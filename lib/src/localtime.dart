@@ -444,7 +444,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
   /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this time is
   /// later than <paramref name="other"/>.</returns>
-  int CompareTo(LocalTime other) => _nanoseconds.CompareTo(other._nanoseconds);
+  int CompareTo(LocalTime other) => _nanoseconds.compareTo(other._nanoseconds);
 
 
   /// Returns a hash code for this local time.
@@ -477,7 +477,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="hours">The number of hours to add</param>
   /// <returns>The current value plus the given number of hours.</returns>
 
-  LocalTime PlusHours(int hours) => TimePeriodField.Hours.Add(this, hours);
+  LocalTime PlusHours(int hours) => TimePeriodField.Hours.add(this, hours);
 
 
   /// Returns a new LocalTime representing the current value with the given number of minutes added.
@@ -488,7 +488,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="minutes">The number of minutes to add</param>
   /// <returns>The current value plus the given number of minutes.</returns>
 
-  LocalTime PlusMinutes(int minutes) => TimePeriodField.Minutes.Add(this, minutes);
+  LocalTime PlusMinutes(int minutes) => TimePeriodField.Minutes.add(this, minutes);
 
 
   /// Returns a new LocalTime representing the current value with the given number of seconds added.
@@ -499,7 +499,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="seconds">The number of seconds to add</param>
   /// <returns>The current value plus the given number of seconds.</returns>
 
-  LocalTime PlusSeconds(int seconds) => TimePeriodField.Seconds.Add(this, seconds);
+  LocalTime PlusSeconds(int seconds) => TimePeriodField.seconds.add(this, seconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
@@ -507,7 +507,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="milliseconds">The number of milliseconds to add</param>
   /// <returns>The current value plus the given number of milliseconds.</returns>
 
-  LocalTime PlusMilliseconds(int milliseconds) => TimePeriodField.Milliseconds.Add(this, milliseconds);
+  LocalTime PlusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.add(this, milliseconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of ticks added.
@@ -515,7 +515,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="ticks">The number of ticks to add</param>
   /// <returns>The current value plus the given number of ticks.</returns>
 
-  LocalTime PlusTicks(int ticks) => TimePeriodField.Ticks.Add(this, ticks);
+  LocalTime PlusTicks(int ticks) => TimePeriodField.ticks.add(this, ticks);
 
 
   /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
@@ -523,7 +523,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="nanoseconds">The number of nanoseconds to add</param>
   /// <returns>The current value plus the given number of ticks.</returns>
 
-  LocalTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
+  LocalTime PlusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.add(this, nanoseconds);
 
 
   /// Returns this time, with the given adjuster applied to it.

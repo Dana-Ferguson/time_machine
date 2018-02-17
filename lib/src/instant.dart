@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/time_machine_calendars.dart';
 
 // todo: remove me -- this prevents me from accidentally using core.Duration
 import 'dart:core' hide Duration;
@@ -18,8 +20,9 @@ class Instant implements Comparable<Instant> {
   final Span _span;
 
   Instant._trusted(this._span);
-  // Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
+  Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
+  Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
 
   int compareTo(Instant other) => _span.compareTo(other._span);
 
@@ -75,9 +78,61 @@ class Instant implements Comparable<Instant> {
   }
 
   DateTime toDateTimeLocal() {
-    //
+    throw new UnimplementedError('Pipe in local date time zone.');
   }
 
+//  // DateTimeOffset is a BCL Class
+//  DateTimeOffset ToDateTimeOffset()
+//  {
+//    if (this < TimeConstants.bclEpoch)
+//    {
+//      throw new ArgumentError("Instant out of range for DateTimeOffset");
+//    }
+//    return new DateTimeOffset(TimeConstants.BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
+//  }
+
+  factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
+
+  factory Instant.fromDateTime(DateTime dateTime) {
+    if (isDartVM) {
+      return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
+    } else {
+      return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
+    }
+  }
+
+  int toUnixTimeSeconds() => _span.seconds;
+  int toUnixTimeMilliseconds() => _span.milliseconds;
+  int toUnixTimeTicks() => _span.totalTicks.toInt();
+
+  // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
+  //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
+  ZoneDateTime inUtc() {
+    // Bypass any determination of offset and arithmetic, as we know the offset is zero.
+    var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.FloorDays);
+    var offsetDateTime = new OffsetDateTime(ymdc, duration.NanosecondOfFloorDay);
+    return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
+  }
+
+  // todo: Combine the regular and x_Calendar constructors
+  ZonedDateTime InZone(DateTimeZone zone) =>
+    // zone is checked for nullity by the constructor.
+    new ZonedDateTime(this, zone);
+
+  ZonedDateTime InZone_Calendar(DateTimeZone zone, CalendarSystem calendar)
+  {
+    Preconditions.checkNotNull(zone, 'zone');
+    Preconditions.checkNotNull(calendar, 'calendar');
+  return new ZonedDateTime(this, zone, calendar);
+  }
+
+  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(this, offset);
+
+  OffsetDateTime WithOffset_Calendar(Offset offset, CalendarSystem calendar)
+  {
+    Preconditions.checkNotNull(calendar, 'calendar');
+    return new OffsetDateTime(this, offset, calendar);
+  }
 
 // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255
   // Add LocalInstant code

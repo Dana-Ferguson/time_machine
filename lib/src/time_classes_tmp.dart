@@ -42,10 +42,10 @@ enum TransitionMode {
 /// An offset from UTC in seconds. A positive value means that the local time is
 /// ahead of UTC (e.g. for Europe); a negative value means that the local time is behind
 /// UTC (e.g. for America).
-class Offset {
-  final int seconds;
-  Offset(this.seconds);
-}
+//class Offset {
+//  final int seconds;
+//  Offset(this.seconds);
+//}
 
 class StandardDaylightAlternatingMap {
   Offset standardOffset;

@@ -20,6 +20,29 @@ export 'src/instant.dart';
 
 export 'src/time_classes_tmp.dart';
 
+// todo: should probably push this to time_machine_utilities
+export 'src/utility/utilities.dart';
+
+export 'src/ambiguous_time_error.dart';
+export 'src/annual_date.dart';
+export 'src/date_adjusters.dart';
+export 'src/date_interval.dart';
+export 'src/clock.dart';
+export 'src/interval.dart';
+
+export 'src/offset.dart';
+export 'src/offset_date.dart';
+export 'src/offset_time.dart';
+export 'src/offset_datetime.dart';
+
+// files skipped:
+//  AssemblyInfo.cs -- well, obviously -- this include the friend references for testing
+//  DateTimeZoneProviders.cs -- only doing TSDB -- this might take a different form?
+//  IDateTimeZoneProvider.cs -- looks like this is sort of part of the js\vm_platform functionality
+//  NamespaceDoc.cs -- just namespace documentation -- add to library level documentation?
+//  NodaTime.csproj -- sort of like a pubspec.yaml
+//
+
 int calculate() {
   return 6 * 7;
 }

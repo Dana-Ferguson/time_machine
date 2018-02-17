@@ -13,16 +13,16 @@ class LocalDate {
   YearMonthDayCalendar _yearMonthDayCalendar;
 
   /// The maximum (latest) date representable in the ISO calendar system.
-  static LocalDate get MaxIsoValue => new LocalDate.preValidated(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.Iso));
+  static LocalDate get MaxIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.Iso));
 
   /// <summary>
   /// The minimum (earliest) date representable in the ISO calendar system.
   /// </summary>
-  static LocalDate get MinIsoValue => new LocalDate.preValidated(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.Iso));
+  static LocalDate get MinIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.Iso));
 
   /// Constructs an instance from values which are assumed to already have been validated.
-  // todo: wtf... I'm lost?
-  @internal LocalDate.preValidated(YearMonthDayCalendar yearMonthDayCalendar)
+  // todo: this one seems like it might be trouble (is this truly protected from being used as an external API?)
+  @internal LocalDate.trusted(YearMonthDayCalendar yearMonthDayCalendar)
   {
     this._yearMonthDayCalendar = yearMonthDayCalendar;
   }
@@ -582,7 +582,7 @@ class LocalDate {
   /// </remarks>
   /// <param name="years">The number of years to add</param>
   /// <returns>The current value plus the given number of years.</returns>
-  LocalDate PlusYears(int years) => DatePeriodFields.YearsField.Add(this, years);
+  LocalDate PlusYears(int years) => DatePeriodFields.YearsField.add(this, years);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of months added.
@@ -600,7 +600,7 @@ class LocalDate {
   /// </remarks>
   /// <param name="months">The number of months to add</param>
   /// <returns>The current date plus the given number of months</returns>
-  LocalDate PlusMonths(int months) => DatePeriodFields.MonthsField.Add(this, months);
+  LocalDate PlusMonths(int months) => DatePeriodFields.MonthsField.add(this, months);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of days added.
@@ -613,14 +613,14 @@ class LocalDate {
   /// </remarks>
   /// <param name="days">The number of days to add</param>
   /// <returns>The current value plus the given number of days.</returns>
-  LocalDate PlusDays(int days) => DatePeriodFields.DaysField.Add(this, days);
+  LocalDate PlusDays(int days) => DatePeriodFields.DaysField.add(this, days);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of weeks added.
   /// </summary>
   /// <param name="weeks">The number of weeks to add</param>
   /// <returns>The current value plus the given number of weeks.</returns>
-  LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
+  LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.add(this, weeks);
 
   /// <summary>
   /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
@@ -692,4 +692,6 @@ class LocalDate {
   /// <param name="time">The time to combine with this date.</param>
   /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
   LocalDateTime At(LocalTime time) => this + time;
+
+  LocalDate With(LocalDate Function(LocalDate) adjuster) => adjuster(this);
 }

@@ -287,7 +287,7 @@ return new DateTime(ticks, DateTimeKind.Unspecified);
 static LocalDateTime FromDateTime(DateTime dateTime)
 {
 int tickOfDay;
-int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
+int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
 return new LocalDateTime(new LocalDate(days), new LocalTime(/*unchecked*/(tickOfDay * NodaConstants.NanosecondsPerTick)));
 }
 
@@ -302,7 +302,7 @@ return new LocalDateTime(new LocalDate(days), new LocalTime(/*unchecked*/(tickOf
 static LocalDateTime FromDateTime(DateTime dateTime, CalendarSystem calendar)
 {
 int tickOfDay;
-int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.Ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
+int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
 return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(/*unchecked*/(tickOfDay * NodaConstants.NanosecondsPerTick)));
 }
 
@@ -675,7 +675,7 @@ LocalDateTime PlusWeeks(int weeks) => new LocalDateTime(date.PlusWeeks(weeks), t
 /// <param name="hours">The number of hours to add</param>
 /// <returns>The current value plus the given number of hours.</returns>
 
-LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.Add(this, hours);
+LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.add(this, hours);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of minutes added.
@@ -683,7 +683,7 @@ LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.Add(this, hours);
 /// <param name="minutes">The number of minutes to add</param>
 /// <returns>The current value plus the given number of minutes.</returns>
 
-LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.Add(this, minutes);
+LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.add(this, minutes);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of seconds added.
@@ -691,7 +691,7 @@ LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.Add(this, minu
 /// <param name="seconds">The number of seconds to add</param>
 /// <returns>The current value plus the given number of seconds.</returns>
 
-LocalDateTime PlusSeconds(int seconds) => TimePeriodField.Seconds.Add(this, seconds);
+LocalDateTime PlusSeconds(int seconds) => TimePeriodField.seconds.add(this, seconds);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
@@ -700,7 +700,7 @@ LocalDateTime PlusSeconds(int seconds) => TimePeriodField.Seconds.Add(this, seco
 /// <returns>The current value plus the given number of milliseconds.</returns>
 
 LocalDateTime PlusMilliseconds(int milliseconds) =>
-TimePeriodField.Milliseconds.Add(this, milliseconds);
+TimePeriodField.milliseconds.add(this, milliseconds);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of ticks added.
@@ -708,7 +708,7 @@ TimePeriodField.Milliseconds.Add(this, milliseconds);
 /// <param name="ticks">The number of ticks to add</param>
 /// <returns>The current value plus the given number of ticks.</returns>
 
-LocalDateTime PlusTicks(int ticks) => TimePeriodField.Ticks.Add(this, ticks);
+LocalDateTime PlusTicks(int ticks) => TimePeriodField.ticks.add(this, ticks);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
@@ -716,7 +716,7 @@ LocalDateTime PlusTicks(int ticks) => TimePeriodField.Ticks.Add(this, ticks);
 /// <param name="nanoseconds">The number of nanoseconds to add</param>
 /// <returns>The current value plus the given number of nanoseconds.</returns>
 
-LocalDateTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.Add(this, nanoseconds);
+LocalDateTime PlusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.add(this, nanoseconds);
 
 
 /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,

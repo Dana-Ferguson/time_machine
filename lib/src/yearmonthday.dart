@@ -68,7 +68,7 @@ class YearMonthDay {
   //bool Equals(dynamic other) => other is YearMonthDay && Equals(other);
 
   @override
-  int get hashCode => _value;
+  int get hashCode => _value.hashCode;
 
   @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDay ? _value == rhs._value : false;

@@ -10,6 +10,8 @@ environment:
 dependencies:
   meta: "^1.1.2"
   intl: "^0.15.2"
+  logging: "^0.11.3+1"
+  quiver_hashcode: "^1.0.0"
 #  path: ^1.4.1
 
 dev_dependencies:

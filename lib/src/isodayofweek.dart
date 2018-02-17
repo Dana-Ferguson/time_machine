@@ -1,3 +1,6 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/IsoDayOfWeek.cs
+// a209e60  on Mar 18, 2015
+
 import 'package:time_machine/time_machine_utilities.dart';
 
 ///// Equates the days of the week with their numerical value according to

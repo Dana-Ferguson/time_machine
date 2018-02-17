@@ -20,7 +20,7 @@ abstract class DateTimeZone {
   /// or may not compare equal to an instance returned by e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
   /// </remarks>
   /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
-  static final DateTimeZone Utc = new FixedDateTimeZone(Offset.Zero);
+  static final DateTimeZone Utc = new FixedDateTimeZone(Offset.zero);
   static const int FixedZoneCacheGranularitySeconds = Span.SECONDS_PER_MINUTE * 30;
   static const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
   static const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
@@ -248,7 +248,7 @@ ZonedDateTime AtStartOfDay(LocalDate date)
 /// <returns>The result of resolving the mapping.</returns>
 ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver)
 {
-Preconditions.CheckNotNull(resolver, 'resolver'));
+Preconditions.checkNotNull(resolver, 'resolver'));
 return resolver(MapLocal(localDateTime));
 }
 
@@ -347,7 +347,7 @@ ZoneInterval _getIntervalBeforeGap(LocalInstant localInstant)
   // If the local interval occurs before the zone interval we're looking at starts,
   // we need to find the earlier one; otherwise this interval must come after the gap, and
   // it's therefore the one we want.
-  if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.RawStart)
+  if (localInstant.minus(guessInterval.WallOffset) < guessInterval.RawStart)
   {
     return GetZoneInterval(guessInterval.Start - Span.Epsilon);
   }
@@ -363,7 +363,7 @@ ZoneInterval _getIntervalAfterGap(LocalInstant localInstant)
   ZoneInterval guessInterval = GetZoneInterval(guess);
   // If the local interval occurs before the zone interval we're looking at starts,
   // it's the one we're looking for. Otherwise, we need to find the next interval.
-  if (localInstant.Minus(guessInterval.WallOffset) < guessInterval.RawStart)
+  if (localInstant.minus(guessInterval.WallOffset) < guessInterval.RawStart)
   {
     return guessInterval;
   }
@@ -395,7 +395,7 @@ static List<DateTimeZone> _buildFixedZoneCache()
   for (int i = 0; i < FixedZoneCacheSize; i++)
   {
     int offsetSeconds = i * FixedZoneCacheGranularitySeconds + FixedZoneCacheMinimumSeconds;
-    ret[i] = new FixedDateTimeZone(Offset.FromSeconds(offsetSeconds));
+    ret[i] = new FixedDateTimeZone(Offset.fromSeconds(offsetSeconds));
   }
   ret[-FixedZoneCacheMinimumSeconds ~/ FixedZoneCacheGranularitySeconds] = Utc;
   return ret;
@@ -435,7 +435,7 @@ static List<DateTimeZone> _buildFixedZoneCache()
 /// <seealso cref="DateTimeZone.GetZoneInterval"/>
 Iterable<ZoneInterval> getZoneIntervals(Interval interval)
 {
-  var current = interval.HasStart ? interval.Start : Instant.MinValue;
+  var current = interval.HasStart ? interval.Start : Instant.minValue;
   var end = interval.RawEnd;
   while (current < end)
   {
