@@ -433,14 +433,14 @@ static List<DateTimeZone> _buildFixedZoneCache()
 /// infinite in both directions).</param>
 /// <returns>A sequence of zone intervals covering the given interval.</returns>
 /// <seealso cref="DateTimeZone.GetZoneInterval"/>
-Iterable<ZoneInterval> getZoneIntervals(Interval interval)
+Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync*
 {
   var current = interval.HasStart ? interval.Start : Instant.minValue;
   var end = interval.RawEnd;
   while (current < end)
   {
     var zoneInterval = GetZoneInterval(current);
-    yield return zoneInterval;
+    yield zoneInterval;
     // If this is the end of time, this will just fail on the next comparison.
     current = zoneInterval.RawEnd;
   }
@@ -472,8 +472,7 @@ Iterable<ZoneInterval> GetZoneIntervals(Interval interval, ZoneEqualityComparer.
 {
   if ((options & ~ZoneEqualityComparer.Options.StrictestMatch) != 0)
   {
-    throw new ArgumentOutOfRangeException('options'),
-        "The value $options is not defined within ZoneEqualityComparer.Options");
+    throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
   }
   var zoneIntervalEqualityComparer = new ZoneEqualityComparer.ZoneIntervalEqualityComparer(options, interval);
   var originalIntervals = getZoneIntervals(interval);

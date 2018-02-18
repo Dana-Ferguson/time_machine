@@ -13,8 +13,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 {
 @private static const int NanosecondsBits = 47;
 // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
-@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
-@private static const int OffsetMask = ~NanosecondsMask;
+//@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
+//@private static const int OffsetMask = ~NanosecondsMask;
 @private static const int MinBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
 @private static const int MaxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
@@ -28,16 +28,16 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 @private final int nanosecondsAndOffset;
 
 // TRUSTED
-@internal OffsetDateTime._fullTrust(this.yearMonthDayCalendar, this.nanosecondsAndOffset)
+@internal OffsetDateTime.fullTrust(this.yearMonthDayCalendar, this.nanosecondsAndOffset)
 {
-  Calendar.debugValidateYearMonthDay(YearMonthDay);
+  Calendar.ValidateYearMonthDay(YearMonthDay);
 }
 
 // TRUSTED
 @internal OffsetDateTime._lessTrust(this.yearMonthDayCalendar, LocalTime time, Offset offset)
  : nanosecondsAndOffset = CombineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
 {
-  Calendar.debugValidateYearMonthDay(YearMonthDay);
+  Calendar.ValidateYearMonthDay(YearMonthDay);
 }
 
 /// <summary>
@@ -61,7 +61,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   var yearMonthDayCalendar = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
   var nanosecondsAndOffset = CombineNanoOfDayAndOffset(nanoOfDay, offset);
 
-  return new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
+  return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
 }
 
 /// <summary>
@@ -84,7 +84,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     }
     var yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(days);
     var nanosecondsAndOffset = CombineNanoOfDayAndOffset(nanoOfDay, offset);
-    return new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
 }
 
 /// <summary>
@@ -93,7 +93,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 /// <param name="localDateTime">Local date and time to represent</param>
 /// <param name="offset">Offset from UTC</param>
 OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-    : this._fullTrust(localDateTime.Date.YearMonthDayCalendar, CombineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
+    : this.fullTrust(localDateTime.Date.yearMonthDayCalendar, CombineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
 
 @private static int CombineNanoOfDayAndOffset(int nanoOfDay, Offset offset)
 {

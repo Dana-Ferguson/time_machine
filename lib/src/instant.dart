@@ -107,11 +107,11 @@ class Instant implements Comparable<Instant> {
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
-  ZoneDateTime inUtc() {
+  ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.GetGregorianYearMonthDayCalendarFromDaysSinceEpoch(duration.FloorDays);
-    var offsetDateTime = new OffsetDateTime(ymdc, duration.NanosecondOfFloorDay);
-    return new ZonedDateTime(offsetDateTime, DateTimeZone.Utc);
+    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.days);
+    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.totalNanoseconds);
+    return new ZonedDateTime.trusted(offsetDateTime, DateTimeZone.Utc);
   }
 
   // todo: Combine the regular and x_Calendar constructors
@@ -123,15 +123,15 @@ class Instant implements Comparable<Instant> {
   {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(calendar, 'calendar');
-  return new ZonedDateTime(this, zone, calendar);
+  return new ZonedDateTime.withCalendar(this, zone, calendar);
   }
 
-  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(this, offset);
+  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.instant(this, offset);
 
   OffsetDateTime WithOffset_Calendar(Offset offset, CalendarSystem calendar)
   {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new OffsetDateTime(this, offset, calendar);
+    return new OffsetDateTime.instantCalendar(this, offset, calendar);
   }
 
 // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255

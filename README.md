@@ -1,6 +1,4 @@
 # time_machine
 
-A sample command-line application.
-
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+Port of Nodatime.
+It didn't start that way. I just wanted some TimeZone functionality -- but, I don't know how to stop.
