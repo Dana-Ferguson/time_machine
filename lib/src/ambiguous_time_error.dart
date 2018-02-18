@@ -9,7 +9,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 class AmbiguousTimeError extends Error {
   /// Get the local date and time which is ambiguous in the time zone.
   /// <value>The local date and time which is ambiguous in the time zone.</value>
-  @internal LocalDateTime get localDateTime => earlierMapping.LocalDateTime;
+  @internal LocalDateTime get localDateTime => earlierMapping.localDateTime;
 
   /// The time zone in which the local date and time is ambiguous.
   /// <value>The time zone in which the local date and time is ambiguous.</value>
@@ -38,10 +38,10 @@ class AmbiguousTimeError extends Error {
   /// <param name="earlierMapping">The earlier possible mapping</param>
   /// <param name="laterMapping">The later possible mapping</param>
   AmbiguousTimeError(this.earlierMapping, this.laterMapping)
-      : message = "Local time ${earlierMapping.LocalDateTime} is ambiguous in time zone ${earlierMapping.Zone.Id}" {
+      : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.Zone.id}" {
     Preconditions.checkArgument(earlierMapping.Zone == laterMapping.Zone, 'laterMapping',
         "Ambiguous possible values must use the same time zone");
-    Preconditions.checkArgument(earlierMapping.LocalDateTime == laterMapping.LocalDateTime, 'laterMapping',
+    Preconditions.checkArgument(earlierMapping.localDateTime == laterMapping.localDateTime, 'laterMapping',
         "Ambiguous possible values must have the same local date/time");
   }
 }

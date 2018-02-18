@@ -137,9 +137,9 @@ CalendarSystem get Calendar => start.Calendar;
 /// </returns>
 @override String toString()
 {
-  String start = LocalDatePattern.Iso.Format(Start);
-  String end = LocalDatePattern.Iso.Format(End);
-  return "[{$start}, {$end}]";
+  String a = LocalDatePattern.Iso.Format(start);
+  String b = LocalDatePattern.Iso.Format(end);
+  return "[$a, $b]";
 }
 
 /// Returns the intersection between the given interval and this interval.

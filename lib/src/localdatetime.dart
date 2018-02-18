@@ -484,8 +484,8 @@ static LocalDateTime Add(LocalDateTime localDateTime, Period period) => localDat
 
 LocalDateTime Plus(Period period)
 {
-Preconditions.checkNotNull(period, nameof(period));
-return period.AddTo(date, time, 1);
+Preconditions.checkNotNull(period, 'period');
+return period.AddDateTimeTo(date, time, 1);
 }
 
 
@@ -513,7 +513,7 @@ static LocalDateTime Subtract(LocalDateTime localDateTime, Period period) => loc
 
 LocalDateTime Minus(Period period)
 {
-Preconditions.checkNotNull(period, nameof(period));
+Preconditions.checkNotNull(period, 'period');
 return period.AddTo(date, time, -1);
 }
 

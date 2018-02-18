@@ -21,7 +21,7 @@ abstract class DateTimeZone {
   /// </remarks>
   /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
   static final DateTimeZone Utc = new FixedDateTimeZone(Offset.zero);
-  static const int FixedZoneCacheGranularitySeconds = Span.SECONDS_PER_MINUTE * 30;
+  static const int FixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
   static const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
   static const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
   static final List<DateTimeZone> FixedZoneCache = _buildFixedZoneCache();
@@ -48,7 +48,7 @@ static DateTimeZone ForOffset(Offset offset)
   {
     return new FixedDateTimeZone(offset);
   }
-  int index = (seconds - FixedZoneCacheMinimumSeconds) / FixedZoneCacheGranularitySeconds;
+  int index = (seconds - FixedZoneCacheMinimumSeconds) ~/ FixedZoneCacheGranularitySeconds;
   if (index < 0 || index >= FixedZoneCacheSize)
   {
     return new FixedDateTimeZone(offset);
@@ -212,20 +212,20 @@ ZonedDateTime AtStartOfDay(LocalDate date)
     case 0:
       var interval = mapping.LateInterval;
       // Safe to use Start, as it can't extend to the start of time.
-      var offsetDateTime = new OffsetDateTime(interval.Start, interval.WallOffset, date.Calendar);
+      var offsetDateTime = new OffsetDateTime.instantCalendar(interval.Start, interval.WallOffset, date.Calendar);
       // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
       // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-      if (offsetDateTime.YearMonthDay != date.YearMonthDay)
+      if (offsetDateTime.YearMonthDay != date.yearMonthDay)
       {
-        throw new SkippedTimeException(midnight, this);
+        throw new SkippedTimeError(midnight, this);
       }
-      return new ZonedDateTime(offsetDateTime, this);
+      return new ZonedDateTime.trusted(offsetDateTime, this);
   // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
     case 1:
     case 2:
-      return new ZonedDateTime(midnight.WithOffset(mapping.EarlyInterval.WallOffset), this);
+      return new ZonedDateTime.trusted(midnight.WithOffset(mapping.EarlyInterval.WallOffset), this);
     default:
-      throw new InvalidOperationException("This won't happen.");
+      throw new StateError("This won't happen.");
   }
 }
 

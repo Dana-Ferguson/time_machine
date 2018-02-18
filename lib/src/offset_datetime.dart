@@ -617,10 +617,10 @@ bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
 /// <summary>
 /// Implementation for <see cref="Comparer.Local"/>
 /// </summary>
-@private class LocalComparer extends Comparer {
-  @internal static final Comparer Instance = new LocalComparer();
+@private class OffsetDateTime_LocalComparer extends OffsetDateTimeComparer {
+  @internal static final OffsetDateTimeComparer Instance = new OffsetDateTime_LocalComparer();
 
-  @private LocalComparer() {
+  @private OffsetDateTime_LocalComparer() {
   }
 
   /// <inheritdoc />
@@ -651,7 +651,7 @@ bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
 /// same value can be used for both equality and ordering comparisons.
 /// </remarks>
 @immutable
-abstract class Comparer // implements Comparable<OffsetDateTime> // : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
+abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> // : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
     {
 // TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
 // but still uses the offset?
@@ -666,7 +666,7 @@ abstract class Comparer // implements Comparable<OffsetDateTime> // : IComparer<
   /// <para>This property will return a reference to the same instance every time it is called.</para>
   /// </remarks>
   /// <value>A comparer which compares values by their local date/time, without reference to the offset.</value>
-  static Comparer get local => LocalComparer.Instance;
+  static OffsetDateTimeComparer get local => OffsetDateTime_LocalComparer.Instance;
 
   /// <summary>
   /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
@@ -679,7 +679,7 @@ abstract class Comparer // implements Comparable<OffsetDateTime> // : IComparer<
   /// </remarks>
   /// <value>A comparer which compares values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static Comparer get instant => InstantComparer.Instance;
+  static OffsetDateTimeComparer get instant => OffsetDateTime_InstantComparer.Instance;
 
   /// <summary>
   /// @internal constructor to prevent external classes from deriving from this.
@@ -735,10 +735,10 @@ abstract class Comparer // implements Comparable<OffsetDateTime> // : IComparer<
 /// <summary>
 /// Implementation for <see cref="Comparer.Instant"/>.
 /// </summary>
-@private class InstantComparer extends Comparer {
-  @internal static final Comparer Instance = new InstantComparer();
+@private class OffsetDateTime_InstantComparer extends OffsetDateTimeComparer {
+  @internal static final OffsetDateTimeComparer Instance = new OffsetDateTime_InstantComparer();
 
-  @private InstantComparer() {
+  @private OffsetDateTime_InstantComparer() {
   }
 
   /// <inheritdoc />
