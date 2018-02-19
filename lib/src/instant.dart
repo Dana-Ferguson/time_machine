@@ -11,6 +11,16 @@ import 'package:time_machine/time_machine_calendars.dart';
 // todo: remove me -- this prevents me from accidentally using core.Duration
 import 'dart:core' hide Duration;
 
+
+/*
+ TODO: BeforeMinValue / AfterMaxValue were being used to deal with nullable Instants -- Dart is struct-less -- everything can be nulled
+
+ //ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
+  //    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
+
+
+ */
+
 // LUXON & MOMENT.JS are both milliseconds (neither of them run in a VM)
 // HighResTimer is 5 microsecond accuracy
 // I wish I could have two different versions of this class for the VM and JS targets. (a specific VM and JS include with just an external declaration here)
@@ -101,6 +111,8 @@ class Instant implements Comparable<Instant> {
     }
   }
 
+  // todo: why are these different?
+  int get daysSinceEpoch => _span.days;
   int toUnixTimeSeconds() => _span.seconds;
   int toUnixTimeMilliseconds() => _span.milliseconds;
   int toUnixTimeTicks() => _span.totalTicks.toInt();

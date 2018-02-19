@@ -12,6 +12,7 @@ export 'src/isodayofweek.dart';
 export 'src/datetimezone.dart';
 export 'src/zoneddatetime.dart';
 
+export 'src/localinstant.dart';
 export 'src/localtime.dart';
 export 'src/localdate.dart';
 export 'src/localdatetime.dart';
@@ -28,7 +29,6 @@ export 'src/system_clock.dart';
 
 // todo: should probably push this to time_machine_utilities
 export 'src/utility/utilities.dart';
-export 'src/time_classes_tmp.dart';
 
 export 'src/ambiguous_time_error.dart';
 export 'src/skipped_time_error.dart';
@@ -47,6 +47,8 @@ export 'src/period.dart';
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
 
+
+// There are several calendar systems implemented -- We should experiment with the deferred loading
 
 // files skipped:
 //  AssemblyInfo.cs -- well, obviously -- this include the friend references for testing

@@ -212,7 +212,7 @@ ZonedDateTime AtStartOfDay(LocalDate date)
     case 0:
       var interval = mapping.LateInterval;
       // Safe to use Start, as it can't extend to the start of time.
-      var offsetDateTime = new OffsetDateTime.instantCalendar(interval.Start, interval.WallOffset, date.Calendar);
+      var offsetDateTime = new OffsetDateTime.instantCalendar(interval.start, interval.wallOffset, date.Calendar);
       // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
       // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
       if (offsetDateTime.YearMonthDay != date.yearMonthDay)
@@ -223,7 +223,7 @@ ZonedDateTime AtStartOfDay(LocalDate date)
   // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
     case 1:
     case 2:
-      return new ZonedDateTime.trusted(midnight.WithOffset(mapping.EarlyInterval.WallOffset), this);
+      return new ZonedDateTime.trusted(midnight.WithOffset(mapping.EarlyInterval.wallOffset), this);
     default:
       throw new StateError("This won't happen.");
   }
@@ -347,9 +347,9 @@ ZoneInterval _getIntervalBeforeGap(LocalInstant localInstant)
   // If the local interval occurs before the zone interval we're looking at starts,
   // we need to find the earlier one; otherwise this interval must come after the gap, and
   // it's therefore the one we want.
-  if (localInstant.minus(guessInterval.WallOffset) < guessInterval.RawStart)
+  if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart)
   {
-    return GetZoneInterval(guessInterval.Start - Span.Epsilon);
+    return GetZoneInterval(guessInterval.start - Span.Epsilon);
   }
   else
   {
@@ -363,14 +363,14 @@ ZoneInterval _getIntervalAfterGap(LocalInstant localInstant)
   ZoneInterval guessInterval = GetZoneInterval(guess);
   // If the local interval occurs before the zone interval we're looking at starts,
   // it's the one we're looking for. Otherwise, we need to find the next interval.
-  if (localInstant.minus(guessInterval.WallOffset) < guessInterval.RawStart)
+  if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart)
   {
     return guessInterval;
   }
   else
   {
     // Will definitely be valid - there can't be a gap after an infinite interval.
-    return GetZoneInterval(guessInterval.End);
+    return GetZoneInterval(guessInterval.end);
   }
 }
 

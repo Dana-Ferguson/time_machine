@@ -117,6 +117,7 @@ class Span implements Comparable<Span> {
           + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
   // todo: I feel like the naming here is not consistent enough (but this is consistent with Nodatime)
+  // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
   int get hours => (_milliseconds ~/ TimeConstants.millisecondsPerHour) % TimeConstants.hoursPerDay;
   int get minutes => (_milliseconds ~/ TimeConstants.millisecondsPerMinute) % TimeConstants.minutesPerHour;
@@ -134,6 +135,9 @@ class Span implements Comparable<Span> {
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
   double get totalTicks => _milliseconds * TimeConstants.ticksPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerTick;
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+
+  // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
+  int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
