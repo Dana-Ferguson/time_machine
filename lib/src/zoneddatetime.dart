@@ -7,6 +7,7 @@ import 'package:quiver_hashcode/hashcode.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_timezones.dart';
 
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
@@ -516,7 +517,7 @@ ZonedDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvide
 /// or the offset is outside the range of +/-14 hours (the range supported by <c>DateTimeOffset</c>).</exception>
 /// <returns>A <c>DateTimeOffset</c> with the same local date/time and offset as this. The <see cref="DateTime"/> part of
 /// the result always has a "kind" of Unspecified.</returns>
-DateTimeOffset ToDateTimeOffset() => offsetDateTime.ToDateTimeOffset();
+// DateTimeOffset ToDateTimeOffset() => offsetDateTime.ToDateTimeOffset();
 
 /// <summary>
 /// Returns a new [ZonedDateTime] representing the same instant in time as the given
@@ -525,9 +526,9 @@ DateTimeOffset ToDateTimeOffset() => offsetDateTime.ToDateTimeOffset();
 /// </summary>
 /// <param name="dateTimeOffset">Date and time value with an offset.</param>
 /// <returns>A [ZonedDateTime] value representing the same instant in time as the given <see cref="DateTimeOffset"/>.</returns>
-static ZonedDateTime FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
-new ZonedDateTime(Instant.FromDateTimeOffset(dateTimeOffset),
-new FixedDateTimeZone(Offset.FromTimeSpan(dateTimeOffset.Offset)));
+//static ZonedDateTime FromDateTimeOffset(DateTimeOffset dateTimeOffset) =>
+//new ZonedDateTime(Instant.FromDateTimeOffset(dateTimeOffset),
+//new FixedDateTimeZone(Offset.FromTimeSpan(dateTimeOffset.Offset)));
 
 /// <summary>
 /// Constructs a <see cref="DateTime"/> from this [ZonedDateTime] which has a

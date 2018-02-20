@@ -3,6 +3,7 @@
 
 import 'package:meta/meta.dart';
 
+import 'package:time_machine/time_machine_fields.dart';
 import 'utility/preconditions.dart';
 
 import 'package:time_machine/time_machine.dart';
@@ -311,7 +312,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   LocalTime operator +(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot add a period with a date component to a time");
-    return period.AddTo(this, 1);
+    return period.AddTimeTo(this, 1);
   }
 
 
@@ -338,29 +339,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="time">The time to subtract the period from</param>
   /// <param name="period">The period to subtract</param>
   /// <returns>The result of subtract the period from the time, wrapping via midnight if necessary</returns>
-  LocalTime operator -(Period period) {
-    Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
-    return period.AddTo(this, -1);
-  }
-
-
-  /// Subtracts the specified period from the time. Friendly alternative to <c>operator-()</c>.
   ///
-  /// <param name="time">The time to subtract the period from</param>
-  /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
-  /// <returns>The result of subtracting the given period from the time.</returns>
-  static LocalTime Subtract(LocalTime time, Period period) => time - period;
-
-
-  /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
-  ///
-  /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
-  /// <returns>The result of subtracting the given period from this time.</returns>
-
-  LocalTime Minus(Period period) => this - period;
-
-
   /// Subtracts one time from another, returning the result as a <see cref="Period"/>.
   ///
   /// <remarks>
@@ -369,18 +348,39 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="lhs">The time to subtract from</param>
   /// <param name="rhs">The time to subtract</param>
   /// <returns>The result of subtracting one time from another.</returns>
-  Period operator -(LocalTime rhs) => Period.Between(rhs, this);
+  // todo: still hate dynamic dispatch
+  dynamic operator -(dynamic rhs) => rhs is Period ? MinusPeriod(rhs) : rhs is LocalTime ? Between(rhs) : throw new TypeError();
+  //Period operator -(LocalTime rhs) => Period.BetweenTimes(rhs, this);
 
-
-  /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+  /// Subtracts the specified period from the time. Friendly alternative to <c>operator-()</c>.
   ///
-  /// <remarks>
-  /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalTime,NodaTime.LocalTime)"/>.
-  /// </remarks>
-  /// <param name="lhs">The time to subtract from</param>
-  /// <param name="rhs">The time to subtract</param>
-  /// <returns>The result of subtracting one time from another.</returns>
-  Period Subtract(LocalTime rhs) => this - rhs;
+  /// <param name="time">The time to subtract the period from</param>
+  /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
+  /// <returns>The result of subtracting the given period from the time.</returns>
+  static LocalTime Subtract(LocalTime time, Period period) => time.MinusPeriod(period);
+
+  /// Subtracts the specified period from this time. Fluent alternative to <c>operator-()</c>.
+  ///
+  /// <param name="period">The period to subtract. Must not contain any (non-zero) date units.</param>
+  /// <returns>The result of subtracting the given period from this time.</returns>
+
+  LocalTime MinusPeriod(Period period) {
+    Preconditions.checkNotNull(period, 'period');
+    Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
+    return period.AddTimeTo(this, -1);
+  }
+
+  // todo: this is a mess here ~ I feel like I didn't get the operators and collaries correct here
+
+//  /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+//  ///
+//  /// <remarks>
+//  /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalTime,NodaTime.LocalTime)"/>.
+//  /// </remarks>
+//  /// <param name="lhs">The time to subtract from</param>
+//  /// <param name="rhs">The time to subtract</param>
+//  /// <returns>The result of subtracting one time from another.</returns>
+//  Period Subtract(LocalTime rhs) => this - rhs;
 
 
   /// Subtracts the specified time from this time, returning the result as a <see cref="Period"/>.
@@ -388,7 +388,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   ///
   /// <param name="time">The time to subtract from this</param>
   /// <returns>The difference between the specified time and this one</returns>
-  Period Minus(LocalTime time) => this - time;
+  Period Between(LocalTime time) => Period.BetweenTimes(time, this); // this - time;
 
 
   /// Compares two local times for equality, by checking whether they represent
@@ -397,7 +397,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="lhs">The first value to compare</param>
   /// <param name="rhs">The second value to compare</param>
   /// <returns>True if the two times are the same; false otherwise</returns>
-  @override bool operator ==(LocalTime rhs) => this._nanoseconds == rhs._nanoseconds;
+  @override bool operator ==(dynamic rhs) => rhs is LocalTime ?? this._nanoseconds == rhs._nanoseconds;
 
 // static bool operator !=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds != rhs.nanoseconds;
 
@@ -461,12 +461,12 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   bool Equals(LocalTime other) => this == other;
 
 
-  /// Compares this local time with the specified reference. A local time is
-  /// only equal to another local time with the same underlying tick value.
-  ///
-  /// <param name="obj">The object to compare this one with</param>
-  /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>
-  @override bool Equals(dynamic obj) => obj is LocalTime && this == obj;
+//  /// Compares this local time with the specified reference. A local time is
+//  /// only equal to another local time with the same underlying tick value.
+//  ///
+//  /// <param name="obj">The object to compare this one with</param>
+//  /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>
+//  @override bool Equals(dynamic obj) => obj is LocalTime && this == obj;
 
 
   /// Returns a new LocalTime representing the current value with the given number of hours added.
@@ -477,7 +477,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="hours">The number of hours to add</param>
   /// <returns>The current value plus the given number of hours.</returns>
 
-  LocalTime PlusHours(int hours) => TimePeriodField.Hours.add(this, hours);
+  LocalTime PlusHours(int hours) => TimePeriodField.Hours.AddTimeSimple(this, hours);
 
 
   /// Returns a new LocalTime representing the current value with the given number of minutes added.
@@ -488,7 +488,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="minutes">The number of minutes to add</param>
   /// <returns>The current value plus the given number of minutes.</returns>
 
-  LocalTime PlusMinutes(int minutes) => TimePeriodField.Minutes.add(this, minutes);
+  LocalTime PlusMinutes(int minutes) => TimePeriodField.Minutes.AddTimeSimple(this, minutes);
 
 
   /// Returns a new LocalTime representing the current value with the given number of seconds added.
@@ -499,7 +499,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="seconds">The number of seconds to add</param>
   /// <returns>The current value plus the given number of seconds.</returns>
 
-  LocalTime PlusSeconds(int seconds) => TimePeriodField.seconds.add(this, seconds);
+  LocalTime PlusSeconds(int seconds) => TimePeriodField.Seconds.AddTimeSimple(this, seconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
@@ -507,7 +507,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="milliseconds">The number of milliseconds to add</param>
   /// <returns>The current value plus the given number of milliseconds.</returns>
 
-  LocalTime PlusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.add(this, milliseconds);
+  LocalTime PlusMilliseconds(int milliseconds) => TimePeriodField.Milliseconds.AddTimeSimple(this, milliseconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of ticks added.
@@ -515,7 +515,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="ticks">The number of ticks to add</param>
   /// <returns>The current value plus the given number of ticks.</returns>
 
-  LocalTime PlusTicks(int ticks) => TimePeriodField.ticks.add(this, ticks);
+  LocalTime PlusTicks(int ticks) => TimePeriodField.Ticks.AddTimeSimple(this, ticks);
 
 
   /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
@@ -523,7 +523,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="nanoseconds">The number of nanoseconds to add</param>
   /// <returns>The current value plus the given number of ticks.</returns>
 
-  LocalTime PlusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.add(this, nanoseconds);
+  LocalTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.AddTimeSimple(this, nanoseconds);
 
 
   /// Returns this time, with the given adjuster applied to it.
@@ -555,7 +555,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="date">The date to combine with this time</param>
   /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
 
-  LocalDateTime On(LocalDate date) => date + this;
+  LocalDateTime On(LocalDate date) => new LocalDateTime(date, this);
 
 
   /// Returns the later time of the given two.

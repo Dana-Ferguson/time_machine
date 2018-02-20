@@ -12,6 +12,10 @@ export 'src/calendars/gj_era_calculator.dart';
 export 'src/calendars/era_calculator.dart';
 export 'src/calendars/era.dart';
 
+export 'src/calendars/i_week_rule.dart';
+export 'src/calendars/week_year_rules.dart';
+export 'src/calendars/simple_week_year_rule.dart';
+
 import 'time_machine.dart';
 import 'src/calendars/gregorian_yearmonthday_calculator.dart';
 import 'src/utility/preconditions.dart';

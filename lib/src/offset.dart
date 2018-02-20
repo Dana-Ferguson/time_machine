@@ -63,6 +63,8 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
   }
 
+  // todo: constant?
+  Span toSpan() => new Span(seconds: _seconds);
 
   /// Gets the number of seconds represented by this offset, which may be negative.
   ///

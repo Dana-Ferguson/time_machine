@@ -45,7 +45,7 @@ class ZonedClock extends Clock {
   /// </summary>
   /// <returns>The local date/time of the current instant provided by the underlying clock, adjusted to the
   /// time zone of this object.</returns>
-  LocalDateTime getCurrentLocalDateTime() => getCurrentZonedDateTime().LocalDateTime;
+  LocalDateTime getCurrentLocalDateTime() => getCurrentZonedDateTime().localDateTime;
 
   /// <summary>
   /// Returns the offset date/time of the current instant provided by the underlying clock, adjusted

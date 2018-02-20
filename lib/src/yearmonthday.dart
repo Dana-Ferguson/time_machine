@@ -48,10 +48,9 @@ class YearMonthDay {
   @override
   String toString() => '${year.toString().padLeft(4, '0')}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
 
-// from: nodatime/src/NodaTime/CalendarSystem.cs at this time.
-//  @internal
-//  YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
-//      new YearMonthDayCalendar(_value, calendar == null ? 0 : calendar.Ordinal);
+  @internal
+  YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
+      new YearMonthDayCalendar.ymd(_value, calendar == null ? 0 : calendar.ordinal);
 
   @internal
   YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>

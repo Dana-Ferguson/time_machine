@@ -572,6 +572,11 @@ class CalendarSystem {
     yearMonthDayCalculator.validateYearMonthDay(year, month, day);
   }
 
+  // todo: name
+  @internal void ValidateYearMonthDay_(YearMonthDay ymd) {
+    yearMonthDayCalculator.validateYearMonthDay(ymd.year, ymd.month, ymd.day);
+  }
+
   @internal int Compare(YearMonthDay lhs, YearMonthDay rhs) {
 //DebugValidateYearMonthDay(lhs);
 //DebugValidateYearMonthDay(rhs);

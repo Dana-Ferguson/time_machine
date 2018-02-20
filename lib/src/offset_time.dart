@@ -31,7 +31,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// Gets the offset from UTC of this value.
   /// <value>The offset from UTC of this value.</value>
   /// </summary>
-  Offset get _Offset => _offset;
+  Offset get offset => _offset;
 
   /// <summary>
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
@@ -125,7 +125,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// <param name="date">The date to combine with this time-of-day.</param>
   /// <returns>The <see cref="OffsetDateTime"/> representation of this time-of-day on the given date.</returns>
 
-  OffsetDateTime On(LocalDate date) => new OffsetDateTime(date.At(_time), Offset);
+  OffsetDateTime On(LocalDate date) => new OffsetDateTime(date.At(_time), offset);
 
   /// <summary>
   /// Returns a hash code for this offset time.

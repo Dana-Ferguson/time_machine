@@ -1,7 +1,10 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/LocalDateTime.cs
 // 12c338e  on Nov 11, 2017
 
+import 'package:quiver_hashcode/hashcode.dart';
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine_fields.dart';
+import 'package:time_machine/time_machine_timezones.dart';
 import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
@@ -38,8 +41,8 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
 /// <param name="localInstant">The local instant.</param>
 /// <returns>The resulting date/time.</returns>
 @internal LocalDateTime.fromInstant(LocalInstant localInstant) :
-date = new LocalDate(localInstant.DaysSinceEpoch),
-time = new LocalTime(localInstant.NanosecondOfDay);
+date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch),
+time = new LocalTime.fromNanoseconds(localInstant.NanosecondOfDay);
 
 
 /// Initializes a new instance of the <see cref="LocalDateTime"/> struct using the ISO calendar system.
@@ -266,16 +269,17 @@ LocalDate get Date => date;
 
 DateTime ToDateTimeUnspecified()
 {
-int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
-if (ticks < 0)
-{
-throw new InvalidOperationException("LocalDateTime out of range of DateTime");
-}
-return new DateTime(ticks, DateTimeKind.Unspecified);
+//int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
+//if (ticks < 0)
+//{
+//throw new StateError("LocalDateTime out of range of DateTime");
+//}
+// todo: on VM we should supply the microsecond
+return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second, time.Millisecond);
 }
 
 
-@internal LocalInstant ToLocalInstant() => new LocalInstant(date.DaysSinceEpoch, time.NanosecondOfDay);
+@internal LocalInstant ToLocalInstant() => new LocalInstant.daysNanos(date.DaysSinceEpoch, time.NanosecondOfDay);
 
 
 /// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the ISO calendar. This does not perform
@@ -284,26 +288,27 @@ return new DateTime(ticks, DateTimeKind.Unspecified);
 /// 
 /// <param name="dateTime">Value to convert into a Noda Time local date and time</param>
 /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
-static LocalDateTime FromDateTime(DateTime dateTime)
-{
-int tickOfDay;
-int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
-return new LocalDateTime(new LocalDate(days), new LocalTime(/*unchecked*/(tickOfDay * NodaConstants.NanosecondsPerTick)));
-}
+//static LocalDateTime FromDateTime(DateTime dateTime)
+//{
+//int tickOfDay;
+//int days = dateTime.difference(new DateTime.fromMillisecondsSinceEpoch(0)).inDays; // TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
+//return new LocalDateTime(new LocalDate.fromDaysSinceEpoch(days), new LocalTime.fromNanoseconds(/*unchecked*/(tickOfDay * TimeConstants.nanosecondsPerTick)));
+//}
 
 
-/// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the specified calendar. This does not perform
+/// Converts a <see cref="DateTime" /> of any kind to a LocalDateTime in the specified or ISO calendar. This does not perform
 /// any time zone conversions, so a DateTime with a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Utc"/>
 /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
 /// 
 /// <param name="dateTime">Value to convert into a Noda Time local date and time</param>
 /// <param name="calendar">The calendar system to convert into</param>
 /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
-static LocalDateTime FromDateTime(DateTime dateTime, CalendarSystem calendar)
+static LocalDateTime FromDateTime(DateTime dateTime, [CalendarSystem calendar = null])
 {
 int tickOfDay;
-int days = TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
-return new LocalDateTime(new LocalDate(days, calendar), new LocalTime(/*unchecked*/(tickOfDay * NodaConstants.NanosecondsPerTick)));
+int days = dateTime.difference(new DateTime.fromMillisecondsSinceEpoch(0)).inDays; // TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
+if (calendar == null) return new LocalDateTime(new LocalDate.fromDaysSinceEpoch(days), new LocalTime.fromNanoseconds(/*unchecked*/(tickOfDay * TimeConstants.nanosecondsPerTick)));
+return new LocalDateTime(new LocalDate.fromDaysSinceEpoch_forCalendar(days, calendar), new LocalTime.fromNanoseconds(/*unchecked*/(tickOfDay * TimeConstants.nanosecondsPerTick)));
 }
 
 // #region Implementation of IEquatable<LocalDateTime>
@@ -326,15 +331,7 @@ bool Equals(LocalDateTime other) => date == other.date && time == other.time;
 /// <param name="left">The left hand side of the operator.</param>
 /// <param name="right">The right hand side of the operator.</param>
 /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
-static bool operator ==(LocalDateTime left, LocalDateTime right) => left.Equals(right);
-
-
-/// Implements the operator != (inequality).
-/// 
-/// <param name="left">The left hand side of the operator.</param>
-/// <param name="right">The right hand side of the operator.</param>
-/// <returns><c>true</c> if values are not equal to each other, otherwise <c>false</c>.</returns>
-static bool operator !=(LocalDateTime left, LocalDateTime right) => !(left == right);
+bool operator ==(dynamic right) => right is LocalDateTime && Equals(right);
 
 
 /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
@@ -349,10 +346,10 @@ static bool operator !=(LocalDateTime left, LocalDateTime right) => !(left == ri
 /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
 /// as the calendar of <paramref name="lhs"/>.</exception>
 /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
-static bool operator <(LocalDateTime lhs, LocalDateTime rhs)
+bool operator <(LocalDateTime rhs)
 {
-Preconditions.checkArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-return lhs.CompareTo(rhs) < 0;
+Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+return CompareTo(rhs) < 0;
 }
 
 
@@ -368,10 +365,10 @@ return lhs.CompareTo(rhs) < 0;
 /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
 /// as the calendar of <paramref name="lhs"/>.</exception>
 /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-static bool operator <=(LocalDateTime lhs, LocalDateTime rhs)
+bool operator <=(LocalDateTime rhs)
 {
-Preconditions.checkArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-return lhs.CompareTo(rhs) <= 0;
+Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+return CompareTo(rhs) <= 0;
 }
 
 
@@ -387,10 +384,10 @@ return lhs.CompareTo(rhs) <= 0;
 /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
 /// as the calendar of <paramref name="lhs"/>.</exception>
 /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
-static bool operator >(LocalDateTime lhs, LocalDateTime rhs)
+bool operator >(LocalDateTime rhs)
 {
-Preconditions.checkArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-return lhs.CompareTo(rhs) > 0;
+Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+return CompareTo(rhs) > 0;
 }
 
 
@@ -406,10 +403,10 @@ return lhs.CompareTo(rhs) > 0;
 /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
 /// as the calendar of <paramref name="lhs"/>.</exception>
 /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-static bool operator >=(LocalDateTime lhs, LocalDateTime rhs)
+bool operator >=(LocalDateTime rhs)
 {
-Preconditions.checkArgument(lhs.Calendar.Equals(rhs.Calendar), nameof(rhs), "Only values in the same calendar can be compared");
-return lhs.CompareTo(rhs) >= 0;
+Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+return CompareTo(rhs) >= 0;
 }
 
 
@@ -438,26 +435,26 @@ return time.CompareTo(other.time);
 }
 
 
-/// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDateTimes.
-/// 
-/// <remarks>
-/// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
-/// </remarks>
-/// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDateTime"/>,
-/// or refers to a adate/time in a different calendar system.</exception>
-/// <param name="obj">The object to compare this value with.</param>
-/// <returns>The result of comparing this LocalDateTime with another one; see <see cref="CompareTo(NodaTime.LocalDateTime)"/> for general details.
-/// If <paramref name="obj"/> is null, this method returns a value greater than 0.
-/// </returns>
-int IComparable.CompareTo(object obj)
-{
-if (obj == null)
-{
-return 1;
-}
-Preconditions.checkArgument(obj is LocalDateTime, nameof(obj), "Object must be of type NodaTime.LocalDateTime.");
-return CompareTo((LocalDateTime)obj);
-}
+///// Implementation of <see cref="IComparable.CompareTo"/> to compare two LocalDateTimes.
+/////
+///// <remarks>
+///// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
+///// </remarks>
+///// <exception cref="ArgumentException"><paramref name="obj"/> is non-null but does not refer to an instance of <see cref="LocalDateTime"/>,
+///// or refers to a adate/time in a different calendar system.</exception>
+///// <param name="obj">The object to compare this value with.</param>
+///// <returns>The result of comparing this LocalDateTime with another one; see <see cref="CompareTo(NodaTime.LocalDateTime)"/> for general details.
+///// If <paramref name="obj"/> is null, this method returns a value greater than 0.
+///// </returns>
+//int IComparable.CompareTo(object obj)
+//{
+//if (obj == null)
+//{
+//return 1;
+//}
+//Preconditions.checkArgument(obj is LocalDateTime, 'obj', "Object must be of type NodaTime.LocalDateTime.");
+//return CompareTo(obj);
+//}
 
 
 /// Adds a period to a local date/time. Fields are added in the order provided by the period.
@@ -466,7 +463,7 @@ return CompareTo((LocalDateTime)obj);
 /// <param name="localDateTime">Initial local date and time</param>
 /// <param name="period">Period to add</param>
 /// <returns>The resulting local date and time</returns>
-static LocalDateTime operator +(LocalDateTime localDateTime, Period period) => localDateTime.Plus(period);
+LocalDateTime operator +(Period period) => Plus(period);
 
 
 /// Add the specified period to the date and time. Friendly alternative to <c>operator+()</c>.
@@ -495,7 +492,7 @@ return period.AddDateTimeTo(date, time, 1);
 /// <param name="localDateTime">Initial local date and time</param>
 /// <param name="period">Period to subtract</param>
 /// <returns>The resulting local date and time</returns>
-static LocalDateTime operator -(LocalDateTime localDateTime, Period period) => localDateTime.Minus(period);
+LocalDateTime operator -(Period period) => Minus(period);
 
 
 /// Subtracts the specified period from the date and time. Friendly alternative to <c>operator-()</c>.
@@ -514,7 +511,7 @@ static LocalDateTime Subtract(LocalDateTime localDateTime, Period period) => loc
 LocalDateTime Minus(Period period)
 {
 Preconditions.checkNotNull(period, 'period');
-return period.AddTo(date, time, -1);
+return period.AddDateTimeTo(date, time, -1);
 }
 
 
@@ -556,14 +553,14 @@ Period Minus(LocalDateTime localDateTime) => this - localDateTime;
 // #region object overrides
 
 
-/// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-/// 
-/// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-/// <returns>
-/// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
-/// otherwise, <c>false</c>.
-/// </returns>
-@override bool Equals(object obj) => obj is LocalDateTime && Equals(obj);
+///// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+/////
+///// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+///// <returns>
+///// <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance;
+///// otherwise, <c>false</c>.
+///// </returns>
+//@override bool Equals(object obj) => obj is LocalDateTime && Equals(obj);
 
 
 /// Returns a hash code for this instance.
@@ -572,7 +569,7 @@ Period Minus(LocalDateTime localDateTime) => this - localDateTime;
 /// A hash code for this instance, suitable for use in hashing algorithms and data
 /// structures like a hash table.
 /// </returns>
-@override int get hashCode => HashCodeHelper.Hash(date, time, Calendar);
+@override int get hashCode => hash3(date, time, Calendar); // HashCodeHelper.Hash(date, time, Calendar);
 //#endregion
 
 
@@ -586,8 +583,8 @@ Period Minus(LocalDateTime localDateTime) => this - localDateTime;
 /// <param name="adjuster">The adjuster to apply.</param>
 /// <returns>The adjusted date/time.</returns>
 
-LocalDateTime With(LocalDate Function(LocalDate) adjuster) =>
-date.With(adjuster) + time;
+LocalDateTime WithDate(LocalDate Function(LocalDate) adjuster) =>
+date.With(adjuster).At(time);
 
 
 /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
@@ -599,7 +596,7 @@ date.With(adjuster) + time;
 /// <param name="adjuster">The adjuster to apply.</param>
 /// <returns>The adjusted date/time.</returns>
 
-LocalDateTime With(LocalTime Function(LocalTime) adjuster) => date + time.With(adjuster)(this);
+LocalDateTime WithTime(LocalTime Function(LocalTime) adjuster) => date.At(time.With(adjuster));
 
 
 /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
@@ -675,7 +672,7 @@ LocalDateTime PlusWeeks(int weeks) => new LocalDateTime(date.PlusWeeks(weeks), t
 /// <param name="hours">The number of hours to add</param>
 /// <returns>The current value plus the given number of hours.</returns>
 
-LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.add(this, hours);
+LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.AddDateTime(this, hours);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of minutes added.
@@ -683,7 +680,7 @@ LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.add(this, hours);
 /// <param name="minutes">The number of minutes to add</param>
 /// <returns>The current value plus the given number of minutes.</returns>
 
-LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.add(this, minutes);
+LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.AddDateTime(this, minutes);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of seconds added.
@@ -691,7 +688,7 @@ LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.add(this, minu
 /// <param name="seconds">The number of seconds to add</param>
 /// <returns>The current value plus the given number of seconds.</returns>
 
-LocalDateTime PlusSeconds(int seconds) => TimePeriodField.seconds.add(this, seconds);
+LocalDateTime PlusSeconds(int seconds) => TimePeriodField.Seconds.AddDateTime(this, seconds);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
@@ -700,7 +697,7 @@ LocalDateTime PlusSeconds(int seconds) => TimePeriodField.seconds.add(this, seco
 /// <returns>The current value plus the given number of milliseconds.</returns>
 
 LocalDateTime PlusMilliseconds(int milliseconds) =>
-TimePeriodField.milliseconds.add(this, milliseconds);
+TimePeriodField.Milliseconds.AddDateTime(this, milliseconds);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of ticks added.
@@ -708,7 +705,7 @@ TimePeriodField.milliseconds.add(this, milliseconds);
 /// <param name="ticks">The number of ticks to add</param>
 /// <returns>The current value plus the given number of ticks.</returns>
 
-LocalDateTime PlusTicks(int ticks) => TimePeriodField.ticks.add(this, ticks);
+LocalDateTime PlusTicks(int ticks) => TimePeriodField.Ticks.AddDateTime(this, ticks);
 
 
 /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
@@ -716,7 +713,7 @@ LocalDateTime PlusTicks(int ticks) => TimePeriodField.ticks.add(this, ticks);
 /// <param name="nanoseconds">The number of nanoseconds to add</param>
 /// <returns>The current value plus the given number of nanoseconds.</returns>
 
-LocalDateTime PlusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.add(this, nanoseconds);
+LocalDateTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.AddDateTime(this, nanoseconds);
 
 
 /// Returns the next <see cref="LocalDateTime" /> falling on the specified <see cref="IsoDayOfWeek"/>,
@@ -753,7 +750,7 @@ LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.P
 /// <param name="offset">The offset to apply.</param>
 /// <returns>The result of this local date/time offset by the given amount.</returns>
 
-OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(date.YearMonthDayCalendar, time, offset);
+OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.lessTrust(date.yearMonthDayCalendar, time, offset);
 
 
 /// Returns the mapping of this local date/time within <see cref="DateTimeZone.Utc"/>.
@@ -763,7 +760,7 @@ OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime(date.YearMonthDay
 
 ZonedDateTime InUtc() =>
 // Use the @internal constructors to avoid validation. We know it will be fine.
-new ZonedDateTime(new OffsetDateTime(date.YearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
+new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
 
 
 /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
@@ -839,7 +836,7 @@ return zone.ResolveLocal(this, resolver);
 /// <returns>The later date/time of <paramref name="x"/> or <paramref name="y"/>.</returns>
 static LocalDateTime Max(LocalDateTime x, LocalDateTime y)
 {
-Preconditions.checkArgument(x.Calendar.Equals(y.Calendar), nameof(y), "Only values with the same calendar system can be compared");
+Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
 return x > y ? x : y;
 }
 
@@ -852,7 +849,7 @@ return x > y ? x : y;
 /// <returns>The earlier date/time of <paramref name="x"/> or <paramref name="y"/>.</returns>
 static LocalDateTime Min(LocalDateTime x, LocalDateTime y)
 {
-Preconditions.checkArgument(x.Calendar.Equals(y.Calendar), nameof(y), "Only values with the same calendar system can be compared");
+Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
 return x < y ? x : y;
 }
 

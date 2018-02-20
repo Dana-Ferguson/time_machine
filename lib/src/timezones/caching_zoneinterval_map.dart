@@ -113,7 +113,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// </summary>
   @internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map) {
     var days = period << PeriodShift;
-    var periodStart = Instant.FromTrustedDuration(new Duration(math.max(days, Instant.MinDays), 0));
+    var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
     var nextPeriodStartDays = days + (1 << PeriodShift);
 
     var interval = map.GetZoneInterval(periodStart);
@@ -124,7 +124,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     // day boundary.)
     // If the raw end is the end of time, the condition will definitely
     // evaluate to false.
-    while (interval.RawEnd.DaysSinceEpoch < nextPeriodStartDays) {
+    while (interval.RawEnd.daysSinceEpoch < nextPeriodStartDays) {
       interval = map.GetZoneInterval(interval.end);
       node = new HashCacheNode(interval, period, node);
     }

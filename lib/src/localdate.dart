@@ -7,6 +7,7 @@ import 'utility/preconditions.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_fields.dart';
 
 class LocalDate {
   // todo: private
@@ -155,20 +156,20 @@ class LocalDate {
   /// system.</returns>
   LocalDateTime get AtMidnight => new LocalDateTime(this, LocalTime.Midnight);
 
-  /// <summary>
-  /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
-  /// of <see cref="DateTimeKind.Unspecified"/>. The result is midnight on the day represented
-  /// by this value.
-  /// </summary>
-  /// <remarks>
-  /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
-  /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
-  /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
-  /// the Noda Time non-system-specific "local" concept as exists in .NET.
-  /// </remarks>
-  /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
-  DateTime get ToDateTimeUnspecified() =>
-      new DateTime(DaysSinceEpoch * TimeConstants.ticksPerDay + TimeConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
+//  /// <summary>
+//  /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
+//  /// of <see cref="DateTimeKind.Unspecified"/>. The result is midnight on the day represented
+//  /// by this value.
+//  /// </summary>
+//  /// <remarks>
+//  /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
+//  /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
+//  /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
+//  /// the Noda Time non-system-specific "local" concept as exists in .NET.
+//  /// </remarks>
+//  /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
+//  DateTime get ToDateTimeUnspecified() =>
+//      new DateTime(DaysSinceEpoch * TimeConstants.ticksPerDay + TimeConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
 
   // Helper method used by both FromDateTime overloads.
   // todo: private
@@ -253,19 +254,6 @@ class LocalDate {
   }
 
   /// <summary>
-  /// Adds the specified period to the date.
-  /// </summary>
-  /// <param name="date">The date to add the period to</param>
-  /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
-  /// <returns>The sum of the given date and period</returns>
-  LocalDate operator +(Period period)
-  {
-    Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot add a period with a time component to a date");
-    return period.AddTo(this, 1);
-  }
-
-  /// <summary>
   /// Adds the specified period to the date. Friendly alternative to <c>operator+()</c>.
   /// </summary>
   /// <param name="date">The date to add the period to</param>
@@ -281,27 +269,26 @@ class LocalDate {
   LocalDate Plus(Period period) => this + period;
 
   /// <summary>
-  /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
-  /// into a single <see cref="LocalDateTime"/>.
+  /// Adds the specified period to the date.
   /// </summary>
-  /// <param name="date">The date to add the time to</param>
-  /// <param name="time">The time to add</param>
-  /// <returns>The sum of the given date and time</returns>
-  LocalDateTime operator +(LocalTime time) => new LocalDateTime(this, time);
-
-  /// <summary>
-  /// Subtracts the specified period from the date.
-  /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
-  /// </summary>
-  /// <param name="date">The date to subtract the period from</param>
-  /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
-  /// <returns>The result of subtracting the given period from the date</returns>
-  LocalDate operator -(LocalDate date, Period period)
+  /// <param name="date">The date to add the period to</param>
+  /// <param name="period">The period to add. Must not contain any (non-zero) time units.</param>
+  /// <returns>The sum of the given date and period</returns>
+  LocalDate operator +(Period period)
   {
     Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
-    return period.AddTo(date, -1);
+    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot add a period with a time component to a date");
+    return period.AddDateTo(this, 1);
   }
+
+//  /// <summary>
+//  /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
+//  /// into a single <see cref="LocalDateTime"/>.
+//  /// </summary>
+//  /// <param name="date">The date to add the time to</param>
+//  /// <param name="time">The time to add</param>
+//  /// <returns>The sum of the given date and time</returns>
+//  LocalDateTime AtTime(LocalTime time) => new LocalDateTime(this, time);
 
   /// <summary>
   /// Subtracts the specified period from the date. Friendly alternative to <c>operator-()</c>.
@@ -312,11 +299,36 @@ class LocalDate {
   static LocalDate Subtract(LocalDate date, Period period) => date - period;
 
   /// <summary>
+  /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+  /// </summary>
+  /// <remarks>
+  /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalDate,NodaTime.LocalDate)"/>.
+  /// The calendar systems of the two dates must be the same.
+  /// </remarks>
+  /// <param name="lhs">The date to subtract from</param>
+  /// <param name="rhs">The date to subtract</param>
+  /// <returns>The result of subtracting one date from another.</returns>
+  Period Between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+
+  /// <summary>
   /// Subtracts the specified period from this date. Fluent alternative to <c>operator-()</c>.
   /// </summary>
   /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
   /// <returns>The result of subtracting the given period from this date.</returns>
-  LocalDate Minus(Period period) => this - period;
+  LocalDate MinusPeriod(Period period) {
+    Preconditions.checkNotNull(period, 'period');
+    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
+    return period.AddDateTo(this, -1);
+  }
+
+  /// <summary>
+  /// Subtracts the specified date from this date, returning the result as a <see cref="Period"/> with units of years, months and days.
+  /// Fluent alternative to <c>operator-()</c>.
+  /// </summary>
+  /// <remarks>The specified date must be in the same calendar system as this.</remarks>
+  /// <param name="date">The date to subtract from this</param>
+  /// <returns>The difference between the specified date and this one</returns>
+  Period MinusDate(LocalDate date) => Period.BetweenDates(date, this); // this - date;
 
   /// <summary>
   /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
@@ -331,28 +343,15 @@ class LocalDate {
   /// <exception cref="ArgumentException">
   /// <paramref name="lhs"/> and <paramref name="rhs"/> are not in the same calendar system.
   /// </exception>
-  Period operator -(LocalDate rhs) => Period.Between(rhs, this);
-
   /// <summary>
-  /// Subtracts one date from another, returning the result as a <see cref="Period"/> with units of years, months and days.
+  /// Subtracts the specified period from the date.
+  /// This is a convenience operator over the <see cref="Minus(Period)"/> method.
   /// </summary>
-  /// <remarks>
-  /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalDate,NodaTime.LocalDate)"/>.
-  /// The calendar systems of the two dates must be the same.
-  /// </remarks>
-  /// <param name="lhs">The date to subtract from</param>
-  /// <param name="rhs">The date to subtract</param>
-  /// <returns>The result of subtracting one date from another.</returns>
-  Period Subtract(LocalDate lhs, LocalDate rhs) => lhs - rhs;
-
-  /// <summary>
-  /// Subtracts the specified date from this date, returning the result as a <see cref="Period"/> with units of years, months and days.
-  /// Fluent alternative to <c>operator-()</c>.
-  /// </summary>
-  /// <remarks>The specified date must be in the same calendar system as this.</remarks>
-  /// <param name="date">The date to subtract from this</param>
-  /// <returns>The difference between the specified date and this one</returns>
-  Period Minus(LocalDate date) => this - date;
+  /// <param name="date">The date to subtract the period from</param>
+  /// <param name="period">The period to subtract. Must not contain any (non-zero) time units.</param>
+  /// <returns>The result of subtracting the given period from the date</returns>
+  // todo: still hate dynamic dispatch
+  dynamic operator -(dynamic rhs) => rhs is LocalDate ? MinusDate(rhs) : rhs is Period ? MinusPeriod(rhs) : throw new TypeError();
 
   /// <summary>
   /// Compares two <see cref="LocalDate" /> values for equality. This requires
@@ -361,15 +360,7 @@ class LocalDate {
   /// <param name="lhs">The first value to compare</param>
   /// <param name="rhs">The second value to compare</param>
   /// <returns>True if the two dates are the same and in the same calendar; false otherwise</returns>
-  bool operator ==(LocalDate rhs) => this._yearMonthDayCalendar == rhs._yearMonthDayCalendar;
-
-  /// <summary>
-  /// Compares two <see cref="LocalDate" /> values for inequality.
-  /// </summary>
-  /// <param name="lhs">The first value to compare</param>
-  /// <param name="rhs">The second value to compare</param>
-  /// <returns>False if the two dates are the same and in the same calendar; true otherwise</returns>
-  bool operator !=(LocalDate rhs) => !(this == rhs);
+  bool operator ==(dynamic rhs) => rhs is LocalDate && this._yearMonthDayCalendar == rhs._yearMonthDayCalendar;
 
   // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
   // naive comparisons.
@@ -389,7 +380,7 @@ class LocalDate {
   /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar.Equals(rhs.Calendar), 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.CompareTo(rhs) < 0;
   }
 
@@ -408,7 +399,7 @@ class LocalDate {
   /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <=(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar.Equals(rhs.Calendar), 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.Calendar== rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.CompareTo(rhs) <= 0;
   }
 
@@ -427,7 +418,7 @@ class LocalDate {
   /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator >(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar.Equals(rhs.Calendar), 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.CompareTo(rhs) > 0;
   }
 
@@ -444,10 +435,10 @@ class LocalDate {
   /// <exception cref="ArgumentException">The calendar system of <paramref name="rhs"/> is not the same
   /// as the calendar of <paramref name="lhs"/>.</exception>
   /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
-  bool operator >=(LocalDate lhs, LocalDate rhs)
+  bool operator >=(LocalDate rhs)
   {
-    Preconditions.checkArgument(lhs.Calendar.Equals(rhs.Calendar), 'rhs', "Only values in the same calendar can be compared");
-    return lhs.CompareTo(rhs) >= 0;
+    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    return CompareTo(rhs) >= 0;
   }
 
   /// <summary>
@@ -467,8 +458,8 @@ class LocalDate {
   /// later than <paramref name="other"/>.</returns>
   int CompareTo(LocalDate other)
   {
-    Preconditions.checkArgument(Calendar.Equals(other.Calendar), 'other', "Only values with the same calendar system can be compared");
-    return Calendar.Compare(YearMonthDay, other.YearMonthDay);
+    Preconditions.checkArgument(Calendar == other.Calendar, 'other', "Only values with the same calendar system can be compared");
+    return Calendar.Compare(yearMonthDay, other.yearMonthDay);
   }
 
   /// <summary>
@@ -503,7 +494,7 @@ class LocalDate {
   /// <returns>The later date of <paramref name="x"/> or <paramref name="y"/>.</returns>
   static LocalDate Max(LocalDate x, LocalDate y)
   {
-    Preconditions.checkArgument(x.Calendar.Equals(y.Calendar), 'y', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
     return x > y ? x : y;
   }
 
@@ -516,7 +507,7 @@ class LocalDate {
   /// <returns>The earlier date of <paramref name="x"/> or <paramref name="y"/>.</returns>
   static LocalDate Min(LocalDate x, LocalDate y)
   {
-    Preconditions.checkArgument(x.Calendar.Equals(y.Calendar), 'y', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
     return x < y ? x : y;
   }
 
@@ -526,13 +517,13 @@ class LocalDate {
   /// <returns>A hash code for this local date.</returns>
   @override int get hashCode => _yearMonthDayCalendar.hashCode;
 
-  /// <summary>
-  /// Compares two <see cref="LocalDate"/> values for equality. This requires
-  /// that the dates be the same, within the same calendar.
-  /// </summary>
-  /// <param name="obj">The object to compare this date with.</param>
-  /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
-  bool Equals(dynamic obj) => obj is LocalDate && this == obj;
+//  /// <summary>
+//  /// Compares two <see cref="LocalDate"/> values for equality. This requires
+//  /// that the dates be the same, within the same calendar.
+//  /// </summary>
+//  /// <param name="obj">The object to compare this date with.</param>
+//  /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
+//  bool Equals(dynamic obj) => obj is LocalDate && this == obj;
 
   /// <summary>
   /// Compares two <see cref="LocalDate"/> values for equality. This requires
@@ -569,7 +560,7 @@ class LocalDate {
   LocalDate WithCalendar(CalendarSystem calendar)
   {
   Preconditions.checkNotNull(calendar, 'calendar');
-  return new LocalDate(DaysSinceEpoch, calendar);
+  return new LocalDate.fromDaysSinceEpoch_forCalendar(DaysSinceEpoch, calendar);
   }
 
   /// <summary>
@@ -582,7 +573,7 @@ class LocalDate {
   /// </remarks>
   /// <param name="years">The number of years to add</param>
   /// <returns>The current value plus the given number of years.</returns>
-  LocalDate PlusYears(int years) => DatePeriodFields.YearsField.add(this, years);
+  LocalDate PlusYears(int years) => DatePeriodFields.YearsField.Add(this, years);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of months added.
@@ -600,7 +591,7 @@ class LocalDate {
   /// </remarks>
   /// <param name="months">The number of months to add</param>
   /// <returns>The current date plus the given number of months</returns>
-  LocalDate PlusMonths(int months) => DatePeriodFields.MonthsField.add(this, months);
+  LocalDate PlusMonths(int months) => DatePeriodFields.MonthsField.Add(this, months);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of days added.
@@ -613,14 +604,14 @@ class LocalDate {
   /// </remarks>
   /// <param name="days">The number of days to add</param>
   /// <returns>The current value plus the given number of days.</returns>
-  LocalDate PlusDays(int days) => DatePeriodFields.DaysField.add(this, days);
+  LocalDate PlusDays(int days) => DatePeriodFields.DaysField.Add(this, days);
 
   /// <summary>
   /// Returns a new LocalDate representing the current value with the given number of weeks added.
   /// </summary>
   /// <param name="weeks">The number of weeks to add</param>
   /// <returns>The current value plus the given number of weeks.</returns>
-  LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.add(this, weeks);
+  LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
 
   /// <summary>
   /// Returns the next <see cref="LocalDate" /> falling on the specified <see cref="IsoDayOfWeek"/>.
@@ -691,7 +682,7 @@ class LocalDate {
   /// </summary>
   /// <param name="time">The time to combine with this date.</param>
   /// <returns>The <see cref="LocalDateTime"/> representation of the given time on this date</returns>
-  LocalDateTime At(LocalTime time) => this + time;
+  LocalDateTime At(LocalTime time) => new LocalDateTime(this, time);
 
   LocalDate With(LocalDate Function(LocalDate) adjuster) => adjuster(this);
 }

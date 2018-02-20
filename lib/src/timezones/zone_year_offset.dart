@@ -198,7 +198,7 @@ class _ZoneYearOffset {
         }
         date = date.PlusDays(1);
       }
-      return (date + timeOfDay).ToLocalInstant();
+      return (date.At(timeOfDay)).ToLocalInstant();
     }
   }
 

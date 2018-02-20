@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'utility/preconditions.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_timezones.dart';
 
 // todo: IZoneIntervalMapWithMinMax ??? (not sure if it matters)
 @immutable
@@ -20,7 +21,7 @@ abstract class DateTimeZone {
   /// or may not compare equal to an instance returned by e.g. <c>DateTimeZoneProviders.Tzdb["UTC"]</c>.
   /// </remarks>
   /// <value>A UTC <see cref="T:NodaTime.DateTimeZone" />.</value>
-  static final DateTimeZone Utc = new FixedDateTimeZone(Offset.zero);
+  static final DateTimeZone Utc = new FixedDateTimeZone.forOffset(Offset.zero);
   static const int FixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
   static const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
   static const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
@@ -46,12 +47,12 @@ static DateTimeZone ForOffset(Offset offset)
   int seconds = offset.seconds;
   if (seconds % FixedZoneCacheGranularitySeconds != 0)
   {
-    return new FixedDateTimeZone(offset);
+    return new FixedDateTimeZone.forOffset(offset);
   }
   int index = (seconds - FixedZoneCacheMinimumSeconds) ~/ FixedZoneCacheGranularitySeconds;
   if (index < 0 || index >= FixedZoneCacheSize)
   {
-    return new FixedDateTimeZone(offset);
+    return new FixedDateTimeZone.forOffset(offset);
   }
   return FixedZoneCache[index];
 }
@@ -154,7 +155,7 @@ ZoneInterval GetZoneInterval(Instant instant);
 
   // Most of the time we'll go into here... the local instant and the instant
   // are close enough that we've found the right instant.
-  if (interval.Contains(localInstant))
+  if (interval.ContainsLocal(localInstant))
   {
     ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
     if (earlier != null)
@@ -215,7 +216,7 @@ ZonedDateTime AtStartOfDay(LocalDate date)
       var offsetDateTime = new OffsetDateTime.instantCalendar(interval.start, interval.wallOffset, date.Calendar);
       // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
       // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-      if (offsetDateTime.YearMonthDay != date.yearMonthDay)
+      if (offsetDateTime.yearMonthDay != date.yearMonthDay)
       {
         throw new SkippedTimeError(midnight, this);
       }
@@ -306,7 +307,7 @@ ZoneInterval _getEarlierMatchingInterval(ZoneInterval interval, LocalInstant loc
     // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
     // not worth it.
     ZoneInterval candidate = GetZoneInterval(intervalStart - Span.Epsilon);
-    if (candidate.Contains(localInstant))
+    if (candidate.ContainsLocal(localInstant))
     {
       return candidate;
     }
@@ -332,7 +333,7 @@ ZoneInterval _getLaterMatchingInterval(ZoneInterval interval, LocalInstant local
     // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
     // not worth it.
     ZoneInterval candidate = GetZoneInterval(intervalEnd);
-    if (candidate.Contains(localInstant))
+    if (candidate.ContainsLocal(localInstant))
     {
       return candidate;
     }
@@ -395,7 +396,7 @@ static List<DateTimeZone> _buildFixedZoneCache()
   for (int i = 0; i < FixedZoneCacheSize; i++)
   {
     int offsetSeconds = i * FixedZoneCacheGranularitySeconds + FixedZoneCacheMinimumSeconds;
-    ret[i] = new FixedDateTimeZone(Offset.fromSeconds(offsetSeconds));
+    ret[i] = new FixedDateTimeZone(Offset.FromSeconds(offsetSeconds));
   }
   ret[-FixedZoneCacheMinimumSeconds ~/ FixedZoneCacheGranularitySeconds] = Utc;
   return ret;

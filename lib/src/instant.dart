@@ -29,6 +29,8 @@ class Instant implements Comparable<Instant> {
   // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?
   final Span _span;
 
+  // todo: investigate if this is okay ... see Instant.cs#115
+  @internal Instant.untrusted(this._span);
   Instant._trusted(this._span);
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
@@ -43,6 +45,13 @@ class Instant implements Comparable<Instant> {
   // Instant operator-(Span span) => new Instant._trusted(_span - span);
   Instant plus(Span span) => this + span;
   Instant minus(Span span) => this - span;
+
+  @internal LocalInstant plusOffset(Offset offset) {
+    return new LocalInstant(_span + offset.toSpan());
+  }
+
+  // todo: evaluate whether all this extra framework is needed for our version: Instant.cs#L267
+  @internal LocalInstant SafePlus(Offset offset) => plusOffset(offset);
 
   // Span operator-(Instant instant) => _span - instant._span;
 
@@ -84,7 +93,8 @@ class Instant implements Comparable<Instant> {
       throw new StateError('Instant out of range for DateTime');
     }
 
-    return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
+    if (Utility.isDartVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
+    return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);
   }
 
   DateTime toDateTimeLocal() {
@@ -104,15 +114,14 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
-    if (isDartVM) {
-      return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
-    } else {
-      return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
-    }
+    if (Utility.isDartVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
+    return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
   // todo: why are these different?
   int get daysSinceEpoch => _span.days;
+  int get nanosecondOfDay => _span.nanosecondOfDay;
+
   int toUnixTimeSeconds() => _span.seconds;
   int toUnixTimeMilliseconds() => _span.milliseconds;
   int toUnixTimeTicks() => _span.totalTicks.toInt();

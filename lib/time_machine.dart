@@ -47,6 +47,25 @@ export 'src/period.dart';
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
 
+// ALSO SHIT: https://nodatime.org/2.2.x/userguide/calendars
+// ****** We need to worry about the leap years ********
+// --> are these accounted for in the TZDB (I doubt it)
+/*
+  Largest number in VM: no end (it transitions between 32bit, 64bit, and bigint)
+  Largest number in JS: 2^53
+  milliseconds => 285420 years
+  microseconds => 285.4 years (1685 to 2255)
+  nanoseconds => 104.24 days
+
+  https://caniuse.com/#feat=high-resolution-time (YES)
+  Accurate to 5 microseconds; (if not available, millisecond accuracy should be)
+
+  (long in VM) 2^63
+  milliseconds => 292271023 years
+  microseconds => 292271 years (1685 to 2255)
+  nanoseconds => 292.27 years
+ */
+
 
 // There are several calendar systems implemented -- We should experiment with the deferred loading
 

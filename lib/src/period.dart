@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
@@ -531,8 +532,9 @@ class Period // : IEquatable<Period>
   }
   * */
 
+    // this is PeriodUnits maskedUnits in nodatime... but, it's nicer for dart this way
     int UnitsBetween(int maskedUnits, IDatePeriodField dateField) {
-      if (maskedUnits.value == 0) {
+      if (maskedUnits == 0) {
         return 0;
       }
 
@@ -614,13 +616,20 @@ class Period // : IEquatable<Period>
   ///
   @internal LocalDateTime AddDateTimeTo(LocalDate date, LocalTime time, int scalar) {
     date = AddDateTo(date, scalar);
+    // todo: probably a better way here
     int extraDays = 0;
-    time = TimePeriodField.Hours.Add(time, Hours * scalar, /*ref*/ extraDays);
-    time = TimePeriodField.Minutes.Add(time, Minutes * scalar, /*ref*/ extraDays);
-    time = TimePeriodField.Seconds.Add(time, Seconds * scalar, /*ref*/ extraDays);
-    time = TimePeriodField.Milliseconds.Add(time, Milliseconds * scalar, /*ref*/ extraDays);
-    time = TimePeriodField.Ticks.Add(time, Ticks * scalar, /*ref*/ extraDays);
-    time = TimePeriodField.Nanoseconds.Add(time, Nanoseconds * scalar, /*ref*/ extraDays);
+    var result = TimePeriodField.Hours.AddTime(time, Hours * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
+    result = TimePeriodField.Minutes.AddTime(time, Minutes * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
+    result = TimePeriodField.Seconds.AddTime(time, Seconds * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
+    result = TimePeriodField.Milliseconds.AddTime(time, Milliseconds * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
+    result = TimePeriodField.Ticks.AddTime(time, Ticks * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
+    result = TimePeriodField.Nanoseconds.AddTime(time, Nanoseconds * scalar, /*ref*/ extraDays);
+    extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
     return new LocalDateTime(date.PlusDays(extraDays), time);

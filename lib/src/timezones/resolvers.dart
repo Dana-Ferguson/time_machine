@@ -90,7 +90,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return new ZonedDateTime(new OffsetDateTime(local, before.wallOffset).WithOffset(after.wallOffset), zone);
+    return new ZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).WithOffset(after.wallOffset), zone);
   }
 
   /// <summary>
@@ -152,9 +152,9 @@ abstract class Resolvers
 
     ZonedDateTime mappingResolve(ZoneLocalMapping mapping) {
       Preconditions.checkNotNull(mapping, 'mapping');
-      switch (mapping.length) {
+      switch (mapping.Count) {
         case 0:
-          return skippedTimeResolver(mapping.LocalDateTime, mapping.Zone, mapping.EarlyInterval, mapping.LateInterval);
+          return skippedTimeResolver(mapping.localDateTime, mapping.Zone, mapping.EarlyInterval, mapping.LateInterval);
         case 1:
           return mapping.First();
         case 2:
