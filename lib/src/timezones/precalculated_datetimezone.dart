@@ -33,6 +33,9 @@ import 'package:time_machine/time_machine_timezones.dart';
   @private final Instant tailZoneStart;
   @private final ZoneInterval firstTailZoneInterval;
 
+  PrecalculatedDateTimeZone._(String id, this.periods, this.tailZone, this.firstTailZoneInterval, this.tailZoneStart)
+      : super(id, false, ComputeOffset(periods, tailZone, Offset.min), ComputeOffset(periods, tailZone, Offset.max));
+
   /// <summary>
   /// Initializes a new instance of the <see cref="PrecalculatedDateTimeZone"/> class.
   /// </summary>
@@ -42,14 +45,14 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.</param>
   @visibleForTesting
   @internal
-  PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, this.tailZone)
-      : periods = intervals,
-        // We want this to be AfterMaxValue for tail-less zones.
-        tailZoneStart = intervals[intervals.length - 1].RawEnd,
-        // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
-        firstTailZoneInterval = tailZone?.GetZoneInterval(tailZoneStart)?.WithStart(tailZoneStart),
-        super(id, false, ComputeOffset(intervals, tailZone, Offset.min), ComputeOffset(intervals, tailZone, Offset.max)) {
+  factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone) {
+    // We want this to be AfterMaxValue for tail-less zones.
+    var tailZoneStart = intervals[intervals.length - 1].RawEnd;
+    // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
+    var firstTailZoneInterval = tailZone?.GetZoneInterval(tailZoneStart)?.WithStart(tailZoneStart);
     ValidatePeriods(intervals, tailZone);
+
+    return new PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
   }
 
 /*
@@ -74,7 +77,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       Preconditions.checkArgument(periods[i].end == periods[i + 1].start, 'periods', "Non-adjoining ZoneIntervals for precalculated time zone");
     }
     Preconditions.checkArgument(
-        tailZone != null || periods[periods.length - 1].RawEnd == Instant.AfterMaxValue, 'tailZone',
+        tailZone != null || periods[periods.length - 1].RawEnd == Instant.afterMaxValue, 'tailZone',
         "Null tail zone given but periods don't cover all of time");
   }
 
@@ -109,7 +112,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       }
     }
 // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-    throw new StateError("Instant $instant did not exist in time zone $Id");
+    throw new StateError("Instant $instant did not exist in time zone $id");
   }
 
 // #region I/O

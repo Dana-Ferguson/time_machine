@@ -19,13 +19,13 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal static final TzdbDateTimeZoneSource builtin = new TzdbDateTimeZoneSource(LoadDefaultDataSource());
 
-  @private static TzdbStreamData LoadDefaultDataSource()
-  {
-    var assembly = typeof(DefaultHolder).GetTypeInfo().Assembly;
-    using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
-    {
-    return TzdbStreamData.FromStream(stream);
-    }
+  @private static TzdbStreamData LoadDefaultDataSource() {
+//    var assembly = typeof(DefaultHolder).GetTypeInfo().Assembly;
+//    using (Stream stream = assembly.GetManifestResourceStream("NodaTime.TimeZones.Tzdb.nzd"))
+//    {
+//    return TzdbStreamData.FromStream(stream);
+//    }
+    return null;
   }
 }
 
@@ -71,7 +71,7 @@ static TzdbDateTimeZoneSource get Default => DefaultHolder.builtin;
 /// </remarks>
 /// <value>A lookup from canonical ID to the aliases of that ID.</value>
 // ILookUp
-final Map<String, String> Aliases;
+final LookUp<String, String> Aliases;
 
 /// <summary>
 /// Returns a read-only map from time zone ID to the canonical ID. For example, the key "Europe/Jersey"
@@ -166,19 +166,24 @@ factory TzdbDateTimeZoneSource.FromStream(Stream stream)
 
   @private factory TzdbDateTimeZoneSource(TzdbStreamData source)
   {
-  Preconditions.checkNotNull(source, nameof(source));
-  this.source = source;
-  var CanonicalIdMap = new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
+  Preconditions.checkNotNull(source, 'source');
+  var CanonicalIdMap = new Map.unmodifiable(source.TzdbIdMap); // new NodaReadOnlyDictionary<string, string>(source.TzdbIdMap);
   // todo: I'm gonna need to know what I'm doing in order to really fix this one
-  var Aliases = CanonicalIdMap
-      .where((pair) => pair.Key != pair.Value)
-      .orderBy((pair) => pair.Key, StringComparer.Ordinal)
-      .toLookup((pair) => pair.Value, pair => pair.Key);
+  var Aliases =
+      new LookUp.fromList(
+      KeyValuePair.getPairs(CanonicalIdMap)
+      .where((pair) => pair.key != pair.value)
+      .toList(), (kvp) => kvp.value, (kvp) => kvp.key);
+
+//  var Aliases = CanonicalIdMap
+//      .where((pair) => pair.Key != pair.Value)
+//      .orderBy((pair) => pair.Key, StringComparer.Ordinal)
+//      .toLookup((pair) => pair.Value, pair => pair.Key);
   var version = source.TzdbVersion + " (mapping: " + source.WindowsMapping.Version + ")";
   var originalZoneLocations = source.ZoneLocations;
-  var ZoneLocations = originalZoneLocations == null ? null : new ReadOnlyCollection<TzdbZoneLocation>(originalZoneLocations);
+  var ZoneLocations = originalZoneLocations == null ? null : new List<TzdbZoneLocation>.unmodifiable(originalZoneLocations);
   var originalZone1970Locations = source.Zone1970Locations;
-  var Zone1970Locations = originalZone1970Locations == null ? null : new ReadOnlyCollection<TzdbZone1970Location>(originalZone1970Locations);
+  var Zone1970Locations = originalZone1970Locations == null ? null : new List<TzdbZone1970Location>.unmodifiable(originalZone1970Locations);
 
   return new TzdbDateTimeZoneSource._(CanonicalIdMap, Aliases, source, version, Zone1970Locations, ZoneLocations);
 }
@@ -256,43 +261,40 @@ String GetSystemDefaultId() => MapTimeZoneInfoId(TimeZoneInfoInterceptor.Local);
 /// <param name="zone">Zone to resolve in a best-effort fashion.</param>
 /// <param name="candidates">All the Noda Time zones to consider - normally a list
 /// obtained from this source.</param>
-@internal String GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates)
-{
+@internal String GuessZoneIdByTransitionsUncached(TimeZoneInfo zone, List<DateTimeZone> candidates) {
   // See https://github.com/nodatime/nodatime/issues/686 for performance observations.
   // Very rare use of the system clock! Windows time zone updates sometimes sacrifice past
   // accuracy for future accuracy, so let's use the current year's transitions.
-  int thisYear = SystemClock.instance.getCurrentInstant().inUtc().Year;
+  int thisYear = SystemClock.instance
+      .getCurrentInstant()
+      .inUtc()
+      .Year;
   Instant startOfThisYear = new Instant.fromUtc(thisYear, 1, 1, 0, 0);
   Instant startOfNextYear = new Instant.fromUtc(thisYear + 5, 1, 1, 0, 0);
   var instants = candidates.selectMany((z) => z.GetZoneIntervals(startOfThisYear, startOfNextYear))
       .Select((zi) => Instant.max(zi.RawStart, startOfThisYear)) // Clamp to start of interval
-    .Distinct()
+      .Distinct()
       .ToList();
   var bclOffsets = instants.select((instant) => new Offset.fromTimeSpan(zone.GetUtcOffset(instant.ToDateTimeUtc()))).ToList();
 // For a zone to be mappable, at most 30% of the checks must fail
 // - so if we get to that number (or whatever our "best" so far is)
 // we know we can stop for any particular zone.
-int lowestFailureScore = (instants.Count * 30) / 100;
-DateTimeZone bestZone = null;
-for (var candidate in candidates)
-  {
-  int failureScore = 0;
-  for (int i = 0; i < instants.Count; i++)
-  {
-  if (candidate.GetUtcOffset(instants[i]) != bclOffsets[i])
-  {
-  failureScore++;
-  if (failureScore == lowestFailureScore)
-  {
-  break;
-  }
-  }
-  }
-  if (failureScore < lowestFailureScore)
-  {
-  lowestFailureScore = failureScore;
-  bestZone = candidate;
-  }
+  int lowestFailureScore = (instants.Count * 30) / 100;
+  DateTimeZone bestZone = null;
+  for (var candidate in candidates) {
+    int failureScore = 0;
+    for (int i = 0; i < instants.Count; i++) {
+      if (candidate.GetUtcOffset(instants[i]) != bclOffsets[i]) {
+        failureScore++;
+        if (failureScore == lowestFailureScore) {
+          break;
+        }
+      }
+    }
+    if (failureScore < lowestFailureScore) {
+      lowestFailureScore = failureScore;
+      bestZone = candidate;
+    }
   }
   return bestZone?.id;
 }
@@ -326,15 +328,15 @@ void Validate()
 {
   // Check that each entry has a canonical value. (Every mapping x to y
   // should be such that y maps to itself.)
-  for (var entry in this.CanonicalIdMap)
+  for (var entryValue in this.CanonicalIdMap.values)
   {
-    String canonical = CanonicalIdMap[entry.Value];
+    String canonical = CanonicalIdMap[entryValue];
     if (canonical == null)
     {
       throw new InvalidTimeDataError(
           "Mapping for entry {entry.Key} ({entry.Value}) is missing");
     }
-    if (entry.Value != canonical)
+    if (entryValue != canonical)
     {
       throw new InvalidTimeDataError(
           "Mapping for entry {entry.Key} ({entry.Value}) is not canonical ({entry.Value} maps to {canonical}");

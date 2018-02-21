@@ -38,8 +38,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   final int fromYear;
   final int toYear;
 
-// todo: we need a sane dart-like replacement for this logic
-  bool get isInfinite => toYear == Int32.MaxValue;
+  // todo: there seems to be a lot of dependence on 'number systems' here -- not sure Dart likes this
+  bool get isInfinite => toYear == Utility.intMaxValueJS;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -51,15 +51,15 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="toYear">The last year in which this recurrence is valid</param>
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
       :
-        this.minLocalInstant = fromYear == int.MinValue ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear),
-        this.maxLocalInstant = toYear == int.MaxValue ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear) {
+        this.minLocalInstant = fromYear == Utility.intMinValueJS ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear),
+        this.maxLocalInstant = toYear == Utility.intMaxValueJS ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
 // todo: magic numbers
-    Preconditions.checkArgument(fromYear == int.MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
+    Preconditions.checkArgument(fromYear == Utility.intMinValueJS || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
         "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
-    Preconditions.checkArgument(toYear == int.MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',
+    Preconditions.checkArgument(toYear == Utility.intMaxValueJS || (toYear >= -9998 && toYear <= 9999), 'toYear',
         "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
   }
 
@@ -124,8 +124,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 // Asked for a transition after our final transition... or both are beyond the end of time (in which case
 // we can return an infinite transition). This branch will always be taken for transitions beyond the end
 // of time.
-      return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.AfterMaxValue, newOffset) : (Transition ?)
-      null;
+      return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.afterMaxValue, newOffset) : null;
     }
     else if (safeLocal == LocalInstant.BeforeMinValue) {
 // We've been asked to find the next transition after some point which is a valid instant, but is before the
@@ -155,7 +154,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     targetYear++;
 // Handle infinite transitions
     if (targetYear > GregorianYearMonthDayCalculator.maxGregorianYear) {
-      return new Transition(Instant.AfterMaxValue, newOffset);
+      return new Transition(Instant.afterMaxValue, newOffset);
     }
 // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
     safeTransition = yearOffset.GetOccurrenceForYear(targetYear).SafeMinus(ruleOffset);
@@ -191,7 +190,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 // start of valid local time after applying the rule offset.  It's possible that the next transition *would*
 // be representable as an instant (e.g. 1pm Dec 31st -9999 with an offset of -5) but it's reasonable to
 // just return an infinite transition.
-        return new Transition(Instant.BeforeMinValue, newOffset);
+        return new Transition(Instant.beforeMinValue, newOffset);
       }
       else {
 // We've been asked to find the next transition before some point which is a valid instant, but is after the
@@ -222,7 +221,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     targetYear--;
 // Handle infinite transitions
     if (targetYear < GregorianYearMonthDayCalculator.minGregorianYear) {
-      return new Transition(Instant.BeforeMinValue, newOffset);
+      return new Transition(Instant.beforeMinValue, newOffset);
     }
 // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
     safeTransition = yearOffset.GetOccurrenceForYear(targetYear).SafeMinus(ruleOffset);
@@ -238,7 +237,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       throw new StateError(
           "Noda Time bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
-    return next.Value;
+    return next;
   }
 
   /// <summary>
@@ -250,7 +249,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       throw new StateError(
           "Noda Time bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
-    return previous.Value;
+    return previous;
   }
 
   /// <summary>
@@ -280,7 +279,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
     int fromYear = reader.ReadCount();
     if (fromYear == 0) {
-      fromYear = int.MinValue;
+      fromYear = Utility.intMinValueJS; // int.minValue;
     }
     int toYear = reader.ReadCount();
     return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
@@ -308,5 +307,5 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
   /// </summary>
   @internal ZoneRecurrence ToStartOfTime() =>
-      fromYear == int.MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, int.MinValue, toYear);
+      fromYear == Utility.intMinValueJS ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.intMinValueJS, toYear);
 }

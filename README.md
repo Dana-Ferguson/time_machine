@@ -15,4 +15,7 @@ Text/Globalization are not yet ported. I want to look into Intl to see what it p
 Calendar support is limited to the basics right now, but the goal is to add them all. 
 TimeZone/IO (&Cldr) are not yet ported, the tzdb source will not be in the same format.
 There is a C# project that converts the NodaTime db into deferrable pieces. The plan is to
-load from there.
+load from there. Seems kind of arbitrary given the size of this library itself, 
+I'm going to look into a `deferred` strategy for the browser platform.
+
+

@@ -41,6 +41,8 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
 // todo:  ReadOnlyCollection<String>
   final List<String> Ids;
 
+  DateTimeZoneCache._(this.source, this.Ids, this.VersionId);
+
   /// <summary>
   /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
   /// </summary>
@@ -51,27 +53,30 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   /// </remarks>
   /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
   /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
-  DateTimeZoneCache(this.source)
-      : VersionId = source.VersionId {
+  factory DateTimeZoneCache(IDateTimeZoneSource source) {
     Preconditions.checkNotNull(source, 'source');
+    var VersionId = source.VersionId;
 
     if (VersionId == null) {
-      throw new InvalidDateTimeZoneSourceException("Source-returned version ID was null");
+      throw new InvalidDateTimeZoneSourceError("Source-returned version ID was null");
     }
     var providerIds = source.GetIds();
     if (providerIds == null) {
-      throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence was null");
+      throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence was null");
     }
-    var idList = new List<String>(providerIds);
-    idList.Sort(StringComparer.Ordinal);
-    Ids = new finalCollection<string>(idList);
+    var idList = new List<String>.from(providerIds);
+    idList.sort((a, b) => a.compareTo(b)); // sort(StringComparer.Ordinal);
+    var ids = new List<String>.from(idList);
+
+    var cache = new DateTimeZoneCache._(source, ids, VersionId);
     // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
-    for (String id in Ids) {
+    for (String id in ids) {
       if (id == null) {
-        throw new InvalidDateTimeZoneSourceException("Source-returned ID sequence contained a null reference");
+        throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence contained a null reference");
       }
-      timeZoneMap[id] = null;
+      cache.timeZoneMap[id] = null;
     }
+    return cache;
   }
 
   /// <inheritdoc />
@@ -90,22 +95,23 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   }
 
   @private DateTimeZone GetZoneFromSourceOrNull(String id) {
-    //lock (accessLock)
-    {
-      DateTimeZone zone;
-      if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
-        return null;
-      }
-      if (zone == null) {
-        zone = source.ForId(id);
-        if (zone == null) {
-          throw new InvalidDateTimeZoneSourceException(
-              "Time zone $id is supported by source #VersionId but not returned");
-        }
-        timeZoneMap[id] = zone;
-      }
-      return zone;
+    // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
+    // if ((zone = timeZoneMap[id]) == null) {
+    if (!timeZoneMap.containsKey(id)) {
+      return null;
     }
+
+    DateTimeZone zone = timeZoneMap[id];
+    if (zone == null) {
+      zone = source.ForId(id);
+      if (zone == null) {
+        throw new InvalidDateTimeZoneSourceError(
+            "Time zone $id is supported by source #VersionId but not returned");
+      }
+      timeZoneMap[id] = zone;
+    }
+
+    return zone;
   }
 
   DateTimeZone operator [](String id) {

@@ -9,6 +9,7 @@ export 'src/calendar_system.dart';
 
 export 'src/isodayofweek.dart';
 
+export 'src/i_datetimezone_provider.dart';
 export 'src/datetimezone.dart';
 export 'src/zoneddatetime.dart';
 

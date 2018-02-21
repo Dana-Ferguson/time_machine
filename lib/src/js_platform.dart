@@ -42,6 +42,6 @@ class TimeMachine {
     return this;
   }
 
-  DateTimeZone get timeZone => _timeZone ?? _init().t;
+  DateTimeZone get timeZone => _timeZone ?? _init().timeZone;
   String get locale => _locale ?? _init()._locale;
 }

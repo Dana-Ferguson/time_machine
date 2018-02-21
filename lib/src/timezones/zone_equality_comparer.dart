@@ -45,7 +45,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// </para>
 /// </remarks>
 @immutable
-class Options {
+class ZoneEqualityComparerOptions {
   final int _value;
 
   int get value => _value;
@@ -55,14 +55,14 @@ class Options {
     'MatchAllTransitions', 'MatchStartAndEndTransitions', 'StrictestMatch'
   ];
 
-  static const List<Options> _isoConstants = const [
+  static const List<ZoneEqualityComparerOptions> _isoConstants = const [
     OnlyMatchWallOffset, MatchOffsetComponents, MatchNames,
     MatchAllTransitions, MatchStartAndEndTransitions, StrictestMatch
   ];
 
   // todo: look at: Constants --> Strings; and then maybe Strings --> Constants ~ but the strings wrapped in a class that doesn't care about case
   //  they'd be really convenient for mask enumerations
-  static final Map<Options, String> _nameMap = {
+  static final Map<ZoneEqualityComparerOptions, String> _nameMap = {
     OnlyMatchWallOffset: 'OnlyMatchWallOffset', MatchOffsetComponents: 'MatchOffsetComponents', MatchNames: 'MatchNames',
     MatchAllTransitions: 'MatchAllTransitions', MatchStartAndEndTransitions: 'MatchStartAndEndTransitions', StrictestMatch: 'StrictestMatch',
   };
@@ -70,45 +70,45 @@ class Options {
   /// The default comparison, which only cares about the wall offset at any particular
   /// instant, within the interval of the comparer. In other words, if <see cref="DateTimeZone.GetUtcOffset"/>
   /// returns the same value for all instants in the interval, the comparer will consider the zones to be equal.
-  static const Options OnlyMatchWallOffset = const Options(0);
+  static const ZoneEqualityComparerOptions OnlyMatchWallOffset = const ZoneEqualityComparerOptions(0);
   /// Instead of only comparing wall offsets, the standard/savings split is also considered. So when this
   /// option is used, two zones which both have a wall offset of +2 at one instant would be considered
   /// unequal if one of those offsets was +1 standard, +1 savings and the other was +2 standard with no daylight
   /// saving.
-  static const Options MatchOffsetComponents = const Options(1 << 0);
+  static const ZoneEqualityComparerOptions MatchOffsetComponents = const ZoneEqualityComparerOptions(1 << 0);
   /// Compare the names of zone intervals as well as offsets.
-  static const Options MatchNames = const Options(1 << 1);
+  static const ZoneEqualityComparerOptions MatchNames = const ZoneEqualityComparerOptions(1 << 1);
   /// This option prevents adjacent zone intervals from being coalesced, even if they are otherwise considered
   /// equivalent according to other options.
-  static const Options MatchAllTransitions = const Options(1 << 2);
+  static const ZoneEqualityComparerOptions MatchAllTransitions = const ZoneEqualityComparerOptions(1 << 2);
   /// Includes the transitions into the first zone interval and out of the
   /// last zone interval as part of the comparison, even if they do not affect
   /// the offset or name for any instant within the operating interval.
-  static const Options MatchStartAndEndTransitions = const Options(1 << 3);
+  static const ZoneEqualityComparerOptions MatchStartAndEndTransitions = const ZoneEqualityComparerOptions(1 << 3);
   /// The combination of all available match options.
-  static const Options StrictestMatch = const Options(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
+  static const ZoneEqualityComparerOptions StrictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
 
   @override get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) => other is Options && other._value == _value || other is int && other == _value;
+  @override operator ==(dynamic other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
 
-  const Options(this._value);
+  const ZoneEqualityComparerOptions(this._value);
 
-  bool operator <(Options other) => _value < other._value;
-  bool operator <=(Options other) => _value <= other._value;
-  bool operator >(Options other) => _value > other._value;
-  bool operator >=(Options other) => _value >= other._value;
+  bool operator <(ZoneEqualityComparerOptions other) => _value < other._value;
+  bool operator <=(ZoneEqualityComparerOptions other) => _value <= other._value;
+  bool operator >(ZoneEqualityComparerOptions other) => _value > other._value;
+  bool operator >=(ZoneEqualityComparerOptions other) => _value >= other._value;
 
-  int operator -(Options other) => _value - other._value;
-  int operator +(Options other) => _value + other._value;
+  int operator -(ZoneEqualityComparerOptions other) => _value - other._value;
+  int operator +(ZoneEqualityComparerOptions other) => _value + other._value;
 
   // todo: I feel like dynamic dispatch like this is *very* dangerous
-  int operator &(dynamic other) => other is Options ? _value & other._value : other is int ? _value & other : throw new ArgumentError('Must be either Options or int.');
+  int operator &(dynamic other) => other is ZoneEqualityComparerOptions ? _value & other._value : other is int ? _value & other : throw new ArgumentError('Must be either Options or int.');
   int operator ~() => ~_value;
 
   @override
   String toString() => _nameMap[this] ?? 'undefined';
 
-  Options parse(String text) {
+  ZoneEqualityComparerOptions parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (ordinalIgnoreCaseStringEquals(_stringRepresentations[i], token)) return _isoConstants[i];
@@ -118,10 +118,10 @@ class Options {
   }
 
   // todo: there is probably a more friendly way to incorporate this for mask usage -- so we can have friendly defined constants above
-  static Options union(Iterable<Options> units) {
+  static ZoneEqualityComparerOptions union(Iterable<ZoneEqualityComparerOptions> units) {
     int i = 0;
     units.forEach((u) => i = i|u._value);
-    return new Options(i);
+    return new ZoneEqualityComparerOptions(i);
   }
 }
 
@@ -129,7 +129,7 @@ class Options {
 /// Checks whether the given set of options includes the candidate one. This would be an extension method, but
 /// that causes problems on Mono at the moment.
 /// </summary>
-bool _checkOption(Options options, Options candidate)
+bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptions candidate)
 {
 return (options & candidate) != 0;
 }
@@ -149,7 +149,7 @@ return (options & candidate) != 0;
     {
 
   @private final Interval interval;
-  @private final Options options;
+  @private final ZoneEqualityComparerOptions options;
 
   /// <summary>
   /// Returns the interval over which this comparer operates.
@@ -163,7 +163,7 @@ return (options & candidate) != 0;
   /// </summary>
   @visibleForTesting
   @internal
-  Options get OptionsForTest => options;
+  ZoneEqualityComparerOptions get OptionsForTest => options;
 
   @private final ZoneIntervalEqualityComparer zoneIntervalComparer;
 
@@ -174,7 +174,7 @@ return (options & candidate) != 0;
   /// <param name="options">The options to use when comparing time zones.</param>
   /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
   @private ZoneEqualityComparer(this.interval, this.options) : zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval) {
-    if ((options & ~Options.StrictestMatch) != 0) {
+    if ((options & ~ZoneEqualityComparerOptions.StrictestMatch) != 0) {
       throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
     }
   }
@@ -192,7 +192,7 @@ return (options & candidate) != 0;
   static ZoneEqualityComparer ForInterval(Interval interval) {
     Preconditions.checkArgument(interval.HasStart && interval.HasEnd, 'interval',
         "The interval must have both a start and an end.");
-    return new ZoneEqualityComparer(interval, Options.OnlyMatchWallOffset);
+    return new ZoneEqualityComparer(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
   }
 
   /// <summary>
@@ -205,7 +205,7 @@ return (options & candidate) != 0;
   /// <param name="options">New set of options, which must consist of flags defined within the <see cref="Options"/> enum.</param>
   /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
   /// <returns>A comparer operating over the same interval as this one, but with the given set of options.</returns>
-  ZoneEqualityComparer WithOptions(Options options) {
+  ZoneEqualityComparer WithOptions(ZoneEqualityComparerOptions options) {
     return this.options == options ? this : new ZoneEqualityComparer(this.interval, options);
   }
 
@@ -228,7 +228,17 @@ return (options & candidate) != 0;
 
     // If we ever need to port this to a platform which doesn't support LINQ,
     // we'll need to reimplement this. Until then, it would seem pointless...
-    return GetIntervals(x).SequenceEqual(GetIntervals(y), zoneIntervalComparer);
+    // Dart: that day is TODAY!
+    var a = GetIntervals(x).iterator;
+    var b = GetIntervals(y).iterator;
+    // if (a.length != b.length) return false;
+    while(a.moveNext() || b.moveNext()) {
+      if (a.current == null || b.current == null) return false;
+      if (!zoneIntervalComparer.Equals(a.current, b.current)) return false;
+    }
+
+    return true;
+    // return GetIntervals(x).SequenceEqual(GetIntervals(y), zoneIntervalComparer);
   }
 
   /// <summary>
@@ -248,14 +258,14 @@ return (options & candidate) != 0;
   }
 
   @private Iterable<ZoneInterval> GetIntervals(DateTimeZone zone) {
-    var allIntervals = zone.GetZoneIntervals(interval.Start, interval.End);
-    return _checkOption(options, Options.MatchAllTransitions) ? allIntervals : zoneIntervalComparer.CoalesceIntervals(allIntervals);
+    var allIntervals = zone.getZoneIntervals(new Interval(interval.Start, interval.End));
+    return _checkOption(options, ZoneEqualityComparerOptions.MatchAllTransitions) ? allIntervals : zoneIntervalComparer.CoalesceIntervals(allIntervals);
   }
 }
 
 @internal /*sealed*/ class ZoneIntervalEqualityComparer // : IEqualityComparer<ZoneInterval>
     {
-  @private final Options options;
+  @private final ZoneEqualityComparerOptions options;
   @private final Interval interval;
 
   @internal ZoneIntervalEqualityComparer(this.options, this.interval);
@@ -292,13 +302,13 @@ return (options & candidate) != 0;
 
   int GetHashCode(ZoneInterval obj) {
     var hashables = new List<Object>();
-    if (_checkOption(options, Options.MatchOffsetComponents)) {
+    if (_checkOption(options, ZoneEqualityComparerOptions.MatchOffsetComponents)) {
       hashables.addAll([obj.StandardOffset, obj.savings]);
     }
     else {
       hashables.add(obj.wallOffset);
     }
-    if (_checkOption(options, Options.MatchNames)) {
+    if (_checkOption(options, ZoneEqualityComparerOptions.MatchNames)) {
       hashables.add(obj.name);
     }
 
@@ -306,11 +316,11 @@ return (options & candidate) != 0;
   }
 
   @private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>
-      _checkOption(options, Options.MatchStartAndEndTransitions)
+      _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
           ? zoneInterval.RawStart : Instant.max(zoneInterval.RawStart, interval.Start);
 
   @private Instant GetEffectiveEnd(ZoneInterval zoneInterval) =>
-      _checkOption(options, Options.MatchStartAndEndTransitions)
+      _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
           ? zoneInterval.RawEnd : Instant.min(zoneInterval.RawEnd, interval.End);
 
   /// <summary>
@@ -324,10 +334,10 @@ return (options & candidate) != 0;
     }
     // As we've already compared wall offsets, we only need to compare savings...
     // If the savings are equal, the standard offset will be too.
-    if (_checkOption(options, Options.MatchOffsetComponents) && x.savings != y.savings) {
+    if (_checkOption(options, ZoneEqualityComparerOptions.MatchOffsetComponents) && x.savings != y.savings) {
       return false;
     }
-    if (_checkOption(options, Options.MatchNames) && x.name != y.name) {
+    if (_checkOption(options, ZoneEqualityComparerOptions.MatchNames) && x.name != y.name) {
       return false;
     }
     return true;

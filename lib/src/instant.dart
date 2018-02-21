@@ -27,21 +27,49 @@ import 'dart:core' hide Duration;
 @immutable
 class Instant implements Comparable<Instant> {
   // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?
+  // These correspond to -9998-01-01 and 9999-12-31 respectively.
+  @internal static const int minDays = -4371222;
+  @internal static const int maxDays = 2932896; // 104249991
+
+  // todo: Min\MaxTicks tack 62 bits ~ these will not work for the JSVM - check if this is okay?
+  static const int _minTicks = minDays * TimeConstants.ticksPerDay;
+  static const int _maxTicks = (maxDays + 1) * TimeConstants.ticksPerDay - 1;
+  static const int _minMilliseconds = minDays * TimeConstants.millisecondsPerDay;
+  static const int _maxMilliseconds = (maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
+  static const int _minSeconds = minDays * TimeConstants.secondsPerDay;
+  static const int _maxSeconds = (maxDays + 1) * TimeConstants.secondsPerDay - 1;
+
+  // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
+  /// Represents the smallest possible <see cref="Instant"/>.
+  /// <remarks>This value is equivalent to -9998-01-01T00:00:00Z</remarks>
+  static final Instant minValue = new Instant.trusted(new Span(days: minDays));
+  /// Represents the largest possible <see cref="Instant"/>.
+  /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
+  static final Instant maxValue = new Instant.trusted(new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
+
+  /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
+  /// This must never be exposed.
+  @internal static final Instant beforeMinValue = new Instant.trusted(new Span(days: Span.minDays)); //, deliberatelyInvalid: true);
+  /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
+  /// This must never be exposed.
+  @internal static final Instant afterMaxValue = new Instant.trusted(new Span(days: Span.maxDays)); //, deliberatelyInvalid: true);
+
   final Span _span;
 
   // todo: investigate if this is okay ... see Instant.cs#115
   @internal Instant.untrusted(this._span);
-  Instant._trusted(this._span);
+  @internal Instant.trusted(this._span);
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
 
   int compareTo(Instant other) => _span.compareTo(other._span);
+  @internal bool get IsValid => daysSinceEpoch >= minDays && daysSinceEpoch <= maxDays;
 
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
 
-  Instant operator+(Span span) => new Instant._trusted(_span + span);
+  Instant operator+(Span span) => new Instant.trusted(_span + span);
   // Instant operator-(Span span) => new Instant._trusted(_span - span);
   Instant plus(Span span) => this + span;
   Instant minus(Span span) => this - span;
@@ -75,7 +103,7 @@ class Instant implements Comparable<Instant> {
   {
     var days = new LocalDate(year, monthOfYear, dayOfMonth).DaysSinceEpoch;
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).NanosecondOfDay;
-    return new Instant._trusted(new Span(days: days, nanoseconds:  nanoOfDay));
+    return new Instant.trusted(new Span(days: days, nanoseconds:  nanoOfDay));
   }
 
   static Instant max(Instant x, Instant y) => x > y ? x : y;
@@ -114,8 +142,8 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
-    if (Utility.isDartVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
-    return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
+    if (Utility.isDartVM) return new Instant.trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
+    return new Instant.trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
   // todo: why are these different?

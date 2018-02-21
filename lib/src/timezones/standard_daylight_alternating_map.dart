@@ -172,8 +172,8 @@ class _TransitionRecurrenceResult {
     String daylightName = reader.ReadString();
     ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
     Offset savings = reader.ReadOffset();
-    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, int.MinValue, int.MaxValue);
-    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, int.MinValue, int.MaxValue);
+    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, Utility.intMinValueJS, Utility.intMaxValueJS);
+    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, Utility.intMinValueJS, Utility.intMaxValueJS);
     return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
   }
 }

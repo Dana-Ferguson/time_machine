@@ -45,8 +45,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// <param name="offset">The offset.</param>
 /// <param name="name">The name to use in the sole <see cref="ZoneInterval"/> in this zone.</param>
 @internal FixedDateTimeZone(String id, Offset offset, String name) :
-      interval = new ZoneInterval(name, Instant.BeforeMinValue, Instant.AfterMaxValue, offset, Offset.zero),
-      this(id, true, offset, offset);
+      interval = new ZoneInterval(name, Instant.beforeMinValue, Instant.afterMaxValue, offset, Offset.zero),
+      super(id, true, offset, offset);
 
 /// <summary>
 /// Makes the id for this time zone. The format is "UTC+/-Offset".
@@ -55,9 +55,9 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// <returns>The generated id string.</returns>
 @private static String MakeId(Offset offset) {
   if (offset == Offset.zero) {
-    return UtcId;
+    return DateTimeZone.UtcId;
   }
-  return UtcId + OffsetPattern.GeneralInvariant.Format(offset);
+  return DateTimeZone.UtcId + OffsetPattern.GeneralInvariant.Format(offset);
 }
 
 /// <summary>
@@ -67,14 +67,14 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// <param name="id">ID </param>
 /// <returns>The parsed time zone, or null if the ID doesn't match.</returns>
 @internal static DateTimeZone GetFixedZoneOrNull(String id) {
-  if (!id.startsWith(UtcId)) {
+  if (!id.startsWith(DateTimeZone.UtcId)) {
     return null;
   }
-  if (id == UtcId) {
-    return Utc;
+  if (id == DateTimeZone.UtcId) {
+    return DateTimeZone.Utc;
   }
-  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.Substring(UtcId.Length));
-  return parseResult.Success ? ForOffset(parseResult.Value) : null;
+  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
+  return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
 }
 
 /// <summary>
@@ -114,7 +114,7 @@ new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 /// Writes the time zone to the specified writer.
 /// </summary>
 /// <param name="writer">The writer.</param>
-@@internal void Write(IDateTimeZoneWriter writer)
+@internal void Write(IDateTimeZoneWriter writer)
 {
   Preconditions.checkNotNull(writer, 'writer');
   writer.WriteOffset(Offset);

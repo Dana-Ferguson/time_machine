@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 // sealed 
 @internal class PartialZoneIntervalMap
 {
-  @@private final IZoneIntervalMap map;
+  @private final IZoneIntervalMap map;
 
   /// <summary>
   /// Start of the interval during which this map is valid.
@@ -39,13 +39,13 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <summary>
   /// Builds a PartialZoneIntervalMap for a single zone interval with the given name, start, end, wall offset and daylight savings.
   /// </summary>
-  @internal static PartialZoneIntervalMap ForZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
+  @internal static PartialZoneIntervalMap ForZoneInterval_NewZone(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
       ForZoneInterval(new ZoneInterval(name, start, end, wallOffset, savings));
 
   /// <summary>
   /// Builds a PartialZoneIntervalMap wrapping the given zone interval, taking its start and end as the start and end of
   /// the portion of the time line handled by the partial map.
-  /// </summary>
+  /// </summary> // todo: name?
   @internal static PartialZoneIntervalMap ForZoneInterval(ZoneInterval interval) =>
       new PartialZoneIntervalMap(interval.RawStart, interval.RawEnd, new SingleZoneIntervalMap(interval));
 
@@ -104,7 +104,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       if (current == null)
       {
         current = next;
-        Preconditions.debugCheckArgument(current.Start == Instant.BeforeMinValue, "maps", "First partial map must start at the beginning of time");
+        Preconditions.debugCheckArgument(current.Start == Instant.beforeMinValue, "maps", "First partial map must start at the beginning of time");
         continue;
       }
       Preconditions.debugCheckArgument(current.End == next.Start, "maps", "Maps must abut");
@@ -138,7 +138,7 @@ import 'package:time_machine/time_machine_timezones.dart';
         {
           // The next map has at least one transition. Add a single new map for the portion of time from the
           // start of current to the first transition in next, then continue on with the next map, starting at the first transition.
-          coalescedMaps.Add(ForZoneInterval(lastIntervalOfCurrent.WithEnd(firstIntervalOfNext.end)));
+          coalescedMaps.add(ForZoneInterval(lastIntervalOfCurrent.WithEnd(firstIntervalOfNext.end)));
           current = next.WithStart(firstIntervalOfNext.end);
         }
         else if (next.IsSingleInterval)
@@ -159,11 +159,11 @@ import 'package:time_machine/time_machine_timezones.dart';
       }
     }
     Preconditions.debugCheckArgument(current != null, "maps", "Collection of maps must not be empty");
-    Preconditions.debugCheckArgument(current.End == Instant.AfterMaxValue, "maps", "Collection of maps must end at the end of time");
+    Preconditions.debugCheckArgument(current.End == Instant.afterMaxValue, "maps", "Collection of maps must end at the end of time");
 
     // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
     coalescedMaps.add(current);
-    return new _CombinedPartialZoneIntervalMap(coalescedMaps.ToArray());
+    return new _CombinedPartialZoneIntervalMap(coalescedMaps.toList());
   }
 }
 

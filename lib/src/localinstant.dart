@@ -12,8 +12,8 @@ import 'package:time_machine/time_machine.dart';
 /// </summary>
 @internal class LocalInstant // : IEquatable<LocalInstant>
     {
-  static final LocalInstant BeforeMinValue = new LocalInstant(Instant.BeforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
-  static final LocalInstant AfterMaxValue = new LocalInstant(Instant.AfterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
+  static final LocalInstant BeforeMinValue = new LocalInstant(Instant.beforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
+  static final LocalInstant AfterMaxValue = new LocalInstant(Instant.afterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
 
   /// <summary>
   /// Elapsed time since the local 1970-01-01T00:00:00.
@@ -56,7 +56,7 @@ import 'package:time_machine/time_machine.dart';
   /// Returns whether or not this is a valid instant. Returns true for all but
   /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
   /// </summary>
-  @internal bool get IsValid => DaysSinceEpoch >= Instant.MinDays && DaysSinceEpoch <= Instant.MaxDays;
+  @internal bool get IsValid => DaysSinceEpoch >= Instant.minDays && DaysSinceEpoch <= Instant.maxDays;
 
   /// <summary>
   /// Number of nanoseconds since the local unix epoch.
@@ -78,7 +78,7 @@ import 'package:time_machine/time_machine.dart';
   /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
   /// </summary>
   // todo: this is an API pickle
-  @internal Instant MinusZeroOffset() => Instant.FromTrustedDuration(_span);
+  @internal Instant MinusZeroOffset() => new Instant.trusted(_span);
 
   /// <summary>
   /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
@@ -90,7 +90,7 @@ import 'package:time_machine/time_machine.dart';
   /// </remarks>
   /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
   /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
-  Instant Minus(Offset offset) => Instant.FromUntrustedDuration(_span.MinusSmallNanoseconds(offset.Nanoseconds));
+  Instant Minus(Offset offset) => new Instant.untrusted(_span.plusSmallNanoseconds(-offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
 
   /// <summary>
   /// Implements the operator == (equality).
@@ -106,26 +106,26 @@ import 'package:time_machine/time_machine.dart';
   @internal Instant SafeMinus(Offset offset) {
     int days = _span.days;
 // If we can do the arithmetic safely, do so.
-    if (days > Instant.MinDays && days < Instant.MaxDays) {
+    if (days > Instant.minDays && days < Instant.maxDays) {
       return Minus(offset);
     }
 // Handle BeforeMinValue and BeforeMaxValue simply.
-    if (days < Instant.MinDays) {
-      return Instant.BeforeMinValue;
+    if (days < Instant.minDays) {
+      return Instant.beforeMinValue;
     }
-    if (days > Instant.MaxDays) {
-      return Instant.AfterMaxValue;
+    if (days > Instant.maxDays) {
+      return Instant.afterMaxValue;
     }
 // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = _span.MinusSmallNanoseconds(offset.Nanoseconds);
-    if (asDuration.FloorDays < Instant.MinDays) {
-      return Instant.BeforeMinValue;
+    var asDuration = _span.plusSmallNanoseconds(-offset.nanoseconds);
+    if (asDuration.days < Instant.minDays) { // FloorDays
+      return Instant.beforeMinValue;
     }
-    if (asDuration.FloorDays > Instant.MaxDays) {
-      return Instant.AfterMaxValue;
+    if (asDuration.days > Instant.maxDays) { // FloorDays
+      return Instant.afterMaxValue;
     }
 // And now we don't need any more checks.
-    return Instant.FromTrustedDuration(asDuration);
+    return new Instant.trusted(asDuration);
   }
 
   /// <summary>

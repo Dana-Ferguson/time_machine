@@ -26,6 +26,15 @@ import 'package:time_machine/time_machine_calendars.dart';
 
 @immutable
 class Span implements Comparable<Span> {
+  // todo: We're not day-based here - we could be? (I don't think it's in the cards)
+  // This is 104249991 days
+  @internal static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
+  @internal static const int minDays = -maxDays; // ~MaxDays;
+
+  // 285420 years worth -- we are good for anything;
+  @internal static const int maxMillis = Utility.intMaxValueJS;
+  @internal static const int minMillis = -maxMillis;
+
   // 285420 years max (unlimited on VM)
   final int _milliseconds;
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
@@ -37,6 +46,14 @@ class Span implements Comparable<Span> {
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
   static final Span zero = new Span._trusted(0);
+  /// Gets a [Span] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
+  static final Span epsilon = new Span._trusted(0, 1);
+
+  /// Gets the maximum value supported by [Span]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
+  static Span maxValue = new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+
+  /// Gets the minimum (largest negative) value supported by [Span].
+  static Span minValue = new Span(days: minDays);
 
   Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
 
@@ -118,6 +135,8 @@ class Span implements Comparable<Span> {
 
   // todo: I feel like the naming here is not consistent enough (but this is consistent with Nodatime)
   // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
+  // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
+  //  where I use floor() if it's negative) .. or does the VM basically already cover that.
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
   int get hours => (_milliseconds ~/ TimeConstants.millisecondsPerHour) % TimeConstants.hoursPerDay;
   int get minutes => (_milliseconds ~/ TimeConstants.millisecondsPerMinute) % TimeConstants.minutesPerHour;
@@ -156,6 +175,8 @@ class Span implements Comparable<Span> {
 
   Span multiply(num factor) => this * factor;
   Span divide(num factor) => this / factor;
+
+  Span plusSmallNanoseconds(int nanoseconds) => new Span._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
   bool operator==(dynamic other) => other is Span && equals(other);
