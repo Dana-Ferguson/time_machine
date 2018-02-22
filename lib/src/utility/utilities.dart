@@ -30,6 +30,8 @@ abstract class Utility {
 
   static const intMaxValueJS = 9007199254740992; // math.pow(2, 53);
   static const intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
+  static const int32MinValue = -2147483648;
+  static const int32MaxValue = 2147483647;
 
   static int _intMaxValue = null;
   static int get intMaxValue => _intMaxValue ?? (_intMaxValue = _getIntMaxValue());

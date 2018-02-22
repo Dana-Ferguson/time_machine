@@ -24,3 +24,5 @@ export 'src/timezones/zoneinterval.dart';
 export 'src/timezones/zone_local_mapping.dart';
 export 'src/timezones/zone_recurrence.dart';
 export 'src/timezones/zone_year_offset.dart';
+
+export 'src/timezones/io.dart';

@@ -153,27 +153,34 @@ class _TransitionRecurrenceResult {
   /// </summary>
   /// <param name="writer">The writer to write to.</param>
   @internal void Write(IDateTimeZoneWriter writer) {
+    throw new UnimplementedError('This feature is not available.');
     // We don't need everything a recurrence can supply: we know that both recurrences should be
     // infinite, and that only the DST recurrence should have savings.
-    Preconditions.checkNotNull(writer, 'writer');
-    writer.WriteOffset(standardOffset);
-    writer.WriteString(standardRecurrence.name);
-    standardRecurrence.yearOffset.Write(writer);
-    writer.WriteString(dstRecurrence.name);
-    dstRecurrence.yearOffset.Write(writer);
-    writer.WriteOffset(dstRecurrence.savings);
+//    Preconditions.checkNotNull(writer, 'writer');
+//    writer.WriteOffset(standardOffset);
+//    writer.WriteString(standardRecurrence.name);
+//    standardRecurrence.yearOffset.Write(writer);
+//    writer.WriteString(dstRecurrence.name);
+//    dstRecurrence.yearOffset.Write(writer);
+//    writer.WriteOffset(dstRecurrence.savings);
   }
 
-  @internal static StandardDaylightAlternatingMap Read(IDateTimeZoneReader reader) {
+  @internal static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
-    Offset standardOffset = reader.ReadOffset();
-    String standardName = reader.ReadString();
-    ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
-    String daylightName = reader.ReadString();
-    ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
-    Offset savings = reader.ReadOffset();
-    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, Utility.intMinValueJS, Utility.intMaxValueJS);
-    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, Utility.intMinValueJS, Utility.intMaxValueJS);
+    var standardOffset = Offset.fromSeconds(reader.readInt32());
+    var standardRecurrence = ZoneRecurrence.Read(reader);
+    var dstRecurrence = ZoneRecurrence.Read(reader);
+
     return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
+
+    // Offset standardOffset = reader.ReadOffset();
+//    String standardName = reader.ReadString();
+//    ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
+//    String daylightName = reader.ReadString();
+//    ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
+//    Offset savings = reader.ReadOffset();
+//    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
+//    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
+//    return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
   }
 }

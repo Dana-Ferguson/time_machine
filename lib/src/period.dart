@@ -375,7 +375,7 @@ class Period // : IEquatable<Period>
         Ticks: Ticks - subtrahend.Ticks,
         Nanoseconds: Nanoseconds - subtrahend.Nanoseconds);
   }
-
+  
   /// Returns the exact difference between two date/times or
   /// returns the period between a start and an end date/time, using only the given units.
   ///
@@ -419,28 +419,44 @@ class Period // : IEquatable<Period>
     }
 
     // Optimization for single field
-    switch (units) {
-      case PeriodUnits.years:
-        return new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
-      case PeriodUnits.months:
-        return new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
-      case PeriodUnits.weeks:
-        return new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
-      case PeriodUnits.days:
-        return new Period.fromDays(DaysBetween(start.Date, endDate));
-      case PeriodUnits.hours:
-        return new Period.fromHours(TimePeriodField.Hours.UnitsBetween(start, end));
-      case PeriodUnits.minutes:
-        return new Period.fromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end));
-      case PeriodUnits.seconds:
-        return new Period.fromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end));
-      case PeriodUnits.milliseconds:
-        return new Period.fromMilliseconds(TimePeriodField.Milliseconds.UnitsBetween(start, end));
-      case PeriodUnits.ticks:
-        return new Period.fromTicks(TimePeriodField.Ticks.UnitsBetween(start, end));
-      case PeriodUnits.nanoseconds:
-        return new Period.fromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end));
-    }
+    // todo: optimize me?
+    Map betweenFunctionMap = {
+      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate)),
+      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate)),
+      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate)),
+      PeriodUnits.days: () => new Period.fromDays(DaysBetween(start.Date, endDate)),
+      PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.Hours.UnitsBetween(start, end)),
+      PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end)),
+      PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end)),
+      PeriodUnits.milliseconds: () => new Period.fromMilliseconds(TimePeriodField.Milliseconds.UnitsBetween(start, end)),
+      PeriodUnits.ticks: () => new Period.fromTicks(TimePeriodField.Ticks.UnitsBetween(start, end)),
+      PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end))
+    };
+    
+    if (betweenFunctionMap.containsKey(units)) return betweenFunctionMap[units];
+    
+//    switch (units) {
+//      case PeriodUnits.years:
+//        return new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
+//      case PeriodUnits.months:
+//        return new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate));
+//      case PeriodUnits.weeks:
+//        return new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate));
+//      case PeriodUnits.days:
+//        return new Period.fromDays(DaysBetween(start.Date, endDate));
+//      case PeriodUnits.hours:
+//        return new Period.fromHours(TimePeriodField.Hours.UnitsBetween(start, end));
+//      case PeriodUnits.minutes:
+//        return new Period.fromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end));
+//      case PeriodUnits.seconds:
+//        return new Period.fromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end));
+//      case PeriodUnits.milliseconds:
+//        return new Period.fromMilliseconds(TimePeriodField.Milliseconds.UnitsBetween(start, end));
+//      case PeriodUnits.ticks:
+//        return new Period.fromTicks(TimePeriodField.Ticks.UnitsBetween(start, end));
+//      case PeriodUnits.nanoseconds:
+//        return new Period.fromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end));
+//    }
 
     // Multiple fields
     LocalDateTime remaining = start;
@@ -471,8 +487,14 @@ class Period // : IEquatable<Period>
         .ToLocalInstant()
         .TimeSinceLocalEpoch;
     if (duration.IsInt64Representable) {
-      // todo: deal with TimeComponentsBetween
-      throw new UnimplementedError('this is not done.');
+      var result = TimeComponentsBetween(duration.totalNanoseconds, units);
+      hours = result.hours;
+      minutes = result.minutes;
+      seconds = result.seconds;
+      milliseconds = result.milliseconds;
+      ticks = result.ticks;
+      nanoseconds = result.nanoseconds;
+      // throw new UnimplementedError('this is not done.');
       // TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
     }
     else {

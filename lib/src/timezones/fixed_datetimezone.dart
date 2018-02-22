@@ -116,9 +116,10 @@ new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 /// <param name="writer">The writer.</param>
 @internal void Write(IDateTimeZoneWriter writer)
 {
-  Preconditions.checkNotNull(writer, 'writer');
-  writer.WriteOffset(Offset);
-  writer.WriteString(Name);
+  throw new UnimplementedError('This feature is not supported.');
+//  Preconditions.checkNotNull(writer, 'writer');
+//  writer.WriteOffset(Offset);
+//  writer.WriteString(Name);
 }
 
 /// <summary>
@@ -127,13 +128,13 @@ new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 /// <param name="reader">The reader.</param>
 /// <param name="id">The id.</param>
 /// <returns>The fixed time zone.</returns>
-static DateTimeZone Read(IDateTimeZoneReader reader, String id)
+static DateTimeZone Read(DateTimeZoneReader reader, String id)
 {
-Preconditions.checkNotNull(reader, 'reader');
-Preconditions.checkNotNull(id, 'id');
-var offset = reader.ReadOffset();
-var name = reader.HasMoreData ? reader.ReadString() : id;
-return new FixedDateTimeZone(id, offset, name);
+  Preconditions.checkNotNull(reader, 'reader');
+  Preconditions.checkNotNull(id, 'id');
+  var offset = reader.readOffsetSeconds();
+  var name = reader.hasMoreData ? reader.readString() : id;
+  return new FixedDateTimeZone(id, offset, name);
 }
 
 /// <summary>
@@ -148,10 +149,10 @@ return new FixedDateTimeZone(id, offset, name);
 // @override bool Equals(object obj) => Equals(obj as FixedDateTimeZone);
 
 bool Equals(FixedDateTimeZone other) =>
-other != null &&
-Offset == other.offset &&
-id == other.id &&
-Name == other.Name;
+  other != null &&
+  Offset == other.offset &&
+  id == other.id &&
+  Name == other.Name;
 
 /// <summary>
 /// Computes the hash code for this instance.

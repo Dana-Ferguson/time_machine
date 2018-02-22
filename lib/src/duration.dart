@@ -196,4 +196,12 @@ class Span implements Comparable<Span> {
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
   }
 
+  bool get IsInt64Representable {
+    if (Utility.intMaxValue / TimeConstants.nanosecondsPerMillisecond < _milliseconds) {
+      return false;
+    }
+
+    return true;
+  }
+
 }

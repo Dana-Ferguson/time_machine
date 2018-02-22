@@ -224,19 +224,33 @@ class _ZoneYearOffset {
 //  writer.WriteMilliseconds((timeOfDay.TickOfDay ~/ TimeConstants.ticksPerMillisecond));
   }
 
-  static ZoneYearOffset Read(/*IDateTimeZoneReader*/ dynamic reader) {
-    return null;
-//Preconditions.checkNotNull(reader, 'reader');
-//int flags = reader.ReadByte();
-//var mode = new TransitionMode(flags >> 5);
-//var dayOfWeek = (flags >> 2) & 7;
-//var advance = (flags & 2) != 0;
-//var addDay = (flags & 1) != 0;
-//int monthOfYear = reader.ReadCount();
-//int dayOfMonth = reader.ReadSignedCount();
-//// The time of day is written as a number of milliseconds for historical reasons.
-//var timeOfDay = LocalTime.FromMillisecondsSinceMidnight(reader.ReadMilliseconds());
-//return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, timeOfDay, addDay);
+  static ZoneYearOffset Read(DateTimeZoneReader reader) {
+    // todo: we can bit-pack all this; for example: see below
+    int flags = reader.readUint8();
+    var mode = new TransitionMode(flags >> 5);
+    var dayOfWeek = (flags >> 2) & 7;
+    var advanceDayOfWeek = (flags & 2) != 0;
+    var addDay = (flags & 1) != 0;
+//  var dayOfWeek = reader.readInt32();
+//  var addDay = reader.readBool();
+//  var mode = new TransitionMode(reader.readUint8());
+//  var advanceDayOfWeek = reader.readBool();
+
+    var dayOfMonth = reader.read7BitEncodedInt(); //.readInt32();
+    var monthOfYear = reader.read7BitEncodedInt(); //.readInt32();
+    var timeOfDay = new LocalTime.fromNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
+
+    return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);//Preconditions.checkNotNull(reader, 'reader');
+    //int flags = reader.ReadByte();
+    //var mode = new TransitionMode(flags >> 5);
+    //var dayOfWeek = (flags >> 2) & 7;
+    //var advance = (flags & 2) != 0;
+    //var addDay = (flags & 1) != 0;
+    //int monthOfYear = reader.ReadCount();
+    //int dayOfMonth = reader.ReadSignedCount();
+    //// The time of day is written as a number of milliseconds for historical reasons.
+    //var timeOfDay = LocalTime.FromMillisecondsSinceMidnight(reader.ReadMilliseconds());
+    //return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advance, timeOfDay, addDay);
   }
 
   /// <summary>

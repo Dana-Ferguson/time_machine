@@ -99,35 +99,36 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal void Write(IDateTimeZoneWriter writer)
   {
-    writer.WriteSignedCount(latitudeSeconds);
-    writer.WriteSignedCount(longitudeSeconds);
-    writer.WriteCount(Countries.length);
-    // We considered writing out the ISO-3166 file as a separate field,
-    // so we can reuse objects, but we don't actually waste very much space this way, 
-    // due to the string pool... and the increased code complexity isn't worth it.
-    for (var country in Countries)
-    {
-      writer.WriteString(country.Name);
-      writer.WriteString(country.Code);
-    }
-    writer.WriteString(ZoneId);
-    writer.WriteString(Comment);
+    throw new UnimplementedError('This feature is not supported.');
+//    writer.WriteSignedCount(latitudeSeconds);
+//    writer.WriteSignedCount(longitudeSeconds);
+//    writer.WriteCount(Countries.length);
+//    // We considered writing out the ISO-3166 file as a separate field,
+//    // so we can reuse objects, but we don't actually waste very much space this way,
+//    // due to the string pool... and the increased code complexity isn't worth it.
+//    for (var country in Countries)
+//    {
+//      writer.WriteString(country.Name);
+//      writer.WriteString(country.Code);
+//    }
+//    writer.WriteString(ZoneId);
+//    writer.WriteString(Comment);
   }
 
-  @internal static TzdbZone1970Location Read(IDateTimeZoneReader reader)
+  @internal static TzdbZone1970Location Read(DateTimeZoneReader reader)
   {
-    int latitudeSeconds = reader.ReadSignedCount();
-    int longitudeSeconds = reader.ReadSignedCount();
-    int countryCount = reader.ReadCount();
+    int latitudeSeconds = reader.readInt32(); //.ReadSignedCount();
+    int longitudeSeconds = reader.readInt32(); //.ReadSignedCount();
+    int countryCount = reader.read7BitEncodedInt(); //.ReadCount();
     var countries = new List<Country>();
     for (int i = 0; i < countryCount; i++)
     {
-      String countryName = reader.ReadString();
-      String countryCode = reader.ReadString();
+      String countryName = reader.readString();
+      String countryCode = reader.readString();
       countries.add(new Country(countryName, countryCode));
     }
-    String zoneId = reader.ReadString();
-    String comment = reader.ReadString();
+    String zoneId = reader.readString();
+    String comment = reader.readString();
     // We could duplicate the validation, but there's no good reason to. It's odd
     // to catch ArgumentException, but we're in pretty tight control of what's going on here.
     try

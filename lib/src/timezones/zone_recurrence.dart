@@ -39,7 +39,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   final int toYear;
 
   // todo: there seems to be a lot of dependence on 'number systems' here -- not sure Dart likes this
-  bool get isInfinite => toYear == Utility.intMaxValueJS;
+  bool get isInfinite => toYear == Utility.int32MaxValue;
 
   /// <summary>
   /// Initializes a new instance of the <see cref="ZoneRecurrence"/> class.
@@ -51,15 +51,15 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="toYear">The last year in which this recurrence is valid</param>
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
       :
-        this.minLocalInstant = fromYear == Utility.intMinValueJS ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear),
-        this.maxLocalInstant = toYear == Utility.intMaxValueJS ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear) {
+        this.minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear),
+        this.maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
 // todo: magic numbers
-    Preconditions.checkArgument(fromYear == Utility.intMinValueJS || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
+    Preconditions.checkArgument(fromYear == Utility.int32MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
         "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
-    Preconditions.checkArgument(toYear == Utility.intMaxValueJS || (toYear >= -9998 && toYear <= 9999), 'toYear',
+    Preconditions.checkArgument(toYear == Utility.int32MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',
         "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
   }
 
@@ -257,13 +257,14 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// </summary>
   /// <param name="writer">Where to send the output.</param>
   @internal void Write(IDateTimeZoneWriter writer) {
-    writer.WriteString(name);
-    writer.WriteOffset(savings);
-    yearOffset.Write(writer);
-// We'll never have time zones with recurrences between the beginning of time and 0AD,
-// so we can treat anything negative as 0, and go to the beginning of time when reading.
-    writer.WriteCount(math.max(fromYear, 0));
-    writer.WriteCount(toYear);
+    throw new UnimplementedError('This feature is not supported');
+//    writer.WriteString(name);
+//    writer.WriteOffset(savings);
+//    yearOffset.Write(writer);
+//// We'll never have time zones with recurrences between the beginning of time and 0AD,
+//// so we can treat anything negative as 0, and go to the beginning of time when reading.
+//    writer.WriteCount(math.max(fromYear, 0));
+//    writer.WriteCount(toYear);
   }
 
 
@@ -272,17 +273,31 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// </summary>
   /// <param name="reader">The reader.</param>
   /// <returns>The recurrence read from the reader.</returns>
-  static ZoneRecurrence Read(IDateTimeZoneReader reader) {
+  static ZoneRecurrence Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
-    String name = reader.ReadString();
-    Offset savings = reader.ReadOffset();
-    ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-    int fromYear = reader.ReadCount();
-    if (fromYear == 0) {
-      fromYear = Utility.intMinValueJS; // int.minValue;
-    }
-    int toYear = reader.ReadCount();
+    var name = reader.readString();
+    var savings = Offset.fromSeconds(reader.readInt32());
+    var yearOffset = ZoneYearOffset.Read(reader);
+    var fromYear = reader.readInt32();
+    var toYear = reader.readInt32();
+
+    //// todo: remove me in the future... but for now, it's a good sanity check
+    //var isInfinite = reader.readBool();
+
     return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+    // if (zoneRecurrence.isInfinite != isInfinite) throw new Exception('zoneRecurrence.isInfinite error.');
+
+
+
+    // String name = reader.ReadString();
+    // Offset savings = reader.ReadOffset();
+    // ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
+    // int fromYear = reader.ReadCount();
+    // if (fromYear == 0) {
+    //   fromYear = Utility.int32MinValue; // int.minValue;
+    // }
+    // int toYear = reader.ReadCount();
+    // return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
   }
 
   /// <summary>

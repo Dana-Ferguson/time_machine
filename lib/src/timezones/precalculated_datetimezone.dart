@@ -155,27 +155,22 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="reader">The reader.</param>
   /// <param name="id">The id.</param>
   /// <returns>The time zone.</returns>
-  @internal static DateTimeZone Read(IDateTimeZoneReader reader, String id) {
-    throw new UnimplementedError('This code will be different for Dart');
+  @internal static DateTimeZone Read(DateTimeZoneReader reader, String id) {
+    //var stream = new Stream(binary);
+    //var id = stream.readString();
 
-//  Preconditions.debugCheckNotNull(reader, 'reader');
-//  Preconditions.debugCheckNotNull(id, 'id');
-//  int size = reader.ReadCount();
-//  var periods = new List<ZoneInterval>(size);
-//// It's not entirely clear why we don't just assume that the first zone interval always starts at Instant.BeforeMinValue
-//// (given that we check that later) but we don't... and changing that now could cause compatibility issues.
-//  var start = reader.ReadZoneIntervalTransition(null);
-//  for (int i = 0; i < size; i++) {
-//    var name = reader.ReadString();
-//    var offset = reader.ReadOffset();
-//    var savings = reader.ReadOffset();
-//    var nextStart = reader.ReadZoneIntervalTransition(start);
-//    periods[i] = new ZoneInterval(name, start, nextStart, offset, savings);
-//    start = nextStart;
-//  }
-//  var tailZone = reader.ReadByte() == 1 ? StandardDaylightAlternatingMap.Read(reader) : null;
-//  return new PrecalculatedDateTimeZone(id, periods, tailZone);
-    return null;
+    var periodsCount = reader.readInt32();
+    var periods = new Iterable
+        .generate(periodsCount)
+        .map((i) => reader.readZoneInterval())
+        .toList();
+
+    var tailFlag = reader.readUint8();
+    if (tailFlag == 1) {
+      var tailZone = StandardDaylightAlternatingMap.Read(reader);
+      return new PrecalculatedDateTimeZone(id, periods, tailZone);
+    }
+    return new PrecalculatedDateTimeZone(id, periods, null);
   }
 
 // #endregion // I/O

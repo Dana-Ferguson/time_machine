@@ -97,21 +97,22 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal void Write(IDateTimeZoneWriter writer)
   {
-    writer.WriteSignedCount(latitudeSeconds);
-    writer.WriteSignedCount(longitudeSeconds);
-    writer.WriteString(CountryName);
-    writer.WriteString(CountryCode);
-    writer.WriteString(ZoneId);
-    writer.WriteString(Comment);
+    throw new UnimplementedError('This feature is not supported.');
+//    writer.WriteSignedCount(latitudeSeconds);
+//    writer.WriteSignedCount(longitudeSeconds);
+//    writer.WriteString(CountryName);
+//    writer.WriteString(CountryCode);
+//    writer.WriteString(ZoneId);
+//    writer.WriteString(Comment);
   }
 
-  @internal static TzdbZoneLocation Read(IDateTimeZoneReader reader) {
-    int latitudeSeconds = reader.ReadSignedCount();
-    int longitudeSeconds = reader.ReadSignedCount();
-    String countryName = reader.ReadString();
-    String countryCode = reader.ReadString();
-    String zoneId = reader.ReadString();
-    String comment = reader.ReadString();
+  @internal static TzdbZoneLocation Read(DateTimeZoneReader reader) {
+    int latitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
+    int longitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
+    String countryName = reader.readString();
+    String countryCode = reader.readString();
+    String zoneId = reader.readString();
+    String comment = reader.readString();
     // We could duplicate the validation, but there's no good reason to. It's odd
     // to catch ArgumentException, but we're in pretty tight control of what's going on here.
     try {

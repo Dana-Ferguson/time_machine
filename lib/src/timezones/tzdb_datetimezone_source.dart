@@ -158,7 +158,7 @@ String get VersionId => "TZDB: $version";
 /// be read by this version of Noda Time.</exception>
 /// <exception cref="IOException">Reading from the stream failed.</exception>
 /// <exception cref="InvalidOperationException">The supplied stream doesn't support reading.</exception>
-factory TzdbDateTimeZoneSource.FromStream(Stream stream)
+factory TzdbDateTimeZoneSource.FromStream(DateTimeZoneReader stream)
 {
   Preconditions.checkNotNull(stream, 'stream');
   return new TzdbDateTimeZoneSource(TzdbStreamData.FromStream(stream));

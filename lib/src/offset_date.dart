@@ -108,7 +108,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// <param name="time">The time to combine with this date.</param>
   /// <returns>The <see cref="OffsetDateTime"/> representation of the given time on this date.</returns>
 
-  OffsetDateTime At(LocalTime time) => new OffsetDateTime(date.At(time), Offset);
+  OffsetDateTime At(LocalTime time) => new OffsetDateTime(date.At(time), offset);
 
 
   /// Returns a hash code for this offset date.

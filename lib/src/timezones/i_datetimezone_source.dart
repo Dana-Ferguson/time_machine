@@ -1,9 +1,6 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/IDateTimeZoneSource.cs
 // 24fdeef  on Apr 10, 2017
 
-import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
@@ -64,7 +61,7 @@ abstract class IDateTimeZoneSource {
   /// information comes from and which version of the source information has been loaded.
   /// </remarks>
   /// <value>An appropriate version ID for diagnostic purposes.</value>
-  final String VersionId;
+  final String VersionId = null;
 
   /// <summary>
   /// Returns the time zone definition associated with the given ID.

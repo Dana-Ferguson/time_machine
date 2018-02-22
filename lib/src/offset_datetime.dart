@@ -11,6 +11,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 @immutable
 class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
+      // todo: We can't use this either
   @private static const int NanosecondsBits = 47;
 
 // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
@@ -251,7 +252,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Gets the offset from UTC.
   /// </summary>
   /// <value>The offset from UTC.</value>
-  Offset get offset => new Offset((int)(nanosecondsAndOffset >> NanosecondsBits));
+  Offset get offset => new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
   /// <summary>
   /// Returns the number of nanoseconds in the offset, without going via an Offset.

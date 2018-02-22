@@ -12,8 +12,8 @@ import 'package:time_machine/time_machine.dart';
 /// </summary>
 @internal class LocalInstant // : IEquatable<LocalInstant>
     {
-  static final LocalInstant BeforeMinValue = new LocalInstant(Instant.beforeMinValue.DaysSinceEpoch, deliberatelyInvalid: true);
-  static final LocalInstant AfterMaxValue = new LocalInstant(Instant.afterMaxValue.DaysSinceEpoch, deliberatelyInvalid: true);
+  static final LocalInstant BeforeMinValue = new LocalInstant._trusted(Instant.beforeMinValue.daysSinceEpoch, deliberatelyInvalid: true);
+  static final LocalInstant AfterMaxValue = new LocalInstant._trusted(Instant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
 
   /// <summary>
   /// Elapsed time since the local 1970-01-01T00:00:00.
@@ -23,7 +23,7 @@ import 'package:time_machine/time_machine.dart';
   /// <summary>
   /// Constructor which should *only* be used to construct the invalid instances.
   /// </summary>
-  LocalInstant._trusted(int days, bool deliberatelyInvalid)
+  LocalInstant._trusted(int days, {bool deliberatelyInvalid})
   {
     this._span = new Span(days: days);
   }
