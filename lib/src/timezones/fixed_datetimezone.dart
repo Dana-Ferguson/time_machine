@@ -73,6 +73,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   if (id == DateTimeZone.UtcId) {
     return DateTimeZone.Utc;
   }
+  print('Shit, we are gonna break'); // todo: remove me
   var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
   return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
 }

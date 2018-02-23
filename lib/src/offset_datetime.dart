@@ -12,7 +12,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
       // todo: We can't use this either
-  @private static const int NanosecondsBits = 47;
+  // @private static const int NanosecondsBits = 47;
 
 // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
 //@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
@@ -28,17 +28,20 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
 // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
 // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
-  @private final int nanosecondsAndOffset;
+  // @private final int nanosecondsAndOffset;
+
+  @private final int _nanosecondOfDay;
+  @private final Offset _offset;
 
 // TRUSTED
-  @internal OffsetDateTime.fullTrust(this.yearMonthDayCalendar, this.nanosecondsAndOffset)
+  @internal OffsetDateTime.fullTrust(this.yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
   {
     Calendar.ValidateYearMonthDay_(yearMonthDay);
   }
 
 // TRUSTED
   @internal OffsetDateTime.lessTrust(this.yearMonthDayCalendar, LocalTime time, Offset offset)
-      : nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
+      : _nanosecondOfDay = time.NanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
     Calendar.ValidateYearMonthDay_(yearMonthDay);
   }
@@ -62,9 +65,9 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
     var yearMonthDayCalendar = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
-    var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
+    // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
 
-    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
   /// <summary>
@@ -86,8 +89,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
     var yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(days);
-    var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
-    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanosecondsAndOffset);
+    // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
+    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
   /// <summary>
@@ -96,7 +99,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// <param name="localDateTime">Local date and time to represent</param>
   /// <param name="offset">Offset from UTC</param>
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this.fullTrust(localDateTime.Date.yearMonthDayCalendar, _combineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
+      : this.fullTrust(localDateTime.Date.yearMonthDayCalendar, localDateTime.NanosecondOfDay, offset); // _combineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
 
   static int _combineNanoOfDayAndOffset(int nanoOfDay, Offset offset) {
     return nanoOfDay + offset.nanoseconds;
@@ -217,7 +220,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   /// </summary>
   /// <value>The nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
-  int get NanosecondOfDay => nanosecondsAndOffset & NanosecondsMask;
+  int get NanosecondOfDay => _nanosecondOfDay; // nanosecondsAndOffset & NanosecondsMask;
 
   /// <summary>
   /// Returns the local date and time represented within this offset date and time.
@@ -252,12 +255,12 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Gets the offset from UTC.
   /// </summary>
   /// <value>The offset from UTC.</value>
-  Offset get offset => new Offset(nanosecondsAndOffset >> NanosecondsBits);
+  Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
   /// <summary>
   /// Returns the number of nanoseconds in the offset, without going via an Offset.
   /// </summary>
-  @private int get OffsetNanoseconds => (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
+  @private int get OffsetNanoseconds => _offset.nanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
 
   /// <summary>
   /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
@@ -315,7 +318,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   OffsetDateTime WithCalendar(CalendarSystem calendar) {
     LocalDate newDate = Date.WithCalendar(calendar);
-    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// <summary>
@@ -331,7 +334,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   OffsetDateTime WithDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = Date.With(adjuster);
-    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// <summary>
@@ -346,7 +349,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   OffsetDateTime WithTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = TimeOfDay.With(adjuster);
-    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, newTime.NanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
   /// <summary>
@@ -360,7 +363,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     // Slight change to the normal operation, as it's *just* about plausible that we change day
     // twice in one direction or the other.
     int days = 0;
-    int nanos = (nanosecondsAndOffset & NanosecondsMask) + offset.nanoseconds - OffsetNanoseconds;
+    int nanos =_nanosecondOfDay /*(nanosecondsAndOffset & NanosecondsMask)*/ + offset.nanoseconds - OffsetNanoseconds;
     if (nanos >= TimeConstants.nanosecondsPerDay) {
       days++;
       nanos -= TimeConstants.nanosecondsPerDay;
@@ -380,8 +383,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     return new OffsetDateTime.fullTrust(
         days == 0 ? yearMonthDayCalendar : Date
             .PlusDays(days)
-            .yearMonthDayCalendar,
-        _combineNanoOfDayAndOffset(nanos, offset));
+            .yearMonthDayCalendar, nanos, offset);
+        // _combineNanoOfDayAndOffset(nanos, offset));
   }
 
   /// <summary>
@@ -413,7 +416,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// <param name="other">The value to compare this offset date/time with.</param>
   /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
   bool equals(OffsetDateTime other) =>
-      this.yearMonthDayCalendar == other.yearMonthDayCalendar && this.nanosecondsAndOffset == other.nanosecondsAndOffset;
+      this.yearMonthDayCalendar == other.yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this._offset == other._offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
 
   /// <summary>
   /// Returns a <see cref="System.String" /> that represents this instance.

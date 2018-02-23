@@ -96,7 +96,7 @@ class Instant implements Comparable<Instant> {
   bool operator<(Instant other) => _span < other._span;
   bool operator<=(Instant other) => _span <= other._span;
   bool operator>(Instant other) => _span > other._span;
-  bool operator>=(Instant other) => _span <= other._span;
+  bool operator>=(Instant other) => _span >= other._span;
 
   // Convenience methods from Nodatime -- evaluate if I want to keep these
   factory Instant.fromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
@@ -150,8 +150,8 @@ class Instant implements Comparable<Instant> {
   int get daysSinceEpoch => _span.days;
   int get nanosecondOfDay => _span.nanosecondOfDay;
 
-  int toUnixTimeSeconds() => _span.seconds;
-  int toUnixTimeMilliseconds() => _span.milliseconds;
+  int toUnixTimeSeconds() => _span.totalSeconds.toInt();
+  int toUnixTimeMilliseconds() => _span.totalMilliseconds.toInt();
   int toUnixTimeTicks() => _span.totalTicks.toInt();
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
@@ -159,7 +159,7 @@ class Instant implements Comparable<Instant> {
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
     var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.days);
-    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.totalNanoseconds);
+    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.nanosecondOfDay, Offset.zero);
     return new ZonedDateTime.trusted(offsetDateTime, DateTimeZone.Utc);
   }
 

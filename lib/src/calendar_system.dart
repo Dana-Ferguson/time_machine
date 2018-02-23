@@ -129,9 +129,22 @@ class CalendarSystem {
     return ForOrdinalUncached(ordinal);
   }
 
+  // todo: how would caching work if this was inside the function body?
+  static final Map<CalendarOrdinal, CalendarSystem> _forOrdinalUncached_referenceMap = {
+    CalendarOrdinal.Iso: Iso,
+    CalendarOrdinal.Gregorian: Gregorian,
+    CalendarOrdinal.Julian: Julian,
+    CalendarOrdinal.Coptic: Coptic
+  };
+
   @visibleForTesting
   @internal
   static CalendarSystem ForOrdinalUncached(CalendarOrdinal ordinal) {
+    var calendarSystem = _forOrdinalUncached_referenceMap[ordinal];
+    if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
+    return calendarSystem;
+
+    /*
     switch (ordinal) {
 // This entry is really just for completeness. We'd never get called with this.
       case CalendarOrdinal.Iso:
@@ -175,7 +188,7 @@ class CalendarSystem {
         return UmAlQura;
       default:
         throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
-    }
+    }*/
   }
 
 
@@ -616,7 +629,7 @@ class CalendarSystem {
   /// </para>
   /// </remarks>
   /// <value>A Gregorian calendar system.</value>
-  static final CalendarSystem Gregorian = GregorianJulianCalendars._gregorian;
+  static final CalendarSystem Gregorian = GregorianJulianCalendars.gregorian;
 
 
   /// Returns a pure proleptic Julian calendar system, which defines every
@@ -631,7 +644,7 @@ class CalendarSystem {
   /// </remarks>
   /// <value>A suitable Julian calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.</value>
-  static final CalendarSystem Julian = GregorianJulianCalendars._julian;
+  static final CalendarSystem Julian = GregorianJulianCalendars.julian;
 
 
   /// Returns a Coptic calendar system, which defines every fourth year as

@@ -43,7 +43,7 @@ class Preconditions {
   // [Conditional("DEBUG")]
   static void debugCheckArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
     // #if DEBUG
-    checkArgumentRange(paramName, value, maxInclusive, maxInclusive);
+    checkArgumentRange(paramName, value, minInclusive, maxInclusive);
     // #endif
   }
 

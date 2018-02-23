@@ -105,21 +105,26 @@ class Span implements Comparable<Span> {
     int _seconds = seconds.floor();
     int _milliseconds = milliseconds.floor();
 
-    milliseconds += _days * TimeConstants.millisecondsPerDay;
-    milliseconds += _hours * TimeConstants.millisecondsPerHour;
-    milliseconds += _minutes * TimeConstants.millisecondsPerMinute;
-    milliseconds += _seconds * TimeConstants.millisecondsPerSecond;
+    var totalMilliseconds = _milliseconds;
+    var intervalNanoseconds = nanoseconds;
 
-    nanoseconds += (microseconds * TimeConstants.nanosecondsPerMicrosecond).round();
-    nanoseconds += (ticks * TimeConstants.nanosecondsPerTick).round();
+    totalMilliseconds += _days * TimeConstants.millisecondsPerDay;
+    totalMilliseconds += _hours * TimeConstants.millisecondsPerHour;
+    totalMilliseconds += _minutes * TimeConstants.millisecondsPerMinute;
+    totalMilliseconds += _seconds * TimeConstants.millisecondsPerSecond;
 
-    nanoseconds += ((days - _days) * TimeConstants.nanosecondsPerDay).round();
-    nanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerDay).round();
-    nanoseconds += ((minutes - _minutes) * TimeConstants.nanosecondsPerDay).round();
-    nanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
-    nanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
+    intervalNanoseconds += (microseconds * TimeConstants.nanosecondsPerMicrosecond).round();
+    intervalNanoseconds += (ticks * TimeConstants.nanosecondsPerTick).round();
 
-    return new Span._untrusted(milliseconds, nanoseconds);
+    intervalNanoseconds += ((days - _days) * TimeConstants.nanosecondsPerDay).round();
+    intervalNanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerDay).round();
+    intervalNanoseconds += ((minutes - _minutes) * TimeConstants.nanosecondsPerDay).round();
+    intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
+    intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
+
+    print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
+
+    return new Span._untrusted(totalMilliseconds, intervalNanoseconds);
   }
 
   Span.fromDuration(Duration duration) :
@@ -180,14 +185,14 @@ class Span implements Comparable<Span> {
 
   @override
   bool operator==(dynamic other) => other is Span && equals(other);
-  bool operator >=(Span other) => (other._milliseconds > _milliseconds) ||
-      (other._milliseconds == _milliseconds && other._nanosecondsInterval >= _nanosecondsInterval);
-  bool operator <=(Span other) => (other._milliseconds < _milliseconds) ||
-      (other._milliseconds == _milliseconds && other._nanosecondsInterval <= _nanosecondsInterval);
-  bool operator >(Span other) => (other._milliseconds > _milliseconds) ||
-      (other._milliseconds == _milliseconds && other._nanosecondsInterval > _nanosecondsInterval);
-  bool operator <(Span other) => (other._milliseconds < _milliseconds) ||
-      (other._milliseconds == _milliseconds && other._nanosecondsInterval < _nanosecondsInterval);
+  bool operator >=(Span other) => (_milliseconds > other._milliseconds) ||
+      (_milliseconds == other._milliseconds && _nanosecondsInterval >= other._nanosecondsInterval);
+  bool operator <=(Span other) => (_milliseconds < other._milliseconds) ||
+      (_milliseconds == other._milliseconds && _nanosecondsInterval <= other._nanosecondsInterval);
+  bool operator >(Span other) => (_milliseconds > other._milliseconds) ||
+      (_milliseconds == other._milliseconds && _nanosecondsInterval > other._nanosecondsInterval);
+  bool operator <(Span other) => (_milliseconds < other._milliseconds) ||
+      (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
 
   bool equals(Span other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 

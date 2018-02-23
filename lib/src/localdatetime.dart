@@ -762,7 +762,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
 
   ZonedDateTime InUtc() =>
 // Use the @internal constructors to avoid validation. We know it will be fine.
-  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay), DateTimeZone.Utc);
+  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay, Offset.zero), DateTimeZone.Utc);
 
 
   /// Returns the mapping of this local date/time within the given <see cref="DateTimeZone" />,
