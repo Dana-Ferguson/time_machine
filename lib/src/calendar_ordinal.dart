@@ -100,7 +100,7 @@ class CalendarOrdinal {
   CalendarOrdinal parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
-      if (ordinalIgnoreCaseStringEquals(_stringRepresentations[i], token)) return _enumConstants[i];
+      if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _enumConstants[i];
     }
 
     return null;

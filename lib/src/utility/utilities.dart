@@ -94,3 +94,10 @@ abstract class IDateTimeZoneReader {
 bool ReferenceEquals(Object x, Object y) {
   return x == y;
 }
+
+// todo: only use this for porting... remove all of these later
+@deprecated
+class OutBox<T> {
+  T value;
+  OutBox(this.value);
+}

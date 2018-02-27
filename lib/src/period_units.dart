@@ -84,13 +84,16 @@ class PeriodUnits {
   int operator -(PeriodUnits other) => _value - other._value;
   int operator +(PeriodUnits other) => _value + other._value;
 
+  PeriodUnits operator |(PeriodUnits other) => new PeriodUnits(_value | other.value);
+  PeriodUnits operator &(PeriodUnits other) => new PeriodUnits(_value & other.value);
+
   @override
   String toString() => _nameMap[this] ?? 'undefined';
 
   PeriodUnits parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
-      if (ordinalIgnoreCaseStringEquals(_stringRepresentations[i], token)) return _isoConstants[i];
+      if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];
     }
 
     return null;

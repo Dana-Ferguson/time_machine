@@ -1,8 +1,8 @@
 name: time_machine
-description: A sample command-line application.
+description: Port of nodatime <https://nodatime.org/>
 version: 0.0.1
 #homepage: https://www.example.com
-#author: dana <email@example.com>
+#author: dana ferguson <email@example.com>
 
 environment:
   sdk: '>=1.20.1 <2.0.0'
@@ -12,6 +12,7 @@ dependencies:
   intl: "^0.15.2"
   logging: "^0.11.3+1"
   quiver_hashcode: "^1.0.0"
+  collection: "^1.14.5"
 #  path: ^1.4.1
 
 dev_dependencies:

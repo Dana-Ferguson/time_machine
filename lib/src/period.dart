@@ -8,6 +8,7 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_text.dart';
 
 @immutable @private
 class DateComponentsBetweenResult {
@@ -657,6 +658,13 @@ class Period // : IEquatable<Period>
     return new LocalDateTime(date.PlusDays(extraDays), time);
   }
 
+  static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
+    PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start, end)),
+    PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end)),
+    PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end)),
+    PeriodUnits.days: (start, end) => new Period.fromDays(DaysBetween(start, end))
+  };
+
   /// Returns the exact difference between two dates or returns the period between a start and an end date, using only the given units.
   ///
   /// <remarks>
@@ -672,8 +680,6 @@ class Period // : IEquatable<Period>
   /// <exception cref="ArgumentException"><paramref name="units"/> contains time units, is empty or contains unknown values.</exception>
   /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
   /// <returns>The period between the given dates, using the given units.</returns>
-
-
   static Period BetweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allTimeUnits.value) == 0, 'units', "Units contains time units: $units");
     Preconditions.checkArgument(units != 0, 'units', "Units must not be empty");
@@ -686,21 +692,22 @@ class Period // : IEquatable<Period>
     }
 
     // Optimization for single field
-    switch (units) {
-      case PeriodUnits.years:
-        return new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start, end));
-      case PeriodUnits.months:
-        return new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end));
-      case PeriodUnits.weeks:
-        return new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end));
-      case PeriodUnits.days:
-        return new Period.fromDays(DaysBetween(start, end));
-    }
+    var singleFieldFunction = _functionMapBetweenDates[units];
+    if (singleFieldFunction != null) return singleFieldFunction(start, end);
 
     // Multiple fields todo: if these result_type functions are just used to make periods, we can simply them
     var result = DateComponentsBetween(start, end, units);
     return new Period(Years: result.years, Months: result.months, Weeks: result.weeks, Days: result.days);
   }
+
+  static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
+    PeriodUnits.hours: (remaining) => new Period.fromHours(remaining ~/ TimeConstants.nanosecondsPerHour),
+    PeriodUnits.minutes: (remaining) => new Period.fromMinutes(remaining ~/ TimeConstants.nanosecondsPerMinute),
+    PeriodUnits.seconds: (remaining) => new Period.fromSeconds(remaining ~/ TimeConstants.nanosecondsPerSecond),
+    PeriodUnits.milliseconds: (remaining) => new Period.fromMilliseconds(remaining ~/ TimeConstants.nanosecondsPerMillisecond),
+    PeriodUnits.ticks: (remaining) => new Period.fromTicks(remaining ~/ TimeConstants.nanosecondsPerTick),
+    PeriodUnits.nanoseconds: (remaining) => new Period.fromNanoseconds(remaining)
+  };
 
   /// Returns the exact difference between two times or returns the period between a start and an end time, using only the given units.
   ///
@@ -717,8 +724,6 @@ class Period // : IEquatable<Period>
   /// <exception cref="ArgumentException"><paramref name="units"/> contains date units, is empty or contains unknown values.</exception>
   /// <exception cref="ArgumentException"><paramref name="start"/> and <paramref name="end"/> use different calendars.</exception>
   /// <returns>The period between the given times, using the given units.</returns>
-
-
   static Period BetweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allDateUnits.value) == 0, 'units', "Units contains date units: $units");
     Preconditions.checkArgument(units != 0, 'units', "Units must not be empty");
@@ -731,20 +736,8 @@ class Period // : IEquatable<Period>
     int remaining = (end.NanosecondOfDay - start.NanosecondOfDay);
 
     // Optimization for a single unit
-    switch (units) {
-      case PeriodUnits.hours:
-        return new Period.fromHours(remaining ~/ TimeConstants.nanosecondsPerHour);
-      case PeriodUnits.minutes:
-        return new Period.fromMinutes(remaining ~/ TimeConstants.nanosecondsPerMinute);
-      case PeriodUnits.seconds:
-        return new Period.fromSeconds(remaining ~/ TimeConstants.nanosecondsPerSecond);
-      case PeriodUnits.milliseconds:
-        return new Period.fromMilliseconds(remaining ~/ TimeConstants.nanosecondsPerMillisecond);
-      case PeriodUnits.ticks:
-        return new Period.fromTicks(remaining ~/ TimeConstants.nanosecondsPerTick);
-      case PeriodUnits.nanoseconds:
-        return new Period.fromNanoseconds(remaining);
-    }
+    var singleFieldFunction = _functionMapBetweenTimes[units];
+    if (singleFieldFunction != null) return singleFieldFunction(remaining);
 
     var result = TimeComponentsBetween(remaining, units);
     return new Period(Hours: result.hours,

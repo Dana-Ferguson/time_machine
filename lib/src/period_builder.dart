@@ -98,7 +98,7 @@ class PeriodBuilder {
     Nanoseconds = period.Nanoseconds;
   }
 
-  Map<PeriodUnits, int Function(PeriodBuilder)> _indexGetterFunctionMap = {
+  static final Map<PeriodUnits, int Function(PeriodBuilder)> _indexGetterFunctionMap = {
     PeriodUnits.years: (PeriodBuilder p) => p.Years,
     PeriodUnits.months: (PeriodBuilder p) => p.Months,
     PeriodUnits.weeks: (PeriodBuilder p) => p.Weeks,
@@ -111,7 +111,7 @@ class PeriodBuilder {
     PeriodUnits.nanoseconds: (PeriodBuilder p) => p.Nanoseconds
   };
 
-  Map<PeriodUnits, Function(PeriodBuilder, int)> _indexSetterFunctionMap = {
+  static final Map<PeriodUnits, Function(PeriodBuilder, int)> _indexSetterFunctionMap = {
     PeriodUnits.years: (PeriodBuilder p, int v) => p.Years = v,
     PeriodUnits.months: (PeriodBuilder p, int v) => p.Months = v,
     PeriodUnits.weeks: (PeriodBuilder p, int v) => p.Weeks = v,
@@ -123,7 +123,6 @@ class PeriodBuilder {
     PeriodUnits.ticks: (PeriodBuilder p, int v) => p.Ticks = v,
     PeriodUnits.nanoseconds: (PeriodBuilder p, int v) => p.Nanoseconds = v
   };
-
 
   /// <summary>
   /// Gets or sets the value of a single unit.

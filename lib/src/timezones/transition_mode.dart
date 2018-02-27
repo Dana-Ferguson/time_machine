@@ -42,7 +42,7 @@ class TransitionMode {
   TransitionMode parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
-      if (ordinalIgnoreCaseStringEquals(_stringRepresentations[i], token)) return _isoConstants[i];
+      if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];
     }
 
     return null;

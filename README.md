@@ -3,19 +3,21 @@
 Port of Nodatime.
 It didn't start that way. I just wanted some TimeZone functionality -- but, I don't know how to stop.
 
-0) Porting classes over.
+1) Porting classes over.
 0) Getting rid of all the red squiggles.
 0) Implementing Unit Tests 
-0) TSDB loading 
+0) TSDB\CLDR loading 
 0) Dartify classes (they are very dotnetified atm)
+0) Remove @internal's before 1.0 (do not consider an @internal annotated field as a public API)
 
-Current Step == 0 & 1
+Current Step == 1 & 2 & 3 & 4 (I'm an obelisk of focus... fear me)
 
-Text/Globalization are not yet ported. I want to look into Intl to see what it provides. 
-Calendar support is limited to the basics right now, but the goal is to add them all. 
-TimeZone/IO (&Cldr) are not yet ported, the tzdb source will not be in the same format.
-There is a C# project that converts the NodaTime db into deferrable pieces. The plan is to
-load from there. Seems kind of arbitrary given the size of this library itself, 
-I'm going to look into a `deferred` strategy for the browser platform.
+There is a C# project that converts the NodaTime db into deferrable pieces. 
+I'm going to look into a `deferred` strategy for the browser platform - so 
+we don't need to load the whole library at once (unsure if it matters -- 
+tree shaking is the best).
+
+Thinking that JS/VM function splits will be VM by default, but with transformers for the JS version
+that swaps to compatible classes.
 
 
