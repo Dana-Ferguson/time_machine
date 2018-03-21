@@ -1,0 +1,20 @@
+{
+  "main": {
+    "bo-IN": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13133 $",
+          "_cldrVersion": "32"
+        },
+        "language": "bo",
+        "territory": "IN"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "ཡིན།:Y",
+          "nostr": "མིན།:N"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "main": {
+    "ccp-IN": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13633 $",
+          "_cldrVersion": "32"
+        },
+        "language": "ccp",
+        "territory": "IN"
+      },
+      "delimiters": {
+        "quotationStart": "“",
+        "quotationEnd": "”",
+        "alternateQuotationStart": "‘",
+        "alternateQuotationEnd": "’"
+      }
+    }
+  }
+}

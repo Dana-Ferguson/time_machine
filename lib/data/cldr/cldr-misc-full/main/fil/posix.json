@@ -1,0 +1,19 @@
+{
+  "main": {
+    "fil": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13701 $",
+          "_cldrVersion": "32"
+        },
+        "language": "fil"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "oo:o",
+          "nostr": "hindi:h"
+        }
+      }
+    }
+  }
+}

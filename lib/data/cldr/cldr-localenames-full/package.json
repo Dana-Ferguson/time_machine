@@ -1,0 +1,58 @@
+{
+  "_from": "cldr-localenames-full",
+  "_id": "cldr-localenames-full@32.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-sBvhk9byZmQ0x+iDQ8ADlMJCuis=",
+  "_location": "/cldr-localenames-full",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cldr-localenames-full",
+    "name": "cldr-localenames-full",
+    "escapedName": "cldr-localenames-full",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cldr-localenames-full/-/cldr-localenames-full-32.0.0.tgz",
+  "_shasum": "b01be193d6f2666434c7e88343c00394c242ba2b",
+  "_spec": "cldr-localenames-full",
+  "_where": "C:\\Users\\vicio",
+  "author": {
+    "name": "The Unicode Consortium"
+  },
+  "bugs": {
+    "url": "http://unicode.org/cldr/trac/newticket"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "This repository provides the a portion of the JSON distribution of CLDR locale data for internationalization.",
+  "homepage": "http://cldr.unicode.org",
+  "licenses": [
+    {
+      "type": "Unicode-TOU",
+      "url": "http://www.unicode.org/copyright.html"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "John Emmons",
+      "email": "emmo@us.ibm.com",
+      "url": "https://github.com/JCEmmons"
+    }
+  ],
+  "name": "cldr-localenames-full",
+  "peerDependencies": {
+    "cldr-core": "32.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unicode-cldr/cldr-localenames-full.git"
+  },
+  "version": "32.0.0"
+}

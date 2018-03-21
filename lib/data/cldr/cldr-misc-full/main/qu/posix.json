@@ -1,0 +1,19 @@
+{
+  "main": {
+    "qu": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "qu"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "yes:y",
+          "nostr": "no:n"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "main": {
+    "da-GL": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13706 $",
+          "_cldrVersion": "32"
+        },
+        "language": "da",
+        "territory": "GL"
+      },
+      "contextTransforms": {
+        "languages": {
+          "uiListOrMenu": "titlecase-firstword"
+        }
+      }
+    }
+  }
+}

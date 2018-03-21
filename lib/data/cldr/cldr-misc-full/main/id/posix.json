@@ -1,0 +1,19 @@
+{
+  "main": {
+    "id": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "id"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "ya:y",
+          "nostr": "tidak:t"
+        }
+      }
+    }
+  }
+}

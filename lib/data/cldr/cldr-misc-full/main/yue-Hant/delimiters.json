@@ -1,0 +1,20 @@
+{
+  "main": {
+    "yue-Hant": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13680 $",
+          "_cldrVersion": "32"
+        },
+        "language": "yue",
+        "script": "Hant"
+      },
+      "delimiters": {
+        "quotationStart": "「",
+        "quotationEnd": "」",
+        "alternateQuotationStart": "『",
+        "alternateQuotationEnd": "』"
+      }
+    }
+  }
+}

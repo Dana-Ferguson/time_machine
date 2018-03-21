@@ -1,0 +1,19 @@
+{
+  "main": {
+    "xog": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13133 $",
+          "_cldrVersion": "32"
+        },
+        "language": "xog"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "Ye:Y",
+          "nostr": "Be:B"
+        }
+      }
+    }
+  }
+}

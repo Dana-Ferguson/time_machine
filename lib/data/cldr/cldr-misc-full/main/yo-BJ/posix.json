@@ -1,0 +1,20 @@
+{
+  "main": {
+    "yo-BJ": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13709 $",
+          "_cldrVersion": "32"
+        },
+        "language": "yo",
+        "territory": "BJ"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "Bɛ́ɛ̀ni :N",
+          "nostr": "Bɛ́ɛ̀kɔ́:K"
+        }
+      }
+    }
+  }
+}

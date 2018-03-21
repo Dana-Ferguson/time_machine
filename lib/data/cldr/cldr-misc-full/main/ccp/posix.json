@@ -1,0 +1,19 @@
+{
+  "main": {
+    "ccp": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13751 $",
+          "_cldrVersion": "32"
+        },
+        "language": "ccp"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "𑄃𑄳𑄦𑄨",
+          "nostr": "𑄚"
+        }
+      }
+    }
+  }
+}

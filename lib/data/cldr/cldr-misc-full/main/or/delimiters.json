@@ -1,0 +1,19 @@
+{
+  "main": {
+    "or": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13757 $",
+          "_cldrVersion": "32"
+        },
+        "language": "or"
+      },
+      "delimiters": {
+        "quotationStart": "“",
+        "quotationEnd": "”",
+        "alternateQuotationStart": "‘",
+        "alternateQuotationEnd": "’"
+      }
+    }
+  }
+}

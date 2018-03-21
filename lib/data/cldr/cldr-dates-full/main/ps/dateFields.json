@@ -1,0 +1,674 @@
+{
+  "main": {
+    "ps": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13686 $",
+          "_cldrVersion": "32"
+        },
+        "language": "ps"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "پېر"
+          },
+          "era-short": {
+            "displayName": "پېر"
+          },
+          "era-narrow": {
+            "displayName": "پېر"
+          },
+          "year": {
+            "displayName": "کال",
+            "relative-type--1": "پروسږکال",
+            "relative-type-0": "سږکال",
+            "relative-type-1": "بل کال",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "په {0} کال کې",
+              "relativeTimePattern-count-other": "په {0} کالونو کې"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} کال مخکې",
+              "relativeTimePattern-count-other": "{0} کاله مخکې"
+            }
+          },
+          "year-short": {
+            "displayName": "کال",
+            "relative-type--1": "پروسږکال",
+            "relative-type-0": "سږکال",
+            "relative-type-1": "بل کال",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "په {0} کال کې",
+              "relativeTimePattern-count-other": "په {0} کالونو کې"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} کال مخکې",
+              "relativeTimePattern-count-other": "{0} کاله مخکې"
+            }
+          },
+          "year-narrow": {
+            "displayName": "کال",
+            "relative-type--1": "پروسږکال",
+            "relative-type-0": "سږکال",
+            "relative-type-1": "بل کال",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "په {0} کال کې",
+              "relativeTimePattern-count-other": "په {0} کالونو کې"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "{0} کال مخکې",
+              "relativeTimePattern-count-other": "{0} کاله مخکې"
+            }
+          },
+          "quarter": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Q",
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Q",
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-short": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Q",
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Q",
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Q",
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Q",
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "month": {
+            "displayName": "مياشت",
+            "relative-type--1": "last month",
+            "relative-type-0": "this month",
+            "relative-type-1": "next month",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} m",
+              "relativeTimePattern-count-other": "+{0} m"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} m",
+              "relativeTimePattern-count-other": "-{0} m"
+            }
+          },
+          "month-short": {
+            "displayName": "مياشت",
+            "relative-type--1": "last month",
+            "relative-type-0": "this month",
+            "relative-type-1": "next month",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} m",
+              "relativeTimePattern-count-other": "+{0} m"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} m",
+              "relativeTimePattern-count-other": "-{0} m"
+            }
+          },
+          "month-narrow": {
+            "displayName": "مياشت",
+            "relative-type--1": "last month",
+            "relative-type-0": "this month",
+            "relative-type-1": "next month",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} m",
+              "relativeTimePattern-count-other": "+{0} m"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} m",
+              "relativeTimePattern-count-other": "-{0} m"
+            }
+          },
+          "week": {
+            "displayName": "اونۍ",
+            "relative-type--1": "last week",
+            "relative-type-0": "this week",
+            "relative-type-1": "next week",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} w",
+              "relativeTimePattern-count-other": "+{0} w"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} w",
+              "relativeTimePattern-count-other": "-{0} w"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "week-short": {
+            "displayName": "اونۍ",
+            "relative-type--1": "last week",
+            "relative-type-0": "this week",
+            "relative-type-1": "next week",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} w",
+              "relativeTimePattern-count-other": "+{0} w"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} w",
+              "relativeTimePattern-count-other": "-{0} w"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "week-narrow": {
+            "displayName": "اونۍ",
+            "relative-type--1": "last week",
+            "relative-type-0": "this week",
+            "relative-type-1": "next week",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} w",
+              "relativeTimePattern-count-other": "+{0} w"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} w",
+              "relativeTimePattern-count-other": "-{0} w"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "weekOfMonth": {
+            "displayName": "د مياشتې اونۍ"
+          },
+          "weekOfMonth-short": {
+            "displayName": "د مياشتې اونۍ"
+          },
+          "weekOfMonth-narrow": {
+            "displayName": "د مياشتې اونۍ"
+          },
+          "day": {
+            "displayName": "ورځ",
+            "relative-type--1": "yesterday",
+            "relative-type-0": "today",
+            "relative-type-1": "tomorrow",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} d",
+              "relativeTimePattern-count-other": "+{0} d"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} d",
+              "relativeTimePattern-count-other": "-{0} d"
+            }
+          },
+          "day-short": {
+            "displayName": "ورځ",
+            "relative-type--1": "yesterday",
+            "relative-type-0": "today",
+            "relative-type-1": "tomorrow",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} d",
+              "relativeTimePattern-count-other": "+{0} d"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} d",
+              "relativeTimePattern-count-other": "-{0} d"
+            }
+          },
+          "day-narrow": {
+            "displayName": "ورځ",
+            "relative-type--1": "yesterday",
+            "relative-type-0": "today",
+            "relative-type-1": "tomorrow",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} d",
+              "relativeTimePattern-count-other": "+{0} d"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} d",
+              "relativeTimePattern-count-other": "-{0} d"
+            }
+          },
+          "dayOfYear": {
+            "displayName": "د کال ورځ"
+          },
+          "dayOfYear-short": {
+            "displayName": "د کال ورځ"
+          },
+          "dayOfYear-narrow": {
+            "displayName": "د کال ورځ"
+          },
+          "weekday": {
+            "displayName": "د اونۍ ورځ"
+          },
+          "weekday-short": {
+            "displayName": "د اونۍ ورځ"
+          },
+          "weekday-narrow": {
+            "displayName": "د اونۍ ورځ"
+          },
+          "weekdayOfMonth": {
+            "displayName": "د مياشتې اونۍ ورځ"
+          },
+          "weekdayOfMonth-short": {
+            "displayName": "د مياشتې اونۍ ورځ"
+          },
+          "weekdayOfMonth-narrow": {
+            "displayName": "د مياشتې اونۍ ورځ"
+          },
+          "sun": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Sundays",
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Sundays",
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "sun-short": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Sundays",
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Sundays",
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "sun-narrow": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Sundays",
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Sundays",
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "mon": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Mondays",
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Mondays",
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "mon-short": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Mondays",
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Mondays",
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "mon-narrow": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Mondays",
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Mondays",
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "tue": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Tuesdays",
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Tuesdays",
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "tue-short": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Tuesdays",
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Tuesdays",
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "tue-narrow": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Tuesdays",
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Tuesdays",
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "wed": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Wednesdays",
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Wednesdays",
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "wed-short": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Wednesdays",
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Wednesdays",
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "wed-narrow": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Wednesdays",
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Wednesdays",
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "thu": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Thursdays",
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Thursdays",
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "thu-short": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Thursdays",
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Thursdays",
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "thu-narrow": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Thursdays",
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Thursdays",
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "fri": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Fridays",
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Fridays",
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "fri-short": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Fridays",
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Fridays",
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "fri-narrow": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Fridays",
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Fridays",
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "sat": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Saturdays",
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Saturdays",
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "sat-short": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Saturdays",
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Saturdays",
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "sat-narrow": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} Saturdays",
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} Saturdays",
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "dayperiod-short": {
+            "displayName": "ورځ شېبه"
+          },
+          "dayperiod": {
+            "displayName": "ورځ شېبه"
+          },
+          "dayperiod-narrow": {
+            "displayName": "ورځ شېبه"
+          },
+          "hour": {
+            "displayName": "ساعت",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} h",
+              "relativeTimePattern-count-other": "+{0} h"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} h",
+              "relativeTimePattern-count-other": "-{0} h"
+            }
+          },
+          "hour-short": {
+            "displayName": "ساعت",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} h",
+              "relativeTimePattern-count-other": "+{0} h"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} h",
+              "relativeTimePattern-count-other": "-{0} h"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "ساعت",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} h",
+              "relativeTimePattern-count-other": "+{0} h"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} h",
+              "relativeTimePattern-count-other": "-{0} h"
+            }
+          },
+          "minute": {
+            "displayName": "دقيقه",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} min",
+              "relativeTimePattern-count-other": "+{0} min"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} min",
+              "relativeTimePattern-count-other": "-{0} min"
+            }
+          },
+          "minute-short": {
+            "displayName": "دقيقه",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} min",
+              "relativeTimePattern-count-other": "+{0} min"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} min",
+              "relativeTimePattern-count-other": "-{0} min"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "دقيقه",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} min",
+              "relativeTimePattern-count-other": "+{0} min"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} min",
+              "relativeTimePattern-count-other": "-{0} min"
+            }
+          },
+          "second": {
+            "displayName": "ثانيه",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} s",
+              "relativeTimePattern-count-other": "+{0} s"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} s",
+              "relativeTimePattern-count-other": "-{0} s"
+            }
+          },
+          "second-short": {
+            "displayName": "ثانيه",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} s",
+              "relativeTimePattern-count-other": "+{0} s"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} s",
+              "relativeTimePattern-count-other": "-{0} s"
+            }
+          },
+          "second-narrow": {
+            "displayName": "ثانيه",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "+{0} s",
+              "relativeTimePattern-count-other": "+{0} s"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "-{0} s",
+              "relativeTimePattern-count-other": "-{0} s"
+            }
+          },
+          "zone": {
+            "displayName": "وخت سيمه"
+          },
+          "zone-short": {
+            "displayName": "وخت سيمه"
+          },
+          "zone-narrow": {
+            "displayName": "وخت سيمه"
+          }
+        }
+      }
+    }
+  }
+}

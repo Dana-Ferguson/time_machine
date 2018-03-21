@@ -1,0 +1,20 @@
+{
+  "main": {
+    "es-MX": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13732 $",
+          "_cldrVersion": "32"
+        },
+        "language": "es",
+        "territory": "MX"
+      },
+      "delimiters": {
+        "quotationStart": "«",
+        "quotationEnd": "»",
+        "alternateQuotationStart": "“",
+        "alternateQuotationEnd": "”"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "main": {
+    "wo": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13704 $",
+          "_cldrVersion": "32"
+        },
+        "language": "wo"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}

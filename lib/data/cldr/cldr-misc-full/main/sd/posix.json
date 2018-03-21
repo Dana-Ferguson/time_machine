@@ -1,0 +1,19 @@
+{
+  "main": {
+    "sd": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "sd"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "جي ها، ها",
+          "nostr": "جي نه، نه"
+        }
+      }
+    }
+  }
+}

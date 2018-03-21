@@ -1,0 +1,20 @@
+{
+  "main": {
+    "ru-KG": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13133 $",
+          "_cldrVersion": "32"
+        },
+        "language": "ru",
+        "territory": "KG"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "да:д",
+          "nostr": "нет:н"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "main": {
+    "en-US-POSIX": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13701 $",
+          "_cldrVersion": "32"
+        },
+        "language": "en",
+        "territory": "US",
+        "variant": "POSIX"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}

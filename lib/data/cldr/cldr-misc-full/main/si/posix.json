@@ -1,0 +1,19 @@
+{
+  "main": {
+    "si": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "si"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "ඔව්:ඔ",
+          "nostr": "නැත:නැ"
+        }
+      }
+    }
+  }
+}

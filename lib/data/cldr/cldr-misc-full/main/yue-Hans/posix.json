@@ -1,0 +1,20 @@
+{
+  "main": {
+    "yue-Hans": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13708 $",
+          "_cldrVersion": "32"
+        },
+        "language": "yue",
+        "script": "Hans"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "系",
+          "nostr": "唔系"
+        }
+      }
+    }
+  }
+}

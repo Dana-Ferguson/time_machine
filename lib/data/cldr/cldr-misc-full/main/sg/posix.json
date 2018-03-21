@@ -1,0 +1,19 @@
+{
+  "main": {
+    "sg": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13701 $",
+          "_cldrVersion": "32"
+        },
+        "language": "sg"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "Iin:I",
+          "nostr": "Én-en:E"
+        }
+      }
+    }
+  }
+}

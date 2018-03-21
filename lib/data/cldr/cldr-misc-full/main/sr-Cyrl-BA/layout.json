@@ -1,0 +1,21 @@
+{
+  "main": {
+    "sr-Cyrl-BA": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13706 $",
+          "_cldrVersion": "32"
+        },
+        "language": "sr",
+        "script": "Cyrl",
+        "territory": "BA"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}

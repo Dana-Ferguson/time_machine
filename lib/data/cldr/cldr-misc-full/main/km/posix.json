@@ -1,0 +1,19 @@
+{
+  "main": {
+    "km": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "km"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "បាទ/ចាស​៖ y",
+          "nostr": "ទេ​៖ n"
+        }
+      }
+    }
+  }
+}

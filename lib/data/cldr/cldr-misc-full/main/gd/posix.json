@@ -1,0 +1,19 @@
+{
+  "main": {
+    "gd": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13701 $",
+          "_cldrVersion": "32"
+        },
+        "language": "gd"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "tha:th:t:y",
+          "nostr": "chan eil:ch:c:n"
+        }
+      }
+    }
+  }
+}

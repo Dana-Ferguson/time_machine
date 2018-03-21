@@ -1,0 +1,19 @@
+{
+  "main": {
+    "da": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "da"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "ja:j",
+          "nostr": "nej:n"
+        }
+      }
+    }
+  }
+}

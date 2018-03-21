@@ -1,0 +1,21 @@
+{
+  "main": {
+    "zh-Hant-HK": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13706 $",
+          "_cldrVersion": "32"
+        },
+        "language": "zh",
+        "script": "Hant",
+        "territory": "HK"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}

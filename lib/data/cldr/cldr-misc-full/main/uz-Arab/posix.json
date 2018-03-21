@@ -1,0 +1,20 @@
+{
+  "main": {
+    "uz-Arab": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13686 $",
+          "_cldrVersion": "32"
+        },
+        "language": "uz",
+        "script": "Arab"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "yes:y",
+          "nostr": "no:n"
+        }
+      }
+    }
+  }
+}

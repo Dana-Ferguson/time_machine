@@ -1,0 +1,19 @@
+{
+  "main": {
+    "tg": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13704 $",
+          "_cldrVersion": "32"
+        },
+        "language": "tg"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}

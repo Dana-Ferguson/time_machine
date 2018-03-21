@@ -1,0 +1,20 @@
+{
+  "main": {
+    "bn-IN": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13706 $",
+          "_cldrVersion": "32"
+        },
+        "language": "bn",
+        "territory": "IN"
+      },
+      "posix": {
+        "messages": {
+          "yesstr": "হ্যাঁ",
+          "nostr": "না"
+        }
+      }
+    }
+  }
+}

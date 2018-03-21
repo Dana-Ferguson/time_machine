@@ -1,0 +1,675 @@
+{
+  "main": {
+    "bs-Cyrl": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13705 $",
+          "_cldrVersion": "32"
+        },
+        "language": "bs",
+        "script": "Cyrl"
+      },
+      "dates": {
+        "fields": {
+          "era": {
+            "displayName": "ера"
+          },
+          "era-short": {
+            "displayName": "ера"
+          },
+          "era-narrow": {
+            "displayName": "ера"
+          },
+          "year": {
+            "displayName": "година",
+            "relative-type--1": "Прошле године",
+            "relative-type-0": "Ове године",
+            "relative-type-1": "Следеће године",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} годину",
+              "relativeTimePattern-count-few": "за {0} године",
+              "relativeTimePattern-count-other": "за {0} година"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} годину",
+              "relativeTimePattern-count-few": "пре {0} године",
+              "relativeTimePattern-count-other": "пре {0} година"
+            }
+          },
+          "year-short": {
+            "displayName": "година",
+            "relative-type--1": "Прошле године",
+            "relative-type-0": "Ове године",
+            "relative-type-1": "Следеће године",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} годину",
+              "relativeTimePattern-count-few": "за {0} године",
+              "relativeTimePattern-count-other": "за {0} година"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} годину",
+              "relativeTimePattern-count-few": "пре {0} године",
+              "relativeTimePattern-count-other": "пре {0} година"
+            }
+          },
+          "year-narrow": {
+            "displayName": "година",
+            "relative-type--1": "Прошле године",
+            "relative-type-0": "Ове године",
+            "relative-type-1": "Следеће године",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} годину",
+              "relativeTimePattern-count-few": "за {0} године",
+              "relativeTimePattern-count-other": "за {0} година"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} годину",
+              "relativeTimePattern-count-few": "пре {0} године",
+              "relativeTimePattern-count-other": "пре {0} година"
+            }
+          },
+          "quarter": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-short": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "quarter-narrow": {
+            "displayName": "Quarter",
+            "relative-type--1": "last quarter",
+            "relative-type-0": "this quarter",
+            "relative-type-1": "next quarter",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Q"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Q"
+            }
+          },
+          "month": {
+            "displayName": "месец",
+            "relative-type--1": "Прошлог месеца",
+            "relative-type-0": "Овог месеца",
+            "relative-type-1": "Следећег месеца",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} месец",
+              "relativeTimePattern-count-few": "за {0} месеца",
+              "relativeTimePattern-count-other": "за {0} месеци"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} месец",
+              "relativeTimePattern-count-few": "пре {0} месеца",
+              "relativeTimePattern-count-other": "пре {0} месеци"
+            }
+          },
+          "month-short": {
+            "displayName": "месец",
+            "relative-type--1": "Прошлог месеца",
+            "relative-type-0": "Овог месеца",
+            "relative-type-1": "Следећег месеца",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} месец",
+              "relativeTimePattern-count-few": "за {0} месеца",
+              "relativeTimePattern-count-other": "за {0} месеци"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} месец",
+              "relativeTimePattern-count-few": "пре {0} месеца",
+              "relativeTimePattern-count-other": "пре {0} месеци"
+            }
+          },
+          "month-narrow": {
+            "displayName": "месец",
+            "relative-type--1": "Прошлог месеца",
+            "relative-type-0": "Овог месеца",
+            "relative-type-1": "Следећег месеца",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} месец",
+              "relativeTimePattern-count-few": "за {0} месеца",
+              "relativeTimePattern-count-other": "за {0} месеци"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} месец",
+              "relativeTimePattern-count-few": "пре {0} месеца",
+              "relativeTimePattern-count-other": "пре {0} месеци"
+            }
+          },
+          "week": {
+            "displayName": "недеља",
+            "relative-type--1": "Прошле недеље",
+            "relative-type-0": "Ове недеље",
+            "relative-type-1": "Следеће недеље",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} недељу",
+              "relativeTimePattern-count-few": "за {0} недеље",
+              "relativeTimePattern-count-other": "за {0} недеља"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} недељу",
+              "relativeTimePattern-count-few": "пре {0} недеље",
+              "relativeTimePattern-count-other": "пре {0} недеља"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "week-short": {
+            "displayName": "недеља",
+            "relative-type--1": "Прошле недеље",
+            "relative-type-0": "Ове недеље",
+            "relative-type-1": "Следеће недеље",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} недељу",
+              "relativeTimePattern-count-few": "за {0} недеље",
+              "relativeTimePattern-count-other": "за {0} недеља"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} недељу",
+              "relativeTimePattern-count-few": "пре {0} недеље",
+              "relativeTimePattern-count-other": "пре {0} недеља"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "week-narrow": {
+            "displayName": "недеља",
+            "relative-type--1": "Прошле недеље",
+            "relative-type-0": "Ове недеље",
+            "relative-type-1": "Следеће недеље",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} недељу",
+              "relativeTimePattern-count-few": "за {0} недеље",
+              "relativeTimePattern-count-other": "за {0} недеља"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} недељу",
+              "relativeTimePattern-count-few": "пре {0} недеље",
+              "relativeTimePattern-count-other": "пре {0} недеља"
+            },
+            "relativePeriod": "the week of {0}"
+          },
+          "weekOfMonth": {
+            "displayName": "Week Of Month"
+          },
+          "weekOfMonth-short": {
+            "displayName": "Week Of Month"
+          },
+          "weekOfMonth-narrow": {
+            "displayName": "Week Of Month"
+          },
+          "day": {
+            "displayName": "дан",
+            "relative-type--2": "прекјуче",
+            "relative-type--1": "јуче",
+            "relative-type-0": "данас",
+            "relative-type-1": "сутра",
+            "relative-type-2": "прекосутра",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} дан",
+              "relativeTimePattern-count-few": "за {0} дана",
+              "relativeTimePattern-count-other": "за {0} дана"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} дан",
+              "relativeTimePattern-count-few": "пре {0} дана",
+              "relativeTimePattern-count-other": "пре {0} дана"
+            }
+          },
+          "day-short": {
+            "displayName": "дан",
+            "relative-type--2": "прекјуче",
+            "relative-type--1": "јуче",
+            "relative-type-0": "данас",
+            "relative-type-1": "сутра",
+            "relative-type-2": "прекосутра",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} дан",
+              "relativeTimePattern-count-few": "за {0} дана",
+              "relativeTimePattern-count-other": "за {0} дана"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} дан",
+              "relativeTimePattern-count-few": "пре {0} дана",
+              "relativeTimePattern-count-other": "пре {0} дана"
+            }
+          },
+          "day-narrow": {
+            "displayName": "дан",
+            "relative-type--2": "прекјуче",
+            "relative-type--1": "јуче",
+            "relative-type-0": "данас",
+            "relative-type-1": "сутра",
+            "relative-type-2": "прекосутра",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} дан",
+              "relativeTimePattern-count-few": "за {0} дана",
+              "relativeTimePattern-count-other": "за {0} дана"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} дан",
+              "relativeTimePattern-count-few": "пре {0} дана",
+              "relativeTimePattern-count-other": "пре {0} дана"
+            }
+          },
+          "dayOfYear": {
+            "displayName": "Day Of Year"
+          },
+          "dayOfYear-short": {
+            "displayName": "Day Of Year"
+          },
+          "dayOfYear-narrow": {
+            "displayName": "Day Of Year"
+          },
+          "weekday": {
+            "displayName": "дан у недељи"
+          },
+          "weekday-short": {
+            "displayName": "дан у недељи"
+          },
+          "weekday-narrow": {
+            "displayName": "дан у недељи"
+          },
+          "weekdayOfMonth": {
+            "displayName": "Weekday Of Month"
+          },
+          "weekdayOfMonth-short": {
+            "displayName": "Weekday Of Month"
+          },
+          "weekdayOfMonth-narrow": {
+            "displayName": "Weekday Of Month"
+          },
+          "sun": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "sun-short": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "sun-narrow": {
+            "relative-type--1": "last Sunday",
+            "relative-type-0": "this Sunday",
+            "relative-type-1": "next Sunday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Sundays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Sundays"
+            }
+          },
+          "mon": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "mon-short": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "mon-narrow": {
+            "relative-type--1": "last Monday",
+            "relative-type-0": "this Monday",
+            "relative-type-1": "next Monday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Mondays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Mondays"
+            }
+          },
+          "tue": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "tue-short": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "tue-narrow": {
+            "relative-type--1": "last Tuesday",
+            "relative-type-0": "this Tuesday",
+            "relative-type-1": "next Tuesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Tuesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Tuesdays"
+            }
+          },
+          "wed": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "wed-short": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "wed-narrow": {
+            "relative-type--1": "last Wednesday",
+            "relative-type-0": "this Wednesday",
+            "relative-type-1": "next Wednesday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Wednesdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Wednesdays"
+            }
+          },
+          "thu": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "thu-short": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "thu-narrow": {
+            "relative-type--1": "last Thursday",
+            "relative-type-0": "this Thursday",
+            "relative-type-1": "next Thursday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Thursdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Thursdays"
+            }
+          },
+          "fri": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "fri-short": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "fri-narrow": {
+            "relative-type--1": "last Friday",
+            "relative-type-0": "this Friday",
+            "relative-type-1": "next Friday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Fridays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Fridays"
+            }
+          },
+          "sat": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "sat-short": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "sat-narrow": {
+            "relative-type--1": "last Saturday",
+            "relative-type-0": "this Saturday",
+            "relative-type-1": "next Saturday",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-other": "+{0} Saturdays"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-other": "-{0} Saturdays"
+            }
+          },
+          "dayperiod-short": {
+            "displayName": "пре подне/поподне"
+          },
+          "dayperiod": {
+            "displayName": "пре подне/поподне"
+          },
+          "dayperiod-narrow": {
+            "displayName": "пре подне/поподне"
+          },
+          "hour": {
+            "displayName": "час",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} сат",
+              "relativeTimePattern-count-few": "за {0} сата",
+              "relativeTimePattern-count-other": "за {0} сати"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} сат",
+              "relativeTimePattern-count-few": "пре {0} сата",
+              "relativeTimePattern-count-other": "пре {0} сати"
+            }
+          },
+          "hour-short": {
+            "displayName": "час",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} сат",
+              "relativeTimePattern-count-few": "за {0} сата",
+              "relativeTimePattern-count-other": "за {0} сати"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} сат",
+              "relativeTimePattern-count-few": "пре {0} сата",
+              "relativeTimePattern-count-other": "пре {0} сати"
+            }
+          },
+          "hour-narrow": {
+            "displayName": "час",
+            "relative-type-0": "this hour",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} сат",
+              "relativeTimePattern-count-few": "за {0} сата",
+              "relativeTimePattern-count-other": "за {0} сати"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} сат",
+              "relativeTimePattern-count-few": "пре {0} сата",
+              "relativeTimePattern-count-other": "пре {0} сати"
+            }
+          },
+          "minute": {
+            "displayName": "минут",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} минут",
+              "relativeTimePattern-count-few": "за {0} минута",
+              "relativeTimePattern-count-other": "за {0} минута"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} минут",
+              "relativeTimePattern-count-few": "пре {0} минута",
+              "relativeTimePattern-count-other": "пре {0} минута"
+            }
+          },
+          "minute-short": {
+            "displayName": "минут",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} минут",
+              "relativeTimePattern-count-few": "за {0} минута",
+              "relativeTimePattern-count-other": "за {0} минута"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} минут",
+              "relativeTimePattern-count-few": "пре {0} минута",
+              "relativeTimePattern-count-other": "пре {0} минута"
+            }
+          },
+          "minute-narrow": {
+            "displayName": "минут",
+            "relative-type-0": "this minute",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} минут",
+              "relativeTimePattern-count-few": "за {0} минута",
+              "relativeTimePattern-count-other": "за {0} минута"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} минут",
+              "relativeTimePattern-count-few": "пре {0} минута",
+              "relativeTimePattern-count-other": "пре {0} минута"
+            }
+          },
+          "second": {
+            "displayName": "секунд",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} секунд",
+              "relativeTimePattern-count-few": "за {0} секунде",
+              "relativeTimePattern-count-other": "за {0} секунди"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} секунд",
+              "relativeTimePattern-count-few": "пре {0} секунде",
+              "relativeTimePattern-count-other": "пре {0} секунди"
+            }
+          },
+          "second-short": {
+            "displayName": "секунд",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} секунд",
+              "relativeTimePattern-count-few": "за {0} секунде",
+              "relativeTimePattern-count-other": "за {0} секунди"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} секунд",
+              "relativeTimePattern-count-few": "пре {0} секунде",
+              "relativeTimePattern-count-other": "пре {0} секунди"
+            }
+          },
+          "second-narrow": {
+            "displayName": "секунд",
+            "relative-type-0": "now",
+            "relativeTime-type-future": {
+              "relativeTimePattern-count-one": "за {0} секунд",
+              "relativeTimePattern-count-few": "за {0} секунде",
+              "relativeTimePattern-count-other": "за {0} секунди"
+            },
+            "relativeTime-type-past": {
+              "relativeTimePattern-count-one": "пре {0} секунд",
+              "relativeTimePattern-count-few": "пре {0} секунде",
+              "relativeTimePattern-count-other": "пре {0} секунди"
+            }
+          },
+          "zone": {
+            "displayName": "зона"
+          },
+          "zone-short": {
+            "displayName": "зона"
+          },
+          "zone-narrow": {
+            "displayName": "зона"
+          }
+        }
+      }
+    }
+  }
+}

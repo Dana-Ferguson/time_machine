@@ -1,0 +1,20 @@
+{
+  "main": {
+    "it-VA": {
+      "identity": {
+        "version": {
+          "_number": "$Revision: 13251 $",
+          "_cldrVersion": "32"
+        },
+        "language": "it",
+        "territory": "VA"
+      },
+      "layout": {
+        "orientation": {
+          "characterOrder": "left-to-right",
+          "lineOrder": "top-to-bottom"
+        }
+      }
+    }
+  }
+}
