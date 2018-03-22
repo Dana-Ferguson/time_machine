@@ -38,6 +38,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 
 // todo: IsoDayOfWeek is called that because 'DayOfWeek' is a BCL enumeration -- I don't think it is here, so we can steal it back?
 
+// todo: Should this be caled IsoDayOfWeek .. or just DayOfWeek?
 /// Equates the days of the week with their numerical value according to
 /// ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
 /// is 7 in the ISO numbering and 0 in System.DayOfWeek.
