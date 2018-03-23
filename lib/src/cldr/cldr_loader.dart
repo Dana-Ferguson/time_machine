@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 // -- let's keep it as clean as we can and look at what we have when we're done.
 import 'cldr-dates-full/timezone_names.dart';
 import 'cldr-dates-full/date_fields.dart';
+import 'cldr-dates-full/calendars.dart';
 
 // I'm thinking of doing something like: cldr_io.dart and cldr_http.dart --> and then build a transformer that
 // will rewrite all *_io.dart references to *_http.dart references
@@ -47,6 +48,18 @@ Future loadDateFieldsJson(String id) {
   return getJson('cldr-dates-full/main/$id/dateFields.json');
 }
 
+Future loadCalendarJson(String id, String calendarType) {
+  return getJson('cldr-dates-full/main/$id/ca-$calendarType.json');
+}
+
+Future loadGenericCalendarJson(String id) {
+  return loadCalendarJson(id, 'generic');
+}
+
+Future loadGregorianCalendarJson(String id) {
+  return loadCalendarJson(id, 'gregorian');
+}
+
 // todo: need to create a good naming scheme and classify things
 Future<DateTimeZoneNames> getDateTimeZoneNames(String id) async {
   var json = await loadDatesTimeZoneNamesJson(id);
@@ -57,6 +70,18 @@ Future<DateTimeZoneNames> getDateTimeZoneNames(String id) async {
 Future<DateFields> getDateFields(String id) async {
   var json = await loadDateFieldsJson(id);
   var dateFields = new DateFields(id, json);
+  return dateFields;
+}
+
+Future<CalendarElements> getGenericCalendar(String id) async {
+  var json = await loadGenericCalendarJson(id);
+  var dateFields = new CalendarElements.generic(id, json);
+  return dateFields;
+}
+
+Future<CalendarElements> getGregorianCalendar(String id) async {
+  var json = await loadGregorianCalendarJson(id);
+  var dateFields = new CalendarElements.gregorian(id, json);
   return dateFields;
 }
 

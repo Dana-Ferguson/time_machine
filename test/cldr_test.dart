@@ -5,11 +5,18 @@ import 'package:time_machine/src/cldr/cldr_loader.dart';
 
 Future main() async {
   try {
-    var dtz = await getDateTimeZoneNames('en-US-POSIX');
+    var id = 'en-US-POSIX';
+    var dtz = await getDateTimeZoneNames(id);
     print(dtz.exemplarCities.cities.length);
 
-    var dfs = await getDateFields('en-US-POSIX');
+    var dfs = await getDateFields(id);
     print(dfs.fields);
+
+    var genericCalendar = await getGenericCalendar(id);
+    var gregorianCalendar = await getGenericCalendar(id);
+
+    print(genericCalendar);
+    print(gregorianCalendar);
   }
   catch (e, s) {
     print ('$e\n$s');
