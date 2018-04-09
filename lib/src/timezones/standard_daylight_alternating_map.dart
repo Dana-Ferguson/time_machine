@@ -45,9 +45,9 @@ class _TransitionRecurrenceResult {
   @private final ZoneRecurrence standardRecurrence;
   @private final ZoneRecurrence dstRecurrence;
 
-  Offset get MinOffset => Offset.min(standardOffset, standardOffset + dstRecurrence.savings);
+  Offset get minOffset => Offset.min(standardOffset, standardOffset + dstRecurrence.savings);
 
-  Offset get MaxOffset => Offset.max(standardOffset, standardOffset + dstRecurrence.savings);
+  Offset get maxOffset => Offset.max(standardOffset, standardOffset + dstRecurrence.savings);
 
   StandardDaylightAlternatingMap._(this.standardOffset, this.standardRecurrence, this.dstRecurrence);
 

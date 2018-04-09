@@ -6,3 +6,6 @@ export 'src/utility/string_format.dart';
 
 export 'src/utility/compare_info.dart';
 export 'src/utility/cache.dart';
+
+// temp code
+export 'src/utility/pattern_shims.dart';

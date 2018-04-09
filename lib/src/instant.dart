@@ -109,7 +109,7 @@ class Instant implements Comparable<Instant> {
   static Instant max(Instant x, Instant y) => x > y ? x : y;
   static Instant min(Instant x, Instant y) => x < y ? x : y;
 
-  @override toString() => '${_span.totalSeconds} seconds since epoch.';
+  @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
 
   // todo: you are here: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L507
 
@@ -149,6 +149,8 @@ class Instant implements Comparable<Instant> {
   // todo: why are these different?
   int get daysSinceEpoch => _span.days;
   int get nanosecondOfDay => _span.nanosecondOfDay;
+
+  Span get spanSinceEpoch => _span;
 
   int toUnixTimeSeconds() => _span.totalSeconds.toInt();
   int toUnixTimeMilliseconds() => _span.totalMilliseconds.toInt();

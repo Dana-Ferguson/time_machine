@@ -96,7 +96,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   LocalDateTime get IsoLocalStart =>
       // Use the Start property to trigger the appropriate end-of-time exception.
   // Call Plus to trigger an appropriate out-of-range exception.
-  new LocalDateTime(start.WithOffset(wallOffset));
+  // todo: check this -- I'm not sure how I got so confused on this
+  new LocalDateTime.fromInstant(start.SafePlus(wallOffset)); // .WithOffset(wallOffset));
 
 
   /// <summary>

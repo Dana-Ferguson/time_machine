@@ -57,7 +57,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   if (offset == Offset.zero) {
     return DateTimeZone.UtcId;
   }
-  return DateTimeZone.UtcId + OffsetPattern.GeneralInvariant.Format(offset);
+  return DateTimeZone.UtcId + TextShim.toStringOffset(offset); // OffsetPattern.GeneralInvariant.Format(offset);
 }
 
 /// <summary>
@@ -73,9 +73,12 @@ import 'package:time_machine/time_machine_timezones.dart';
   if (id == DateTimeZone.UtcId) {
     return DateTimeZone.Utc;
   }
-  print('Shit, we are gonna break'); // todo: remove me
-  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
-  return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
+
+  print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // todo: get real parsing
+  return null;
+
+  //var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
+  //return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
 }
 
 /// <summary>

@@ -45,7 +45,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// <value>The hour of the half-day of this offset time, in the range 1 to 12 inclusive.</value>
   int get ClockHourOfHalfDay => _time.ClockHourOfHalfDay;
 
-// TODO(feature): Consider exposing this.
+  // TODO(feature): Consider exposing this.
   /// <summary>
   /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
   /// </summary>
@@ -156,7 +156,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => OffsetTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  @override String toString() => TextShim.toStringOffsetTime(this); // OffsetTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.
@@ -171,7 +171,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-  String toString_Format(String patternText, IFormatProvider formatProvider) =>
-      OffsetTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+//  String toString_Format(String patternText, IFormatProvider formatProvider) =>
+//      OffsetTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
 }

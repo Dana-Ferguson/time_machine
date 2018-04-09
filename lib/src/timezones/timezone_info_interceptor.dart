@@ -12,7 +12,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 // todo: This seems fairly BCL centric -- so it probably doesn't apply to us here
-
+/*
 /// <summary>
 /// Interception for TimeZoneInfo static methods. These are still represented as
 /// static methods in this class, but they're implemented via a replacable shim, which
@@ -46,10 +46,11 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// </summary>
 @private class BclShim implements ITimeZoneInfoShim
 {
-  TimeZoneInfo get Local => TimeZoneInfo.Local;
+  TimeZoneInfo get Local => null; // TimeZoneInfo.Local;
 
   TimeZoneInfo FindSystemTimeZoneById(String id) => TimeZoneInfo.FindSystemTimeZoneById(id);
 
   // ReadOnlyCollection
   List<TimeZoneInfo> GetSystemTimeZones() => TimeZoneInfo.GetSystemTimeZones();
 }
+*/

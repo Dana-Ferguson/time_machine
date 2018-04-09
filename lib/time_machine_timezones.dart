@@ -1,4 +1,4 @@
-export 'src/timezones/cached_timezone.dart';
+export 'src/timezones/cached_datetimezone.dart';
 export 'src/timezones/caching_zoneinterval_map.dart';
 export 'src/timezones/datetimezone_cache.dart';
 export 'src/timezones/datetimezone_notfound_exception.dart';

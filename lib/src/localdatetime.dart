@@ -8,6 +8,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_utilities.dart';
 
 // TODO(feature): Calendar-neutral comparer.
 
@@ -859,8 +860,8 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String ToString() =>
-      LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  @override String ToString() => TextShim.toStringLocalDateTime(this);
+      // LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
 
 /// Formats the value of the current instance using the specified pattern.

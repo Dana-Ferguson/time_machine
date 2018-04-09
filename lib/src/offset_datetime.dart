@@ -425,7 +425,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.
@@ -440,8 +440,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-  String toString_Format(String patternText, IFormatProvider formatProvider) =>
-      OffsetDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+//  String toString_Format(String patternText, IFormatProvider formatProvider) =>
+//      OffsetDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
   /// <summary>
   /// Adds a duration to an offset date and time.

@@ -3,6 +3,7 @@
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_utilities.dart';
 
 /// <summary>
 /// Represents a local date and time without reference to a calendar system. Essentially
@@ -175,18 +176,19 @@ import 'package:time_machine/time_machine.dart';
   /// <returns>
   /// A <see cref="System.String"/> that represents this instance.
   /// </returns>
-  @override String toString() {
-    if (this == BeforeMinValue) {
-      return InstantPatternParser.BeforeMinValueText;
-    }
-    if (this == AfterMaxValue) {
-      return InstantPatternParser.AfterMaxValueText;
-    }
-    var date = new LocalDate.fromDaysSinceEpoch(_span.days);
-    var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfDay));
-    return pattern.Format(utc);
-  }
+  @override String toString() => TextShim.toStringLocalInstant(this);
+//  {
+//    if (this == BeforeMinValue) {
+//      return InstantPatternParser.BeforeMinValueText;
+//    }
+//    if (this == AfterMaxValue) {
+//      return InstantPatternParser.AfterMaxValueText;
+//    }
+//    var date = new LocalDate.fromDaysSinceEpoch(_span.days);
+//    var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
+//    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfDay));
+//    return pattern.Format(utc);
+//  }
 
 // #region IEquatable<LocalInstant> Members
   /// <summary>

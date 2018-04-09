@@ -8,9 +8,9 @@ import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_fields.dart';
+import 'package:time_machine/time_machine_utilities.dart';
 
 class LocalDate {
-  // todo: private
   YearMonthDayCalendar _yearMonthDayCalendar;
 
   /// The maximum (latest) date representable in the ISO calendar system.
@@ -685,4 +685,29 @@ class LocalDate {
   LocalDateTime At(LocalTime time) => new LocalDateTime(this, time);
 
   LocalDate With(LocalDate Function(LocalDate) adjuster) => adjuster(this);
+
+  /// <summary>
+  /// Returns a <see cref="System.String" /> that represents this instance.
+  /// </summary>
+  /// <returns>
+  /// The value of the current instance in the default format pattern ("D"), using the current thread's
+  /// culture to obtain a format provider.
+  /// </returns>
+  @override String toString() => TextShim.toStringLocalDate(this); // LocalDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+
+  /// <summary>
+  /// Formats the value of the current instance using the specified pattern.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+  /// </returns>
+  /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+  /// or null to use the default format pattern ("D").
+  /// </param>
+  /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+  /// or null to use the current thread's culture to obtain a format provider.
+  /// </param>
+  /// <filterpriority>2</filterpriority>
+//  String ToStringFormatted(string patternText, IFormatProvider formatProvider) =>
+//      LocalDatePattern.BclSupport.Format(this, patternText, formatProvider);
 }

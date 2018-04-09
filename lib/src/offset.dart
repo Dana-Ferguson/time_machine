@@ -284,7 +284,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// The value of the current instance in the default format pattern ("g"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  @override String toString() => TextShim.toStringOffset(this); // OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
 
   /// Formats the value of the current instance using the specified pattern.
@@ -299,8 +299,8 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-  String toString_Formatted(String patternText, IFormatProvider formatProvider) =>
-      OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
+//  String toString_Formatted(String patternText, IFormatProvider formatProvider) =>
+//      OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
 
   /// Returns an offset for the given seconds value, which may be negative.
   ///

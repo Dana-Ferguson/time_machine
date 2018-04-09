@@ -121,7 +121,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   ///
   /// <param name="other">The value to compare this offset date with.</param>
   /// <returns>True if the given value is another offset date equal to this one; false otherwise.</returns>
-  bool Equals(OffsetDate other) => date == other.date && Offset == other._offset;
+  bool Equals(OffsetDate other) => date == other.date && _offset == other._offset;
 
 
   /// Implements the operator == (equality).
@@ -137,7 +137,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => OffsetDatePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  @override String toString() => TextShim.toStringOffsetDate(this); // OffsetDatePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
 
   /// Formats the value of the current instance using the specified pattern.
@@ -152,7 +152,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-  String toString_Pattern(String patternText, IFormatProvider formatProvider) =>
-      OffsetDatePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+//  String toString_Pattern(String patternText, IFormatProvider formatProvider) =>
+//      OffsetDatePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
 }

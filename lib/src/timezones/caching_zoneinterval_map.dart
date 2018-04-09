@@ -112,9 +112,9 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// a new node referring to that interval and the previous interval, and keep going.
   /// </summary>
   @internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map) {
-    var days = period << PeriodShift;
+    var days = period << HashArrayCache.PeriodShift;
     var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
-    var nextPeriodStartDays = days + (1 << PeriodShift);
+    var nextPeriodStartDays = days + (1 << HashArrayCache.PeriodShift);
 
     var interval = map.GetZoneInterval(periodStart);
     var node = new HashCacheNode(interval, period, null);

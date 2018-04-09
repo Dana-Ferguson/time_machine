@@ -7,6 +7,7 @@ import 'package:time_machine/time_machine_fields.dart';
 import 'utility/preconditions.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_utilities.dart';
 
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
@@ -597,8 +598,24 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-  @override String toString() => '$Hour:$Minute:$Second';
+  @override String toString() => TextShim.toStringLocalTime(this);
 // @override String toString(String patternText, IFormatProvider formatProvider) =>
 //    LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
+
+  /// <summary>
+  /// Formats the value of the current instance using the specified pattern.
+  /// </summary>
+  /// <returns>
+  /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
+  /// </returns>
+  /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
+  /// or null to use the default format pattern ("T").
+  /// </param>
+  /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
+  /// or null to use the current thread's culture to obtain a format provider.
+  /// </param>
+  /// <filterpriority>2</filterpriority>
+//  public string ToString(string patternText, IFormatProvider formatProvider) =>
+//      LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
 
 }

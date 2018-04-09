@@ -475,8 +475,8 @@ bool IsDaylightSavingTime() => GetZoneInterval().savings != Offset.zero;
 /// The value of the current instance in the default format pattern ("G"), using the current thread's
 /// culture to obtain a format provider.
 /// </returns>
-@override String toString() =>
-ZonedDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+@override String toString() => TextShim.toStringZonedDateTime(this);
+// ZonedDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
 /// <summary>
 /// Formats the value of the current instance using the specified pattern.
@@ -491,8 +491,8 @@ ZonedDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentC
 /// or null to use the current thread's culture to obtain a format provider.
 /// </param>
 /// <filterpriority>2</filterpriority>
-String toStringFormatted(String patternText, IFormatProvider formatProvider) =>
-ZonedDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+//String toStringFormatted(String patternText, IFormatProvider formatProvider) =>
+//ZonedDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
 /// <summary>
 /// Constructs a <see cref="DateTimeOffset"/> value with the same local time and offset from

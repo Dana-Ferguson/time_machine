@@ -28,6 +28,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 @internal abstract class IZoneIntervalMapWithMinMax extends IZoneIntervalMap
 {
   // todo: getters or finals?
-  Offset get MinOffset; // { get; }
-  Offset get MaxOffset; // { get; }
+  Offset get minOffset; // { get; }
+  Offset get maxOffset; // { get; }
 }

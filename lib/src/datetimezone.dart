@@ -7,7 +7,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 // todo: IZoneIntervalMapWithMinMax ??? (not sure if it matters)
 @immutable
-abstract class DateTimeZone {
+abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
   /// used. If the provider has its own mapping for UTC, that will be returned by <see cref="DateTimeZoneCache.GetZoneOrNull" />, but otherwise
   /// the value of the <see cref="Utc"/> property will be returned.

@@ -189,7 +189,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     if (tailZone != null) {
 // Effectively a shortcut for picking either tailZone.MinOffset or
 // tailZone.MaxOffset
-      Offset bestFromZone = aggregator(tailZone.MinOffset, tailZone.MaxOffset);
+      Offset bestFromZone = aggregator(tailZone.minOffset, tailZone.maxOffset);
       ret = aggregator(ret, bestFromZone);
     }
     return ret;
