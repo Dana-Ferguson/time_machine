@@ -48,9 +48,9 @@ export 'src/period.dart';
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
 
-// ALSO SHIT: https://nodatime.org/2.2.x/userguide/calendars
+// ALSO: https://nodatime.org/2.2.x/userguide/calendars
 // ****** We need to worry about the leap years ********
-// --> are these accounted for in the TZDB (I doubt it)
+// --> are these accounted for in the TZDB?
 /*
   Largest number in VM: no end (it transitions between 32bit, 64bit, and bigint)
   Largest number in JS: 2^53
@@ -73,7 +73,7 @@ export 'src/period_builder.dart';
 // files skipped:
 //  AssemblyInfo.cs -- well, obviously -- this include the friend references for testing
 //  DateTimeZoneProviders.cs -- only doing TSDB -- this might take a different form?
-//  IDateTimeZoneProvider.cs -- looks like this is sort of part of the js\vm_platform functionality
+//  (X) [Must have done it later] IDateTimeZoneProvider.cs -- looks like this is sort of part of the js\vm_platform functionality
 //  NamespaceDoc.cs -- just namespace documentation -- add to library level documentation?
 //  NodaTime.csproj -- sort of like a pubspec.yaml
 //

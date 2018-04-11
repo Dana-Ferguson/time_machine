@@ -1,6 +1,8 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/IDateTimeZoneSource.cs
 // 24fdeef  on Apr 10, 2017
 
+import 'dart:async';
+
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
@@ -50,7 +52,7 @@ abstract class IDateTimeZoneSource {
   /// </para>
   /// </remarks>
   /// <returns>The IDs available from this source.</returns>
-  Iterable<String> GetIds();
+  Future<Iterable<String>> GetIds();
 
   /// <summary>
   /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
@@ -61,7 +63,7 @@ abstract class IDateTimeZoneSource {
   /// information comes from and which version of the source information has been loaded.
   /// </remarks>
   /// <value>An appropriate version ID for diagnostic purposes.</value>
-  final String VersionId = null;
+  final Future<String> VersionId = null;
 
   /// <summary>
   /// Returns the time zone definition associated with the given ID.
@@ -90,7 +92,7 @@ abstract class IDateTimeZoneSource {
   /// returned by <see cref="GetIds"/>.</param>
   /// <returns>The <see cref="DateTimeZone"/> for the given ID.</returns>
   /// <exception cref="ArgumentException"><paramref name="id"/> is not supported by this source.</exception>
-  DateTimeZone ForId(String id);
+  Future<DateTimeZone> ForId(String id);
 
   /// <summary>
   /// Returns this source's ID for the system default time zone.

@@ -11,6 +11,60 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'dart:typed_data';
 import 'dart:convert';
 
+import 'dart:async';
+import 'dart:io';
+
+class TzdbIndex {
+  static Future<TzdbIndex> load() async {
+    var map = await _loadIdMapping();
+    return new TzdbIndex._(map);
+  }
+
+  TzdbIndex._(this._zoneFilenames);
+
+  static Future _getJson(String path) async {
+    // Keep as much as the repeated path arguments in here as possible
+    var file = new File('${Directory.current.path}/lib/data/tzdb/$path');
+    return JSON.decode(await file.readAsString());
+  }
+
+  static Future<Map<String, String>> _loadIdMapping() async {
+    var json = _getJson('tzdb.json');
+    return json;
+  }
+
+  final Map<String, String> _zoneFilenames;
+  final Map<String, DateTimeZone> _cache = {};
+
+  Iterable<String> get zoneIds => _zoneFilenames.keys;
+  bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);
+
+  Future<ByteData> _getBinary(String zoneId) async {
+    var filename = _zoneFilenames[zoneId];
+    if (filename == null) return new ByteData(0);
+
+    var file = new File('${Directory.current.path}/lib/data/tzdb/$filename.bin');
+    // todo: probably a better way to do this
+    var binary = new ByteData.view(new Int8List.fromList(await file.readAsBytes()).buffer);
+    return binary;
+  }
+
+  DateTimeZone _zoneFromBinary(ByteData binary) {
+    var reader = new DateTimeZoneReader(binary);
+    // this should be the same as the index id
+    var id = reader.readString();
+    var zone = PrecalculatedDateTimeZone.Read(reader, id);
+    return zone;
+  }
+
+  Future<DateTimeZone> getTimeZone(String zoneId) async {
+    return _cache[zoneId] ??
+        (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
+  }
+
+  static String get locale => Platform.localeName;
+}
+
 class DateTimeZoneReader {
   final ByteData binary;
   int _offset;

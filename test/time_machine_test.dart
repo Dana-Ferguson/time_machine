@@ -1,8 +1,15 @@
+import 'dart:async';
+
 import 'package:time_machine/time_machine.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
+import 'package:time_machine/time_machine_timezones.dart';
 
 void main() {
+  test('InZone', () async => await InstantTests.InZone());
+
+
+  return;
   test('calculate', () {
     // expect(calculate(), 42);
 
@@ -81,7 +88,7 @@ abstract class InstantTests {
     test('FromUnixTimeSeconds_TooSmall', () => InstantTests.FromUnixTimeSeconds_TooSmall());
 
     // WithOffset_NonIsoCalendar
-    // test('InZone', () => InstantTests.InZone());
+    test('InZone', () async => await InstantTests.InZone());
   }
 
   static void FromUtcNoSeconds()
@@ -105,9 +112,10 @@ abstract class InstantTests {
   }
 
   
-  static void InZone()
+  static Future InZone () async
   {
-    DateTimeZone london = DateTimeZoneProviders.Tzdb["Europe/London"];
+    // todo: this is absurd
+    DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
     ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).InZone(london);
 
     // London is UTC+1 in the Summer, so the above is 14:16:17 local.

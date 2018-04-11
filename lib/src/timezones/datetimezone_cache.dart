@@ -2,6 +2,7 @@
 // 95327c5 on Apr 10, 2017
 
 import 'dart:math' as math;
+import 'dart:async';
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -38,7 +39,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   final String VersionId;
 
   /// <inheritdoc />
-// todo:  ReadOnlyCollection<String>
+  // todo:  ReadOnlyCollection<String>
   final List<String> Ids;
 
   DateTimeZoneCache._(this.source, this.Ids, this.VersionId);
@@ -53,14 +54,14 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   /// </remarks>
   /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
   /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
-  factory DateTimeZoneCache(IDateTimeZoneSource source) {
+  static Future<DateTimeZoneCache> getCache(IDateTimeZoneSource source) async {
     Preconditions.checkNotNull(source, 'source');
-    var VersionId = source.VersionId;
+    var VersionId = await source.VersionId;
 
     if (VersionId == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned version ID was null");
     }
-    var providerIds = source.GetIds();
+    var providerIds = await source.GetIds();
     if (providerIds == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence was null");
     }
@@ -80,21 +81,21 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   }
 
   /// <inheritdoc />
-  DateTimeZone GetSystemDefault() {
+  Future<DateTimeZone> GetSystemDefault() async {
     String id = source.GetSystemDefaultId();
     if (id == null) {
       throw new DateTimeZoneNotFoundException("System default time zone is unknown to source $VersionId");
     }
-    return this[id];
+    return await this[id];
   }
 
   /// <inheritdoc />
-  DateTimeZone GetZoneOrNull(String id) {
+  Future<DateTimeZone> GetZoneOrNull(String id) async {
     Preconditions.checkNotNull(id, 'id');
-    return GetZoneFromSourceOrNull(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
+    return (await GetZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
   }
 
-  @private DateTimeZone GetZoneFromSourceOrNull(String id) {
+  @private Future<DateTimeZone> GetZoneFromSourceOrNull(String id) async {
     // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
     // if ((zone = timeZoneMap[id]) == null) {
     if (!timeZoneMap.containsKey(id)) {
@@ -103,7 +104,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
 
     DateTimeZone zone = timeZoneMap[id];
     if (zone == null) {
-      zone = source.ForId(id);
+      zone = await source.ForId(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
             "Time zone $id is supported by source #VersionId but not returned");
@@ -114,7 +115,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
     return zone;
   }
 
-  DateTimeZone operator [](String id) {
+  Future<DateTimeZone> operator [](String id) async {
     var zone = GetZoneOrNull(id);
     if (zone == null) {
       throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $VersionId");

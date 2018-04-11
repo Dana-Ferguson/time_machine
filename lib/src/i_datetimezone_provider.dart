@@ -1,6 +1,8 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/IDateTimeZoneProvider.cs
 // 7160b82  on Jun 18, 2017
 
+import 'dart:async';
+
 import 'package:time_machine/time_machine.dart';
 
 /// Provides stable, performant time zone data.
@@ -56,7 +58,7 @@ abstract class IDateTimeZoneProvider {
   /// <returns>
   /// The provider-specific representation of the system default time zone.
   /// </returns>
-  DateTimeZone GetSystemDefault();
+  Future<DateTimeZone> GetSystemDefault();
 
   /// <summary>
   /// Returns the time zone for the given ID, if it's available.
@@ -78,7 +80,7 @@ abstract class IDateTimeZoneProvider {
   /// <param name="id">The time zone ID to find.</param>
   /// <returns>The <see cref="DateTimeZone" /> for the given ID or null if the provider does not support
   /// the given ID.</returns>
-  DateTimeZone GetZoneOrNull(String id);
+  Future<DateTimeZone> GetZoneOrNull(String id);
 
   /// <summary>
   /// Returns the time zone for the given ID.
@@ -104,5 +106,5 @@ abstract class IDateTimeZoneProvider {
   /// <param name="id">The time zone id to find.</param>
   /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
   /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
-  DateTimeZone operator [](String id);
+  Future<DateTimeZone> operator [](String id);
 }

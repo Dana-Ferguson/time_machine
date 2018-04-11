@@ -8,7 +8,7 @@ import 'package:time_machine/time_machine.dart';
 
 // {locale: en-US, numberingSystem: latn, calendar: gregory, timeZone: America/New_York, year: numeric, month: numeric, day: numeric}
 class TimeMachine {
-  final Logger _log = new Logger('MyClassName');
+  final Logger _log = new Logger('TimeMachine');
 
   DateTimeZone _timeZone;
   String _locale;
