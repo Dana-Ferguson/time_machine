@@ -93,8 +93,8 @@ class DateTimeZoneReader {
       endSeconds = /*stream.*/readInt32();
     }
 
-    Instant start = startSeconds == null ? null : new Instant.fromUnixTimeSeconds(startSeconds);
-    Instant end = endSeconds == null ? null : new Instant.fromUnixTimeSeconds(endSeconds);
+    Instant start = startSeconds == null ? Instant.beforeMinValue : new Instant.fromUnixTimeSeconds(startSeconds);
+    Instant end = endSeconds == null ? Instant.afterMaxValue : new Instant.fromUnixTimeSeconds(endSeconds);
 
     var wallOffset = /*stream.*/readOffsetSeconds(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds(); // Offset.fromSeconds(stream.readInt32());
