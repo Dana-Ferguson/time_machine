@@ -10,8 +10,6 @@ It didn't start that way. I just wanted some TimeZone functionality -- but, I do
 0) Dartify classes (they are very dotnetified atm)
 0) Remove @internal's before 1.0 (do not consider an @internal annotated field as a public API)
 
-I'm working more on #4 and since it leads to being able to do #2 and #3.
-
 There is a C# project that converts the NodaTime db into pieces (not included in this repository).
 
 I'm thinking that JS/VM specific functions will be VM by default, and I'm thinking we can use
