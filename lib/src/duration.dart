@@ -160,8 +160,10 @@ class Span implements Comparable<Span> {
   double get totalTicks => _milliseconds * TimeConstants.ticksPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerTick;
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
+  // original version shown here, very bad, rounding errors much bad -- be better than this
+  // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
   // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
-  int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
+  int get nanosecondOfDay => milliseconds*TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;

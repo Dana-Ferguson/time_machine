@@ -167,7 +167,7 @@ class _TransitionRecurrenceResult {
 
   @internal static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
-    var standardOffset = Offset.fromSeconds(reader.readInt32());
+    var standardOffset = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
     var standardRecurrence = ZoneRecurrence.Read(reader);
     var dstRecurrence = ZoneRecurrence.Read(reader);
 

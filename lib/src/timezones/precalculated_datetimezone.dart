@@ -159,7 +159,12 @@ import 'package:time_machine/time_machine_timezones.dart';
     //var stream = new Stream(binary);
     //var id = stream.readString();
 
-    var periodsCount = reader.readInt32();
+    // todo: remove later -- but useful for now
+    print('loading id = $id!');
+
+    // 1885679436 is too much!
+    var periodsCount = reader.read7BitEncodedInt();
+    if (periodsCount > 10000) throw new Exception('Parse error for id = $id. Too many periods. Count = $periodsCount.');
     var periods = new Iterable
         .generate(periodsCount)
         .map((i) => reader.readZoneInterval())

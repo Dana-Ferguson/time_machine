@@ -860,7 +860,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String ToString() => TextShim.toStringLocalDateTime(this);
+  @override String toString() => TextShim.toStringLocalDateTime(this);
       // LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
 

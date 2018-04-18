@@ -176,8 +176,6 @@ import 'package:time_machine/time_machine_timezones.dart';
         _localStart = RawStart.SafePlus(wallOffset),
         _localEnd = RawEnd.SafePlus(wallOffset) {
     Preconditions.checkNotNull(name, 'name');
-    print(RawStart);
-    print(RawEnd);
     Preconditions.checkArgument(RawStart < RawEnd, 'start', "The start Instant must be less than the end Instant");
   }
 

@@ -276,7 +276,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   static ZoneRecurrence Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var name = reader.readString();
-    var savings = Offset.fromSeconds(reader.readInt32());
+    var savings = reader.readOffsetSeconds(); // Offset.fromSeconds(reader.readInt32());
     var yearOffset = ZoneYearOffset.Read(reader);
     var fromYear = reader.readInt32();
     var toYear = reader.readInt32();
@@ -322,5 +322,5 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
   /// </summary>
   @internal ZoneRecurrence ToStartOfTime() =>
-      fromYear == Utility.intMinValueJS ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.intMinValueJS, toYear);
+      fromYear == Utility.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.int32MinValue, toYear);
 }

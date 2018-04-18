@@ -71,32 +71,38 @@ class DateTimeZoneReader {
 
   DateTimeZoneReader(this.binary, [this._offset = 0]);
 
-  int readInt32() => binary.getInt32(_offset+=4);
+  int readInt32() { var i32 = binary.getInt32(_offset, Endianness.LITTLE_ENDIAN); _offset +=4; return i32; }
+  int readInt64() { var i64 = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN); _offset +=8; return i64; }
   int readUint8() => binary.getUint8(_offset++);
   bool readBool() => readUint8() == 1;
   Offset readOffsetSeconds() => Offset.fromSeconds(read7BitEncodedInt());
+  Offset readOffsetSeconds2() => Offset.fromSeconds(readInt32());
 
   bool get hasMoreData => binary.lengthInBytes < _offset;
 
   ZoneInterval readZoneInterval() {
     var name = /*stream.*/readString();
     var flag = /*stream.*/readUint8();
+    bool startIsLong = (flag & (1 << 2)) != 0;
+    bool endIsLong = (flag & (1 << 3)) != 0;
     bool hasStart = (flag & 1) == 1;
     bool hasEnd = (flag & 2) == 2;
     int startSeconds = null;
     int endSeconds = null;
 
     if (hasStart) {
-      startSeconds = /*stream.*/readInt32();
+      if (startIsLong) startSeconds = readInt64();
+      else startSeconds = /*stream.*/readInt32();
     }
     if (hasEnd) {
-      endSeconds = /*stream.*/readInt32();
+      if (endIsLong) endSeconds = readInt64();
+      else endSeconds = /*stream.*/readInt32();
     }
 
     Instant start = startSeconds == null ? Instant.beforeMinValue : new Instant.fromUnixTimeSeconds(startSeconds);
     Instant end = endSeconds == null ? Instant.afterMaxValue : new Instant.fromUnixTimeSeconds(endSeconds);
 
-    var wallOffset = /*stream.*/readOffsetSeconds(); // Offset.fromSeconds(stream.readInt32());
+    var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds(); // Offset.fromSeconds(stream.readInt32());
     return new ZoneInterval(name, start, end, wallOffset, savings);
   }
@@ -122,6 +128,7 @@ class DateTimeZoneReader {
     int length = read7BitEncodedInt();
     var byteLength = _getStringByteCount(_offset, length);
     var bytes = binary.buffer.asUint8List(_offset, byteLength);
+    _offset+=byteLength;
     return UTF8.decode(bytes);
   }
 
@@ -142,7 +149,7 @@ class DateTimeZoneReader {
     int byteCount = 0;
 
     // I'm not proud of this
-    for (int i = o; i < o+byteCount; i++) {
+    for (int i = o; i < o+charLength; i++) {
       byteCount += _getUnicodeCodeSize(o);
     }
 

@@ -227,6 +227,7 @@ class _ZoneYearOffset {
   static ZoneYearOffset Read(DateTimeZoneReader reader) {
     // todo: we can bit-pack all this; for example: see below
     int flags = reader.readUint8();
+    var dayOfMonthSign = flags >> 7 == 1 ? -1 : 1;
     var mode = new TransitionMode(flags >> 5);
     var dayOfWeek = (flags >> 2) & 7;
     var advanceDayOfWeek = (flags & 2) != 0;
@@ -236,7 +237,7 @@ class _ZoneYearOffset {
 //  var mode = new TransitionMode(reader.readUint8());
 //  var advanceDayOfWeek = reader.readBool();
 
-    var dayOfMonth = reader.read7BitEncodedInt(); //.readInt32();
+    var dayOfMonth = reader.read7BitEncodedInt() * dayOfMonthSign; //.readInt32();
     var monthOfYear = reader.read7BitEncodedInt(); //.readInt32();
     var timeOfDay = new LocalTime.fromNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
 
