@@ -15,4 +15,6 @@ There is a C# project that converts the NodaTime db into pieces (not included in
 I'm thinking that JS/VM specific functions will be VM by default, and I'm thinking we can use
 transformers to use the JS specific versions so the import's will be consistent between projects.
 
-
+I'm hoping to hit a release candidate about the time Dart 2 comes out (Jun 15th... or much later this year?).
+I'm working on getting everything ready, except CLDR, and only the Gregorian and Julian calendar systems. See: lib/src/calendar_system.dart
+The goal is to get a fairly complete usable working prototype. Afterwards we will get back to CLDR and the other calendar systems.
