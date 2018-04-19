@@ -812,7 +812,7 @@ class CalendarSystem {
     _gregorian = new CalendarSystem(CalendarOrdinal.Gregorian, CalendarSystem.GregorianId, CalendarSystem.GregorianName,
         CalendarSystem.IsoCalendarSystem.yearMonthDayCalculator, CalendarSystem.IsoCalendarSystem.eraCalculator);
 
-    return [_julian, _gregorian];
+    return [_gregorian, _julian];
   }
 }
 

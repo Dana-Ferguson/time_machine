@@ -186,38 +186,10 @@ void FromUnixTimeSeconds_TooSmall()
 @TestCase(const [0.0, -4712, 1, 1, 12, 0, 0], "Julian epoch")
 void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second)
 {
-  print('TEST!');
-
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);
-  Instant expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc().ToInstant();
-
-  // TimeConstants.julianEpoch + new Span.complex(days: julianDate);
-  //print ('Juilian Epoch = ${TimeConstants.julianEpoch}');
-  //print (new Span.complex(days: julianDate));
-  var ldt2 = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).WithOffset(Offset.zero);
-  print('LocalDateTime2 = ${ldt2.DayOfYear} of ${ldt2.Year} :: ${ldt2.NanosecondOfDay} ?');
-
-
-  // var ld = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian);
-  var ldt = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc();
-  print('LocalDateTime = ${ldt.DayOfYear} of ${ldt.Year} :: ${ldt.NanosecondOfDay} ?');
-
-  // ld.Sec
-  int days = ldt.offsetDateTime.Calendar.GetDaysSinceEpoch(ldt.offsetDateTime.yearMonthDayCalendar.toYearMonthDay());
-  print("The days = $days;");
-
-  print('ldt.nano = ${ldt.offsetDateTime.NanosecondOfDay}');
-  print ('ldt.offsetDateTime = ${ldt.offsetDateTime.NanosecondOfDay}');
-  var ts = ldt.offsetDateTime.ToElapsedTimeSinceEpoch().totalSeconds;
-  print('ts = $ts');
-  var span = new Span.complex(seconds: ts);
-  print('span = $span');
-  var ldti = new Instant.untrusted(span); //  ldt.ToInstant();
-  print('InstantSeconds = ${ldti.toUnixTimeSeconds()}');
-
-  print('TEST!!!');
+  var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc().ToInstant();
 
   // Assert.AreEqual(expected.toUnixTimeMilliseconds(), actual.toUnixTimeMilliseconds(), 50, "Expected $expected, was $actual");
   // Assert.AreEqual(julianDate, expected.toJulianDate(), 0.000001);
@@ -226,6 +198,4 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
 
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
   expect(julianDate, closeTo(expected.toJulianDate(), 0.000001));
-
-  print('TEST!!!!!!');
 }

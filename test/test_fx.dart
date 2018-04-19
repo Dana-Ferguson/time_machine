@@ -11,14 +11,10 @@ import 'package:matcher/matcher.dart';
 //      (async tests ran in parallel, but I can see that doing weird things to the tests)
 // todo: can we had the stack_trace portions from here?
 
-// Angular seems to do the @Meta() instead of @Meta, follow suite?
-// --> I went ahead and made it a class, just because we can add parameters later easier
-/*
-class Input {
-  /// Name used when instantiating a component in the template.
-  final String bindingPropertyName;
-  const Input([this.bindingPropertyName]);
-}*/
+// Note: this won't work for Dart4Web applications
+// I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion)
+// If we want to expand this test framework for Dart4Web we can probably make our own transformer?
+
 class Test {
   final String name;
   const Test([this.name]);
