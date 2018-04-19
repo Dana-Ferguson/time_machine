@@ -5,9 +5,16 @@ import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+import 'test_fx.dart';
+
 void main() {
+  // runTests();
+
   test('InZone', () async => await InstantTests.InZone());
 
+  test('FromUnixTimeSeconds_Valid', () => InstantTests.FromUnixTimeSeconds_Valid());
+  test('FromUnixTimeSeconds_TooLarge', () => InstantTests.FromUnixTimeSeconds_TooLarge());
+  test('FromUnixTimeSeconds_TooSmall', () => InstantTests.FromUnixTimeSeconds_TooSmall());
 
   return;
   test('calculate', () {
