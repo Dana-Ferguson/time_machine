@@ -371,7 +371,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     List<DateTimeZone> ret = new List<DateTimeZone>(FixedZoneCacheSize);
     for (int i = 0; i < FixedZoneCacheSize; i++) {
       int offsetSeconds = i * FixedZoneCacheGranularitySeconds + FixedZoneCacheMinimumSeconds;
-      ret[i] = new FixedDateTimeZone.forOffset(Offset.fromSeconds(offsetSeconds));
+      ret[i] = new FixedDateTimeZone.forOffset(new Offset.fromSeconds(offsetSeconds));
     }
     ret[-FixedZoneCacheMinimumSeconds ~/ FixedZoneCacheGranularitySeconds] = Utc;
     return ret;

@@ -58,21 +58,27 @@ class Span implements Comparable<Span> {
   Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
 
   factory Span._untrusted(int milliseconds, [int nanoseconds = 0]) {
-    if (nanoseconds >= _minNano && nanoseconds <= _maxNano) return new Span._trusted(milliseconds, nanoseconds);
+    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Span._trusted(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
       // newNS = ns + TimeConstants.nanosecondsPerMillisecond * n;
       // _minNano < ns <= _maxNano => ns > _minNano
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
-      nanoseconds = nanoseconds + TimeConstants.nanosecondsPerMillisecond * delta;
-      milliseconds = milliseconds - delta;
+      milliseconds -= delta;
+      nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
+
       return new Span._trusted(milliseconds, nanoseconds);
     }
 
-    if (nanoseconds >= _maxNano) {
-      var delta = ((nanoseconds - _maxNano) / TimeConstants.nanosecondsPerMillisecond).floor();
-      nanoseconds = nanoseconds - TimeConstants.nanosecondsPerMillisecond * delta;
-      milliseconds = milliseconds + delta;
+    if (nanoseconds >= TimeConstants.nanosecondsPerMillisecond) {
+      // while(nanoseconds >= TimeConstants.nanosecondsPerMillisecond) {
+      //   nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
+      //   milliseconds++;
+      // }
+
+      var delta = nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond;
+      milliseconds += delta;
+      nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
       return new Span._trusted(milliseconds, nanoseconds);
     }
 
@@ -160,6 +166,11 @@ class Span implements Comparable<Span> {
   double get totalTicks => _milliseconds * TimeConstants.ticksPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerTick;
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
+  // totalsFloor* ???
+  int get floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
+  int get floorMilliseconds => totalMilliseconds.floor();
+  int get floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
+
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
   // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
@@ -173,6 +184,7 @@ class Span implements Comparable<Span> {
 
   Span operator+(Span other) => new Span._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
   Span operator-(Span other) => new Span._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
+  Span operator-() => new Span._untrusted(-_milliseconds, -_nanosecondsInterval);
 
   Span plus(Span other) => this + other;
   Span minus(Span other) => this - other;

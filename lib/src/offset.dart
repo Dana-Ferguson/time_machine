@@ -30,16 +30,16 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.
   ///
-  static final Offset zero = fromSeconds(0);
+  static final Offset zero = new Offset.fromSeconds(0);
 
 
   /// The minimum permitted offset; 18 hours before UTC.
   ///
-  static final Offset minValue = fromHours(-18);
+  static final Offset minValue = new Offset.fromHours(-18);
 
   /// The maximum permitted offset; 18 hours after UTC.
   ///
-  static final Offset maxValue = fromHours(18);
+  static final Offset maxValue = new Offset.fromHours(18);
 
   static const int _minHours = -18;
   static const int _maxHours = 18;
@@ -62,6 +62,8 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   @internal Offset(this._seconds) {
     Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
   }
+
+  // Offset.fromHours(int hours) : this(hours * TimeConstants.secondsPerHour);
 
   // todo: constant?
   Span toSpan() => new Span(seconds: _seconds);
@@ -141,7 +143,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
   /// <returns>A new <see cref="Offset" /> representing the sum of the given values.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-  Offset operator +(Offset right) => fromSeconds(seconds + right.seconds);
+  Offset operator +(Offset right) => new Offset.fromSeconds(seconds + right.seconds);
 
 
   /// Adds one Offset to another. Friendly alternative to <c>operator+()</c>.
@@ -171,7 +173,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>A new <see cref="Offset" /> representing the difference of the given values.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
   Offset operator -(Offset subtrahend) =>
-      fromSeconds(seconds - subtrahend.seconds);
+      new Offset.fromSeconds(seconds - subtrahend.seconds);
 
 
   /// Subtracts one Offset from another. Friendly alternative to <c>operator-()</c>.
@@ -308,7 +310,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>An offset representing the given number of seconds.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The specified number of seconds is outside the range of
   /// [-18, +18] hours.</exception>
-  static Offset fromSeconds(int seconds) {
+  factory Offset.fromSeconds(int seconds) {
     Preconditions.checkArgumentRange('seconds', seconds, minSeconds, maxSeconds);
     return new Offset(seconds);
   }
@@ -324,7 +326,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>An offset representing the given number of milliseconds, to the (truncated) second.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The specified number of milliseconds is outside the range of
   /// [-18, +18] hours.</exception>
-  static Offset fromMilliseconds(int milliseconds) {
+  factory Offset.fromMilliseconds(int milliseconds) {
     Preconditions.checkArgumentRange('milliseconds', milliseconds, _minMilliseconds, _maxMilliseconds);
     return new Offset(milliseconds ~/ TimeConstants.millisecondsPerSecond);
   }
@@ -340,7 +342,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>An offset representing the given number of ticks, to the (truncated) second.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The specified number of ticks is outside the range of
   /// [-18, +18] hours.</exception>
-  static Offset fromTicks(int ticks) {
+  factory Offset.fromTicks(int ticks) {
     Preconditions.checkArgumentRange('ticks', ticks, _minTicks, _maxTicks);
     return new Offset((ticks ~/ TimeConstants.ticksPerSecond));
   }
@@ -356,7 +358,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>An offset representing the given number of nanoseconds, to the (truncated) second.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The specified number of nanoseconds is outside the range of
   /// [-18, +18] hours.</exception>
-  static Offset fromNanoseconds(int nanoseconds) {
+  factory Offset.fromNanoseconds(int nanoseconds) {
     Preconditions.checkArgumentRange('nanoseconds', nanoseconds, _minNanoseconds, _maxNanoseconds);
     return new Offset((nanoseconds ~/ TimeConstants.nanosecondsPerSecond));
   }
@@ -368,7 +370,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <returns>An offset representing the given value.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The specified number of hours is outside the range of
   /// [-18, +18].</exception>
-  static Offset fromHours(int hours) {
+  factory Offset.fromHours(int hours) {
     Preconditions.checkArgumentRange('hours', hours, _minHours, _maxHours);
     return new Offset(hours * TimeConstants.secondsPerHour);
   }
@@ -386,8 +388,8 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <param name="minutes">The number of minutes to represent in the new offset.</param>
   /// <returns>An offset representing the given value.</returns>
   /// <exception cref="ArgumentOutOfRangeException">The result of the operation is outside the range of Offset.</exception>
-  static Offset fromHoursAndMinutes(int hours, int minutes) =>
-      fromSeconds(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
+  factory Offset.fromHoursAndMinutes(int hours, int minutes) =>
+      new Offset.fromSeconds(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
 
   /// Converts this offset to a .NET standard <see cref="TimeSpan" /> value.
@@ -402,9 +404,16 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// <param name="timeSpan">The timespan to convert</param>
   /// <exception cref="ArgumentOutOfRangeException">The given time span falls outside the range of +/- 18 hours.</exception>
   /// <returns>An offset for the same time as the given time span.</returns>
-  static Offset fromDuration(Duration timeSpan) {
-    int seconds = timeSpan.inSeconds;
-    Preconditions.checkArgumentRange('timeSpan', seconds, _minTicks, _maxTicks);
-    return fromSeconds(seconds);
+  factory Offset.fromDuration(Duration timeSpan) {
+    int seconds = timeSpan.inMilliseconds;
+    Preconditions.checkArgumentRange('timeSpan', seconds, _minMilliseconds, _maxMilliseconds);
+    return new Offset.fromSeconds(seconds);
   }
+
+  factory Offset.fromSpan(Span timeSpan) {
+    int ticks = timeSpan.floorTicks;
+    Preconditions.checkArgumentRange('timeSpan', ticks, _minTicks, _maxTicks);
+    return new Offset.fromSeconds(ticks);
+  }
+
 }

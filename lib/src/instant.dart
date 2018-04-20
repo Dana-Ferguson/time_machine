@@ -62,6 +62,7 @@ class Instant implements Comparable<Instant> {
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
+  Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
   @internal bool get IsValid => daysSinceEpoch >= minDays && daysSinceEpoch <= maxDays;
@@ -69,10 +70,10 @@ class Instant implements Comparable<Instant> {
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
 
-  Instant operator+(Span span) => new Instant.trusted(_span + span);
-  // Instant operator-(Span span) => new Instant._trusted(_span - span);
-  Instant plus(Span span) => this + span;
-  Instant minus(Span span) => this - span;
+  Instant operator+(Span span) => this.plus(span);
+  // Instant operator-(Span span) => this.minus(span);
+  Instant plus(Span span) => new Instant.trusted(_span + span);
+  Instant minus(Span span) => new Instant.trusted(_span - span);
 
   @internal LocalInstant plusOffset(Offset offset) {
     return new LocalInstant(_span + offset.toSpan());
@@ -152,9 +153,9 @@ class Instant implements Comparable<Instant> {
 
   Span get spanSinceEpoch => _span;
 
-  int toUnixTimeSeconds() => _span.totalSeconds.toInt();
-  int toUnixTimeMilliseconds() => _span.totalMilliseconds.toInt();
-  int toUnixTimeTicks() => _span.totalTicks.toInt();
+  int toUnixTimeSeconds() => _span.floorSeconds;
+  int toUnixTimeMilliseconds() => _span.floorMilliseconds; //.totalMilliseconds.toInt();
+  int toUnixTimeTicks() => _span.floorTicks; //.totalTicks.toInt();
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime

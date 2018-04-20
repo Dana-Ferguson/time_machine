@@ -75,8 +75,8 @@ class DateTimeZoneReader {
   int readInt64() { var i64 = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN); _offset +=8; return i64; }
   int readUint8() => binary.getUint8(_offset++);
   bool readBool() => readUint8() == 1;
-  Offset readOffsetSeconds() => Offset.fromSeconds(read7BitEncodedInt());
-  Offset readOffsetSeconds2() => Offset.fromSeconds(readInt32());
+  Offset readOffsetSeconds() => new Offset.fromSeconds(read7BitEncodedInt());
+  Offset readOffsetSeconds2() => new Offset.fromSeconds(readInt32());
 
   bool get hasMoreData => binary.lengthInBytes < _offset;
 
