@@ -29,7 +29,7 @@ class Span implements Comparable<Span> {
   // todo: We're not day-based here - we could be? (I don't think it's in the cards)
   // This is 104249991 days
   @internal static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
-  @internal static const int minDays = -maxDays; // ~MaxDays;
+  @internal static const int minDays = ~maxDays;
 
   // 285420 years worth -- we are good for anything;
   @internal static const int maxMillis = Utility.intMaxValueJS;
@@ -152,10 +152,12 @@ class Span implements Comparable<Span> {
   int get hours => (_milliseconds ~/ TimeConstants.millisecondsPerHour) % TimeConstants.hoursPerDay;
   int get minutes => (_milliseconds ~/ TimeConstants.millisecondsPerMinute) % TimeConstants.minutesPerHour;
   int get seconds => (_milliseconds ~/ TimeConstants.millisecondsPerSecond) % TimeConstants.secondsPerMinute;
-  int get milliseconds => _milliseconds % TimeConstants.millisecondsPerDay;
+  int get milliseconds => _milliseconds % TimeConstants.millisecondsPerSecond;
   // microseconds?
-  int get subsecondTicks => (_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerSecond;
-  int get subsecondNanoseconds => _nanosecondsInterval % TimeConstants.nanosecondsPerSecond;
+  int get subsecondTicks => (_milliseconds % TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
+      + (_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerSecond;
+  int get subsecondNanoseconds => (_milliseconds % TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
+      + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
   double get totalDays => _milliseconds / TimeConstants.millisecondsPerDay + _nanosecondsInterval / TimeConstants.nanosecondsPerDay;
   double get totalHours => _milliseconds / TimeConstants.millisecondsPerHour + _nanosecondsInterval / TimeConstants.nanosecondsPerHour;
@@ -169,12 +171,17 @@ class Span implements Comparable<Span> {
   // totalsFloor* ???
   int get floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
   int get floorMilliseconds => totalMilliseconds.floor();
+  int get floorDays => totalDays.floor();
   int get floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
 
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
   // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
-  int get nanosecondOfDay => milliseconds*TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  int get nanosecondOfDay => millisecondsOfDay*TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  int get millisecondsOfDay => _milliseconds % TimeConstants.millisecondsPerDay;
+
+  // todo: is this the same thing?
+  int get nanosecondOfFloorDay => nanosecondOfDay;
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
@@ -190,7 +197,14 @@ class Span implements Comparable<Span> {
   Span minus(Span other) => this - other;
 
   Span operator*(num factor) => new Span._untrusted(_milliseconds * factor, _nanosecondsInterval * factor);
-  Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
+  // Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
+
+  // note: this is wrong'ish*
+  // Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
+  // note: this works on VM (because of BigInt)
+  Span operator/(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
+  // This is what it will look like in JS -- only fails 1 unit test though
+  // Span operator/(num factor) => new Span(nanoseconds: ((_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) / factor).toInt());
 
   Span multiply(num factor) => this * factor;
   Span divide(num factor) => this / factor;
@@ -199,18 +213,22 @@ class Span implements Comparable<Span> {
 
   @override
   bool operator==(dynamic other) => other is Span && equals(other);
-  bool operator >=(Span other) => (_milliseconds > other._milliseconds) ||
+  bool operator >=(Span other) => other == null ? true : (_milliseconds > other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval >= other._nanosecondsInterval);
-  bool operator <=(Span other) => (_milliseconds < other._milliseconds) ||
+  bool operator <=(Span other) => other == null ? false : (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval <= other._nanosecondsInterval);
-  bool operator >(Span other) => (_milliseconds > other._milliseconds) ||
+  bool operator >(Span other) => other == null ? true : (_milliseconds > other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval > other._nanosecondsInterval);
-  bool operator <(Span other) => (_milliseconds < other._milliseconds) ||
+  bool operator <(Span other) => other == null ? false : (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
+
+  static Span max(Span x, Span y) => x > y ? x : y;
+  static Span min(Span x, Span y) => x < y ? x : y;
 
   bool equals(Span other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 
   int compareTo(Span other) {
+    if (other == null) return 1;
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
   }

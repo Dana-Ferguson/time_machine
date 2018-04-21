@@ -26,8 +26,7 @@ final Instant negativeFiftyMillion = new Instant.untrusted(new Span(nanoseconds:
 @TestCase(const [2456293.520833, 2012, 12, 19, 0, 30, 0], "Sample from Wikipedia")
 @TestCase(const [1842713.0, 333, 1, 27, 12, 0, 0], "Another sample from Astronomical Algorithms 2nd Edition, chapter 7")
 @TestCase(const [0.0, -4712, 1, 1, 12, 0, 0], "Julian epoch")
-void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second)
-{
+void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second) {
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);

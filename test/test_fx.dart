@@ -93,7 +93,6 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
     }
   }
   else {
-    int i = 0;
     for (var testCase in testCases) {
       var name = '$testName.${testCase.description ?? testCase.arguments}'; // '${method.simpleName}_${i++}';
 
