@@ -12,9 +12,7 @@ It didn't start that way. I just wanted some TimeZone functionality -- but, I do
 
 There is a C# project that converts the NodaTime db into pieces (not included in this repository).
 
-I'm thinking that JS/VM specific functions will be VM by default, and I'm thinking we can use
-transformers to use the JS specific versions so the import's will be consistent between projects.
+I'm thinking that JS/VM specific functions will function via conditional imports, but will be VM by default for right now.
 
-I'm hoping to hit a release candidate about the time Dart 2 comes out (Jun 15th... or much later this year?).
-I'm working on getting everything ready, except CLDR, and only the Gregorian and Julian calendar systems. See: lib/src/calendar_system.dart
-The goal is to get a fairly complete usable working prototype. Afterwards we will get back to CLDR and the other calendar systems.
+The goal is to get a fairly complete usable working prototype. CLDR and non-Gregorian/Julian calendar systems (see: lib/src/calendar_system.dart) are being
+pushed back until all applicable unit tests are ported. I'm hoping to hit a release candidate about the time Dart 2 comes out (Jun 15th... or much later this year?).

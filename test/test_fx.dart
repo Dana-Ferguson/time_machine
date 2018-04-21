@@ -12,8 +12,8 @@ import 'package:matcher/matcher.dart';
 // todo: can we had the stack_trace portions from here?
 
 // Note: this won't work for Dart4Web applications
-// I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion)
-// If we want to expand this test framework for Dart4Web we can probably make our own transformer?
+// I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion --> fixable via build.yaml???)
+// Transformers are dead in 2.0, long live build.yaml???
 
 class Test {
   final String name;
