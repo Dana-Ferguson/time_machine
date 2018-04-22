@@ -1,5 +1,6 @@
 import 'package:time_machine/time_machine.dart';
 
+// todo: YearMonthDay_Calendar packing didn't work on VM (with the masks -- packing actually worked!), I don't think this packing works on JS, we'll need to drop it (or investigate a better solution)
 @internal
 class YearMonthDay {
   // static const int _dayBits = 6; // Up to 64 days in a month.
@@ -19,6 +20,7 @@ class YearMonthDay {
   YearMonthDay(int year, int month, int day) :
         _value = ((year - 1) << (YearMonthDayCalendar.dayBits + YearMonthDayCalendar.monthBits)) | ((month - 1) << YearMonthDayCalendar.dayBits) | (day - 1);
 
+  // todo: + calendar
   @internal
   int get year => (_value >> (YearMonthDayCalendar.dayBits + YearMonthDayCalendar.monthBits)) + 1;
 
@@ -50,11 +52,11 @@ class YearMonthDay {
 
   @internal
   YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
-      new YearMonthDayCalendar.ymd(_value, calendar == null ? 0 : calendar.ordinal);
+      new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : calendar.ordinal);
 
   @internal
   YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
-      new YearMonthDayCalendar.ymd(_value, calendarOrdinal);
+      new YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
   int compareTo(YearMonthDay other) => _value.compareTo(other._value);
 

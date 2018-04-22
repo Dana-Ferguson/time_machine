@@ -1,6 +1,8 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/YearMonthDayCalendar.cs
 // 2a15d0  on Aug 24, 2017
 
+import 'package:quiver_hashcode/hashcode.dart';
+
 import 'package:time_machine/time_machine.dart';
 
 // todo: IEquatable<YearMonthDayCalendar>
@@ -25,32 +27,45 @@ class YearMonthDayCalendar {
   static const int _monthMask = ((1 << monthBits) - 1) << _calendarDayBits;
   static const int _yearMask = ((1 << yearBits) - 1) << _calendarDayMonthBits;
 
-  final int _value;
+  @internal final CalendarOrdinal calendarOrdinal;
+  // @internal final int _value;
+  @internal final YearMonthDay yearMonthDay;
 
   @internal
-  YearMonthDayCalendar.ymd(int yearMonthDay, CalendarOrdinal calendarOrdinal)
-      : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
+  YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
+  // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
   @internal
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
-  YearMonthDayCalendar(int year, int month, int day, CalendarOrdinal calendarOrdinal)
-      : _value = ((year - 1) << _calendarDayMonthBits) |
-  ((month - 1) << _calendarDayBits) |
-  ((day - 1) << calendarBits) |
-  calendarOrdinal.value;
+  YearMonthDayCalendar(int year, int month, int day, this.calendarOrdinal) :
+      yearMonthDay = new YearMonthDay(year, month, day);
+//      : _value = ((year - 1) << _calendarDayMonthBits) |
+//  ((month - 1) << _calendarDayBits) |
+//  ((day - 1) << calendarBits) |
+//  calendarOrdinal.value;
 
+
+  // @internal
+  // CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
+
+  // @internal
+  // int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
+
+  // @internal
+  // int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
+
+  // @internal
+  // int get day => ((_value & _dayMask) >> calendarBits) + 1;
 
   @internal
-  CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
+  int get year => yearMonthDay.year;
 
   @internal
-  int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
+  int get month => yearMonthDay.month;
 
   @internal
-  int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
+  int get day => yearMonthDay.day;
 
-  @internal
-  int get day => ((_value & _dayMask) >> calendarBits) + 1;
 
 // Just for testing purposes...
 //  @visibleForTesting
@@ -73,15 +88,15 @@ class YearMonthDayCalendar {
 //  }
 
   @internal
-  YearMonthDay toYearMonthDay() => new YearMonthDay.raw(_value >> calendarBits);
+  YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
   @override String toString() => new YearMonthDay(year, month, day).toString() + ' $CalendarOrdinal';
 
   // string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 
   @override
-  bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? _value == rhs._value : false;
+  bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;
 
   @override
-  int get hashCode => _value;
+  int get hashCode => hash2(yearMonthDay.hashCode, calendarOrdinal.hashCode);
 }
