@@ -30,7 +30,7 @@ class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, 
   /// <param name="day">The day of month.</param>
   /// <exception cref="ArgumentOutOfRangeException">The parameters do not form a valid date.
   /// (February 29th is considered valid.)</exception>
-  AnnualDate(int month, int day) :
+  AnnualDate([int month = 1, int day = 1]) :
     // See comment below for why this is using year 1, and why that's okay even for February 29th.
     _value = new YearMonthDay(1, month, day)
   {
@@ -108,6 +108,7 @@ class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, 
   /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this annual date is
   /// later than <paramref name="other"/>.</returns>
   int compareTo(AnnualDate other) {
+    if (other == null) return 1;
     return _value.compareTo(other._value);
   }
 
