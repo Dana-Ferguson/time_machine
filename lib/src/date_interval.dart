@@ -90,6 +90,7 @@ bool equals(DateInterval other) => this == other;
 /// <returns><c>true</c> if <paramref name="date"/> is within this interval; <c>false</c> otherwise.</returns>
 bool contains(LocalDate date)
 {
+  if (date == null) throw new ArgumentError.notNull('date');
   Preconditions.checkArgument(date.Calendar == start.Calendar, 'date',
       "The date to check must be in the same calendar as the start and end dates");
   return start <= date && date <= end;

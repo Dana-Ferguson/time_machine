@@ -90,7 +90,7 @@ class YearMonthDayCalendar {
   @internal
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
-  @override String toString() => new YearMonthDay(year, month, day).toString() + ' $CalendarOrdinal';
+  @override String toString() => new YearMonthDay(year, month, day).toString() + ' $calendarOrdinal';
 
   // string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 
