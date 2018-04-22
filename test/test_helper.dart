@@ -46,7 +46,7 @@ abstract class TestHelper
   /// </summary>
   static void AssertArgumentNull<TArg, TOut>(TOut func(TArg), TArg arg)
   {
-    expect(() => func(arg), throwsNullThrownError);
+    expect(() => func(arg), throwsArgumentError);
     // Assert.Throws<ArgumentNullException>(() => func(arg));
   }
 
@@ -73,7 +73,7 @@ abstract class TestHelper
   static void AssertOutOfRange2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
   {
     // Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2));
-    expect(func(arg1, arg2), throwsRangeError);
+    expect(() => func(arg1, arg2), throwsRangeError);
   }
 
   /// <summary>
@@ -82,7 +82,7 @@ abstract class TestHelper
   static void AssertArgumentNull2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
   {
     // Assert.Throws<ArgumentNullException>(() => func(arg1, arg2));
-    expect(func(arg1, arg2), throwsNullThrownError);
+    expect(() => func(arg1, arg2), throwsArgumentError);
   }
 
   /// <summary>
@@ -99,7 +99,7 @@ abstract class TestHelper
   static void AssertOutOfRange3<TArg1, TArg2, TArg3, TOut>(TOut func(TArg1, TArg2, TArg3), TArg1 arg1, TArg2 arg2, TArg3 arg3)
   {
     // Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2, arg3));
-    expect(func(arg1, arg2, arg3), throwsRangeError);
+    expect(() => func(arg1, arg2, arg3), throwsRangeError);
   }
 
   /// <summary>
@@ -108,7 +108,7 @@ abstract class TestHelper
   static void AssertArgumentNull3<TArg1, TArg2, TArg3, TOut>(TOut func(TArg1, TArg2, TArg3), TArg1 arg1, TArg2 arg2, TArg3 arg3)
   {
     // Assert.Throws<ArgumentNullException>(() => func(arg1, arg2, arg3));
-    expect(func(arg1, arg2, arg3), throwsNullThrownError);
+    expect(() => func(arg1, arg2, arg3), throwsNullThrownError);
   }
 
   /// <summary>
@@ -178,17 +178,17 @@ abstract class TestHelper
     }
   }
 
-  static void TestComparerStruct2<T>(Comparable<T> comparer, T value, T equalValue, T greaterValue) // where T : struct
-  {
-    Comparable.compare(a, b);
-    expect(comparer.Compare(value, equalValue), 0);
-    expect(comparer.Compare(greaterValue, value).sign, 1);
-    expect(comparer.Compare(value, greaterValue).sign, -1);
-
-    //Assert.AreEqual(0, comparer.Compare(value, equalValue));
-    //Assert.AreEqual(1, math.Sign(comparer.Compare(greaterValue, value)));
-    //Assert.AreEqual(-1, Math.Sign(comparer.Compare(value, greaterValue)));
-  }
+//  static void TestComparerStruct2<T>(Comparable<T> comparer, T value, T equalValue, T greaterValue) // where T : struct
+//  {
+//    Comparable.compare(a, b);
+//    expect(comparer.Compare(value, equalValue), 0);
+//    expect(comparer.Compare(greaterValue, value).sign, 1);
+//    expect(comparer.Compare(value, greaterValue).sign, -1);
+//
+//    //Assert.AreEqual(0, comparer.Compare(value, equalValue));
+//    //Assert.AreEqual(1, math.Sign(comparer.Compare(greaterValue, value)));
+//    //Assert.AreEqual(-1, Math.Sign(comparer.Compare(value, greaterValue)));
+//  }
 
   static void TestComparerStruct<T>(Comparator<T> comparer, T value, T equalValue, T greaterValue)
   {
