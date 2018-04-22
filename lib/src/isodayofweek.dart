@@ -76,6 +76,9 @@ class IsoDayOfWeek {
 
   const IsoDayOfWeek(this._value);
 
+  @override get hashCode => _value.hashCode;
+  @override operator ==(dynamic other) => other is IsoDayOfWeek && other._value == _value || other is int && other == _value;
+
   bool operator <(IsoDayOfWeek other) => _value < other._value;
   bool operator <=(IsoDayOfWeek other) => _value <= other._value;
   bool operator >(IsoDayOfWeek other) => _value > other._value;
