@@ -134,13 +134,13 @@ class CalendarSystem {
     CalendarOrdinal.Iso: Iso,
     CalendarOrdinal.Gregorian: Gregorian,
     CalendarOrdinal.Julian: Julian,
-    CalendarOrdinal.Coptic: Coptic
+    // CalendarOrdinal.Coptic: Coptic
   };
 
   @visibleForTesting
   @internal
   static CalendarSystem ForOrdinalUncached(CalendarOrdinal ordinal) {
-    var calendarSystem = _forOrdinalUncached_referenceMap[ordinal];
+    var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
     if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
     return calendarSystem;
 

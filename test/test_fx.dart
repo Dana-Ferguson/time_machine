@@ -21,10 +21,32 @@ class Test {
 }
 
 class TestCase {
-  final List arguments;
+  final Iterable arguments;
   final String description;
 
   const TestCase(this.arguments, [this.description]);
+}
+
+class TestCaseSource {
+  // List of Lists (n-arguments), or just a List (single argument)
+  final Symbol source;
+  final String description;
+
+  const TestCaseSource(this.source, [this.description]);
+
+  Iterable<TestCase> toTestCases(ObjectMirror mirror) {
+    var argumentsSource = mirror.getField(source).reflectee as List;
+
+    if (argumentsSource.isEmpty) const [];
+    var testCases = new List<TestCase>();
+
+    for (var arguments in argumentsSource) {
+      if (arguments is List) testCases.add(new TestCase(arguments));
+      else testCases.add(new TestCase([arguments]));
+    }
+
+    return testCases;
+  }
 }
 
 Future runTests() async {
@@ -75,6 +97,12 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
       .where((m) => m.reflectee is TestCase)
       .map((m) => m.reflectee as TestCase)
       .toList();
+
+  method
+      .metadata
+      .where((m) => m.reflectee is TestCaseSource)
+      .map((m) => (m.reflectee as TestCaseSource).toTestCases(mirror))
+      .fold(null, (p, e) => testCases.addAll(e));
 
   if (testCases.isEmpty) {
     var name = testName; // '${method.simpleName}';

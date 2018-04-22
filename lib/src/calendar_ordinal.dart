@@ -95,7 +95,7 @@ class CalendarOrdinal {
   int operator +(CalendarOrdinal other) => _value + other._value;
 
   @override
-  String toString() => _stringRepresentations[_value] ?? 'undefined';
+  String toString() => _stringRepresentations.length > _value ? _stringRepresentations[_value] : 'undefined';
 
   CalendarOrdinal parse(String text) {
     var token = text.trim().toLowerCase();
