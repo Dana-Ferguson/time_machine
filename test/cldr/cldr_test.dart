@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:time_machine/src/cldr/cldr_loader.dart';
+// todo: is there a better way to reference this?
+import '../time_machine_testing.dart';
 
 Future main() async {
   try {

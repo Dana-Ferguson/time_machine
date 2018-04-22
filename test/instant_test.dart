@@ -105,7 +105,7 @@ void WithOffset_NonIsoCalendar()
   CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
-  OffsetDateTime actual = instant.WithOffset(offset, calendar);
+  OffsetDateTime actual = instant.WithOffset_Calendar(offset, calendar);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.fromYMDHMC(1434, 12, 7, 13, 15, calendar), offset);
   expect(expected, actual);
 }
