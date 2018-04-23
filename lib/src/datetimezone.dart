@@ -390,9 +390,9 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// <exception cref="ArgumentOutOfRangeException"><paramref name="end"/> is earlier than <paramref name="start"/>.</exception>
   /// <returns>A sequence of zone intervals covering the given interval.</returns>
   /// <seealso cref="DateTimeZone.GetZoneInterval"/>
-//Iterable<ZoneInterval> getZoneIntervals(Instant start, Instant end) =>
+  Iterable<ZoneInterval> getZoneIntervalsFromTo(Instant start, Instant end) =>
 //    // The static constructor performs all the validation we need.
-//getZoneIntervals(new Interval(start, end));
+  getZoneIntervals(new Interval(start, end));
 
 
   /// Returns all the zone intervals which occur for any instant in the given interval.
@@ -443,7 +443,8 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// infinite in both directions).</param>
   /// <param name="options"></param>
   /// <returns></returns>
-  Iterable<ZoneInterval> GetZoneIntervals(Interval interval, ZoneEqualityComparerOptions options) {
+  // todo: merge with regular getZoneIntervals as a custom parameter
+  Iterable<ZoneInterval> getZoneIntervalsOptions(Interval interval, ZoneEqualityComparerOptions options) {
     if ((options & ~ZoneEqualityComparerOptions.StrictestMatch) != 0) {
       throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
     }

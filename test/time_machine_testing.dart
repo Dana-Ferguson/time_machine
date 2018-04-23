@@ -5,6 +5,6 @@
 //import 'package:matcher/matcher.dart';
 //import 'package:time_machine/time_machine_timezones.dart';
 
-export 'framework/test_fx.dart';
-export 'framework/time_matchers.dart';
-export 'framework/test_helper.dart';
+export 'testing/test_fx.dart';
+export 'testing/time_matchers.dart';
+export 'testing/test_helper.dart';

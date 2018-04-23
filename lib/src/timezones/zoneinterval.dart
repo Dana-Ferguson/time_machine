@@ -170,16 +170,20 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="wallOffset">The <see cref="WallOffset" /> from UTC for this period including any daylight savings.</param>
   /// <param name="savings">The <see cref="WallOffset" /> daylight savings contribution to the offset.</param>
   /// <exception cref="ArgumentException">If <c><paramref name = "start" /> &gt;= <paramref name = "end" /></c>.</exception>
-  @internal ZoneInterval(this.name, this.RawStart, this.RawEnd, this.wallOffset, this.savings)
-      :
-  // Work out the corresponding local instants, taking care to "go infinite" appropriately.
-        _localStart = RawStart.SafePlus(wallOffset),
-        _localEnd = RawEnd.SafePlus(wallOffset) {
+  @internal factory ZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
+    rawStart ??= Instant.beforeMinValue;
+    rawEnd ??= Instant.afterMaxValue;
+    // Work out the corresponding local instants, taking care to "go infinite" appropriately.
     Preconditions.checkNotNull(name, 'name');
-    Preconditions.checkArgument(RawStart < RawEnd, 'start', "The start Instant must be less than the end Instant");
+    Preconditions.checkArgument(rawStart < rawEnd, 'start', "The start Instant must be less than the end Instant");
+    return new ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
   }
 
-  // todo:  make all these factories
+  ZoneInterval._(this.name, this.RawStart, this.RawEnd, this.wallOffset, this.savings) :
+        _localStart = RawStart.SafePlus(wallOffset),
+        _localEnd = RawEnd.SafePlus(wallOffset);
+
+    // todo:  make all these factories
 
   /// <summary>
   /// Returns a copy of this zone interval, but with the given start instant.
@@ -241,16 +245,17 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="other">An object to compare with this object.
   /// </param>
   bool Equals(ZoneInterval other) {
-    if (other == null) {
+    if (identical(other, null)) {
       return false;
     }
-    // todo: unsure if this translates correctly
-    if (this == other) {
+    if (identical(this, other)) {
       return true;
     }
     return name == other.name && RawStart == other.RawStart && RawEnd == other.RawEnd
         && wallOffset == other.wallOffset && savings == other.savings;
   }
+
+  @override bool operator==(dynamic other) => other is ZoneInterval ? Equals(other) : false;
 
   /// <summary>
   ///   Serves as a hash function for a particular type.
