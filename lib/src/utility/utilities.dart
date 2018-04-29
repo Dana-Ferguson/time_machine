@@ -15,7 +15,7 @@ abstract class Utility {
   }
 
   static bool _isDartVM = null;
-  static bool get isDartVM => _isDartVM ?? (_isDartVM = _checkForDartVM());
+  static bool get isDartVM => _isDartVM ??= _checkForDartVM();
   static bool _checkForDartVM() {
     double n = 1.0;
     String s = n.toString();
@@ -38,7 +38,7 @@ abstract class Utility {
   static int _intMaxValue = null;
   static int get intMaxValue => _intMaxValue ?? (_intMaxValue = _getIntMaxValue());
   static int _getIntMaxValue() {
-    if (_isDartVM) return math.pow(2, 63);
+    if (isDartVM) return math.pow(2, 63);
     return intMaxValueJS;
   }
 }

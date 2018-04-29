@@ -1,6 +1,8 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/FixedDateTimeZone.cs
 // cb92068  on Dec 29, 2016
 
+import 'dart:math' as math;
+
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -57,6 +59,11 @@ import 'package:time_machine/time_machine_timezones.dart';
   if (offset == Offset.zero) {
     return DateTimeZone.UtcId;
   }
+
+  if (offset.seconds % TimeConstants.secondsPerHour == 0) {
+    return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
+  }
+
   return DateTimeZone.UtcId + TextShim.toStringOffset(offset); // OffsetPattern.GeneralInvariant.Format(offset);
 }
 

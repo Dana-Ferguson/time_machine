@@ -8,3 +8,6 @@
 export 'testing/test_fx.dart';
 export 'testing/time_matchers.dart';
 export 'testing/test_helper.dart';
+
+export 'testing/timezones/single_transition_datetimezone.dart';
+export 'testing/timezones/multi_transition_datetimezone.dart';
