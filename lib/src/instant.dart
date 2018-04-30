@@ -79,8 +79,35 @@ class Instant implements Comparable<Instant> {
     return new LocalInstant(_span + offset.toSpan());
   }
 
-  // todo: evaluate whether all this extra framework is needed for our version: Instant.cs#L267
-  @internal LocalInstant SafePlus(Offset offset) => plusOffset(offset);
+  @internal LocalInstant SafePlus(Offset offset) {
+    var days = _span.floorDays;
+    // plusOffset(offset);
+    // If we can do the arithmetic safely, do so.
+    if (days > minDays && days < maxDays)
+    {
+      return plusOffset(offset);
+    }
+    // Handle BeforeMinValue and BeforeMaxValue simply.
+    if (days < minDays)
+    {
+      return LocalInstant.BeforeMinValue;
+    }
+    if (days > maxDays)
+    {
+      return LocalInstant.AfterMaxValue;
+    }
+    // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
+    var asDuration = _span.plusSmallNanoseconds(offset.nanoseconds);
+    if (asDuration.floorDays < Instant.minDays)
+    {
+      return LocalInstant.BeforeMinValue;
+    }
+    if (asDuration.floorDays > Instant.maxDays)
+    {
+      return LocalInstant.AfterMaxValue;
+    }
+    return new LocalInstant(asDuration);
+  }
 
   // Span operator-(Instant instant) => _span - instant._span;
 
