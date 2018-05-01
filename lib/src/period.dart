@@ -216,8 +216,9 @@ class Period // : IEquatable<Period>
 //}
 
 ///// Creates a period with the given time values.
-  @internal const Period({this.Years, this.Months, this.Weeks, this.Days, this.Hours, this.Minutes, this.Seconds,
-    this.Milliseconds, this.Ticks, this.Nanoseconds});
+  @internal const Period({this.Years: 0, this.Months: 0, this.Weeks: 0, this.Days: 0,
+    this.Hours: 0, this.Minutes: 0, this.Seconds: 0,
+    this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});
 
 
 ///// Creates a new period from the given values.
@@ -540,7 +541,7 @@ class Period // : IEquatable<Period>
   /// <returns>The resulting date after adding the result components to <paramref name="start"/> (to
   /// allow further computations to be made)</returns>
   @private static DateComponentsBetweenResult DateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
-    LocalDate result = start;
+    var result = new OutBox(start);
 
     /*
   int UnitsBetween(PeriodUnits maskedUnits, /*ref*/ LocalDate startDate, LocalDate endDate, IDatePeriodField dateField)
@@ -556,22 +557,22 @@ class Period // : IEquatable<Period>
   * */
 
     // this is PeriodUnits maskedUnits in nodatime... but, it's nicer for dart this way
-    int UnitsBetween(int maskedUnits, IDatePeriodField dateField) {
+    int UnitsBetween(int maskedUnits, OutBox<LocalDate> startDate, IDatePeriodField dateField) {
       if (maskedUnits == 0) {
         return 0;
       }
 
-      int value = dateField.UnitsBetween(result, end);
-      result = dateField.Add(result, value);
+      int value = dateField.UnitsBetween(startDate.value, end);
+      startDate.value = dateField.Add(startDate.value, value);
       return value;
     }
 
-    var years = UnitsBetween(units.value & PeriodUnits.years.value, DatePeriodFields.YearsField);
-    var months = UnitsBetween(units.value & PeriodUnits.months.value, DatePeriodFields.MonthsField);
-    var weeks = UnitsBetween(units.value & PeriodUnits.weeks.value, DatePeriodFields.WeeksField);
-    var days = UnitsBetween(units.value & PeriodUnits.days.value, DatePeriodFields.DaysField);
+    var years = UnitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.YearsField);
+    var months = UnitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.MonthsField);
+    var weeks = UnitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.WeeksField);
+    var days = UnitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.DaysField);
 
-    return new DateComponentsBetweenResult(result, years, months, weeks, days);
+    return new DateComponentsBetweenResult(result.value, years, months, weeks, days);
   }
 
 
@@ -682,7 +683,7 @@ class Period // : IEquatable<Period>
   /// <returns>The period between the given dates, using the given units.</returns>
   static Period BetweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allTimeUnits.value) == 0, 'units', "Units contains time units: $units");
-    Preconditions.checkArgument(units != 0, 'units', "Units must not be empty");
+    Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
     CalendarSystem calendar = start.Calendar;
     Preconditions.checkArgument(calendar == end.Calendar, 'end', "start and end must use the same calendar system");

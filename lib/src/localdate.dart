@@ -10,7 +10,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
-class LocalDate {
+class LocalDate implements Comparable<LocalDate> {
   YearMonthDayCalendar _yearMonthDayCalendar;
 
   /// The maximum (latest) date representable in the ISO calendar system.
@@ -156,20 +156,21 @@ class LocalDate {
   /// system.</returns>
   LocalDateTime get AtMidnight => new LocalDateTime(this, LocalTime.Midnight);
 
-//  /// <summary>
-//  /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
-//  /// of <see cref="DateTimeKind.Unspecified"/>. The result is midnight on the day represented
-//  /// by this value.
-//  /// </summary>
-//  /// <remarks>
-//  /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
-//  /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
-//  /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
-//  /// the Noda Time non-system-specific "local" concept as exists in .NET.
-//  /// </remarks>
-//  /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
-//  DateTime get ToDateTimeUnspecified() =>
-//      new DateTime(DaysSinceEpoch * TimeConstants.ticksPerDay + TimeConstants.BclTicksAtUnixEpoch, DateTimeKind.Unspecified);
+  /// <summary>
+  /// Constructs a <see cref="DateTime"/> from this value which has a <see cref="DateTime.Kind" />
+  /// of <see cref="DateTimeKind.Unspecified"/>. The result is midnight on the day represented
+  /// by this value.
+  /// </summary>
+  /// <remarks>
+  /// <see cref="DateTimeKind.Unspecified"/> is slightly odd - it can be treated as UTC if you use <see cref="DateTime.ToLocalTime"/>
+  /// or as system local time if you use <see cref="DateTime.ToUniversalTime"/>, but it's the only kind which allows
+  /// you to construct a <see cref="DateTimeOffset"/> with an arbitrary offset, which makes it as close to
+  /// the Noda Time non-system-specific "local" concept as exists in .NET.
+  /// </remarks>
+  /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
+  DateTime toDateTimeUnspecified() =>
+      new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
+              // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
 
   // Helper method used by both FromDateTime overloads.
   // todo: private
@@ -308,7 +309,7 @@ class LocalDate {
   /// <param name="lhs">The date to subtract from</param>
   /// <param name="rhs">The date to subtract</param>
   /// <returns>The result of subtracting one date from another.</returns>
-  Period Between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+  static Period Between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
 
   /// <summary>
   /// Subtracts the specified period from this date. Fluent alternative to <c>operator-()</c>.
@@ -381,7 +382,7 @@ class LocalDate {
   bool operator <(LocalDate rhs)
   {
     Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.CompareTo(rhs) < 0;
+    return this.compareTo(rhs) < 0;
   }
 
   /// <summary>
@@ -400,7 +401,7 @@ class LocalDate {
   bool operator <=(LocalDate rhs)
   {
     Preconditions.checkArgument(this.Calendar== rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.CompareTo(rhs) <= 0;
+    return this.compareTo(rhs) <= 0;
   }
 
   /// <summary>
@@ -419,7 +420,7 @@ class LocalDate {
   bool operator >(LocalDate rhs)
   {
     Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.CompareTo(rhs) > 0;
+    return this.compareTo(rhs) > 0;
   }
 
   /// <summary>
@@ -438,7 +439,7 @@ class LocalDate {
   bool operator >=(LocalDate rhs)
   {
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return CompareTo(rhs) >= 0;
+    return compareTo(rhs) >= 0;
   }
 
   /// <summary>
@@ -456,9 +457,9 @@ class LocalDate {
   /// <returns>A value less than zero if this date is earlier than <paramref name="other"/>;
   /// zero if this date is the same as <paramref name="other"/>; a value greater than zero if this date is
   /// later than <paramref name="other"/>.</returns>
-  int CompareTo(LocalDate other)
+  int compareTo(LocalDate other)
   {
-    Preconditions.checkArgument(Calendar == other.Calendar, 'other', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(Calendar == other?.Calendar, 'other', "Only values with the same calendar system can be compared");
     return Calendar.Compare(yearMonthDay, other.yearMonthDay);
   }
 
@@ -482,7 +483,7 @@ class LocalDate {
       return 1;
     }
     Preconditions.checkArgument(obj is LocalDate, 'obj', "Object must be of type NodaTime.LocalDate.");
-    return CompareTo(obj as LocalDate);
+    return compareTo(obj as LocalDate);
   }
 
   /// <summary>
@@ -710,4 +711,5 @@ class LocalDate {
   /// <filterpriority>2</filterpriority>
 //  String ToStringFormatted(string patternText, IFormatProvider formatProvider) =>
 //      LocalDatePattern.BclSupport.Format(this, patternText, formatProvider);
+
 }

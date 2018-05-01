@@ -433,7 +433,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// later than <paramref name="other"/>.</returns>
   int CompareTo(LocalDateTime other) {
 // This will check calendars...
-    int dateComparison = date.CompareTo(other.date);
+    int dateComparison = date.compareTo(other.date);
     if (dateComparison != 0) {
       return dateComparison;
     }

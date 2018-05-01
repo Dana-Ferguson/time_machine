@@ -48,7 +48,7 @@ import 'package:time_machine/time_machine_calendars.dart';
     var yearMonthDayCalculator = calendar.yearMonthDayCalculator;
     var maxWeeks = GetWeeksInWeekYear(weekYear, calendar);
     if (weekOfWeekYear < 1 || weekOfWeekYear > maxWeeks) {
-      throw new ArgumentError.value(weekOfWeekYear, 'weekOfWeekYear');
+      throw new RangeError.value(weekOfWeekYear, 'weekOfWeekYear');
     }
 
 // unchecked
