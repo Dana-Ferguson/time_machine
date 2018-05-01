@@ -108,10 +108,6 @@ void PeriodSubtraction_MethodEquivalents()
   LocalDate start = new LocalDate(2010, 6, 19);
   Period period = new Period.fromMonths(3) + new Period.fromDays(10);
   LocalDate end = start + period;
-  print('Period: $period;');
-  print('End: $end;');
-  print('Start: $start;');
-  print('End - Start: ${end - start};');
   expect(start - period, LocalDate.Subtract(start, period));
   expect(start - period, start.MinusPeriod(period));
   expect(period, end - start);

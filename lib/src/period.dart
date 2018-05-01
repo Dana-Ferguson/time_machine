@@ -893,6 +893,8 @@ class Period // : IEquatable<Period>
           Milliseconds == other.Milliseconds &&
           Ticks == other.Ticks &&
           Nanoseconds == other.Nanoseconds;
+
+  bool operator==(dynamic other) => other is Period && Equals(other);
 }
 
 /// Equality comparer which simply normalizes periods before comparing them.
