@@ -106,18 +106,18 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// </summary>
   @internal Instant SafeMinus(Offset offset) {
     int days = _span.days;
-// If we can do the arithmetic safely, do so.
+    // If we can do the arithmetic safely, do so.
     if (days > Instant.minDays && days < Instant.maxDays) {
       return Minus(offset);
     }
-// Handle BeforeMinValue and BeforeMaxValue simply.
+    // Handle BeforeMinValue and BeforeMaxValue simply.
     if (days < Instant.minDays) {
       return Instant.beforeMinValue;
     }
     if (days > Instant.maxDays) {
       return Instant.afterMaxValue;
     }
-// Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
+    // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
     var asDuration = _span.plusSmallNanoseconds(-offset.nanoseconds);
     if (asDuration.days < Instant.minDays) { // FloorDays
       return Instant.beforeMinValue;
@@ -125,7 +125,7 @@ import 'package:time_machine/time_machine_utilities.dart';
     if (asDuration.days > Instant.maxDays) { // FloorDays
       return Instant.afterMaxValue;
     }
-// And now we don't need any more checks.
+    // And now we don't need any more checks.
     return new Instant.trusted(asDuration);
   }
 

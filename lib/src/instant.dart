@@ -57,8 +57,14 @@ class Instant implements Comparable<Instant> {
   final Span _span;
 
   // todo: investigate if this is okay ... see Instant.cs#115
-  @internal Instant.untrusted(this._span);
+  @internal factory Instant.untrusted(Span _span) {
+    if (_span < minValue._span) return beforeMinValue;
+    if (_span > maxValue._span) return afterMaxValue;
+    return new Instant.trusted(_span);
+  }
+
   @internal Instant.trusted(this._span);
+  // todo: to untrusted factories
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
@@ -72,8 +78,8 @@ class Instant implements Comparable<Instant> {
 
   Instant operator+(Span span) => this.plus(span);
   // Instant operator-(Span span) => this.minus(span);
-  Instant plus(Span span) => new Instant.trusted(_span + span);
-  Instant minus(Span span) => new Instant.trusted(_span - span);
+  Instant plus(Span span) => new Instant.untrusted(_span + span);
+  Instant minus(Span span) => new Instant.untrusted(_span - span);
 
   @internal LocalInstant plusOffset(Offset offset) {
     return new LocalInstant(_span + offset.toSpan());
@@ -178,6 +184,7 @@ class Instant implements Comparable<Instant> {
   int get daysSinceEpoch => _span.days;
   int get nanosecondOfDay => _span.nanosecondOfDay;
 
+  // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
   Span get spanSinceEpoch => _span;
 
   int toUnixTimeSeconds() => _span.floorSeconds;
