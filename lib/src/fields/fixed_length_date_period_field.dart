@@ -39,8 +39,7 @@ import 'package:time_machine/time_machine_fields.dart';
         newDayOfYear += calculator.getDaysInYear(year - 1);
         year--;
         if (year < calculator.minYear) {
-          // todo: OverflowException
-          throw new StateError("Date computation would underflow the minimum year of the calendar");
+          throw new RangeError("Date computation would underflow the minimum year of the calendar");
         }
       }
       else {
@@ -49,8 +48,7 @@ import 'package:time_machine/time_machine_fields.dart';
           newDayOfYear -= daysInYear;
           year++;
           if (year > calculator.maxYear) {
-            // todo: OverflowException
-            throw new StateError("Date computation would overflow the maximum year of the calendar");
+            throw new RangeError("Date computation would overflow the maximum year of the calendar");
           }
         }
       }
