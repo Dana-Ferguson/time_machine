@@ -467,11 +467,16 @@ class Period // : IEquatable<Period>
         weeks = 0,
         days = 0;
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
-      // todo: deal with DateComponentsBetween
-      throw new UnimplementedError('this is not done.');
-//    LocalDate remainingDate = DateComponentsBetween(
-//        start.Date, endDate, units, out years, out months, out weeks, out days);
-//     remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
+      // LocalDate remainingDate = DateComponentsBetween(
+      //  start.Date, endDate, units, out years, out months, out weeks, out days);
+      var result = DateComponentsBetween(start.Date, endDate, units);
+      years = result.years;
+      months = result.months;
+      weeks = result.weeks;
+      days = result.days;
+
+      var remainingDate = result.date;
+      remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(Years: years, Months: months, Weeks: weeks, Days: days);
