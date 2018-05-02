@@ -30,7 +30,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// </remarks>
 /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
+class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
   @private final LocalDate date;
   @private final LocalTime time;
@@ -312,14 +312,19 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <param name="calendar">The calendar system to convert into</param>
   /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
   static LocalDateTime FromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
-    int tickOfDay;
+    return new LocalDateTime(LocalDate.FromDateTime(dateTime), new LocalTime(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond));
+
+    /*
+    int tickOfDay = dateTime.millisecond;
     int days = dateTime
         .difference(new DateTime.fromMillisecondsSinceEpoch(0))
         .inDays; // TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
+    // int leftOver = new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
     if (calendar == null) return new LocalDateTime(
         new LocalDate.fromDaysSinceEpoch(days), new LocalTime.fromNanoseconds(/*unchecked*/ (tickOfDay * TimeConstants.nanosecondsPerTick)));
     return new LocalDateTime(new LocalDate.fromDaysSinceEpoch_forCalendar(days, calendar),
         new LocalTime.fromNanoseconds(/*unchecked*/ (tickOfDay * TimeConstants.nanosecondsPerTick)));
+    */
   }
 
 // #region Implementation of IEquatable<LocalDateTime>
@@ -360,7 +365,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <(LocalDateTime rhs) {
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return CompareTo(rhs) < 0;
+    return compareTo(rhs) < 0;
   }
 
 
@@ -378,7 +383,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <=(LocalDateTime rhs) {
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return CompareTo(rhs) <= 0;
+    return compareTo(rhs) <= 0;
   }
 
 
@@ -396,7 +401,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator >(LocalDateTime rhs) {
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return CompareTo(rhs) > 0;
+    return compareTo(rhs) > 0;
   }
 
 
@@ -414,7 +419,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
   bool operator >=(LocalDateTime rhs) {
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
-    return CompareTo(rhs) >= 0;
+    return compareTo(rhs) >= 0;
   }
 
 
@@ -431,7 +436,7 @@ class LocalDateTime // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, 
   /// <returns>A value less than zero if this date/time is earlier than <paramref name="other"/>;
   /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date/time is
   /// later than <paramref name="other"/>.</returns>
-  int CompareTo(LocalDateTime other) {
+  int compareTo(LocalDateTime other) {
 // This will check calendars...
     int dateComparison = date.compareTo(other.date);
     if (dateComparison != 0) {

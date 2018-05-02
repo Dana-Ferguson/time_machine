@@ -953,6 +953,6 @@ class Period // : IEquatable<Period>
 // wouldn't, but it's highly unlikely
       return x.ToSpan().compareTo(y.ToSpan());
     }
-    return (baseDateTime.Plus(x)).CompareTo(baseDateTime.Plus(y));
+    return (baseDateTime.Plus(x)).compareTo(baseDateTime.Plus(y));
   }
 }

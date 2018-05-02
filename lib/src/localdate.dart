@@ -154,6 +154,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// </summary>
   /// <returns>The <see cref="LocalDateTime" /> representing midnight on this local date, in the same calendar
   /// system.</returns>
+  // todo: this should probably be a method? Check style guide.
   LocalDateTime get AtMidnight => new LocalDateTime(this, LocalTime.Midnight);
 
   /// <summary>
@@ -174,7 +175,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   // Helper method used by both FromDateTime overloads.
   // todo: private
-  static int NonNegativeMicrosecondsToDays(int ticks) => ticks ~/ TimeConstants.ticksPerMicrosecond;
+  static int NonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
       // ((ticks >> 14) ~/ 52734375);
 
   /// <summary>
