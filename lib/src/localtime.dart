@@ -17,7 +17,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// 
 /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
+class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
     {
 
   /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -350,7 +350,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="rhs">The time to subtract</param>
   /// <returns>The result of subtracting one time from another.</returns>
   // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic rhs) => rhs is Period ? MinusPeriod(rhs) : rhs is LocalTime ? Between(rhs) : throw new TypeError();
+  dynamic operator -(dynamic rhs) => rhs is Period ? MinusPeriod(rhs) : rhs is LocalTime ? Between(rhs) : throw new ArgumentError();
   //Period operator -(LocalTime rhs) => Period.BetweenTimes(rhs, this);
 
   /// Subtracts the specified period from the time. Friendly alternative to <c>operator-()</c>.
@@ -398,7 +398,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <param name="lhs">The first value to compare</param>
   /// <param name="rhs">The second value to compare</param>
   /// <returns>True if the two times are the same; false otherwise</returns>
-  @override bool operator ==(dynamic rhs) => rhs is LocalTime ?? this._nanoseconds == rhs._nanoseconds;
+  @override bool operator ==(dynamic rhs) => rhs is LocalTime && this._nanoseconds == rhs._nanoseconds;
 
 // static bool operator !=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds != rhs.nanoseconds;
 
@@ -445,7 +445,7 @@ class LocalTime // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable
   /// <returns>A value less than zero if this time is earlier than <paramref name="other"/>;
   /// zero if this time is the same as <paramref name="other"/>; a value greater than zero if this time is
   /// later than <paramref name="other"/>.</returns>
-  int CompareTo(LocalTime other) => _nanoseconds.compareTo(other._nanoseconds);
+  int compareTo(LocalTime other) => _nanoseconds.compareTo(other?._nanoseconds ?? 0);
 
 
   /// Returns a hash code for this local time.

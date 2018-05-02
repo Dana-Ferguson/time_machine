@@ -442,7 +442,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
     if (dateComparison != 0) {
       return dateComparison;
     }
-    return time.CompareTo(other.time);
+    return time.compareTo(other.time);
   }
 
 
