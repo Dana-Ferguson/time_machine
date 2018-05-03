@@ -850,11 +850,23 @@ class Period // : IEquatable<Period>
     // sum them.
     int totalNanoseconds = TotalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
-    int hours = (totalNanoseconds ~/ TimeConstants.nanosecondsPerHour) % TimeConstants.hoursPerDay;
-    int minutes = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMinute) % TimeConstants.minutesPerHour;
-    int seconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerSecond) % TimeConstants.secondsPerMinute;
-    int milliseconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond) % TimeConstants.millisecondsPerSecond;
-    int nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerMillisecond;
+
+    int hours, minutes, seconds, milliseconds, nanoseconds;
+
+    if (totalNanoseconds >= 0) {
+      hours = (totalNanoseconds ~/ TimeConstants.nanosecondsPerHour) % TimeConstants.hoursPerDay;
+      minutes = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMinute) % TimeConstants.minutesPerHour;
+      seconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerSecond) % TimeConstants.secondsPerMinute;
+      milliseconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond) % TimeConstants.millisecondsPerSecond;
+      nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerMillisecond;
+    }
+    else {
+      hours = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
+      minutes = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
+      seconds = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
+      milliseconds = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond), TimeConstants.millisecondsPerSecond);
+      nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
+    }
 
     return new Period(Years: this.Years,
         Months: this.Months,

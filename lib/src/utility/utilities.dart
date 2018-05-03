@@ -90,9 +90,9 @@ abstract class IDateTimeZoneReader {
   //
 }
 
-// todo: how does reference equals work for DartLang?
+@deprecated
 bool ReferenceEquals(Object x, Object y) {
-  return x == y;
+  return identical(x, y);
 }
 
 // todo: only use this for porting... remove all of these later
@@ -100,4 +100,10 @@ bool ReferenceEquals(Object x, Object y) {
 class OutBox<T> {
   T value;
   OutBox(this.value);
+}
+
+// we should only use this where 'x' can be negative
+int csharpMod(num x, int y) {
+  if (x >= 0) return x % y;
+  return -((-x)%y);
 }

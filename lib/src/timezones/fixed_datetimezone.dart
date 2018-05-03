@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     return DateTimeZone.UtcId;
   }
 
-  if (offset.seconds % TimeConstants.secondsPerHour == 0) {
+  if (csharpMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
     return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
   }
 

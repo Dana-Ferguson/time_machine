@@ -78,7 +78,7 @@ class _AddTimeResult {
       {
         if (value <= -unitsPerDay)
         {
-          value = -value % unitsPerDay * -1;
+          value = -(-value % unitsPerDay);
         }
         int nanosToAdd = value * unitNanoseconds;
         int newNanos = localTime.NanosecondOfDay + nanosToAdd;
@@ -122,7 +122,7 @@ class _AddTimeResult {
           int longDays = value ~/ unitsPerDay;
           // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
           days = /*checked*/(longDays);
-          value = -value % unitsPerDay * -1; //value.sign;
+          value = -(-value % unitsPerDay) * -1;
         }
         int nanosToAdd = value * unitNanoseconds;
         int newNanos = localTime.NanosecondOfDay + nanosToAdd;

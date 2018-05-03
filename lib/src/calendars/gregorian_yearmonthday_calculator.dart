@@ -183,5 +183,5 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   @internal @override
   bool IsLeapYear(int year) => _isGregorianLeapYear(year);
 
-  static bool _isGregorianLeapYear(int year) => ((year & 3) == 0) && ((year % 100) != 0 || (year % 400) == 0);
+  static bool _isGregorianLeapYear(int year) => ((year & 3) == 0) && (csharpMod(year, 100) != 0 || csharpMod(year, 400) == 0);
 }

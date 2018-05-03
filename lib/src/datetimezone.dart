@@ -44,7 +44,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// <returns>A fixed time zone with the given offset.</returns>
   static DateTimeZone ForOffset(Offset offset) {
     int seconds = offset.seconds;
-    if (seconds % FixedZoneCacheGranularitySeconds != 0) {
+    if (csharpMod(seconds, FixedZoneCacheGranularitySeconds) != 0) {
       return new FixedDateTimeZone.forOffset(offset);
     }
     int index = (seconds - FixedZoneCacheMinimumSeconds) ~/ FixedZoneCacheGranularitySeconds;

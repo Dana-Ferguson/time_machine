@@ -63,6 +63,7 @@ class Span implements Comparable<Span> {
     if (nanoseconds < _minNano) {
       // newNS = ns + TimeConstants.nanosecondsPerMillisecond * n;
       // _minNano < ns <= _maxNano => ns > _minNano
+      // todo: test all '%' uses in this class for negatives
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
       milliseconds -= delta;
       nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
