@@ -543,7 +543,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// <param name="duration">The duration to subtract</param>
   /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the subtraction.</returns>
 
-  OffsetDateTime MinusSpan(Span span) => new OffsetDateTime(ToInstant() - span, offset);
+  OffsetDateTime MinusSpan(Span span) => new OffsetDateTime.instant(ToInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
   /// <summary>
   /// Returns a new <see cref="OffsetDateTime"/> with the duration subtracted.
@@ -570,8 +570,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// <param name="start">The offset date and time to subtract from <paramref name="end"/>.</param>
   /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
 
-  OffsetDateTime operator -(dynamic value) =>
-// todo: dynamic dispatch... still complaining
+  dynamic operator -(dynamic value) =>
+// todo: dynamic dispatch... still complaining... change API to prevent dynamic dispatch?
   value is Span ? MinusSpan(value) : value is OffsetDateTime ? MinusOffsetDateTime(value) : throw new TypeError();
 
   // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
