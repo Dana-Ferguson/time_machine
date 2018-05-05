@@ -59,7 +59,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// Initializes a new instance of the <see cref="Offset" /> struct.
   ///
   /// <param name="seconds">The number of seconds in the offset.</param>
-  @internal Offset(this._seconds) {
+  @internal Offset([this._seconds = 0]) {
     Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
   }
 
