@@ -129,7 +129,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
 // Guaranteed to still be in range.
   new Offset(-seconds);
 
-
   /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
   ///
   /// <param name="offset">The offset to negate.</param>
@@ -261,7 +260,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   ///     </item>
   ///   </list>
   /// </returns>
-  int compareTo(Offset other) => seconds.compareTo(other.seconds);
+  int compareTo(Offset other) => other == null ? 1 : seconds.compareTo(other.seconds);
 
   ///   Indicates whether the current object is equal to another object of the same type.
   ///
