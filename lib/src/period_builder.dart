@@ -152,11 +152,12 @@ class PeriodBuilder {
 //    Preconditions.checkArgumentRange('value', value, int.MinValue, int.MaxValue);
 //  }
 
-    if (_indexSetterFunctionMap.containsKey(unit)) _indexSetterFunctionMap[unit](this, value);
+    if (_indexSetterFunctionMap.containsKey(unit)) return _indexSetterFunctionMap[unit](this, value);
     throw new ArgumentError("Indexer for PeriodBuilder only takes a single unit");
   }
 
 
+  // todo: this doesn't work well with the cascade pattern.. is there a way around that?
   /// <summary>
   /// Builds a period from the properties in this builder.
   /// </summary>

@@ -35,6 +35,8 @@ class PeriodUnits {
     dateAndTime: 'DateAndTime', allUnits: 'AllUnits'
   };
 
+  static List<PeriodUnits> get values => _isoConstants;
+
 
   /// Value indicating no units - an empty period
   static const PeriodUnits none = const PeriodUnits(0);
@@ -72,7 +74,9 @@ class PeriodUnits {
   static const PeriodUnits allUnits = const PeriodUnits(1023); // union(const [years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds]);
 
   @override get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) => other is PeriodUnits && other._value == _value || other is int && other == _value;
+  @override operator ==(dynamic other) =>
+      (other is PeriodUnits && other._value == _value)
+          || (other is int && other == _value);
 
   const PeriodUnits(this._value);
 

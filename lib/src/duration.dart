@@ -55,6 +55,9 @@ class Span implements Comparable<Span> {
   /// Gets the minimum (largest negative) value supported by [Span].
   static Span minValue = new Span(days: minDays);
 
+  static Span oneDay = new Span(days: 1);
+  static Span oneWeek = new Span(days: 7);
+
   Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
 
   factory Span._untrusted(int milliseconds, [int nanoseconds = 0]) {

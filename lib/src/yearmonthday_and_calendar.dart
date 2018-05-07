@@ -2,6 +2,7 @@
 // 2a15d0  on Aug 24, 2017
 
 import 'package:quiver_hashcode/hashcode.dart';
+import 'package:meta/meta.dart';
 
 import 'package:time_machine/time_machine.dart';
 
@@ -68,29 +69,29 @@ class YearMonthDayCalendar {
 
 
 // Just for testing purposes...
-//  @visibleForTesting
-//  static YearMonthDayCalendar Parse(String text) {
-//    throw new UnimplementedError('We need to be able to parse the CalendarOrdinal Enum.');
-//
-//    // Handle a leading - to negate the year
-//    if (text.startsWith("-")) {
-//      var ymdc = Parse(text.substring(1));
-//      return new YearMonthDayCalendar(-ymdc.Year, ymdc.Month, ymdc.Day, ymdc.calendarOrdinal);
-//    }
-//
-//    List<String> bits = text.split('-');
-//    return new YearMonthDayCalendar(
-//        int.parse(bits[0]), // CultureInfo.InvariantCulture),
-//        int.parse(bits[1]), // CultureInfo.InvariantCulture),
-//        int.parse(bits[2]), // CultureInfo.InvariantCulture),
-//        // bits[3]));
-//        CalendarOrdinal.Iso);
-//  }
+  @visibleForTesting
+  static YearMonthDayCalendar Parse(String text) {
+    // throw new UnimplementedError('We need to be able to parse the CalendarOrdinal Enum.');
+
+    // Handle a leading - to negate the year
+    if (text.startsWith("-")) {
+      var ymdc = Parse(text.substring(1));
+      return new YearMonthDayCalendar(-ymdc.year, ymdc.month, ymdc.day, ymdc.calendarOrdinal);
+    }
+
+    List<String> bits = text.split('-');
+    return new YearMonthDayCalendar(
+        int.parse(bits[0]), // CultureInfo.InvariantCulture),
+        int.parse(bits[1]), // CultureInfo.InvariantCulture),
+        int.parse(bits[2]), // CultureInfo.InvariantCulture),
+        // bits[3]));
+        CalendarOrdinal.parse(bits[3]));
+  }
 
   @internal
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
-  @override String toString() => new YearMonthDay(year, month, day).toString() + ' $calendarOrdinal';
+  @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
   // string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 

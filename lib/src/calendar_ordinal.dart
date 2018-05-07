@@ -97,7 +97,7 @@ class CalendarOrdinal {
   @override
   String toString() => _stringRepresentations.length > _value ? _stringRepresentations[_value] : 'undefined';
 
-  CalendarOrdinal parse(String text) {
+  static CalendarOrdinal parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _enumConstants[i];

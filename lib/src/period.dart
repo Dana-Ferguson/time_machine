@@ -353,6 +353,7 @@ class Period // : IEquatable<Period>
   /// <returns>The new comparer.</returns>
 // todo: what to do abuot IComparer?
 // static IComparer<Period> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
+  static PeriodComparer CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
 
 
   /// Subtracts one period from another, by simply subtracting each property value.
@@ -435,7 +436,7 @@ class Period // : IEquatable<Period>
       PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end))
     };
     
-    if (betweenFunctionMap.containsKey(units)) return betweenFunctionMap[units];
+    if (betweenFunctionMap.containsKey(units)) return betweenFunctionMap[units]();
     
 //    switch (units) {
 //      case PeriodUnits.years:
@@ -796,8 +797,8 @@ class Period // : IEquatable<Period>
 
   Span ToSpan() {
     if (Months != 0 || Years != 0) {
-      // todo: is this real?
-      throw new ArgumentError("Cannot construct span of period with non-zero months or years.");
+      // todo: does this apply to us?
+      throw new StateError("Cannot construct span of period with non-zero months or years.");
     }
     return new Span(nanoseconds: TotalNanoseconds);
   }
@@ -925,7 +926,7 @@ class Period // : IEquatable<Period>
 
   @override bool Equals(Period x, Period y) {
     // todo: ReferenceEquals?
-    if (x as Object == y as Object) {
+    if (identical(x, y)) {
       return true;
     }
     if (x == null || y == null) {
@@ -949,8 +950,7 @@ class Period // : IEquatable<Period>
   @internal PeriodComparer(this.baseDateTime);
 
   @override int Compare(Period x, Period y) {
-    // todo: ReferenceEquals?
-    if (x as Object == y as Object) {
+    if (identical(x, y)) {
       return 0;
     }
     if (x == null) {

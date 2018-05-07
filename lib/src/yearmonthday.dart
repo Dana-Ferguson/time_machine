@@ -47,6 +47,7 @@ class YearMonthDay {
         int.parse(bits[2]));
   }
 
+  // todo: padding doesn't work well with '-'s)
   @override
   String toString() => '${year.toString().padLeft(4, '0')}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
 
