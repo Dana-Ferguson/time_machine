@@ -1,3 +1,5 @@
+// todo: these should really be contained in a class
+
 // https://regexr.com/
 // Capturing Group 1: Arg Index
 // Capturing Group 3: Special Format
@@ -36,4 +38,13 @@ String stringFilled(String text, int count) {
     sb.write(text);
   }
   return sb.toString();
+}
+
+abstract class StringFormatUtilities {
+  static String zeroPadNumber(int n, int width) {
+    if (n >= 0)
+      return n.toString().padLeft(width, '0');
+    else
+      return '-' + n.abs().toString().padLeft(width, '0');
+  }
 }

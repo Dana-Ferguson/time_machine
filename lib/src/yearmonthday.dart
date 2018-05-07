@@ -1,4 +1,5 @@
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_utilities.dart';
 
 // todo: YearMonthDay_Calendar packing didn't work on VM (with the masks -- packing actually worked!), I don't think this packing works on JS, we'll need to drop it (or investigate a better solution)
 @internal
@@ -49,7 +50,7 @@ class YearMonthDay {
 
   // todo: padding doesn't work well with '-'s)
   @override
-  String toString() => '${year.toString().padLeft(4, '0')}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
+  String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   @internal
   YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
