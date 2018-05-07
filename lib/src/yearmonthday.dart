@@ -3,7 +3,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 
 // todo: YearMonthDay_Calendar packing didn't work on VM (with the masks -- packing actually worked!), I don't think this packing works on JS, we'll need to drop it (or investigate a better solution)
 @internal
-class YearMonthDay {
+class YearMonthDay implements Comparable<YearMonthDay> {
   // static const int _dayBits = 6; // Up to 64 days in a month.
   // static const int _monthBits = 4; // Up to 16 months per year.
   // static const int _yearBits = 15; // 32K range; only need -10K to +10K.
@@ -60,7 +60,7 @@ class YearMonthDay {
   YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       new YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
-  int compareTo(YearMonthDay other) => _value.compareTo(other._value);
+  int compareTo(YearMonthDay other) => (other == null) ? 1 : _value.compareTo(other._value);
 
   //bool Equals(YearMonthDay other)
   //{
@@ -79,11 +79,11 @@ class YearMonthDay {
   //@override
   //bool operator !=(YearMonthDay rhs) => _value != rhs._value;
 
-  bool operator <(YearMonthDay rhs) => _value < rhs._value;
+  bool operator <(YearMonthDay rhs) => rhs == null ? false : _value < rhs._value;
 
-  bool operator <=(YearMonthDay rhs) => _value <= rhs._value;
+  bool operator <=(YearMonthDay rhs) => rhs == null ? false : _value <= rhs._value;
 
-  bool operator >(YearMonthDay rhs) => _value > rhs._value;
+  bool operator >(YearMonthDay rhs) => rhs == null ? true : _value > rhs._value;
 
-  bool operator >=(YearMonthDay rhs) => _value >= rhs._value;
+  bool operator >=(YearMonthDay rhs) => rhs == null ? true : _value >= rhs._value;
 }
