@@ -45,9 +45,9 @@ class Span implements Comparable<Span> {
   // this is only true on the VM....
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
-  static final Span zero = new Span._trusted(0);
+  static const Span zero = const Span._trusted(0);
   /// Gets a [Span] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static final Span epsilon = new Span._trusted(0, 1);
+  static const Span epsilon = const Span._trusted(0, 1);
 
   /// Gets the maximum value supported by [Span]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
   static Span maxValue = new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
@@ -58,7 +58,7 @@ class Span implements Comparable<Span> {
   static Span oneDay = new Span(days: 1);
   static Span oneWeek = new Span(days: 7);
 
-  Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
+  const Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
 
   factory Span._untrusted(int milliseconds, [int nanoseconds = 0]) {
     if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Span._trusted(milliseconds, nanoseconds);
