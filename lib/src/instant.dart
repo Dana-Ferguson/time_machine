@@ -63,12 +63,12 @@ class Instant implements Comparable<Instant> {
     return new Instant.trusted(_span);
   }
 
-  @internal Instant.trusted(this._span);
+  @internal const Instant.trusted(this._span);
   // todo: to untrusted factories
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
-  Instant() : _span = Span.zero;
+  const Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
   @internal bool get IsValid => daysSinceEpoch >= minDays && daysSinceEpoch <= maxDays;

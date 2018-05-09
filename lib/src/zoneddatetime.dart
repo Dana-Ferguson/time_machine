@@ -58,10 +58,10 @@ offsetDateTime = new OffsetDateTime.instantCalendar(instant, zone.GetUtcOffset(i
 /// </summary>
 /// <param name="instant">The instant.</param>
 /// <param name="zone">The time zone.</param>
-ZonedDateTime(Instant instant, DateTimeZone zone)
+ZonedDateTime([Instant instant = const Instant(), DateTimeZone zone = null])
 :
-this.zone = Preconditions.checkNotNull(zone, 'zone'),
-offsetDateTime = new OffsetDateTime.instant(instant, zone.GetUtcOffset(instant));
+this.zone = zone ?? DateTimeZone.Utc /*Preconditions.checkNotNull(zone, 'zone')*/,
+offsetDateTime = new OffsetDateTime.instant(instant, (zone ?? DateTimeZone.Utc).GetUtcOffset(instant));
 
 /// <summary>
 /// Initializes a new instance of the [ZonedDateTime] struct in the specified time zone
