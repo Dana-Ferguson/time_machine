@@ -44,6 +44,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
 
   DateTimeZoneCache._(this.source, this.Ids, this.VersionId);
 
+  // todo: anyway I can make this a regular constructor???
   /// <summary>
   /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
   /// </summary>
@@ -61,10 +62,12 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
     if (VersionId == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned version ID was null");
     }
+
     var providerIds = await source.GetIds();
     if (providerIds == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence was null");
     }
+
     var idList = new List<String>.from(providerIds);
     idList.sort((a, b) => a.compareTo(b)); // sort(StringComparer.Ordinal);
     var ids = new List<String>.from(idList);
@@ -116,7 +119,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
   }
 
   Future<DateTimeZone> operator [](String id) async {
-    var zone = GetZoneOrNull(id);
+    var zone = await GetZoneOrNull(id);
     if (zone == null) {
       throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $VersionId");
     }
