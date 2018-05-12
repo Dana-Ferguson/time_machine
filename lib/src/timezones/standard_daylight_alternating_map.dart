@@ -87,6 +87,8 @@ class _TransitionRecurrenceResult {
           dstRecurrence.Equals(other.dstRecurrence) &&
           standardRecurrence.Equals(other.standardRecurrence);
 
+  bool operator==(dynamic other) => other is StandardDaylightAlternatingMap && Equals(other);
+
   @override int get hashCode => hash3(standardOffset, dstRecurrence, standardRecurrence);
 
   /// <summary>

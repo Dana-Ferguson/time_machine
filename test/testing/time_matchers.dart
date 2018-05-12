@@ -6,6 +6,23 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 Matcher instantIsCloseTo(Instant value) => new InstantIsCloseTo(value, Span.epsilon);
 
+/// Returns the uncached version of the given zone. If the zone isn't
+/// an instance of CachedDateTimeZone, the same reference is returned back.
+DateTimeZone Uncached(DateTimeZone zone)
+{
+  // 'as' will return 'null' in C#, throws exception in Dart
+  if (zone is! CachedDateTimeZone) return zone;
+
+  var cached = zone as CachedDateTimeZone;
+  return cached == null ? zone : cached.TimeZone;
+}
+
+// Matcher throwsAsync<T>() => new Throws(wrapMatcher(new isInstanceOf<T>()));
+Matcher willThrow<T>() => throwsA(new isInstanceOf<T>());
+// Matcher throws<T>() => throwsA(new isInstanceOf<T>());
+
+// throwsA(new isInstanceOf<ArgumentError>()));
+
 class InstantIsCloseTo extends Matcher {
   final Instant _value;
   final Span _delta;

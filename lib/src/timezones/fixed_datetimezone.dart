@@ -61,7 +61,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   if (csharpMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
-    return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
+    return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
   }
 
   return DateTimeZone.UtcId + TextShim.toStringOffset(offset); // OffsetPattern.GeneralInvariant.Format(offset);
@@ -161,9 +161,11 @@ static DateTimeZone Read(DateTimeZoneReader reader, String id)
 
 bool Equals(FixedDateTimeZone other) =>
   other != null &&
-  Offset == other.offset &&
+  offset == other.offset &&
   id == other.id &&
   Name == other.Name;
+
+bool operator==(dynamic other) => other is FixedDateTimeZone && Equals(other);
 
 /// <summary>
 /// Computes the hash code for this instance.

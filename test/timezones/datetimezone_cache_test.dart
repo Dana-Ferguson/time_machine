@@ -32,17 +32,15 @@ void Construction_NullProvider()
 void InvalidSource_NullVersionId()
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"])..VersionId = null;
-  expect(DateTimeZoneCache.getCache(source), throwsAsync<InvalidDateTimeZoneSourceError>());
+  expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
-
-Matcher throwsAsync<T>() => new Throws(wrapMatcher(new isInstanceOf<T>()));
 
 @Test()
 Future InvalidSource_NullIdSequence() async
 {
   List<String> ids = null;
   var source = new TestDateTimeZoneSource(ids);
-  expect(DateTimeZoneCache.getCache(source), throwsAsync<InvalidDateTimeZoneSourceError>());
+  expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
@@ -50,14 +48,14 @@ Future InvalidSource_ReturnsNullForAdvertisedId() async
 {
   var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(() => cache.GetZoneOrNull("foo"), throwsAsync<InvalidDateTimeZoneSourceError>());
+  expect(() => cache.GetZoneOrNull("foo"), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 void InvalidProvider_NullIdWithinSequence()
 {
   var source = new TestDateTimeZoneSource(["Test1", null]);
-  expect(DateTimeZoneCache.getCache(source), throwsAsync<InvalidDateTimeZoneSourceError>());
+  expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
@@ -106,7 +104,7 @@ Future SourceIsNotAskedForUnknownIds() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider["Unknown"], throwsAsync<InvalidDateTimeZoneSourceError>());
+  expect(provider["Unknown"], willThrow<InvalidDateTimeZoneSourceError>());
   expect(source.LastRequestedId, isNull);
 }
 
@@ -175,7 +173,7 @@ Future FixedOffsetZeroReturnsUtc() async
 @Test()
 void Tzdb_Indexer_InvalidFixedOffset()
 {
-  expect(Tzdb["UTC+5Months"], throwsAsync<DateTimeZoneNotFoundException>());
+  expect(Tzdb["UTC+5Months"], willThrow<DateTimeZoneNotFoundException>());
 }
 
 @Test()
@@ -189,7 +187,7 @@ Future NullIdRejected() async
 Future EmptyIdAccepted() async
 {
   var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"]));
-  expect(provider[""], throwsAsync<DateTimeZoneNotFoundException>());
+  expect(provider[""], willThrow<DateTimeZoneNotFoundException>());
 }
 
 @Test()
@@ -256,7 +254,7 @@ Future GetSystemDefault_SourceReturnsNullId() async
 {
   var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(cache.GetSystemDefault(), throwsAsync<DateTimeZoneNotFoundException>());
+  expect(cache.GetSystemDefault(), willThrow<DateTimeZoneNotFoundException>());
 }
 
 

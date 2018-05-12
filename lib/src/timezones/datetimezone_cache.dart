@@ -110,7 +110,7 @@ class DateTimeZoneCache implements IDateTimeZoneProvider {
       zone = await source.ForId(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
-            "Time zone $id is supported by source #VersionId but not returned");
+            "Time zone $id is supported by source $VersionId but not returned");
       }
       timeZoneMap[id] = zone;
     }
