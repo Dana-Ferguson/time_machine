@@ -89,12 +89,13 @@ import 'package:time_machine/time_machine_timezones.dart';
     if (null == other) {
       return false;
     }
-// todo: unsure about this
-    if (this == other) {
+    if (identical(this, other)) {
       return true;
     }
     return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.Equals(other.yearOffset);
   }
+
+  bool operator==(dynamic other) => other is ZoneRecurrence && Equals(other);
 
   /// <summary>
   /// Returns the first transition which occurs strictly after the given instant.
