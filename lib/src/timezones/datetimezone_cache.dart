@@ -26,7 +26,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// implementation is thread-safe.</threadsafety>
 @immutable // only; caches are naturally mutable internally.
 // sealed
-class DateTimeZoneCache implements IDateTimeZoneProvider {
+class DateTimeZoneCache extends IDateTimeZoneProvider {
   @private final Object accessLock = new Object();
   @private final IDateTimeZoneSource source;
   @private final Map<String, DateTimeZone> timeZoneMap = new Map<String, DateTimeZone>();

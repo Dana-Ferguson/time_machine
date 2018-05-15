@@ -123,7 +123,7 @@ class MtdtzBuilder {
 
     EnsureNotBuilt();
     Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
-// The ZoneInterval constructor will perform validation.
+    // The ZoneInterval constructor will perform validation.
     intervals.add(new ZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
     currentName = newName;
     currentStandardOffset = new Offset.fromHours(newStandardOffsetHours);

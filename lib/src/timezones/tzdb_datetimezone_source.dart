@@ -17,7 +17,7 @@ abstract class DateTimeZoneProviders {
   static Future<IDateTimeZoneProvider> Tzdb = DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
 }
 
-class TzdbDateTimeZoneSource implements IDateTimeZoneSource {
+class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
   static Future<TzdbIndex> _tzdbIndex = TzdbIndex.load();
 
   @override

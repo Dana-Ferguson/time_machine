@@ -102,7 +102,14 @@ class ZoneEqualityComparerOptions {
   int operator +(ZoneEqualityComparerOptions other) => _value + other._value;
 
   // todo: I feel like dynamic dispatch like this is *very* dangerous
-  int operator &(dynamic other) => other is ZoneEqualityComparerOptions ? _value & other._value : other is int ? _value & other : throw new ArgumentError('Must be either Options or int.');
+  ZoneEqualityComparerOptions operator &(dynamic other) =>
+      other is ZoneEqualityComparerOptions ? new ZoneEqualityComparerOptions(_value & other._value)
+          : other is int ? new ZoneEqualityComparerOptions(_value & other)
+          : throw new ArgumentError('Must be either Options or int.');
+  ZoneEqualityComparerOptions operator |(dynamic other) =>
+      other is ZoneEqualityComparerOptions ? new ZoneEqualityComparerOptions(_value | other._value)
+          : other is int ? new ZoneEqualityComparerOptions(_value | other)
+          : throw new ArgumentError('Must be either Options or int.');
   int operator ~() => ~_value;
 
   @override
@@ -131,7 +138,7 @@ class ZoneEqualityComparerOptions {
 /// </summary>
 bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptions candidate)
 {
-return (options & candidate) != 0;
+  return (options & candidate).value != 0;
 }
 
 /// <summary>
@@ -174,7 +181,7 @@ return (options & candidate) != 0;
   /// <param name="options">The options to use when comparing time zones.</param>
   /// <exception cref="ArgumentOutOfRangeException">The specified options are invalid.</exception>
   @private ZoneEqualityComparer(this.interval, this.options) : zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval) {
-    if ((options & ~ZoneEqualityComparerOptions.StrictestMatch) != 0) {
+    if ((options & ~ZoneEqualityComparerOptions.StrictestMatch).value != 0) {
       throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
     }
   }
@@ -216,11 +223,13 @@ return (options & candidate) != 0;
   /// <param name="y">The second <see cref="DateTimeZone"/> to compare.</param>
   /// <returns><c>true</c> if the specified time zones are equal under the options and interval of this comparer; otherwise, <c>false</c>.</returns>
   bool Equals(DateTimeZone x, DateTimeZone y) {
-    // todo: unsure what do do about these
-//  if (ReferenceEquals(x, y))
-//  {
-//    return true;
-//  }
+    if (identical(x, y)) {
+      return true;
+    }
+
+    if (x == y) {
+      return true;
+    }
 
     if (x == null || y == null) {
       return false;
@@ -228,16 +237,28 @@ return (options & candidate) != 0;
 
     // If we ever need to port this to a platform which doesn't support LINQ,
     // we'll need to reimplement this. Until then, it would seem pointless...
-    // Dart: that day is TODAY!
-    var a = GetIntervals(x).iterator;
-    var b = GetIntervals(y).iterator;
-    // if (a.length != b.length) return false;
-    while(a.moveNext() || b.moveNext()) {
-      if (a.current == null || b.current == null) return false;
-      if (!zoneIntervalComparer.Equals(a.current, b.current)) return false;
-    }
+    // Dart: that day is TODAY! todo: is this inefficient?
+    var ax = GetIntervals(x); //.toList(growable: false);
+    var by = GetIntervals(y); //.toList(growable: false);
+    // Need a way to know if length can be efficiently computed or not
+    // if (ax.length != by.length) return false;
 
-    return true;
+    var a = ax.iterator;
+    var b = by.iterator;
+    // if (a.length != b.length) return false;
+//    while(a.moveNext() || b.moveNext()) {
+//      if (a.current == null || b.current == null) return false;
+//      if (!zoneIntervalComparer.Equals(a.current, b.current)) return false;
+//    }
+
+    while (a.moveNext())
+    {
+      if (!b.moveNext() || !zoneIntervalComparer.Equals(a.current, b.current))
+        return false;
+    }
+    return !b.moveNext();
+
+    // return true;
     // return GetIntervals(x).SequenceEqual(GetIntervals(y), zoneIntervalComparer);
   }
 
@@ -254,7 +275,10 @@ return (options & candidate) != 0;
   /// <returns>A hash code for the specified object.</returns>
   int GetHashCode(DateTimeZone obj) {
     Preconditions.checkNotNull(obj, 'obj');
-    return hashObjects(GetIntervals(obj).map((i) => zoneIntervalComparer.GetHashCode(i)));
+    return hashObjects(
+        GetIntervals(obj)
+            .map((zoneInterval) => zoneIntervalComparer.GetHashCode(zoneInterval))
+    );
   }
 
   @private Iterable<ZoneInterval> GetIntervals(DateTimeZone zone) {
@@ -301,7 +325,7 @@ return (options & candidate) != 0;
   }
 
   int GetHashCode(ZoneInterval obj) {
-    var hashables = new List<Object>();
+    List hashables = [GetEffectiveStart(obj), GetEffectiveEnd(obj)];
     if (_checkOption(options, ZoneEqualityComparerOptions.MatchOffsetComponents)) {
       hashables.addAll([obj.StandardOffset, obj.savings]);
     }

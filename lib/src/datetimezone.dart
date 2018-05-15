@@ -409,8 +409,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// infinite in both directions).</param>
   /// <returns>A sequence of zone intervals covering the given interval.</returns>
   /// <seealso cref="DateTimeZone.GetZoneInterval"/>
-  Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync*
-  {
+  Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync* {
     var current = interval.HasStart ? interval.Start : Instant.minValue;
     var end = interval.RawEnd;
     while (current < end) {

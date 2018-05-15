@@ -1,5 +1,7 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/IDateTimeZoneProvider.cs
 // 7160b82  on Jun 18, 2017
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Extensions/DateTimeZoneProviderExtensions.cs
+// 24fdeef  on Apr 10, 2017
 
 import 'dart:async';
 
@@ -107,4 +109,13 @@ abstract class IDateTimeZoneProvider {
   /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
   /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
   Future<DateTimeZone> operator [](String id);
+
+  /// Returns a sequence of time zones from the specified provider,
+  /// in the same order in which the IDs are returned by the provider.
+  Future<Iterable<DateTimeZone>> GetAllZones() async {
+    // var ids = await GetIds();
+    var futureZones = Ids.map((id) => this[id]);
+    return await Future.wait(futureZones);
+  }
+
 }

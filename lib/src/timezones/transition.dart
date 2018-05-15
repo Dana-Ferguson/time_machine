@@ -28,7 +28,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal Transition(this.instant, this.NewOffset);
 
-  bool Equals(Transition other) => Instant == other.instant && NewOffset == other.NewOffset;
+  bool Equals(Transition other) => instant == other.instant && NewOffset == other.NewOffset;
 
   /// <summary>
   /// Implements the operator == (equality).
@@ -53,5 +53,5 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <returns>
   /// A <see cref="System.String"/> that represents this instance.
   /// </returns>
-  @override String ToString() => "Transition to $NewOffset at $Instant";
+  @override String toString() => "Transition to $NewOffset at $instant";
 }
