@@ -140,7 +140,7 @@ class _ZoneYearOffset {
     if (null == other) {
       return false;
     }
-    if (this == other) {
+    if (identical(this, other)) {
       return true;
     }
     return mode == other.mode &&
@@ -151,6 +151,8 @@ class _ZoneYearOffset {
         timeOfDay == other.timeOfDay &&
         addDay == other.addDay;
   }
+
+  bool operator==(dynamic other) => other is ZoneYearOffset && Equals(other);
 
 // todo: timeOfDay:{5:r} <-- recreate the format?
   @override String toString() =>
