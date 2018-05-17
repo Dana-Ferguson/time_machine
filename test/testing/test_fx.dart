@@ -35,18 +35,28 @@ class TestCaseSource {
   const TestCaseSource(this.source, [this.description]);
 
   Iterable<TestCase> toTestCases(ObjectMirror mirror) {
-    var argumentsSource = mirror.getField(source).reflectee as List;
+    var argumentsSource = mirror.getField(source).reflectee as Iterable;
 
-    if (argumentsSource.isEmpty) const [];
+    if (argumentsSource.isEmpty) return const [];
     var testCases = new List<TestCase>();
 
     for (var arguments in argumentsSource) {
-      if (arguments is List) testCases.add(new TestCase(arguments));
+      if (arguments is TestCaseData) {
+        if (arguments.data is List) testCases.add(new TestCase(arguments.data, arguments.name));
+        else testCases.add(new TestCase([arguments.data], arguments.name));
+      }
+      else if (arguments is List) testCases.add(new TestCase(arguments));
       else testCases.add(new TestCase([arguments]));
     }
 
     return testCases;
   }
+}
+
+class TestCaseData {
+  String name;
+  Object data;
+  TestCaseData(this.data);
 }
 
 Future runTests() async {
