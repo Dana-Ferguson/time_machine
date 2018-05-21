@@ -105,7 +105,7 @@ class _TransitionRecurrenceResult {
 
     // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
     // two transitions into the same recurrence in a row.)
-    Offset previousSavings = ReferenceEquals(recurrence, standardRecurrence) ? dstRecurrence.savings : Offset.zero;
+    Offset previousSavings = identical(recurrence, standardRecurrence) ? dstRecurrence.savings : Offset.zero;
     var previous = recurrence.PreviousOrSameOrFail(instant, standardOffset, previousSavings);
     return new ZoneInterval(recurrence.name, previous.instant, next.instant, standardOffset + recurrence.savings, recurrence.savings);
   }

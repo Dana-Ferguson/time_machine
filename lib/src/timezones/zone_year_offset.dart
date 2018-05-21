@@ -265,14 +265,10 @@ class _ZoneYearOffset {
   /// <param name="savings">The daylight savings adjustment.</param>
   /// <returns>The base time offset as a <see cref="Duration"/>.</returns>
   @internal Offset GetRuleOffset(Offset standardOffset, Offset savings) {
-    switch (mode) {
-      case TransitionMode.wall:
-        return standardOffset + savings;
-      case TransitionMode.standard:
-        return standardOffset;
-      default:
-        return Offset.zero;
-    }
+    // note: switch statements in Dart 1.25 don't work with constant classes
+    if (mode == TransitionMode.wall) return standardOffset + savings;
+    else if (mode == TransitionMode.standard) return standardOffset;
+    return Offset.zero;
   }
 
   /// <summary>

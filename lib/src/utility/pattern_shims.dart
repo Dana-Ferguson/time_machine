@@ -35,7 +35,10 @@ abstract class TextShim {
   }
 
   static String toStringOffset(Offset offset) {
-    return '${offset.seconds} offset seconds';
+    if (offset.seconds % TimeConstants.secondsPerHour == 0) {
+      return '${offset.seconds ~/ TimeConstants.secondsPerHour} offset-hours';
+    }
+    return '${offset.seconds} offset-seconds';
   }
 
   static String toStringLocalDateTime(LocalDateTime ldt) {

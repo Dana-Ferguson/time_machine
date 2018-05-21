@@ -368,18 +368,8 @@ void AtStrictly_ThrowsWhenSkipped()
 void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
-  // Our Pacific is a PrecalculatedDateTimeZone
-  // Noda's Pacific is a CachedDateTimeZone or a PrecalculatedDateTimeZone
-  //  --> the 'firstGuess' produced by each library differ
-
-  // firstTailZoneInterval
-  //  RawStart is the same, RawEnd is different
-  //  localEnd is different (our's is off by 7 hours!) ?? loading issue ?? missed offset application?
-
-  // other _localEnds's are off in the periods list (MORE LOADING ERRORS!)
   var zoned = Pacific.AtLeniently(local);
   expect(zoned.localDateTime, local);
-  // Offset.fromHours(-8) is what we're getting
   expect(zoned.offset, new Offset.fromHours(-7));
 }
 

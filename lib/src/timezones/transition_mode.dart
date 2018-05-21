@@ -25,7 +25,6 @@ class TransitionMode {
   /// Calculate transitions against standard offset.
   static const TransitionMode standard = const TransitionMode(2);
 
-
   const TransitionMode(this._value);
 
   bool operator <(TransitionMode other) => _value < other._value;
@@ -35,6 +34,9 @@ class TransitionMode {
 
   int operator -(TransitionMode other) => _value - other._value;
   int operator +(TransitionMode other) => _value + other._value;
+
+  bool operator ==(dynamic other) => other is TransitionMode && other._value == _value;
+  int get hashCode => _value.hashCode;
 
   @override
   String toString() => _stringRepresentations[_value] ?? 'undefined';
