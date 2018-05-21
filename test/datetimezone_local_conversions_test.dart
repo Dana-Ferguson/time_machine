@@ -379,6 +379,7 @@ void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
   // other _localEnds's are off in the periods list (MORE LOADING ERRORS!)
   var zoned = Pacific.AtLeniently(local);
   expect(zoned.localDateTime, local);
+  // Offset.fromHours(-8) is what we're getting
   expect(zoned.offset, new Offset.fromHours(-7));
 }
 

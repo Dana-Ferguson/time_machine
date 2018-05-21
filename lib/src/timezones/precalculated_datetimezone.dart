@@ -88,8 +88,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <returns>The ZoneInterval including the given instant.</returns>
   @override ZoneInterval GetZoneInterval(Instant instant) {
     if (tailZone != null && instant >= tailZoneStart) {
-// Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
-// join is seamless.
+      // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
+      // join is seamless.
       ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
       return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
     }
@@ -103,7 +103,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       if (candidate.RawStart > instant) {
         upper = current;
       }
-// Safe to use RawEnd, as it's just for the comparison.
+      // Safe to use RawEnd, as it's just for the comparison.
       else if (candidate.RawEnd <= instant) {
         lower = current + 1;
       }
@@ -111,7 +111,7 @@ import 'package:time_machine/time_machine_timezones.dart';
         return candidate;
       }
     }
-// Note: this would indicate a bug. The time zone is meant to cover the whole of time.
+    // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
     throw new StateError("Instant $instant did not exist in time zone $id");
   }
 
@@ -178,8 +178,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 // #region Offset computation for constructors
 
-// Reasonably simple way of computing the maximum/minimum offset
-// from either periods or transitions, with or without a tail zone.
+  // Reasonably simple way of computing the maximum/minimum offset
+  // from either periods or transitions, with or without a tail zone.
   @private static Offset ComputeOffset(List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
     Preconditions.checkNotNull(intervals, 'intervals');
     Preconditions.checkArgument(intervals.length > 0, 'intervals', "No intervals specified");
@@ -188,8 +188,8 @@ import 'package:time_machine/time_machine_timezones.dart';
       ret = aggregator(ret, intervals[i].wallOffset);
     }
     if (tailZone != null) {
-// Effectively a shortcut for picking either tailZone.MinOffset or
-// tailZone.MaxOffset
+      // Effectively a shortcut for picking either tailZone.MinOffset or
+      // tailZone.MaxOffset
       Offset bestFromZone = aggregator(tailZone.minOffset, tailZone.maxOffset);
       ret = aggregator(ret, bestFromZone);
     }
