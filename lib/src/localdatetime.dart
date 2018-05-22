@@ -312,19 +312,17 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// <param name="calendar">The calendar system to convert into</param>
   /// <returns>A new <see cref="LocalDateTime"/> with the same values as the specified <c>DateTime</c>.</returns>
   static LocalDateTime FromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
-    return new LocalDateTime(LocalDate.FromDateTime(dateTime), new LocalTime(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond));
+    // return new LocalDateTime(LocalDate.FromDateTime(dateTime), new LocalTime(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond));
 
-    /*
-    int tickOfDay = dateTime.millisecond;
-    int days = dateTime
-        .difference(new DateTime.fromMillisecondsSinceEpoch(0))
-        .inDays; // TickArithmetic.NonNegativeTicksToDaysAndTickOfDay(dateTime.ticks, out tickOfDay) - NodaConstants.BclDaysAtUnixEpoch;
-    // int leftOver = new DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+    var ms = dateTime.millisecondsSinceEpoch;
+    var days = ms ~/ TimeConstants.millisecondsPerDay; // - 1;
+    ms -= days * TimeConstants.millisecondsPerDay;
+    // print('days: $days; ms: $ms');
+
     if (calendar == null) return new LocalDateTime(
-        new LocalDate.fromDaysSinceEpoch(days), new LocalTime.fromNanoseconds(/*unchecked*/ (tickOfDay * TimeConstants.nanosecondsPerTick)));
+        new LocalDate.fromDaysSinceEpoch(days), new LocalTime.fromNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
     return new LocalDateTime(new LocalDate.fromDaysSinceEpoch_forCalendar(days, calendar),
-        new LocalTime.fromNanoseconds(/*unchecked*/ (tickOfDay * TimeConstants.nanosecondsPerTick)));
-    */
+        new LocalTime.fromNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
   }
 
 // #region Implementation of IEquatable<LocalDateTime>
@@ -437,7 +435,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// zero if this date/time is the same as <paramref name="other"/>; a value greater than zero if this date/time is
   /// later than <paramref name="other"/>.</returns>
   int compareTo(LocalDateTime other) {
-// This will check calendars...
+    // This will check calendars...
     int dateComparison = date.compareTo(other.date);
     if (dateComparison != 0) {
       return dateComparison;

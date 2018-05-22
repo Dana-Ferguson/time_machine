@@ -39,27 +39,28 @@ void ToDateTimeUnspecified()
 @TestCase(const [2900])
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
-  var ldt = new LocalDateTime.fromYMDHMS(year, 1, 1, 13, 15, 55).PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
+  var ldt = new LocalDateTime.fromYMDHMS(year, 1, 1, 13, 15, 55).PlusMilliseconds(TimeConstants.millisecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
   var expected = new DateTime(year, 1, 1, 13, 15, 55/*, DateTimeKind.Unspecified*/)
-      .add(new Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
+      .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
   var actual = ldt.ToDateTimeUnspecified();
-  expect(expected, actual);
+  expect(actual, expected);
 }
 
+/* This works in dart:core (vs. BCL)
 @Test()
 void ToDateTimeUnspecified_OutOfRange()
 {
   // One day before 1st January, 1AD (which is DateTime.MinValue)
   var ldt = new LocalDate(1, 1, 1).PlusDays(-1).AtMidnight;
   expect(() => ldt.ToDateTimeUnspecified(), throwsStateError);
-}
+}*/
 
 @Test()
 void FromDateTime()
 {
   LocalDateTime expected = new LocalDateTime.fromYMDHM(2011, 08, 18, 20, 53);
   // for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
-  DateTime x = new DateTime(2011, 08, 18, 20, 53, 0); //, kind);
+  DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
   LocalDateTime actual = LocalDateTime.FromDateTime(x);
   expect(actual, expected);
 }
@@ -69,9 +70,12 @@ void FromDateTime_WithCalendar()
 {
   // Julian calendar is 13 days behind Gregorian calendar in the 21st century
   LocalDateTime expected = new LocalDateTime.fromYMDHMC(2011, 08, 05, 20, 53, CalendarSystem.Julian);
+  // print('Expected day of year: ${expected.date.DaysSinceEpoch}');
+
+  // todo: I don't understand what the test is doing here, this doesn't work with DateTime() local.
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   {
-  DateTime x = new DateTime(2011, 08, 18, 20, 53, 0); //, kind);
+  DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
   LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.Julian);
   expect(actual, expected);
   }
@@ -295,7 +299,7 @@ void IComparableCompareTo_WrongType_ArgumentException()
   var instance = new LocalDateTime.fromYMDHM(2012, 3, 5, 10, 45);
   Comparable i_instance = /*(IComparable)*/instance;
   var arg = new LocalDate(2012, 3, 6);
-  expect(() => i_instance.compareTo(arg), throwsArgumentError);
+  expect(() => i_instance.compareTo(arg), willThrow<TypeError>());
 }
 
 @Test()
@@ -345,7 +349,7 @@ void InZoneStrictly_InSummer()
 void InZoneStrictly_ThrowsWhenAmbiguous()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
-  expect(() => local.InZoneStrictly(Pacific), throwsA(AmbiguousTimeError));
+  expect(() => local.InZoneStrictly(Pacific), willThrow<AmbiguousTimeError>());
 }
 
 /// <summary>
@@ -356,7 +360,7 @@ void InZoneStrictly_ThrowsWhenAmbiguous()
 void InZoneStrictly_ThrowsWhenSkipped()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(() => local.InZoneStrictly(Pacific), throwsA(SkippedTimeError));
+  expect(() => local.InZoneStrictly(Pacific), willThrow<SkippedTimeError>());
 }
 
 /// <summary>
