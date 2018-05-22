@@ -118,25 +118,25 @@ import 'package:time_machine/time_machine_timezones.dart';
     LocalInstant safeLocal = instant.SafePlus(ruleOffset);
     int targetYear;
     if (safeLocal < minLocalInstant) {
-// Asked for a transition after some point before the first transition: crop to first year (so we get the first transition)
+      // Asked for a transition after some point before the first transition: crop to first year (so we get the first transition)
       targetYear = fromYear;
     }
     else if (safeLocal >= maxLocalInstant) {
-// Asked for a transition after our final transition... or both are beyond the end of time (in which case
-// we can return an infinite transition). This branch will always be taken for transitions beyond the end
-// of time.
+      // Asked for a transition after our final transition... or both are beyond the end of time (in which case
+      // we can return an infinite transition). This branch will always be taken for transitions beyond the end
+      // of time.
       return maxLocalInstant == LocalInstant.AfterMaxValue ? new Transition(Instant.afterMaxValue, newOffset) : null;
     }
     else if (safeLocal == LocalInstant.BeforeMinValue) {
-// We've been asked to find the next transition after some point which is a valid instant, but is before the
-// start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
-// "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
-// I *think* that works...
+      // We've been asked to find the next transition after some point which is a valid instant, but is before the
+      // start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
+      // "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
+      // I *think* that works...
       targetYear = GregorianYearMonthDayCalculator.minGregorianYear;
     }
     else {
-// Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
-// int ignoredDayOfYear;
+      // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
+      // int ignoredDayOfYear;
       targetYear = CalendarSystem.Iso.yearMonthDayCalculator
           .getYear(safeLocal.DaysSinceEpoch)
           .first; //.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
@@ -149,15 +149,15 @@ import 'package:time_machine/time_machine_timezones.dart';
       return new Transition(safeTransition, newOffset);
     }
 
-// We've got a transition earlier than we were asked for. Try next year.
-// Note that this will stil be within the FromYear/ToYear range, otherwise
-// safeLocal >= maxLocalInstant would have been triggered earlier.
+    // We've got a transition earlier than we were asked for. Try next year.
+    // Note that this will stil be within the FromYear/ToYear range, otherwise
+    // safeLocal >= maxLocalInstant would have been triggered earlier.
     targetYear++;
-// Handle infinite transitions
+    // Handle infinite transitions
     if (targetYear > GregorianYearMonthDayCalculator.maxGregorianYear) {
       return new Transition(Instant.afterMaxValue, newOffset);
     }
-// It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
+    // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
     safeTransition = yearOffset.GetOccurrenceForYear(targetYear).SafeMinus(ruleOffset);
     return new Transition(safeTransition, newOffset);
   }

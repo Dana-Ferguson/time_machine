@@ -346,7 +346,7 @@ void AtStrictly_InSummer()
 void AtStrictly_ThrowsWhenAmbiguous()
 {
   // Assert.Throws<AmbiguousTimeException>(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)));
-  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)), throwsA(AmbiguousTimeError));
+  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)), willThrow<AmbiguousTimeError>());
 }
 
 /// <summary>
@@ -357,7 +357,7 @@ void AtStrictly_ThrowsWhenAmbiguous()
 void AtStrictly_ThrowsWhenSkipped()
 {
   // Assert.Throws<SkippedTimeException>(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)));
-  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)), throwsA(SkippedTimeError));
+  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)), willThrow<SkippedTimeError>());
 }
 
 /// <summary>

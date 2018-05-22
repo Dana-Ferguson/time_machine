@@ -272,5 +272,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <returns>
   ///   A <see cref="System.String" /> that represents this instance.
   /// </returns>
+  // @override String toString() => "${name}: [$RawStart, $RawEnd) $wallOffset ($savings)";
+  // @override String toString() => "${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)";
   @override String toString() => "${name}: [$RawStart, $RawEnd) $wallOffset ($savings)";
 }

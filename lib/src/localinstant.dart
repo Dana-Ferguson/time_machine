@@ -176,19 +176,20 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// <returns>
   /// A <see cref="System.String"/> that represents this instance.
   /// </returns>
-  @override String toString() => TextShim.toStringLocalInstant(this);
-//  {
-//    if (this == BeforeMinValue) {
-//      return InstantPatternParser.BeforeMinValueText;
-//    }
-//    if (this == AfterMaxValue) {
-//      return InstantPatternParser.AfterMaxValueText;
-//    }
-//    var date = new LocalDate.fromDaysSinceEpoch(_span.days);
-//    var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-//    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfDay));
-//    return pattern.Format(utc);
-//  }
+  @override String toString() // => TextShim.toStringLocalInstant(this);
+  {
+    if (this == BeforeMinValue) {
+      return "StartOfTime"; // InstantPatternParser.BeforeMinValueText;
+    }
+    if (this == AfterMaxValue) {
+      return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
+    }
+    var date = new LocalDate.fromDaysSinceEpoch(_span.days);
+    // var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
+    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfDay));
+    // return pattern.Format(utc);
+    return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
+  }
 
 // #region IEquatable<LocalInstant> Members
   /// <summary>

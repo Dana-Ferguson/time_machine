@@ -39,7 +39,8 @@ class TransitionMode {
   int get hashCode => _value.hashCode;
 
   @override
-  String toString() => _stringRepresentations[_value] ?? 'undefined';
+  String toString() => _value < _stringRepresentations.length ?
+    _stringRepresentations[_value] : 'undefined:$_value';
 
   TransitionMode parse(String text) {
     var token = text.trim().toLowerCase();

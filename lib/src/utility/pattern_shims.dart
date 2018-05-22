@@ -68,7 +68,15 @@ abstract class TextShim {
   }
 
   static String toStringInstant(Instant instant) {
-    return '${instant.spanSinceEpoch.totalSeconds} seconds since epoch';
+    if (instant == Instant.beforeMinValue) {
+      return "StartOfTime"; //InstantPatternParser.BeforeMinValueText;
+    }
+    if (instant == Instant.afterMaxValue) {
+      return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
+    }
+
+    return instant.toDateTimeUtc().toString();
+    // return '${instant.spanSinceEpoch.totalSeconds} seconds since epoch';
   }
 
   static String toStringInterval(Interval interval) {

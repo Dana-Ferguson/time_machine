@@ -230,7 +230,7 @@ class _ZoneYearOffset {
     // todo: we can bit-pack all this; for example: see below
     int flags = reader.readUint8();
     var dayOfMonthSign = flags >> 7 == 1 ? -1 : 1;
-    var mode = new TransitionMode(flags >> 5);
+    var mode = new TransitionMode(flags >> 5 & 3);
     var dayOfWeek = (flags >> 2) & 7;
     var advanceDayOfWeek = (flags & 2) != 0;
     var addDay = (flags & 1) != 0;
