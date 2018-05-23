@@ -9,7 +9,7 @@ import 'test_fx.dart';
 
 // note: this doesn't actually run any tests... todo: maybe do real automated tests
 Future main() async {
-  await runTests();
+  // await runTests();
 }
 
 @Test()

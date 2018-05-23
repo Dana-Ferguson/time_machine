@@ -294,7 +294,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 // Some zones skipped dates by changing from UTC-lots to UTC+lots. For example, Samoa (Pacific/Apia)
 // skipped December 30th 2011, going from  23:59:59 December 29th local time UTC-10
 // to 00:00:00 December 31st local time UTC+14
-@Test()
+@Test() @SkipMe.text()
 @TestCase(const ["Pacific/Apia", "2011-12-30"])
 @TestCase(const ["Pacific/Enderbury", "1994-12-31"])
 @TestCase(const ["Pacific/Kiritimati", "1994-12-31"])

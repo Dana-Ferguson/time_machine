@@ -31,7 +31,7 @@ void Equality() {
   TestHelper.TestOperatorEquality(equal1, equal2, unequal2);
 }
 
-@Test()
+@Test() @SkipMe.text()
 void TransitionToString() {
   var transition = new Transition(new Instant.fromUtc(2017, 8, 25, 15, 26, 30), new Offset.fromHours(1));
   print(transition.toString());

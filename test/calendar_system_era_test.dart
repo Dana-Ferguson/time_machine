@@ -17,7 +17,7 @@ Future main() async {
 final CalendarSystem CopticCalendar = CalendarSystem.Coptic;
 
 // Tests using CopticCalendar as a simple example which doesn't override anything.
-@Test()
+@Test() @SkipMe.unimplemented()
 void GetAbsoluteYear()
 {
   expect(5, CopticCalendar.GetAbsoluteYear(5, Era.AnnoMartyrum));
@@ -28,13 +28,13 @@ void GetAbsoluteYear()
   expect(Era.AnnoMartyrum, localDate.era);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void GetMinYearOfEra()
 {
   expect(1, CopticCalendar.GetMinYearOfEra(Era.AnnoMartyrum));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void GetMaxYearOfEra()
 {
   expect(CopticCalendar.maxYear, CopticCalendar.GetMaxYearOfEra(Era.AnnoMartyrum));

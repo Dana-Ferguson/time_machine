@@ -362,6 +362,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// as the calendar of <paramref name="lhs"/>.</exception>
   /// <returns>true if the <paramref name="lhs"/> is strictly earlier than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <(LocalDateTime rhs) {
+    if (rhs == null) return false;
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) < 0;
   }
@@ -380,6 +381,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// as the calendar of <paramref name="lhs"/>.</exception>
   /// <returns>true if the <paramref name="lhs"/> is earlier than or equal to <paramref name="rhs"/>, false otherwise.</returns>
   bool operator <=(LocalDateTime rhs) {
+    if (rhs == null) return false;
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) <= 0;
   }
@@ -398,6 +400,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// as the calendar of <paramref name="lhs"/>.</exception>
   /// <returns>true if the <paramref name="lhs"/> is strictly later than <paramref name="rhs"/>, false otherwise.</returns>
   bool operator >(LocalDateTime rhs) {
+    if (rhs == null) return true;
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) > 0;
   }
@@ -416,6 +419,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// as the calendar of <paramref name="lhs"/>.</exception>
   /// <returns>true if the <paramref name="lhs"/> is later than or equal to <paramref name="rhs"/>, false otherwise.</returns>
   bool operator >=(LocalDateTime rhs) {
+    if (rhs == null) return true;
     Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) >= 0;
   }
@@ -436,6 +440,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// later than <paramref name="other"/>.</returns>
   int compareTo(LocalDateTime other) {
     // This will check calendars...
+    if (other == null) return 1;
     int dateComparison = date.compareTo(other.date);
     if (dateComparison != 0) {
       return dateComparison;

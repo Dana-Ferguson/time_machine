@@ -70,7 +70,7 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
   Period p = null;
-  expect(() => (date - p).toString(), throwsStateError);
+  expect(() => (date - p).toString(), willThrow<TypeError>());
 }
 
 @Test()

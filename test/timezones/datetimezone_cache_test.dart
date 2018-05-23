@@ -124,7 +124,7 @@ Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
   expect(provider.Ids.contains(DateTimeZone.UtcId), isFalse);
 }
 
-@Test()
+@Test() @SkipMe.parseIds()
 Future FixedOffsetSucceedsWhenNotAdvertised() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
@@ -147,7 +147,7 @@ Future FixedOffsetConsultsSourceWhenAdvertised() async
   expect(id, source.LastRequestedId);
 }
 
-@Test()
+@Test() @SkipMe.parseIds()
 Future FixedOffsetUncached() async
 {
   String id = "UTC+05:26";
@@ -159,7 +159,7 @@ Future FixedOffsetUncached() async
   expect(zone1, zone2);
 }
 
-@Test()
+@Test() @SkipMe.parseIds()
 Future FixedOffsetZeroReturnsUtc() async
 {
   String id = "UTC+00:00";

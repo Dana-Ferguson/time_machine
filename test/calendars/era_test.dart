@@ -34,7 +34,7 @@ List<Era> Eras = []; /*typeof(Era).GetTypeInfo()
 .Cast<Era>();*/
 
 @TestCaseSource(#Eras)
-@Test()
+@Test() @SkipMe.unimplemented()
 void ResourcePresence(Era era)
 {
   // todo: get us resources?

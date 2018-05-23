@@ -125,7 +125,7 @@ void TimeProperties_BeforeEpoch()
   expect(123456789, ldt.NanosecondOfSecond);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void DateTime_Roundtrip_OtherCalendarInBcl()
 {
   var bcl = BclCalendars.Hijri;
@@ -247,7 +247,7 @@ void CompareTo_SameCalendar()
   expect(value3.compareTo(value2),  greaterThan(0));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void CompareTo_DifferentCalendars_Throws()
 {
   CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);

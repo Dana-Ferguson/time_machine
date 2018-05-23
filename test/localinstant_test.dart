@@ -41,7 +41,7 @@ void MinusOffset_Zero_IsNeutralElement()
   expect(sampleInstant, sampleLocalInstant.MinusZeroOffset());
 }
 
-@Test()
+@Test() @SkipMe.text()
 @TestCase(const [0, 0, "1970-01-01T00:00:00 LOC"])
 @TestCase(const [0, 1, "1970-01-01T00:00:00.000000001 LOC"])
 @TestCase(const [0, 1000, "1970-01-01T00:00:00.000001 LOC"])
@@ -52,7 +52,7 @@ void ToString_Valid(int day, int nanoOfDay, String expectedText)
   expect(expectedText, new LocalInstant.daysNanos(day, nanoOfDay).toString());
 }
 
-@Test()
+@Test() @SkipMe.text()
 void ToString_Extremes()
 {
   expect(InstantPatternParser.BeforeMinValueText, LocalInstant.BeforeMinValue.toString());

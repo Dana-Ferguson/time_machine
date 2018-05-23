@@ -154,7 +154,7 @@ void Equals_DifferentToOtherType()
   expect(interval == new Instant.fromUnixTimeTicks(0), isFalse);
 }
 
-@Test()
+@Test() @SkipMe.text()
 void StringRepresentation()
 {
   LocalDate start = new LocalDate(2000, 1, 1);
@@ -182,7 +182,7 @@ void Calendar()
   expect(calendar, interval.Calendar);
 }
 
-@Test()
+@Test() @SkipMe.text()
 @TestCase(const ["1999-12-31", false], "Before start")
 @TestCase(const ["2000-01-01", true], "On start")
 @TestCase(const ["2005-06-06", true], "In middle")
@@ -234,7 +234,7 @@ void Contains_NullInterval_Throws()
   expect(() => value.contains(null), throwsArgumentError);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Contains_IntervalWithinAnotherCalendar_Throws()
 {
   var value = new DateInterval(
@@ -273,7 +273,7 @@ void Intersection_NullInterval_Throws()
   expect(() => value.Intersection(null), throwsArgumentError);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Intersection_IntervalInDifferentCalendar_Throws()
 {
   var value = new DateInterval(
@@ -313,7 +313,7 @@ void Union_NullInterval_Throws()
   expect(() => value.Union(null), throwsArgumentError);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Union_DifferentCalendar_Throws()
 {
   var value = new DateInterval(

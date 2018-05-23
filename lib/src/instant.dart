@@ -150,10 +150,10 @@ class Instant implements Comparable<Instant> {
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
   DateTime toDateTimeUtc() {
-    if (this < TimeConstants.bclEpoch) {
-      // todo: this may not actually be the case for us
-      throw new StateError('Instant out of range for DateTime');
-    }
+//    if (this < TimeConstants.bclEpoch) {
+//      // todo: this may not actually be the case for us
+//      throw new StateError('Instant out of range for DateTime');
+//    }
 
     if (Utility.isDartVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
     return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);

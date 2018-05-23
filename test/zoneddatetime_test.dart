@@ -510,7 +510,7 @@ void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
 }
 */
 
-@Test()
+@Test() @SkipMe.text()
 void ZonedDateTime_ToString()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
@@ -518,7 +518,7 @@ void ZonedDateTime_ToString()
   expect("2013-07-23T13:05:20 Single (+04)", zoned.toString());
 }
 
-@Test()
+@Test() @SkipMe.text()
 void ZonedDateTime_ToString_WithFormat()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
@@ -526,7 +526,7 @@ void ZonedDateTime_ToString_WithFormat()
   expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 Future LocalComparer() async
 {
   var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
@@ -554,7 +554,7 @@ Future LocalComparer() async
   expect(comparer.getHashCode(londonAfternoon), comparer.getHashCode(losAngelesAfternoon));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 Future InstantComparer() async
 {
   var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];

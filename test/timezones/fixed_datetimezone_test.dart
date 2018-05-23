@@ -60,7 +60,7 @@ void GetZoneIntervals_ReturnsSingleInterval()
   expect(1, mapping.Count);
 }
 
-@Test()
+@Test() @SkipMe.parseIds()
 void For_Id_FixedOffset()
 {
   String id = "UTC+05:30";
@@ -69,7 +69,7 @@ void For_Id_FixedOffset()
   expect(id, zone.id);
 }
 
-@Test()
+@Test() @SkipMe.parseIds()
 void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = "UTC+05:00:00";
@@ -103,7 +103,7 @@ void ZoneIntervalNameDefaultsToZoneId()
   expect("id", zone.Name);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Read_NoNameInStream()
 {
   var ioHelper = DtzIoHelper.CreateNoStringPool();
@@ -116,7 +116,7 @@ void Read_NoNameInStream()
   expect("id", zone.Name);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Read_WithNameInStream()
 {
   var ioHelper = DtzIoHelper.CreateNoStringPool();
@@ -130,7 +130,7 @@ void Read_WithNameInStream()
   expect("name", zone.Name);
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void Roundtrip()
 {
   var ioHelper = DtzIoHelper.CreateNoStringPool();

@@ -123,7 +123,7 @@ void CompareTo_SameCalendar()
   expect(date3.compareTo(date2), greaterThan(0));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void CompareTo_DifferentCalendars_Throws()
 {
   CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);

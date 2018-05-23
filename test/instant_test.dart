@@ -98,7 +98,7 @@ void WithOffset()
 }
 
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void WithOffset_NonIsoCalendar()
 {
   // October 12th 2013 ISO is 1434-12-07 Islamic
@@ -219,7 +219,7 @@ void UnixConversions_ExtremeValues()
   expect(min, new Instant.fromUnixTimeTicks(min.toUnixTimeTicks()));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.Coptic;

@@ -20,6 +20,8 @@ class SkipMe {
 
   const SkipMe([this.reason]);
   const SkipMe.unimplemented() : reason = 'unimplemented';
+  const SkipMe.parseIds() : reason = 'cannot parse dtz ids';
+  const SkipMe.text() : reason = 'text';
 }
 
 class Test {
