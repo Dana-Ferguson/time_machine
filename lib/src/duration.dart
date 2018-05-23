@@ -148,7 +148,7 @@ class Span implements Comparable<Span> {
       microseconds: milliseconds * TimeConstants.microsecondsPerMillisecond
           + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
-  // todo: I feel like the naming here is not consistent enough (but this is consistent with Nodatime)
+  // todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
   // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
   //  where I use floor() if it's negative) .. or does the VM basically already cover that.

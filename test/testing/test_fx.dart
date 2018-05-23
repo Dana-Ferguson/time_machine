@@ -15,6 +15,13 @@ import 'package:matcher/matcher.dart';
 // I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion --> fixable via build.yaml???)
 // Transformers are dead in 2.0, long live build.yaml???
 
+class SkipMe {
+  final String reason;
+
+  const SkipMe([this.reason]);
+  const SkipMe.unimplemented() : reason = 'unimplemented';
+}
+
 class Test {
   final String name;
   const Test([this.name]);
@@ -59,6 +66,8 @@ class TestCaseData {
   TestCaseData(this.data);
 }
 
+int _skippedTotal = 0;
+
 Future runTests() async {
   // this doesn't work, but I believe it should
   // var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
@@ -88,6 +97,15 @@ Future runTests() async {
         testName = sb.toString();
       }
 
+      var skipThisTest = declaration.metadata.any((m) => m.reflectee is SkipMe);
+      if (skipThisTest) {
+        _skippedTotal++;
+        var reason = (declaration.metadata.firstWhere((m) => m.reflectee is SkipMe).reflectee as SkipMe).reason;
+        if (reason == null) print('skipped $testName');
+        else print('skipped $testName because $reason');
+        continue;
+      }
+
       if (declaration is MethodMirror) {
         futures.addAll(_runTest(lib, declaration, testName));
       } else if (declaration is ClassMirror) {
@@ -95,6 +113,8 @@ Future runTests() async {
       }
     }
   }
+
+  print('Total Tests Skipped = $_skippedTotal;');
 
   await Future.wait(futures);
 }
