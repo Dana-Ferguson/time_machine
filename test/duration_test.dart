@@ -292,20 +292,16 @@ void PositiveComponents()
 @Test()
 void NegativeComponents()
 {
-  // Worked out with a calculator :)
+  // Worked out with a calculator :) // -1234567 890123456
   Span duration = new Span(nanoseconds: -1234567890123456);
   expect(-14, duration.days);
-  // todo: our implementation won't go 'negative' for the subcomponents -- should we change it?
-  // todo: we need to seperate our duration subcomponents from the instant subcomponents,
-  //    because, durations are just spreading out from 0, instants are based on day-boundaries.
-  expect(-24967890123456 + TimeConstants.nanosecondsPerDay, duration.nanosecondOfDay);
-  expect(-6 + TimeConstants.hoursPerDay, duration.hours);
-  expect(-56 + TimeConstants.minutesPerHour, duration.minutes);
-  expect(-7 + TimeConstants.secondsPerMinute, duration.seconds);
-  // todo: '- 1' maybe shouldn't be there, floor implementation?
-  expect(-890 + TimeConstants.millisecondsPerSecond - 1, duration.milliseconds);
-  expect(-8901234 + TimeConstants.ticksPerSecond - 1, duration.subsecondTicks);
-  expect(-890123456 + TimeConstants.nanosecondsPerSecond, duration.subsecondNanoseconds);
+  expect(-24967890123456, duration.nanosecondOfDay);
+  expect(-6, duration.hours);
+  expect(-56, duration.minutes);
+  expect(-7, duration.seconds);
+  expect(-890, duration.milliseconds);
+  expect(-8901234, duration.subsecondTicks);
+  expect(-890123456, duration.subsecondNanoseconds);
 }
 
 @Test()

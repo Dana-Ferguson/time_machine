@@ -64,31 +64,26 @@ class Span implements Comparable<Span> {
     if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Span._trusted(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
-      // newNS = ns + TimeConstants.nanosecondsPerMillisecond * n;
-      // _minNano < ns <= _maxNano => ns > _minNano
-      // todo: test all '%' uses in this class for negatives
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
       milliseconds -= delta;
       nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
-
-      return new Span._trusted(milliseconds, nanoseconds);
     }
-
-    if (nanoseconds >= TimeConstants.nanosecondsPerMillisecond) {
-      // while(nanoseconds >= TimeConstants.nanosecondsPerMillisecond) {
-      //   nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
-      //   milliseconds++;
-      // }
-
+    else if (nanoseconds >= TimeConstants.nanosecondsPerMillisecond) {
       var delta = nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond;
       milliseconds += delta;
       nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
-      return new Span._trusted(milliseconds, nanoseconds);
     }
+
+    if (milliseconds < 0 && nanoseconds != 0) {
+      milliseconds++;
+      nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
+    }
+
+    return new Span._trusted(milliseconds, nanoseconds);
+
 
     // todo: custom errors
     throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
-    // return new Duration._trusted(milliseconds, 0);
   }
 
   factory Span({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
@@ -132,7 +127,7 @@ class Span implements Comparable<Span> {
     intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
     intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
 
-    print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
+    // print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
 
     return new Span._untrusted(totalMilliseconds, intervalNanoseconds);
   }
@@ -152,17 +147,17 @@ class Span implements Comparable<Span> {
   // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
   //  where I use floor() if it's negative) .. or does the VM basically already cover that.
-  int get days => floorDays;
+  int get days2 => floorDays;
 
-  int get days2 => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
-  int get hours => (_milliseconds ~/ TimeConstants.millisecondsPerHour) % TimeConstants.hoursPerDay;
-  int get minutes => (_milliseconds ~/ TimeConstants.millisecondsPerMinute) % TimeConstants.minutesPerHour;
-  int get seconds => (_milliseconds ~/ TimeConstants.millisecondsPerSecond) % TimeConstants.secondsPerMinute;
-  int get milliseconds => _milliseconds % TimeConstants.millisecondsPerSecond;
+  int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
+  int get hours => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
+  int get minutes => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
+  int get seconds => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
+  int get milliseconds => csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond);
   // microseconds?
-  int get subsecondTicks => (_milliseconds % TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
-      + (_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerSecond;
-  int get subsecondNanoseconds => (_milliseconds % TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
+  int get subsecondTicks => csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
+      + csharpMod((_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick), TimeConstants.ticksPerSecond);
+  int get subsecondNanoseconds => csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
       + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
   double get totalDays => _milliseconds / TimeConstants.millisecondsPerDay + _nanosecondsInterval / TimeConstants.nanosecondsPerDay;
@@ -188,11 +183,18 @@ class Span implements Comparable<Span> {
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
   // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
-  int get nanosecondOfDay => millisecondsOfDay*TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
-  int get millisecondsOfDay => _milliseconds % TimeConstants.millisecondsPerDay;
+  // todo: these should work with the floorDay
+  // int get nanosecondOfDay => millisecondsOfDay*TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  int get millisecondsOfDay => _milliseconds - (days * TimeConstants.millisecondsPerDay);
 
-  // todo: is this the same thing?
-  int get nanosecondOfFloorDay => nanosecondOfDay;
+  int get nanosecondOfFloorDay =>
+      (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+
+  int get nanosecondOfDay =>
+      (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+
+  Span get spanOfDay => new Span._trusted (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  Span get spanOfFloorDay => new Span._trusted (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
