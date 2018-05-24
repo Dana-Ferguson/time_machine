@@ -160,8 +160,8 @@ void PlusHours_CrossingYearBoundary()
   // Christmas day + 10 days and 1 hour
   LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 12, 25, 12, 15, 8);
   LocalDateTime expected = new LocalDateTime.fromYMDHMS(2012, 1, 4, 13, 15, 8);
-  expect(expected, start.PlusHours(241));
-  expect(start, start.PlusHours(241).PlusHours(-241));
+  expect(start.PlusHours(241), expected);
+  expect(start.PlusHours(241).PlusHours(-241), start);
 }
 
 // Having tested that hours cross boundaries correctly, the other time unit

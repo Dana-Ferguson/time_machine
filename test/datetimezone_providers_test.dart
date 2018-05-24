@@ -17,7 +17,6 @@ Future main() async {
 @Test()
 Future TzdbProviderUsesTzdbSource () async
 {
-  // todo: we need to look at this -- is there a standard VersionId? (also, migrate it into the Tzdb files)
   expect((await DateTimeZoneProviders.Tzdb).VersionId.startsWith("TZDB: "), isTrue);
 }
 

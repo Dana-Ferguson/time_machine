@@ -64,7 +64,7 @@ void SafeMinus_NormalTime()
 {
   var start = new LocalInstant.daysNanos(0, 0);
   var end = start.SafeMinus(new Offset.fromHours(1));
-  expect(new Span(hours: -1), end.spanSinceEpoch);
+  expect(new Span(hours: -1), end.timeSinceEpoch);
 }
 
 // A null offset indicates "BeforeMinValue". Otherwise, MinValue.Plus(offset)

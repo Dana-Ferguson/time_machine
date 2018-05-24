@@ -17,6 +17,7 @@ import 'dart:io';
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var map = await _loadIdMapping();
+    map[DateTimeZone.UtcId] = '';
     return new TzdbIndex._(map);
   }
 
@@ -34,7 +35,7 @@ class TzdbIndex {
   }
 
   final Map<String, String> _zoneFilenames;
-  final Map<String, DateTimeZone> _cache = {};
+  final Map<String, DateTimeZone> _cache = { DateTimeZone.UtcId: DateTimeZone.Utc };
 
   Iterable<String> get zoneIds => _zoneFilenames.keys;
   bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);

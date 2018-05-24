@@ -460,9 +460,6 @@ void SafePlus_NormalTime()
 @TestCase(const [1, -2, null])
 @TestCase(const [2, 1, 3])
 void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
-  // This unit test fails... on some of the case..
-  // todo: what is this unit test doing?
-
   var start = initialOffset == null
       ? Instant.beforeMinValue
       : Instant.minValue + new Span(hours: initialOffset);
@@ -482,9 +479,6 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
 @TestCase(const [-1, 2, null])
 @TestCase(const [-2, -1, -3])
 void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
-  // Has the same issues as above
-  // todo: what is this unit test doing?
-
   var start = initialOffset == null
       ? Instant.afterMaxValue
       : Instant.maxValue + new Span(hours: initialOffset);
@@ -492,6 +486,7 @@ void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset)
       ? LocalInstant.AfterMaxValue
       : Instant.maxValue.plusOffset(new Offset.fromHours(finalOffset));
   var actual = start.SafePlus(new Offset.fromHours(offsetToAdd));
+
   expect(actual, expected);
 }
 

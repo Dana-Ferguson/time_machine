@@ -39,7 +39,6 @@ class _AddTimeResult {
   @private final int maxLongUnits;
   @private final int unitsPerDay;
 
-  // TODO: THIS APPEARS TO ABUSE UNCHECKED BEHAVIOR TO ROLLAROUND -- THIS WILL NOT WORK FOR US AT ALL
   @private TimePeriodField(this.unitNanoseconds) :
         maxLongUnits = Utility.intMaxValue ~/ unitNanoseconds,
         unitsPerDay = TimeConstants.nanosecondsPerDay ~/ unitNanoseconds;
@@ -122,7 +121,7 @@ class _AddTimeResult {
           int longDays = value ~/ unitsPerDay;
           // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
           days = /*checked*/(longDays);
-          value = -(-value % unitsPerDay) * -1;
+          value = -(-value % unitsPerDay);
         }
         int nanosToAdd = value * unitNanoseconds;
         int newNanos = localTime.NanosecondOfDay + nanosToAdd;

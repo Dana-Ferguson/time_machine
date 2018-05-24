@@ -51,12 +51,12 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// <param name="toYear">The last year in which this recurrence is valid</param>
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
       :
-        this.minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.BeforeMinValue : yearOffset.GetOccurrenceForYear(fromYear),
-        this.maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.AfterMaxValue : yearOffset.GetOccurrenceForYear(toYear) {
+        this.minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.BeforeMinValue : yearOffset?.GetOccurrenceForYear(fromYear),
+        this.maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.AfterMaxValue : yearOffset?.GetOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
-// todo: magic numbers
+    // todo: magic numbers
     Preconditions.checkArgument(fromYear == Utility.int32MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
         "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
     Preconditions.checkArgument(toYear == Utility.int32MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',

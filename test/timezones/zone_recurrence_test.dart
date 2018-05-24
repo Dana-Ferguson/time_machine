@@ -254,7 +254,7 @@ void ForSingleYear()
   expect(2017, singleYear.toYear);
 }
 
-@Test()
+@Test() @SkipMe.text()
 void ZoneRecurrenceToString()
 {
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.Midnight);

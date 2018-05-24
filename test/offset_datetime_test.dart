@@ -235,7 +235,7 @@ void ToString_Utc()
 //  expect("2012/10/06 01:02:03 01", odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", CultureInfo.InvariantCulture));
 //}
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void LocalComparer()
 {
   var localControl = new LocalDateTime.fromYMDHM(2013, 4, 2, 19, 54);
@@ -282,7 +282,7 @@ void LocalComparer()
   expect(comparer.getHashCode(control), isNot(comparer.getHashCode(control)));
 }
 
-@Test()
+@Test() @SkipMe.unimplemented()
 void InstantComparer()
 {
   var localControl = new LocalDateTime.fromYMDHM(2013, 4, 2, 19, 54);

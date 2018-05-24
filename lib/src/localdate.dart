@@ -170,7 +170,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// </remarks>
   /// <returns>A <see cref="DateTime"/> value for the same date and time as this value.</returns>
   DateTime toDateTimeUnspecified() =>
-      new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
+      new DateTime(Year, Month, Day);
+      // new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
               // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
 
   // Helper method used by both FromDateTime overloads.

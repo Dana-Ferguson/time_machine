@@ -31,5 +31,5 @@ class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
 
   // TODO: forward version to tzdb_index and then get it in here!
   @override
-  Future<String> get VersionId => new Future.sync(() => 'version_super!');
+  Future<String> get VersionId => new Future.sync(() => 'TZDB: 2018');
 }

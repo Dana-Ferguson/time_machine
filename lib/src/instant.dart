@@ -71,7 +71,7 @@ class Instant implements Comparable<Instant> {
   const Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
-  @internal bool get IsValid => daysSinceEpoch >= minDays && daysSinceEpoch <= maxDays;
+  @internal bool get IsValid => this >= minValue && this <= maxValue;
 
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
@@ -150,11 +150,6 @@ class Instant implements Comparable<Instant> {
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
   DateTime toDateTimeUtc() {
-//    if (this < TimeConstants.bclEpoch) {
-//      // todo: this may not actually be the case for us
-//      throw new StateError('Instant out of range for DateTime');
-//    }
-
     if (Utility.isDartVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
     return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);
   }
@@ -163,16 +158,6 @@ class Instant implements Comparable<Instant> {
     throw new UnimplementedError('Pipe in local date time zone.');
   }
 
-//  // DateTimeOffset is a BCL Class
-//  DateTimeOffset ToDateTimeOffset()
-//  {
-//    if (this < TimeConstants.bclEpoch)
-//    {
-//      throw new ArgumentError("Instant out of range for DateTimeOffset");
-//    }
-//    return new DateTimeOffset(TimeConstants.BclTicksAtUnixEpoch + ToUnixTimeTicks(), TimeSpan.Zero);
-//  }
-
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
@@ -180,12 +165,11 @@ class Instant implements Comparable<Instant> {
     return new Instant.trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
-  // todo: why are these different?
-  int get daysSinceEpoch => _span.days;
-  int get nanosecondOfDay => _span.nanosecondOfDay;
+  int get daysSinceEpoch => _span.floorDays; //days;
+  int get nanosecondOfDay => _span.nanosecondOfFloorDay; //nanosecondOfDay;
 
   // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
-  Span get spanSinceEpoch => _span;
+  Span get timeSinceEpoch => _span;
 
   int toUnixTimeSeconds() => _span.floorSeconds;
   int toUnixTimeMilliseconds() => _span.floorMilliseconds; //.totalMilliseconds.toInt();

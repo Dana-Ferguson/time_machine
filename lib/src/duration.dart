@@ -152,11 +152,7 @@ class Span implements Comparable<Span> {
   // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
   //  where I use floor() if it's negative) .. or does the VM basically already cover that.
-  int get days {
-    var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
-    if (_milliseconds < 0 && _milliseconds % TimeConstants.millisecondsPerDay != 0) return days-1;
-    return days;
-  }
+  int get days => floorDays;
 
   int get days2 => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
   int get hours => (_milliseconds ~/ TimeConstants.millisecondsPerHour) % TimeConstants.hoursPerDay;
@@ -180,8 +176,13 @@ class Span implements Comparable<Span> {
 
   // totalsFloor* ???
   int get floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
+  // todo: make more like floorDays?
   int get floorMilliseconds => totalMilliseconds.floor();
-  int get floorDays => totalDays.floor();
+  int get floorDays {
+    var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
+    if (_milliseconds < 0 && _milliseconds % TimeConstants.millisecondsPerDay != 0) return days - 1;
+    return days;
+  }
   int get floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
 
   // original version shown here, very bad, rounding errors much bad -- be better than this

@@ -18,9 +18,10 @@ Future main() async {
   await runTests();
 }
 
+// DateTime doesn't do Ticks, so we lose some precision
 const int extraTicks = 8760; // 8765;
 
-DateTime UnixEpochDateTime = new DateTime(1970, 1, 1, 0, 0, 0);
+DateTime UnixEpochDateTime = new DateTime.utc(1970, 1, 1, 0, 0, 0);
 // This was when I was writing the tests, having finally made everything work - several thousand lines
 // of shockingly untested code.
 DateTime TimeOfGreatAchievement = new DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
@@ -73,11 +74,11 @@ void FieldsOf_GreatAchievement()
   expect(38, now.Minute);
   expect(25, now.Second);
   expect(345, now.Millisecond);
-  expect(3458765, now.TickOfSecond);
+  expect(3458760, now.TickOfSecond); // 3458765
   expect(18 * TimeConstants.ticksPerHour +
       38 * TimeConstants.ticksPerMinute +
       25 * TimeConstants.ticksPerSecond +
-      3458765,
+      3458760, // 3458765
       now.TickOfDay);
 }
 
