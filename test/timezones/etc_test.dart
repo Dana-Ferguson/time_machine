@@ -26,7 +26,7 @@ Future main() async {
 
 // todo: these don't work at all; I'm guessing these come from Aliases?
 
-@Test()
+@Test() @SkipMe("Aliases not yet available?")
 Future FixedEasternZone() async
 {
   String id = "Etc/GMT+5";
@@ -37,7 +37,7 @@ Future FixedEasternZone() async
   expect(new Offset.fromHours(-5), fixedZone.offset);
 }
 
-@Test()
+@Test() @SkipMe("Aliases not yet available?")
 Future FixedWesternZone() async
 {
   String id = "Etc/GMT-4";

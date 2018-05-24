@@ -29,7 +29,7 @@ class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
   @override
   String GetSystemDefaultId() => TzdbIndex.locale;
 
-  // TODO: forward version to tzdb_index and then get it in here!
+  // TODO: forward version to tzdb_index and then get it in here! (I think nodatime is on 2018e atm?)
   @override
   Future<String> get VersionId => new Future.sync(() => 'TZDB: 2018');
 }

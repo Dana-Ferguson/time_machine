@@ -116,7 +116,7 @@ Future runTests() async {
     }
   }
 
-  print('Total Tests Skipped = $_skippedTotal;');
+  if (_skippedTotal != 0) print('Total Tests Skipped = $_skippedTotal;');
 
   await Future.wait(futures);
 }

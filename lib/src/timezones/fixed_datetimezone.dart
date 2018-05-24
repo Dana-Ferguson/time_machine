@@ -81,7 +81,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     return DateTimeZone.Utc;
   }
 
-  print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // todo: get real parsing
+  print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // ${StackTrace.current}'); // todo: get real parsing
   return null;
 
   //var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
