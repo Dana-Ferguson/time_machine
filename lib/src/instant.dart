@@ -189,6 +189,7 @@ class Instant implements Comparable<Instant> {
     // zone is checked for nullity by the constructor.
     new ZonedDateTime(this, zone);
 
+  // todo: name is bad (This is InZone in nodatime)
   ZonedDateTime InZone_Calendar(DateTimeZone zone, CalendarSystem calendar)
   {
     Preconditions.checkNotNull(zone, 'zone');
