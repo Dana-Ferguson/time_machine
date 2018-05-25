@@ -52,58 +52,58 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// </remarks>
 abstract class IWeekYearRule
 {
-/// <summary>
-/// Creates a <see cref="LocalDate" /> from a given week-year, week within that week-year,
-/// and day-of-week, for the specified calendar system.
-/// </summary>
-/// <remarks>
-/// <para>
-/// Wherever reasonable, implementations should ensure that all valid dates
-/// can be constructed via this method. In other words, given a <see cref="LocalDate"/> <c>date</c>,
-/// <c>rule.GetLocalDate(rule.GetWeekYear(date), rule.GetWeekOfWeekYear(date), date.IsoDayOfWeek, date.Calendar)</c>
-/// should always return <c>date</c>. This is true for all rules within Noda Time, but third party
-/// implementations may choose to simplify their implementations by restricting them to appropriate portions
-/// of time.
-/// </para>
-/// <para>
-/// Implementations may restrict which calendar systems supplied here, but the implementations provided by
-/// Noda Time work with all available calendar systems.
-/// </para>
-/// </remarks>
-/// <param name="weekYear">The week-year of the new date. Implementations provided by Noda Time allow any
-/// year which is a valid calendar year, and sometimes one less than the minimum calendar year
-/// and/or one more than the maximum calendar year, to allow for dates near the start of a calendar
-/// year to fall in the previous week year, and similarly for dates near the end of a calendar year.</param>
-/// <param name="weekOfWeekYear">The week of week-year of the new date. Valid values for this parameter
-/// may vary depending on <paramref name="weekYear"/>, as the length of a year in weeks varies.</param>
-/// <param name="dayOfWeek">The day-of-week of the new date. Valid values for this parameter may vary
-/// depending on <paramref name="weekYear"/> and <paramref name="weekOfWeekYear"/>.</param>
-/// <param name="calendar">The calendar system for the date.</param>
-/// <exception cref="ArgumentOutOfRangeException">The parameters do not combine to form a valid date.</exception>
-/// <returns>A <see cref="LocalDate"/> corresponding to the specified values.</returns>
-LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
+  /// <summary>
+  /// Creates a <see cref="LocalDate" /> from a given week-year, week within that week-year,
+  /// and day-of-week, for the specified calendar system.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// Wherever reasonable, implementations should ensure that all valid dates
+  /// can be constructed via this method. In other words, given a <see cref="LocalDate"/> <c>date</c>,
+  /// <c>rule.GetLocalDate(rule.GetWeekYear(date), rule.GetWeekOfWeekYear(date), date.IsoDayOfWeek, date.Calendar)</c>
+  /// should always return <c>date</c>. This is true for all rules within Noda Time, but third party
+  /// implementations may choose to simplify their implementations by restricting them to appropriate portions
+  /// of time.
+  /// </para>
+  /// <para>
+  /// Implementations may restrict which calendar systems supplied here, but the implementations provided by
+  /// Noda Time work with all available calendar systems.
+  /// </para>
+  /// </remarks>
+  /// <param name="weekYear">The week-year of the new date. Implementations provided by Noda Time allow any
+  /// year which is a valid calendar year, and sometimes one less than the minimum calendar year
+  /// and/or one more than the maximum calendar year, to allow for dates near the start of a calendar
+  /// year to fall in the previous week year, and similarly for dates near the end of a calendar year.</param>
+  /// <param name="weekOfWeekYear">The week of week-year of the new date. Valid values for this parameter
+  /// may vary depending on <paramref name="weekYear"/>, as the length of a year in weeks varies.</param>
+  /// <param name="dayOfWeek">The day-of-week of the new date. Valid values for this parameter may vary
+  /// depending on <paramref name="weekYear"/> and <paramref name="weekOfWeekYear"/>.</param>
+  /// <param name="calendar">The calendar system for the date.</param>
+  /// <exception cref="ArgumentOutOfRangeException">The parameters do not combine to form a valid date.</exception>
+  /// <returns>A <see cref="LocalDate"/> corresponding to the specified values.</returns>
+  LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
 
-/// <summary>
-/// Calculates the week-year in which the given date occurs, according to this rule.
-/// </summary>
-/// <param name="date">The date to compute the week-year of.</param>
-/// <returns>The week-year of <paramref name="date"/>, according to this rule.</returns>
-int GetWeekYear(LocalDate date);
+  /// <summary>
+  /// Calculates the week-year in which the given date occurs, according to this rule.
+  /// </summary>
+  /// <param name="date">The date to compute the week-year of.</param>
+  /// <returns>The week-year of <paramref name="date"/>, according to this rule.</returns>
+  int GetWeekYear(LocalDate date);
 
-/// <summary>
-/// Calculates the week of the week-year in which the given date occurs, according to this rule.
-/// </summary>
-/// <param name="date">The date to compute the week of.</param>
-/// <returns>The week of the week-year of <paramref name="date"/>, according to this rule.</returns>
-int GetWeekOfWeekYear(LocalDate date);
+  /// <summary>
+  /// Calculates the week of the week-year in which the given date occurs, according to this rule.
+  /// </summary>
+  /// <param name="date">The date to compute the week of.</param>
+  /// <returns>The week of the week-year of <paramref name="date"/>, according to this rule.</returns>
+  int GetWeekOfWeekYear(LocalDate date);
 
-/// <summary>
-/// Returns the number of weeks in the given week-year, within the specified calendar system.
-/// </summary>
-/// <param name="weekYear">The week-year to find the range of.</param>
-/// <param name="calendar">The calendar system the calculation is relative to.</param>
-/// <returns>The number of weeks in the given week-year within the given calendar.</returns>
-int GetWeeksInWeekYear(int weekYear, CalendarSystem calendar);
+  /// <summary>
+  /// Returns the number of weeks in the given week-year, within the specified calendar system.
+  /// </summary>
+  /// <param name="weekYear">The week-year to find the range of.</param>
+  /// <param name="calendar">The calendar system the calculation is relative to.</param>
+  /// <returns>The number of weeks in the given week-year within the given calendar.</returns>
+  int GetWeeksInWeekYear(int weekYear, CalendarSystem calendar);
 }
 
 // todo: No extension methods in Dart ... look at ergonomics here
