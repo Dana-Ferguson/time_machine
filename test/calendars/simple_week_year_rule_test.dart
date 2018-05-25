@@ -201,23 +201,23 @@ void HebrewCalendar(int year, IsoDayOfWeek expectedFirstDay,
     int isoYear, int isoMonth, int isoDay, // Mostly for documentation
     int expectedWeeks, int expectedWeekYearOfFirstDay, int expectedWeekOfWeekYearOfFirstDay)
 {
-  var civilDate = new LocalDate(year, 1, 1, HebrewCivil);
+  var civilDate = new LocalDate.forCalendar(year, 1, 1, CalendarSystem.HebrewCivil);
   var rule = WeekYearRules.Iso;
   expect(expectedFirstDay, civilDate.DayOfWeek);
   expect(civilDate.WithCalendar(CalendarSystem.Iso), new LocalDate(isoYear, isoMonth, isoDay));
-  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, HebrewCivil));
+  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, CalendarSystem.HebrewCivil));
   expect(expectedWeekYearOfFirstDay, rule.GetWeekYear(civilDate));
   expect(expectedWeekOfWeekYearOfFirstDay, rule.GetWeekOfWeekYear(civilDate));
   expect(civilDate,
-      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, HebrewCivil));
+      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.HebrewCivil));
 
   // The scriptural month numbering system should have the same week-year and week-of-week-year.
-  var scripturalDate = civilDate.WithCalendar(HebrewScriptural);
-  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, HebrewScriptural));
+  var scripturalDate = civilDate.WithCalendar(CalendarSystem.HebrewScriptural);
+  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, CalendarSystem.HebrewScriptural));
   expect(expectedWeekYearOfFirstDay, rule.GetWeekYear(scripturalDate));
   expect(expectedWeekOfWeekYearOfFirstDay, rule.GetWeekOfWeekYear(scripturalDate));
   expect(scripturalDate,
-      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, HebrewScriptural));
+      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.HebrewScriptural));
 }
 
 // Jan 1st 2015 = Thursday
