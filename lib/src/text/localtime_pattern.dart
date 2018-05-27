@@ -41,7 +41,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static const String DefaultFormatPattern = "T"; // Long
 
   @internal static final PatternBclSupport<LocalTime> BclSupport =
-  new PatternBclSupport<LocalTime>(DefaultFormatPattern, (fi) => fi.LocalTimePatternParser);
+  new PatternBclSupport<LocalTime>(DefaultFormatPattern, (fi) => fi.localTimePatternParser);
 
   /// <summary>
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
@@ -110,7 +110,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == LocalTime.Midnight
-        ? formatInfo.LocalTimePatternParser.ParsePattern(patternText)
+        ? formatInfo.localTimePatternParser.ParsePattern(patternText)
         : new LocalTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     // (Alternatively, we could just return it directly, instead of creating a new object.)

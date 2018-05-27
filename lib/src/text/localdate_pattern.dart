@@ -35,7 +35,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static const String DefaultFormatPattern = "D"; // Long
 
-  @internal static final PatternBclSupport<LocalDate> BclSupport = new PatternBclSupport<LocalDate>(DefaultFormatPattern, (fi) => fi.LocalDatePatternParser);
+  @internal static final PatternBclSupport<LocalDate> BclSupport = new PatternBclSupport<LocalDate>(DefaultFormatPattern, (fi) => fi.localDatePatternParser);
 
   /// <summary>
   /// Gets an invariant local date pattern which is ISO-8601 compatible.
@@ -110,7 +110,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == DefaultTemplateValue
-        ? formatInfo.LocalDatePatternParser.ParsePattern(patternText)
+        ? formatInfo.localDatePatternParser.ParsePattern(patternText)
         : new LocalDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = (pattern as LocalDatePattern)?.UnderlyingPattern ?? pattern;
