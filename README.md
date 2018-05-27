@@ -1,7 +1,6 @@
 # time_machine
 
-Port of Noda Time. Intended targets are DartVM and Dart4Web.
-It didn't start that way. I just wanted some TimeZone functionality -- but, I don't know how to stop.
+Time Machine is a date and time API for Dart (port of Noda Time).  Intended targets are DartVM and Dart4Web.
 
 The majority of the classes and unit tests are ported over (and passing!).
 
