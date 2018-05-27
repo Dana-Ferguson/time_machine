@@ -46,6 +46,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   FixedFormatInfoPatternParser<OffsetDate> _offsetDatePatternParser;
   FixedFormatInfoPatternParser<OffsetTime> _offsetTimePatternParser;
   FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
+  FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
   // #endregion
 
   /// <summary>
@@ -190,16 +191,18 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
-  @internal FixedFormatInfoPatternParser<Duration> get durationPatternParser => _durationPatternParser = EnsureFixedFormatInitialized(durationPatternParser, () => new DurationPatternParser());
-  @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser => _offsetPatternParser = EnsureFixedFormatInitialized(offsetPatternParser, () => new OffsetPatternParser());
-  @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser => _instantPatternParser = EnsureFixedFormatInitialized(instantPatternParser, () => new InstantPatternParser());
-  @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser => _localTimePatternParser = EnsureFixedFormatInitialized(localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
-  @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser => _localDatePatternParser = EnsureFixedFormatInitialized(localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser => _localDateTimePatternParser = EnsureFixedFormatInitialized(localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser => _offsetDateTimePatternParser = EnsureFixedFormatInitialized(offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser => _offsetDatePatternParser = EnsureFixedFormatInitialized(offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser => _offsetTimePatternParser = EnsureFixedFormatInitialized(offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser => _zonedDateTimePatternParser = EnsureFixedFormatInitialized(zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
+  @internal FixedFormatInfoPatternParser<Duration> get durationPatternParser => _durationPatternParser = EnsureFixedFormatInitialized(_durationPatternParser, () => new DurationPatternParser());
+  @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser => _offsetPatternParser = EnsureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
+  @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser => _instantPatternParser = EnsureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
+  @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser => _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
+  @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser => _localDatePatternParser = EnsureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser => _localDateTimePatternParser = EnsureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser => _offsetDateTimePatternParser = EnsureFixedFormatInitialized(_offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser => _offsetDatePatternParser = EnsureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser => _offsetTimePatternParser = EnsureFixedFormatInitialized(_offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser => _zonedDateTimePatternParser = EnsureFixedFormatInitialized(_zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
+  @internal FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser => _annualDatePatternParser = EnsureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
+
 
   @private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T> field,
   IPatternParser<T> Function() patternParserFactory) {
