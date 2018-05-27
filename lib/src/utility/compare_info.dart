@@ -37,4 +37,6 @@ class DateTimeFormatInfo {
 
   String ShortDatePattern;
   String LongDatePattern;
+  String ShortTimePattern;
+  String LongTimePattern;
 }

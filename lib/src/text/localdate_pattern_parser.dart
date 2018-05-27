@@ -11,37 +11,31 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
 /// Maximum two-digit-year in the template to treat as the current century.
 /// (One day we may want to make this configurable, but it feels very low
 /// priority.)
-/// </summary>
 @private const int TwoDigitYearMax = 30;
 
-// todo: was Map<Char
-@private final Map<String, CharacterHandler<LocalDate, LocalDateParseBucket>> PatternCharacterHandlers =
-/*new Map<String, CharacterHandler<LocalDate, LocalDateParseBucket>>*/
-{
-  '%': SteppedPatternBuilder.HandlePercent/**<LocalDate, LocalDateParseBucket>*/,
-  '\'': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
-  '\"': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
-  '\\': SteppedPatternBuilder.HandleBackslash/**<LocalDate, LocalDateParseBucket>*/,
-  '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
-  'y': DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value),
-  'u': SteppedPatternBuilder.HandlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.Year, (bucket, value) => bucket.Year = value),
-  'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
-  'd': DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>((value) => value.Day, (value) => /*(int)*/ value.DayOfWeek.value, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value),
-  'c': DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>((value) => value.Calendar, (bucket, value) => bucket.Calendar = value),
-  'g': DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>((date) => date.era, (bucket) => bucket),
-};
-
-
-/// <summary>
 /// Parser for patterns of <see cref="LocalDate"/> values.
-/// </summary>
 @internal /*sealed*/ class LocalDatePatternParser implements IPatternParser<LocalDate> {
   @private final LocalDate templateValue;
 
+  // todo: was Map<Char
+  @private final Map<String, CharacterHandler<LocalDate, LocalDateParseBucket>> PatternCharacterHandlers =
+/*new Map<String, CharacterHandler<LocalDate, LocalDateParseBucket>>*/
+  {
+    '%': SteppedPatternBuilder.HandlePercent/**<LocalDate, LocalDateParseBucket>*/,
+    '\'': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
+    '\"': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
+    '\\': SteppedPatternBuilder.HandleBackslash/**<LocalDate, LocalDateParseBucket>*/,
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
+    'y': DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value),
+    'u': SteppedPatternBuilder.HandlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.Year, (bucket, value) => bucket.Year = value),
+    'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
+    'd': DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>((value) => value.Day, (value) => /*(int)*/ value.DayOfWeek.value, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value),
+    'c': DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>((value) => value.Calendar, (bucket, value) => bucket.Calendar = value),
+    'g': DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>((date) => date.era, (bucket) => bucket),
+  };
 
   Map aMap = {'s': 0, 'y': 3};
 
