@@ -14,5 +14,6 @@ export 'src/text/delegates.dart';
 export 'src/text/parse_bucket.dart';
 export 'src/text/fixed_format_info_pattern_parser.dart';
 export 'src/text/localdate_pattern_parser.dart';
+export 'src/text/localdate_pattern.dart';
 
 export 'src/text/globalization/nodaformatinfo.dart';
