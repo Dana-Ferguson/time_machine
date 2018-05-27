@@ -467,7 +467,7 @@ class _findLongestMatchCursor {
           AddField(PatternFields.embeddedTime, 'l');
           AddEmbeddedPattern(
               LocalDateTimePattern
-                  .Create(embeddedPatternText, FormatInfo, templateDate + templateTime)
+                  .Create(embeddedPatternText, FormatInfo, templateDate.At(templateTime))
                   .UnderlyingPattern,
               parseAction,
               dateTimeExtractor);

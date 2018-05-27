@@ -35,6 +35,7 @@ class DateTimeFormatInfo {
 
   String GetEraName(int x) => "";
 
+  String FullDateTimePattern;
   String ShortDatePattern;
   String LongDatePattern;
   String ShortTimePattern;
