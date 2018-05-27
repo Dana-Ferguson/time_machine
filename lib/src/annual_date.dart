@@ -1,5 +1,5 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/AnnualDate.cs
-// 2cd3c25  on Oct 16, 2017
+// 81a5286 on May 20, 2018
 
 import 'package:meta/meta.dart';
 
@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// <remarks>In the future, this struct may be expanded to support other calendar systems,
 /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
 /// with its leap month.</remarks>
-class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, IComparable<AnnualDate>
+class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
     {
 // The underlying value. We only care about the month and day, but for the sake of
 // compatibility with the default value, this ends up being in year 1. This would
@@ -97,6 +97,7 @@ class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, 
   /// The value of the current instance, in the form MM-dd.
   /// </returns>
   @override String toString() {
+    // AnnualDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
     return '${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
   }
 

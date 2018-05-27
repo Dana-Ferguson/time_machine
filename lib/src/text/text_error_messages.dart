@@ -1,3 +1,6 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/TextErrorMessages.cs
+// c77bb7b May 8th 2018
+
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
@@ -16,6 +19,7 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static const String DateFieldAndEmbeddedDate = "Custom date specifiers cannot be specified in the same pattern as an embedded date specifier";
   @internal static const String DateSeparatorMismatch = "The value string does not match a date separator in the format string.";
   @internal static const String DayOfMonthOutOfRange = "The day {0} is out of range in month {1} of year {2}.";
+  @internal static const String DayOfMonthOutOfRangeNoYear = "The day {0} is out of range in month {1}.";
   @internal static const String EmptyPeriod = "The specified period was empty.";
   @internal static const String EmptyZPrefixedOffsetPattern = "The Z prefix for an Offset pattern must be followed by a custom pattern.";
   @internal static const String EndOfString = "Input string ended unexpectedly early.";
@@ -36,6 +40,7 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static const String InvalidOffset = "The specified offset is invalid for the given date/time.";
   @internal static const String InvalidRepeatCount = "The number of consecutive copies of the pattern character \"{0}\" in the format string ({1}) is invalid.";
   @internal static const String InvalidUnitSpecifier = "The period unit specifier '{0}' is invalid.";
+  @internal static const String IsoMonthOutOfRange = "The month {0} is out of range in the ISO calendar.";
   @internal static const String MismatchedCharacter = "The value string does not match a simple character in the format string \"{0}\".";
   @internal static const String MismatchedNumber = "The value string does not match the required number from the format string \"{0}\".";
   @internal static const String MismatchedText = "The value string does not match the text-based field '{0}'.";

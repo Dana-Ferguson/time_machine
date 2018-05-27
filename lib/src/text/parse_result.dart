@@ -1,3 +1,5 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/ParseResult.cs
+// c77bb7b May 8th, 2018
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
@@ -260,8 +262,14 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static ParseResult<T> MonthOutOfRange<T>(String text, int month, int year) =>
       ForInvalidValuePostParse(text, TextErrorMessages.MonthOutOfRange, [month, year]);
 
+  @internal static ParseResult<T> IsoMonthOutOfRange<T>(String text, int month) =>
+      ForInvalidValuePostParse(text, TextErrorMessages.IsoMonthOutOfRange, [month]);
+
   @internal static ParseResult<T> DayOfMonthOutOfRange<T>(String text, int day, int month, int year) =>
       ForInvalidValuePostParse(text, TextErrorMessages.DayOfMonthOutOfRange, [day, month, year]);
+
+  @internal static ParseResult<T> DayOfMonthOutOfRangeNoYear<T>(String text, int day, int month) =>
+      ForInvalidValuePostParse(text, TextErrorMessages.DayOfMonthOutOfRangeNoYear, [day, month]);
 
   @internal static ParseResult<T> InvalidOffset<T>(String text) => ForInvalidValuePostParse(text, TextErrorMessages.InvalidOffset);
 
