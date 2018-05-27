@@ -14,7 +14,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-@private abstract class Patterns
+@private abstract class _Patterns
 {
   @internal static final LocalTimePattern ExtendedIsoPatternImpl = LocalTimePattern.CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
 }
@@ -36,7 +36,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
   /// </summary>
   /// <value>An invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.</value>
-  static final LocalTimePattern ExtendedIso = Patterns.ExtendedIsoPatternImpl;
+  static final LocalTimePattern ExtendedIso = _Patterns.ExtendedIsoPatternImpl;
 
   @private static const String DefaultFormatPattern = "T"; // Long
 

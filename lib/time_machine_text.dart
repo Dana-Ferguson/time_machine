@@ -19,5 +19,6 @@ export 'src/text/localdate_pattern.dart';
 export 'src/text/localtime_pattern_parser.dart';
 export 'src/text/localtime_pattern.dart';
 export 'src/text/localdatetime_pattern_parser.dart';
+export 'src/text/localdatetime_pattern.dart';
 
 export 'src/text/globalization/nodaformatinfo.dart';

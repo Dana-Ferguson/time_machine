@@ -77,16 +77,16 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (patternText.length == 1) {
       String /*char*/ patternCharacter = patternText[0];
       if (patternCharacter == 'o' || patternCharacter == 'O') {
-        return LocalDateTimePattern.Patterns.BclRoundtripPatternImpl;
+        return LocalDateTimePatterns.BclRoundtripPatternImpl;
       }
       if (patternCharacter == 'r') {
-        return LocalDateTimePattern.Patterns.FullRoundtripPatternImpl;
+        return LocalDateTimePatterns.FullRoundtripPatternImpl;
       }
       if (patternCharacter == 'R') {
-        return LocalDateTimePattern.Patterns.FullRoundtripWithoutCalendarImpl;
+        return LocalDateTimePatterns.FullRoundtripWithoutCalendarImpl;
       }
       if (patternCharacter == 's') {
-        return LocalDateTimePattern.Patterns.GeneralIsoPatternImpl;
+        return LocalDateTimePatterns.GeneralIsoPatternImpl;
       }
       patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
       if (patternText == null) {
