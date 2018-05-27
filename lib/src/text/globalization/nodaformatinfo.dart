@@ -1,3 +1,6 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Globalization/NodaFormatInfo.cs
+// commit 41dc54e on Nov 4, 2017
+
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -27,8 +30,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
   // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
-  @private static final List<String> ShortInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.Clone();
-  @private static final List<String> LongInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Clone();
+  // todo: was .Clone() -- we can probably avoid the need altogether
+  @private static final List<String> ShortInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.toList(growable: false);
+  @private static final List<String> LongInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.toList(growable: false);
 
   // #region Patterns
   // @private final object fieldLock = new object();
@@ -55,7 +59,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   // used by any particular application.
   // 500 should be ample for almost all cases, without being enormous.
   @private static final Cache<CultureInfo, NodaFormatInfo> _cache = new Cache<CultureInfo, NodaFormatInfo>
-  (500, (culture) => new NodaFormatInfo.simple(culture)/*, new ReferenceEqualityComparer<CultureInfo>()*/);
+  (500, (culture) => new NodaFormatInfo(culture)/*, new ReferenceEqualityComparer<CultureInfo>()*/);
 
   // #if NETSTANDARD1_3
   @private final String dateSeparator;
@@ -76,8 +80,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   /// <param name="cultureInfo">The culture info to use.</param>
   @visibleForTesting
-  @internal  NodaFormatInfo.simple(CultureInfo cultureInfo)
-      : this(cultureInfo, cultureInfo?.DateTimeFormat);
+  @internal  NodaFormatInfo(CultureInfo cultureInfo)
+      : this.withDateTimeFormat(cultureInfo, cultureInfo?.DateTimeFormat);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based on
@@ -87,7 +91,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
   /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
   @visibleForTesting
-  @internal  NodaFormatInfo(this.cultureInfo, this.DateTimeFormat)
+  @internal  NodaFormatInfo.withDateTimeFormat(this.cultureInfo, this.DateTimeFormat)
     : eraDescriptions = new Map<Era, EraDescription>() {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     Preconditions.checkNotNull(DateTimeFormat, 'dateTimeFormat');
@@ -184,7 +188,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// Gets the text comparison information associated with this format provider.
   /// </summary>
-  CompareInfo get compareInfo => CultureInfo.CompareInfo;
+  CompareInfo get compareInfo => cultureInfo.compareInfo;
 
   @internal  FixedFormatInfoPatternParser<Duration> get DurationPatternParser => durationPatternParser = EnsureFixedFormatInitialized(durationPatternParser, () => new DurationPatternParser());
   @internal  FixedFormatInfoPatternParser<Offset> get OffsetPatternParser => offsetPatternParser = EnsureFixedFormatInitialized(offsetPatternParser, () => new OffsetPatternParser());
@@ -260,7 +264,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// CultureInfo, that's used for format strings but the invariant culture is used for
   /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
   /// </remarks>
-  DateTimeFormatInfo final DateTimeFormat;
+  final DateTimeFormatInfo DateTimeFormat;
 
   /// <summary>
   /// Gets the time separator.
@@ -270,7 +274,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// Gets the date separator.
   /// </summary>
-String get DateSeparator => dateSeparator;
+  String get DateSeparator => dateSeparator;
 
 //  /// <summary>
 //  /// Gets the time separator.
@@ -285,12 +289,12 @@ String get DateSeparator => dateSeparator;
   /// <summary>
   /// Gets the AM designator.
   /// </summary>
-String get AMDesignator => DateTimeFormat.AMDesignator;
+  String get AMDesignator => DateTimeFormat.AMDesignator;
 
   /// <summary>
   /// Gets the PM designator.
   /// </summary>
-String get PMDesignator => DateTimeFormat.PMDesignator;
+  String get PMDesignator => DateTimeFormat.PMDesignator;
 
   /// <summary>
   /// Returns the names for the given era in this culture.
@@ -322,7 +326,7 @@ String get PMDesignator => DateTimeFormat.PMDesignator;
       EraDescription ret = eraDescriptions[era];
       if (ret == null)
       {
-        ret = EraDescription.ForEra(era, CultureInfo);
+        ret = EraDescription.ForEra(era, cultureInfo);
         eraDescriptions[era] = ret;
       }
       return ret;
@@ -332,7 +336,7 @@ String get PMDesignator => DateTimeFormat.PMDesignator;
   /// <summary>
   /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
   /// </summary>
-  static NodaFormatInfo get CurrentInfo => GetInstance(cultureInfo.CurrentCulture);
+  static NodaFormatInfo get CurrentInfo => GetInstance(CultureInfo.CurrentCulture);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "l" pattern.
@@ -402,34 +406,43 @@ String get PMDesignator => DateTimeFormat.PMDesignator;
   /// <param name="provider">The <see cref="IFormatProvider" />.</param>
   /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
   /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-  static NodaFormatInfo GetInstance(IFormatProvider provider)
-  {
+  static NodaFormatInfo GetInstance(/*IFormatProvider*/ dynamic provider) {
+    if (provider == null) {
+      return GetFormatInfo(CurrentInfo.cultureInfo);
+    } else if (provider is CultureInfo) {
+      return GetFormatInfo(provider);
+    } else if (provider is DateTimeFormatInfo) {
+      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, provider);
+    }
+
+    throw new ArgumentError("Cannot use provider of type ${provider.GetType().FullName} in Noda Time");
+
+    /*
     switch (provider)
     {
       case null:
         return GetFormatInfo(CurrentInfo.cultureInfo);
       case CultureInfo cultureInfo:
       return GetFormatInfo(cultureInfo);
-    // Note: no caching for this case. It's a corner case anyway... we could add a cache later
-    // if users notice a problem.
+      // Note: no caching for this case. It's a corner case anyway... we could add a cache later
+      // if users notice a problem.
       case DateTimeFormatInfo dateTimeFormatInfo:
-      return new NodaFormatInfo(CultureInfo.InvariantCulture, dateTimeFormatInfo);
+      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, dateTimeFormatInfo);
       default:
         throw new ArgumentError("Cannot use provider of type ${provider.GetType().FullName} in Noda Time");
-    }
+    }*/
   }
 
   /// <summary>
   /// Returns a <see cref="System.String" /> that represents this instance.
   /// </summary>
-  @override String toString() => "NodaFormatInfo[" + CultureInfo.Name + "]";
+  @override String toString() => "NodaFormatInfo[" + cultureInfo.Name + "]";
 }
 
 /// <summary>
 /// The description for an era: the primary name and all possible names.
 /// </summary>
-@private class EraDescription
-{
+@private class EraDescription {
   @internal final String PrimaryName;
   @internal final /*ReadOnlyCollection*/ List<String> AllNames;
 
@@ -465,21 +478,14 @@ String get PMDesignator => DateTimeFormat.PMDesignator;
   /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
   /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
   /// </summary>
-  @private static String GetEraNameFromBcl(Era era, CultureInfo culture)
-  {
+  @private static String GetEraNameFromBcl(Era era, CultureInfo culture) {
     var calendar = culture.DateTimeFormat.Calendar;
-//    #if NETSTANDARD1_3
-//    var calendarTypeName = calendar.GetType().FullName;
-//  bool getEraFromCalendar =
-//  (era == Era.Common && calendarTypeName == "System.Globalization.GregorianCalendar") ||
-//  (era == Era.AnnoPersico && calendarTypeName == "System.Globalization.PersianCalendar") ||
-//  (era == Era.AnnoHegirae && (calendarTypeName == "System.Globalization.HijriCalendar" || calendarTypeName == "System.Globalization.UmAlQuraCalendar"));
-//  #else
-  bool getEraFromCalendar =
-  (era == Era.Common && calendar is GregorianCalendar) ||
-  (era == Era.AnnoPersico && calendar is PersianCalendar) ||
-  (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
-//  #endif
-  return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
+
+    bool getEraFromCalendar =
+        (era == Era.Common && calendar is GregorianCalendar) ||
+        (era == Era.AnnoPersico && calendar is PersianCalendar) ||
+        (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
+
+    return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
   }
 }

@@ -19,7 +19,12 @@ import 'dart:collection';
   final Queue<TKey> _keyList;
   final Map<TKey, TValue> _dictionary;
 
+  // todo: Do i want to make our own IEqualityComparer for use here?
   @internal Cache(this._size, this._valueFactory /*, IEqualityComparer<TKey> keyComparer*/) :
+  //   external factory LinkedHashMap(
+  //      {bool equals(K key1, K key2),
+  //      int hashCode(K key),
+  //      bool isValidKey(potentialKey)});
         this._dictionary = new Map<TKey,TValue>(/*keyComparer*/),
         this._keyList = new Queue<TKey>();
 
@@ -38,10 +43,9 @@ import 'dart:collection';
     }
 
     // Make space if necessary...
-    if (_dictionary.length == _size)
+    while (_dictionary.length >= _size)
     {
-      TKey firstKey = _keyList.first;
-      _keyList.removeFirst();
+      TKey firstKey = _keyList.removeFirst();
       _dictionary.remove(firstKey);
     }
 

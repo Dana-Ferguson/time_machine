@@ -7,6 +7,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
+import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
 
 
 // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
@@ -27,7 +28,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 
   Function(TResult, StringBuffer) BuildFormatAction(PatternFields finalFields) {
-    bool genitive = (finalFields & PatternFields.dayOfMonth) != 0;
+    bool genitive = (finalFields.value & PatternFields.dayOfMonth.value) != 0;
     List<String> textValues = count == 3
         ? (genitive ? formatInfo.ShortMonthGenitiveNames : formatInfo.ShortMonthNames)
         : (genitive ? formatInfo.LongMonthGenitiveNames : formatInfo.LongMonthNames);

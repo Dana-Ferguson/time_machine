@@ -1,3 +1,6 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/CompositePatternBuilder.cs
+// 95327c5  on Apr 10, 2017
+
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';

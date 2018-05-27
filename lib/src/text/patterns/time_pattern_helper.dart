@@ -231,21 +231,21 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static void HandleHalfAmPmDesignator<TResult, TBucket extends ParseBucket<TResult>>
       (int count, String specifiedDesignator, int specifiedDesignatorValue, int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter,
       SteppedPatternBuilder<TResult, TBucket> builder) {
-    CompareInfo compareInfo = builder.FormatInfo.CompareInfo;
+    CompareInfo compareInfo = builder.FormatInfo.compareInfo;
     if (count == 1) {
       String abbreviation = specifiedDesignator.substring(0, 1);
 
 
-      _parseAction(str, bucket) {
+      _parseAction(ValueCursor str, TBucket bucket) {
         int value = str.MatchCaseInsensitive(abbreviation, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
         amPmSetter(bucket, value);
         return null;
       }
 
-      _formatAction(value, sb) {
+      _formatAction(TResult value, StringBuffer sb) {
         // Only append anything if it's the non-empty designator.
         if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue) {
-          sb.Append(specifiedDesignator[0]);
+          sb.write(specifiedDesignator[0]);
         }
       }
 
@@ -254,16 +254,16 @@ import 'package:time_machine/time_machine_patterns.dart';
       return;
     }
 
-    _parseAction2(str, bucket) {
+    _parseAction2(ValueCursor str, TBucket bucket) {
       int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
       amPmSetter(bucket, value);
       return null;
     }
 
-    _formatAction2(value, sb) {
+    _formatAction2(TResult value, StringBuffer sb) {
       // Only append anything if it's the non-empty designator.
       if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue) {
-        sb.Append(specifiedDesignator);
+        sb.write(specifiedDesignator);
       }
     }
 

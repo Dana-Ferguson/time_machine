@@ -1,3 +1,6 @@
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/Patterns/SteppedPatternBuilder.cs
+// 10dbf36  on Apr 23
+
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -8,12 +11,13 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
+
 // todo: ******************** REMOVE ALL REF'S \\ OUT'S
 
-// todo: was originally a class inside SteppedPatternBuilder
-@internal typedef ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
-// @internal typedef TBucket
-
+// was originally a class inside SteppedPatternBuilder
+// internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
+@internal typedef ParseResult<TResult>
+  ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
 
 class _findLongestMatchCursor {
   int bestIndex = 0;
@@ -92,9 +96,9 @@ class _findLongestMatchCursor {
   /// Validates the combination of fields used.
   /// </summary>
   @internal void ValidateUsedFields() {
-// We assume invalid combinations are global across all parsers. The way that
-// the patterns are parsed ensures we never end up with any invalid individual fields
-// (e.g. time fields within a date pattern).
+  // We assume invalid combinations are global across all parsers. The way that
+  // the patterns are parsed ensures we never end up with any invalid individual fields
+  // (e.g. time fields within a date pattern).
 
     if ((usedFields & (PatternFields.era | PatternFields.yearOfEra)) == PatternFields.era) {
       throw new InvalidPatternError(TextErrorMessages.EraWithoutYearOfEra);
@@ -154,14 +158,12 @@ class _findLongestMatchCursor {
       int minimumValue, int maximumValue, Function(TBucket, int) valueSetter) {
     Preconditions.debugCheckArgumentRange('minimumValue', minimumValue, 0, Utility.int64MaxValue);
 
-    parseAction(cursor, bucket) {
+    parseAction(ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.Index;
-      int value;
-      if (!cursor.ParseInt64Digits(minimumDigits, maximumDigits, /*todo:out*/ value)
-      ) {
+      int value = cursor.ParseInt64Digits(minimumDigits, maximumDigits);
+      if (value != null) {
         cursor.Move(startingIndex);
-        return ParseResult.
-        MismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+        return ParseResult.MismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (value < minimumValue || value > maximumValue) {
         cursor.Move(startingIndex);
@@ -263,9 +265,10 @@ class _findLongestMatchCursor {
   /// <param name="getter">Delegate to retrieve the field value when formatting</param>
   /// <param name="setter">Delegate to set the field value into a bucket when parsing</param>
   /// <returns>The pattern parsing failure, or null on success.</returns>
-  @internal static CharacterHandler<TResult, TBucket> HandlePaddedField<TResult, TBucket>(int maxCount, PatternFields field, int minValue, int maxValue,
-      int Function(TResult) getter, int Function(TBucket) setter) {
-    return (pattern, builder) =>
+  @internal static CharacterHandler<TResult, TBucket> HandlePaddedField<TResult, TBucket extends ParseBucket<TResult>>(int maxCount, PatternFields field, int minValue, int maxValue,
+      int Function(TResult) getter, int Function(TBucket, int) setter) {
+    // PatternCursor patternCursor, SteppedPatternBuilder<TResult, TBucket>
+    return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) =>
         _HandlePaddedFieldFunction(
             pattern,
             builder,
@@ -277,8 +280,8 @@ class _findLongestMatchCursor {
             setter);
   }
 
-  static void _HandlePaddedFieldFunction<TResult, TBucket>(pattern, builder, int maxCount, PatternFields field, int minValue, int maxValue,
-      int Function(TResult) getter, int Function(TBucket) setter) {
+  static void _HandlePaddedFieldFunction<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder, int maxCount, PatternFields field, int minValue, int maxValue,
+      int Function(TResult) getter, int Function(TBucket, int) setter) {
     int count = pattern.GetRepeatCount(maxCount);
     builder.AddField(field, pattern.Current);
     builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
@@ -431,7 +434,7 @@ class _findLongestMatchCursor {
       // null if date/time embedded patterns are invalid
       LocalDateTime Function(TResult) dateTimeExtractor) {
     // todo: what Types are these?
-    parseAction(bucket, value) {
+    parseAction(TBucket bucket, value) {
       var dateBucket = dateBucketExtractor(bucket);
       var timeBucket = timeBucketExtractor(bucket);
       dateBucket.Calendar = value.Calendar;
@@ -444,8 +447,8 @@ class _findLongestMatchCursor {
       timeBucket.FractionalSeconds = value.NanosecondOfSecond;
     }
 
-// This will be d (date-only), t (time-only), or < (date and time)
-// If it's anything else, we'll see the problem when we try to get the pattern.
+    // This will be d (date-only), t (time-only), or < (date and time)
+    // If it's anything else, we'll see the problem when we try to get the pattern.
     var patternType = pattern.PeekNext();
     if (patternType == 'd' || patternType == 't') {
       pattern.MoveNext();
@@ -485,7 +488,7 @@ class _findLongestMatchCursor {
       String embeddedPatternText,
       /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketExtractor,
       LocalDate Function(TResult) dateExtractor) {
-    parseAction(bucket, value) {
+    parseAction(TBucket bucket, value) {
       var dateBucket = dateBucketExtractor(bucket);
       dateBucket.Calendar = value.Calendar;
       dateBucket.Year = value.Year;
@@ -507,7 +510,7 @@ class _findLongestMatchCursor {
       String embeddedPatternText,
       /*LocalTimePatternParser.*/LocalTimeParseBucket Function(TBucket) timeBucketExtractor,
       LocalTime Function(TResult) timeExtractor) {
-    parseAction(bucket, value) {
+    parseAction(TBucket bucket, value) {
       var timeBucket = timeBucketExtractor(bucket);
       timeBucket.Hours24 = value.Hour;
       timeBucket.Minutes = value.Minute;
@@ -547,7 +550,7 @@ class _findLongestMatchCursor {
   }
 }
 
-// todo: this was a C# hack ... it was inside SteppedPatternBuilder originall
+// todo: this was a C# hack ... it was inside SteppedPatternBuilder original
 /// <summary>
 /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
 /// </summary>
