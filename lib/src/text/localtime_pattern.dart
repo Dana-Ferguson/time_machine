@@ -40,8 +40,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static const String DefaultFormatPattern = "T"; // Long
 
-  //internal static readonly PatternBclSupport<LocalTime> BclSupport =
-  //new PatternBclSupport<LocalTime>(DefaultFormatPattern, fi => fi.LocalTimePatternParser);
+  @internal static final PatternBclSupport<LocalTime> BclSupport =
+  new PatternBclSupport<LocalTime>(DefaultFormatPattern, (fi) => fi.LocalTimePatternParser);
 
   /// <summary>
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class

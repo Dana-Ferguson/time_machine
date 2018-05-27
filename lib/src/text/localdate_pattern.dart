@@ -35,8 +35,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static const String DefaultFormatPattern = "D"; // Long
 
-  // todo: eliminate?
-  // @internal static final PatternBclSupport<LocalDate> BclSupport = new PatternBclSupport<LocalDate>(DefaultFormatPattern, (fi) => fi.LocalDatePatternParser);
+  @internal static final PatternBclSupport<LocalDate> BclSupport = new PatternBclSupport<LocalDate>(DefaultFormatPattern, (fi) => fi.LocalDatePatternParser);
 
   /// <summary>
   /// Gets an invariant local date pattern which is ISO-8601 compatible.
