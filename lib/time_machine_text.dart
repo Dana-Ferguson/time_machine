@@ -32,5 +32,6 @@ export 'src/text/offset_date_pattern_parser.dart';
 export 'src/text/offset_datetime_pattern.dart';
 export 'src/text/offset_datetime_pattern_parser.dart';
 export 'src/text/offset_pattern.dart';
+export 'src/text/offset_pattern_parser.dart';
 
 export 'src/text/globalization/nodaformatinfo.dart';
