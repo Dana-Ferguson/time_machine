@@ -31,6 +31,10 @@ class Span implements Comparable<Span> {
   @internal static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
   @internal static const int minDays = ~maxDays;
 
+  // todo: Convert to BigInt for Dart 2.0
+  @internal static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
+  @internal static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1 /*BigInteger.One*/;
+
   // 285420 years worth -- we are good for anything;
   @internal static const int maxMillis = Utility.intMaxValueJS;
   @internal static const int minMillis = -maxMillis;

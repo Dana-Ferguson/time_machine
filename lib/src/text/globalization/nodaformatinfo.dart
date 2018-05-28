@@ -344,32 +344,32 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// Gets the <see cref="Offset" /> "l" pattern.
   /// </summary>
-  String get OffsetPatternLong => PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo);
+  String get OffsetPatternLong => cultureInfo.OffsetPatternLong; // PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "m" pattern.
   /// </summary>
-  String get OffsetPatternMedium => PatternResources.ResourceManager.GetString("OffsetPatternMedium", cultureInfo);
+  String get OffsetPatternMedium => cultureInfo.OffsetPatternMedium; // PatternResources.ResourceManager.GetString("OffsetPatternMedium", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "s" pattern.
   /// </summary>
-  String get OffsetPatternShort => PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo);
+  String get OffsetPatternShort => cultureInfo.OffsetPatternShort; // PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "L" pattern.
   /// </summary>
-  String get OffsetPatternLongNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", cultureInfo);
+  String get OffsetPatternLongNoPunctuation => cultureInfo.OffsetPatternLongNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "M" pattern.
   /// </summary>
-  String get OffsetPatternMediumNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", cultureInfo);
+  String get OffsetPatternMediumNoPunctuation => cultureInfo.OffsetPatternMediumNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "S" pattern.
   /// </summary>
-  String get OffsetPatternShortNoPunctuation => PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", cultureInfo);
+  String get OffsetPatternShortNoPunctuation => cultureInfo.OffsetPatternShortNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Clears the cache. Only used for test purposes.

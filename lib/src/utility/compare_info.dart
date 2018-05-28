@@ -17,6 +17,15 @@ class CultureInfo {
   CompareInfo compareInfo;
 
   String Name;
+
+  // PatternResources.ResourceManager.GetString(**var**, cultureInfo);
+  String OffsetPatternLong;
+  String OffsetPatternMedium;
+  String OffsetPatternShort;
+
+  String OffsetPatternLongNoPunctuation;
+  String OffsetPatternMediumNoPunctuation;
+  String OffsetPatternShortNoPunctuation;
 }
 
 class DateTimeFormatInfo {

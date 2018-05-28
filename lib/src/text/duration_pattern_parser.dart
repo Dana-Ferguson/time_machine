@@ -144,14 +144,15 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 }
 
+// todo: convert int to BigInt for Dart 2.0
 /// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
 @private /*sealed*/ class SpanParseBucket extends ParseBucket<Span> {
-  @private static final BigInt BigIntegerNanosecondsPerDay = TimeConstants.nanosecondsPerDay;
+  @private static final /*BigInt*/ int BigIntegerNanosecondsPerDay = TimeConstants.nanosecondsPerDay;
 
   // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
   // than to manipulate a real Span.
   @internal bool IsNegative;
-  @private BigInt currentNanos;
+  @private /*BigInt*/ int currentNanos;
 
   @internal void AddNanoseconds(int nanoseconds) {
     this.currentNanos += nanoseconds;
@@ -161,7 +162,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     currentNanos += days * BigIntegerNanosecondsPerDay;
   }
 
-  @internal void AddUnits(int units, BigInt nanosecondsPerUnit) {
+  @internal void AddUnits(int units, /*BigInt*/ int nanosecondsPerUnit) {
     currentNanos += units * nanosecondsPerUnit;
   }
 
@@ -172,7 +173,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (IsNegative) {
       currentNanos = -currentNanos;
     }
-    if (currentNanos < Span.MinNanoseconds || currentNanos > Span.MaxNanoseconds) {
+    if (currentNanos < Span.minNanoseconds || currentNanos > Span.maxNanoseconds) {
       return ParseResult.ForInvalidValuePostParse<Span>(text, TextErrorMessages.OverallValueOutOfRange, ['Span']);
     }
     return ParseResult.ForValue<Span>(new Span(nanoseconds: currentNanos));
