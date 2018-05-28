@@ -27,5 +27,7 @@ export 'src/text/duration_pattern.dart';
 export 'src/text/duration_pattern_parser.dart';
 export 'src/text/instant_pattern.dart';
 export 'src/text/instant_pattern_parser.dart';
+export 'src/text/offset_date_pattern.dart';
+export 'src/text/offset_date_pattern_parser.dart';
 
 export 'src/text/globalization/nodaformatinfo.dart';
