@@ -36,7 +36,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // #region Patterns
   // @private final object fieldLock = new object();
-  FixedFormatInfoPatternParser<Duration> _durationPatternParser;
+  FixedFormatInfoPatternParser<Span> _spanPatternParser;
   FixedFormatInfoPatternParser<Offset> _offsetPatternParser;
   FixedFormatInfoPatternParser<Instant> _instantPatternParser;
   FixedFormatInfoPatternParser<LocalTime> _localTimePatternParser;
@@ -191,7 +191,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
-  @internal FixedFormatInfoPatternParser<Duration> get durationPatternParser => _durationPatternParser = EnsureFixedFormatInitialized(_durationPatternParser, () => new DurationPatternParser());
+  @internal FixedFormatInfoPatternParser<Span> get spanPatternParser => _spanPatternParser = EnsureFixedFormatInitialized(_spanPatternParser, () => new SpanPatternParser());
   @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser => _offsetPatternParser = EnsureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
   @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser => _instantPatternParser = EnsureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
   @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser => _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));

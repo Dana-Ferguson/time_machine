@@ -1,4 +1,4 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/DurationPattern.cs
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/SpanPattern.cs
 // 32a15d0  on Aug 24, 2017
 
 import 'package:meta/meta.dart';
@@ -12,13 +12,13 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 // Nested class for ease of type initialization
-@internal abstract class DurationPatterns
+@internal abstract class SpanPatterns
 {
-  @internal static final DurationPattern RoundtripPatternImpl = DurationPattern.CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+  @internal static final SpanPattern RoundtripPatternImpl = SpanPattern.CreateWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
 }
 
 /// <summary>
-/// Represents a pattern for parsing and formatting <see cref="Duration"/> values.
+/// Represents a pattern for parsing and formatting <see cref="Span"/> values.
 /// </summary>
 /// <threadsafety>
 /// When used with a read-only <see cref="CultureInfo" />, this type is immutable and instances
@@ -26,17 +26,17 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// not currently enforced.
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
-/*sealed*/ class DurationPattern implements IPattern<Duration> {
+/*sealed*/ class SpanPattern implements IPattern<Span> {
   /// <summary>
-  /// Gets the general pattern for durations using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
+  /// Gets the general pattern for Spans using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
   /// This pattern round-trips.
   /// </summary>
-  /// <value>The general pattern for durations using the invariant culture.</value>
-  static DurationPattern get Roundtrip => DurationPatterns.RoundtripPatternImpl;
+  /// <value>The general pattern for Spans using the invariant culture.</value>
+  static SpanPattern get Roundtrip => SpanPatterns.RoundtripPatternImpl;
 
-  @internal static final PatternBclSupport<Duration> BclSupport = new PatternBclSupport<Duration>("o", (fi) => fi.durationPatternParser);
+  @internal static final PatternBclSupport<Span> BclSupport = new PatternBclSupport<Span>("o", (fi) => fi.spanPatternParser);
 
-  @private final IPattern<Duration> pattern;
+  @private final IPattern<Span> pattern;
 
   /// <summary>
   /// Gets the pattern text for this pattern, as supplied on creation.
@@ -44,7 +44,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <value>The pattern text for this pattern, as supplied on creation.</value>
   final String PatternText;
 
-  @private DurationPattern(this.PatternText, this.pattern);
+  @private SpanPattern(this.PatternText, this.pattern);
 
   /// <summary>
   /// Parses the given text value according to the rules of this pattern.
@@ -55,14 +55,14 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </remarks>
   /// <param name="text">The text value to parse.</param>
   /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
-  ParseResult<Duration> Parse(String text) => pattern.Parse(text);
+  ParseResult<Span> Parse(String text) => pattern.Parse(text);
 
   /// <summary>
-  /// Formats the given duration as text according to the rules of this pattern.
+  /// Formats the given Span as text according to the rules of this pattern.
   /// </summary>
-  /// <param name="value">The duration to format.</param>
-  /// <returns>The duration formatted according to this pattern.</returns>
-  String Format(Duration value) => pattern.Format(value);
+  /// <param name="value">The Span to format.</param>
+  /// <returns>The Span formatted according to this pattern.</returns>
+  String Format(Span value) => pattern.Format(value);
 
   /// <summary>
   /// Formats the given value as text according to the rules of this pattern,
@@ -71,7 +71,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="value">The value to format.</param>
   /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
   /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
-  StringBuffer AppendFormat(Duration value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer AppendFormat(Span value, StringBuffer builder) => pattern.AppendFormat(value, builder);
 
   /// <summary>
   /// Creates a pattern for the given pattern text and format info.
@@ -80,11 +80,11 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="formatInfo">Localization information</param>
   /// <returns>A pattern for parsing and formatting offsets.</returns>
   /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-  @private static DurationPattern Create(String patternText, NodaFormatInfo formatInfo) {
+  @private static SpanPattern Create(String patternText, NodaFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternTex');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = formatInfo.durationPatternParser.ParsePattern(patternText);
-    return new DurationPattern(patternText, pattern);
+    var pattern = formatInfo.spanPatternParser.ParsePattern(patternText);
+    return new SpanPattern(patternText, pattern);
   }
 
   /// <summary>
@@ -97,7 +97,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="cultureInfo">The culture to use in the pattern</param>
   /// <returns>A pattern for parsing and formatting offsets.</returns>
   /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-  static DurationPattern Create2(String patternText, CultureInfo cultureInfo) =>
+  static SpanPattern Create2(String patternText, CultureInfo cultureInfo) =>
       Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
 
   /// <summary>
@@ -111,7 +111,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="patternText">Pattern text to create the pattern for</param>
   /// <returns>A pattern for parsing and formatting offsets.</returns>
   /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-  static DurationPattern CreateWithCurrentCulture(String patternText) =>
+  static SpanPattern CreateWithCurrentCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.CurrentInfo);
 
   /// <summary>
@@ -125,7 +125,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="patternText">Pattern text to create the pattern for</param>
   /// <returns>A pattern for parsing and formatting offsets.</returns>
   /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
-  static DurationPattern CreateWithInvariantCulture(String patternText) =>
+  static SpanPattern CreateWithInvariantCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.InvariantInfo);
 
   /// <summary>
@@ -134,6 +134,6 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   /// <param name="cultureInfo">The culture to use in the new pattern.</param>
   /// <returns>A new pattern with the given culture.</returns>
-  DurationPattern WithCulture(CultureInfo cultureInfo) =>
+  SpanPattern WithCulture(CultureInfo cultureInfo) =>
       Create(PatternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
 }

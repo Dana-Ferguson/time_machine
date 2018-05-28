@@ -52,7 +52,7 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static const String MissingNumber = "The value string does not include a number in the expected position.";
   @internal static const String MissingSign = "The required value sign is missing.";
   @internal static const String MonthOutOfRange = "The month {0} is out of range in year {1}.";
-  @internal static const String MultipleCapitalDurationFields = "Only one of \"D\", \"H\", \"M\" or \"S\" can occur in a duration format string.";
+  @internal static const String MultipleCapitalSpanFields = "Only one of \"D\", \"H\", \"M\" or \"S\" can occur in a span format string.";
   @internal static const String NoMatchingCalendarSystem = "The specified calendar id is not recognized.";
   @internal static const String NoMatchingFormat = "None of the specified formats matches the given value string.";
   @internal static const String NoMatchingZoneId = "The specified time zone identifier is not recognized.";
