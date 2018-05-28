@@ -35,5 +35,6 @@ export 'src/text/offset_pattern.dart';
 export 'src/text/offset_pattern_parser.dart';
 export 'src/text/offset_time_pattern.dart';
 export 'src/text/offset_time_pattern_parser.dart';
+export 'src/text/zoneddatetime_pattern.dart';
 
 export 'src/text/globalization/nodaformatinfo.dart';
