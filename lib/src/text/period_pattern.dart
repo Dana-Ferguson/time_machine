@@ -163,7 +163,7 @@ import 'package:time_machine/time_machine_text.dart';
         default:
           return PeriodPattern.InvalidUnit(valueCursor, valueCursor.Current);
       }
-      if ((unit & unitsSoFar) != 0) {
+      if ((unit & unitsSoFar).value != 0) {
         return PeriodPattern.RepeatedUnit(valueCursor, valueCursor.Current);
       }
 

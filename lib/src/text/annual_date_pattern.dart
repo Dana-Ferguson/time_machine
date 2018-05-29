@@ -115,7 +115,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         ? formatInfo.annualDatePatternParser.ParsePattern(patternText)
         : new AnnualDatePatternParser(templateValue).ParsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
-    pattern = (pattern as AnnualDatePattern)?.UnderlyingPattern ?? pattern;
+    pattern = pattern is AnnualDatePattern ? pattern.UnderlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<AnnualDate>;
     return new AnnualDatePattern(patternText, formatInfo, templateValue, partialPattern);
   }

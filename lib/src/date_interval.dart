@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 
@@ -136,12 +137,12 @@ CalendarSystem get Calendar => start.Calendar;
 /// A string representation of this interval, as <c>[start, end]</c>,
 /// where "start" and "end" are the dates formatted using an ISO-8601 compatible pattern.
 /// </returns>
-@override String toString() => TextShim.toStringDateInterval(this);
-//{
-//  String a = LocalDatePattern.Iso.Format(start);
-//  String b = LocalDatePattern.Iso.Format(end);
-//  return "[$a, $b]";
-//}
+//@override String toString() => TextShim.toStringDateInterval(this);
+  @override String toString() {
+    String a = LocalDatePattern.Iso.Format(start);
+    String b = LocalDatePattern.Iso.Format(end);
+    return "[$a, $b]";
+  }
 
 /// Returns the intersection between the given interval and this interval.
 /// 

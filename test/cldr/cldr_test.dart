@@ -75,12 +75,12 @@ String json = '''
 ''';
 
 void SpiderTest() {
-  var _json = JSON.decode(json);
+  /*var _json = JSON.decode(json);
   print(_json);
   var map = new ExemplarCityMap(_json);
   print (map[['zone']]);
   print(map[['zone', 'America']]);
   print(map[['zone', 'America', 'Adak']]);
   print(map[['zone', 'America', 'Argentina']]);
-  print(map[['zone', 'America', 'Argentina', 'San_Luis']]);
+  print(map[['zone', 'America', 'Argentina', 'San_Luis']]);*/
 }

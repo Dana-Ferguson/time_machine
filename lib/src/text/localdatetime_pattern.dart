@@ -161,7 +161,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         ? formatInfo.localDateTimePatternParser.ParsePattern(patternText)
         : new LocalDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
 // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
-    pattern = (pattern as LocalDateTimePattern)?.UnderlyingPattern ?? pattern;
+    pattern = pattern is LocalDateTimePattern ? pattern.UnderlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDateTime>;
     return new LocalDateTimePattern(patternText, formatInfo, templateValue, partialPattern);
   }

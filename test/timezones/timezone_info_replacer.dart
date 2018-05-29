@@ -20,8 +20,9 @@ Future main() async {
   await runTests();
 }
 
-internal class TimeZoneInfoReplacer extends TimeZoneInfo TimeZoneInfoInterceptor // .ITimeZoneInfoShim
+@internal class TimeZoneInfoReplacer extends TimeZoneInfo // TimeZoneInfoInterceptor // .ITimeZoneInfoShim
 {
+  /*
 final TimeZoneInfoInterceptor.ITimeZoneInfoShim originalShim;
 final ReadOnlyCollection<TimeZoneInfo> zones;
 
@@ -53,6 +54,6 @@ throw new Exception("No such time zone: $id");
 
 ReadOnlyCollection<TimeZoneInfo> GetSystemTimeZones() => zones;
 
-void Dispose() => TimeZoneInfoInterceptor.Shim = originalShim;
+void Dispose() => TimeZoneInfoInterceptor.Shim = originalShim;*/
 }
 

@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/time_machine_text.dart';
 
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 
 import 'time_machine_testing.dart';
 
@@ -154,7 +155,7 @@ void Equals_DifferentToOtherType()
   expect(interval == new Instant.fromUnixTimeTicks(0), isFalse);
 }
 
-@Test() @SkipMe.text()
+@Test()
 void StringRepresentation()
 {
   LocalDate start = new LocalDate(2000, 1, 1);
@@ -182,7 +183,7 @@ void Calendar()
   expect(calendar, interval.Calendar);
 }
 
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const ["1999-12-31", false], "Before start")
 @TestCase(const ["2000-01-01", true], "On start")
 @TestCase(const ["2005-06-06", true], "In middle")
