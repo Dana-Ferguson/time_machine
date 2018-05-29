@@ -10,6 +10,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 
 /// <summary>
 /// A <see cref="IFormatProvider"/> for Noda Time types, usually initialised from a <see cref="System.Globalization.CultureInfo"/>.
@@ -25,12 +26,10 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// and may be used freely between threads. Instances with mutable cultures should not be shared between threads
 /// without external synchronization.
 /// See the thread safety section of the user guide for more information.</threadsafety>
-@internal  /*sealed*/ class NodaFormatInfo
-{
+@internal  /*sealed*/ class NodaFormatInfo {
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
   // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
-  // todo: was .Clone() -- we can probably avoid the need altogether
   @private static final List<String> ShortInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.toList(growable: false);
   @private static final List<String> LongInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.toList(growable: false);
 
@@ -47,6 +46,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   FixedFormatInfoPatternParser<OffsetTime> _offsetTimePatternParser;
   FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
   FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
+
   // #endregion
 
   /// <summary>
@@ -60,12 +60,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   // used by any particular application.
   // 500 should be ample for almost all cases, without being enormous.
   @private static final Cache<CultureInfo, NodaFormatInfo> _cache = new Cache<CultureInfo, NodaFormatInfo>
-  (500, (culture) => new NodaFormatInfo(culture)/*, new ReferenceEqualityComparer<CultureInfo>()*/);
+    (500, (culture) => new NodaFormatInfo(culture) /*, new ReferenceEqualityComparer<CultureInfo>()*/);
 
-  // #if NETSTANDARD1_3
-  @private final String dateSeparator;
-  @private final String timeSeparator;
-  // #endif
   @private List<String> longMonthNames;
   @private List<String> longMonthGenitiveNames;
   @private List<String> longDayNames;
@@ -81,7 +77,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   /// <param name="cultureInfo">The culture info to use.</param>
   @visibleForTesting
-  @internal  NodaFormatInfo(CultureInfo cultureInfo)
+  @internal
+  NodaFormatInfo(CultureInfo cultureInfo)
       : this.withDateTimeFormat(cultureInfo, cultureInfo?.DateTimeFormat);
 
   /// <summary>
@@ -92,8 +89,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
   /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
   @visibleForTesting
-  @internal  NodaFormatInfo.withDateTimeFormat(this.cultureInfo, this.DateTimeFormat)
-    : eraDescriptions = new Map<Era, EraDescription>() {
+  @internal
+  NodaFormatInfo.withDateTimeFormat(this.cultureInfo, this.DateTimeFormat)
+      : eraDescriptions = new Map<Era, EraDescription>() {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     Preconditions.checkNotNull(DateTimeFormat, 'dateTimeFormat');
 //  #if NETSTANDARD1_3
@@ -103,10 +101,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 //  #endif
   }
 
-  @private void EnsureMonthsInitialized()
-  {
-    if (longMonthNames != null)
-    {
+  @private void EnsureMonthsInitialized() {
+    if (longMonthNames != null) {
       return;
     }
     // Turn month names into 1-based read-only lists
@@ -125,12 +121,10 @@ import 'package:time_machine/time_machine_patterns.dart';
     return new List<String>.unmodifiable(list);
   }
 
-  @private void EnsureDaysInitialized()
-  {
+  @private void EnsureDaysInitialized() {
     // lock (fieldLock)
     {
-      if (longDayNames != null)
-      {
+      if (longDayNames != null) {
         return;
       }
       longDayNames = ConvertDayArray(DateTimeFormat.DayNames);
@@ -191,21 +185,48 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
-  @internal FixedFormatInfoPatternParser<Span> get spanPatternParser => _spanPatternParser = EnsureFixedFormatInitialized(_spanPatternParser, () => new SpanPatternParser());
-  @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser => _offsetPatternParser = EnsureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
-  @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser => _instantPatternParser = EnsureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
-  @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser => _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
-  @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser => _localDatePatternParser = EnsureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser => _localDateTimePatternParser = EnsureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser => _offsetDateTimePatternParser = EnsureFixedFormatInitialized(_offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser => _offsetDatePatternParser = EnsureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser => _offsetTimePatternParser = EnsureFixedFormatInitialized(_offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
-  @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser => _zonedDateTimePatternParser = EnsureFixedFormatInitialized(_zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
-  @internal FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser => _annualDatePatternParser = EnsureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
+  @internal FixedFormatInfoPatternParser<Span> get spanPatternParser =>
+      _spanPatternParser = EnsureFixedFormatInitialized(_spanPatternParser, () => new SpanPatternParser());
+
+  @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser =>
+      _offsetPatternParser = EnsureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
+
+  @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser =>
+      _instantPatternParser = EnsureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
+
+  @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser =>
+      _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
+
+  @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
+      _localDatePatternParser = EnsureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
+
+  @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
+      _localDateTimePatternParser =
+          EnsureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
+
+  @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
+      _offsetDateTimePatternParser =
+          EnsureFixedFormatInitialized(_offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.DefaultTemplateValue));
+
+  @internal FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser =>
+      _offsetDatePatternParser =
+          EnsureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.DefaultTemplateValue));
+
+  @internal FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser =>
+      _offsetTimePatternParser =
+          EnsureFixedFormatInitialized(_offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.DefaultTemplateValue));
+
+  @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
+      _zonedDateTimePatternParser = EnsureFixedFormatInitialized(
+          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
+
+  @internal FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
+      _annualDatePatternParser =
+          EnsureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.DefaultTemplateValue));
 
 
   @private FixedFormatInfoPatternParser<T> EnsureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T> field,
-  IPatternParser<T> Function() patternParserFactory) {
+      IPatternParser<T> Function() patternParserFactory) {
     // lock (fieldLock)
     if (field == null) {
       field = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
@@ -218,13 +239,21 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
   /// </summary>
-  List<String> get LongMonthNames { EnsureMonthsInitialized();  return longMonthNames; }
+  List<String> get LongMonthNames {
+    EnsureMonthsInitialized();
+    return longMonthNames;
+  }
+
   /// <summary>
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
   /// </summary>
-  List<String> get ShortMonthNames { EnsureMonthsInitialized(); return shortMonthNames; }
+  List<String> get ShortMonthNames {
+    EnsureMonthsInitialized();
+    return shortMonthNames;
+  }
+
   /// <summary>
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
@@ -233,7 +262,11 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// If the culture does not use genitive month names, this property will return the same reference as
   /// <see cref="LongMonthNames"/>.
   /// </summary>
-  List<String> get LongMonthGenitiveNames { EnsureMonthsInitialized(); return longMonthGenitiveNames; }
+  List<String> get LongMonthGenitiveNames {
+    EnsureMonthsInitialized();
+    return longMonthGenitiveNames;
+  }
+
   /// <summary>
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
@@ -242,21 +275,32 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// If the culture does not use genitive month names, this property will return the same reference as
   /// <see cref="ShortMonthNames"/>.
   /// </summary>
-  List<String> get ShortMonthGenitiveNames { EnsureMonthsInitialized(); return shortMonthGenitiveNames; }
+  List<String> get ShortMonthGenitiveNames {
+    EnsureMonthsInitialized();
+    return shortMonthGenitiveNames;
+  }
+
   /// <summary>
   /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
   /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
   /// </summary>
-  List<String> get LongDayNames { EnsureDaysInitialized(); return longDayNames; }
+  List<String> get LongDayNames {
+    EnsureDaysInitialized();
+    return longDayNames;
+  }
+
   /// <summary>
   /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
   /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
   /// </summary>
-  List<String> get ShortDayNames { EnsureDaysInitialized(); return shortDayNames; }
+  List<String> get ShortDayNames {
+    EnsureDaysInitialized();
+    return shortDayNames;
+  }
 
   /// <summary>
   /// Gets the BCL date time format associated with this formatting information.
@@ -272,23 +316,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// Gets the time separator.
   /// </summary>
-  String get TimeSeparator => timeSeparator;
+  String get TimeSeparator => DateTimeFormat.TimeSeparator;
 
   /// <summary>
   /// Gets the date separator.
   /// </summary>
-  String get DateSeparator => dateSeparator;
+  String get DateSeparator => DateTimeFormat.DateSeparator;
 
-//  /// <summary>
-//  /// Gets the time separator.
-//  /// </summary>
-//  String TimeSeparator => DateTimeFormat.TimeSeparator;
-//
-//  /// <summary>
-//  /// Gets the date separator.
-//  /// </summary>
-//  String DateSeparator => DateTimeFormat.DateSeparator;
-//  
   /// <summary>
   /// Gets the AM designator.
   /// </summary>
@@ -305,10 +339,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="era">The era to find the names of.</param>
   /// <returns>A read-only list of names for the given era, or an empty list if
   /// the era is not known in this culture.</returns>
-  List<String> GetEraNames(Era era)
-  {
-  Preconditions.checkNotNull(era, 'era');
-  return GetEraDescription(era).AllNames;
+  List<String> GetEraNames(Era era) {
+    Preconditions.checkNotNull(era, 'era');
+    return GetEraDescription(era).AllNames;
   }
 
   /// <summary>
@@ -316,19 +349,16 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   /// <param name="era">The era to find the primary name of.</param>
   /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
-  String GetEraPrimaryName(Era era)
-  {
-  Preconditions.checkNotNull(era, 'era');
-  return GetEraDescription(era).PrimaryName;
+  String GetEraPrimaryName(Era era) {
+    Preconditions.checkNotNull(era, 'era');
+    return GetEraDescription(era).PrimaryName;
   }
 
-  @private EraDescription GetEraDescription(Era era)
-  {
+  @private EraDescription GetEraDescription(Era era) {
     // lock (eraDescriptions)
     {
       EraDescription ret = eraDescriptions[era];
-      if (ret == null)
-      {
+      if (ret == null) {
         ret = EraDescription.ForEra(era, cultureInfo);
         eraDescriptions[era] = ret;
       }
@@ -344,32 +374,35 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// Gets the <see cref="Offset" /> "l" pattern.
   /// </summary>
-  String get OffsetPatternLong => cultureInfo.OffsetPatternLong; // PatternResources.ResourceManager.GetString("OffsetPatternLong", cultureInfo);
+  String get OffsetPatternLong => PatternResources.GetString("OffsetPatternLong", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "m" pattern.
   /// </summary>
-  String get OffsetPatternMedium => cultureInfo.OffsetPatternMedium; // PatternResources.ResourceManager.GetString("OffsetPatternMedium", cultureInfo);
+  String get OffsetPatternMedium => PatternResources.GetString("OffsetPatternMedium", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "s" pattern.
   /// </summary>
-  String get OffsetPatternShort => cultureInfo.OffsetPatternShort; // PatternResources.ResourceManager.GetString("OffsetPatternShort", cultureInfo);
+  String get OffsetPatternShort => PatternResources.GetString("OffsetPatternShort", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "L" pattern.
   /// </summary>
-  String get OffsetPatternLongNoPunctuation => cultureInfo.OffsetPatternLongNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternLongNoPunctuation", cultureInfo);
+  String get OffsetPatternLongNoPunctuation =>
+      PatternResources.GetString("OffsetPatternLongNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "M" pattern.
   /// </summary>
-  String get OffsetPatternMediumNoPunctuation => cultureInfo.OffsetPatternMediumNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternMediumNoPunctuation", cultureInfo);
+  String get OffsetPatternMediumNoPunctuation =>
+      PatternResources.GetString("OffsetPatternMediumNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "S" pattern.
   /// </summary>
-  String get OffsetPatternShortNoPunctuation => cultureInfo.OffsetPatternShortNoPunctuation; // PatternResources.ResourceManager.GetString("OffsetPatternShortNoPunctuation", cultureInfo);
+  String get OffsetPatternShortNoPunctuation =>
+      PatternResources.GetString("OffsetPatternShortNoPunctuation", cultureInfo);
 
   /// <summary>
   /// Clears the cache. Only used for test purposes.
@@ -384,19 +417,16 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </remarks>
   /// <param name="cultureInfo">The culture info.</param>
   /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-  @internal  static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo)
-  {
-  Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
-  if (cultureInfo == CultureInfo.InvariantCulture)
-  {
-  return InvariantInfo;
-  }
-  // Never cache (or consult the cache) for non-read-only cultures.
-  if (!cultureInfo.IsReadOnly)
-  {
-  return new NodaFormatInfo(cultureInfo);
-  }
-  return _cache.GetOrAdd(cultureInfo);
+  @internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo) {
+    Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
+    if (cultureInfo == CultureInfo.InvariantCulture) {
+      return InvariantInfo;
+    }
+    // Never cache (or consult the cache) for non-read-only cultures.
+    if (!cultureInfo.IsReadOnly) {
+      return new NodaFormatInfo(cultureInfo);
+    }
+    return _cache.GetOrAdd(cultureInfo);
   }
 
   /// <summary>
@@ -409,16 +439,18 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <param name="provider">The <see cref="IFormatProvider" />.</param>
   /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
   /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
-  static NodaFormatInfo GetInstance(/*IFormatProvider*/ dynamic provider) {
-    if (provider == null) {
+  static NodaFormatInfo GetInstance(/*IFormatProvider*/ dynamic formatProvider) {
+    if (formatProvider == null) {
       return GetFormatInfo(CurrentInfo.cultureInfo);
-    } else if (provider is CultureInfo) {
-      return GetFormatInfo(provider);
-    } else if (provider is DateTimeFormatInfo) {
-      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, provider);
+    } else if (formatProvider is CultureInfo) {
+      return GetFormatInfo(formatProvider);
+    } else if (formatProvider is DateTimeFormatInfo) {
+      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, formatProvider);
     }
 
-    throw new ArgumentError("Cannot use provider of type ${provider.GetType().FullName} in Noda Time");
+    throw new ArgumentError("Cannot use provider of type ${formatProvider
+        .GetType()
+        .FullName} in Noda Time");
 
     /*
     switch (provider)
@@ -453,7 +485,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal static EraDescription ForEra(Era era, CultureInfo cultureInfo)
   {
-    String pipeDelimited = PatternResources.ResourceManager.GetString(era.resourceIdentifier, cultureInfo);
+    String pipeDelimited = PatternResources.GetString(era.resourceIdentifier, cultureInfo);
     String primaryName;
     List<String> allNames;
     if (pipeDelimited == null)
@@ -485,9 +517,9 @@ import 'package:time_machine/time_machine_patterns.dart';
     var calendar = culture.DateTimeFormat.Calendar;
 
     bool getEraFromCalendar =
-        (era == Era.Common && calendar is GregorianCalendar) ||
-        (era == Era.AnnoPersico && calendar is PersianCalendar) ||
-        (era == Era.AnnoHegirae && (calendar is HijriCalendar || calendar is UmAlQuraCalendar));
+        (era == Era.Common && calendar == BclCalendarType.gregorian) ||
+        (era == Era.AnnoPersico && calendar == BclCalendarType.persian) ||
+        (era == Era.AnnoHegirae && (calendar == BclCalendarType.hijri || calendar == BclCalendarType.umAlQura));
 
     return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
   }

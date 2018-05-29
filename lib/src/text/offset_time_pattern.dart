@@ -15,7 +15,11 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
 /// </summary>
-@internal abstract class OffsetTimePatterns {
+@internal class OffsetTimePatterns {
+  //static OffsetTimePattern _GeneralIsoPatternImpl = null;
+  //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
+  //    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
+
   @internal static final OffsetTimePattern GeneralIsoPatternImpl = OffsetTimePattern.Create(
       "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
   @internal static final OffsetTimePattern ExtendedIsoPatternImpl = OffsetTimePattern.Create(

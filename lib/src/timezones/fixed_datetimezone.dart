@@ -8,7 +8,7 @@ import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 // Implementation note: this implemented IEquatable<FixedDateTimeZone> for the sake of fitting in with our test infrastructure
@@ -81,11 +81,11 @@ import 'package:time_machine/time_machine_timezones.dart';
     return DateTimeZone.Utc;
   }
 
-  print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // ${StackTrace.current}'); // todo: get real parsing
-  return null;
+  //print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // ${StackTrace.current}'); // todo: get real parsing
+  //return null;
 
-  //var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
-  //return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
+  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
+  return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
 }
 
 /// <summary>

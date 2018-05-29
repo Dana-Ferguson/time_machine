@@ -6,7 +6,7 @@ import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_text.dart';
 
 @immutable
 class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
@@ -156,7 +156,8 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => TextShim.toStringOffsetTime(this); // OffsetTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  //@override String toString() => OffsetTimePatterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  //String toStringSimple() => TextShim.toStringOffsetTime(this); // OffsetTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.
@@ -171,7 +172,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// or null to use the current thread's culture to obtain a format provider.
   /// </param>
   /// <filterpriority>2</filterpriority>
-//  String toString_Format(String patternText, IFormatProvider formatProvider) =>
-//      OffsetTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
+  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
+      OffsetTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
 
 }

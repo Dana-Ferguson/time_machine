@@ -7,10 +7,11 @@ import 'dart:math' as math;
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/time_machine_text.dart';
 
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 
 import 'time_machine_testing.dart';
 
@@ -133,7 +134,7 @@ void BetweenLocalDates_SingleUnit(String startText, String endText, PeriodUnits 
 {
   var start = LocalDatePattern.Iso.Parse(startText).Value;
   var end = LocalDatePattern.Iso.Parse(endText).Value;
-  var actual = Period.Between(start, end, units);
+  var actual = Period.BetweenDates(start, end, units);
   var expected = (new PeriodBuilder()..[units] = expectedValue).Build();
 expect(expected, actual);
 }
@@ -299,7 +300,7 @@ void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits 
   var end = LocalTimePattern.ExtendedIso
       .Parse(endText)
       .Value;
-  var actual = Period.Between(start, end, units);
+  var actual = Period.BetweenTimes(start, end, units);
   var expected = (new PeriodBuilder()
     ..[units] = expectedValue).Build();
   expect(expected, actual);

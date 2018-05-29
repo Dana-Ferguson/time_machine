@@ -102,7 +102,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (current == EmbeddedPatternEnd) {
         depth--;
         if (depth == 0) {
-          return Value.substring(startIndex, Index - startIndex);
+          return Value.substring(startIndex, Index /*- startIndex*/);
         }
       }
       else if (current == EmbeddedPatternStart) {

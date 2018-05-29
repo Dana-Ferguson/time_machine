@@ -27,6 +27,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     throw new StateError("This method should never be called");
   }
 
+  @override
   Function(TResult, StringBuffer) BuildFormatAction(PatternFields finalFields) {
     bool genitive = (finalFields.value & PatternFields.dayOfMonth.value) != 0;
     List<String> textValues = count == 3
@@ -105,7 +106,10 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           }
 
           // Hack: see below
-          builder.AddFormatAction(new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter).DummyMethod);
+          // Dart Hack: we don't even need to pass a DummyMethod, we don't have a Delegate.Action in Dart
+          //  So instead of, 'formatAction.Target as IPostPatternParseFormatAction' we can do
+          //   'formatAction as IPostPatternParseFormatAction' ... Will this still work in Dart 2.0?
+          builder.AddFormatAction(new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter)); //.DummyMethod);
           break;
         default:
           throw new StateError("Invalid count!");

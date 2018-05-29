@@ -38,7 +38,7 @@ class _findLongestMatchCursor {
   @private final List<Function(TResult, StringBuffer)> formatActions;
   @private final List<ParseAction<TResult, TBucket>> parseActions;
   @private final TBucket Function() bucketProvider;
-  @private PatternFields usedFields;
+  @private PatternFields usedFields = PatternFields.none;
   @private bool formatOnly = false;
 
   @internal final NodaFormatInfo FormatInfo;
@@ -128,8 +128,14 @@ class _findLongestMatchCursor {
 
     List<Function/*(TResult, StringBuffer)*/> formatDelegate = [];
     for (/*Function(TResult, StringBuffer)*/ Function formatAction in formatActions) {
-      IPostPatternParseFormatAction postAction = formatAction/*.Target*/ as IPostPatternParseFormatAction;
-      formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
+      if (formatAction is IPostPatternParseFormatAction) {
+        formatDelegate.add((formatAction as IPostPatternParseFormatAction).BuildFormatAction(usedFields));
+      } else {
+        formatDelegate.add(formatAction);
+      }
+
+      // IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
+      // formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
     }
     return new SteppedPattern(formatDelegate, formatOnly ? null : parseActions, bucketProvider, usedFields, sample);
   }
@@ -618,7 +624,8 @@ class _findLongestMatchCursor {
 
   String Format(TResult value)
   {
-    StringBuffer builder = new StringBuffer(expectedLength);
+    // if StringBuffer gets an initial size: pass in expectedLength
+    StringBuffer builder = new StringBuffer();
     // This will call all the actions in the multicast delegate.
     formatActions.forEach((formatAction) => formatAction(value, builder));
     return builder.toString();

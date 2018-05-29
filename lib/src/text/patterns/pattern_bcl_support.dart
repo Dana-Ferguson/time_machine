@@ -15,6 +15,7 @@ import 'package:time_machine/time_machine_text.dart';
 
   @internal PatternBclSupport(this.defaultFormatPattern, this.patternParser);
 
+  // todo: do we want to provide an interface for formatProviders?
   @internal String Format(T value, String patternText, /*IFormatProvider*/ Object formatProvider)
   {
     if (patternText == null || patternText.length == 0)

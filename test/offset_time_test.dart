@@ -7,10 +7,11 @@ import 'dart:math' as math;
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/time_machine_text.dart';
+import 'package:time_machine/time_machine_timezones.dart';
 
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 
 import 'time_machine_testing.dart';
 
@@ -101,31 +102,32 @@ void WithAdjuster()
   expect(expected, actual);
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_WithFormat()
 {
   LocalTime time = new LocalTime(14, 15, 12, 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
-  expect("14:15:12.123 01", offsetDate.toString("HH:mm:ss.fff o<-HH>", CultureInfo.InvariantCulture));
+  expect(offsetDate.toString("HH:mm:ss.fff o<-HH>", CultureInfo.InvariantCulture), "14:15:12.123 01");
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_WithNullFormat()
 {
   LocalTime time = new LocalTime(14, 15, 12, 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
-  expect("14:15:12+01", offsetDate.toString(null, CultureInfo.InvariantCulture));
+  expect(offsetDate.toString(null, CultureInfo.InvariantCulture), "14:15:12+01");
 }
 
-@Test() @SkipMe.text()
+@Test() @SkipMe("Investigate CultureSaver")
 void ToString_NoFormat() {
   LocalTime time = new LocalTime(14, 15, 12, 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
+
   //using(CultureSaver.SetCultures(CultureInfo.InvariantCulture))
   {
-    expect("14:15:12+01", offsetDate.toString());
+    expect(offsetDate.toString(), "14:15:12+01");
   }
 }

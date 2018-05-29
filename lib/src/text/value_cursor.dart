@@ -180,7 +180,7 @@ import 'package:time_machine/time_machine_text.dart';
     while (GetDigit() != -1) {
       MoveNext();
     }
-    String badValue = Value.substring(startIndex, Index - startIndex);
+    String badValue = Value.substring(startIndex, Index /*- startIndex*/);
     Move(startIndex);
     return ParseResult.ValueOutOfRange<T>(this, badValue);
   }

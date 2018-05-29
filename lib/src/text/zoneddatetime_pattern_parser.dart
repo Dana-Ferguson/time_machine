@@ -1,6 +1,7 @@
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/ZonedDateTimePatternParser.cs
 // f78a32a  on Oct 9, 2017
 
+import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -172,7 +173,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// on success (after moving the cursor to the end of the ID) or null on failure
   /// (leaving the cursor where it was).
   /// </summary>
-  @private DateTimeZone TryParseProviderZone(ValueCursor value) {
+  @private Future<DateTimeZone> TryParseProviderZone(ValueCursor value) async {
     // The IDs from the provider are guaranteed to be in order (using ordinal comparisons).
     // Use a binary search to find a match, then make sure it's the longest possible match.
     var ids = zoneProvider.Ids;
@@ -219,7 +220,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           }
         }
         value.Move(value.Index + longestSoFar.length);
-        return zoneProvider[longestSoFar];
+        return await zoneProvider[longestSoFar];
       }
     }
     return null;
