@@ -1,0 +1,15 @@
+=============================================================================
+= NOTICE file corresponding to section 4d of the Apache License Version 2.0 =
+=============================================================================
+Time Machine includes ports of software developed by
+NodaTime.org (https://nodatime.org/).
+
+(Portions of Time Machine were derived from Noda Time 2.3.0; Noda Time
+2.3.0 is copyright 2009-2018 by the Noda Time Authors
+[https://github.com/nodatime/nodatime/blob/master/AUTHORS.txt].)
+
+Noda Time includes ports of software developed by
+Joda.org (http://www.joda.org/).
+
+(Portions of Noda Time were derived from Joda Time 1.6.0; Joda Time
+1.6.0 is copyright 2001-2009 Stephen Colebourne.)
