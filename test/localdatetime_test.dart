@@ -128,6 +128,7 @@ void TimeProperties_BeforeEpoch()
 @Test() @SkipMe.unimplemented()
 void DateTime_Roundtrip_OtherCalendarInBcl()
 {
+  dynamic BclCalendars = null;
   var bcl = BclCalendars.Hijri;
   DateTime original = bcl.ToDateTime(1376, 6, 19, 0, 0, 0, 0);
   LocalDateTime noda = LocalDateTime.FromDateTime(original);
@@ -250,6 +251,9 @@ void CompareTo_SameCalendar()
 @Test() @SkipMe.unimplemented()
 void CompareTo_DifferentCalendars_Throws()
 {
+  dynamic IslamicLeapYearPattern = null;
+  dynamic IslamicEpoch = null;
+
   CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
   LocalDateTime value1 = new LocalDateTime.fromYMDHM(2011, 1, 2, 10, 30);
   LocalDateTime value2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 10, 30, islamic);

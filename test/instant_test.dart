@@ -101,6 +101,9 @@ void WithOffset()
 @Test() @SkipMe.unimplemented()
 void WithOffset_NonIsoCalendar()
 {
+  dynamic IslamicLeapYearPattern = null;
+  dynamic IslamicEpoch = null;
+
   // October 12th 2013 ISO is 1434-12-07 Islamic
   CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);

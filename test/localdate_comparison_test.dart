@@ -126,6 +126,9 @@ void CompareTo_SameCalendar()
 @Test() @SkipMe.unimplemented()
 void CompareTo_DifferentCalendars_Throws()
 {
+  dynamic IslamicLeapYearPattern = null;
+  dynamic IslamicEpoch = null;
+
   CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
   LocalDate date1 = new LocalDate(2011, 1, 2);
   LocalDate date2 = new LocalDate.forCalendar(1500, 1, 1, islamic);

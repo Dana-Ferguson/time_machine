@@ -106,7 +106,8 @@ void ZoneIntervalNameDefaultsToZoneId()
 @Test() @SkipMe.unimplemented()
 void Read_NoNameInStream()
 {
-  var ioHelper = DtzIoHelper.CreateNoStringPool();
+  // var ioHelper = DtzIoHelper.CreateNoStringPool();
+  dynamic ioHelper = null;
   var offset = new Offset.fromHours(5);
   ioHelper.Writer.WriteOffset(offset);
   var zone = FixedDateTimeZone.Read(ioHelper.Reader, "id") as FixedDateTimeZone;
@@ -119,7 +120,8 @@ void Read_NoNameInStream()
 @Test() @SkipMe.unimplemented()
 void Read_WithNameInStream()
 {
-  var ioHelper = DtzIoHelper.CreateNoStringPool();
+  // var ioHelper = DtzIoHelper.CreateNoStringPool();
+  dynamic ioHelper = null;
   var offset = new Offset.fromHours(5);
   ioHelper.Writer.WriteOffset(offset);
   ioHelper.Writer.WriteString("name");
@@ -133,7 +135,8 @@ void Read_WithNameInStream()
 @Test() @SkipMe.unimplemented()
 void Roundtrip()
 {
-  var ioHelper = DtzIoHelper.CreateNoStringPool();
+  // var ioHelper = DtzIoHelper.CreateNoStringPool();
+  dynamic ioHelper = null;
   var oldZone = new FixedDateTimeZone("id", new Offset.fromHours(4), "name");
   oldZone.Write(ioHelper.Writer);
   var newZone = FixedDateTimeZone.Read(ioHelper.Reader, "id") as FixedDateTimeZone;
