@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
@@ -475,8 +476,9 @@ bool IsDaylightSavingTime() => GetZoneInterval().savings != Offset.zero;
 /// The value of the current instance in the default format pattern ("G"), using the current thread's
 /// culture to obtain a format provider.
 /// </returns>
-@override String toString() => TextShim.toStringZonedDateTime(this);
-// ZonedDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  // @override String toString() => TextShim.toStringZonedDateTime(this);
+  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
+      ZonedDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
 
 /// <summary>
 /// Formats the value of the current instance using the specified pattern.

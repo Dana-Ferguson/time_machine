@@ -64,7 +64,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
   }
 
-  return DateTimeZone.UtcId + TextShim.toStringOffset(offset); // OffsetPattern.GeneralInvariant.Format(offset);
+  return DateTimeZone.UtcId + OffsetPattern.GeneralInvariant.Format(offset);
 }
 
 /// <summary>

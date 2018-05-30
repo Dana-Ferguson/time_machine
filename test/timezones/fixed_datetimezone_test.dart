@@ -60,7 +60,7 @@ void GetZoneIntervals_ReturnsSingleInterval()
   expect(1, mapping.Count);
 }
 
-@Test() @SkipMe.parseIds()
+@Test()
 void For_Id_FixedOffset()
 {
   String id = "UTC+05:30";
@@ -69,7 +69,7 @@ void For_Id_FixedOffset()
   expect(id, zone.id);
 }
 
-@Test() @SkipMe.parseIds()
+@Test()
 void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = "UTC+05:00:00";

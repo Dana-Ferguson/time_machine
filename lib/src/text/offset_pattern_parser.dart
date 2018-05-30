@@ -163,17 +163,17 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// The hours in the range [0, 23].
   /// </summary>
-  @internal int Hours;
+  @internal int Hours = 0;
 
   /// <summary>
   /// The minutes in the range [0, 59].
   /// </summary>
-  @internal int Minutes;
+  @internal int Minutes = 0;
 
   /// <summary>
   /// The seconds in the range [0, 59].
   /// </summary>
-  @internal int Seconds;
+  @internal int Seconds = 0;
 
   /// <summary>
   /// Gets a value indicating whether this instance is negative.

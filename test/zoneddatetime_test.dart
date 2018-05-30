@@ -510,7 +510,7 @@ void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
 }
 */
 
-@Test() @SkipMe.text()
+@Test()
 void ZonedDateTime_ToString()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
@@ -518,7 +518,7 @@ void ZonedDateTime_ToString()
   expect("2013-07-23T13:05:20 Single (+04)", zoned.toString());
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ZonedDateTime_ToString_WithFormat()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
