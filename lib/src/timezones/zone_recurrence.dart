@@ -277,7 +277,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   static ZoneRecurrence Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var name = reader.readString();
-    var savings = reader.readOffsetSeconds(); // Offset.fromSeconds(reader.readInt32());
+    var savings = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
     var yearOffset = ZoneYearOffset.Read(reader);
     var fromYear = reader.readInt32();
     var toYear = reader.readInt32();

@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -294,7 +295,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 // Some zones skipped dates by changing from UTC-lots to UTC+lots. For example, Samoa (Pacific/Apia)
 // skipped December 30th 2011, going from  23:59:59 December 29th local time UTC-10
 // to 00:00:00 December 31st local time UTC+14
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const ["Pacific/Apia", "2011-12-30"])
 @TestCase(const ["Pacific/Enderbury", "1994-12-31"])
 @TestCase(const ["Pacific/Kiritimati", "1994-12-31"])
@@ -305,7 +306,6 @@ Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
   DateTimeZone zone = await (await DateTimeZoneProviders.Tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
   expect(exception = capture(() => zone.AtStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
-
   expect(badDate.At(LocalTime.Midnight), exception.localDateTime);
 }
 

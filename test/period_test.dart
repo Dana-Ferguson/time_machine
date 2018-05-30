@@ -248,7 +248,7 @@ void BetweenLocalDateTimes_OnLeapYear()
 @Test() @SkipMe.unimplemented()
 void BetweenLocalDateTimes_OnLeapYearIslamic()
 {
-  var calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+  var calendar = CalendarSystem.GetIslamicCalendar(null, null/*IslamicLeapYearPattern.Base15, IslamicEpoch.Civil*/);
   expect(calendar.IsLeapYear(2), isTrue);
   expect(calendar.IsLeapYear(3), isFalse);
 

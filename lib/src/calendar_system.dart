@@ -334,12 +334,13 @@ class CalendarSystem {
   /// <param name="epoch">The kind of epoch to use (astronomical or civil)</param>
   /// <returns>A suitable Islamic calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.</returns>
-//static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-//{
-//Preconditions.checkArgumentRange(nameof(leapYearPattern), (int) leapYearPattern, 1, 4);
-//Preconditions.checkArgumentRange(nameof(epoch), (int) epoch, 1, 2);
-//return IslamicCalendars.ByLeapYearPatterAndEpoch[(int) leapYearPattern - 1, (int) epoch - 1];
-//}
+  static CalendarSystem GetIslamicCalendar(leapYearPattern, epoch) => throw new UnimplementedError();
+//  static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+//  {
+//    Preconditions.checkArgumentRange('leapYearPattern', leapYearPattern.value, 1, 4);
+//    Preconditions.checkArgumentRange('epoch', epoch.value, 1, 2);
+//    return IslamicCalendars.ByLeapYearPatterAndEpoch[leapYearPattern.value - 1, epoch.value - 1];
+//  }
 
 // #endregion
 

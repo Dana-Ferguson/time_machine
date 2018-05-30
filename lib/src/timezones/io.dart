@@ -104,7 +104,7 @@ class DateTimeZoneReader {
     Instant end = endSeconds == null ? Instant.afterMaxValue : new Instant.fromUnixTimeSeconds(endSeconds);
 
     var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
-    var savings = /*stream.*/readOffsetSeconds(); // Offset.fromSeconds(stream.readInt32());
+    var savings = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     return new ZoneInterval(name, start, end, wallOffset, savings);
   }
 
