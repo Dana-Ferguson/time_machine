@@ -8,7 +8,7 @@ final _pattern = new RegExp(_basicArgPattern);
 
 /// Simulates basic dotnet BCL string.Format functionality to ease porting. Invariant Culture only.
 String stringFormat(String text, [List<dynamic> args = const []]) {
-  if (args?.length ?? 0 == 0) return text;
+  if ((args?.length ?? 0) == 0) return text;
   return text.replaceAllMapped(_pattern, (match) => _replacer(match, args));
 }
 

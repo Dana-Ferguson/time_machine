@@ -125,7 +125,7 @@ void BetweenLocalDates_DifferentCalendarSystems_Throws()
   expect(() => Period.BetweenDates(start, end), throwsArgumentError);
 }
 
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const ["2016-05-16", "2019-03-13", PeriodUnits.years, 2])
 @TestCase(const ["2016-05-16", "2017-07-13", PeriodUnits.months, 13])
 @TestCase(const ["2016-05-16", "2016-07-13", PeriodUnits.weeks, 8])
@@ -232,7 +232,7 @@ void BetweenLocalDates_AfterLeapYear()
   expect(new Period.fromYears(-1), Period.BetweenDates(d2, d1));
 }
 
-@Test() @SkipMe.text()
+@Test()
 void BetweenLocalDateTimes_OnLeapYear()
 {
   LocalDateTime dt1 = new LocalDateTime.fromYMDHM(2012, 2, 29, 2, 0);
@@ -286,7 +286,7 @@ void BetweenLocalTimes_InvalidUnits()
   expect(() => Period.BetweenTimes(t1, t2, PeriodUnits.years | PeriodUnits.hours), throwsArgumentError);
 }
 
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const ["01:02:03", "05:00:00", PeriodUnits.hours, 3])
 @TestCase(const ["01:02:03", "03:00:00", PeriodUnits.minutes, 117])
 @TestCase(const ["01:02:03", "01:05:02", PeriodUnits.seconds, 179])
@@ -903,7 +903,7 @@ void Between_ExtremeValues_Overflow()
   expect(() => Period.Between(minValue, maxValue, PeriodUnits.nanoseconds), throwsRangeError); // throwsStateError);
 }
 
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const ["2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.years, 1, 0])
 @TestCase(const ["2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.months, 12, -11])
 @TestCase(const ["2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.days, 1, -1])

@@ -44,7 +44,6 @@ import 'package:time_machine/time_machine_text.dart';
   @internal bool Match(String match) {
     // string.CompareOrdinal(Value, Index, match, 0, match.length) == 0) {
     // Value, Index, match, 0, match.length
-    // if (Value.startsWith(match, Index)) {
     if (stringOrdinalCompare(Value, Index, match, 0, match.length) == 0) {
       Move(Index + match.length);
       return true;
@@ -289,7 +288,7 @@ import 'package:time_machine/time_machine_text.dart';
     if (count < minimumDigits) {
       return null;
     }
-    result = (result * math.pow(10.0, scale - count));
+    result = (result * math.pow(10.0, scale - count).toInt());
     Move(localIndex);
     return result;
   }

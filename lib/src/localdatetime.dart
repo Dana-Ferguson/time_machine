@@ -4,6 +4,7 @@
 import 'package:quiver_hashcode/hashcode.dart';
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine_fields.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
@@ -868,8 +869,10 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   /// </returns>
-  @override String toString() => TextShim.toStringLocalDateTime(this);
-      // LocalDateTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+  // @override String toString() => TextShim.toStringLocalDateTime(this);
+  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
+      LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+
 
 
 /// Formats the value of the current instance using the specified pattern.

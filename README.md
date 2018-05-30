@@ -9,7 +9,7 @@ Todo:
  - [x] Port over corresponding unit tests
  - [ ] Dartification of the API
  - [ ] Non-Gregorian/Julian calendar systems
- - [ ] Text formatting and Parsing (CLDR or CultureInfo?)
+ - [X] Text formatting and Parsing
  - [ ] Remove XML tags from documentation and format them for pub
  - [ ] *maybe*: Create simple website with samples (at minimal a samples directory in github)
 

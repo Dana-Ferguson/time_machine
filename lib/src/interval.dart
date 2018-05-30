@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 /// An interval between two instants in time (start and end).
@@ -134,11 +135,11 @@ class Interval // : IEquatable<Interval>
   /// represent this.
   /// </summary>
   /// <returns>A string representation of this interval.</returns>
-  @override String toString() => TextShim.toStringInterval(this);
-//  {
-//    var pattern = InstantPattern.ExtendedIso;
-//    return pattern.Format(_start) + "/" + pattern.Format(_end);
-//  }
+  @override String toString() // => TextShim.toStringInterval(this);
+  {
+    var pattern = InstantPattern.ExtendedIso;
+    return pattern.Format(_start) + "/" + pattern.Format(_end);
+  }
 
   /// <summary>
   /// Implements the operator ==.

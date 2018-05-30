@@ -66,7 +66,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    _patternBuilder(pattern, builder) {
+    return (pattern, builder) {
       // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
@@ -77,11 +77,11 @@ import 'package:time_machine/time_machine_patterns.dart';
         pattern.MoveNext();
         int count = pattern.GetRepeatCount(maxCount);
         builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
-
-        _parseAction(valueCursor, bucket) {
+        builder.AddParseAction((valueCursor, bucket) {
           // If the next token isn't a dot or comma, we assume
           // it's part of the next token in the pattern
-          if (!valueCursor.Match('.') && !valueCursor.Match(',')) {
+          // todo: dart: look for this in other places; had to add 'valueCursor.Index >= valueCursor.Length' because our Match's stringOrdinalCompare doesn't work quite the same
+          if (valueCursor.Index >= valueCursor.Length || (!valueCursor.Match('.') && !valueCursor.Match(','))) {
             return null;
           }
 
@@ -94,10 +94,8 @@ import 'package:time_machine/time_machine_patterns.dart';
           // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
           setter(bucket, fractionalSeconds);
           return null;
-        }
-
-        builder.AddParseAction(_parseAction);
-        builder.AddFormatAction((localTime, sb) => sb.Append('.'));
+        });
+        builder.AddFormatAction((localTime, sb) => sb.write('.'));
         builder.AddFormatFractionTruncate(count, maxCount, getter);
       }
       else {
@@ -105,11 +103,9 @@ import 'package:time_machine/time_machine_patterns.dart';
         str.Match('.') || str.Match(',')
             ? null
             : ParseResult.MismatchedCharacter<TResult>(str, ';'));
-        builder.AddFormatAction((value, sb) => sb.Append('.'));
+        builder.AddFormatAction((value, sb) => sb.write('.'));
       }
-    }
-
-    return _patternBuilder;
+    };
   }
 
   /// <summary>

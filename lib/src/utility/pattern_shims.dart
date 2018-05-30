@@ -3,6 +3,7 @@
 
 import 'package:time_machine/time_machine.dart';
 
+@deprecated
 abstract class TextShim {
   static String toStringZonedDateTime(ZonedDateTime zdt) {
     var sb = new StringBuffer();

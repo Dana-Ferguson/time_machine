@@ -92,33 +92,33 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <summary>
   /// The fractions of a second in nanoseconds, in the range [0, 999999999]
   /// </summary>
-  @internal int FractionalSeconds;
+  @internal int FractionalSeconds = 0;
 
   /// <summary>
   /// The hours in the range [0, 23].
   /// </summary>
-  @internal int Hours24;
+  @internal int Hours24 = 0;
 
   /// <summary>
   /// The hours in the range [1, 12].
   /// </summary>
-  @internal int Hours12;
+  @internal int Hours12 = 0;
 
   /// <summary>
   /// The minutes in the range [0, 59].
   /// </summary>
-  @internal int Minutes;
+  @internal int Minutes = 0;
 
   /// <summary>
   /// The seconds in the range [0, 59].
   /// </summary>
-  @internal int Seconds;
+  @internal int Seconds = 0;
 
   /// <summary>
   /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
   /// where we're parsing but there is no AM or PM designator.
   /// </summary>
-  @internal int AmPm;
+  @internal int AmPm = 0;
 
   @internal LocalTimeParseBucket(this.TemplateValue);
 

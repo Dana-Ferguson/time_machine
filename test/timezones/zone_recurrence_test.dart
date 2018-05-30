@@ -254,12 +254,12 @@ void ForSingleYear()
   expect(2017, singleYear.toYear);
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ZoneRecurrenceToString()
 {
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.Midnight);
   var recurrence = new ZoneRecurrence("name", new Offset.fromHours(1), yearOffset, 1900, 2000);
   print(recurrence.toString());
   expect(recurrence.toString(),
-      "name +01 ZoneYearOffset[mode:Utc monthOfYear:10 dayOfMonth:31 dayOfWeek:3 advance:True timeOfDay:00:00:00 addDay:False] [1900-2000]");
+      "name +01 ZoneYearOffset[mode:Utc monthOfYear:10 dayOfMonth:31 dayOfWeek:3 advance:true timeOfDay:00:00:00 addDay:false] [1900-2000]");
 }

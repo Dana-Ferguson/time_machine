@@ -199,7 +199,7 @@ void InFixedZone()
   expect(DateTimeZone.ForOffset(offset).AtStrictly(local), zoned);
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_WholeHourOffset()
 {
   LocalDateTime local = new LocalDateTime.fromYMDHMS(2012, 10, 6, 1, 2, 3);
@@ -208,7 +208,7 @@ void ToString_WholeHourOffset()
   expect("2012-10-06T01:02:03+01", odt.toString());
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_PartHourOffset()
 {
   LocalDateTime local = new LocalDateTime.fromYMDHMS(2012, 10, 6, 1, 2, 3);
@@ -217,7 +217,7 @@ void ToString_PartHourOffset()
   expect("2012-10-06T01:02:03+01:30", odt.toString());
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_Utc()
 {
   LocalDateTime local = new LocalDateTime.fromYMDHMS(2012, 10, 6, 1, 2, 3);
