@@ -3,6 +3,7 @@
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 /// <summary>
@@ -67,7 +68,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// <summary>
   /// Number of days since the local unix epoch.
   /// </summary>
-  @internal int get DaysSinceEpoch => _span.days;
+  @internal int get DaysSinceEpoch => _span.floorDays;
 
   /// <summary>
   /// Nanosecond within the day.
@@ -184,11 +185,11 @@ import 'package:time_machine/time_machine_utilities.dart';
     if (this == AfterMaxValue) {
       return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
     }
-    var date = new LocalDate.fromDaysSinceEpoch(_span.days);
-    // var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfDay));
-    // return pattern.Format(utc);
-    return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
+    var date = new LocalDate.fromDaysSinceEpoch(_span.floorDays);
+    var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
+    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
+    return pattern.Format(utc);
+    // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }
 
 // #region IEquatable<LocalInstant> Members

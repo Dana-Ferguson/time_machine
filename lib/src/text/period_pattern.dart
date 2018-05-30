@@ -292,7 +292,7 @@ import 'package:time_machine/time_machine_text.dart';
       // Seen a . or , which need special handling.
       if (unit == PeriodUnits.nanoseconds) {
         // Check for already having seen seconds, e.g. PT5S0.5
-        if ((unitsSoFar & PeriodUnits.seconds) != 0) {
+        if ((unitsSoFar & PeriodUnits.seconds).value != 0) {
           return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
         }
         builder.Seconds = unitValue.value;

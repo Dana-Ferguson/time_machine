@@ -275,7 +275,7 @@ void Plus_FullPeriod() {
 @TestCase(const [11, IsoDayOfWeek.sunday, 13])
 @TestCase(const [12, IsoDayOfWeek.friday, 18])
 @TestCase(const [13, IsoDayOfWeek.friday, 18])
-int Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
+void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 11, dayOfMonth, 15, 25, 30).PlusNanoseconds(123456789);
   LocalDateTime target = start.Next(targetDayOfWeek);
@@ -306,7 +306,7 @@ void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 @TestCase(const [11, IsoDayOfWeek.sunday, 6])
 @TestCase(const [12, IsoDayOfWeek.friday, 11])
 @TestCase(const [13, IsoDayOfWeek.friday, 11])
-int Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
+void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 11, dayOfMonth, 15, 25, 30).PlusNanoseconds(123456789);
   LocalDateTime target = start.Previous(targetDayOfWeek);

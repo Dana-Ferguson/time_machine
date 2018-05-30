@@ -733,7 +733,7 @@ class Period // : IEquatable<Period>
   /// <returns>The period between the given times, using the given units.</returns>
   static Period BetweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allDateUnits.value) == 0, 'units', "Units contains date units: $units");
-    Preconditions.checkArgument(units != 0, 'units', "Units must not be empty");
+    Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
 
     // We know that the difference is in the range of +/- 1 day, which is a relatively small

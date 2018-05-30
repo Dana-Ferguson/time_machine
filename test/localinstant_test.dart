@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -41,7 +42,7 @@ void MinusOffset_Zero_IsNeutralElement()
   expect(sampleInstant, sampleLocalInstant.MinusZeroOffset());
 }
 
-@Test() @SkipMe.text()
+@Test()
 @TestCase(const [0, 0, "1970-01-01T00:00:00 LOC"])
 @TestCase(const [0, 1, "1970-01-01T00:00:00.000000001 LOC"])
 @TestCase(const [0, 1000, "1970-01-01T00:00:00.000001 LOC"])
@@ -49,10 +50,12 @@ void MinusOffset_Zero_IsNeutralElement()
 @TestCase(const [-1, TimeConstants.nanosecondsPerDay - 1, "1969-12-31T23:59:59.999999999 LOC"])
 void ToString_Valid(int day, int nanoOfDay, String expectedText)
 {
-  expect(expectedText, new LocalInstant.daysNanos(day, nanoOfDay).toString());
+  var localInstant = new LocalInstant.daysNanos(day, nanoOfDay);
+  expect(localInstant.DaysSinceEpoch, day);
+  expect(localInstant.toString(), expectedText);
 }
 
-@Test() @SkipMe.text()
+@Test()
 void ToString_Extremes()
 {
   expect(InstantPatternParser.BeforeMinValueText, LocalInstant.BeforeMinValue.toString());

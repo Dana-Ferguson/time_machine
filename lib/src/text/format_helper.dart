@@ -301,12 +301,14 @@ import 'package:time_machine/time_machine_text.dart';
       relevantLength--;
     }
 
-    var buffer = new List<String>.filled(relevantLength, '0');
-
+    // note: StringBuffer doesn't have [index] semantics and can't be contracted
+    // so... we have to go through some gymnastics here, todo: definitely some optimization is possible here
     if (relevantLength > 0)
     {
-      // outputBuffer.write('0', relevantLength);
-      int index = outputBuffer.length - 1;
+      var buffer = new List<String>.filled(relevantLength, '0', growable: false);
+
+      // outputBuffer.Append('0', relevantLength);
+      int index = /*outputBuffer*/buffer.length - 1;
       while (relevantDigits > 0)
       {
         buffer[index--] = new String.fromCharCode(ZeroCodeUnit + (relevantDigits % 10));
@@ -315,10 +317,13 @@ import 'package:time_machine/time_machine_text.dart';
 
       outputBuffer.writeAll(buffer);
     }
-    else if (buffer.length > 0 && buffer[buffer.length - 1] == '.')
-    {
-      // buffer.length--;
-      outputBuffer.writeAll(buffer.take(buffer.length-1));
+    else if (outputBuffer.length > 0) {
+      var buffer = outputBuffer.toString();
+      if (buffer.endsWith('.')) {
+        // buffer.length--;
+        outputBuffer.clear();
+        outputBuffer.write(buffer.substring(0, buffer.length-1));
+      }
     }
   }
 

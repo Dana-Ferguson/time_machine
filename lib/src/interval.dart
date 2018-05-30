@@ -134,7 +134,7 @@ class Interval // : IEquatable<Interval>
   /// represent this.
   /// </summary>
   /// <returns>A string representation of this interval.</returns>
-  @override String ToString() => TextShim.toStringInterval(this);
+  @override String toString() => TextShim.toStringInterval(this);
 //  {
 //    var pattern = InstantPattern.ExtendedIso;
 //    return pattern.Format(_start) + "/" + pattern.Format(_end);

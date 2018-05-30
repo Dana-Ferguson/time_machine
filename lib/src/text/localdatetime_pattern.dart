@@ -156,11 +156,11 @@ import 'package:time_machine/time_machine_patterns.dart';
       LocalDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-// Use the "fixed" parser for the common case of the default template value.
+    // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == DefaultTemplateValue
         ? formatInfo.localDateTimePatternParser.ParsePattern(patternText)
         : new LocalDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
-// If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
+    // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = pattern is LocalDateTimePattern ? pattern.UnderlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDateTime>;
     return new LocalDateTimePattern(patternText, formatInfo, templateValue, partialPattern);

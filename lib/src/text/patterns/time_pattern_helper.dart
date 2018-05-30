@@ -32,8 +32,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         pattern.MoveNext();
         int count = pattern.GetRepeatCount(maxCount);
         builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
-
-        _parseAction(ValueCursor valueCursor, TBucket bucket) {
+        builder.AddParseAction((ValueCursor valueCursor, TBucket bucket) {
           // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
           if (!valueCursor.Match('.')) {
             return null;
@@ -48,10 +47,8 @@ import 'package:time_machine/time_machine_patterns.dart';
           // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
           setter(bucket, fractionalSeconds);
           return null;
-        }
-
-        builder.AddParseAction(_parseAction);
-        builder.AddFormatAction((localTime, sb) => sb.Append('.'));
+        });
+        builder.AddFormatAction((localTime, StringBuffer sb) => sb.write('.'));
         builder.AddFormatFractionTruncate(count, maxCount, getter);
       }
       else {

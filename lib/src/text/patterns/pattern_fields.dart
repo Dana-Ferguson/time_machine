@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_calendars.dart';
   /// <summary>
   /// Returns true if the given set of fields contains any of the target fields.
   /// </summary>
-  @internal static bool HasAny(PatternFields fields, PatternFields target) => (fields & target) != 0;
+  @internal static bool HasAny(PatternFields fields, PatternFields target) => (fields & target).value != 0;
 
   /// <summary>
   /// Returns true if the given set of fields contains all of the target fields.

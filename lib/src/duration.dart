@@ -179,7 +179,9 @@ class Span implements Comparable<Span> {
   int get floorMilliseconds => totalMilliseconds.floor();
   int get floorDays {
     var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
-    if (_milliseconds < 0 && _milliseconds % TimeConstants.millisecondsPerDay != 0) return days - 1;
+    // todo: determine if there are other corner-cases here
+    if ((_milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0))
+        && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
     return days;
   }
   int get floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();

@@ -628,6 +628,12 @@ class _findLongestMatchCursor {
     StringBuffer builder = new StringBuffer();
     // This will call all the actions in the multicast delegate.
     formatActions.forEach((formatAction) => formatAction(value, builder));
+    /* todo: remove me
+    for (var formatAction in formatActions) {
+      var x = builder.toString();
+      formatAction(value, builder);
+      print('${x} --> ${builder.toString()}');
+    }*/
     return builder.toString();
   }
 
