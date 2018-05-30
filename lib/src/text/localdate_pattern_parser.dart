@@ -87,13 +87,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal final LocalDate TemplateValue;
 
   @internal CalendarSystem Calendar;
-  @internal int Year;
-  @private Era era;
-  @internal int YearOfEra;
-  @internal int MonthOfYearNumeric;
-  @internal int MonthOfYearText;
-  @internal int DayOfMonth;
-  @internal int DayOfWeek;
+  @internal int Year = 0;
+  @private Era era = Era.Common;
+  @internal int YearOfEra = 0;
+  @internal int MonthOfYearNumeric = 0;
+  @internal int MonthOfYearText = 0;
+  @internal int DayOfMonth = 0;
+  @internal int DayOfWeek = 0;
 
   @internal LocalDateParseBucket(this.TemplateValue) {
 // Only fetch this once.

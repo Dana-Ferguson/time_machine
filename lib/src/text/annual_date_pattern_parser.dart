@@ -77,9 +77,9 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </summary>
 @internal /*sealed*/ class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
   @internal final AnnualDate TemplateValue;
-  @internal int MonthOfYearNumeric;
-  @internal int MonthOfYearText;
-  @internal int DayOfMonth;
+  @internal int MonthOfYearNumeric = 0;
+  @internal int MonthOfYearText = 0;
+  @internal int DayOfMonth = 0;
 
   @internal AnnualDateParseBucket(this.TemplateValue);
 

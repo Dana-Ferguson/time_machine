@@ -152,7 +152,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
   // than to manipulate a real Span.
   @internal bool IsNegative;
-  @private /*BigInt*/ int currentNanos;
+  @private /*BigInt*/ int currentNanos = 0;
 
   @internal void AddNanoseconds(int nanoseconds) {
     this.currentNanos += nanoseconds;
