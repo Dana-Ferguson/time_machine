@@ -31,11 +31,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   Instant actual = new Instant.fromJulianDate(julianDate);
   var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc().ToInstant();
 
-  // expect(expected.toUnixTimeMilliseconds(), actual.toUnixTimeMilliseconds(), 50, "Expected $expected, was $actual");
-  // expect(julianDate, expected.toJulianDate(), 0.000001);
-  print('${expected.toUnixTimeMilliseconds()} =?? ${actual.toUnixTimeMilliseconds()}');
-  print('${julianDate} =?? ${expected.toJulianDate()}');
-
+  // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
   expect(julianDate, closeTo(expected.toJulianDate(), 0.000001));
 }

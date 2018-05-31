@@ -151,7 +151,7 @@ class Span implements Comparable<Span> {
   // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
   //  where I use floor() if it's negative) .. or does the VM basically already cover that.
-  int get days2 => floorDays;
+  // int get days2 => floorDays;
 
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
   int get hours => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
@@ -196,6 +196,7 @@ class Span implements Comparable<Span> {
   int get nanosecondOfFloorDay =>
       (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
+  // todo: this is not obvious enough that, this is probably not the method the average person wants to be calling
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 

@@ -961,8 +961,8 @@ class Period // : IEquatable<Period>
     }
     if (x.Months == 0 && y.Months == 0 &&
         x.Years == 0 && y.Years == 0) {
-// Note: this *could* throw an OverflowException when the normal approach
-// wouldn't, but it's highly unlikely
+      // Note: this *could* throw an OverflowException when the normal approach
+      // wouldn't, but it's highly unlikely
       return x.ToSpan().compareTo(y.ToSpan());
     }
     return (baseDateTime.Plus(x)).compareTo(baseDateTime.Plus(y));

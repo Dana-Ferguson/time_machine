@@ -59,7 +59,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 
   @private static int GetPositiveNanosecondOfSecond(Span Span) {
-    return ((Span.nanosecondOfDay) % TimeConstants.nanosecondsPerSecond).abs();
+    return ((Span.nanosecondOfFloorDay) % TimeConstants.nanosecondsPerSecond).abs();
   }
 
   @private static CharacterHandler<Span, SpanParseBucket> CreateTotalHandler
@@ -111,7 +111,7 @@ import 'package:time_machine/time_machine_patterns.dart';
               (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
       // This is never used for anything larger than a day, so the day part is irrelevant.
       builder.AddFormatLeftPad(count,
-              (Span) => (((Span.nanosecondOfDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
+              (Span) => (((Span.nanosecondOfFloorDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
           assumeNonNegative: true,
           assumeFitsInCount: count == 2);
     };
@@ -134,7 +134,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return floorDays * unitsPerDay + Span.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
     }
     else {
-      int nanosecondOfDay = Span.nanosecondOfDay;
+      int nanosecondOfDay = Span.nanosecondOfFloorDay;
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay

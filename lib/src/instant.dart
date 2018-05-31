@@ -158,6 +158,7 @@ class Instant implements Comparable<Instant> {
   }
 
   DateTime toDateTimeLocal() {
+    // todo: does this need to match the zone?
     throw new UnimplementedError('Pipe in local date time zone.');
   }
 
@@ -182,8 +183,8 @@ class Instant implements Comparable<Instant> {
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.days);
-    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.nanosecondOfDay, Offset.zero);
+    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.floorDays);
+    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.nanosecondOfFloorDay, Offset.zero);
     return new ZonedDateTime.trusted(offsetDateTime, DateTimeZone.Utc);
   }
 

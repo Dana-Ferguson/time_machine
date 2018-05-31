@@ -73,7 +73,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// <summary>
   /// Nanosecond within the day.
   /// </summary>
-  @internal int get NanosecondOfDay => _span.nanosecondOfDay;
+  @internal int get NanosecondOfDay => _span.nanosecondOfFloorDay;
 
   /// <summary>
   /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
