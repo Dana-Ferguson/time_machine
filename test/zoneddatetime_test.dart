@@ -6,6 +6,7 @@ import 'dart:math' as math;
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -523,7 +524,7 @@ void ZonedDateTime_ToString_WithFormat()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
   ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
-  expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", CultureInfo.InvariantCulture));
+  expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", CultureInfo.invariantCulture));
 }
 
 @Test() @SkipMe.unimplemented()

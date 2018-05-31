@@ -443,7 +443,7 @@ class _findLongestMatchCursor {
     parseAction(TBucket bucket, value) {
       var dateBucket = dateBucketExtractor(bucket);
       var timeBucket = timeBucketExtractor(bucket);
-      dateBucket.Calendar = value.Calendar;
+      dateBucket.Calendar = value.calendar;
       dateBucket.Year = value.Year;
       dateBucket.MonthOfYearNumeric = value.Month;
       dateBucket.DayOfMonth = value.Day;
@@ -496,7 +496,7 @@ class _findLongestMatchCursor {
       LocalDate Function(TResult) dateExtractor) {
     parseAction(TBucket bucket, value) {
       var dateBucket = dateBucketExtractor(bucket);
-      dateBucket.Calendar = value.Calendar;
+      dateBucket.Calendar = value.calendar;
       dateBucket.Year = value.Year;
       dateBucket.MonthOfYearNumeric = value.Month;
       dateBucket.DayOfMonth = value.Day;

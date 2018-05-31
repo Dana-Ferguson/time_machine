@@ -30,8 +30,8 @@ import 'package:time_machine/time_machine_globalization.dart';
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
   // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
-  @private static final List<String> ShortInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames.toList(growable: false);
-  @private static final List<String> LongInvariantMonthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.toList(growable: false);
+  @private static final List<String> ShortInvariantMonthNames = CultureInfo.invariantCulture.dateTimeFormat.abbreviatedMonthNames.toList(growable: false);
+  @private static final List<String> LongInvariantMonthNames = CultureInfo.invariantCulture.dateTimeFormat.monthNames.toList(growable: false);
 
   // #region Patterns
   // @private final object fieldLock = new object();
@@ -53,7 +53,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// A NodaFormatInfo wrapping the invariant culture.
   /// </summary>
   // Note: this must occur below the pattern parsers, to make type initialization work...
-  static final NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.InvariantCulture);
+  static final NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.invariantCulture);
 
   // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
   // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
@@ -79,7 +79,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   @visibleForTesting
   @internal
   NodaFormatInfo(CultureInfo cultureInfo)
-      : this.withDateTimeFormat(cultureInfo, cultureInfo?.DateTimeFormat);
+      : this.withDateTimeFormat(cultureInfo, cultureInfo?.dateTimeFormat);
 
   /// <summary>
   /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based on
@@ -106,10 +106,10 @@ import 'package:time_machine/time_machine_globalization.dart';
       return;
     }
     // Turn month names into 1-based read-only lists
-    longMonthNames = ConvertMonthArray(DateTimeFormat.MonthNames);
-    shortMonthNames = ConvertMonthArray(DateTimeFormat.AbbreviatedMonthNames);
-    longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, DateTimeFormat.MonthGenitiveNames, LongInvariantMonthNames);
-    shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, DateTimeFormat.AbbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
+    longMonthNames = ConvertMonthArray(DateTimeFormat.monthNames);
+    shortMonthNames = ConvertMonthArray(DateTimeFormat.abbreviatedMonthNames);
+    longMonthGenitiveNames = ConvertGenitiveMonthArray(longMonthNames, DateTimeFormat.monthGenitiveNames, LongInvariantMonthNames);
+    shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, DateTimeFormat.abbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
   }
 
   /// <summary>
@@ -127,8 +127,8 @@ import 'package:time_machine/time_machine_globalization.dart';
       if (longDayNames != null) {
         return;
       }
-      longDayNames = ConvertDayArray(DateTimeFormat.DayNames);
-      shortDayNames = ConvertDayArray(DateTimeFormat.AbbreviatedDayNames);
+      longDayNames = ConvertDayArray(DateTimeFormat.dayNames);
+      shortDayNames = ConvertDayArray(DateTimeFormat.abbreviatedDayNames);
     }
   }
 
@@ -316,22 +316,22 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// <summary>
   /// Gets the time separator.
   /// </summary>
-  String get TimeSeparator => DateTimeFormat.TimeSeparator;
+  String get TimeSeparator => DateTimeFormat.timeSeparator;
 
   /// <summary>
   /// Gets the date separator.
   /// </summary>
-  String get DateSeparator => DateTimeFormat.DateSeparator;
+  String get DateSeparator => DateTimeFormat.dateSeparator;
 
   /// <summary>
   /// Gets the AM designator.
   /// </summary>
-  String get AMDesignator => DateTimeFormat.AMDesignator;
+  String get AMDesignator => DateTimeFormat.amDesignator;
 
   /// <summary>
   /// Gets the PM designator.
   /// </summary>
-  String get PMDesignator => DateTimeFormat.PMDesignator;
+  String get PMDesignator => DateTimeFormat.pmDesignator;
 
   /// <summary>
   /// Returns the names for the given era in this culture.
@@ -369,7 +369,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// <summary>
   /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
   /// </summary>
-  static NodaFormatInfo get CurrentInfo => GetInstance(CultureInfo.CurrentCulture);
+  static NodaFormatInfo get CurrentInfo => GetInstance(CultureInfo.currentCulture);
 
   /// <summary>
   /// Gets the <see cref="Offset" /> "l" pattern.
@@ -419,11 +419,11 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
   @internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo) {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
-    if (cultureInfo == CultureInfo.InvariantCulture) {
+    if (cultureInfo == CultureInfo.invariantCulture) {
       return InvariantInfo;
     }
     // Never cache (or consult the cache) for non-read-only cultures.
-    if (!cultureInfo.IsReadOnly) {
+    if (!cultureInfo.isReadOnly) {
       return new NodaFormatInfo(cultureInfo);
     }
     return _cache.GetOrAdd(cultureInfo);
@@ -445,7 +445,7 @@ import 'package:time_machine/time_machine_globalization.dart';
     } else if (formatProvider is CultureInfo) {
       return GetFormatInfo(formatProvider);
     } else if (formatProvider is DateTimeFormatInfo) {
-      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, formatProvider);
+      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.invariantCulture, formatProvider);
     }
 
     throw new ArgumentError("Cannot use provider of type ${formatProvider
@@ -471,7 +471,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// <summary>
   /// Returns a <see cref="System.String" /> that represents this instance.
   /// </summary>
-  @override String toString() => "NodaFormatInfo[" + cultureInfo.Name + "]";
+  @override String toString() => "NodaFormatInfo[" + cultureInfo.name + "]";
 }
 
 /// <summary>
@@ -514,13 +514,13 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
   /// </summary>
   @private static String GetEraNameFromBcl(Era era, CultureInfo culture) {
-    var calendar = culture.DateTimeFormat.Calendar;
+    var calendar = culture.dateTimeFormat.calendar;
 
     bool getEraFromCalendar =
         (era == Era.Common && calendar == BclCalendarType.gregorian) ||
         (era == Era.AnnoPersico && calendar == BclCalendarType.persian) ||
         (era == Era.AnnoHegirae && (calendar == BclCalendarType.hijri || calendar == BclCalendarType.umAlQura));
 
-    return getEraFromCalendar ? culture.DateTimeFormat.GetEraName(1) : null;
+    return getEraFromCalendar ? culture.dateTimeFormat.getEraName(1) : null;
   }
 }

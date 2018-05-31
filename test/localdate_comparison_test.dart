@@ -67,6 +67,7 @@ void Equals_DifferentToNull()
 void Equals_DifferentToOtherType()
 {
   LocalDate date = new LocalDate(2011, 1, 2);
+  // ignore: unrelated_type_equality_checks
   expect(date == new Instant.fromUnixTimeTicks(0), isFalse);
 }
 
@@ -147,7 +148,7 @@ void CompareTo_DifferentCalendars_Throws()
 void IComparableCompareTo_SameCalendar()
 {
   var instance = new LocalDate(2012, 3, 5);
-  var i_instance = instance as Comparable<LocalDate>;
+  Comparable<LocalDate> i_instance = instance;
 
   var later = new LocalDate(2012, 6, 4);
   var earlier = new LocalDate(2012, 1, 4);

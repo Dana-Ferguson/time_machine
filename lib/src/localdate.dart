@@ -3,6 +3,7 @@
 
 import 'package:meta/meta.dart';
 
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'utility/preconditions.dart';
 
@@ -699,7 +700,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// </returns>
   // @override String toString() => TextShim.toStringLocalDate(this); // LocalDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      LocalDatePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      LocalDatePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.

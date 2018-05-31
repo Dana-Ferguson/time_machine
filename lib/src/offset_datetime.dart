@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
@@ -428,7 +429,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// </returns>
   // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      OffsetDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.

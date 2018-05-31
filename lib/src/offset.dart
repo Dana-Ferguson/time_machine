@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
@@ -288,7 +289,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// </returns>
   // @override String toString() => TextShim.toStringOffset(this); // OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      OffsetPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// Formats the value of the current instance using the specified pattern.
   ///

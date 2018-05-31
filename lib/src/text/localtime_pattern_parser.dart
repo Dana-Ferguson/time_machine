@@ -70,9 +70,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, NodaFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 't':
-        return formatInfo.DateTimeFormat.ShortTimePattern;
+        return formatInfo.DateTimeFormat.shortTimePattern;
       case 'T':
-        return formatInfo.DateTimeFormat.LongTimePattern;
+        return formatInfo.DateTimeFormat.longTimePattern;
       case 'r':
         return "HH:mm:ss.FFFFFFFFF";
       default:

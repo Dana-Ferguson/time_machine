@@ -4,14 +4,8 @@
 // 632d984  on Sep 15, 2017
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_timezones.dart';
-import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_patterns.dart';
 
 abstract class PatternResources
 {

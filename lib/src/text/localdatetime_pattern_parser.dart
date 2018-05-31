@@ -104,13 +104,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, NodaFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'f':
-        return formatInfo.DateTimeFormat.LongDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
+        return formatInfo.DateTimeFormat.longDatePattern + " " + formatInfo.DateTimeFormat.shortTimePattern;
       case 'F':
-        return formatInfo.DateTimeFormat.FullDateTimePattern;
+        return formatInfo.DateTimeFormat.fullDateTimePattern;
       case 'g':
-        return formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.ShortTimePattern;
+        return formatInfo.DateTimeFormat.shortDatePattern + " " + formatInfo.DateTimeFormat.shortTimePattern;
       case 'G':
-        return formatInfo.DateTimeFormat.ShortDatePattern + " " + formatInfo.DateTimeFormat.LongTimePattern;
+        return formatInfo.DateTimeFormat.shortDatePattern + " " + formatInfo.DateTimeFormat.longTimePattern;
       default:
         // Will be turned into an exception.
         return null;

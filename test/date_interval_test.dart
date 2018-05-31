@@ -152,6 +152,7 @@ void Equals_DifferentToOtherType()
   LocalDate end = new LocalDate(2001, 6, 19);
   var interval = new DateInterval(start, end);
   // expect(interval.equals(new Instant.fromUnixTimeTicks(0)), isFalse);
+  // ignore: unrelated_type_equality_checks
   expect(interval == new Instant.fromUnixTimeTicks(0), isFalse);
 }
 

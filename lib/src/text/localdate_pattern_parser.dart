@@ -68,9 +68,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, NodaFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'd':
-        return formatInfo.DateTimeFormat.ShortDatePattern;
+        return formatInfo.DateTimeFormat.shortDatePattern;
       case 'D':
-        return formatInfo.DateTimeFormat.LongDatePattern;
+        return formatInfo.DateTimeFormat.longDatePattern;
       default:
         // Will be turned into an exception.
         return null;

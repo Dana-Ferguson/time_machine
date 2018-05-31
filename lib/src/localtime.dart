@@ -4,6 +4,7 @@
 import 'package:meta/meta.dart';
 
 import 'package:time_machine/time_machine_fields.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'utility/preconditions.dart';
 
@@ -603,7 +604,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
 // @override String toString(String patternText, IFormatProvider formatProvider) =>
 //    LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      LocalTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      LocalTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// <summary>
   /// Formats the value of the current instance using the specified pattern.

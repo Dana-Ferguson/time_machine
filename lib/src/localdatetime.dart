@@ -4,6 +4,7 @@
 import 'package:quiver_hashcode/hashcode.dart';
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine_fields.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'utility/preconditions.dart';
@@ -871,7 +872,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// </returns>
   // @override String toString() => TextShim.toStringLocalDateTime(this);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
 
 

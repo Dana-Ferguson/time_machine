@@ -148,8 +148,8 @@ import 'package:time_machine/time_machine_patterns.dart';
       int count = pattern.GetRepeatCount(2);
       builder.AddField(PatternFields.amPm, pattern.Current);
 
-      String amDesignator = builder.FormatInfo.AMDesignator;
-      String pmDesignator = builder.FormatInfo.PMDesignator;
+      String amDesignator = builder.FormatInfo.amDesignator;
+      String pmDesignator = builder.FormatInfo.pmDesignator;
 
       // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
       // to the special value of 2, meaning "take it from the template".

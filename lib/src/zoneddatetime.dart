@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
@@ -478,7 +479,7 @@ bool IsDaylightSavingTime() => GetZoneInterval().savings != Offset.zero;
 /// </returns>
   // @override String toString() => TextShim.toStringZonedDateTime(this);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      ZonedDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.CurrentCulture);
+      ZonedDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
 /// <summary>
 /// Formats the value of the current instance using the specified pattern.
