@@ -14,11 +14,15 @@ abstract class Cultures {
 
 // https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Globalization/CultureInfo.Unix.cs
 // https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Globalization/CultureInfo.cs
-@immutable
+@immutable // todo: change to Culture and then merge with Cultures?
 class CultureInfo {
   static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
   // todo: change this!
-  static CultureInfo get currentCulture => invariantCulture;
+
+  static CultureInfo _currentCulture = null;
+  static CultureInfo get currentCulture => _currentCulture??=invariantCulture;
+  static void set currentCulture(CultureInfo value) => _currentCulture = value;
+
   bool get isReadOnly => true;
 
   final DateTimeFormatInfo dateTimeFormat;

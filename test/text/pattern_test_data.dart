@@ -61,7 +61,7 @@ abstract class PatternTestData<T> {
   @internal IPattern<T> CreatePattern();
 
   @internal void TestParse() {
-    assert(Message != null);
+    assert(Message == null);
     IPattern<T> pattern = CreatePattern();
     var result = pattern.Parse(Text);
     var actualValue = result.Value;
@@ -75,7 +75,7 @@ abstract class PatternTestData<T> {
   }
 
   @internal void TestFormat() {
-    assert(Message != null);
+    assert(Message == null);
     IPattern<T> pattern = CreatePattern();
     assert(Text == pattern.Format(Value));
 
@@ -137,7 +137,7 @@ abstract class PatternTestData<T> {
       // Expected... now let's check the message *starts* with the right part.
       // We're not currently validating the bit that reproduces the bad value.
       assert(e.message.startsWith(expectedMessage),
-      "Expected message to start with ${expectedMessage}; was actually ${e.message}");
+      "Expected message to start with \n'${expectedMessage}'; was actually \n'${e.message}'");
     }
   }
 

@@ -161,7 +161,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// </para>
   /// </remarks>
   @private List<String> ConvertGenitiveMonthArray(List<String> nonGenitiveNames, List<String> bclNames, List<String> invariantNames) {
-    var number = int.parse(bclNames[0]); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
+    var number = int.parse(bclNames[0], onError: (_) => null); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
 
     if (number != null) {
       return nonGenitiveNames;

@@ -20,7 +20,7 @@ String _replacer(Match match, List<dynamic> args) {
 
   var formatToken = match[3];
   // Just ignoring them for now?
-  print('Found a formatToken: $formatToken');
+  if (formatToken != null) print('Found a formatToken: $formatToken');
 
   if (args.length <= index) return null;
   return args[index]?.toString();
@@ -29,7 +29,7 @@ String _replacer(Match match, List<dynamic> args) {
 String stringInsert(String text, int index, String value) {
   if (index <= 0) return value + text;
   if (index >= text.length) return text + value;
-  return '${value.substring(0, index)}$value${value.substring(index)}';
+  return '${text.substring(0, index)}$value${text.substring(index)}';
 }
 
 String stringFilled(String text, int count) {

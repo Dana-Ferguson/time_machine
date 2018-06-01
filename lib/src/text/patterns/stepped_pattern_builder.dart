@@ -129,6 +129,7 @@ class _findLongestMatchCursor {
     List<Function/*(TResult, StringBuffer)*/> formatDelegate = [];
     for (/*Function(TResult, StringBuffer)*/ Function formatAction in formatActions) {
       if (formatAction is IPostPatternParseFormatAction) {
+        print("IPostPatternParseFormatAction!");
         formatDelegate.add((formatAction as IPostPatternParseFormatAction).BuildFormatAction(usedFields));
       } else {
         formatDelegate.add(formatAction);

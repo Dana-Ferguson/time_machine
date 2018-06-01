@@ -12,8 +12,8 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
 
 // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
 // using the genitive form or not.
-@private /*sealed*/ class MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> extends /*SteppedPatternBuilder<TResult, TBucket>.*/IPostPatternParseFormatAction
-// where TBucket : ParseBucket<TResult>
+@private /*sealed*/ class MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>>
+    extends /*SteppedPatternBuilder<TResult, TBucket>.*/IPostPatternParseFormatAction // where TBucket : ParseBucket<TResult>
     {
   @private final int count;
   @private final NodaFormatInfo formatInfo;
@@ -80,7 +80,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) numberGetter, Function(TBucket, int) textSetter, Function(TBucket, int) numberSetter) {
-    patternBuilder(pattern, builder) {
+    patternBuilder(PatternCursor pattern, SteppedPatternBuilder builder) {
       int count = pattern.GetRepeatCount(4);
       PatternFields field;
       switch (count) {
@@ -98,10 +98,10 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           List<String> nonGenitiveTextValues = count == 3 ? format.ShortMonthNames : format.LongMonthNames;
           List<String> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
           if (nonGenitiveTextValues == genitiveTextValues) {
-            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CompareInfo, nonGenitiveTextValues);
+            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.compareInfo, nonGenitiveTextValues);
           }
           else {
-            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.CompareInfo,
+            builder.AddParseLongestTextAction(pattern.Current, textSetter, format.compareInfo,
                 genitiveTextValues, nonGenitiveTextValues);
           }
 
@@ -109,7 +109,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           // Dart Hack: we don't even need to pass a DummyMethod, we don't have a Delegate.Action in Dart
           //  So instead of, 'formatAction.Target as IPostPatternParseFormatAction' we can do
           //   'formatAction as IPostPatternParseFormatAction' ... Will this still work in Dart 2.0?
-          builder.AddFormatAction(new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter)); //.DummyMethod);
+          builder.AddFormatAction((_, __) => new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter)); //.DummyMethod);
           break;
         default:
           throw new StateError("Invalid count!");
