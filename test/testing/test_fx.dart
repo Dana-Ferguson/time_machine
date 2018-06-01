@@ -178,8 +178,13 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   var futures = new List<Future>();
 
   var instance = classMirror.newInstance(new Symbol(''), []);
+  var declarations = new List<DeclarationMirror>()..addAll(classMirror.declarations.values);
+  while (classMirror.superclass != null) {
+    classMirror = classMirror.superclass;
+    declarations.addAll(classMirror.declarations.values);
+  }
 
-  for(DeclarationMirror declaration in classMirror.declarations.values) {
+  for(DeclarationMirror declaration in declarations) {
     if (declaration is MethodMirror && declaration.metadata.any((m) => m.reflectee is Test)) {
       if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
