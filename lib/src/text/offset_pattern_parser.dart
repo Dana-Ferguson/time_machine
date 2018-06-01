@@ -181,7 +181,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// <value>
   /// <c>true</c> if this instance is negative; otherwise, <c>false</c>.
   /// </value>
-  bool IsNegative;
+  bool IsNegative = false;
 
   /// <summary>
   /// Calculates the value from the parsed pieces.
