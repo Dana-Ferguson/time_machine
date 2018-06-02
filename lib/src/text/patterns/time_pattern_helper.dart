@@ -21,7 +21,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    _patternBuilder(pattern, builder) {
+    _patternBuilder(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
@@ -41,7 +41,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           // If there *was* a decimal separator, we should definitely have a number.
           // Last argument is 1 because we need at least one digit after the decimal separator
           var fractionalSeconds = valueCursor.ParseFraction(count, maxCount, 1);
-          if (fractionalSeconds != null) {
+          if (fractionalSeconds == null) {
             return ParseResult.MismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
           }
           // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
@@ -66,7 +66,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    return (PatternCursor pattern, SteppedPatternBuilder builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
@@ -77,7 +77,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         pattern.MoveNext();
         int count = pattern.GetRepeatCount(maxCount);
         builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
-        builder.AddParseAction((valueCursor, bucket) {
+        builder.AddParseAction((ValueCursor valueCursor, ParseBucket bucket) {
           // If the next token isn't a dot or comma, we assume
           // it's part of the next token in the pattern
           // todo: dart: look for this in other places; had to add 'valueCursor.Index >= valueCursor.Length' because our Match's stringOrdinalCompare doesn't work quite the same
@@ -99,7 +99,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         builder.AddFormatFractionTruncate(count, maxCount, getter);
       }
       else {
-        builder.AddParseAction((str, bucket) =>
+        builder.AddParseAction((ValueCursor str, ParseBucket bucket) =>
         str.Match('.') || str.Match(',')
             ? null
             : ParseResult.MismatchedCharacter<TResult>(str, ';'));
@@ -113,43 +113,39 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    _patternBuilder(pattern, builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       String patternCharacter = pattern.Current;
       int count = pattern.GetRepeatCount(maxCount);
       builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
 
-      _parseAction(str, bucket) {
+      builder.AddParseAction((ValueCursor str, ParseBucket bucket) {
         int fractionalSeconds = str.ParseFraction(count, maxCount, patternCharacter == 'f' ? count : 0);
         // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
         // "up to count" digits.
-        if (fractionalSeconds != null) {
+        if (fractionalSeconds == null) {
           return ParseResult.MismatchedNumber<TResult>(str, stringFilled(patternCharacter, count));
         }
         // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
         setter(bucket, fractionalSeconds);
         return null;
-      }
-
-      builder.AddParseAction(_parseAction);
+      });
       if (patternCharacter == 'f') {
         builder.AddFormatFraction(count, maxCount, getter);
       }
       else {
         builder.AddFormatFractionTruncate(count, maxCount, getter);
       }
-    }
-
-    return _patternBuilder;
+    };
   }
 
   @internal static CharacterHandler<TResult, TBucket> CreateAmPmHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter) {
-    _patternBuilder(pattern, builder) {
+    return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.GetRepeatCount(2);
       builder.AddField(PatternFields.amPm, pattern.Current);
 
-      String amDesignator = builder.FormatInfo.amDesignator;
-      String pmDesignator = builder.FormatInfo.pmDesignator;
+      String amDesignator = builder.FormatInfo.AMDesignator;
+      String pmDesignator = builder.FormatInfo.PMDesignator;
 
       // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
       // to the special value of 2, meaning "take it from the template".
@@ -171,7 +167,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         return;
       }
 
-      CompareInfo compareInfo = builder.FormatInfo.CompareInfo;
+      CompareInfo compareInfo = builder.FormatInfo.compareInfo;
       // Single character designator
       if (count == 1) {
         // It's not entirely clear whether this is the right thing to do... there's no nice
@@ -179,7 +175,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         String amFirst = amDesignator.substring(0, 1);
         String pmFirst = pmDesignator.substring(0, 1);
 
-        _parseAction(str, bucket) {
+        builder.AddParseAction((ValueCursor str, TBucket bucket) {
           if (str.MatchCaseInsensitive(amFirst, compareInfo, true)) {
             amPmSetter(bucket, 0);
             return null;
@@ -189,14 +185,13 @@ import 'package:time_machine/time_machine_patterns.dart';
             return null;
           }
           return ParseResult.MissingAmPmDesignator<TResult>(str);
-        }
-
-        builder.AddParseAction(_parseAction);
-        builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
+        });
+        builder.AddFormatAction((value, sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
         return;
       }
 
-      parseAction(str, bucket) {
+      // Full designator
+      builder.AddParseAction((ValueCursor str, TBucket bucket) {
         // Could use the "match longest" approach, but with only two it feels a bit silly to build a list...
         bool pmLongerThanAm = pmDesignator.length > amDesignator.length;
         String longerDesignator = pmLongerThanAm ? pmDesignator : amDesignator;
@@ -211,14 +206,9 @@ import 'package:time_machine/time_machine_patterns.dart';
           return null;
         }
         return ParseResult.MissingAmPmDesignator<TResult>(str);
-      }
-
-      // Full designator
-      builder.AddParseAction(parseAction);
-      builder.AddFormatAction((value, sb) => sb.Append(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
-    }
-
-    return _patternBuilder;
+      });
+      builder.AddFormatAction((TResult value, StringBuffer sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
+    };
   }
 
   @private static void HandleHalfAmPmDesignator<TResult, TBucket extends ParseBucket<TResult>>

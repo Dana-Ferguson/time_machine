@@ -32,12 +32,12 @@ class SpanPatternTest extends PatternTestBase<Span> {
   /// Test data that can only be used to test formatting.
   /// </summary>
   @internal  final List<Data> FormatOnlyData = [
-// No sign, so we can't parse it.
+    // No sign, so we can't parse it.
     new Data.hm(-1, 0)
       ..Pattern = "HH:mm"
       ..Text = "01:00",
 
-// Loss of nano precision
+    // Loss of nano precision
     new Data.dhmsn(1, 2, 3, 4, 123456789)
       ..Pattern = "D:hh:mm:ss.ffff"
       ..Text = "1:02:03:04.1234",
@@ -109,55 +109,48 @@ class SpanPatternTest extends PatternTestBase<Span> {
       Message = TextErrorMessages.FieldValueOutOfRange
       ..Parameters.addAll(["1449551462401", 'S', 'Span']),
 
-// Each field in range, but overall result out of range
+  /* note: In Dart we don't go out of range -- todo: evaluate -- should we?
+    // Each field in range, but overall result out of range
     new Data(Span.minValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "-16777216:00:00:00.000000001"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.maxValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "16777216:00:00:00.000000000"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-H:mm:ss.fffffffff"
       ..Text = "-402653184:00:00.000000001"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-H:mm:ss.fffffffff"
       ..Text = "402653184:00:00.000000000"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "-24159191040:00.000000001"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "24159191040:00.000000000"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-S.fffffffff"
       ..Text = "-1449551462400.000000001"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
+      ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),
     new Data(Span.minValue)
       ..Pattern = "-S.fffffffff"
       ..Text = "1449551462400.000000000"
-      ..
-      Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Message = TextErrorMessages.OverallValueOutOfRange
+      ..Parameters.addAll(['Span']),*/
     new Data(Span.minValue)
       ..Pattern = "'x'S"
       ..Text = "x"
@@ -251,6 +244,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Culture = TestCultures.DotTimeSeparator,
 
 // Extremes...
+  /* todo: our extremes are different (could be different based on platform?)
     new Data(Span.minValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "-16777216:00:00:00.000000000",
@@ -267,6 +261,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "-24159191040:00.000000000",
     new Data(Span.maxValue)
+    new Data(Span.maxValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "24159191039:59.999999999",
     new Data(Span.minValue)
@@ -274,7 +269,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Text = "-1449551462400.000000000",
     new Data(Span.maxValue)
       ..Pattern = "-S.fffffffff"
-      ..Text = "1449551462399.999999999",
+      ..Text = "1449551462399.999999999",*/
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);

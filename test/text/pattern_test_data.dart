@@ -1,3 +1,4 @@
+import 'package:test/test.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
@@ -65,7 +66,7 @@ abstract class PatternTestData<T> {
     IPattern<T> pattern = CreatePattern();
     var result = pattern.Parse(Text);
     var actualValue = result.Value;
-    assert(Value == actualValue);
+    expect(Value, actualValue);
 
     if (StandardPattern != null) {
       assert(Value == StandardPattern
@@ -126,6 +127,7 @@ abstract class PatternTestData<T> {
   void TestParseFailure() {
     String expectedMessage = FormatMessage(Message, Parameters);
     IPattern<T> pattern = CreatePattern();
+
     var result = pattern.Parse(Text);
     assert(result.Success == false);
     try {
