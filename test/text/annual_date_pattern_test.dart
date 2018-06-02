@@ -22,14 +22,10 @@ import 'pattern_test_data.dart';
 import 'test_cultures.dart';
 import 'text_cursor_test_base_tests.dart';
 
-/// Tests for SteppedPatternBuilder, often using OffsetPatternParser as this is known
-/// to use SteppedPatternBuilder.
 Future main() async {
-  //FrCa = await TestCultures.getCulture('fr-CA');
   await runTests();
 }
 
-//CultureInfo FrCa;
 
 @Test()
 class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
