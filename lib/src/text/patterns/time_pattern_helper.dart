@@ -66,7 +66,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    return (pattern, builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder builder) {
       // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
@@ -95,7 +95,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           setter(bucket, fractionalSeconds);
           return null;
         });
-        builder.AddFormatAction((localTime, sb) => sb.write('.'));
+        builder.AddFormatAction((TResult localTime, StringBuffer sb) => sb.write('.'));
         builder.AddFormatFractionTruncate(count, maxCount, getter);
       }
       else {
@@ -103,7 +103,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         str.Match('.') || str.Match(',')
             ? null
             : ParseResult.MismatchedCharacter<TResult>(str, ';'));
-        builder.AddFormatAction((value, sb) => sb.write('.'));
+        builder.AddFormatAction((TResult value, StringBuffer sb) => sb.write('.'));
       }
     };
   }
@@ -228,39 +228,31 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (count == 1) {
       String abbreviation = specifiedDesignator.substring(0, 1);
 
-
-      _parseAction(ValueCursor str, TBucket bucket) {
+      builder.AddParseAction((ValueCursor str, TBucket bucket) {
         int value = str.MatchCaseInsensitive(abbreviation, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
         amPmSetter(bucket, value);
         return null;
-      }
+      });
 
-      _formatAction(TResult value, StringBuffer sb) {
+      builder.AddFormatAction((TResult value, StringBuffer sb) {
         // Only append anything if it's the non-empty designator.
-        if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue) {
+        if (hourOfDayGetter(value) ~/ 12 == specifiedDesignatorValue) {
           sb.write(specifiedDesignator[0]);
         }
-      }
-
-      builder.AddParseAction(_parseAction);
-      builder.AddFormatAction(_formatAction);
+      });
       return;
     }
 
-    _parseAction2(ValueCursor str, TBucket bucket) {
+    builder.AddParseAction((ValueCursor str, TBucket bucket) {
       int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
       amPmSetter(bucket, value);
       return null;
-    }
-
-    _formatAction2(TResult value, StringBuffer sb) {
+    });
+    builder.AddFormatAction((TResult value, StringBuffer sb) {
       // Only append anything if it's the non-empty designator.
-      if (hourOfDayGetter(value) / 12 == specifiedDesignatorValue) {
+      if (hourOfDayGetter(value) ~/ 12 == specifiedDesignatorValue) {
         sb.write(specifiedDesignator);
       }
-    }
-
-    builder.AddParseAction(_parseAction2);
-    builder.AddFormatAction(_formatAction2);
+    });
   }
 }

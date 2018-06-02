@@ -74,7 +74,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       builder.AddField(field, pattern.Current);
       builder.AddField(PatternFields.totalSpan, pattern.Current);
       builder.AddParseInt64ValueAction(count, 13, pattern.Current, 0, maxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
-      builder.AddFormatAction((value, sb) =>
+      builder.AddFormatAction((Span value, StringBuffer sb) =>
           FormatHelper.LeftPadNonNegativeInt64(GetPositiveNanosecondUnits(value, nanosecondsPerUnit, unitsPerDay), count, sb));
     };
   }

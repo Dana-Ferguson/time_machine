@@ -22,8 +22,8 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   @internal MonthFormatActionHolder(this.formatInfo, this.count, this.getter);
 
   @internal void DummyMethod(TResult value, StringBuffer builder) {
-// This method is never called. We use it to create a delegate with a target that implements
-// IPostPatternParseFormatAction. There's no test for this throwing.
+    // This method is never called. We use it to create a delegate with a target that implements
+    // IPostPatternParseFormatAction. There's no test for this throwing.
     throw new StateError("This method should never be called");
   }
 
@@ -106,10 +106,9 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           }
 
           // Hack: see below
-          // Dart Hack: we don't even need to pass a DummyMethod, we don't have a Delegate.Action in Dart
-          //  So instead of, 'formatAction.Target as IPostPatternParseFormatAction' we can do
-          //   'formatAction as IPostPatternParseFormatAction' ... Will this still work in Dart 2.0?
-          builder.AddFormatAction((_, __) => new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter)); //.DummyMethod);
+          // Dart Hack: we don't have a Delegate.Action in Dart
+          //  So instead of, 'formatAction.Target as IPostPatternParseFormatAction' we perform type erasure
+          builder.AddPostPatternParseFormatAction(new MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter));
           break;
         default:
           throw new StateError("Invalid count!");
