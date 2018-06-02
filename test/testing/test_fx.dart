@@ -193,6 +193,15 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
       // should we collate all found test names?
       var testName = '$testGroupName.${test.first.name ?? _stripSymbol(declaration.simpleName)}'; //test.first.name ?? '${lib.simpleName}.${declaration.simpleName}';
 
+      var skipThisTest = declaration.metadata.any((m) => m.reflectee is SkipMe);
+      if (skipThisTest) {
+        _skippedTotal++;
+        var reason = (declaration.metadata.firstWhere((m) => m.reflectee is SkipMe).reflectee as SkipMe).reason;
+        if (reason == null) print('skipped $testName');
+        else print('skipped $testName because $reason');
+        continue;
+      }
+
       // easy, because no sub classes
       futures.addAll(_runTest(instance, declaration, testName));
     }

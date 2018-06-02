@@ -47,7 +47,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) yearGetter, Function(TBucket, int) setter) {
-    _patternBuilder(PatternCursor pattern, SteppedPatternBuilder builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder builder) {
       int count = pattern.GetRepeatCount(4);
       builder.AddField(PatternFields.yearOfEra, pattern.Current);
       switch (count) {
@@ -70,9 +70,9 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
         default:
           throw new InvalidPatternError.format(TextErrorMessages.InvalidRepeatCount, [pattern.Current, count]);
       }
-    }
+    };
 
-    return _patternBuilder; // (pattern, builder) => _createYearofEraHandler(pattern, builder);
+    // (pattern, builder) => _createYearofEraHandler(pattern, builder);
   }
 
   /// <summary>
@@ -80,7 +80,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) numberGetter, Function(TBucket, int) textSetter, Function(TBucket, int) numberSetter) {
-    patternBuilder(PatternCursor pattern, SteppedPatternBuilder builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder builder) {
       int count = pattern.GetRepeatCount(4);
       PatternFields field;
       switch (count) {
@@ -114,9 +114,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           throw new StateError("Invalid count!");
       }
       builder.AddField(field, pattern.Current);
-    }
-
-    return patternBuilder;
+    };
   }
 
 
@@ -126,7 +124,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   @internal static CharacterHandler<TResult, TBucket> CreateDayHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) dayOfMonthGetter, int Function(TResult) dayOfWeekGetter,
       Function(TBucket, int) dayOfMonthSetter, Function(TBucket, int) dayOfWeekSetter) {
-    patternBuilder(pattern, builder) {
+    return(pattern, builder) {
       int count = pattern.GetRepeatCount(4);
       PatternFields field;
       switch (count) {
@@ -142,16 +140,14 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           field = PatternFields.dayOfWeek;
           var format = builder.FormatInfo;
           List<String> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
-          builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.CompareInfo, textValues);
-          builder.AddFormatAction((value, sb) => sb.Append(textValues[dayOfWeekGetter(value)]));
+          builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.compareInfo, textValues);
+          builder.AddFormatAction((value, sb) => sb.write(textValues[dayOfWeekGetter(value)]));
           break;
         default:
           throw new StateError("Invalid count!");
       }
       builder.AddField(field, pattern.Current);
-    }
-
-    return patternBuilder;
+    };
   }
 
   /// <summary>
@@ -159,7 +155,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (Era Function(TResult) eraFromValue, /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketFromBucket) {
-    _patternBuilder(pattern, builder) {
+    return (pattern, builder) {
       pattern.GetRepeatCount(2);
       builder.AddField(PatternFields.era, pattern.Current);
       var formatInfo = builder.FormatInfo;
@@ -172,10 +168,8 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
       // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
       builder.AddParseAction(_parseAction);
 
-      builder.AddFormatAction((value, sb) => sb.Append(formatInfo.GetEraPrimaryName(eraFromValue(value))));
-    }
-
-    return _patternBuilder;
+      builder.AddFormatAction((value, sb) => sb.write(formatInfo.GetEraPrimaryName(eraFromValue(value))));
+    };
   }
 
   /// <summary>
@@ -183,7 +177,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCalendarHandler<TResult, TBucket extends ParseBucket<TResult>>
       (CalendarSystem Function(TResult) getter, Function(TBucket, CalendarSystem) setter) {
-    _function(pattern, builder) {
+    return (pattern, builder) {
       builder.AddField(PatternFields.calendar, pattern.Current);
 
       _parseAction(cursor, bucket) {
@@ -197,8 +191,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
       }
 
       builder.AddParseAction(_parseAction);
-      builder.AddFormatAction((value, sb) => sb.Append(getter(value).id));
-    }
-    return _function;
+      builder.AddFormatAction((value, sb) => sb.write(getter(value).id));
+    };
   }
 }
