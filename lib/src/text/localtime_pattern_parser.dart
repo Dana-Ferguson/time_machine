@@ -154,12 +154,12 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (usedFields.HasAny(PatternFields.hours24)) {
       if (usedFields.HasAll(PatternFields.hours12 | PatternFields.hours24)) {
         if (Hours12 % 12 != Hours24 % 12) {
-          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 'h');
+          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
         }
       }
       if (usedFields.HasAny(PatternFields.amPm)) {
         if (Hours24 / 12 != AmPm) {
-          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 't');
+          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
         }
       }
       hour.value = Hours24;

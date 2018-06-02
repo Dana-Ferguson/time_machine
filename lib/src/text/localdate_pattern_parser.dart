@@ -171,11 +171,11 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private ParseResult<LocalDate> DetermineYear(PatternFields usedFields, String text) {
     if (usedFields.HasAny(PatternFields.year)) {
       if (Year > Calendar.maxYear || Year < Calendar.minYear) {
-        return ParseResult.FieldValueOutOfRangePostParse<LocalDate>(text, Year, 'u');
+        return ParseResult.FieldValueOutOfRangePostParse<LocalDate>(text, Year, 'u', 'LocalDate');
       }
 
       if (usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)) {
-        return ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u');
+        return ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate');
       }
 
       if (usedFields.HasAny(PatternFields.yearOfEra)) {
@@ -185,7 +185,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           yearOfEraFromYear = yearOfEraFromYear % 100;
         }
         if (yearOfEraFromYear != YearOfEra) {
-          return ParseResult.InconsistentValues<LocalDate>(text, 'y', 'u');
+          return ParseResult.InconsistentValues<LocalDate>(text, 'y', 'u', 'LocalDate');
         }
       }
       return null;
@@ -195,7 +195,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (!usedFields.HasAny(PatternFields.yearOfEra)) {
       Year = TemplateValue.Year;
       return usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)
-          ? ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u') : null;
+          ? ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
     }
 
     if (!usedFields.HasAny(PatternFields.era)) {

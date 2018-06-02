@@ -171,13 +171,13 @@ class _findLongestMatchCursor {
     AddParseAction((ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.Index;
       int value = cursor.ParseInt64Digits(minimumDigits, maximumDigits);
-      if (value != null) {
+      if (value == null) {
         cursor.Move(startingIndex);
         return ParseResult.MismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (value < minimumValue || value > maximumValue) {
         cursor.Move(startingIndex);
-        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar);
+        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);
@@ -207,7 +207,7 @@ class _findLongestMatchCursor {
       }
       if (value < minimumValue || value > maximumValue) {
         cursor.Move(startingIndex);
-        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar);
+        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);

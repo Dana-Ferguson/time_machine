@@ -138,7 +138,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay
-          : (floorDays + 1) * unitsPerDay + nanosecondOfDay / nanosecondsPerUnit;
+          : (floorDays + 1) * unitsPerDay + nanosecondOfDay ~/ nanosecondsPerUnit;
       return -negativeValue;
     }
   }

@@ -226,17 +226,17 @@ import 'package:time_machine/time_machine_text.dart';
 
   @internal static ParseResult<T> InvalidHour24<T>(String text) => ForInvalidValuePostParse(text, TextErrorMessages.InvalidHour24);
 
-  @internal static ParseResult<T> FieldValueOutOfRange<T>(ValueCursor cursor, int value, String field) =>
-      ForInvalidValue(cursor, TextErrorMessages.FieldValueOutOfRange, [value, field, field.runtimeType]);
+  @internal static ParseResult<T> FieldValueOutOfRange<T>(ValueCursor cursor, int value, String field, String tType) =>
+      ForInvalidValue(cursor, TextErrorMessages.FieldValueOutOfRange, [value, field, tType]);
 
-  @internal static ParseResult<T> FieldValueOutOfRangePostParse<T>(String text, int value, String field) =>
-      ForInvalidValuePostParse(text, TextErrorMessages.FieldValueOutOfRange, [value, field, field.runtimeType]);
+  @internal static ParseResult<T> FieldValueOutOfRangePostParse<T>(String text, int value, String field, String tType) =>
+      ForInvalidValuePostParse(text, TextErrorMessages.FieldValueOutOfRange, [value, field, tType]);
 
   /// <summary>
   /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
   /// </summary>
-  @internal static ParseResult<T> InconsistentValues<T>(String text, String field1, String field2) =>
-      ForInvalidValuePostParse(text, TextErrorMessages.InconsistentValues2, [field1, field2, field2.runtimeType]);
+  @internal static ParseResult<T> InconsistentValues<T>(String text, String field1, String field2, String tType) =>
+      ForInvalidValuePostParse(text, TextErrorMessages.InconsistentValues2, [field1, field2, tType]);
 
   /// <summary>
   /// The month of year is inconsistent between the text and numeric specifications.
