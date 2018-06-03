@@ -21,7 +21,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
-    _patternBuilder(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
+    return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
@@ -34,7 +34,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
         builder.AddParseAction((ValueCursor valueCursor, TBucket bucket) {
           // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
-          if (!valueCursor.Match('.')) {
+          if (!valueCursor.MatchSingle('.')) {
             return null;
           }
 
@@ -54,9 +54,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       else {
         builder.AddLiteral2('.', ParseResult.MismatchedCharacter);
       }
-    }
-
-    return _patternBuilder;
+    };
   }
 
   /// <summary>
@@ -81,7 +79,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           // If the next token isn't a dot or comma, we assume
           // it's part of the next token in the pattern
           // todo: dart: look for this in other places; had to add 'valueCursor.Index >= valueCursor.Length' because our Match's stringOrdinalCompare doesn't work quite the same
-          if (valueCursor.Index >= valueCursor.Length || (!valueCursor.Match('.') && !valueCursor.Match(','))) {
+          if (valueCursor.Index >= valueCursor.Length || (!valueCursor.MatchSingle('.') && !valueCursor.MatchSingle(','))) {
             return null;
           }
 
@@ -100,7 +98,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       }
       else {
         builder.AddParseAction((ValueCursor str, ParseBucket bucket) =>
-        str.Match('.') || str.Match(',')
+        str.MatchSingle('.') || str.MatchSingle(',')
             ? null
             : ParseResult.MismatchedCharacter<TResult>(str, ';'));
         builder.AddFormatAction((TResult value, StringBuffer sb) => sb.write('.'));

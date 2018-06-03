@@ -21,19 +21,20 @@ import 'package:time_machine/time_machine_text.dart';
   @internal ValueCursor(String value)
       : super(value);
 
-//  /// <summary>
-//  ///   Attempts to match the specified character with the current character of the string. If the
-//  ///   character matches then the index is moved passed the character.
-//  /// </summary>
-//  /// <param name="character">The character to match.</param>
-//  /// <returns><c>true</c> if the character matches.</returns>
-//  @internal bool Match(String character) {
-//    if (Current == character) {
-//      MoveNext();
-//      return true;
-//    }
-//    return false;
-//  }
+  /// <summary>
+  ///   Attempts to match the specified character with the current character of the string. If the
+  ///   character matches then the index is moved passed the character.
+  /// </summary>
+  /// <param name="character">The character to match.</param>
+  /// <returns><c>true</c> if the character matches.</returns>
+  @internal bool MatchSingle(String character) {
+    assert(character.length == 1);
+    if (Current == character) {
+      MoveNext();
+      return true;
+    }
+    return false;
+  }
 
   /// <summary>
   /// Attempts to match the specified string with the current point in the string. If the
@@ -41,7 +42,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// </summary>
   /// <param name="match">The string to match.</param>
   /// <returns><c>true</c> if the string matches.</returns>
-  @internal bool Match(String match) {
+  @internal bool MatchText(String match) {
     // string.CompareOrdinal(Value, Index, match, 0, match.length) == 0) {
     // Value, Index, match, 0, match.length
     if (stringOrdinalCompare(Value, Index, match, 0, match.length) == 0) {

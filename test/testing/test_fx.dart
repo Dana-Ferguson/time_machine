@@ -51,8 +51,8 @@ class TestCaseSource {
 
     for (var arguments in argumentsSource) {
       if (arguments is TestCaseData) {
-        if (arguments.data is List) testCases.add(new TestCase(arguments.data, arguments.name));
-        else testCases.add(new TestCase([arguments.data], arguments.name));
+        if (arguments.arguments is List) testCases.add(new TestCase(arguments.arguments, arguments.name));
+        else testCases.add(new TestCase([arguments.arguments], arguments.name));
       }
       else if (arguments is List) testCases.add(new TestCase(arguments));
       else testCases.add(new TestCase([arguments]));
@@ -64,8 +64,8 @@ class TestCaseSource {
 
 class TestCaseData {
   String name;
-  Object data;
-  TestCaseData(this.data);
+  Object arguments;
+  TestCaseData(this.arguments);
 }
 
 int _skippedTotal = 0;

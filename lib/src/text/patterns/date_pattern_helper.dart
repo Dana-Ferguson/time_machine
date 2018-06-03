@@ -180,17 +180,15 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     return (pattern, builder) {
       builder.AddField(PatternFields.calendar, pattern.Current);
 
-      _parseAction(cursor, bucket) {
+      builder.AddParseAction((cursor, bucket) {
         for (var id in CalendarSystem.Ids) {
-          if (cursor.Match(id)) {
+          if (cursor.MatchText(id)) {
             setter(bucket, CalendarSystem.ForId(id));
             return null;
           }
         }
         return ParseResult.NoMatchingCalendarSystem<TResult>(cursor);
-      }
-
-      builder.AddParseAction(_parseAction);
+      });
       builder.AddFormatAction((value, sb) => sb.write(getter(value).id));
     };
   }
