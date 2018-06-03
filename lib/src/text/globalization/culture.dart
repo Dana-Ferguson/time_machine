@@ -29,12 +29,15 @@ class CultureInfo {
   final CompareInfo compareInfo;
 
   final String name;
+  static const invariantCultureId = "Invariant Culture";
 
   CultureInfo._invariantCulture()
-      : dateTimeFormat = new DateTimeFormatInfo.invariantCulture(),
-        name = "Invariant Culture",
+      : dateTimeFormat = new DateTimeFormatInfoBuilder.invariantCulture().Build(),
+        name = invariantCultureId,
         compareInfo = null
   ;
 
   CultureInfo(this.name, this.dateTimeFormat) : compareInfo = null;
+
+  @override String toString() => name;
 }

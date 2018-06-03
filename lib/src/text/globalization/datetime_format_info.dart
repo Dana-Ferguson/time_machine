@@ -40,29 +40,7 @@ class DateTimeFormatInfo {
   final String shortTimePattern;
   final String longTimePattern;
 
-  // Month's have a blank entry at the end
-  static final List<String> invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
-  static final List<String> invariantAbbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
-
-  DateTimeFormatInfo.invariantCulture()
-      : amDesignator = 'AM',
-        pmDesignator = 'PM',
-        timeSeparator = ':',
-        dateSeparator = '/',
-        abbreviatedDayNames = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        dayNames = const ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        monthNames = invariantMonthNames,
-        abbreviatedMonthNames = invariantAbbreviatedMonthNames,
-        monthGenitiveNames = invariantMonthNames,
-        abbreviatedMonthGenitiveNames = invariantAbbreviatedMonthNames,
-        calendar = BclCalendarType.gregorian,
-        eraNames = const ['A.D.'],
-        fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss',
-        shortDatePattern = 'MM/dd/yyyy',
-        longDatePattern = 'dddd, dd MMMM yyyy',
-        shortTimePattern = 'HH:mm',
-        longTimePattern = 'HH:mm:ss'
-  ;
+  factory DateTimeFormatInfo.invariantCulture() => new DateTimeFormatInfoBuilder.invariantCulture().Build();
 
   DateTimeFormatInfo(
       this.amDesignator,
@@ -131,4 +109,28 @@ class DateTimeFormatInfoBuilder {
           longTimePattern);
 
   DateTimeFormatInfoBuilder();
+
+  // Month's have a blank entry at the end
+  static final List<String> _invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
+  static final List<String> _invariantAbbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
+
+  DateTimeFormatInfoBuilder.invariantCulture()
+      : amDesignator = 'AM',
+        pmDesignator = 'PM',
+        timeSeparator = ':',
+        dateSeparator = '/',
+        abbreviatedDayNames = const ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        dayNames = const ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        monthNames = _invariantMonthNames,
+        abbreviatedMonthNames = _invariantAbbreviatedMonthNames,
+        monthGenitiveNames = _invariantMonthNames,
+        abbreviatedMonthGenitiveNames = _invariantAbbreviatedMonthNames,
+        calendar = BclCalendarType.gregorian,
+        eraNames = const ['A.D.'],
+        fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss',
+        shortDatePattern = 'MM/dd/yyyy',
+        longDatePattern = 'dddd, dd MMMM yyyy',
+        shortTimePattern = 'HH:mm',
+        longTimePattern = 'HH:mm:ss'
+  ;
 }

@@ -117,7 +117,7 @@ class PatternFields {
   // todo: there is probably a more friendly way to incorporate this for mask usage -- so we can have friendly defined constants above
   static PatternFields union(Iterable<PatternFields> units) {
     int i = 0;
-    units.forEach((u) => i = i | u._value);
+    units.forEach((u) => i |= u._value);
     return new PatternFields(i);
   }
 

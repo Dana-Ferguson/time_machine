@@ -158,7 +158,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         }
       }
       if (usedFields.HasAny(PatternFields.amPm)) {
-        if (Hours24 / 12 != AmPm) {
+        if (Hours24 ~/ 12 != AmPm) {
           return ParseResult.InconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
         }
       }
