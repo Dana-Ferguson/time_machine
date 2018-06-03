@@ -445,19 +445,6 @@ class _findLongestMatchCursor {
       LocalTime Function(TResult) timeExtractor,
       // null if date/time embedded patterns are invalid
       LocalDateTime Function(TResult) dateTimeExtractor) {
-    // todo: what Types are these?
-    parseAction(TBucket bucket, value) {
-      var dateBucket = dateBucketExtractor(bucket);
-      var timeBucket = timeBucketExtractor(bucket);
-      dateBucket.Calendar = value.calendar;
-      dateBucket.Year = value.Year;
-      dateBucket.MonthOfYearNumeric = value.Month;
-      dateBucket.DayOfMonth = value.Day;
-      timeBucket.Hours24 = value.Hour;
-      timeBucket.Minutes = value.Minute;
-      timeBucket.Seconds = value.Second;
-      timeBucket.FractionalSeconds = value.NanosecondOfSecond;
-    }
 
     // This will be d (date-only), t (time-only), or < (date and time)
     // If it's anything else, we'll see the problem when we try to get the pattern.
@@ -481,7 +468,18 @@ class _findLongestMatchCursor {
               LocalDateTimePattern
                   .Create(embeddedPatternText, FormatInfo, templateDate.At(templateTime))
                   .UnderlyingPattern,
-              parseAction,
+                  (TBucket bucket, LocalDateTime value) {
+                var dateBucket = dateBucketExtractor(bucket);
+                var timeBucket = timeBucketExtractor(bucket);
+                dateBucket.Calendar = value.Calendar;
+                dateBucket.Year = value.Year;
+                dateBucket.MonthOfYearNumeric = value.Month;
+                dateBucket.DayOfMonth = value.Day;
+                timeBucket.Hours24 = value.Hour;
+                timeBucket.Minutes = value.Minute;
+                timeBucket.Seconds = value.Second;
+                timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+              },
               dateTimeExtractor);
           break;
         }
