@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// A nul character. This character is not allowed in any parsable string and is used to
   /// indicate that the current character is not set.
   /// </summary>
-  @internal static const String Nul = '\0';
+  @internal static final String Nul = new String.fromCharCode(0);
 
   /// <summary>
   /// Initializes a new instance to parse the given value.

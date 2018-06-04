@@ -56,9 +56,9 @@ abstract class TextCursorTestBase {
     expect(cursor.MovePrevious(), isTrue); // 1
     expect(cursor.MovePrevious(), isTrue); // 0
     expect(cursor.MovePrevious(), isFalse);
-    ValidateCurrentCharacter(cursor, -1, '\0');
+    ValidateCurrentCharacter(cursor, -1, TextCursor.Nul);
     expect(cursor.MovePrevious(), isFalse);
-    ValidateCurrentCharacter(cursor, -1, '\0');
+    ValidateCurrentCharacter(cursor, -1, TextCursor.Nul);
   }
 
   @Test()
@@ -83,8 +83,8 @@ abstract class TextCursorTestBase {
   }
 
   @internal static void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) {
-    expect(expectedCurrentCharacter, cursor.Current);
-    expect(expectedCurrentIndex, cursor.Index);
+    expect(cursor.Current, expectedCurrentCharacter);
+    expect(cursor.Index, expectedCurrentIndex);
   }
 
   @internal static void ValidateEndOfString(TextCursor cursor) {
