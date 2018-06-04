@@ -19,6 +19,43 @@ import '../time_machine_testing.dart';
 import 'pattern_test_data.dart';
 import 'text_cursor_test_base_tests.dart';
 
+@internal abstract class TestLocalDateTimes {
+  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.fromYMDHMSM(
+      1976,
+      6,
+      19,
+      21,
+      13,
+      34,
+      123);
+  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34);
+  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.fromYMDHM(1976, 6, 19, 21, 13);
+
+/*@internal static final LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime.fromYMDHMSC(
+      1976,
+      6,
+      19,
+      21,
+      13,
+      34,
+      CalendarSystem.Coptic).PlusNanoseconds(123456789);*/
+
+// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+// the expected results of the standard patterns.
+  @internal static final LocalDateTime MsdnStandardExample = new LocalDateTime.fromYMDHMSM(
+      2009,
+      06,
+      15,
+      13,
+      45,
+      30,
+      90);
+  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.fromYMDHMS(2009, 06, 15, 13, 45, 30);
+  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.fromYMDHM(2009, 06, 15, 13, 45);
+}
+
 /// <summary>
 /// Cultures to use from various tests.
 /// </summary>

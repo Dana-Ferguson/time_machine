@@ -25,48 +25,12 @@ Future main() async {
   await runTests();
 }
 
-class LocalDateTimePatternTest {
-@private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456789);
-@private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456700);
-@private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.fromYMDHMSM(
-1976,
-6,
-19,
-21,
-13,
-34,
-123);
-@private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34);
-@private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.fromYMDHM(1976, 6, 19, 21, 13);
-/*@internal static final LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime.fromYMDHMSC(
-      1976,
-      6,
-      19,
-      21,
-      13,
-      34,
-      CalendarSystem.Coptic).PlusNanoseconds(123456789);*/
-
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns.
-@internal static final LocalDateTime MsdnStandardExample = new LocalDateTime.fromYMDHMSM(
-2009,
-06,
-15,
-13,
-45,
-30,
-90);
-@internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.fromYMDHMS(2009, 06, 15, 13, 45, 30);
-@private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.fromYMDHM(2009, 06, 15, 13, 45);
-}
-
 @Test()
 class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
 // the expected results of the standard patterns. We've got an offset of 1 hour though.
-  @private static final OffsetDate MsdnStandardExample = LocalDateTimePatternTest.MsdnStandardExample.Date.WithOffset(new Offset.fromHours(1));
-  @private static final OffsetDate MsdnStandardExampleNoMillis = LocalDateTimePatternTest.MsdnStandardExampleNoMillis.Date.WithOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.Date.WithOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.Date.WithOffset(new Offset.fromHours(1));
 
 // todo: @SkipMe.unimplemented()
 // @private static final OffsetDate SampleOffsetDateCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.Date.WithOffset(Offset.zero);
