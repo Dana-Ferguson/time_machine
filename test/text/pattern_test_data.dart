@@ -66,7 +66,7 @@ abstract class PatternTestData<T> {
     IPattern<T> pattern = CreatePattern();
     var result = pattern.Parse(Text);
     var actualValue = result.Value;
-    expect(Value, actualValue);
+    expect(actualValue, Value);
 
     if (StandardPattern != null) {
       assert(Value == StandardPattern
@@ -78,10 +78,10 @@ abstract class PatternTestData<T> {
   @internal void TestFormat() {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
-    assert(Text == pattern.Format(Value));
+    expect(pattern.Format(Value), Text);
 
     if (StandardPattern != null) {
-      assert(Text == StandardPattern.Format(Value));
+      expect(StandardPattern.Format(Value), Text);
     }
   }
 
@@ -108,7 +108,8 @@ abstract class PatternTestData<T> {
     var pattern = CreatePattern();
     var builder = new StringBuffer("x");
     pattern.AppendFormat(Value, builder);
-    assert("x" + Text == builder.toString());
+    // assert("x" + Text == builder.toString());
+    expect(builder.toString(), "x" + Text );
   }
 
   @internal void TestInvalidPattern() {

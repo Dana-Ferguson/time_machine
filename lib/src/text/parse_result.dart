@@ -213,8 +213,8 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static ParseResult<T> NoMatchingFormat<T>(ValueCursor cursor) => ForInvalidValue(cursor, TextErrorMessages.NoMatchingFormat);
 
   // todo: this will not work in JSDart
-  @internal static ParseResult<T> ValueOutOfRange<T>(ValueCursor cursor, dynamic value) =>
-      ForInvalidValue(cursor, TextErrorMessages.ValueOutOfRange, [value, value.runtimeType]);
+  @internal static ParseResult<T> ValueOutOfRange<T>(ValueCursor cursor, dynamic value, String tType) =>
+      ForInvalidValue(cursor, TextErrorMessages.ValueOutOfRange, [value, tType]);
 
   @internal static ParseResult<T> MissingSign<T>(ValueCursor cursor) => ForInvalidValue(cursor, TextErrorMessages.MissingSign);
 

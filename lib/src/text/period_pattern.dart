@@ -117,7 +117,7 @@ import 'package:time_machine/time_machine_text.dart';
         inDate = false;
         continue;
       }
-      var failure = valueCursor.ParseInt64<Period>(unitValue);
+      var failure = valueCursor.ParseInt64<Period>(unitValue, 'Period');
       if (failure != null) {
         return failure;
       }
@@ -232,7 +232,7 @@ import 'package:time_machine/time_machine_text.dart';
         continue;
       }
       bool negative = valueCursor.Current == '-';
-      var failure = valueCursor.ParseInt64<Period>(unitValue);
+      var failure = valueCursor.ParseInt64<Period>(unitValue, 'Period');
       if (failure != null) {
         return failure;
       }

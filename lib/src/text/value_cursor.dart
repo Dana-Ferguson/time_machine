@@ -119,7 +119,8 @@ import 'package:time_machine/time_machine_text.dart';
   /// <param name="result">The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is non-null.</param>
   /// <returns>null if the digits were parsed, or the appropriate parse failure</returns>
-  @internal ParseResult<T> ParseInt64<T>(OutBox<int> result) { ///*out*/ int result) {
+  // hack: we need to know what T is at runtime for error messages
+  @internal ParseResult<T> ParseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
     result.value = 0;
     int startIndex = Index;
     bool negative = Current == '-';
@@ -146,7 +147,7 @@ import 'package:time_machine/time_machine_text.dart';
 
     if (result.value >= 922337203685477580 && (digit = GetDigit()) != -1) {
       if (result.value > 922337203685477580) {
-        return BuildNumberOutOfRangeResult<T>(startIndex);
+        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
       }
       if (negative && digit == 8) {
         MoveNext();
@@ -154,14 +155,14 @@ import 'package:time_machine/time_machine_text.dart';
         return null;
       }
       if (digit > 7) {
-        return BuildNumberOutOfRangeResult<T>(startIndex);
+        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
       }
       // We know we can cope with this digit...
       result.value = result.value * 10 + digit;
       MoveNext();
       if (GetDigit() != -1) {
         // Too many digits. Die.
-        return BuildNumberOutOfRangeResult<T>(startIndex);
+        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
       }
     }
     if (negative) {
@@ -171,7 +172,7 @@ import 'package:time_machine/time_machine_text.dart';
     return null;
   }
 
-  @private ParseResult<T> BuildNumberOutOfRangeResult<T>(int startIndex) {
+  @private ParseResult<T> BuildNumberOutOfRangeResult<T>(int startIndex, String tType) {
     Move(startIndex);
     if (Current == '-') {
       MoveNext();
@@ -182,7 +183,7 @@ import 'package:time_machine/time_machine_text.dart';
     }
     String badValue = Value.substring(startIndex, Index /*- startIndex*/);
     Move(startIndex);
-    return ParseResult.ValueOutOfRange<T>(this, badValue);
+    return ParseResult.ValueOutOfRange<T>(this, badValue, tType);
   }
 
   /// <summary>
