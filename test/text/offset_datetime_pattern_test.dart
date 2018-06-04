@@ -1,4 +1,5 @@
-
+// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/OffsetDateTimePatternTest.cs
+// e81483f  on Sep 15, 2017
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -21,23 +22,7 @@ import 'pattern_test_data.dart';
 import 'test_cultures.dart';
 import 'text_cursor_test_base_tests.dart';
 
-@private final List<String> AllStandardPatterns = [ "f", "F", "g", "G", "o", "O", "s" ];
-@private final List _AllCulturesStandardPatterns = [];
-
 Future main() async {
-  var sw = new Stopwatch()..start();
-  var ids = await Cultures.ids;
-  var allCultures = new List<CultureInfo>();
-  for(var id in ids) {
-    allCultures.add(await Cultures.getCulture(id));
-  }
-  for(var culture in allCultures) {
-    for(var format in AllStandardPatterns) {
-      _AllCulturesStandardPatterns.add(new TestCaseData([culture, format])..name = '$culture: $format');
-    }
-  }
-  print('Time to load cultures: ${sw.elapsedMilliseconds} ms;');
-
   await runTests();
 }
 

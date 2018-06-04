@@ -108,7 +108,26 @@ class DateTimeFormatInfoBuilder {
           shortTimePattern,
           longTimePattern);
 
-  DateTimeFormatInfoBuilder();
+  DateTimeFormatInfoBuilder([DateTimeFormatInfo info = null]) {
+    if (info == null) return;
+    amDesignator = info.amDesignator;
+    pmDesignator = info.pmDesignator;
+    timeSeparator = info.timeSeparator;
+    dateSeparator = info.dateSeparator;
+    abbreviatedDayNames = info.abbreviatedDayNames;
+    dayNames = info.dayNames;
+    monthNames = info.monthNames;
+    abbreviatedMonthNames = info.abbreviatedMonthNames;
+    monthGenitiveNames = info.monthGenitiveNames;
+    abbreviatedMonthGenitiveNames = info.abbreviatedMonthGenitiveNames;
+    calendar = info.calendar;
+    eraNames = info.eraNames;
+    fullDateTimePattern = info.fullDateTimePattern;
+    shortDatePattern = info.shortDatePattern;
+    longDatePattern = info.longDatePattern;
+    shortTimePattern = info.shortTimePattern;
+    longTimePattern = info.longTimePattern;
+  }
 
   // Month's have a blank entry at the end
   static final List<String> _invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
