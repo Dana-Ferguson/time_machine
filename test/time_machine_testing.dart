@@ -12,6 +12,7 @@ export 'testing/test_helper.dart';
 export 'testing/fake_clock.dart';
 export 'testing/timezones/single_transition_datetimezone.dart';
 export 'testing/timezones/multi_transition_datetimezone.dart';
+export 'testing/timezones/fake_datetimezone_source.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';

@@ -45,6 +45,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   DateTimeZoneCache._(this.source, this.Ids, this.VersionId);
 
   // todo: anyway I can make this a regular constructor???
+  // note: this is a Static Constructor (against the requirements of the Style guide), because it's a future
   /// <summary>
   /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
   /// </summary>
