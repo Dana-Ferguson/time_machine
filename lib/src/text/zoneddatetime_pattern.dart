@@ -102,6 +102,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private ZonedDateTimePattern(this.PatternText, this.FormatInfo, this.TemplateValue, this.Resolver, this.ZoneProvider, this.pattern);
 
+  // todo: transform to ParseAsync and ParseSync?
   /// <summary>
   /// Parses the given text value according to the rules of this pattern.
   /// </summary>

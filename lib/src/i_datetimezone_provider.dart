@@ -108,7 +108,10 @@ abstract class IDateTimeZoneProvider {
   /// <param name="id">The time zone id to find.</param>
   /// <value>The <see cref="DateTimeZone" /> for the given ID.</value>
   /// <exception cref="DateTimeZoneNotFoundException">This provider does not support the given ID.</exception>
+  // todo: drop the operator [] support if we're going to have async an sync support?
   Future<DateTimeZone> operator [](String id);
+
+  DateTimeZone getDateTimeZoneSync(String id);
 
   /// Returns a sequence of time zones from the specified provider,
   /// in the same order in which the IDs are returned by the provider.

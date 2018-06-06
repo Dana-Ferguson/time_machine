@@ -99,6 +99,11 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
     return (await GetZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
   }
 
+  DateTimeZone GetZoneOrNullSync(String id) {
+    Preconditions.checkNotNull(id, 'id');
+    return GetZoneFromSourceOrNullSync(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
+  }
+
   @private Future<DateTimeZone> GetZoneFromSourceOrNull(String id) async {
     // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
     // if ((zone = timeZoneMap[id]) == null) {
@@ -119,10 +124,26 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
     return zone;
   }
 
+  // todo: compress this call-chain?
+  @private DateTimeZone GetZoneFromSourceOrNullSync(String id) {
+    // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
+    // if ((zone = timeZoneMap[id]) == null) {
+    // let the exception propagate on it's own
+    return timeZoneMap[id];
+  }
+
   Future<DateTimeZone> operator [](String id) async {
     var zone = await GetZoneOrNull(id);
     if (zone == null) {
       throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $VersionId");
+    }
+    return zone;
+  }
+
+  DateTimeZone getDateTimeZoneSync(String id) {
+    var zone = GetZoneOrNullSync(id);
+    if (zone == null) {
+      throw new DateTimeZoneNotFoundException("Time zone $id is unknown or unavailable synchronously to source $VersionId");
     }
     return zone;
   }
