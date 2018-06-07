@@ -59,6 +59,15 @@ import 'package:time_machine/time_machine_utilities.dart';
     //return canonicalId;
   }
 
+  @override
+  DateTimeZone ForIdSync(String id) {
+    Preconditions.checkNotNull(id, 'id');
+    var zone = zones[id];
+    if (zone != null) {
+      return zone;
+    }
+    throw new ArgumentError("Unknown ID: " + id);
+  }
 }
 
 /// <summary>

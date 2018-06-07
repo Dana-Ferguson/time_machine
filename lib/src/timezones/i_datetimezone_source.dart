@@ -94,6 +94,8 @@ abstract class IDateTimeZoneSource {
   /// <exception cref="ArgumentException"><paramref name="id"/> is not supported by this source.</exception>
   Future<DateTimeZone> ForId(String id);
 
+  DateTimeZone ForIdSync(String id);
+
   /// <summary>
   /// Returns this source's ID for the system default time zone.
   /// </summary>

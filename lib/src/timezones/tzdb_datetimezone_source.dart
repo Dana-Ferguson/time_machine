@@ -18,13 +18,22 @@ abstract class DateTimeZoneProviders {
 }
 
 class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
-  static Future<TzdbIndex> _tzdbIndex = TzdbIndex.load();
+  static Future _init() async {
+    if (_tzdbIndexSync != null) return;
+    _tzdbIndexSync = await TzdbIndex.load();
+  }
+
+  static TzdbIndex _tzdbIndexSync;
+  static Future<TzdbIndex> _tzdbIndexAsync = _init().then((_) => _tzdbIndexSync);
 
   @override
-  Future<DateTimeZone> ForId(String id) async => (await _tzdbIndex).getTimeZone(id);
+  Future<DateTimeZone> ForId(String id) async => (await _tzdbIndexAsync).getTimeZone(id);
 
   @override
-  Future<Iterable<String>> GetIds () async => (await _tzdbIndex).zoneIds;
+  DateTimeZone ForIdSync(String id) => _tzdbIndexSync.getTimeZoneSync(id);
+
+  @override
+  Future<Iterable<String>> GetIds () async => (await _tzdbIndexAsync).zoneIds;
 
   @override
   String GetSystemDefaultId() => TzdbIndex.locale;

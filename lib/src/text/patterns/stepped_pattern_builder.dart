@@ -85,8 +85,9 @@ class _findLongestMatchCursor {
       else {
         String current = patternCursor.Current;
         var currentCodeUnit = current.codeUnitAt(0);
-        if ((currentCodeUnit >= _ACodeUnit && currentCodeUnit <= _ZCodeUnit) || (currentCodeUnit >= _aCodeUnit && currentCodeUnit <= _zCodeUnit) ||
-            current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternEnd) {
+        if ((currentCodeUnit >= _ACodeUnit && currentCodeUnit <= _ZCodeUnit)
+            || (currentCodeUnit >= _aCodeUnit && currentCodeUnit <= _zCodeUnit)
+            || current == PatternCursor.EmbeddedPatternStart || current == PatternCursor.EmbeddedPatternEnd) {
           throw new InvalidPatternError.format(TextErrorMessages.UnquotedLiteral, [current]);
         }
         AddLiteral2(patternCursor.Current, ParseResult.MismatchedCharacter);
@@ -273,24 +274,12 @@ class _findLongestMatchCursor {
   /// <returns>The pattern parsing failure, or null on success.</returns>
   @internal static CharacterHandler<TResult, TBucket> HandlePaddedField<TResult, TBucket extends ParseBucket<TResult>>(int maxCount, PatternFields field, int minValue, int maxValue,
       int Function(TResult) getter, int Function(TBucket, int) setter) {
-    return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) =>
-        _HandlePaddedFieldFunction(
-            pattern,
-            builder,
-            maxCount,
-            field,
-            minValue,
-            maxValue,
-            getter,
-            setter);
-  }
-
-  static void _HandlePaddedFieldFunction<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder, int maxCount, PatternFields field, int minValue, int maxValue,
-      int Function(TResult) getter, int Function(TBucket, int) setter) {
-    int count = pattern.GetRepeatCount(maxCount);
-    builder.AddField(field, pattern.Current);
-    builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
-    builder.AddFormatLeftPad(count, getter, assumeNonNegative: minValue >= 0, assumeFitsInCount: count == maxCount);
+    return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) {
+      int count = pattern.GetRepeatCount(maxCount);
+      builder.AddField(field, pattern.Current);
+      builder.AddParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
+      builder.AddFormatLeftPad(count, getter, assumeNonNegative: minValue >= 0, assumeFitsInCount: count == maxCount);
+    };
   }
 
   /// <summary>

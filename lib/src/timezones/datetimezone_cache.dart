@@ -126,10 +126,21 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
 
   // todo: compress this call-chain?
   @private DateTimeZone GetZoneFromSourceOrNullSync(String id) {
-    // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
-    // if ((zone = timeZoneMap[id]) == null) {
-    // let the exception propagate on it's own
-    return timeZoneMap[id];
+    if (!timeZoneMap.containsKey(id)) {
+      return null;
+    }
+
+    DateTimeZone zone = timeZoneMap[id];
+    if (zone == null) {
+      zone = source.ForIdSync(id);
+      if (zone == null) {
+        throw new InvalidDateTimeZoneSourceError(
+            "Time zone $id is supported by source $VersionId but not returned");
+      }
+      timeZoneMap[id] = zone;
+    }
+
+    return zone;
   }
 
   Future<DateTimeZone> operator [](String id) async {

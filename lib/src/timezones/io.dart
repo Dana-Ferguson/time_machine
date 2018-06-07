@@ -63,6 +63,12 @@ class TzdbIndex {
         (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
   }
 
+  DateTimeZone getTimeZoneSync(String zoneId) {
+    return _cache[zoneId]; // ?? null;
+    // todo: check to see if we have binary loaded data
+        // (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
+  }
+
   static String get locale => Platform.localeName;
 }
 

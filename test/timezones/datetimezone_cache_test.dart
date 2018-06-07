@@ -269,8 +269,12 @@ class TestDateTimeZoneSource extends IDateTimeZoneSource {
   Future<Iterable<String>> GetIds() => new Future(() => ids);
 
   Future<DateTimeZone> ForId(String id) {
+    return new Future(() => ForIdSync(id));
+  }
+
+  DateTimeZone ForIdSync(String id) {
     LastRequestedId = id;
-    return new Future(() => new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.fromHours(id.hashCode % 18), id));
+    return new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.fromHours(id.hashCode % 18), id);
   }
 
   Future<String> VersionId;
@@ -290,4 +294,9 @@ class NullReturningTestDateTimeZoneSource extends TestDateTimeZoneSource {
   }
 
   @override String GetSystemDefaultId() => null;
+
+  @override DateTimeZone ForIdSync(String id) {
+    var _id = super.ForIdSync(id);
+    return null;
+  }
 }
