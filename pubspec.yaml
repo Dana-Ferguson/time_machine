@@ -1,8 +1,8 @@
 name: time_machine
 description: Time and date library.
 version: 0.0.1
-#homepage: https://www.example.com
-#author: dana ferguson <email@example.com>
+homepage: https://github.com/Joshua-Ferguson/time_machine
+author: Dana Ferguson <email@example.com>
 
 environment:
   sdk: '>=1.20.1 <2.0.0'
@@ -13,7 +13,6 @@ dependencies:
   logging: "^0.11.3+1"
   quiver_hashcode: "^1.0.0"
   collection: "^1.14.5"
-#  path: ^1.4.1
 
 dev_dependencies:
   test: ^0.12.0

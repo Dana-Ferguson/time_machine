@@ -216,20 +216,19 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   LocalDate get Date => date;
 
 
-/// Constructs a [DateTime] from this value which has a [DateTime.Kind]
-/// of [DateTimeKind.Unspecified].
-///
-/// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
-/// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
-/// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
-/// the Time Machine non-system-specific "local" concept as exists in .NET.
-///
-/// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
-/// towards the start of time.
-///
-/// [InvalidOperationException]: The date/time is outside the range of `DateTime`.
-/// Returns: A [DateTime] value for the same date and time as this value.
-
+  /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
+  /// of [DateTimeKind.Unspecified].
+  ///
+  /// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
+  /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
+  /// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
+  /// the Time Machine non-system-specific "local" concept as exists in .NET.
+  ///
+  /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+  /// towards the start of time.
+  ///
+  /// [InvalidOperationException]: The date/time is outside the range of `DateTime`.
+  /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime ToDateTimeUnspecified() {
     //int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
     //if (ticks < 0)
