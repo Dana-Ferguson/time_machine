@@ -11,7 +11,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
 /// A rule determining how "week years" are arranged, including the weeks within the week year.
-/// Implementations provided by Noda Time itself can be obtained via the [WeekYearRules]
+/// Implementations provided by Time Machine itself can be obtained via the [WeekYearRules]
 /// class.
 ///
 /// Dates are usually identified within a calendar system by a calendar year, a month within that
@@ -40,7 +40,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// contains calendar information, and there is no method to obtain the day-of-week as that is not affected by the
 /// week year rule being used.
 ///
-/// All implementations within Noda Time are immutable, and it is advised that any external implementations
+/// All implementations within Time Machine are immutable, and it is advised that any external implementations
 /// should be immutable too.
 abstract class IWeekYearRule
 {
@@ -50,14 +50,14 @@ abstract class IWeekYearRule
   /// Wherever reasonable, implementations should ensure that all valid dates
   /// can be constructed via this method. In other words, given a [LocalDate] `date`,
   /// `rule.GetLocalDate(rule.GetWeekYear(date), rule.GetWeekOfWeekYear(date), date.IsoDayOfWeek, date.Calendar)`
-  /// should always return `date`. This is true for all rules within Noda Time, but third party
+  /// should always return `date`. This is true for all rules within Time Machine, but third party
   /// implementations may choose to simplify their implementations by restricting them to appropriate portions
   /// of time.
   ///
   /// Implementations may restrict which calendar systems supplied here, but the implementations provided by
-  /// Noda Time work with all available calendar systems.
+  /// Time Machine work with all available calendar systems.
   ///
-  /// [weekYear]: The week-year of the new date. Implementations provided by Noda Time allow any
+  /// [weekYear]: The week-year of the new date. Implementations provided by Time Machine allow any
   /// year which is a valid calendar year, and sometimes one less than the minimum calendar year
   /// and/or one more than the maximum calendar year, to allow for dates near the start of a calendar
   /// year to fall in the previous week year, and similarly for dates near the end of a calendar year.
@@ -98,7 +98,7 @@ abstract class WeekYearRuleExtensions
   /// passing in the ISO calendar system.
   ///
   /// [rule]: The rule to delegate the call to.
-  /// [weekYear]: The week-year of the new date. Implementations provided by Noda Time allow any
+  /// [weekYear]: The week-year of the new date. Implementations provided by Time Machine allow any
   /// year which is a valid calendar year, and sometimes one less than the minimum calendar year
   /// and/or one more than the maximum calendar year, to allow for dates near the start of a calendar
   /// year to fall in the previous week year, and similarly for dates near the end of a calendar year.

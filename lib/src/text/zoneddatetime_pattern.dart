@@ -83,7 +83,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   // todo: transform to ParseAsync and ParseSync?
   /// Parses the given text value according to the rules of this pattern.
   ///
-  /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
+  /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
   /// [text]: The text value to parse.
@@ -219,7 +219,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// the specified calendar system.
   ///
   /// Care should be taken in two (relatively rare) scenarios. Although the default template value
-  /// is supported by all Noda Time calendar systems, if a pattern is created with a different
+  /// is supported by all Time Machine calendar systems, if a pattern is created with a different
   /// template value and then this method is called with a calendar system which doesn't support that
   /// date, an exception will be thrown. Additionally, if the pattern only specifies some date fields,
   /// it's possible that the new template value will not be suitable for all values.

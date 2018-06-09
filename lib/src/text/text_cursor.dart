@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
 /// Provides a cursor over text being parsed. None of the methods in this class throw exceptions (unless
-/// there is a bug in Noda Time, in which case an exception is appropriate) and none of the methods
+/// there is a bug in Time Machine, in which case an exception is appropriate) and none of the methods
 /// have ref parameters indicating failures, unlike subclasses. This class is used as the basis for both
 /// value and pattern parsing, so can make no judgement about what's wrong (i.e. it wouldn't know what
 /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.

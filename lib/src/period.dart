@@ -176,7 +176,7 @@ class Period // : IEquatable<Period>
 //  this.Nanoseconds = nanoseconds;
 //}
 
-  ///// Creates a period with the given time values.
+  /// Creates a period with the given time values.
   @internal const Period({this.Years: 0, this.Months: 0, this.Weeks: 0, this.Days: 0,
     this.Hours: 0, this.Minutes: 0, this.Seconds: 0,
     this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});

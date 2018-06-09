@@ -145,7 +145,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
   /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
   /// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
-  /// the Noda Time non-system-specific "local" concept as exists in .NET.
+  /// the Time Machine non-system-specific "local" concept as exists in .NET.
   ///
   /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime toDateTimeUnspecified() =>
@@ -162,7 +162,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
   /// [DateTimeKind.Utc] will still represent the same year/month/day - it won't be converted into the local system time.
   ///
-  /// [dateTime]: Value to convert into a Noda Time local date
+  /// [dateTime]: Value to convert into a Time Machine local date
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
   static LocalDate FromDateTime(DateTime dateTime)
   {
@@ -175,7 +175,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
   /// [DateTimeKind.Utc] will still represent the same year/month/day - it won't be converted into the local system time.
   ///
-  /// [dateTime]: Value to convert into a Noda Time local date
+  /// [dateTime]: Value to convert into a Time Machine local date
   /// [calendar]: The calendar system to convert into
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
   static LocalDate FromDateTimeAndCalendar(DateTime dateTime, CalendarSystem calendar)

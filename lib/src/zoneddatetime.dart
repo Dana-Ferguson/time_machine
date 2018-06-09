@@ -225,7 +225,7 @@ bool Equals(ZonedDateTime other) => offsetDateTime == other.offsetDateTime && Zo
 /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
 ///
 /// [zonedDateTime]: The value to add the duration to.
-/// [duration]: The duration to add
+/// [span]: The duration to add
 /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
 static ZonedDateTime AddSpan(ZonedDateTime zonedDateTime, Span span) => zonedDateTime + span;
 
@@ -233,7 +233,7 @@ static ZonedDateTime AddSpan(ZonedDateTime zonedDateTime, Span span) => zonedDat
 ///
 /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
 ///
-/// [duration]: The duration to add
+/// [span]: The duration to add
 /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
 ZonedDateTime PlusSpan(Span span) => this + span;
@@ -286,7 +286,7 @@ ZonedDateTime PlusNanoseconds(int nanoseconds) => this + new Span(nanoseconds: n
 /// The returned value retains the calendar system and time zone of [zonedDateTime].
 ///
 /// [zonedDateTime]: The [ZonedDateTime] to add the duration to.
-/// [duration]: The duration to add.
+/// [span]: The duration to add.
 /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
 ZonedDateTime operator +(Span span) =>
 new ZonedDateTime.withCalendar(ToInstant() + span, zone, Calendar);
@@ -296,14 +296,14 @@ new ZonedDateTime.withCalendar(ToInstant() + span, zone, Calendar);
 /// This is an alternative way of calling [op_Subtraction(ZonedDateTime, Duration)].
 ///
 /// [zonedDateTime]: The value to subtract the duration from.
-/// [duration]: The duration to subtract.
+/// [span]: The duration to subtract.
 /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
 static ZonedDateTime SubtractSpan(ZonedDateTime zonedDateTime, Span span) => zonedDateTime.MinusSpan(span);
 
 /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
 /// [op_Subtraction(ZonedDateTime, Duration)]
 ///
-/// [duration]: The duration to subtract
+/// [span]: The duration to subtract
 /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
 
 ZonedDateTime MinusSpan(Span span) => new ZonedDateTime.withCalendar(ToInstant() - span, zone, Calendar);
@@ -348,7 +348,7 @@ Span Minus(ZonedDateTime other) => ToInstant() - other.ToInstant();
 /// The returned value retains the calendar system and time zone of [zonedDateTime].
 ///
 /// [zonedDateTime]: The value to subtract the duration from.
-/// [duration]: The duration to subtract.
+/// [span]: The duration to subtract.
 /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
 // todo: I really do not like this pattern
 dynamic operator -(dynamic start) => start is Span ? MinusSpan(start) : start is ZonedDateTime ? Minus(start) : throw new TypeError();

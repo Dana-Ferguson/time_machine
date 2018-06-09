@@ -23,7 +23,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// specified in the interface. Typically this would be unusual to the point that callers would not
 /// try to catch them; any implementation which may break in ways that are sensible to catch should advertise
 /// this clearly, so that clients will know to handle the exceptions appropriately. No wrapper exception
-/// type is provided by Noda Time to handle this situation, and code in Noda Time does not try to catch
+/// type is provided by Time Machine to handle this situation, and code in Time Machine does not try to catch
 /// such exceptions.
 ///
 /// <threadsafety>Implementations are not required to be thread-safe.</threadsafety>

@@ -9,7 +9,7 @@ import 'package:time_machine/time_machine.dart';
 /// other frames of reference, so long as they comply with the restrictions listed below.
 ///
 /// Each entry in the cache is a 32-bit number. The "value" part of the entry consists of the
-/// number of days since the Unix epoch (negative for a value before the epoch). As Noda Time
+/// number of days since the Unix epoch (negative for a value before the epoch). As Time Machine
 /// only supports a number of ticks since the Unix epoch of between long.MinValue and long.MaxValue,
 /// we only need to support a number of days in the range
 /// [long.MinValue / TicksPerDay, long.MaxValue / TicksPerDay] which is [-10675200, 10675200] (rounding

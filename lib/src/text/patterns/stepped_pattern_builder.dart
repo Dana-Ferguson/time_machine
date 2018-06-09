@@ -2,13 +2,9 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
@@ -129,7 +125,7 @@ class _findLongestMatchCursor {
     // IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
     // formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
     }
-    return new SteppedPattern(formatDelegate, _formatOnly ? null : _parseActions, _bucketProvider, _usedFields, sample);
+    return new _SteppedPattern(formatDelegate, _formatOnly ? null : _parseActions, _bucketProvider, _usedFields, sample);
   }
 
   /// Registers that a pattern field has been used in this pattern, and throws a suitable error
@@ -517,7 +513,7 @@ class _findLongestMatchCursor {
   Function(TResult, StringBuffer) BuildFormatAction(PatternFields finalFields);
 }
 
-@private /*sealed*/ class SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements IPartialPattern<TResult>
+@private /*sealed*/ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements IPartialPattern<TResult>
 {
   // @private final Function(TResult, StringBuffer) formatActions;
   @private final List<Function(TResult, StringBuffer)> formatActions;
@@ -527,9 +523,9 @@ class _findLongestMatchCursor {
   @private final PatternFields usedFields;
   @private final int expectedLength;
 
-  SteppedPattern._(this.formatActions, this.parseActions, this.bucketProvider, this.usedFields, TResult sample, this.expectedLength);
+  _SteppedPattern._(this.formatActions, this.parseActions, this.bucketProvider, this.usedFields, TResult sample, this.expectedLength);
 
-  factory SteppedPattern(List<Function/*(TResult, StringBuffer)*/> formatActions, Iterable<ParseAction<TResult, TBucket>> parseActions, TBucket Function() bucketProvider,
+  factory _SteppedPattern(List<Function/*(TResult, StringBuffer)*/> formatActions, Iterable<ParseAction<TResult, TBucket>> parseActions, TBucket Function() bucketProvider,
       PatternFields usedFields, TResult sample)
   {
     // Format the sample value to work out the expected length, so we
@@ -539,7 +535,7 @@ class _findLongestMatchCursor {
     formatActions.forEach((formatAction) => formatAction(sample, builder));
     var expectedLength = builder.length;
 
-    return new SteppedPattern._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
+    return new _SteppedPattern._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
   }
 
   ParseResult<TResult> Parse(String text)

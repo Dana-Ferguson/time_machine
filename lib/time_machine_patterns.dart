@@ -1,3 +1,5 @@
+/// Time Machine Patterns
+library time_machine_patterns;
 
 export 'src/text/patterns/pattern_cursor.dart';
 export 'src/text/patterns/pattern_fields.dart';

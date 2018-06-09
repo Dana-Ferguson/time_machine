@@ -1,3 +1,4 @@
+/// Time Machine Text
 
 export 'src/text/composite_pattern_builder.dart';
 export 'src/text/i_pattern.dart';
@@ -38,4 +39,4 @@ export 'src/text/offset_time_pattern_parser.dart';
 export 'src/text/zoneddatetime_pattern.dart';
 export 'src/text/zoneddatetime_pattern_parser.dart';
 
-export 'src/text/globalization/nodaformatinfo.dart';
+// export 'src/text/globalization/nodaformatinfo.dart';

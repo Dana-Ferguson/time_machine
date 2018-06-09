@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 
-/// A [IIFormatProvider] for Noda Time types, usually initialised from a [System.Globalization.CultureInfo].
+/// A [IIFormatProvider] for Time Machine types, usually initialised from a [System.Globalization.CultureInfo].
 /// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
 ///
 /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
@@ -374,7 +374,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// resource lookups. Otherwise, [ArgumentException] is thrown.
   ///
   /// [provider]: The [IIFormatProvider].
-  /// [ArgumentException]: The format provider cannot be used for Noda Time.
+  /// [ArgumentException]: The format provider cannot be used for Time Machine.
   /// Returns: The [NodaFormatInfo]. Will never be null.
   static NodaFormatInfo GetInstance(/*IFormatProvider*/ dynamic formatProvider) {
     if (formatProvider == null) {

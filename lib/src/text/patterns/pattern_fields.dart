@@ -8,16 +8,6 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
-/// Extension methods on PatternFields; nothing PatternFields-specific here, but we
-/// can't write this generically due to limitations in C#. (See Unconstrained Melody for details...)
-@internal abstract class PatternFieldsExtensions {
-  /// Returns true if the given set of fields contains any of the target fields.
-  @internal static bool HasAny(PatternFields fields, PatternFields target) => (fields & target).value != 0;
-
-  /// Returns true if the given set of fields contains all of the target fields.
-  @internal static bool HasAll(PatternFields fields, PatternFields target) => (fields & target) == target;
-}
-
 /// Enum representing the fields available within patterns. This single enum is shared
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,

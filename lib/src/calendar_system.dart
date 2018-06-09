@@ -14,13 +14,13 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// such as years, months and days.
 ///
 /// Many developers will never need to touch this class, other than to potentially ask a calendar
-/// how many days are in a particular year/month and the like. Noda Time defaults to using the ISO-8601
+/// how many days are in a particular year/month and the like. Time Machine defaults to using the ISO-8601
 /// calendar anywhere that a calendar system is required but hasn't been explicitly specified.
 ///
 /// If you need to obtain a [CalendarSystem] instance, use one of the static properties or methods in this
 /// class, such as the [Iso] property or the [GetHebrewCalendar(HebrewMonthNumbering)] method.
 ///
-/// Although this class is currently sealed (as of Noda Time 1.2), in the future this decision may
+/// Although this class is currently sealed (as of Time Machine 1.2), in the future this decision may
 /// be reversed. In any case, there is no current intention for third-party developers to be able to implement
 /// their own calendar systems (for various reasons). If you require a calendar system which is not
 /// currently supported, please file a feature request and we'll see what we can do.
@@ -188,7 +188,7 @@ class CalendarSystem {
   }
 
 
-  /// Returns the IDs of all calendar systems available within Noda Time. The order of the keys is not guaranteed.
+  /// Returns the IDs of all calendar systems available within Time Machine. The order of the keys is not guaranteed.
   static Iterable<String> get Ids => IdToFactoryMap.keys;
 
   // todo: make const
@@ -219,9 +219,9 @@ class CalendarSystem {
   /// Returns a calendar system that follows the rules of the ISO-8601 standard,
   /// which is compatible with Gregorian for all modern dates.
   ///
-  /// As of Noda Time 2.0, this calendar system is equivalent to [Gregorian].
+  /// As of NoTime Machine 2.0, this calendar system is equivalent to [Gregorian].
   /// The only areas in which the calendars differed were around centuries, and the members
-  /// relating to those differences were removed in Noda Time 2.0.
+  /// relating to those differences were removed in Time Machine 2.0.
   /// The distinction between Gregorian and ISO has been maintained for the sake of simplicity, compatibility
   /// and consistency.
   static final CalendarSystem Iso = IsoCalendarSystem;
@@ -230,7 +230,7 @@ class CalendarSystem {
 /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
 /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational.
 ///
-/// Please note that in version 1.3.0 of Noda Time, support for the Hebrew calendar is somewhat experimental,
+/// Please note that in version 1.3.0 of Time Machine, support for the Hebrew calendar is somewhat experimental,
 /// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
 /// and parsing using month names is not currently supported, due to the challenges of handling leap months.
 /// It is hoped that this will be improved in future versions.
@@ -258,7 +258,7 @@ class CalendarSystem {
 /// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is
 /// a momentary point in time, so the "date" of the equinox is determined by the date (beginning
 /// at sunset) in effect in Tehran, Iran at the moment of the equinox.
-/// In this Noda Time implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
+/// In this Time Machine implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
 /// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will
 /// not work as expected for Ayyám-i-Há, such as EndOfMonth.
 ///
@@ -288,7 +288,7 @@ class CalendarSystem {
   /// if you need to be compatible with other Windows systems, you may wish to use
   /// [IslamicEpoch.Astronomical]. The fact that the Islamic calendar
   /// traditionally starts at dusk, a Julian day traditionally starts at noon,
-  /// and all calendar systems in Noda Time start their days at midnight adds
+  /// and all calendar systems in Time Machine start their days at midnight adds
   /// somewhat inevitable confusion to the mix, unfortunately.
   ///
   /// The tabular form of the calendar defines 12 months of alternately
@@ -348,7 +348,7 @@ class CalendarSystem {
   ///
   /// A unique ID for a calendar is required when serializing types which include a [CalendarSystem].
   /// As of 2 Nov 2012 (ISO calendar) there are no ISO or RFC standards for naming a calendar system. As such,
-  /// the identifiers provided here are specific to Noda Time, and are not guaranteed to interoperate with any other
+  /// the identifiers provided here are specific to Time Machine, and are not guaranteed to interoperate with any other
   /// date and time API.
   ///
   /// <list type="table">
@@ -635,7 +635,7 @@ class CalendarSystem {
 
 
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
-  /// BCL `PersianCalendar` before .NET 4.6, and the sole Persian calendar in Noda Time 1.3.
+  /// BCL `PersianCalendar` before .NET 4.6, and the sole Persian calendar in Time Machine 1.3.
   ///
   /// This implementation uses a simple 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30
   /// in each cycle are leap years.
@@ -646,7 +646,7 @@ class CalendarSystem {
   /// BCL `PersianCalendar` from .NET 4.6 onwards (and Windows 10), and the astronomical
   /// system described in Wikipedia and Calendrical Calculations.
   ///
-  /// This implementation uses data derived from the .NET 4.6 implementation (with the data built into Noda Time, so there's
+  /// This implementation uses data derived from the .NET 4.6 implementation (with the data built into Time Machine, so there's
   /// no BCL dependency) for simplicity; the actual implementation involves computing the time of noon in Iran, and
   /// is complex.
   static CalendarSystem get PersianArithmetic => throw new UnimplementedError(); // PersianCalendars.Arithmetic;

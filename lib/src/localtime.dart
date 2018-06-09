@@ -167,7 +167,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   }
 
 
-  /// Constructor only called from other parts of Noda Time - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
+  /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
   @internal LocalTime.fromNanoseconds(this._nanoseconds);
 //  {
 // Preconditions.debugcheckArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);

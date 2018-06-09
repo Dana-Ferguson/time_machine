@@ -35,7 +35,7 @@ abstract class IDateTimeZoneProvider {
   /// available.
   ///
   /// Callers should be aware that this method will throw [DateTimeZoneNotFoundException] if no matching
-  /// time zone is found. For the built-in Noda Time providers, this is unlikely to occur in practice (assuming
+  /// time zone is found. For the built-in Time Machine providers, this is unlikely to occur in practice (assuming
   /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
   /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
   /// are unmappable.

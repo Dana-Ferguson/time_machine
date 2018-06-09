@@ -222,7 +222,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 /// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
 /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
 /// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
-/// the Noda Time non-system-specific "local" concept as exists in .NET.
+/// the Time Machine non-system-specific "local" concept as exists in .NET.
 ///
 /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
 /// towards the start of time.
@@ -255,7 +255,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.Utc]
 /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
 ///
-/// [dateTime]: Value to convert into a Noda Time local date and time
+/// [dateTime]: Value to convert into a Time Machine local date and time
 /// Returns: A new [LocalDateTime] with the same values as the specified `DateTime`.
 //static LocalDateTime FromDateTime(DateTime dateTime)
 //{
@@ -269,7 +269,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.Utc]
   /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
   ///
-  /// [dateTime]: Value to convert into a Noda Time local date and time
+  /// [dateTime]: Value to convert into a Time Machine local date and time
   /// [calendar]: The calendar system to convert into
   /// Returns: A new [LocalDateTime] with the same values as the specified `DateTime`.
   static LocalDateTime FromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {

@@ -9,7 +9,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine.dart';
 
 
-/// The core of date calculations in Noda Time. This class *only* cares about absolute years, and only
+/// The core of date calculations in Time Machine. This class *only* cares about absolute years, and only
 /// dates - it has no time aspects at all, nor era-related aspects.
 // todo: IComparer<YearMonthDay>
 @internal

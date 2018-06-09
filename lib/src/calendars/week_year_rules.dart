@@ -13,7 +13,7 @@ enum CalendarWeekRule {
   FirstFourDayWeek
 }
 
-/// Factory methods to construct week-year rules supported by Noda Time.
+/// Factory methods to construct week-year rules supported by Time Machine.
 abstract class WeekYearRules
 {
   /// Returns an [IWeekYearRule] consistent with ISO-8601.

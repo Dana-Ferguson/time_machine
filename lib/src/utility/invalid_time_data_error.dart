@@ -2,7 +2,7 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-/// Exception thrown when data read by Noda Time (such as serialized time zone data) is invalid. This includes
+/// Exception thrown when data read by Time Machine (such as serialized time zone data) is invalid. This includes
 /// data which is truncated, i.e. we expect more data than we can read.
 ///
 /// This type only exists as `InvalidDataException` didn't exist in Portable Class Libraries.

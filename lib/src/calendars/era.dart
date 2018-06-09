@@ -9,7 +9,7 @@ import 'package:time_machine/time_machine.dart';
 
 /// Represents an era used in a calendar.
 ///
-/// All the built-in calendars in Noda Time use the values specified by the static
+/// All the built-in calendars in Time Machine use the values specified by the static
 /// read-only fields in this class. These may be compared for reference equality to check for specific
 /// eras.
 // sealed

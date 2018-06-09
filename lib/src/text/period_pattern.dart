@@ -46,7 +46,7 @@ import 'package:time_machine/time_machine_text.dart';
 
   /// Parses the given text value according to the rules of this pattern.
   ///
-  /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
+  /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
   /// [text]: The text value to parse.

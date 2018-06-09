@@ -7,7 +7,7 @@ import 'package:time_machine/time_machine_text.dart';
 /// Generic interface supporting parsing and formatting. Parsing always results in a 
 /// [ParseResult{T}] which can represent success or failure.
 ///
-/// Idiomatic text handling in Noda Time involves creating a pattern once and reusing it multiple
+/// Idiomatic text handling in Time Machine involves creating a pattern once and reusing it multiple
 /// times, rather than specifying the pattern text repeatedly. All patterns are immutable and thread-safe,
 /// and include the culture used for localization purposes.
 ///
@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_text.dart';
 abstract class IPattern<T> {
   /// Parses the given text value according to the rules of this pattern.
   ///
-  /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
+  /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
   /// [text]: The text value to parse.

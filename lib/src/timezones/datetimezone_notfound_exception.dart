@@ -8,7 +8,7 @@
 /// This type only exists as `TimeZoneNotFoundException` doesn't exist in netstandard1.x.
 /// By creating an exception which derives from `TimeZoneNotFoundException` on the desktop version
 /// and `Exception` on the .NET Standard 1.3 version, we achieve reasonable consistency while remaining
-/// backwardly compatible with Noda Time v1 (which was desktop-only, and threw `TimeZoneNotFoundException`).
+/// backwardly compatible with Time Machine v1 (which was desktop-only, and threw `TimeZoneNotFoundException`).
 // sealed
 class DateTimeZoneNotFoundException extends Error {
   final String message;

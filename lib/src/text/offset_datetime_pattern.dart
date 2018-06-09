@@ -58,7 +58,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// The minutes part of the offset is always included, but any sub-minute component
   /// of the offset is lost. An offset of zero is formatted as 'Z', but all of 'Z', '+00:00' and '-00:00' are parsed
-  /// the same way. The RFC 3339 meaning of '-00:00' is not supported by Noda Time.
+  /// the same way. The RFC 3339 meaning of '-00:00' is not supported by Time Machine.
   /// Note that parsing is case-sensitive (so 'T' and 'Z' must be upper case).
   /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
   /// "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;Z+HH:mm&gt;".
@@ -94,7 +94,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   /// Parses the given text value according to the rules of this pattern.
   ///
-  /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
+  /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
   /// [text]: The text value to parse.
@@ -201,7 +201,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// the specified calendar system.
   ///
   /// Care should be taken in two (relatively rare) scenarios. Although the default template value
-  /// is supported by all Noda Time calendar systems, if a pattern is created with a different
+  /// is supported by all Time Machine calendar systems, if a pattern is created with a different
   /// template value and then this method is called with a calendar system which doesn't support that
   /// date, an exception will be thrown. Additionally, if the pattern only specifies some date fields,
   /// it's possible that the new template value will not be suitable for all values.
