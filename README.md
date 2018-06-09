@@ -6,6 +6,8 @@ A lot of functionality works at this time, but the public API is still changing 
 QoL changes that are coming, but not here yet. This is a preview release. Documentation was also ported
 and still needs to be gone over and corrected.
 
+--> Documentation builds locally with 0.15.1 but failed to build on pub.dartlang.org.
+
 Todo:
  - [x] Port over major classes
  - [x] Port over corresponding unit tests
