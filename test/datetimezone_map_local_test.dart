@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
@@ -193,12 +196,10 @@ void ZoneWithGap_FirstTickAfterTransition()
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
-/// <summary>
 /// Case added to cover everything: we want our initial guess to hit the
 /// *later* zone, which doesn't actually include the local instant. However,
 /// we want the *earlier* zone to include it. So, we want a zone with two
 /// positive offsets.
-/// </summary>
 @Test()
 void TrickyCase()
 {
@@ -214,5 +215,6 @@ void CheckMapping(ZoneLocalMapping mapping, ZoneInterval earlyInterval, ZoneInte
   expect(lateInterval, mapping.LateInterval);
   expect(count, mapping.Count);
 }
+
 
 

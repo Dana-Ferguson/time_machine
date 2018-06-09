@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/OffsetTimePattern.cs
-// 41dc54e  on Nov 8, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -12,14 +13,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-/// </summary>
 @internal class OffsetTimePatterns {
-  //static OffsetTimePattern _GeneralIsoPatternImpl = null;
-  //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
-  //    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
+//static OffsetTimePattern _GeneralIsoPatternImpl = null;
+//@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
+//    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
 
   @internal static final OffsetTimePattern GeneralIsoPatternImpl = OffsetTimePattern.Create(
       "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
@@ -30,11 +29,10 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal static final PatternBclSupport<OffsetTime> BclSupport = new PatternBclSupport<OffsetTime>("G", (fi) => fi.offsetTimePatternParser);
 }
 
-/// <summary>
-/// Represents a pattern for parsing and formatting <see cref="OffsetTime"/> values.
-/// </summary>
+/// Represents a pattern for parsing and formatting [OffsetTime] values.
+///
 /// <threadsafety>
-/// When used with a read-only <see cref="CultureInfo" />, this type is immutable and instances
+/// When used with a read-only [CultureInfo], this type is immutable and instances
 /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
 /// not currently enforced.
 /// </threadsafety>
@@ -42,99 +40,76 @@ import 'package:time_machine/time_machine_patterns.dart';
 /*sealed*/ class OffsetTimePattern implements IPattern<OffsetTime> {
   @internal static final OffsetTime DefaultTemplateValue = LocalTime.Midnight.WithOffset(Offset.zero);
 
-  /// <summary>
   /// Gets an invariant offset time pattern based on ISO-8601 (down to the second), including offset from UTC.
-  /// </summary>
-  /// <remarks>
+  ///
   /// This corresponds to a custom pattern of "HH':'mm':'sso&lt;G&gt;". It is available as the "G"
   /// standard pattern (even though it is invariant).
-  /// </remarks>
-  /// <value>An invariant offset time pattern based on ISO-8601 (down to the second), including offset from UTC.</value>
   static OffsetTimePattern get GeneralIso => OffsetTimePatterns.GeneralIsoPatternImpl;
 
-  /// <summary>
   /// Gets an invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
-  /// </summary>
-  /// <remarks>
+  ///
   /// This corresponds to a custom pattern of "HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;".
   /// This will round-trip all values, and is available as the "o" standard pattern.
-  /// </remarks>
-  /// <value>An invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.</value>
   static OffsetTimePattern get ExtendedIso => OffsetTimePatterns.ExtendedIsoPatternImpl;
 
-  /// <summary>
   /// Gets an invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
   /// as hours and minutes only.
-  /// </summary>
-  /// <remarks>
+  ///
   /// The minutes part of the offset is always included, but any sub-minute component
   /// of the offset is lost. An offset of zero is formatted as 'Z', but all of 'Z', '+00:00' and '-00:00' are parsed
   /// the same way. The RFC 3339 meaning of '-00:00' is not supported by Noda Time.
   /// Note that parsing is case-sensitive (so 'T' and 'Z' must be upper case).
   /// This pattern corresponds to a custom pattern of
   /// "HH':'mm':'ss;FFFFFFFFFo&lt;Z+HH:mm&gt;".
-  /// </remarks>
+  ///
   /// <value>An invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
   /// as hours and minutes only.</value>
   static OffsetTimePattern get Rfc3339 => OffsetTimePatterns.Rfc3339PatternImpl;
 
   @private final IPattern<OffsetTime> pattern;
 
-  /// <summary>
   /// Gets the pattern text for this pattern, as supplied on creation.
-  /// </summary>
-  /// <value>The pattern text for this pattern, as supplied on creation.</value>
   final String PatternText;
 
-  /// <summary>
   /// Gets the localization information used in this pattern.
-  /// </summary>
   @internal final NodaFormatInfo FormatInfo;
 
-  /// <summary>
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
-  /// </summary>
-  /// <value>The value used as a template for parsing.</value>
   final OffsetTime TemplateValue;
 
   @private OffsetTimePattern(this.PatternText, this.FormatInfo, this.TemplateValue, this.pattern);
 
-  /// <summary>
   /// Parses the given text value according to the rules of this pattern.
-  /// </summary>
-  /// <remarks>
+  ///
   /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
-  /// </remarks>
-  /// <param name="text">The text value to parse.</param>
-  /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
+  ///
+  /// [text]: The text value to parse.
+  /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<OffsetTime> Parse(String text) => pattern.Parse(text);
 
-  /// <summary>
   /// Formats the given zoned time as text according to the rules of this pattern.
-  /// </summary>
-  /// <param name="value">The zoned time to format.</param>
-  /// <returns>The zoned time formatted according to this pattern.</returns>
+  ///
+  /// [value]: The zoned time to format.
+  /// Returns: The zoned time formatted according to this pattern.
   String Format(OffsetTime value) => pattern.Format(value);
 
-  /// <summary>
   /// Formats the given value as text according to the rules of this pattern,
-  /// appending to the given <see cref="StringBuilder"/>.
-  /// </summary>
-  /// <param name="value">The value to format.</param>
-  /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
-  /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+  /// appending to the given [StringBuilder].
+  ///
+  /// [value]: The value to format.
+  /// [builder]: The `StringBuilder` to append to.
+  /// Returns: The builder passed in as [builder].
   StringBuffer AppendFormat(OffsetTime value, StringBuffer builder) => pattern.AppendFormat(value, builder);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text, format info, and template value.
-  /// </summary>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <param name="formatInfo">The format info to use in the pattern</param>
-  /// <param name="templateValue">Template value to use for unspecified fields</param>
-  /// <returns>A pattern for parsing and formatting zoned times.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// [formatInfo]: The format info to use in the pattern
+  /// [templateValue]: Template value to use for unspecified fields
+  /// Returns: A pattern for parsing and formatting zoned times.
+  /// [InvalidPatternException]: The pattern text was invalid.
   @private static OffsetTimePattern Create(String patternText, NodaFormatInfo formatInfo,
       OffsetTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
@@ -143,81 +118,71 @@ import 'package:time_machine/time_machine_patterns.dart';
     return new OffsetTimePattern(patternText, formatInfo, templateValue, pattern);
   }
 
-  /// <summary>
   /// Creates a pattern for the given pattern text, culture, and template value.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <param name="cultureInfo">The culture to use in the pattern</param>
-  /// <param name="templateValue">Template value to use for unspecified fields</param>
-  /// <returns>A pattern for parsing and formatting local times.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// [cultureInfo]: The culture to use in the pattern
+  /// [templateValue]: Template value to use for unspecified fields
+  /// Returns: A pattern for parsing and formatting local times.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetTimePattern Create2(String patternText, CultureInfo cultureInfo, OffsetTime templateValue) =>
       Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text in the invariant culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <returns>A pattern for parsing and formatting local times.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// Returns: A pattern for parsing and formatting local times.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetTimePattern CreateWithInvariantCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text in the current culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options. Note that the current culture
   /// is captured at the time this method is called - it is not captured at the point of parsing
   /// or formatting values.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <returns>A pattern for parsing and formatting local times.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// Returns: A pattern for parsing and formatting local times.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetTimePattern CreateWithCurrentCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
-  /// </summary>
-  /// <param name="patternText">The pattern text to use in the new pattern.</param>
-  /// <returns>A new pattern with the given pattern text.</returns>
+  ///
+  /// [patternText]: The pattern text to use in the new pattern.
+  /// Returns: A new pattern with the given pattern text.
   OffsetTimePattern WithPatternText(String patternText) =>
       Create(patternText, FormatInfo, TemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
-  /// </summary>
-  /// <param name="formatInfo">The localization information to use in the new pattern.</param>
-  /// <returns>A new pattern with the given localization information.</returns>
+  ///
+  /// [formatInfo]: The localization information to use in the new pattern.
+  /// Returns: A new pattern with the given localization information.
   @private OffsetTimePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
       Create(PatternText, formatInfo, TemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
-  /// </summary>
-  /// <param name="cultureInfo">The culture to use in the new pattern.</param>
-  /// <returns>A new pattern with the given culture.</returns>
+  ///
+  /// [cultureInfo]: The culture to use in the new pattern.
+  /// Returns: A new pattern with the given culture.
   OffsetTimePattern WithCulture(CultureInfo cultureInfo) =>
       WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
-  /// <summary>
   /// Creates a pattern for the same original pattern text and culture as this pattern, but with
   /// the specified template value.
-  /// </summary>
-  /// <param name="newTemplateValue">The template value to use in the new pattern.</param>
-  /// <returns>A new pattern with the given template value.</returns>
+  ///
+  /// [newTemplateValue]: The template value to use in the new pattern.
+  /// Returns: A new pattern with the given template value.
   OffsetTimePattern WithTemplateValue(OffsetTime newTemplateValue) =>
       Create(PatternText, FormatInfo, newTemplateValue);
 }

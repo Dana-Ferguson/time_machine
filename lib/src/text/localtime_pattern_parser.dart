@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/LocalTimePatternParser.cs
-// 10dbf36  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -82,49 +83,33 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 }
 
-/// <summary>
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-/// </summary>
 @internal /*sealed*/ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   @internal final LocalTime TemplateValue;
 
-  /// <summary>
   /// The fractions of a second in nanoseconds, in the range [0, 999999999]
-  /// </summary>
   @internal int FractionalSeconds = 0;
 
-  /// <summary>
   /// The hours in the range [0, 23].
-  /// </summary>
   @internal int Hours24 = 0;
 
-  /// <summary>
   /// The hours in the range [1, 12].
-  /// </summary>
   @internal int Hours12 = 0;
 
-  /// <summary>
   /// The minutes in the range [0, 59].
-  /// </summary>
   @internal int Minutes = 0;
 
-  /// <summary>
   /// The seconds in the range [0, 59].
-  /// </summary>
   @internal int Seconds = 0;
 
-  /// <summary>
   /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
   /// where we're parsing but there is no AM or PM designator.
-  /// </summary>
   @internal int AmPm = 0;
 
   @internal LocalTimeParseBucket(this.TemplateValue);
 
-  /// <summary>
   /// Calculates the value from the parsed pieces.
-  /// </summary>
   @internal
   @override
   ParseResult<LocalTime> CalculateValue(PatternFields usedFields, String text) {

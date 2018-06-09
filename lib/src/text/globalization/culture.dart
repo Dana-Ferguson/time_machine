@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 
 import 'package:meta/meta.dart';
@@ -12,12 +15,9 @@ abstract class Cultures {
   static Future<CultureInfo> getCulture(String id) async => (await _cultures).getCulture(id);
 }
 
-// https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Globalization/CultureInfo.Unix.cs
-// https://github.com/dotnet/coreclr/blob/master/src/System.Private.CoreLib/src/System/Globalization/CultureInfo.cs
-@immutable // todo: change to Culture and then merge with Cultures?
 class CultureInfo {
   static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
-  // todo: change this!
+// todo: change this!
 
   static CultureInfo _currentCulture = null;
   static CultureInfo get currentCulture => _currentCulture??=invariantCulture;

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/ZonedClock.cs
-// a209e60  on Mar 18, 2015
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
@@ -13,61 +14,54 @@ class ZonedClock extends Clock {
   final DateTimeZone _zone;
   final CalendarSystem _calendar;
 
-  /// <summary>
-  /// Creates a new <see cref="ZonedClock"/> with the given clock, time zone and calendar system.
-  /// </summary>
-  /// <param name="clock">Clock to use to obtain instants.</param>
-  /// <param name="zone">Time zone to adjust instants into.</param>
-  /// <param name="calendar">Calendar system to use.</param>
+  /// Creates a new [ZonedClock] with the given clock, time zone and calendar system.
+  ///
+  /// [clock]: Clock to use to obtain instants.
+  /// [zone]: Time zone to adjust instants into.
+  /// [calendar]: Calendar system to use.
   ZonedClock(this._clock, this._zone, this._calendar) {
     Preconditions.checkNotNull(_clock, 'clock');
     Preconditions.checkNotNull(_zone, 'zone');
     Preconditions.checkNotNull(_calendar, 'calendar');
   }
 
-  /// <summary>
   /// Returns the current instant provided by the underlying clock.
-  /// </summary>
-  /// <returns>The current instant provided by the underlying clock.</returns>
+  ///
+  /// Returns: The current instant provided by the underlying clock.
   Instant getCurrentInstant() => _clock.getCurrentInstant();
 
-  /// <summary>
   /// Returns the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
-  /// </summary>
-  /// <returns>The current instant provided by the underlying clock, adjusted to the
-  /// time zone of this object.</returns>
+  ///
+  /// The current instant provided by the underlying clock, adjusted to the
+  /// time zone of this object.
   ZonedDateTime getCurrentZonedDateTime() => getCurrentInstant().InZone_Calendar(_zone, _calendar);
 
-  /// <summary>
   /// Returns the local date/time of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
-  /// </summary>
-  /// <returns>The local date/time of the current instant provided by the underlying clock, adjusted to the
-  /// time zone of this object.</returns>
+  ///
+  /// The local date/time of the current instant provided by the underlying clock, adjusted to the
+  /// time zone of this object.
   LocalDateTime getCurrentLocalDateTime() => getCurrentZonedDateTime().localDateTime;
 
-  /// <summary>
   /// Returns the offset date/time of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
-  /// </summary>
-  /// <returns>The offset date/time of the current instant provided by the underlying clock, adjusted to the
-  /// time zone of this object.</returns>
+  ///
+  /// The offset date/time of the current instant provided by the underlying clock, adjusted to the
+  /// time zone of this object.
   OffsetDateTime getCurrentOffsetDateTime() => getCurrentZonedDateTime().ToOffsetDateTime();
 
-  /// <summary>
   /// Returns the local date of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
-  /// </summary>
-  /// <returns>The local date of the current instant provided by the underlying clock, adjusted to the
-  /// time zone of this object.</returns>
+  ///
+  /// The local date of the current instant provided by the underlying clock, adjusted to the
+  /// time zone of this object.
   LocalDate getCurrentDate() => getCurrentZonedDateTime().Date;
 
-  /// <summary>
   /// Returns the local time of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
-  /// </summary>
-  /// <returns>The local time of the current instant provided by the underlying clock, adjusted to the
-  /// time zone of this object.</returns>
+  ///
+  /// The local time of the current instant provided by the underlying clock, adjusted to the
+  /// time zone of this object.
   LocalTime getCurrentTimeOfDay() => getCurrentZonedDateTime().TimeOfDay;
 }

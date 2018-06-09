@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/AnnualDatePattern.cs
-// c77bb7b  19 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -12,21 +13,18 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-/// </summary>
 @private abstract class _Patterns
 {
   @internal static final AnnualDatePattern IsoPatternImpl = AnnualDatePattern.CreateWithInvariantCulture("MM'-'dd");
 }
 
 
-/// <summary>
-/// Represents a pattern for parsing and formatting <see cref="AnnualDate"/> values.
-/// </summary>
+/// Represents a pattern for parsing and formatting [AnnualDate] values.
+///
 /// <threadsafety>
-/// When used with a read-only <see cref="CultureInfo" />, this type is immutable and instances
+/// When used with a read-only [CultureInfo], this type is immutable and instances
 /// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
 /// not currently enforced.
 /// </threadsafety>
@@ -39,74 +37,56 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal static final PatternBclSupport<AnnualDate> BclSupport =
   new PatternBclSupport<AnnualDate>(DefaultFormatPattern, (fi) => fi.annualDatePatternParser);
 
-  /// <summary>
   /// Gets an invariant annual date pattern which is compatible with the month/day part of ISO-8601.
   /// This corresponds to the text pattern "MM'-'dd".
-  /// </summary>
-  /// <value>An invariant annual date pattern which is compatible with the month/day part of ISO-8601.</value>
   static AnnualDatePattern get Iso => _Patterns.IsoPatternImpl;
 
-  /// <summary>
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an @internal interface.
-  /// </summary>
   @internal final IPartialPattern<AnnualDate> UnderlyingPattern;
 
-  /// <summary>
   /// Gets the pattern text for this pattern, as supplied on creation.
-  /// </summary>
-  /// <value>The pattern text for this pattern, as supplied on creation.</value>
   final String PatternText;
 
-  /// <summary>
   /// Returns the localization information used in this pattern.
-  /// </summary>
   @internal final NodaFormatInfo FormatInfo;
 
-  /// <summary>
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
-  /// </summary>
-  /// <value>The value used as a template for parsing.</value>
   final AnnualDate TemplateValue;
 
   @private AnnualDatePattern(this.PatternText, this.FormatInfo, this.TemplateValue, this.UnderlyingPattern);
 
-  /// <summary>
   /// Parses the given text value according to the rules of this pattern.
-  /// </summary>
-  /// <remarks>
+  ///
   /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
-  /// </remarks>
-  /// <param name="text">The text value to parse.</param>
-  /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
+  ///
+  /// [text]: The text value to parse.
+  /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<AnnualDate> Parse(String text) => UnderlyingPattern.Parse(text);
 
-  /// <summary>
   /// Formats the given annual date as text according to the rules of this pattern.
-  /// </summary>
-  /// <param name="value">The annual date to format.</param>
-  /// <returns>The annual date formatted according to this pattern.</returns>
+  ///
+  /// [value]: The annual date to format.
+  /// Returns: The annual date formatted according to this pattern.
   String Format(AnnualDate value) => UnderlyingPattern.Format(value);
 
-  /// <summary>
   /// Formats the given value as text according to the rules of this pattern,
-  /// appending to the given <see cref="StringBuilder"/>.
-  /// </summary>
-  /// <param name="value">The value to format.</param>
-  /// <param name="builder">The <c>StringBuilder</c> to append to.</param>
-  /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+  /// appending to the given [StringBuilder].
+  ///
+  /// [value]: The value to format.
+  /// [builder]: The `StringBuilder` to append to.
+  /// Returns: The builder passed in as [builder].
   StringBuffer AppendFormat(AnnualDate value, StringBuffer builder) => UnderlyingPattern.AppendFormat(value, builder);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text, format info, and template value.
-  /// </summary>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <param name="formatInfo">The format info to use in the pattern</param>
-  /// <param name="templateValue">Template value to use for unspecified fields</param>
-  /// <returns>A pattern for parsing and formatting annual dates.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// [formatInfo]: The format info to use in the pattern
+  /// [templateValue]: Template value to use for unspecified fields
+  /// Returns: A pattern for parsing and formatting annual dates.
+  /// [InvalidPatternException]: The pattern text was invalid.
   @internal static AnnualDatePattern Create(String patternText, NodaFormatInfo formatInfo,
       AnnualDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
@@ -121,84 +101,73 @@ import 'package:time_machine/time_machine_patterns.dart';
     return new AnnualDatePattern(patternText, formatInfo, templateValue, partialPattern);
   }
 
-  /// <summary>
   /// Creates a pattern for the given pattern text, culture, and template value.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <param name="cultureInfo">The culture to use in the pattern</param>
-  /// <param name="templateValue">Template value to use for unspecified fields</param>
-  /// <returns>A pattern for parsing and formatting annual dates.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// [cultureInfo]: The culture to use in the pattern
+  /// [templateValue]: Template value to use for unspecified fields
+  /// Returns: A pattern for parsing and formatting annual dates.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern Create2(String patternText, CultureInfo cultureInfo, AnnualDate templateValue) =>
       Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text and culture, with a template value of 2000-01-01.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <param name="cultureInfo">The culture to use in the pattern</param>
-  /// <returns>A pattern for parsing and formatting annual dates.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// [cultureInfo]: The culture to use in the pattern
+  /// Returns: A pattern for parsing and formatting annual dates.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern Create3(String patternText, CultureInfo cultureInfo) =>
       Create2(patternText, cultureInfo, DefaultTemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text in the current thread's current culture.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options. Note that the current culture
   /// is captured at the time this method is called - it is not captured at the point of parsing
   /// or formatting values.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <returns>A pattern for parsing and formatting annual dates.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// Returns: A pattern for parsing and formatting annual dates.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern CreateWithCurrentCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the given pattern text in the invariant culture.
-  /// </summary>
-  /// <remarks>
+  ///
   /// See the user guide for the available pattern text options. Note that the current culture
   /// is captured at the time this method is called - it is not captured at the point of parsing
   /// or formatting values.
-  /// </remarks>
-  /// <param name="patternText">Pattern text to create the pattern for</param>
-  /// <returns>A pattern for parsing and formatting annual dates.</returns>
-  /// <exception cref="InvalidPatternException">The pattern text was invalid.</exception>
+  ///
+  /// [patternText]: Pattern text to create the pattern for
+  /// Returns: A pattern for parsing and formatting annual dates.
+  /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern CreateWithInvariantCulture(String patternText) =>
       Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
-  /// </summary>
-  /// <param name="formatInfo">The localization information to use in the new pattern.</param>
-  /// <returns>A new pattern with the given localization information.</returns>
+  ///
+  /// [formatInfo]: The localization information to use in the new pattern.
+  /// Returns: A new pattern with the given localization information.
   @private AnnualDatePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
       Create(PatternText, formatInfo, TemplateValue);
 
-  /// <summary>
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
-  /// </summary>
-  /// <param name="cultureInfo">The culture to use in the new pattern.</param>
-  /// <returns>A new pattern with the given culture.</returns>
+  ///
+  /// [cultureInfo]: The culture to use in the new pattern.
+  /// Returns: A new pattern with the given culture.
   AnnualDatePattern WithCulture(CultureInfo cultureInfo) =>
       WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
 
-  /// <summary>
   /// Creates a pattern like this one, but with the specified template value.
-  /// </summary>
-  /// <param name="newTemplateValue">The template value for the new pattern, used to fill in unspecified fields.</param>
-  /// <returns>A new pattern with the given template value.</returns>
+  ///
+  /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
+  /// Returns: A new pattern with the given template value.
   AnnualDatePattern WithTemplateValue(AnnualDate newTemplateValue) =>
       Create(PatternText, FormatInfo, newTemplateValue);
 }

@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
@@ -23,7 +26,7 @@ void Construction_DifferentCalendars()
   LocalDate start = new LocalDate(1600, 1, 1);
   LocalDate end = new LocalDate.forCalendar(1800, 1, 1, JulianCalendar);
   expect(() => new DateInterval(start, end), throwsArgumentError);
-  // Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
+// Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
 }
 
 @Test()
@@ -32,7 +35,7 @@ void Construction_EndBeforeStart()
   LocalDate start = new LocalDate(1600, 1, 1);
   LocalDate end = new LocalDate(1500, 1, 1);
   expect(() => new DateInterval(start, end), throwsArgumentError);
-  // Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
+// Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
 }
 
 @Test()

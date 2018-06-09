@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 // --- https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/InstantTest.cs
 // --- 0913621  on Aug 26, 2017
 
@@ -14,9 +17,7 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
 /// Using the default constructor is equivalent to Span.Zero.
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
@@ -112,11 +113,11 @@ void Addition_Subtraction(int leftDays, int leftNanos,
 
   expect(result, left + right);
   expect(result, left.plus(right));
-  // expect(result, Span.add(left, right));
+// expect(result, Span.add(left, right));
 
   expect(left, result - right);
   expect(left, result.minus(right));
-  // expect(left, Span.subtract(result, right));
+// expect(left, Span.subtract(result, right));
 }
 
 @Test()
@@ -254,16 +255,16 @@ void Division(int startDays, int startNanoOfDay, int divisor, int expectedDays, 
 @Test()
 void Validation()
 {
-  //TestHelper.AssertValid(Span.FromDays, (1 << 24) - 1);
-  //TestHelper.AssertOutOfRange(Span.FromDays, 1 << 24);
-  //TestHelper.AssertValid(Span.FromDays, -(1 << 24));
-  //TestHelper.AssertOutOfRange(Span.FromDays, -(1 << 24) - 1);
+//TestHelper.AssertValid(Span.FromDays, (1 << 24) - 1);
+//TestHelper.AssertOutOfRange(Span.FromDays, 1 << 24);
+//TestHelper.AssertValid(Span.FromDays, -(1 << 24));
+//TestHelper.AssertOutOfRange(Span.FromDays, -(1 << 24) - 1);
 
   // todo: I owe you out of range behavior
   expect(new Span(days: (1 << 24) - 1), isNot(throwsException));
   //expect(new Span(days: (1 << 24)), throwsException);
   expect(new Span(days: -(1 << 24)), isNot(throwsException));
-  //expect(new Span(days: -(1 << 24) - 1), throwsException);
+//expect(new Span(days: -(1 << 24) - 1), throwsException);
 }
 
 //@Test("Overflow")

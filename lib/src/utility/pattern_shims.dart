@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 // This file contains non-globalized text output.
 // -- this is temporary code to be deleted later when we have a good globalization story.
 
@@ -77,7 +80,7 @@ abstract class TextShim {
     }
 
     return instant.toDateTimeUtc().toString();
-    // return '${instant.spanSinceEpoch.totalSeconds} seconds since epoch';
+  // return '${instant.spanSinceEpoch.totalSeconds} seconds since epoch';
   }
 
   static String toStringInterval(Interval interval) {

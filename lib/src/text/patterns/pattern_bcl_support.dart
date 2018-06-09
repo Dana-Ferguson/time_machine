@@ -1,13 +1,12 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/Patterns/PatternBclSupport.cs
-// a209e60  on Mar 18, 2015
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-/// <summary>
 /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads
 /// provided by individual types.
-/// </summary>
 @internal /*sealed*/ class PatternBclSupport<T>
 {
   @private final FixedFormatInfoPatternParser<T> Function(NodaFormatInfo) patternParser;

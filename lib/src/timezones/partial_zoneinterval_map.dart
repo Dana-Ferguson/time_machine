@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/PartialZoneIntervalMap.cs
-// 747ec41  on Feb 26, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -9,23 +10,17 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-/// <summary>
 /// Like ZoneIntervalMap, representing just part of the time line. The intervals returned by this map
 /// are clamped to the portion of the time line being represented, to make it easier to work with.
-/// </summary>
 // sealed 
 @internal class PartialZoneIntervalMap
 {
   @private final IZoneIntervalMap map;
 
-  /// <summary>
   /// Start of the interval during which this map is valid.
-  /// </summary>
   @internal final Instant Start;
 
-  /// <summary>
   /// End (exclusive) of the interval during which this map is valid.
-  /// </summary>
   @internal final Instant End;
 
   @internal PartialZoneIntervalMap(this.Start, this.End, this.map)
@@ -36,16 +31,13 @@ import 'package:time_machine/time_machine_timezones.dart';
         "Invalid start/end combination: $Start - $End");
   }
 
-  /// <summary>
   /// Builds a PartialZoneIntervalMap for a single zone interval with the given name, start, end, wall offset and daylight savings.
-  /// </summary>
   @internal static PartialZoneIntervalMap ForZoneInterval_NewZone(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
       ForZoneInterval(new ZoneInterval(name, start, end, wallOffset, savings));
 
-  /// <summary>
   /// Builds a PartialZoneIntervalMap wrapping the given zone interval, taking its start and end as the start and end of
   /// the portion of the time line handled by the partial map.
-  /// </summary> // todo: name?
+  ///  // todo: name?
   @internal static PartialZoneIntervalMap ForZoneInterval(ZoneInterval interval) =>
       new PartialZoneIntervalMap(interval.RawStart, interval.RawEnd, new SingleZoneIntervalMap(interval));
 
@@ -67,34 +59,26 @@ import 'package:time_machine/time_machine_timezones.dart';
     return interval;
   }
 
-  /// <summary>
   /// Returns true if this map only contains a single interval; that is, if the first interval includes the end of the map.
-  /// </summary>
   @private bool get IsSingleInterval => map.GetZoneInterval(Start).RawEnd >= End;
 
-  /// <summary>
   /// Returns a partial zone interval map equivalent to this one, but with the given start point.
-  /// </summary>
   @internal PartialZoneIntervalMap WithStart(Instant start)
   {
     return new PartialZoneIntervalMap(start, this.End, this.map);
   }
 
-  /// <summary>
   /// Returns a partial zone interval map equivalent to this one, but with the given end point.
-  /// </summary>
   @internal PartialZoneIntervalMap WithEnd(Instant end)
   {
     return new PartialZoneIntervalMap(this.Start, end, this.map);
   }
 
-  /// <summary>
   /// Converts a sequence of PartialZoneIntervalMaps covering the whole time line into an IZoneIntervalMap.
   /// The partial maps are expected to be in order, with the start of the first map being Instant.BeforeMinValue,
   /// the end of the last map being Instant.AfterMaxValue, and each adjacent pair of maps abutting (i.e. current.End == next.Start).
   /// Zone intervals belonging to abutting maps but which are equivalent in terms of offset and name
   /// are coalesced in the resulting map.
-  /// </summary>
   @internal static IZoneIntervalMap ConvertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
     var coalescedMaps = new List<PartialZoneIntervalMap>();
@@ -126,7 +110,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       }
       else
       {
-        // The boundary belongs to a single zone interval crossing the two maps. Some coalescing to do.
+// The boundary belongs to a single zone interval crossing the two maps. Some coalescing to do.
 
         // If both the current and the next map are single zone interval maps, we can just make the current one
         // go on until the end of the next one instead.
@@ -167,9 +151,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 }
 
-/// <summary>
 /// Implementation of IZoneIntervalMap used by ConvertToFullMap
-/// </summary>
 class _CombinedPartialZoneIntervalMap implements IZoneIntervalMap {
   @private final List<PartialZoneIntervalMap> partialMaps;
 

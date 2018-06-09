@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/Resolvers.cs
-// 9aa4e04  on Apr 14, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -12,44 +13,30 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 
-/// <summary>
-/// Commonly-used implementations of the delegates used in resolving a <see cref="LocalDateTime"/> to a
-/// <see cref="ZonedDateTime"/>, and a method to combine two "partial" resolvers into a full one.
-/// </summary>
-/// <remarks>
-/// <para>
-/// This class contains predefined implementations of <see cref="ZoneLocalMappingResolver"/>,
-/// <see cref="AmbiguousTimeResolver"/>, and <see cref="SkippedTimeResolver"/>, along with
-/// <see cref="CreateMappingResolver"/>, which produces a <c>ZoneLocalMappingResolver</c> from instances of the
+/// Commonly-used implementations of the delegates used in resolving a [LocalDateTime] to a
+/// [ZonedDateTime], and a method to combine two "partial" resolvers into a full one.
+///
+/// This class contains predefined implementations of [ZoneLocalMappingResolver],
+/// [AmbiguousTimeResolver], and [SkippedTimeResolver], along with
+/// [CreateMappingResolver], which produces a `ZoneLocalMappingResolver` from instances of the
 /// other two.
-/// </para>
-/// </remarks>
+///
 /// <threadsafety>All members of this class are thread-safe, as are the values returned by them.</threadsafety>
 abstract class Resolvers
 {
-  /// <summary>
-  /// An <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.
-  /// </summary>
-  /// <value>An <see cref="AmbiguousTimeResolver"/> which returns the earlier of the two matching times.</value>
+  /// An [AmbiguousTimeResolver] which returns the earlier of the two matching times.
   static final AmbiguousTimeResolver ReturnEarlier = (earlier, later) => earlier;
 
-  /// <summary>
-  /// An <see cref="AmbiguousTimeResolver"/> which returns the later of the two matching times.
-  /// </summary>
-  /// <value>An <see cref="AmbiguousTimeResolver"/> which returns the later of the two matching times.</value>
+  /// An [AmbiguousTimeResolver] which returns the later of the two matching times.
   static final AmbiguousTimeResolver ReturnLater = (earlier, later) => later;
 
-  /// <summary>
-  /// An <see cref="AmbiguousTimeResolver"/> which simply throws an <see cref="AmbiguousTimeException"/>.
-  /// </summary>
-  /// <value>An <see cref="AmbiguousTimeResolver"/> which simply throws an <see cref="AmbiguousTimeException"/>.</value>
+  /// An [AmbiguousTimeResolver] which simply throws an [AmbiguousTimeException].
   static final AmbiguousTimeResolver ThrowWhenAmbiguous = (earlier, later) => throw new AmbiguousTimeError(earlier, later);
 
-  /// <summary>
-  /// A <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
+  /// A [SkippedTimeResolver] which returns the final tick of the time zone interval
   /// before the "gap".
-  /// </summary>
-  /// <value>A <see cref="SkippedTimeResolver"/> which returns the final tick of the time zone interval
+  ///
+  /// <value>A [SkippedTimeResolver] which returns the final tick of the time zone interval
   /// before the "gap".</value>
   static final SkippedTimeResolver ReturnEndOfIntervalBefore = returnEndOfIntervalBefore;
   static ZonedDateTime returnEndOfIntervalBefore(LocalDateTime local, DateTimeZone zone, ZoneInterval before, ZoneInterval after) {
@@ -60,12 +47,11 @@ abstract class Resolvers
     return new ZonedDateTime.withCalendar(before.end - Span.epsilon, zone, local.Calendar);
   }
 
-  /// <summary>
-  /// A <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
+  /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
   /// after the "gap".
-  /// </summary>
+  ///
   /// <value>
-  /// A <see cref="SkippedTimeResolver"/> which returns the first tick of the time zone interval
+  /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
   /// after the "gap".
   /// </value>
   static final SkippedTimeResolver ReturnStartOfIntervalAfter = returnStartOfIntervalAfter;
@@ -76,13 +62,12 @@ abstract class Resolvers
     return new ZonedDateTime.withCalendar(after.start, zone, local.Calendar);
   }
 
-  /// <summary>
-  /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
+  /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
   /// of the gap (which is usually 1 hour). This corresponds to the instant that would have occured,
   /// had there not been a transition.
-  /// </summary>
+  ///
   /// <value>
-  /// A <see cref="SkippedTimeResolver"/> which shifts values in the "gap" forward by the duration
+  /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
   /// of the gap (which is usually 1 hour).
   /// </value>
   static final SkippedTimeResolver ReturnForwardShifted = returnForwardShifted;
@@ -93,10 +78,7 @@ abstract class Resolvers
     return new ZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).WithOffset(after.wallOffset), zone);
   }
 
-  /// <summary>
-  /// A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.
-  /// </summary>
-  /// <value>A <see cref="SkippedTimeResolver"/> which simply throws a <see cref="SkippedTimeException"/>.</value>
+  /// A [SkippedTimeResolver] which simply throws a [SkippedTimeException].
   static final SkippedTimeResolver ThrowWhenSkipped = throwWhenSkipped;
   static ZonedDateTime throwWhenSkipped(LocalDateTime local, DateTimeZone zone, ZoneInterval before, ZoneInterval after) {
     Preconditions.checkNotNull(zone, 'zone');
@@ -105,46 +87,39 @@ abstract class Resolvers
     throw new SkippedTimeError(local, zone);
   }
 
-  /// <summary>
-  /// A <see cref="ZoneLocalMappingResolver"/> which only ever succeeds in the (usual) case where the result
+  /// A [ZoneLocalMappingResolver] which only ever succeeds in the (usual) case where the result
   /// of the mapping is unambiguous.
-  /// </summary>
-  /// <remarks>
-  /// If the mapping is ambiguous or skipped, this throws <see cref="SkippedTimeException"/> or
-  /// <see cref="AmbiguousTimeException"/>, as appropriate. This resolver combines
-  /// <see cref="ThrowWhenAmbiguous"/> and <see cref="ThrowWhenSkipped"/>.
-  /// </remarks>
+  ///
+  /// If the mapping is ambiguous or skipped, this throws [SkippedTimeException] or
+  /// [AmbiguousTimeException], as appropriate. This resolver combines
+  /// [ThrowWhenAmbiguous] and [ThrowWhenSkipped].
+  ///
   /// <seealso cref="DateTimeZone.AtStrictly"/>
-  /// <value>A <see cref="ZoneLocalMappingResolver"/> which only ever succeeds in the (usual) case where the result
+  /// <value>A [ZoneLocalMappingResolver] which only ever succeeds in the (usual) case where the result
   /// of the mapping is unambiguous.</value>
   static final ZoneLocalMappingResolver StrictResolver = CreateMappingResolver(ThrowWhenAmbiguous, ThrowWhenSkipped);
 
-  /// <summary>
-  /// A <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.
-  /// </summary>
-  /// <remarks>
+  /// A [ZoneLocalMappingResolver] which never throws an exception due to ambiguity or skipped time.
+  ///
   /// Ambiguity is handled by returning the earlier occurrence, and skipped times are shifted forward by the duration
-  /// of the gap. This resolver combines <see cref="ReturnEarlier"/> and <see cref="ReturnForwardShifted"/>.
-  /// <para>Note: The behavior of this resolver was changed in version 2.0 to fit the most commonly seen real-world
-  /// usage pattern.  Previous versions combined the <see cref="ReturnLater"/> and <see cref="ReturnStartOfIntervalAfter"/>
-  /// resolvers, which can still be used separately if desired.</para>
-  /// </remarks>
+  /// of the gap. This resolver combines [ReturnEarlier] and [ReturnForwardShifted].
+  /// Note: The behavior of this resolver was changed in version 2.0 to fit the most commonly seen real-world
+  /// usage pattern.  Previous versions combined the [ReturnLater] and [ReturnStartOfIntervalAfter]
+  /// resolvers, which can still be used separately if desired.
+  ///
   /// <seealso cref="DateTimeZone.AtLeniently"/>
-  /// <value>A <see cref="ZoneLocalMappingResolver"/> which never throws an exception due to ambiguity or skipped time.</value>
   static final ZoneLocalMappingResolver LenientResolver = CreateMappingResolver(ReturnEarlier, ReturnForwardShifted);
 
-  /// <summary>
-  /// Combines an <see cref="AmbiguousTimeResolver"/> and a <see cref="SkippedTimeResolver"/> to create a
-  /// <see cref="ZoneLocalMappingResolver"/>.
-  /// </summary>
-  /// <remarks>
-  /// The <c>ZoneLocalMappingResolver</c> created by this method operates in the obvious way: unambiguous mappings
-  /// are returned directly, ambiguous mappings are delegated to the given <c>AmbiguousTimeResolver</c>, and
-  /// "skipped" mappings are delegated to the given <c>SkippedTimeResolver</c>.
-  /// </remarks>
-  /// <param name="ambiguousTimeResolver">Resolver to use for ambiguous mappings.</param>
-  /// <param name="skippedTimeResolver">Resolver to use for "skipped" mappings.</param>
-  /// <returns>The logical combination of the two resolvers.</returns>
+  /// Combines an [AmbiguousTimeResolver] and a [SkippedTimeResolver] to create a
+  /// [ZoneLocalMappingResolver].
+  ///
+  /// The `ZoneLocalMappingResolver` created by this method operates in the obvious way: unambiguous mappings
+  /// are returned directly, ambiguous mappings are delegated to the given `AmbiguousTimeResolver`, and
+  /// "skipped" mappings are delegated to the given `SkippedTimeResolver`.
+  ///
+  /// [ambiguousTimeResolver]: Resolver to use for ambiguous mappings.
+  /// [skippedTimeResolver]: Resolver to use for "skipped" mappings.
+  /// Returns: The logical combination of the two resolvers.
   static ZoneLocalMappingResolver CreateMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver) {
     // typedef ZonedDateTime ZoneLocalMappingResolver(ZoneLocalMapping mapping);
     Preconditions.checkNotNull(ambiguousTimeResolver, 'ambiguousTimeResolver');

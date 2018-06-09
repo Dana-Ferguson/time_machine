@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Fields/TimePeriodField.cs
-// 6b4af41  on Jun 10, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -16,15 +17,12 @@ class _AddTimeResult {
   _AddTimeResult(this.time, this.extraDays);
 }
 
-/// <summary>
 /// Period field class representing a field with a fixed duration regardless of when it occurs.
-/// </summary>
-/// <remarks>
+///
 /// 2014-06-29: Tried optimizing time period calculations by making these static methods accepting
 /// the number of ticks. I'd expected that to be really significant, given that it would avoid
 /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
 /// of code elegance.
-/// </remarks>
 @internal /*sealed*/ class TimePeriodField
 {
   @internal static final TimePeriodField Nanoseconds = new TimePeriodField(1);
@@ -91,7 +89,7 @@ class _AddTimeResult {
   }
 
   @internal _AddTimeResult AddTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
-    // if (extraDays == null) return AddTimeSimple(localTime, value);
+// if (extraDays == null) return AddTimeSimple(localTime, value);
 
     // unchecked
     {
@@ -150,9 +148,7 @@ class _AddTimeResult {
 //          ? span.ToInt64Nanoseconds() / unitNanoseconds
 //          : (span.ToDecimalNanoseconds() / unitNanoseconds);
 
-  /// <summary>
-  /// Returns a <see cref="Duration"/> representing the given number of units.
-  /// </summary>
+  /// Returns a [Duration] representing the given number of units.
   @internal Span ToDuration(int units) =>
       units >= -maxLongUnits && units <= maxLongUnits
           ? new Span(nanoseconds: units * unitNanoseconds)

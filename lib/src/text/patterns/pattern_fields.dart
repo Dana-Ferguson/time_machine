@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -5,28 +8,20 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
-/// <summary>
 /// Extension methods on PatternFields; nothing PatternFields-specific here, but we
 /// can't write this generically due to limitations in C#. (See Unconstrained Melody for details...)
-/// </summary>
 @internal abstract class PatternFieldsExtensions {
-  /// <summary>
   /// Returns true if the given set of fields contains any of the target fields.
-  /// </summary>
   @internal static bool HasAny(PatternFields fields, PatternFields target) => (fields & target).value != 0;
 
-  /// <summary>
   /// Returns true if the given set of fields contains all of the target fields.
-  /// </summary>
   @internal static bool HasAll(PatternFields fields, PatternFields target) => (fields & target) == target;
 }
 
-/// <summary>
 /// Enum representing the fields available within patterns. This single enum is shared
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,
 /// due to concepts such as "sign".
-/// </summary>
 @immutable
 class PatternFields {
   final int _value;
@@ -121,13 +116,9 @@ class PatternFields {
     return new PatternFields(i);
   }
 
-  /// <summary>
   /// Returns true if the given set of fields contains any of the target fields.
-  /// </summary>
   @internal bool HasAny(PatternFields target) => (_value & target._value) != 0;
 
-  /// <summary>
   /// Returns true if the given set of fields contains all of the target fields.
-  /// </summary>
   @internal bool HasAll(PatternFields target) => (_value & target._value) == target._value;
 }

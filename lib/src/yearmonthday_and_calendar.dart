@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/YearMonthDayCalendar.cs
-// 2a15d0  on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:quiver_hashcode/hashcode.dart';
 import 'package:meta/meta.dart';
@@ -34,7 +35,7 @@ class YearMonthDayCalendar {
 
   @internal
   YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
-  // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
+// : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
   @internal
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
@@ -46,17 +47,17 @@ class YearMonthDayCalendar {
 //  calendarOrdinal.value;
 
 
-  // @internal
-  // CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
+// @internal
+// CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
 
-  // @internal
-  // int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
+// @internal
+// int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
 
-  // @internal
-  // int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
+// @internal
+// int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
 
-  // @internal
-  // int get day => ((_value & _dayMask) >> calendarBits) + 1;
+// @internal
+// int get day => ((_value & _dayMask) >> calendarBits) + 1;
 
   @internal
   int get year => yearMonthDay.year;
@@ -68,10 +69,10 @@ class YearMonthDayCalendar {
   int get day => yearMonthDay.day;
 
 
-// Just for testing purposes...
+  // Just for testing purposes...
   @visibleForTesting
   static YearMonthDayCalendar Parse(String text) {
-    // throw new UnimplementedError('We need to be able to parse the CalendarOrdinal Enum.');
+// throw new UnimplementedError('We need to be able to parse the CalendarOrdinal Enum.');
 
     // Handle a leading - to negate the year
     if (text.startsWith("-")) {
@@ -93,7 +94,7 @@ class YearMonthDayCalendar {
 
   @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
-  // string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
+// string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 
   @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;
@@ -101,3 +102,4 @@ class YearMonthDayCalendar {
   @override
   int get hashCode => hash2(yearMonthDay.hashCode, calendarOrdinal.hashCode);
 }
+

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Calendars/GregorianCalendarSystemTest.cs
-// 69dedbc  24 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -48,3 +49,4 @@ void AddMonths_BoundaryCondition()
   var expected = new LocalDate(2016, 1, 20);
   expect(expected, end);
 }
+

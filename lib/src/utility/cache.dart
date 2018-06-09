@@ -1,14 +1,15 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:time_machine/time_machine.dart';
 import 'dart:collection';
 
-/// <summary>
 /// Implements a thread-safe cache of a fixed size, with a single computation function.
 /// (That happens to be all we need at the time of writing.)
-/// </summary>
-/// <remarks>
+///
 /// For simplicity's sake, eviction is currently on a least-recently-added basis (not LRU). This
 /// may change in the future.
-/// </remarks>
+///
 /// <typeparam name="TKey">Type of key</typeparam>
 /// <typeparam name="TValue">Type of value</typeparam>
 @internal /*sealed*/ class Cache<TKey, TValue> {
@@ -21,18 +22,17 @@ import 'dart:collection';
 
   // todo: Do i want to make our own IEqualityComparer for use here?
   @internal Cache(this._size, this._valueFactory /*, IEqualityComparer<TKey> keyComparer*/) :
-  //   external factory LinkedHashMap(
-  //      {bool equals(K key1, K key2),
-  //      int hashCode(K key),
-  //      bool isValidKey(potentialKey)});
+        //   external factory LinkedHashMap(
+        //      {bool equals(K key1, K key2),
+        //      int hashCode(K key),
+        //      bool isValidKey(potentialKey)});
         this._dictionary = new Map<TKey,TValue>(/*keyComparer*/),
         this._keyList = new Queue<TKey>();
 
-  /// <summary>
   /// Fetches a value from the cache, populating it if necessary.
-  /// </summary>
-  /// <param name="key">Key to fetch</param>
-  /// <returns>The value associated with the key.</returns>
+  ///
+  /// [key]: Key to fetch
+  /// Returns: The value associated with the key.
   @internal TValue GetOrAdd(TKey key)
   {
     // lock (mutex)
@@ -56,20 +56,14 @@ import 'dart:collection';
     return value;
   }
 
-  /// <summary>
   /// Returns the number of entries currently in the cache, primarily for diagnostic purposes.
-  /// </summary>
   @internal int get Count => _dictionary.length;
 
 
-  /// <summary>
   /// Returns a copy of the keys in the cache as a list, for diagnostic purposes.
-  /// </summary>
   @internal List<TKey> get Keys => new List<TKey>.unmodifiable(_keyList);
 
-  /// <summary>
   /// Clears the cache.
-  /// </summary>
   @internal void Clear()
   {
     _keyList.clear();

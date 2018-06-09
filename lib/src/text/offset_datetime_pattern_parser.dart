@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/OffsetDateTimePatternParser.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -15,7 +16,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private final OffsetDateTime templateValue;
 
   @private static final Map<String/*char*/, CharacterHandler<OffsetDateTime, OffsetDateTimeParseBucket>> PatternCharacterHandlers =
-// new Dictionary<char, CharacterHandler<OffsetDateTime, OffsetDateTimeParseBucket>>
+  // new Dictionary<char, CharacterHandler<OffsetDateTime, OffsetDateTimeParseBucket>>
   {
     '%': SteppedPatternBuilder.HandlePercent /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
@@ -85,7 +86,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     var patternBuilder = new SteppedPatternBuilder<OffsetDateTime, OffsetDateTimeParseBucket>(formatInfo, () => new OffsetDateTimeParseBucket(templateValue));
     patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
     patternBuilder.ValidateUsedFields();
-// Need to reconstruct the template value from the bits...
+    // Need to reconstruct the template value from the bits...
     return patternBuilder.Build(templateValue);
   }
 
@@ -123,4 +124,5 @@ import 'package:time_machine/time_machine_patterns.dart';
     return ParseResult.ForValue<OffsetDateTime>(localDateTime.WithOffset(offset));
   }
 }
+
 

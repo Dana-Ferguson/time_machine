@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Utility/Preconditions.cs
-// 32a15d0 on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 // todo: Look into what we want do do with debug-only checks
 
@@ -25,7 +26,7 @@ class Preconditions {
     if (argument == null) {
       throw new ArgumentError.notNull(paramName);
     }
-    // #endif
+  // #endif
   }
 
   // Note: this overload exists for performance reasons. It would be reasonable to call the
@@ -44,7 +45,7 @@ class Preconditions {
   static void debugCheckArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
     // #if DEBUG
     checkArgumentRange(paramName, value, minInclusive, maxInclusive);
-    // #endif
+  // #endif
   }
 
   // [ContractAnnotation("expression:false => halt")]
@@ -52,7 +53,7 @@ class Preconditions {
   static void debugCheckArgument(bool expression, String parameter, String message) {
     // #if DEBUG
     checkArgument(expression, parameter, message);
-    // #endif
+  // #endif
   }
 
   // [ContractAnnotation("expression:false => halt")]
@@ -73,6 +74,7 @@ class Preconditions {
   static void debugCheckState(bool expression, String message) {
     // #if DEBUG
     checkState(expression, message);
-    // #endif
+  // #endif
   }
 }
+

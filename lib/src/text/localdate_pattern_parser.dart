@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/LocalDatePatternParser.cs
-// 69dedbc  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -16,7 +17,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// priority.)
 @private const int TwoDigitYearMax = 30;
 
-/// Parser for patterns of <see cref="LocalDate"/> values.
+/// Parser for patterns of [LocalDate] values.
 @internal /*sealed*/ class LocalDatePatternParser implements IPatternParser<LocalDate> {
   @private final LocalDate templateValue;
 
@@ -41,10 +42,10 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal LocalDatePatternParser(this.templateValue);
 
-// Note: to implement the interface. It does no harm, and it's simpler than using explicit
-// interface implementation.
+  // Note: to implement the interface. It does no harm, and it's simpler than using explicit
+  // interface implementation.
   IPattern<LocalDate> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
-// Nullity check is performed in LocalDatePattern.
+    // Nullity check is performed in LocalDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
     }
@@ -79,10 +80,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 // todo: was a sub class of LocalDatePatternParser
-/// <summary>
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-/// </summary>
 @internal /*sealed*/ class LocalDateParseBucket extends ParseBucket<LocalDate> {
   @internal final LocalDate TemplateValue;
 
@@ -96,7 +95,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal int DayOfWeek = 0;
 
   @internal LocalDateParseBucket(this.TemplateValue) {
-// Only fetch this once.
+    // Only fetch this once.
     this.Calendar = TemplateValue.Calendar;
   }
 
@@ -119,12 +118,12 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (usedFields.HasAny(PatternFields.embeddedDate)) {
       return ParseResult.ForValue<LocalDate>(new LocalDate.forCalendar(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
     }
-// This will set Year if necessary
+    // This will set Year if necessary
     ParseResult<LocalDate> failure = DetermineYear(usedFields, text);
     if (failure != null) {
       return failure;
     }
-// This will set MonthOfYearNumeric if necessary
+    // This will set MonthOfYearNumeric if necessary
     failure = DetermineMonth(usedFields, text);
     if (failure != null) {
       return failure;
@@ -144,7 +143,6 @@ import 'package:time_machine/time_machine_patterns.dart';
     return ParseResult.ForValue<LocalDate>(value);
   }
 
-  /// <summary>
   /// Work out the year, based on fields of:
   /// - Year
   /// - YearOfEra
@@ -167,7 +165,6 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// and if the template value isn't in the first century already.
   ///
   /// Phew.
-  /// </summary>
   @private ParseResult<LocalDate> DetermineYear(PatternFields usedFields, String text) {
     if (usedFields.HasAny(PatternFields.year)) {
       if (Year > Calendar.maxYear || Year < Calendar.minYear) {
@@ -181,7 +178,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (usedFields.HasAny(PatternFields.yearOfEra)) {
         int yearOfEraFromYear = Calendar.GetYearOfEra(Year);
         if (usedFields.HasAny(PatternFields.yearTwoDigits)) {
-// We're only checking the last two digits
+          // We're only checking the last two digits
           yearOfEraFromYear = yearOfEraFromYear % 100;
         }
         if (yearOfEraFromYear != YearOfEra) {
@@ -191,7 +188,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return null;
     }
 
-// Use the year from the template value, possibly checking the era.
+    // Use the year from the template value, possibly checking the era.
     if (!usedFields.HasAny(PatternFields.yearOfEra)) {
       Year = TemplateValue.Year;
       return usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)
@@ -225,7 +222,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private ParseResult<LocalDate> DetermineMonth(PatternFields usedFields, String text) {
     var x = usedFields & (PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText);
     if (x ==  PatternFields.monthOfYearNumeric) {
-      // No-op
+    // No-op
     }
     else if (x == PatternFields.monthOfYearText) {
       MonthOfYearNumeric = MonthOfYearText;
@@ -234,7 +231,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (MonthOfYearNumeric != MonthOfYearText) {
         return ParseResult.InconsistentMonthValues<LocalDate>(text);
       }
-      // No need to change MonthOfYearNumeric - this was just a check
+    // No need to change MonthOfYearNumeric - this was just a check
     }
     else if (x == PatternFields.none) {
       MonthOfYearNumeric = TemplateValue.Month;

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/CachedDateTimeZoneTest.cs
-// 16aacad  on Aug 26, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -72,4 +73,5 @@ void ForZone_AlreadyCached()
 {
   expect(identical(timeZone, CachedDateTimeZone.ForZone(timeZone)), isTrue);
 }
+
 

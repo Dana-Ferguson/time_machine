@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/ZonedDateTimePatternParser.cs
-// f78a32a  on Oct 9, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'package:meta/meta.dart';
@@ -151,13 +152,11 @@ import 'package:time_machine/time_machine_patterns.dart';
     return null;
   }
 
-  /// <summary>
   /// Attempts to parse a fixed time zone from "UTC" with an optional
   /// offset, expressed as +HH, +HH:mm, +HH:mm:ss or +HH:mm:ss.fff - i.e. the
   /// general format. If it manages, it will move the cursor and return the
   /// zone. Otherwise, it will return null and the cursor will remain where
   /// it was.
-  /// </summary>
   @private DateTimeZone TryParseFixedZone(ValueCursor value) {
     if (value.CompareOrdinal(DateTimeZone.UtcId) != 0) {
       return null;
@@ -168,11 +167,9 @@ import 'package:time_machine/time_machine_patterns.dart';
     return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
   }
 
-  /// <summary>
   /// Tries to parse a time zone ID from the provider. Returns the zone
   /// on success (after moving the cursor to the end of the ID) or null on failure
   /// (leaving the cursor where it was).
-  /// </summary>
   @private DateTimeZone TryParseProviderZone(ValueCursor value) {
     // The IDs from the provider are guaranteed to be in order (using ordinal comparisons).
     // Use a binary search to find a match, then make sure it's the longest possible match.
@@ -191,20 +188,20 @@ import 'package:time_machine/time_machine_patterns.dart';
         lowerBound = guess + 1;
       }
       else {
-        // We've found a match! But it may not be as long as it
-        // could be. Keep track of a "longest match so far" (starting with the match we've found),
-        // and keep looking through the IDs until we find an ID which doesn't start with that "longest
-        // match so far", at which point we know we're done.
-        //
-        // We can't just look through all the IDs from "guess" to "lowerBound" and stop when we hit
-        // a non-match against "value", because of situations like this:
-        // value=Etc/GMT-12
-        // guess=Etc/GMT-1
-        // IDs includes { Etc/GMT-1, Etc/GMT-10, Etc/GMT-11, Etc/GMT-12, Etc/GMT-13 }
-        // We can't stop when we hit Etc/GMT-10, because otherwise we won't find Etc/GMT-12.
-        // We *can* stop when we get to Etc/GMT-13, because by then our longest match so far will
-        // be Etc/GMT-12, and we know that anything beyond Etc/GMT-13 won't match that.
-        // We can also stop when we hit upperBound, without any more comparisons.
+// We've found a match! But it may not be as long as it
+// could be. Keep track of a "longest match so far" (starting with the match we've found),
+// and keep looking through the IDs until we find an ID which doesn't start with that "longest
+// match so far", at which point we know we're done.
+//
+// We can't just look through all the IDs from "guess" to "lowerBound" and stop when we hit
+// a non-match against "value", because of situations like this:
+// value=Etc/GMT-12
+// guess=Etc/GMT-1
+// IDs includes { Etc/GMT-1, Etc/GMT-10, Etc/GMT-11, Etc/GMT-12, Etc/GMT-13 }
+// We can't stop when we hit Etc/GMT-10, because otherwise we won't find Etc/GMT-12.
+// We *can* stop when we get to Etc/GMT-13, because by then our longest match so far will
+// be Etc/GMT-12, and we know that anything beyond Etc/GMT-13 won't match that.
+// We can also stop when we hit upperBound, without any more comparisons.
 
         String longestSoFar = ids[guess];
         for (int i = guess + 1; i < upperBound; i++) {
@@ -273,3 +270,4 @@ import 'package:time_machine/time_machine_patterns.dart';
     return ParseResult.ForValue<ZonedDateTime>(result);
   }
 }
+

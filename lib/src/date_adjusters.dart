@@ -1,17 +1,18 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/DateAdjusters.cs
-// 24fdeef  on Apr 10, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 
 import 'package:time_machine/time_machine.dart';
 
-/// Factory class for date adjusters: functions from <see cref="LocalDate"/> to <c>LocalDate</c>,
-/// which can be applied to <see cref="LocalDate"/>, <see cref="LocalDateTime"/>, and <see cref="OffsetDateTime"/>.
+/// Factory class for date adjusters: functions from [LocalDate] to `LocalDate`,
+/// which can be applied to [LocalDate], [LocalDateTime], and [OffsetDateTime].
 @immutable
 class DateAdjusters {
 
   /// A date adjuster to move to the first day of the current month.
-  /// 
+  ///
   /// <value>
   /// A date adjuster to move to the first day of the current month.
   /// </value>
@@ -20,7 +21,7 @@ class DateAdjusters {
 
 
   /// A date adjuster to move to the last day of the current month.
-  /// 
+  ///
   /// <value>
   /// A date adjuster to move to the last day of the current month.
   /// </value>
@@ -29,37 +30,35 @@ class DateAdjusters {
 
 
   /// A date adjuster to move to the specified day of the current month.
-  /// 
-  /// <remarks>
+  ///
   /// The returned adjuster will throw an exception if it is applied to a date
   /// that would create an invalid result.
-  /// </remarks>
-  /// <param name="day">The day of month to adjust dates to.</param>
-  /// <returns>An adjuster which changes the day to <paramref name="day"/>,
-  /// retaining the same year and month.</returns>
+  ///
+  /// [day]: The day of month to adjust dates to.
+  /// An adjuster which changes the day to [day],
+  /// retaining the same year and month.
   static LocalDate Function(LocalDate) DayOfMonth(int day) =>
           (date) => new LocalDate.forCalendar(date.Year, date.Month, day, date.Calendar);
 
 
   /// A date adjuster to move to the same day of the specified month.
-  /// 
-  /// <remarks>
+  ///
   /// The returned adjuster will throw an exception if it is applied to a date
   /// that would create an invalid result.
-  /// </remarks>
-  /// <param name="month">The month to adjust dates to.</param>
-  /// <returns>An adjuster which changes the month to <paramref name="month"/>,
-  /// retaining the same year and day of month.</returns>
+  ///
+  /// [month]: The month to adjust dates to.
+  /// An adjuster which changes the month to [month],
+  /// retaining the same year and day of month.
   static LocalDate Function(LocalDate) Month(int month) =>
           (date) => new LocalDate.forCalendar(date.Year, month, date.Day, date.Calendar);
 
 
   /// A date adjuster to move to the next specified day-of-week, but return the
   /// original date if the day is already correct.
-  /// 
-  /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
-  /// <returns>An adjuster which advances a date to the next occurrence of the
-  /// specified day-of-week, or the original date if the day is already corret.</returns>
+  ///
+  /// [dayOfWeek]: The day-of-week to adjust dates to.
+  /// An adjuster which advances a date to the next occurrence of the
+  /// specified day-of-week, or the original date if the day is already corret.
   static LocalDate Function(LocalDate) NextOrSame(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
@@ -71,10 +70,10 @@ class DateAdjusters {
 
   /// A date adjuster to move to the previous specified day-of-week, but return the
   /// original date if the day is already correct.
-  /// 
-  /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
-  /// <returns>An adjuster which advances a date to the previous occurrence of the
-  /// specified day-of-week, or the original date if the day is already corret.</returns>
+  ///
+  /// [dayOfWeek]: The day-of-week to adjust dates to.
+  /// An adjuster which advances a date to the previous occurrence of the
+  /// specified day-of-week, or the original date if the day is already corret.
   static LocalDate Function(LocalDate) PreviousOrSame(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
@@ -86,13 +85,12 @@ class DateAdjusters {
 
   /// A date adjuster to move to the next specified day-of-week, adding
   /// a week if the day is already correct.
-  /// 
-  /// <remarks>
-  /// This is the adjuster equivalent of <see cref="LocalDate.Next"/>.
-  /// </remarks>
-  /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
-  /// <returns>An adjuster which advances a date to the next occurrence of the
-  /// specified day-of-week.</returns>
+  ///
+  /// This is the adjuster equivalent of [LocalDate.Next].
+  ///
+  /// [dayOfWeek]: The day-of-week to adjust dates to.
+  /// An adjuster which advances a date to the next occurrence of the
+  /// specified day-of-week.
   static LocalDate Function(LocalDate) Next(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
@@ -104,13 +102,12 @@ class DateAdjusters {
 
   /// A date adjuster to move to the previous specified day-of-week, subtracting
   /// a week if the day is already correct.
-  /// 
-  /// <remarks>
-  /// This is the adjuster equivalent of <see cref="LocalDate.Previous"/>.
-  /// </remarks>
-  /// <param name="dayOfWeek">The day-of-week to adjust dates to.</param>
-  /// <returns>An adjuster which advances a date to the previous occurrence of the
-  /// specified day-of-week.</returns>
+  ///
+  /// This is the adjuster equivalent of [LocalDate.Previous].
+  ///
+  /// [dayOfWeek]: The day-of-week to adjust dates to.
+  /// An adjuster which advances a date to the previous occurrence of the
+  /// specified day-of-week.
   static LocalDate Function(LocalDate) Previous(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {

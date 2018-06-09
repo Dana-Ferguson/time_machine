@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/DateTimeZoneCacheTest.cs
-// 407f018  on Aug 31, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -235,11 +236,9 @@ Future Tzdb_Ids_All() async
   expect(DateTimeZone.UtcId, utc);
 }
 
-/// <summary>
 /// Simply tests that every ID in the built-in database can be fetched. This is also
 /// helpful for diagnostic debugging when we want to check that some potential
 /// invariant holds for all time zones...
-/// </summary>
 @Test()
 void Tzdb_Indexer_AllIds()
 {

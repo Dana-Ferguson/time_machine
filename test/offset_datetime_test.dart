@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/OffsetDateTimeTest.cs
-// 27cf251  on Nov 11, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -324,9 +325,7 @@ void InstantComparer()
   expect(comparer.getHashCode(control), isNot(comparer.getHashCode(control)));
 }
 
-/// <summary>
 /// Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
@@ -493,3 +492,4 @@ void ToOffsetTime()
   var expected = new OffsetTime(new LocalTime(12, 15, 8).PlusNanoseconds(123456789), offset);
   expect(expected, odt.ToOffsetTime());
 }
+

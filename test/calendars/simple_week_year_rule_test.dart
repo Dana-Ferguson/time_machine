@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Calendars/SimpleWeekYearRuleTest.cs
-// 0857f44  on Dec 29, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -66,11 +67,11 @@ void OutOfRange_ValidWeekYearAndWeek_TooEarly()
 @Test()
 void OutOfRange_ValidWeekYearAndWeek_TooLate()
 {
-  // Gregorian 4: December 31st 9999 is a Friday, so the Saturday of the
-  // same week is therefore out of range, even though the week-year
-  // and week-of-week-year are valid.
-  //Assert.Throws<ArgumentOutOfRangeException>(
-  //        () => WeekYearRules.Iso.GetLocalDate(9999, 52, Saturday));
+// Gregorian 4: December 31st 9999 is a Friday, so the Saturday of the
+// same week is therefore out of range, even though the week-year
+// and week-of-week-year are valid.
+//Assert.Throws<ArgumentOutOfRangeException>(
+//        () => WeekYearRules.Iso.GetLocalDate(9999, 52, Saturday));
 
   expect(() => WeekYearRules.Iso.GetLocalDate(9999, 52, IsoDayOfWeek.saturday, CalendarSystem.Iso), willThrow<ArgumentError>());
 
@@ -182,9 +183,7 @@ void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayO
   expect(viaCalendar, viaRule);
 }
 
-/// <summary>
 /// Just a sample test of not using the Gregorian/ISO calendar system.
-/// </summary>
 @Test() @SkipMe.unimplemented()
 @TestCase(const [5400, IsoDayOfWeek.thursday, 1639, 9, 29, 51, 5400, 1])
 @TestCase(const [5401, IsoDayOfWeek.monday, 1640, 9, 17, 50, 5401, 1])
@@ -245,12 +244,10 @@ void NonMondayFirstDayOfWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek
 /*
 // Tests for BCL rules...
 
-/// <summary>
 /// For each calendar and rule combination, check everything we can about every date
 /// from mid December to mid January around each year between 2016 and 2046.
 /// (For non-Gregorian calendars, the rough equivalent is used...)
 /// That should give us plenty of coverage.
-/// </summary>
 @Test()
 [Combinatorial]
 void BclEquivalence(
@@ -284,10 +281,8 @@ expect(date, nodaRule.GetLocalDate(bclWeekYear, bclWeek, date.DayOfWeek, nodaCal
 }
 }
 
-/// <summary>
 /// The number of weeks in the year is equal to the week-of-week-year for the last
 /// day of the year.
-/// </summary>
 @Test()
 [Combinatorial]
 void GetWeeksInWeekYear(
@@ -352,4 +347,5 @@ date.DayOfWeek));
 */
 
 // TODO: Test the difference in ValidateWeekYear for 9999 between regular and non-regular rules.
+
 

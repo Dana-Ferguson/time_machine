@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/DateTimeZoneTest.LocalConversions.cs
-// 2e47e7c  on Mar 24
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -16,10 +17,8 @@ import 'testing/timezones/single_transition_datetimezone.dart';
 import 'testing/timezones/multi_transition_datetimezone.dart';
 import 'time_machine_testing.dart';
 
-/// <summary>
 /// Tests for aspects of DateTimeZone to do with converting from LocalDateTime and
 /// LocalDate to ZonedDateTime.
-/// </summary>
 // TODO: Fix all tests to use SingleTransitionZone.
 
 // Sample time zones for DateTimeZone.AtStartOfDay etc. I didn't want to only test midnight transitions.
@@ -39,27 +38,19 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
 /// Local midnight at the start of the transition (June 1st) becomes 1am.
-/// </summary>
 final DateTimeZone TransitionForwardAtMidnightZone =
 new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 2, 0), new Offset.fromHours(-2), new Offset.fromHours(-1));
 
-/// <summary>
 /// Local 1am at the start of the transition (June 1st) becomes midnight.
-/// </summary>
 final DateTimeZone TransitionBackwardToMidnightZone =
 new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 3, 0), new Offset.fromHours(-2), new Offset.fromHours(-3));
 
-/// <summary>
 /// Local 11.20pm at the start of the transition (May 30th) becomes 12.20am of June 1st.
-/// </summary>
 final DateTimeZone TransitionForwardBeforeMidnightZone =
 new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 1, 20), new Offset.fromHours(-2), new Offset.fromHours(-1));
 
-/// <summary>
 /// Local 12.20am at the start of the transition (June 1st) becomes 11.20pm of the previous day.
-/// </summary>
 final DateTimeZone TransitionBackwardAfterMidnightZone =
 new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 2, 20), new Offset.fromHours(-2), new Offset.fromHours(-3));
 
@@ -338,10 +329,8 @@ void AtStrictly_InSummer()
   expect(new Offset.fromHours(-7), when.offset);
 }
 
-/// <summary>
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
 /// so 2am became 1am.
-/// </summary>
 @Test()
 void AtStrictly_ThrowsWhenAmbiguous()
 {
@@ -349,10 +338,8 @@ void AtStrictly_ThrowsWhenAmbiguous()
   expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)), willThrow<AmbiguousTimeError>());
 }
 
-/// <summary>
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
 /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
-/// </summary>
 @Test()
 void AtStrictly_ThrowsWhenSkipped()
 {
@@ -360,10 +347,8 @@ void AtStrictly_ThrowsWhenSkipped()
   expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)), willThrow<SkippedTimeError>());
 }
 
-/// <summary>
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
 /// so 2am became 1am. We'll return the earlier result, i.e. with the offset of -7
-/// </summary>
 @Test()
 void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
@@ -373,11 +358,9 @@ void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
   expect(zoned.offset, new Offset.fromHours(-7));
 }
 
-/// <summary>
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
 /// so 2am became 3am. This means that 2:30am doesn't exist on that day.
 /// We'll return 3:30am, the forward-shifted value.
-/// </summary>
 @Test()
 void AtLeniently_ReturnsForwardShiftedValue()
 {

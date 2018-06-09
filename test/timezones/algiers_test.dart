@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/AlgiersTest.cs
-// 8d5399d  on Feb 26, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -14,12 +15,10 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-/// <summary>
 /// Algiers had DST until May 1st 1981, after which time it didn't have any - so
 /// we use that to test a time zone whose transitions run out. (When Algiers
 /// decided to stop using DST, it changed its standard offset to be what had previously
 /// been its DST offset, i.e. +1.)
-/// </summary>
 Future main() async {
   Algiers = await (await DateTimeZoneProviders.Tzdb)["Africa/Algiers"];
 
@@ -45,4 +44,5 @@ void GetPeriod_AfterLastTransition()
   var expected = new ZoneInterval("CET", new Instant.fromUnixTimeTicks(3575232000000000), null, new Offset.fromSeconds(TimeConstants.secondsPerHour), Offset.zero);
   expect(expected, actual);
 }
+
 

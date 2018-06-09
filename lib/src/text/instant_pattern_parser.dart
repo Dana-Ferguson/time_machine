@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/InstantPatternParser.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -11,15 +12,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
-/// Pattern parsing support for <see cref="Instant" />.
-/// </summary>
-/// <remarks>
+/// Pattern parsing support for [Instant].
+///
 /// Supported standard patterns:
 /// <list type="bullet">
 ///   <item><description>g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ</description></item>
 /// </list>
-/// </remarks>
 @internal /*sealed*/ class InstantPatternParser implements IPatternParser<Instant> {
   @private static const String GeneralPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
   @internal static const String BeforeMinValueText = "StartOfTime";
@@ -70,4 +68,5 @@ import 'package:time_machine/time_machine_patterns.dart';
 
       );
 }
+
 

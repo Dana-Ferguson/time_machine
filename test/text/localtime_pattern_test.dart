@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/LocalTimePatternTest.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -48,9 +49,9 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       123); //.AddTicks(4567);
   @private static final LocalTime SampleLocalTime = LocalTime.FromHourMinuteSecondMillisecondTick(21, 13, 34, 123, 4567);
 
-  // No BCL here. (also we'd need ExpectedCharacters to be a string?)
-  // Characters we expect to work the same in Noda Time as in the BCL.
-  // @private static const String ExpectedCharacters = "hHms.:fFtT ";
+// No BCL here. (also we'd need ExpectedCharacters to be a string?)
+// Characters we expect to work the same in Noda Time as in the BCL.
+// @private static const String ExpectedCharacters = "hHms.:fFtT ";
 
   @private static final CultureInfo AmOnlyCulture = CreateCustomAmPmCulture("am", "");
   @private static final CultureInfo PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
@@ -116,7 +117,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "sss"
       ..Message = TextErrorMessages.RepeatCountExceeded
       ..Parameters.addAll(['s', 2]),
-// T isn't valid in a time pattern
+    // T isn't valid in a time pattern
     new Data()
       ..Pattern = "1970-01-01THH:mm:ss"
       ..Message = TextErrorMessages.UnquotedLiteral
@@ -262,7 +263,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Text = "7"
       ..Pattern = "%s",
 
-// AM/PM designator is case-insensitive for both short and long forms
+    // AM/PM designator is case-insensitive for both short and long forms
     new Data.hms(17, 0, 0, 0)
       ..Text = "5 p"
       ..Pattern = "h t",
@@ -270,7 +271,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Text = "5 pm"
       ..Pattern = "h tt",
 
-// Parsing using the semi-colon "comma dot" specifier
+    // Parsing using the semi-colon "comma dot" specifier
     new Data.hms(16, 05, 20, 352)
       ..Pattern = "HH:mm:ss;fff"
       ..Text = "16:05:20,352",
@@ -278,7 +279,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "HH:mm:ss;FFF"
       ..Text = "16:05:20,352",
 
-// Empty fractional section
+    // Empty fractional section
     new Data.hms(0, 0, 4, 0)
       ..Text = "04"
       ..Pattern = "ssFF",
@@ -413,7 +414,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   ];
 
   @internal List<Data> DefaultPatternData = [
-// Invariant culture uses HH:mm:ss for the "long" pattern
+    // Invariant culture uses HH:mm:ss for the "long" pattern
     new Data.hms(5, 0, 0, 0)
       ..Text = "05:00:00",
     new Data.hms(5, 12, 0, 0)
@@ -421,7 +422,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
     new Data.hms(5, 12, 34, 0)
       ..Text = "05:12:34",
 
-// US uses hh:mm:ss tt for the "long" pattern
+    // US uses hh:mm:ss tt for the "long" pattern
     new Data.hms(17, 0, 0, 0)
       ..Culture = TestCultures.EnUs
       ..Text = "5:00:00 PM",
@@ -437,13 +438,13 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   ];
 
   @internal final List<Data> TemplateValueData = [
-// Pattern specifies nothing - template value is passed through
+    // Pattern specifies nothing - template value is passed through
     new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "X"
       ..Pattern = "'X'"
       ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-// Tests for each individual field being propagated
+    // Tests for each individual field being propagated
     new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
@@ -465,7 +466,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "HH:mm:ss"
       ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
-// Hours are tricky because of the ways they can be specified
+    // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
       ..Culture = TestCultures.EnUs
       ..Text = "6"
@@ -503,10 +504,8 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Template = new LocalTime(1, 2, 3),
   ];
 
-  /// <summary>
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  /// </summary>
   @internal final List<Data> FormatAndParseData = [
     new Data(LocalTime.Midnight)
       ..Culture = TestCultures.EnUs
@@ -758,8 +757,8 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Text = "14.15.16.789123456"
       ..Pattern = "r",
 
-// ------------ Template value tests ----------
-// Mixtures of 12 and 24 hour times
+    // ------------ Template value tests ----------
+    // Mixtures of 12 and 24 hour times
     new Data.hms(18, 0, 0)
       ..Culture = TestCultures.EnUs
       ..Text = "18 6 PM"
@@ -797,13 +796,13 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Text = "P"
       ..Pattern = "%t",
 
-// Pattern specifies nothing - template value is passed through
+    // Pattern specifies nothing - template value is passed through
     new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "*"
       ..Pattern = "%*"
       ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-// Tests for each individual field being propagated
+    // Tests for each individual field being propagated
     new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
@@ -830,7 +829,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "HH:mm:ss"
       ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
-// Hours are tricky because of the ways they can be specified
+    // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
       ..Culture = TestCultures.EnUs
       ..Text = "6"
@@ -868,8 +867,8 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Template = new LocalTime(1, 2, 3),
 // --------------- end of template value tests ----------------------
 
-// Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
-// or absense of the non-empty one.
+    // Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
+    // or absense of the non-empty one.
     new Data.hms(5, 0, 0)
       ..Culture = AmOnlyCulture
       ..Text = "5 am"
@@ -906,8 +905,8 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Text = "3 p"
       ..Pattern = "h t",
 
-// AM / PM designators are both empty strings. The parsing side relies on the AM/PM value being correct on the
-// template value. (The template value is for the wrong actual hour, but in the right side of noon.)
+    // AM / PM designators are both empty strings. The parsing side relies on the AM/PM value being correct on the
+    // template value. (The template value is for the wrong actual hour, but in the right side of noon.)
     new Data.hms(5, 0, 0)
       ..Culture = NoAmOrPmCulture
       ..Text = "5 "
@@ -929,7 +928,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "h t"
       ..Template = new LocalTime(14, 0, 0),
 
-// Use of the semi-colon "comma dot" specifier
+    // Use of the semi-colon "comma dot" specifier
     new Data.hms(16, 05, 20, 352)
       ..Pattern = "HH:mm:ss;fff"
       ..Text = "16:05:20.352",
@@ -943,7 +942,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "HH:mm:ss;FFF 'end'"
       ..Text = "16:05:20 end",
 
-// Patterns obtainable by properties but not single character standard patterns
+    // Patterns obtainable by properties but not single character standard patterns
     new Data.nano(1, 2, 3, 123456700 /*L*/)
       ..StandardPattern = LocalTimePattern.ExtendedIso
       ..Culture = TestCultures.EnUs
@@ -1014,7 +1013,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 
   @Test()
   void CreateWithCurrentCulture() {
-// using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
+    // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = LocalTimePattern.CreateWithCurrentCulture("HH:mm");
@@ -1067,9 +1066,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
   }*/
 }
 
-/// <summary>
-/// A container for test data for formatting and parsing <see cref="LocalTime" /> objects.
-/// </summary>
+/// A container for test data for formatting and parsing [LocalTime] objects.
 /*sealed*/ class Data extends PatternTestData<LocalTime>
 {
   // Default to midnight
@@ -1091,3 +1088,4 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
       .WithTemplateValue(Template)
       .WithCulture(Culture);
 }
+

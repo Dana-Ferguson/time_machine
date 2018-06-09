@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/SingleZoneIntervalMap.cs
-// a209e60  on Mar 18, 2015
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -11,10 +12,8 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-/// <summary>
 /// Implementation of IZoneIntervalMap which just returns a single interval (provided on construction) regardless of
 /// the instant requested.
-/// </summary>
 @internal /*sealed*/ class SingleZoneIntervalMap implements IZoneIntervalMap {
   final ZoneInterval _interval;
 
@@ -22,3 +21,4 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   ZoneInterval GetZoneInterval(Instant instant) => _interval;
 }
+

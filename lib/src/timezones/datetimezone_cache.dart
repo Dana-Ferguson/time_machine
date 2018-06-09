@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/DateTimeZoneCache.cs
-// 95327c5 on Apr 10, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 import 'dart:async';
@@ -12,17 +13,15 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-/// <summary>
-/// Provides an implementation of <see cref="IDateTimeZoneProvider"/> that caches results from an
-/// <see cref="IDateTimeZoneSource"/>.
-/// </summary>
-/// <remarks>
+/// Provides an implementation of [IDateTimeZoneProvider] that caches results from an
+/// [IDateTimeZoneSource].
+///
 /// The process of loading or creating time zones may be an expensive operation. This class implements an
 /// unlimited-size non-expiring cache over a time zone source, and adapts an implementation of the
-/// <c>IDateTimeZoneSource</c> interface to an <c>IDateTimeZoneProvider</c>.
-/// </remarks>
+/// `IDateTimeZoneSource` interface to an `IDateTimeZoneProvider`.
+///
 /// <seealso cref="DateTimeZoneProviders"/>
-/// <threadsafety>All members of this type are thread-safe as long as the underlying <c>IDateTimeZoneSource</c>
+/// <threadsafety>All members of this type are thread-safe as long as the underlying `IDateTimeZoneSource`
 /// implementation is thread-safe.</threadsafety>
 @immutable // only; caches are naturally mutable internally.
 // sealed
@@ -31,11 +30,8 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   @private final IDateTimeZoneSource source;
   @private final Map<String, DateTimeZone> timeZoneMap = new Map<String, DateTimeZone>();
 
-  /// <summary>
-  /// Gets the version ID of this provider. This is simply the <see cref="IDateTimeZoneSource.VersionId"/> returned by
+  /// Gets the version ID of this provider. This is simply the [IDateTimeZoneSource.VersionId] returned by
   /// the underlying source.
-  /// </summary>
-  /// <value>The version ID of this provider.</value>
   final String VersionId;
 
   /// <inheritdoc />
@@ -46,16 +42,14 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
 
   // todo: anyway I can make this a regular constructor???
   // note: this is a Static Constructor (against the requirements of the Style guide), because it's a future
-  /// <summary>
-  /// Creates a provider backed by the given <see cref="IDateTimeZoneSource"/>.
-  /// </summary>
-  /// <remarks>
+  /// Creates a provider backed by the given [IDateTimeZoneSource].
+  ///
   /// Note that the source will never be consulted for requests for the fixed-offset timezones "UTC" and
   /// "UTC+/-Offset" (a standard implementation will be returned instead). This is true even if these IDs are
   /// advertised by the source.
-  /// </remarks>
-  /// <param name="source">The <see cref="IDateTimeZoneSource"/> for this provider.</param>
-  /// <exception cref="InvalidDateTimeZoneSourceException"><paramref name="source"/> violates its contract.</exception>
+  ///
+  /// [source]: The [IDateTimeZoneSource] for this provider.
+  /// [InvalidDateTimeZoneSourceException]: [source] violates its contract.
   static Future<DateTimeZoneCache> getCache(IDateTimeZoneSource source) async {
     Preconditions.checkNotNull(source, 'source');
     var VersionId = await source.VersionId;
@@ -159,3 +153,4 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
     return zone;
   }
 }
+

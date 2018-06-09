@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:mirrors';
 import 'dart:io';
@@ -9,7 +12,7 @@ import 'test_fx.dart';
 
 // note: this doesn't actually run any tests... todo: maybe do real automated tests
 Future main() async {
-  // await runTests();
+// await runTests();
 }
 
 @Test()

@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
@@ -65,8 +68,8 @@ class TzdbIndex {
 
   DateTimeZone getTimeZoneSync(String zoneId) {
     return _cache[zoneId]; // ?? null;
-    // todo: check to see if we have binary loaded data
-        // (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
+  // todo: check to see if we have binary loaded data
+  // (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
   }
 
   static String get locale => Platform.localeName;
@@ -103,4 +106,5 @@ class DateTimeZoneReader extends BinaryReader {
     return new ZoneInterval(name, start, end, wallOffset, savings);
   }
 }
+
 

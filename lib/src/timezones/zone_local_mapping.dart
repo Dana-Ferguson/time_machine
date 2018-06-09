@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/ZoneLocalMapping.cs
-// 24fdeef  on Apr 10, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -14,15 +15,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
-/// <summary>
-/// The result of mapping a <see cref="T:NodaTime.LocalDateTime" /> within a time zone, i.e. finding out
+/// The result of mapping a [LocalDateTime] within a time zone, i.e. finding out
 /// at what "global" time the "local" time occurred.
-/// </summary>
-/// <remarks>
-/// <para>
-/// This class is used as the return type of <see cref="DateTimeZone.MapLocal" />. It allows for
+///
+/// This class is used as the return type of [DateTimeZone.MapLocal]. It allows for
 /// finely-grained handling of the three possible results:
-/// </para>
+///
 /// <list type="bullet">
 ///   <item>
 ///     <term>Unambiguous mapping</term>
@@ -47,49 +45,34 @@ import 'package:time_machine/time_machine_timezones.dart';
 ///     </description>
 ///   </item>
 /// </list>
-/// </remarks>
+///
 /// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
 /*sealed*/ class ZoneLocalMapping {
-  /// <summary>
-  /// Gets the <see cref="DateTimeZone" /> in which this mapping was performed.
-  /// </summary>
-  /// <value>The time zone in which this mapping was performed.</value>
+  /// Gets the [DateTimeZone] in which this mapping was performed.
   final DateTimeZone Zone;
 
-  /// <summary>
-  /// Gets the <see cref="T:NodaTime.LocalDateTime" /> which was mapped within the time zone.
-  /// </summary>
-  /// <value>The local date and time which was mapped within the time zone.</value>
+  /// Gets the [LocalDateTime] which was mapped within the time zone.
   final LocalDateTime localDateTime;
 
-  /// <summary>
-  /// Gets the earlier <see cref="ZoneInterval" /> within this mapping.
-  /// </summary>
-  /// <remarks>
-  /// For unambiguous mappings, this is the same as <see cref="LateInterval" />; for ambiguous mappings,
+  /// Gets the earlier [ZoneInterval] within this mapping.
+  ///
+  /// For unambiguous mappings, this is the same as [LateInterval]; for ambiguous mappings,
   /// this is the interval during which the mapped local time first occurs; for impossible
   /// mappings, this is the interval before which the mapped local time occurs.
-  /// </remarks>
-  /// <value>The earlier zone interval within this mapping.</value>
   final ZoneInterval EarlyInterval;
 
-  /// <summary>
-  /// Gets the later <see cref="ZoneInterval" /> within this mapping.
-  /// </summary>
-  /// <remarks>
+  /// Gets the later [ZoneInterval] within this mapping.
+  ///
   /// For unambiguous
-  /// mappings, this is the same as <see cref="EarlyInterval" />; for ambiguous mappings,
+  /// mappings, this is the same as [EarlyInterval]; for ambiguous mappings,
   /// this is the interval during which the mapped local time last occurs; for impossible
   /// mappings, this is the interval after which the mapped local time occurs.
-  /// </remarks>
-  /// <value>The later zone interval within this mapping.</value>
   final ZoneInterval LateInterval;
 
-  /// <summary>
   /// Gets the number of results within this mapping: the number of distinct
-  /// <see cref="ZonedDateTime" /> values which map to the original <see cref="T:NodaTime.LocalDateTime" />.
-  /// </summary>
+  /// [ZonedDateTime] values which map to the original [LocalDateTime].
+  ///
   /// <value>The number of results within this mapping: the number of distinct values which map to the
   /// original local date and time.</value>
   final int Count;
@@ -101,13 +84,12 @@ import 'package:time_machine/time_machine_timezones.dart';
     Preconditions.debugCheckArgumentRange('count', Count, 0, 2);
   }
 
-  /// <summary>
-  /// Returns the single <see cref="ZonedDateTime"/> which maps to the original
-  /// <see cref="T:NodaTime.LocalDateTime" /> in the mapped <see cref="DateTimeZone" />.
-  /// </summary>
-  /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
-  /// <exception cref="AmbiguousTimeException">The local date/time was ambiguous in the time zone.</exception>
-  /// <returns>The unambiguous result of mapping the local date/time in the time zone.</returns>
+  /// Returns the single [ZonedDateTime] which maps to the original
+  /// [LocalDateTime] in the mapped [DateTimeZone].
+  ///
+  /// [SkippedTimeException]: The local date/time was skipped in the time zone.
+  /// [AmbiguousTimeException]: The local date/time was ambiguous in the time zone.
+  /// Returns: The unambiguous result of mapping the local date/time in the time zone.
   ZonedDateTime Single() {
     switch (Count) {
       case 0:
@@ -123,14 +105,13 @@ import 'package:time_machine/time_machine_timezones.dart';
     }
   }
 
-  /// <summary>
-  /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
-  /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
+  /// Returns a [ZonedDateTime] which maps to the original [LocalDateTime]
+  /// in the mapped [DateTimeZone]: either the single result if the mapping is unambiguous,
   /// or the earlier result if the local date/time occurs twice in the time zone due to a time zone
   /// offset change such as an autumnal daylight saving transition.
-  /// </summary>
-  /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
-  /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
+  ///
+  /// [SkippedTimeException]: The local date/time was skipped in the time zone.
+  /// Returns: The unambiguous result of mapping a local date/time in a time zone.
   ZonedDateTime First() {
     switch (Count) {
       case 0:
@@ -143,14 +124,13 @@ import 'package:time_machine/time_machine_timezones.dart';
     }
   }
 
-  /// <summary>
-  /// Returns a <see cref="ZonedDateTime"/> which maps to the original <see cref="T:NodaTime.LocalDateTime" />
-  /// in the mapped <see cref="DateTimeZone" />: either the single result if the mapping is unambiguous,
+  /// Returns a [ZonedDateTime] which maps to the original [LocalDateTime]
+  /// in the mapped [DateTimeZone]: either the single result if the mapping is unambiguous,
   /// or the later result if the local date/time occurs twice in the time zone due to a time zone
   /// offset change such as an autumnal daylight saving transition.
-  /// </summary>
-  /// <exception cref="SkippedTimeException">The local date/time was skipped in the time zone.</exception>
-  /// <returns>The unambiguous result of mapping a local date/time in a time zone.</returns>
+  ///
+  /// [SkippedTimeException]: The local date/time was skipped in the time zone.
+  /// Returns: The unambiguous result of mapping a local date/time in a time zone.
   ZonedDateTime Last() {
     switch (Count) {
       case 0:

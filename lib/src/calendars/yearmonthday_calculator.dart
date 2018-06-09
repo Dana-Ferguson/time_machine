@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 
 import 'package:time_machine/src/utility/preconditions.dart';
@@ -12,7 +15,7 @@ import 'package:time_machine/time_machine.dart';
 @internal
 abstract class YearMonthDayCalculator {
   /// Cache to speed up working out when a particular year starts.
-  /// See the <see cref="YearStartCacheEntry"/> documentation and <see cref="GetStartOfYearInDays"/>
+  /// See the [YearStartCacheEntry] documentation and [GetStartOfYearInDays]
   /// for more details.
   final List<YearStartCacheEntry> _yearCache = YearStartCacheEntry.createCache();
 
@@ -31,8 +34,8 @@ abstract class YearMonthDayCalculator {
   @protected
   YearMonthDayCalculator(this.minYear, this.maxYear,
       int averageDaysPer10Years, this.daysAtStartOfYear1) :
-    // We add an extra day to make sure that
-    // approximations using days-since-epoch are conservative, to avoid going out of bounds.
+      // We add an extra day to make sure that
+      // approximations using days-since-epoch are conservative, to avoid going out of bounds.
       averageDaysPer10Years = averageDaysPer10Years + 1 {
     // We should really check the minimum year as well, but constructing it hurts my brain.
     Preconditions.checkArgument(maxYear < YearStartCacheEntry.invalidEntryYear, 'maxYear',
@@ -45,11 +48,11 @@ abstract class YearMonthDayCalculator {
 
   /// Compute the start of the given year in days since 1970-01-01 ISO. The year may be outside
   /// the bounds advertised by the calendar, but only by a single year. This method is only
-  /// called by <see cref="GetStartOfYearInDays"/> (unless the calendar chooses to call it itself),
+  /// called by [GetStartOfYearInDays] (unless the calendar chooses to call it itself),
   /// so calendars which override that method and don't call the original implementation may leave
   /// this unimplemented (e.g. by throwing an exception if it's ever called).
-// TODO(misc): Either hard-code a check that this *is* only called by GetStartOfYearInDays
-// via a Roslyn test, or work out an attribute to indicate that, and write a more general test.
+  // TODO(misc): Either hard-code a check that this *is* only called by GetStartOfYearInDays
+  // via a Roslyn test, or work out an attribute to indicate that, and write a more general test.
   @protected
   int calculateStartOfYearDays(int year);
 
@@ -73,7 +76,7 @@ abstract class YearMonthDayCalculator {
   @internal
   int getDaysInYear(int year);
 
-  /// Find the months between <paramref name="start"/> and <paramref name="end"/>.
+  /// Find the months between [start] and [end].
   /// (If start is earlier than end, the result will be non-negative.)
   @internal
   int monthsBetween(YearMonthDay start, YearMonthDay end);
@@ -84,10 +87,10 @@ abstract class YearMonthDayCalculator {
   YearMonthDay setYear(YearMonthDay yearMonthDay, int year);
 
 // Virtual methods (subclasses should check to see whether they could override for performance, or should override for correctness)
-  // ^^ todo: investigate this -- we have different pressures than nodatime
+// ^^ todo: investigate this -- we have different pressures than nodatime
 
   /// Computes the days since the Unix epoch at the start of the given year/month/day.
-  /// This is the opposite of <see cref="GetYearMonthDay(int)"/>.
+  /// This is the opposite of [GetYearMonthDay(int)].
   /// This assumes the parameter have been validated previously.
   @internal @virtual
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) {
@@ -198,3 +201,4 @@ abstract class YearMonthDayCalculator {
   }
 // #endregion
 }
+

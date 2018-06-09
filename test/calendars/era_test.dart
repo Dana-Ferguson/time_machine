@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Calendars/Era.cs
-// 69dedbc  24 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -41,3 +42,4 @@ void ResourcePresence(Era era)
   var valueByName = null; // PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
   expect(valueByName, isNotNull, reason: "Missing resource for " + era?.resourceIdentifier ?? 'null');
 }
+

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Calendars/YearStartCacheEntry.cs
-// 7208243  on Mar 18, 2015
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:time_machine/time_machine.dart';
 
@@ -7,16 +8,13 @@ import 'package:time_machine/time_machine.dart';
 /// This is not specific to YearMonthDayCalculator - it can be used for
 /// other frames of reference, so long as they comply with the restrictions listed below.
 ///
-/// <remarks>
-/// <para>
 /// Each entry in the cache is a 32-bit number. The "value" part of the entry consists of the
 /// number of days since the Unix epoch (negative for a value before the epoch). As Noda Time
 /// only supports a number of ticks since the Unix epoch of between long.MinValue and long.MaxValue,
 /// we only need to support a number of days in the range
 /// [long.MinValue / TicksPerDay, long.MaxValue / TicksPerDay] which is [-10675200, 10675200] (rounding
 /// away from 0). This value can be stored in 25 bits.
-/// </para>
-/// <para>
+///
 /// The remaining 7 bits of the value are used for validation. For any given year, the bottom
 /// 10 bits are used as the index into the cache (which is an array). The next 7 most significant
 /// bits are stored in the entry. So long as we have fewer than 17 significant bits in the year value,
@@ -25,13 +23,10 @@ import 'package:time_machine/time_machine.dart';
 /// This gives us a range of year numbers greater than [-60000, 60000] without any risk of collisions. By
 /// contrast, the ISO calendar years are in the range [-27255, 31195] - so we'd have to be dealing with a
 /// calendar with either very short years, or an epoch a long way ahead or behind the Unix epoch.
-/// </para>
-/// <para>
+///
 /// The fact that each cache entry is only 32 bits means that we can safely use the cache from multiple
 /// threads without locking. 32-bit aligned values are guaranteed to be accessed atomically, so we know we'll
 /// never get the value for one year with the validation bits for another, for example.
-/// </para>
-/// </remarks>
 @internal
 class YearStartCacheEntry {
   static const int _cacheIndexBits = 10;
@@ -69,7 +64,7 @@ class YearStartCacheEntry {
   /// Returns the validator to use for a given year, a non-negative number containing at most
   /// EntryValidationBits bits.
   static int _getValidator(int year) =>
-      // Note that we assume that the input year fits into EntryValidationBits+CacheIndexBits bits - if not,
+  // Note that we assume that the input year fits into EntryValidationBits+CacheIndexBits bits - if not,
   // this would return the same validator for more than one input year, meaning that we could potentially
   // use the wrong cache value.
   // The masking here is necessary to remove some of the sign-extended high bits for negative years.
@@ -78,7 +73,7 @@ class YearStartCacheEntry {
   /// Returns the cache index, in [0, CacheSize), that should be used to store the given year's cache entry.
   @internal
   static int getCacheIndex(int year) =>
-      // Effectively keep only the bottom CacheIndexBits bits.
+  // Effectively keep only the bottom CacheIndexBits bits.
   year & _cacheIndexMask;
 
   /// Returns whether this cache entry is valid for the given year, and so is safe to use.  (We assume that we

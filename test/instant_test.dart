@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/InstantTest.cs
-// 0913621  on Aug 26, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -39,7 +40,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
 @Test()
 void BasicSpanTests() {
   var aSpan = new Span.complex(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
-  // print('aSpan.totalDays = ${aSpan.totalDays}');
+// print('aSpan.totalDays = ${aSpan.totalDays}');
 
   expect(aSpan.totalDays, 11+2);
 }
@@ -326,9 +327,7 @@ void ToDateTimeUtc()
 //  Assert.AreEqual(expected, Instant.FromDateTimeUtc(x));
 //}
 
-/// <summary>
 /// Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO Calendar
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
@@ -371,9 +370,9 @@ void InvalidValues()
 @Test()
 void PlusDuration_Overflow()
 {
-  // todo: I owe you, overflow behavior
-  // TestHelper.AssertOverflow(Instant.minValue.plus, -Duration.Epsilon);
-  // TestHelper.AssertOverflow(Instant.maxValue.plus, Duration.Epsilon);
+// todo: I owe you, overflow behavior
+// TestHelper.AssertOverflow(Instant.minValue.plus, -Duration.Epsilon);
+// TestHelper.AssertOverflow(Instant.maxValue.plus, Duration.Epsilon);
 }
 
 @Test()
@@ -391,9 +390,9 @@ void ExtremeArithmetic()
 @Test()
 void PlusOffset_Overflow()
 {
-  // todo: I owe you, overflow behavior
-  // TestHelper.AssertOverflow(Instant.MinValue.Plus, Offset.FromSeconds(-1));
-  // TestHelper.AssertOverflow(Instant.MaxValue.Plus, Offset.FromSeconds(1));
+// todo: I owe you, overflow behavior
+// TestHelper.AssertOverflow(Instant.MinValue.Plus, Offset.FromSeconds(-1));
+// TestHelper.AssertOverflow(Instant.MaxValue.Plus, Offset.FromSeconds(1));
 }
 
 @Test()
@@ -402,15 +401,15 @@ void FromUnixTimeMilliseconds_Range()
   // todo: I owe you, exception behavior
   int smallestValid = Instant.minValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerMillisecond;
   int largestValid = Instant.maxValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerMillisecond;
-  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
-  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
-  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
-  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid + 1), throwsException);
+//expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
+//expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
+//expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
+//expect(() => new Instant.fromUnixTimeMilliseconds(largestValid + 1), throwsException);
 
-  //TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
-  //TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);
-  //TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);
-  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeMilliseconds, largestValid + 1);
+//TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
+//TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);
+//TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);
+//TestHelper.AssertOutOfRange(Instant.FromUnixTimeMilliseconds, largestValid + 1);
 }
 
 @Test()
@@ -419,10 +418,10 @@ void FromUnixTimeSeconds_Range()
   // todo: I owe you, out of range behavior
   int smallestValid = Instant.minValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerSecond;
   int largestValid = Instant.maxValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerSecond;
-  //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
-  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
-  //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
-  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, largestValid + 1);
+//TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
+//TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
+//TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
+//TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, largestValid + 1);
 }
 
 @Test()
@@ -431,10 +430,10 @@ void FromTicksSinceUnixEpoch_Range()
   // todo: I owe you, out of range behavior
   int smallestValid = Instant.minValue.toUnixTimeTicks();
   int largestValid = Instant.maxValue.toUnixTimeTicks();
-  //TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
-  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
-  //TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
-  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
+//TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
+//TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
+//TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
+//TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
 }
 
 @Test()
@@ -488,5 +487,6 @@ void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset)
 
   expect(actual, expected);
 }
+
 
 

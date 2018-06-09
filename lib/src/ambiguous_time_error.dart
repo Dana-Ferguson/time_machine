@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/AmbiguousTimeException.cs
-// 0958802  on Jun 18, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 
@@ -8,35 +9,28 @@ import 'package:time_machine/time_machine_utilities.dart';
 
 class AmbiguousTimeError extends Error {
   /// Get the local date and time which is ambiguous in the time zone.
-  /// <value>The local date and time which is ambiguous in the time zone.</value>
   @internal LocalDateTime get localDateTime => earlierMapping.localDateTime;
 
   /// The time zone in which the local date and time is ambiguous.
-  /// <value>The time zone in which the local date and time is ambiguous.</value>
   DateTimeZone get Zone => earlierMapping.Zone;
 
   /// Gets the earlier of the two occurrences of the local date and time within the time zone.
-  /// <value>The earlier of the two occurrences of the local date and time within the time zone.</value>
   final ZonedDateTime earlierMapping;
 
   /// Gets the later of the two occurrences of the local date and time within the time zone.
-  /// <value>The later of the two occurrences of the local date and time within the time zone.</value>
   final ZonedDateTime laterMapping;
 
   final String message;
 
   /// Constructs an instance from the given information.
-  /// <remarks>
-  /// <para>
+  ///
   /// User code is unlikely to need to deliberately call this constructor except
   /// possibly for testing.
-  /// </para>
-  /// <para>
+  ///
   /// The two mappings must have the same local time and time zone.
-  /// </para>
-  /// </remarks>
-  /// <param name="earlierMapping">The earlier possible mapping</param>
-  /// <param name="laterMapping">The later possible mapping</param>
+  ///
+  /// [earlierMapping]: The earlier possible mapping
+  /// [laterMapping]: The later possible mapping
   AmbiguousTimeError(this.earlierMapping, this.laterMapping)
       : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.Zone.id}" {
     Preconditions.checkArgument(earlierMapping.Zone == laterMapping.Zone, 'laterMapping',
@@ -45,3 +39,4 @@ class AmbiguousTimeError extends Error {
         "Ambiguous possible values must have the same local date/time");
   }
 }
+

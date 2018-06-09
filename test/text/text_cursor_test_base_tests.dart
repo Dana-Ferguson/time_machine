@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/TextCursorTestBase.cs
-// cae7975  on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'package:test/test.dart';
@@ -15,9 +16,7 @@ import '../time_machine_testing.dart';
 //  await runTests();
 //}
 
-/// <summary>
 /// Base class for tests of classes derived from TextCursor.
-/// </summary>
 abstract class TextCursorTestBase {
   @Test()
   void TestConstructor() {
@@ -106,3 +105,4 @@ abstract class TextCursorTestBase {
 
   @internal TextCursor MakeCursor(String value);
 }
+

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/ZonedDateTimePatternTest.cs
-// f78a32a  on Oct 9, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -65,8 +66,8 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 // todo: @SkipMe.unimplemented()
 // @private static final ZonedDateTime SampleZonedDateTimeCoptic = TestLocalDateTimes.SampleLocalDateTimeCoptic.InUtc();
 
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns.
+  // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+  // the expected results of the standard patterns.
   @private static final ZonedDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.InUtc();
   @private static final ZonedDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.InUtc();
 
@@ -78,11 +79,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "dd MM yyyy HH:MM:SS"
       ..Message = TextErrorMessages.RepeatedFieldInPattern
       ..Parameters.addAll(['M']),
-// Note incorrect use of "u" (year) instead of "y" (year of era)
+    // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
       ..Message = TextErrorMessages.EraWithoutYearOfEra,
-// Era specifier and calendar specifier in the same pattern.
+    // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
       ..Message = TextErrorMessages.CalendarAndEra,
@@ -90,7 +91,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "g"
       ..Message = TextErrorMessages.UnknownStandardFormat
       ..Parameters.addAll(['g', 'ZonedDateTime']),
-// Invalid patterns involving embedded values
+    // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "ld<d> yyyy"
       ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
@@ -130,34 +131,34 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   ];
 
   @internal List<Data> ParseFailureData = [
-// Skipped value
+    // Skipped value
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
       ..Message = TextErrorMessages.SkippedLocalTime,
-// Ambiguous value
+    // Ambiguous value
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
       ..Message = TextErrorMessages.AmbiguousLocalTime,
 
-// Invalid offset within a skipped time
+    // Invalid offset within a skipped time
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 ab +01"
       ..Message = TextErrorMessages.InvalidOffset,
-// Invalid offset within an ambiguous time (doesn't match either option)
+    // Invalid offset within an ambiguous time (doesn't match either option)
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 abc +05"
       ..Message = TextErrorMessages.InvalidOffset,
-// Invalid offset for an unambiguous time
+    // Invalid offset for an unambiguous time
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2005-01-01 01:30 ab +02"
       ..Message = TextErrorMessages.InvalidOffset,
 
-// Failures copied from LocalDateTimePatternTest
+    // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
       ..Text = "Complete mismatch"
@@ -167,7 +168,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "(c)"
       ..Text = "(xxx)"
       ..Message = TextErrorMessages.NoMatchingCalendarSystem,
-// 24 as an hour is only valid when the time is midnight
+    // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:05"
@@ -191,27 +192,27 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1)
       ..Message = TextErrorMessages.InvalidHour24,
 
-// Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
+    // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC+01:00:00.00"
       ..Message = TextErrorMessages.ExtraValueCharacters
       ..Parameters.addAll([".00"]),
 
-// Can't parse a pattern with a time zone abbreviation.
+    // Can't parse a pattern with a time zone abbreviation.
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm x"
       ..Text = "ignored"
       ..Message = TextErrorMessages.FormatOnlyPattern,
 
-// Can't parse using a pattern that has no provider
+    // Can't parse using a pattern that has no provider
     new Data()
       ..ZoneProvider = null
       ..Pattern = "yyyy-MM-dd z"
       ..Text = "ignored"
       ..Message = TextErrorMessages.FormatOnlyPattern,
 
-// Invalid ID
+    // Invalid ID
     new Data()
       ..Pattern = "yyyy-MM-dd z"
       ..Text = "2017-08-21 LemonCurdIceCream"
@@ -219,25 +220,25 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-// Template value time zone is from a different provider, but it's not part of the pattern.
+    // Template value time zone is from a different provider, but it's not part of the pattern.
     new Data.b(2013, 1, 13, 16, 2, France)
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2013-01-13 16:02"
       ..Template = TimeConstants.unixEpoch.InZone(France),
 
-// Skipped value, resolver returns start of second interval
+    // Skipped value, resolver returns start of second interval
     new Data(TestZone1.Transition.InZone(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
       ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnStartOfIntervalAfter),
 
-// Skipped value, resolver returns end of first interval
+    // Skipped value, resolver returns end of first interval
     new Data(TestZone1.Transition.minus(Span.epsilon).InZone(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
       ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnEndOfIntervalBefore),
 
-// Parse-only tests from LocalDateTimeTest.
+    // Parse-only tests from LocalDateTimeTest.
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
       ..Text = "19 10 2011"
@@ -247,7 +248,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "16:05:20"
       ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).InUtc(),
 
-// Parsing using the semi-colon "comma dot" specifier
+    // Parsing using the semi-colon "comma dot" specifier
     new Data.d(
         2011,
         10,
@@ -269,7 +270,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm:ss;FFF"
       ..Text = "2011-10-19 16:05:20,352",
 
-// 24:00 meaning "start of next day"
+    // 24:00 meaning "start of next day"
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:00",
@@ -284,7 +285,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24",
 
-// Redundant specification of offset
+    // Redundant specification of offset
     new Data.b(2013, 01, 13, 15, 44, FixedPlus1)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC+01:00",
@@ -298,21 +299,21 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "ddd yyyy"
       ..Text = "Wed 2011",
 
-// Time zone isn't in the provider
+    // Time zone isn't in the provider
     new Data.b(2013, 1, 13, 16, 2, France)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 16:02 Europe/Paris",
 
-// Ambiguous value - would be invalid if parsed with a strict parser.
+    // Ambiguous value - would be invalid if parsed with a strict parser.
     new Data(TestZone2.Transition.plus(new Span(minutes: 30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2010-01-01 01:30",
 
-// Winter
+    // Winter
     new Data.b(2013, 1, 13, 16, 2, France)
       ..Pattern = "yyyy-MM-dd HH:mm x"
       ..Text = "2013-01-13 16:02 CET",
-// Summer
+    // Summer
     new Data.b(2013, 6, 13, 16, 2, France)
       ..Pattern = "yyyy-MM-dd HH:mm x"
       ..Text = "2013-06-13 16:02 CEST",
@@ -322,7 +323,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-06-13 16:02 Europe/Paris",
 
-// Standard patterns without a DateTimeZoneProvider
+    // Standard patterns without a DateTimeZoneProvider
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso
       ..Pattern = "G"
@@ -335,7 +336,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "2009-06-15T13:45:30.09 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..ZoneProvider = null,
-// Standard patterns without a resolver
+    // Standard patterns without a resolver
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso
       ..Pattern = "G"
@@ -352,7 +353,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
   @internal List<Data> FormatAndParseData = [
 
-// Zone ID at the end
+    // Zone ID at the end
     new Data.b(2013, 01, 13, 15, 44, TestZone1)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 ab",
@@ -372,7 +373,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC",
 
-// Zone ID at the start
+    // Zone ID at the start
     new Data.b(2013, 01, 13, 15, 44, TestZone1)
       ..Pattern = "z yyyy-MM-dd HH:mm"
       ..Text = "ab 2013-01-13 15:44",
@@ -392,7 +393,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "z yyyy-MM-dd HH:mm"
       ..Text = "UTC 2013-01-13 15:44",
 
-// More precise fixed zones.
+    // More precise fixed zones.
     new Data.b(2013, 01, 13, 15, 44, FixedWithMinutes)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC+01:30",
@@ -400,45 +401,45 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC+00:00:05",
 
-// Valid offset for an unambiguous time
+    // Valid offset for an unambiguous time
     new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2005-01-01 01:30 ab +01",
-// Valid offset (in the middle of the pattern) for an unambiguous time
+    // Valid offset (in the middle of the pattern) for an unambiguous time
     new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1))
       ..Pattern = "yyyy-MM-dd o<g> HH:mm z"
       ..Text = "2005-01-01 +01 01:30 ab",
 
-// Ambiguous value, resolver returns later value.
+    // Ambiguous value, resolver returns later value.
     new Data(TestZone2.Transition.plus(new Span(minutes: 30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
       ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped),
 
-// Ambiguous value, resolver returns earlier value.
+    // Ambiguous value, resolver returns earlier value.
     new Data(TestZone2.Transition.plus(new Span(minutes: -30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
       ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped),
 
-// Ambiguous local value, but with offset for later value (smaller offset).
+    // Ambiguous local value, but with offset for later value (smaller offset).
     new Data(TestZone2.Transition.plus(new Span(minutes: 30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 abc +01",
 
-// Ambiguous local value, but with offset for earlier value (greater offset).
+    // Ambiguous local value, but with offset for earlier value (greater offset).
     new Data(TestZone2.Transition.plus(new Span(minutes: -30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 abc +02",
 
-// Specify the provider
+    // Specify the provider
     new Data.b(2013, 1, 13, 16, 2, France)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 16:02 Europe/Paris"
       ..ZoneProvider = Tzdb,
 
-// Tests without zones, copied from LocalDateTimePatternTest
-// Calendar patterns are invariant
+    // Tests without zones, copied from LocalDateTimePatternTest
+    // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFF"
       ..Text = "(ISO) 2009-06-15T13:45:30.09"
@@ -447,11 +448,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "uuuu-MM-dd(c)'T'HH:mm:ss.FFFFFFF"
       ..Text = "2009-06-15(ISO)T13:45:30.09"
       ..Culture = TestCultures.EnUs,
-    // todo: @SkipMe.unimplemented()
+// todo: @SkipMe.unimplemented()
 //new Data(SampleZonedDateTimeCoptic) ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF"..Text = "(Coptic) 1976-06-19T21:13:34.123456789"..Culture = TestCultures.FrFr ,
 //new Data(SampleZonedDateTimeCoptic) ..Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF"..Text = "1976-06-19CCopticT21:13:34.123456789"..Culture = TestCultures.EnUs ,
 
-// Use of the semi-colon "comma dot" specifier
+    // Use of the semi-colon "comma dot" specifier
     new Data.d(
         2011,
         10,
@@ -486,7 +487,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm:ss;FFF 'end'"
       ..Text = "2011-10-19 16:05:20 end",
 
-// Standard patterns with a time zone provider
+    // Standard patterns with a time zone provider
     new Data.e(
         2013,
         01,
@@ -514,7 +515,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "2013-01-13T15:44:30.09 ab (+02)"
       ..Culture = TestCultures.FrFr,
 
-// Custom embedded patterns (or mixture of custom and standard)
+    // Custom embedded patterns (or mixture of custom and standard)
     new Data.e(
         2015,
         10,
@@ -576,7 +577,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "2015*10*24X11:55:30 Europe/Athens +03"
       ..ZoneProvider = Tzdb,
 
-// Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
+    // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
     new Data.e(
         2015,
         10,
@@ -638,7 +639,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "10/24/2015 11:55:30 Europe/Athens +03"
       ..ZoneProvider = Tzdb,
 
-// Nested embedded patterns
+    // Nested embedded patterns
     new Data.e(
         2015,
         10,
@@ -664,12 +665,12 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "X11_55_30Y2015*10*24X Europe/Athens +03"
       ..ZoneProvider = Tzdb,
 
-// Check that unquoted T still works.
+    // Check that unquoted T still works.
     new Data.c(2012, 1, 31, 17, 36, 45)
       ..Text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-ddTHH:mm:ss",
 
-// Issue981
+    // Issue981
     new Data.e(
         1906,
         8,
@@ -683,7 +684,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'"
       ..ZoneProvider = Tzdb,
 
-// Fields not otherwise covered (according to tests running on AppVeyor...)
+    // Fields not otherwise covered (according to tests running on AppVeyor...)
     new Data(MsdnStandardExample)
       ..Pattern = "d MMMM yyyy (g) h:mm:ss.FF tt"
       ..Text = "15 June 2009 (A.D.) 1:45:30.09 PM",
@@ -701,8 +702,8 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         .Parse("2017-08-23")
         .Value;
     expect(identical(TestZone3, parsed.Zone), isTrue);
-// TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
-// Even though we're parsing a date in 2017, it's the local time from the template value that's used.
+    // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
+    // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
     expect(new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 30, 0), parsed.localDateTime);
     expect(new Offset.fromHours(2), parsed.offset);
   }
@@ -741,7 +742,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     expect("19.30", text);
   }
 
-// Test to hit each exit condition in the time zone ID parsing part of ZonedDateTimePatternParser
+  // Test to hit each exit condition in the time zone ID parsing part of ZonedDateTimePatternParser
   @Test()
   Future FindLongestZoneId() async {
     DateTimeZone CreateZone(String id) =>
@@ -779,10 +780,9 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @internal ZoneLocalMappingResolver Resolver;
   @internal IDateTimeZoneProvider ZoneProvider;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePattern.DefaultTemplateValue) {
     Resolver = Resolvers.StrictResolver;
     ZoneProvider = TestProvider;
@@ -791,8 +791,8 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   Data.a(int year, int month, int day)
       : this(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).InUtc());
 
-// Coincidentally, we don't specify time zones in tests other than the
-// ones which just go down to the date and hour/minute.
+  // Coincidentally, we don't specify time zones in tests other than the
+  // ones which just go down to the date and hour/minute.
   Data.b(int year, int month, int day, int hour, int minute, DateTimeZone zone)
       : this(new LocalDateTime.fromYMDHM(year, month, day, hour, minute).InZoneStrictly(zone));
 
@@ -824,3 +824,4 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   IPattern<ZonedDateTime> CreatePattern() =>
       ZonedDateTimePattern.Create2(super.Pattern, super.Culture, Resolver, ZoneProvider, Template);
 }
+

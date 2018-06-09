@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalTimeTest.Operators.cs
-// 69dedbc  9 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -169,9 +170,7 @@ void CompareTo()
   expect(time3.compareTo(time2),  greaterThan(0));
 }
 
-/// <summary>
 /// IComparable.CompareTo works properly for LocalTime inputs.
-/// </summary>
 @Test()
 void IComparableCompareTo()
 {
@@ -187,9 +186,7 @@ void IComparableCompareTo()
   expect(i_time3.compareTo(time2),  greaterThan(0));
 }
 
-/// <summary>
 /// IComparable.CompareTo returns a positive number for a null input.
-/// </summary>
 @Test()
 void IComparableCompareTo_Null_Positive()
 {
@@ -200,10 +197,8 @@ void IComparableCompareTo_Null_Positive()
   expect(result,  greaterThan(0));
 }
 
-/// <summary>
 /// IComparable.CompareTo throws an ArgumentException for non-null arguments
 /// that are not a LocalTime.
-/// </summary>
 @Test()
 void IComparableCompareTo_WrongType_ArgumentException()
 {
@@ -216,3 +211,4 @@ void IComparableCompareTo_WrongType_ArgumentException()
     expect(e, new isInstanceOf<TestFailure>());
   }
 }
+

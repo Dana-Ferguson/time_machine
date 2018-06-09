@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/PeriodPatternTest.Roundtrip.cs
-// 69dedbc  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -101,14 +102,14 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..Text = "PT00000000000000000000005H",
   ];
 
-// This pattern round-trips, so we can always parse what we format.
+  // This pattern round-trips, so we can always parse what we format.
   @internal List<Data> FormatOnlyData = [];
 
   @internal static final List<Data> FormatAndParseData = [
     new Data(Period.Zero)
       ..Text = "P",
 
-// All single values                                                                
+    // All single values                                                                
     new Data.builder(new PeriodBuilder()..Years = 5)
       ..Text = "P5Y",
     new Data.builder(new PeriodBuilder()..Months = 5)
@@ -130,13 +131,13 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
     new Data.builder(new PeriodBuilder()..Nanoseconds = 5)
       ..Text = "PT5n",
 
-// No normalization
+    // No normalization
     new Data.builder(new PeriodBuilder()
       ..Hours = 25
       ..Minutes = 90)
       ..Text = "PT25H90M",
 
-// Compound, negative and zero tests
+    // Compound, negative and zero tests
     new Data.builder(new PeriodBuilder()
       ..Years = 5
       ..Months = 2)
@@ -154,7 +155,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..Minutes = -1)
       ..Text = "PT1H-1M",
 
-// Max/min
+    // Max/min
     new Data(new Period.fromHours(Utility.int64MaxValue))
       ..Text = "PT9223372036854775807H",
     new Data(new Period.fromHours(Utility.int64MinValue))
@@ -168,3 +169,4 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   @Test()
   void ParseNull() => AssertParseNull(PeriodPattern.Roundtrip);
 }
+

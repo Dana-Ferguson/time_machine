@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/OffsetTimePatternTest.cs
-// 41dc54e  on Nov 8, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -61,7 +62,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   ];
 
   @internal List<Data> ParseFailureData = [
-// Failures copied from LocalDateTimePatternTest
+    // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "HH:mm:ss"
       ..Text = "Complete mismatch"
@@ -72,7 +73,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..Pattern = "HH:mm:ss o<+HH>"
       ..Text = "16:02 +15:00"
       ..Message = TextErrorMessages.TimeSeparatorMismatch,
-// It's not ideal that the type reported is LocalTime rather than OffsetTime, but probably not worth fixing.
+    // It's not ideal that the type reported is LocalTime rather than OffsetTime, but probably not worth fixing.
     new Data()
       ..Pattern = "HH:mm:ss tt o<+HH>"
       ..Text = "16:02:00 AM +15:00"
@@ -81,7 +82,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-// Parsing using the semi-colon "comma dot" specifier
+    // Parsing using the semi-colon "comma dot" specifier
     new Data.d(16, 05, 20, 352)
       ..Pattern = "HH:mm:ss;fff"
       ..Text = "16:05:20,352",
@@ -91,12 +92,12 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   ];
 
   @internal List<Data> FormatOnlyData = [
-// Our template value has an offset of 0, but the value has an offset of 1.
-// The pattern doesn't include the offset, so that information is lost - no round-trip.
+    // Our template value has an offset of 0, but the value has an offset of 1.
+    // The pattern doesn't include the offset, so that information is lost - no round-trip.
     new Data(MsdnStandardExample)
       ..Pattern = "HH:mm:ss.FF"
       ..Text = "13:45:30.09",
-// The value includes milliseconds, which aren't formatted.
+    // The value includes milliseconds, which aren't formatted.
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.GeneralIso
       ..Pattern = "G"
@@ -107,7 +108,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @internal List<Data> FormatAndParseData = [
 // Copied from LocalDateTimePatternTest
 
-// Standard patterns (all invariant)
+    // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetTimePattern.GeneralIso
       ..Pattern = "G"
@@ -119,14 +120,14 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..Text = "13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
 
-// Property-only patterns
+    // Property-only patterns
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.Rfc3339
       ..Pattern = "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..Text = "13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,
 
-// Embedded patterns
+    // Embedded patterns
     new Data.c(11, 55, 30, AthensOffset)
       ..Pattern = "l<HH_mm_ss> o<g>"
       ..Text = "11_55_30 +03",
@@ -134,7 +135,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..Pattern = "l<T> o<g>"
       ..Text = "11:55:30 +03",
 
-// Fields not otherwise covered
+    // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "h:mm:ss.FF tt o<g>"
       ..Text = "1:45:30.09 PM +01",
@@ -191,7 +192,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     var parsed = pattern
         .Parse("+02")
         .Value;
-// Local time is taken from the template value; offset is from the text
+    // Local time is taken from the template value; offset is from the text
     expect(new LocalTime(13, 30), parsed.TimeOfDay);
     expect(new Offset.fromHours(2), parsed.offset);
   }
@@ -204,10 +205,9 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   // Default to the start of the year 2000 UTC
   /*protected*/ @override OffsetTime get DefaultTemplate => OffsetTimePattern.DefaultTemplateValue;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   @internal Data([OffsetTime value = null]) : super(value ?? OffsetTimePattern.DefaultTemplateValue);
 
   @internal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
@@ -228,5 +228,6 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   IPattern<OffsetTime> CreatePattern() =>
       OffsetTimePattern.Create2(super.Pattern, super.Culture, Template);
 }
+
 
 

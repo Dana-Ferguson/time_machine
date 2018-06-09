@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 
 import 'package:time_machine/time_machine_calendars.dart';
@@ -74,7 +77,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
 
   @internal @override
   int getDaysInMonth(int year, int month) =>
-      // We know that only February differs, so avoid the virtual call for other months.
+  // We know that only February differs, so avoid the virtual call for other months.
   month == 2 && IsLeapYear(year) ? maxDaysPerMonth[month - 1] : minDaysPerMonth[month - 1];
 
   @protected @override
@@ -92,3 +95,4 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     return new YearMonthDay(year, month, day);
   }
 }
+

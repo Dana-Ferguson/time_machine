@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/OffsetPatternTest.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -28,14 +29,10 @@ Future main() async {
 
 @Test()
 class OffsetPatternTest extends PatternTestBase<Offset> {
-  /// <summary>
   /// A non-breaking space.
-  /// </summary>
   static const String Nbsp = "\u00a0";
 
-  /// <summary>
   /// Test data that can only be used to test formatting.
-  /// </summary>
   @internal final List<Data> FormatOnlyData = [
     new Data.hms(3, 0, 0)
       ..Culture = TestCultures.EnUs
@@ -142,9 +139,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..Pattern = "l",
   ];
 
-  /// <summary>
   /// Test data that can only be used to test successful parsing.
-  /// </summary>
   @internal final List<Data> ParseOnlyData = [
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
@@ -183,9 +178,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..Text = "+00:00" // Lenient when parsing Z-prefixed patterns.
   ];
 
-  /// <summary>
   /// Test data for invalid patterns
-  /// </summary>
   @internal final List<Data> InvalidPatternData = [
     new Data(Offset.zero)
       ..Pattern = ""
@@ -273,9 +266,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..Parameters.addAll(['s', 2]),
   ];
 
-  /// <summary>
   /// Tests for parsing failures (of values)
-  /// </summary>
   @internal final List<Data> ParseFailureData = [
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
@@ -394,10 +385,8 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..Message = TextErrorMessages.PositiveSignInvalid,
   ];
 
-  /// <summary>
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  /// </summary>
   @internal final List<Data> FormatAndParseData = [
 /*XXX*/ new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
@@ -711,9 +700,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   }
 }
 
-/// <summary>
-/// A container for test data for formatting and parsing <see cref="Offset" /> objects.
-/// </summary>
+/// A container for test data for formatting and parsing [Offset] objects.
 /*sealed*/class Data extends PatternTestData<Offset> {
   // Ignored anyway...
   /*protected*/ @override Offset get DefaultTemplate => Offset.zero;
@@ -750,5 +737,6 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
           .WithCulture(Culture)
           .UnderlyingPattern;
 }
+
 
 

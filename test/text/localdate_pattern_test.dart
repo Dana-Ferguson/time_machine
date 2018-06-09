@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/LocalDatePatternTest.cs
-// 5c9293e  on Mar 25
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -85,17 +86,17 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "'qwe\\'"
       ..Message = TextErrorMessages.MissingEndQuote
       ..Parameters.addAll(['\'']),
-// Note incorrect use of "u" (year) instead of "y" (year of era)
+    // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu gg"
       ..Message = TextErrorMessages.EraWithoutYearOfEra,
-// Era specifier and calendar specifier in the same pattern.
+    // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy gg c"
       ..Message = TextErrorMessages.CalendarAndEra,
 
-// Invalid patterns directly after the yyyy specifier. This will detect the issue early, but then
-// continue and reject it in the normal path.
+    // Invalid patterns directly after the yyyy specifier. This will detect the issue early, but then
+    // continue and reject it in the normal path.
     new Data()
       ..Pattern = "yyyy'"
       ..Message = TextErrorMessages.MissingEndQuote
@@ -104,18 +105,18 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy\\"
       ..Message = TextErrorMessages.EscapeAtEndOfString,
 
-// Common typo, which is caught in 2.0...
+    // Common typo, which is caught in 2.0...
     new Data()
       ..Pattern = "yyyy-mm-dd"
       ..Message = TextErrorMessages.UnquotedLiteral
       ..Parameters.addAll(['m']),
-// T isn't valid in a date pattern
+    // T isn't valid in a date pattern
     new Data()
       ..Pattern = "yyyy-MM-ddT00:00:00"
       ..Message = TextErrorMessages.UnquotedLiteral
       ..Parameters.addAll(['T']),
 
-// These became invalid in v2.0, when we decided that y and yyy weren't sensible.
+    // These became invalid in v2.0, when we decided that y and yyy weren't sensible.
     new Data()
       ..Pattern = "y M d"
       ..Message = TextErrorMessages.InvalidRepeatCount
@@ -163,20 +164,20 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy/MM/dd"
       ..Text = "2011/02-29"
       ..Message = TextErrorMessages.DateSeparatorMismatch,
-// Don't match a short name against a long pattern
+    // Don't match a short name against a long pattern
     new Data()
       ..Pattern = "yyyy MMMM dd"
       ..Text = "2011 Oct 09"
       ..Message = TextErrorMessages.MismatchedText
       ..Parameters.addAll(['M']),
-// Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
+    // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
     new Data()
       ..Pattern = "yyyy MMM dd"
       ..Text = "2011 October 09"
       ..Message = TextErrorMessages.MismatchedCharacter
       ..Parameters.addAll([' ']),
 
-// Invalid year, year-of-era, month, day
+    // Invalid year, year-of-era, month, day
     new Data()
       ..Pattern = "yyyy MM dd"
       ..Text = "0000 01 01"
@@ -192,13 +193,13 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Text = "2011 02 35"
       ..Message = TextErrorMessages.DayOfMonthOutOfRange
       ..Parameters.addAll([35, 2, 2011]),
-// Year of era can't be negative...
+    // Year of era can't be negative...
     new Data()
       ..Pattern = "yyyy MM dd"
       ..Text = "-15 01 01"
       ..Message = TextErrorMessages.UnexpectedNegative,
 
-// Invalid leap years
+    // Invalid leap years
     new Data()
       ..Pattern = "yyyy MM dd"
       ..Text = "2011 02 29"
@@ -210,20 +211,20 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Message = TextErrorMessages.DayOfMonthOutOfRange
       ..Parameters.addAll([29, 2, 1900]),
 
-// Year of era and two-digit year, but they don't match
+    // Year of era and two-digit year, but they don't match
     new Data()
       ..Pattern = "uuuu yy"
       ..Text = "2011 10"
       ..Message = TextErrorMessages.InconsistentValues2
       ..Parameters.addAll(['y', 'u', 'LocalDate']),
 
-// Invalid calendar name
+    // Invalid calendar name
     new Data()
       ..Pattern = "c yyyy MM dd"
       ..Text = "2015 01 01"
       ..Message = TextErrorMessages.NoMatchingCalendarSystem,
 
-// Invalid year
+  // Invalid year
   /* todo: @SkipMe.unimplemented()
     new Data()
       ..Template = new LocalDate.forCalendar(1, 1, 1, CalendarSystem.IslamicBcl)
@@ -238,7 +239,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Message = TextErrorMessages.YearOfEraOutOfRange
       ..Parameters.addAll([9999, "EH", "Hijri"]),*/
 
-// https://github.com/nodatime/nodatime/issues/414
+    // https://github.com/nodatime/nodatime/issues/414
     new Data()
       ..Pattern = "yyyy-MM-dd"
       ..Text = "1984-00-15"
@@ -250,7 +251,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Message = TextErrorMessages.FieldValueOutOfRange
       ..Parameters.addAll([0, 'M', 'LocalDate']),
 
-// Calendar ID parsing is now ordinal, case-sensitive
+    // Calendar ID parsing is now ordinal, case-sensitive
     new Data.ymd(2011, 10, 9)
       ..Pattern = "yyyy MM dd c"
       ..Text = "2011 10 09 iso"
@@ -258,12 +259,12 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-// Alternative era names
+    // Alternative era names
     new Data.ymd(0, 10, 3)
       ..Pattern = "yyyy MM dd gg"
       ..Text = "0001 10 03 BCE",
 
-// Valid leap years
+    // Valid leap years
     new Data.ymd(2000, 2, 29)
       ..Pattern = "yyyy MM dd"
       ..Text = "2000 02 29",
@@ -271,14 +272,14 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy MM dd"
       ..Text = "2004 02 29",
 
-// Month parsing should be case-insensitive
+    // Month parsing should be case-insensitive
     new Data.ymd(2011, 10, 3)
       ..Pattern = "yyyy MMM dd"
       ..Text = "2011 OcT 03",
     new Data.ymd(2011, 10, 3)
       ..Pattern = "yyyy MMMM dd"
       ..Text = "2011 OcToBeR 03",
-// Day-of-week parsing should be case-insensitive
+    // Day-of-week parsing should be case-insensitive
     new Data.ymd(2011, 10, 9)
       ..Pattern = "yyyy MM dd ddd"
       ..Text = "2011 10 09 sUN",
@@ -286,7 +287,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy MM dd dddd"
       ..Text = "2011 10 09 SuNDaY",
 
-// Genitive name is an extension of the non-genitive name; parse longer first.
+    // Genitive name is an extension of the non-genitive name; parse longer first.
     new Data.ymd(2011, 1, 10)
       ..Pattern = "yyyy MMMM dd"
       ..Text = "2011 MonthName-Genitive 10"
@@ -306,12 +307,12 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
   ];
 
   @internal List<Data> FormatOnlyData = [
-// Would parse back to 2011
+    // Would parse back to 2011
     new Data.ymd(1811, 7, 3)
       ..Pattern = "yy M d"
       ..Text = "11 7 3",
-// Tests for the documented 2-digit formatting of BC years
-// (Less of an issue since yy became "year of era")
+    // Tests for the documented 2-digit formatting of BC years
+    // (Less of an issue since yy became "year of era")
     new Data.ymd(-94, 7, 3)
       ..Pattern = "yy M d"
       ..Text = "95 7 3",
@@ -321,8 +322,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
   ];
 
   @internal List<Data> FormatAndParseData = [
-// Standard patterns
-// Invariant culture uses the crazy MM/dd/yyyy format. Blech.
+    // Standard patterns
+    // Invariant culture uses the crazy MM/dd/yyyy format. Blech.
     new Data.ymd(2011, 10, 20)
       ..Pattern = "d"
       ..Text = "10/20/2011",
@@ -330,7 +331,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "D"
       ..Text = "Thursday, 20 October 2011",
 
-// Custom patterns
+    // Custom patterns
     new Data.ymd(2011, 10, 3)
       ..Pattern = "yyyy/MM/dd"
       ..Text = "2011/10/03",
@@ -350,7 +351,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
     new Data.ymd(2030, 7, 3)
       ..Pattern = "yy M d"
       ..Text = "30 7 3",
-// Cutoff defaults to 30 (at the moment...)
+    // Cutoff defaults to 30 (at the moment...)
     new Data.ymd(1931, 7, 3)
       ..Pattern = "yy M d"
       ..Text = "31 7 3",
@@ -358,7 +359,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yy M d"
       ..Text = "76 7 3",
 
-// In the first century, we don't skip back a century for "high" two-digit year numbers.
+    // In the first century, we don't skip back a century for "high" two-digit year numbers.
     new Data.ymd(25, 7, 3)
       ..Pattern = "yy M d"
       ..Text = "25 7 3"
@@ -376,9 +377,9 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Text = "10/03"
       ..Template = new LocalDate(1885, 10, 3),
 
-// When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
-// the template value is specified to allow simple roundtripping. (Day of week doesn't affect what value is parsed; it just validates.)
-// Non-genitive month name when there's no "day of month", even if there's a "day of week"
+    // When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
+    // the template value is specified to allow simple roundtripping. (Day of week doesn't affect what value is parsed; it just validates.)
+    // Non-genitive month name when there's no "day of month", even if there's a "day of week"
     new Data.ymd(2011, 1, 3)
       ..Pattern = "MMMM"
       ..Text = "FullNonGenName"
@@ -399,20 +400,20 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Text = "AbbrNonGenName Mon"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new LocalDate(2011, 5, 3),
-// Genitive month name when the pattern includes "day of month"
+    // Genitive month name when the pattern includes "day of month"
     new Data.ymd(2011, 1, 3)
       ..Pattern = "MMMM dd"
       ..Text = "FullGenName 03"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new LocalDate(2011, 5, 3),
-// TODO: Check whether or not this is actually appropriate
+    // TODO: Check whether or not this is actually appropriate
     new Data.ymd(2011, 1, 3)
       ..Pattern = "MMM dd"
       ..Text = "AbbrGenName 03"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new LocalDate(2011, 5, 3),
 
-// Era handling
+    // Era handling
     new Data.ymd(2011, 1, 3)
       ..Pattern = "yyyy MM dd gg"
       ..Text = "2011 01 03 A.D.",
@@ -423,7 +424,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy MM dd gg"
       ..Text = "0002 01 03 B.C.",
 
-// Day of week handling
+    // Day of week handling
     new Data.ymd(2011, 10, 9)
       ..Pattern = "yyyy MM dd dddd"
       ..Text = "2011 10 09 Sunday",
@@ -431,7 +432,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy MM dd ddd"
       ..Text = "2011 10 09 Sun",
 
-// Month handling
+    // Month handling
     new Data.ymd(2011, 10, 9)
       ..Pattern = "yyyy MMMM dd"
       ..Text = "2011 October 09",
@@ -439,18 +440,18 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "yyyy MMM dd"
       ..Text = "2011 Oct 09",
 
-// Year and two-digit year-of-era in the same format. Note that the year
-// gives the full year information, so we're not stuck in the 20th/21st century
+    // Year and two-digit year-of-era in the same format. Note that the year
+    // gives the full year information, so we're not stuck in the 20th/21st century
     new Data.ymd(1825, 10, 9)
       ..Pattern = "uuuu yy MM/dd"
       ..Text = "1825 25 10/09",
 
-// Negative years
+    // Negative years
     new Data.ymd(-43, 3, 15)
       ..Pattern = "uuuu MM dd"
       ..Text = "-0043 03 15",
 
-// Calendar handling
+    // Calendar handling
     new Data.ymd(2011, 10, 9)
       ..Pattern = "c yyyy MM dd"
       ..Text = "ISO 2011 10 09",
@@ -469,8 +470,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "uuuu MM dd c"
       ..Text = "0180 15 19 Badi",*/
 
-// Awkward day-of-week handling
-// December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
+    // Awkward day-of-week handling
+    // December 14th 2012 was a Friday. Friday is "Foo" or "FooBar" in AwkwardDayOfWeekCulture.
     new Data.ymd(2012, 12, 14)
       ..Pattern = "ddd yyyy MM dd"
       ..Text = "Foo 2012 12 14"
@@ -479,7 +480,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Pattern = "dddd yyyy MM dd"
       ..Text = "FooBar 2012 12 14"
       ..Culture = TestCultures.AwkwardDayOfWeekCulture,
-// December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
+    // December 13th 2012 was a Thursday. Friday is "FooBaz" or "FooBa" in AwkwardDayOfWeekCulture.
     new Data.ymd(2012, 12, 13)
       ..Pattern = "ddd yyyy MM dd"
       ..Text = "FooBaz 2012 12 13"
@@ -489,7 +490,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..Text = "FooBa 2012 12 13"
       ..Culture = TestCultures.AwkwardDayOfWeekCulture,
 
-// 3 digit year patterns (odd, but valid)
+    // 3 digit year patterns (odd, but valid)
     new Data.ymd(12, 1, 2)
       ..Pattern = "uuu MM dd"
       ..Text = "012 01 02",
@@ -556,9 +557,9 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 
   /* ~ No BCL ~ todo: equivalent?
   @private void AssertBclNodaEquality(CultureInfo culture, String patternText) {
-// The BCL never seems to use abbreviated month genitive names.
-// I think it's reasonable that we do. Hmm.
-// See https://github.com/nodatime/nodatime/issues/377
+    // The BCL never seems to use abbreviated month genitive names.
+    // I think it's reasonable that we do. Hmm.
+    // See https://github.com/nodatime/nodatime/issues/377
     if (patternText.contains("MMM") && !patternText.contains("MMMM") &&
         culture.dateTimeFormat.abbreviatedMonthGenitiveNames[SampleLocalDate.Month - 1] !=
             culture.dateTimeFormat.abbreviatedMonthNames[SampleLocalDate.Month - 1]) {
@@ -568,13 +569,13 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
     var pattern = LocalDatePattern.Create3(patternText, culture);
     var calendarSystem = BclCalendars.CalendarSystemForCalendar(culture.Calendar);
     if (calendarSystem == null) {
-// We can't map this calendar system correctly yet; the test would be invalid.
+      // We can't map this calendar system correctly yet; the test would be invalid.
       return;
     }
 
     var sampleDateInCalendar = SampleLocalDate.WithCalendar(calendarSystem);
-// To construct a DateTime, we need a time... let's give a non-midnight one to catch
-// any unexpected uses of time within the date patterns.
+    // To construct a DateTime, we need a time... let's give a non-midnight one to catch
+    // any unexpected uses of time within the date patterns.
     DateTime sampleDateTime = (SampleLocalDate + new LocalTime(2, 3, 5)).ToDateTimeUnspecified();
     expect(sampleDateTime.toString(patternText, culture), pattern.Format(sampleDateInCalendar));
   }*/
@@ -585,10 +586,9 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 // Default to the start of the year 2000.
 /*protected*/ @override LocalDate get DefaultTemplate => LocalDatePattern.DefaultTemplateValue;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   Data([LocalDate value = null]) : super(value ?? LocalDatePattern.DefaultTemplateValue);
 
   Data.ymd(int year, int month, int day) : super(new LocalDate(year, month, day));
@@ -601,4 +601,5 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
       .WithTemplateValue(Template)
       .WithCulture(Culture);
   }
+
 

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Globalization/NodaFormatInfo.cs
-// commit 41dc54e on Nov 4, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -12,16 +13,14 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 
-/// <summary>
-/// A <see cref="IFormatProvider"/> for Noda Time types, usually initialised from a <see cref="System.Globalization.CultureInfo"/>.
+/// A [IIFormatProvider] for Noda Time types, usually initialised from a [System.Globalization.CultureInfo].
 /// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
-/// </summary>
-/// <remarks>
+///
 /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
 /// CultureInfo itself may be mutable. If the CultureInfo is mutated after initialization, results are not
 /// guaranteed: some aspects of the CultureInfo may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
-/// </remarks>
+///
 /// <threadsafety>Instances which use read-only CultureInfo instances are immutable,
 /// and may be used freely between threads. Instances with mutable cultures should not be shared between threads
 /// without external synchronization.
@@ -47,11 +46,9 @@ import 'package:time_machine/time_machine_globalization.dart';
   FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
   FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
 
-  // #endregion
+// #endregion
 
-  /// <summary>
   /// A NodaFormatInfo wrapping the invariant culture.
-  /// </summary>
   // Note: this must occur below the pattern parsers, to make type initialization work...
   static final NodaFormatInfo InvariantInfo = new NodaFormatInfo(CultureInfo.invariantCulture);
 
@@ -71,34 +68,32 @@ import 'package:time_machine/time_machine_globalization.dart';
 
   @private final Map<Era, EraDescription> eraDescriptions;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based solely
-  /// on a <see cref="System.Globalization.CultureInfo"/>.
-  /// </summary>
-  /// <param name="cultureInfo">The culture info to use.</param>
+  /// Initializes a new instance of the [NodaFormatInfo] class based solely
+  /// on a [System.Globalization.CultureInfo].
+  ///
+  /// [cultureInfo]: The culture info to use.
   @visibleForTesting
   @internal
   NodaFormatInfo(CultureInfo cultureInfo)
       : this.withDateTimeFormat(cultureInfo, cultureInfo?.dateTimeFormat);
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="NodaFormatInfo" /> class based on
-  /// potentially disparate <see cref="System.Globalization.CultureInfo"/> and
-  /// <see cref="DateTimeFormatInfo"/> instances.
-  /// </summary>
-  /// <param name="cultureInfo">The culture info to use for text comparisons and resource lookups.</param>
-  /// <param name="dateTimeFormat">The date/time format to use for format strings etc.</param>
+  /// Initializes a new instance of the [NodaFormatInfo] class based on
+  /// potentially disparate [System.Globalization.CultureInfo] and
+  /// [DateTimeFormatInfo] instances.
+  ///
+  /// [cultureInfo]: The culture info to use for text comparisons and resource lookups.
+  /// [dateTimeFormat]: The date/time format to use for format strings etc.
   @visibleForTesting
   @internal
   NodaFormatInfo.withDateTimeFormat(this.cultureInfo, this.DateTimeFormat)
       : eraDescriptions = new Map<Era, EraDescription>() {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     Preconditions.checkNotNull(DateTimeFormat, 'dateTimeFormat');
-//  #if NETSTANDARD1_3
-//  // Horrible, but it does the job...
-//  dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
-//  timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
-//  #endif
+  //  #if NETSTANDARD1_3
+  //  // Horrible, but it does the job...
+  //  dateSeparator = DateTime.MinValue.ToString("%/", cultureInfo);
+  //  timeSeparator = DateTime.MinValue.ToString("%:", cultureInfo);
+  //  #endif
   }
 
   @private void EnsureMonthsInitialized() {
@@ -112,9 +107,7 @@ import 'package:time_machine/time_machine_globalization.dart';
     shortMonthGenitiveNames = ConvertGenitiveMonthArray(shortMonthNames, DateTimeFormat.abbreviatedMonthGenitiveNames, ShortInvariantMonthNames);
   }
 
-  /// <summary>
   /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as null).
-  /// </summary>
   @private static List<String> ConvertMonthArray(List<String> monthNames) {
     List<String> list = new List<String>.from(monthNames);
     list.insert(0, null);
@@ -132,10 +125,8 @@ import 'package:time_machine/time_machine_globalization.dart';
     }
   }
 
-  /// <summary>
   /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as null)
   /// and with 7 as Sunday.
-  /// </summary>
   @private static List<String> ConvertDayArray(List<String> dayNames) {
     List<String> list = new List<String>.from(dayNames);
     list.add(dayNames[0]);
@@ -143,23 +134,17 @@ import 'package:time_machine/time_machine_globalization.dart';
     return new List<String>.unmodifiable(list);
   }
 
-  /// <summary>
   /// Checks whether any of the genitive names differ from the non-genitive names, and returns
   /// either a reference to the non-genitive names or a converted list as per ConvertMonthArray.
-  /// </summary>
-  /// <remarks>
-  /// <para>
+  ///
   /// Mono uses the invariant month names for the genitive month names by default, so we'll assume that
   /// if we see an invariant name, that *isn't* deliberately a genitive month name. A non-invariant culture
   /// which decided to have genitive month names exactly matching the invariant ones would be distinctly odd.
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=3278 for more details and progress.
-  /// </para>
-  /// <para>
+  ///
   /// Mono 3.0.6 has an exciting and different bug, where all the abbreviated genitive month names are just numbers ("1" etc).
   /// So again, if we detect that, we'll go back to the non-genitive version.
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
-  /// </para>
-  /// </remarks>
   @private List<String> ConvertGenitiveMonthArray(List<String> nonGenitiveNames, List<String> bclNames, List<String> invariantNames) {
     var number = int.parse(bclNames[0], onError: (_) => null); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
 
@@ -174,15 +159,11 @@ import 'package:time_machine/time_machine_globalization.dart';
     return nonGenitiveNames;
   }
 
-  /// <summary>
   /// Gets the culture info associated with this format provider. This is used
   /// for resource lookups and text comparisons.
-  /// </summary>
   final CultureInfo cultureInfo;
 
-  /// <summary>
   /// Gets the text comparison information associated with this format provider.
-  /// </summary>
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
   @internal FixedFormatInfoPatternParser<Span> get spanPatternParser =>
@@ -234,121 +215,96 @@ import 'package:time_machine/time_machine_globalization.dart';
     return field;
   }
 
-  /// <summary>
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
-  /// </summary>
   List<String> get LongMonthNames {
     EnsureMonthsInitialized();
     return longMonthNames;
   }
 
-  /// <summary>
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
-  /// </summary>
   List<String> get ShortMonthNames {
     EnsureMonthsInitialized();
     return shortMonthNames;
   }
 
-  /// <summary>
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
   /// The genitive form is used for month text where the day of month also appears in the pattern.
   /// If the culture does not use genitive month names, this property will return the same reference as
-  /// <see cref="LongMonthNames"/>.
-  /// </summary>
+  /// [LongMonthNames].
   List<String> get LongMonthGenitiveNames {
     EnsureMonthsInitialized();
     return longMonthGenitiveNames;
   }
 
-  /// <summary>
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
   /// The genitive form is used for month text where the day also appears in the pattern.
   /// If the culture does not use genitive month names, this property will return the same reference as
-  /// <see cref="ShortMonthNames"/>.
-  /// </summary>
+  /// [ShortMonthNames].
   List<String> get ShortMonthGenitiveNames {
     EnsureMonthsInitialized();
     return shortMonthGenitiveNames;
   }
 
-  /// <summary>
   /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-  /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
-  /// </summary>
+  /// [LocalDateTime.DayOfWeek] and similar properties.
   List<String> get LongDayNames {
     EnsureDaysInitialized();
     return longDayNames;
   }
 
-  /// <summary>
   /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-  /// <see cref="LocalDateTime.DayOfWeek"/> and similar properties.
-  /// </summary>
+  /// [LocalDateTime.DayOfWeek] and similar properties.
   List<String> get ShortDayNames {
     EnsureDaysInitialized();
     return shortDayNames;
   }
 
-  /// <summary>
   /// Gets the BCL date time format associated with this formatting information.
-  /// </summary>
-  /// <remarks>
-  /// This is usually the <see cref="DateTimeFormatInfo"/> from <see cref="CultureInfo"/>,
+  ///
+  /// This is usually the [DateTimeFormatInfo] from [CultureInfo],
   /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
   /// CultureInfo, that's used for format strings but the invariant culture is used for
   /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
-  /// </remarks>
   final DateTimeFormatInfo DateTimeFormat;
 
-  /// <summary>
   /// Gets the time separator.
-  /// </summary>
   String get TimeSeparator => DateTimeFormat.timeSeparator;
 
-  /// <summary>
   /// Gets the date separator.
-  /// </summary>
   String get DateSeparator => DateTimeFormat.dateSeparator;
 
-  /// <summary>
   /// Gets the AM designator.
-  /// </summary>
   String get AMDesignator => DateTimeFormat.amDesignator;
 
-  /// <summary>
   /// Gets the PM designator.
-  /// </summary>
   String get PMDesignator => DateTimeFormat.pmDesignator;
 
-  /// <summary>
   /// Returns the names for the given era in this culture.
-  /// </summary>
-  /// <param name="era">The era to find the names of.</param>
-  /// <returns>A read-only list of names for the given era, or an empty list if
-  /// the era is not known in this culture.</returns>
+  ///
+  /// [era]: The era to find the names of.
+  /// A read-only list of names for the given era, or an empty list if
+  /// the era is not known in this culture.
   List<String> GetEraNames(Era era) {
     Preconditions.checkNotNull(era, 'era');
     return GetEraDescription(era).AllNames;
   }
 
-  /// <summary>
   /// Returns the primary name for the given era in this culture.
-  /// </summary>
-  /// <param name="era">The era to find the primary name of.</param>
-  /// <returns>The primary name for the given era, or an empty string if the era name is not known.</returns>
+  ///
+  /// [era]: The era to find the primary name of.
+  /// Returns: The primary name for the given era, or an empty string if the era name is not known.
   String GetEraPrimaryName(Era era) {
     Preconditions.checkNotNull(era, 'era');
     return GetEraDescription(era).PrimaryName;
@@ -366,57 +322,39 @@ import 'package:time_machine/time_machine_globalization.dart';
     }
   }
 
-  /// <summary>
-  /// Gets the <see cref="NodaFormatInfo" /> object for the current thread.
-  /// </summary>
+  /// Gets the [NodaFormatInfo] object for the current thread.
   static NodaFormatInfo get CurrentInfo => GetInstance(CultureInfo.currentCulture);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "l" pattern.
-  /// </summary>
+  /// Gets the [Offset] "l" pattern.
   String get OffsetPatternLong => PatternResources.GetString("OffsetPatternLong", cultureInfo);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "m" pattern.
-  /// </summary>
+  /// Gets the [Offset] "m" pattern.
   String get OffsetPatternMedium => PatternResources.GetString("OffsetPatternMedium", cultureInfo);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "s" pattern.
-  /// </summary>
+  /// Gets the [Offset] "s" pattern.
   String get OffsetPatternShort => PatternResources.GetString("OffsetPatternShort", cultureInfo);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "L" pattern.
-  /// </summary>
+  /// Gets the [Offset] "L" pattern.
   String get OffsetPatternLongNoPunctuation =>
       PatternResources.GetString("OffsetPatternLongNoPunctuation", cultureInfo);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "M" pattern.
-  /// </summary>
+  /// Gets the [Offset] "M" pattern.
   String get OffsetPatternMediumNoPunctuation =>
       PatternResources.GetString("OffsetPatternMediumNoPunctuation", cultureInfo);
 
-  /// <summary>
-  /// Gets the <see cref="Offset" /> "S" pattern.
-  /// </summary>
+  /// Gets the [Offset] "S" pattern.
   String get OffsetPatternShortNoPunctuation =>
       PatternResources.GetString("OffsetPatternShortNoPunctuation", cultureInfo);
 
-  /// <summary>
   /// Clears the cache. Only used for test purposes.
-  /// </summary>
   @internal static void ClearCache() => _cache.Clear();
 
-  /// <summary>
-  /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="CultureInfo" />.
-  /// </summary>
-  /// <remarks>
+  /// Gets the [NodaFormatInfo] for the given [CultureInfo].
+  ///
   /// This method maintains a cache of results for read-only cultures.
-  /// </remarks>
-  /// <param name="cultureInfo">The culture info.</param>
-  /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
+  ///
+  /// [cultureInfo]: The culture info.
+  /// Returns: The [NodaFormatInfo]. Will never be null.
   @internal static NodaFormatInfo GetFormatInfo(CultureInfo cultureInfo) {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     if (cultureInfo == CultureInfo.invariantCulture) {
@@ -429,16 +367,15 @@ import 'package:time_machine/time_machine_globalization.dart';
     return _cache.GetOrAdd(cultureInfo);
   }
 
-  /// <summary>
-  /// Gets the <see cref="NodaFormatInfo" /> for the given <see cref="IFormatProvider" />. If the
+  /// Gets the [NodaFormatInfo] for the given [IIFormatProvider]. If the
   /// format provider is null then the format object for the current thread is returned. If it's
   /// a CultureInfo, that's used for everything. If it's a DateTimeFormatInfo, that's used for
   /// format strings, day names etc but the invariant culture is used for text comparisons and
-  /// resource lookups. Otherwise, <see cref="ArgumentException"/> is thrown.
-  /// </summary>
-  /// <param name="provider">The <see cref="IFormatProvider" />.</param>
-  /// <exception cref="ArgumentException">The format provider cannot be used for Noda Time.</exception>
-  /// <returns>The <see cref="NodaFormatInfo" />. Will never be null.</returns>
+  /// resource lookups. Otherwise, [ArgumentException] is thrown.
+  ///
+  /// [provider]: The [IIFormatProvider].
+  /// [ArgumentException]: The format provider cannot be used for Noda Time.
+  /// Returns: The [NodaFormatInfo]. Will never be null.
   static NodaFormatInfo GetInstance(/*IFormatProvider*/ dynamic formatProvider) {
     if (formatProvider == null) {
       return GetFormatInfo(CurrentInfo.cultureInfo);
@@ -468,15 +405,11 @@ import 'package:time_machine/time_machine_globalization.dart';
     }*/
   }
 
-  /// <summary>
-  /// Returns a <see cref="System.String" /> that represents this instance.
-  /// </summary>
+  /// Returns a [String] that represents this instance.
   @override String toString() => "NodaFormatInfo[" + cultureInfo.name + "]";
 }
 
-/// <summary>
 /// The description for an era: the primary name and all possible names.
-/// </summary>
 @private class EraDescription {
   @internal final String PrimaryName;
   @internal final /*ReadOnlyCollection*/ List<String> AllNames;
@@ -508,11 +441,9 @@ import 'package:time_machine/time_machine_globalization.dart';
     return new EraDescription(primaryName, new List<String>.unmodifiable(allNames));
   }
 
-  /// <summary>
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that
   /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
   /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
-  /// </summary>
   @private static String GetEraNameFromBcl(Era era, CultureInfo culture) {
     var calendar = culture.dateTimeFormat.calendar;
 

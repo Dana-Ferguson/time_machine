@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/ZonedDateTimeTest.cs
-// 69dedbc  15 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -19,9 +20,7 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
 /// Changes from UTC+3 to UTC+4 at 1am local time on June 13th 2011.
-/// </summary>
 final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 3, 4);
 
 @Test()
@@ -316,7 +315,7 @@ void Equality()
   TestHelper.TestEqualsStruct(sample, fromUtc, [new Instant.fromUtc(2011, 6, 12, 21, 30).inUtc()]);
   TestHelper.TestOperatorEquality(sample, fromUtc, [new Instant.fromUtc(2011, 6, 12, 21, 30).inUtc()]);
 
-  // Now just use a simple inequality check for other aspects...
+// Now just use a simple inequality check for other aspects...
 
   // Different offset
   var later = zone.MapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 30)).Last();
@@ -387,9 +386,7 @@ void Construct_FromLocal_InvalidOffset()
   expect(() => new ZonedDateTime.fromLocal(local, zone, zone.LateInterval.wallOffset), throwsArgumentError);
 }
 
-/// <summary>
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
-/// </summary>
 @Test()
 void DefaultConstructor()
 {

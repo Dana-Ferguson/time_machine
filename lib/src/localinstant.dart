@@ -1,110 +1,87 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/LocalInstant.cs
-// 2dcb64f  on Aug 22, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
-/// <summary>
 /// Represents a local date and time without reference to a calendar system. Essentially
 /// this is a duration since a Unix epoch shifted by an offset (but we don't store what that
 /// offset is). This class has been slimmed down considerably over time - it's used much less
 /// than it used to be... almost solely for time zones.
-/// </summary>
 @internal class LocalInstant // : IEquatable<LocalInstant>
     {
   static final LocalInstant BeforeMinValue = new LocalInstant._trusted(Instant.beforeMinValue.daysSinceEpoch, deliberatelyInvalid: true);
   static final LocalInstant AfterMaxValue = new LocalInstant._trusted(Instant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
 
-  /// <summary>
   /// Elapsed time since the local 1970-01-01T00:00:00.
-  /// </summary>
   Span _span;
 
-  /// <summary>
   /// Constructor which should *only* be used to construct the invalid instances.
-  /// </summary>
   LocalInstant._trusted(int days, {bool deliberatelyInvalid})
   {
     this._span = new Span(days: days);
   }
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
-  /// </summary>
+  /// Initializes a new instance of the [LocalInstant] struct.
   @internal LocalInstant(Span nanoseconds) {
-// todo: would it? (from Dart perspective -- we have different bounds? or do we? -- investigate)
-//int days = nanoseconds.FloorDays;
-//if (days < Instant.MinDays || days > Instant.MaxDays)
-//{
-//throw new OverflowException("Operation would overflow bounds of local date/time");
-//}
+    // todo: would it? (from Dart perspective -- we have different bounds? or do we? -- investigate)
+    //int days = nanoseconds.FloorDays;
+    //if (days < Instant.MinDays || days > Instant.MaxDays)
+    //{
+    //throw new OverflowException("Operation would overflow bounds of local date/time");
+    //}
     this._span = nanoseconds;
   }
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="LocalInstant"/> struct.
-  /// </summary>
-  /// <param name="days">Number of days since 1970-01-01, in a time zone neutral fashion.</param>
-  /// <param name="nanoOfDay">Nanosecond of the local day.</param>
-// todo: replace -- we use milliseconds\nanoseconds
+  /// Initializes a new instance of the [LocalInstant] struct.
+  ///
+  /// [days]: Number of days since 1970-01-01, in a time zone neutral fashion.
+  /// [nanoOfDay]: Nanosecond of the local day.
+  // todo: replace -- we use milliseconds\nanoseconds
   @internal LocalInstant.daysNanos(int days, int nanoOfDay)
   {
     this._span = new Span(days: days, nanoseconds: nanoOfDay);
   }
 
-  /// <summary>
   /// Returns whether or not this is a valid instant. Returns true for all but
-  /// <see cref="BeforeMinValue"/> and <see cref="AfterMaxValue"/>.
-  /// </summary>
+  /// [BeforeMinValue] and [AfterMaxValue].
   @internal bool get IsValid => DaysSinceEpoch >= Instant.minDays && DaysSinceEpoch <= Instant.maxDays;
 
-  /// <summary>
   /// Number of nanoseconds since the local unix epoch.
-  /// </summary>
   @internal Span get TimeSinceLocalEpoch => _span;
 
-  /// <summary>
   /// Number of days since the local unix epoch.
-  /// </summary>
   @internal int get DaysSinceEpoch => _span.floorDays;
 
-  /// <summary>
   /// Nanosecond within the day.
-  /// </summary>
   @internal int get NanosecondOfDay => _span.nanosecondOfFloorDay;
 
-  /// <summary>
   /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
-  /// This is just a slight optimization over calling <c>localInstant.Minus(Offset.Zero)</c>.
-  /// </summary>
+  /// This is just a slight optimization over calling `localInstant.Minus(Offset.Zero)`.
   // todo: this is an API pickle
   @internal Instant MinusZeroOffset() => new Instant.trusted(_span);
 
-  /// <summary>
-  /// Subtracts the given time zone offset from this local instant, to give an <see cref="Instant" />.
-  /// </summary>
-  /// <remarks>
+  /// Subtracts the given time zone offset from this local instant, to give an [Instant].
+  ///
   /// This would normally be implemented as an operator, but as the corresponding "plus" operation
   /// on Instant cannot be written (as Instant is a type and LocalInstant is an @internal type)
   /// it makes sense to keep them both as methods for consistency.
-  /// </remarks>
-  /// <param name="offset">The offset between UTC and a time zone for this local instant</param>
-  /// <returns>A new <see cref="Instant"/> representing the difference of the given values.</returns>
+  ///
+  /// [offset]: The offset between UTC and a time zone for this local instant
+  /// Returns: A new [Instant] representing the difference of the given values.
   Instant Minus(Offset offset) => new Instant.untrusted(_span.plusSmallNanoseconds(-offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
 
-  /// <summary>
   /// Implements the operator == (equality).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if values are equal to each other, otherwise `false`.
   bool operator ==(dynamic right) => right is LocalInstant && _span == right._span;
 
-  /// <summary>
-  /// Equivalent to <see cref="Instant.SafePlus"/>, but in the opposite direction.
-  /// </summary>
+  /// Equivalent to [Instant.SafePlus], but in the opposite direction.
   @internal Instant SafeMinus(Offset offset) {
     int days = _span.days;
     // If we can do the arithmetic safely, do so.
@@ -130,53 +107,43 @@ import 'package:time_machine/time_machine_utilities.dart';
     return new Instant.trusted(asDuration);
   }
 
-  /// <summary>
   /// Implements the operator &lt; (less than).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if the left value is less than the right value, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if the left value is less than the right value, otherwise `false`.
   bool operator <(LocalInstant right) => _span < right._span;
 
-  /// <summary>
   /// Implements the operator &lt;= (less than or equal).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if the left value is less than or equal to the right value, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if the left value is less than or equal to the right value, otherwise `false`.
   bool operator <=(LocalInstant right) => _span <= right._span;
 
-  /// <summary>
   /// Implements the operator &gt; (greater than).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if the left value is greater than the right value, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if the left value is greater than the right value, otherwise `false`.
   bool operator >(LocalInstant right) => _span > right._span;
 
-  /// <summary>
   /// Implements the operator &gt;= (greater than or equal).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if the left value is greater than or equal to the right value, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if the left value is greater than or equal to the right value, otherwise `false`.
   bool operator >=(LocalInstant right) => _span >= right._span;
 
-  /// <summary>
   /// Returns a hash code for this instance.
-  /// </summary>
-  /// <returns>
+  ///
   /// A hash code for this instance, suitable for use in hashing algorithms and data
   /// structures like a hash table.
-  /// </returns>
   @override int get hashCode => _span.hashCode;
 
-  /// <summary>
-  /// Returns a <see cref="System.String"/> that represents this instance.
-  /// </summary>
-  /// <returns>
-  /// A <see cref="System.String"/> that represents this instance.
-  /// </returns>
+  /// Returns a [String] that represents this instance.
+  ///
+  /// A [String] that represents this instance.
   @override String toString() // => TextShim.toStringLocalInstant(this);
   {
     if (this == BeforeMinValue) {
@@ -189,17 +156,16 @@ import 'package:time_machine/time_machine_utilities.dart';
     var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
     var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
     return pattern.Format(utc);
-    // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
+  // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }
 
-// #region IEquatable<LocalInstant> Members
-  /// <summary>
+  // #region IEquatable<LocalInstant> Members
   /// Indicates whether the current object is equal to another object of the same type.
-  /// </summary>
-  /// <param name="other">An object to compare with this object.</param>
-  /// <returns>
-  /// true if the current object is equal to the <paramref name="other"/> parameter;
+  ///
+  /// [other]: An object to compare with this object.
+  ///
+  /// true if the current object is equal to the [other] parameter;
   /// otherwise, false.
-  /// </returns>
   bool Equals(LocalInstant other) => this == other;
 }
+

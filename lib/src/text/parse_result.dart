@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/ParseResult.cs
-// c77bb7b May 8th, 2018
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
@@ -11,10 +12,9 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-/// <summary>
 /// The result of a parse operation.
-/// </summary>
-/// <typeparam name="T">The type which was parsed, such as a <see cref="LocalDateTime"/>.</typeparam>
+///
+/// <typeparam name="T">The type which was parsed, such as a [LocalDateTime].</typeparam>
 /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
 /*sealed*/ class ParseResult<T> {
@@ -28,23 +28,18 @@ import 'package:time_machine/time_machine_text.dart';
       : errorProvider = null,
         ContinueAfterErrorWithMultipleFormats = false;
 
-  /// <summary>
   /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
   /// otherwise.
-  /// </summary>
-  /// <remarks>
-  /// This method is exactly equivalent to calling the <see cref="GetValueOrThrow"/> method, but is terser if the code is
+  ///
+  /// This method is exactly equivalent to calling the [GetValueOrThrow] method, but is terser if the code is
   /// already clear that it will throw if the parse failed.
-  /// </remarks>
-  /// <value>The result of the parsing operation if it was successful.</value>
   T get Value => GetValueOrThrow();
 
-  /// <summary>
   /// Gets an exception indicating the cause of the parse failure.
-  /// </summary>
-  /// <remarks>This property is typically used to wrap parse failures in higher level exceptions.</remarks>
-  /// <value>The exception indicating the cause of the parse failure.</value>
-  /// <exception cref="InvalidOperationException">The parse operation succeeded.</exception>
+  ///
+  /// This property is typically used to wrap parse failures in higher level exceptions.
+  ///
+  /// [InvalidOperationException]: The parse operation succeeded.
   Error get Exception {
     if (errorProvider == null) {
       // InvalidOperationException
@@ -53,15 +48,13 @@ import 'package:time_machine/time_machine_text.dart';
     return errorProvider();
   }
 
-  /// <summary>
   /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
   /// otherwise.
-  /// </summary>
-  /// <remarks>
-  /// This method is exactly equivalent to fetching the <see cref="Value"/> property, but more explicit in terms of throwing
+  ///
+  /// This method is exactly equivalent to fetching the [Value] property, but more explicit in terms of throwing
   /// an exception on failure.
-  /// </remarks>
-  /// <returns>The result of the parsing operation if it was successful.</returns>
+  ///
+  /// Returns: The result of the parsing operation if it was successful.
   T GetValueOrThrow() {
     if (errorProvider == null) {
       return _value;
@@ -69,35 +62,29 @@ import 'package:time_machine/time_machine_text.dart';
     throw errorProvider();
   }
 
-  /// <summary>
   /// Returns the success value, and sets the out parameter to either
   /// the specified failure value of T or the successful parse result value.
-  /// </summary>
-  /// <param name="failureValue">The "default" value to set in <paramref name="result"/> if parsing failed.</param>
-  /// <param name="result">The parameter to store the parsed value in on success.</param>
-  /// <returns>True if this parse result was successful, or false otherwise.</returns>
+  ///
+  /// [failureValue]: The "default" value to set in [result] if parsing failed.
+  /// [result]: The parameter to store the parsed value in on success.
+  /// Returns: True if this parse result was successful, or false otherwise.
   T TryGetValue(T failureValue) {
     // todo: This did the true/false return _value ... this might alter how it's used (no longer doing that)
     return Success ? _value : failureValue;
   }
 
-  /// <summary>
   /// Indicates whether the parse operation was successful.
-  /// </summary>
-  /// <remarks>
-  /// This returns True if and only if fetching the value with the <see cref="Value"/> property will return with no exception.
-  /// </remarks>
-  /// <value>true if the parse operation was successful; otherwise false.</value>
+  ///
+  /// This returns True if and only if fetching the value with the [Value] property will return with no exception.
   bool get Success => errorProvider == null;
 
-  /// <summary>
-  /// Converts this result to a new target type, either by executing the given projection
-  /// for a success result, or propagating the exception provider for failure.
-  /// </summary>
-  /// <param name="projection">The projection to apply for the value of this result,
-  /// if it's a success result.</param>
-  /// <returns>A ParseResult for the target type, either with a value obtained by applying the specified
-  /// projection to the value in this result, or with the same error as this result.</returns>
+/// Converts this result to a new target type, either by executing the given projection
+/// for a success result, or propagating the exception provider for failure.
+///
+/// [projection]: The projection to apply for the value of this result,
+/// if it's a success result.
+/// A ParseResult for the target type, either with a value obtained by applying the specified
+/// projection to the value in this result, or with the same error as this result.
 
   ParseResult<TTarget> Convert<TTarget>(TTarget Function(T) projection) {
     Preconditions.checkNotNull(projection, 'projection');
@@ -106,11 +93,10 @@ import 'package:time_machine/time_machine_text.dart';
         : new ParseResult<TTarget>.error(errorProvider, ContinueAfterErrorWithMultipleFormats);
   }
 
-  /// <summary>
   /// Converts this result to a new target type by propagating the exception provider.
   /// This parse result must already be an error result.
-  /// </summary>
-  /// <returns>A ParseResult for the target type, with the same error as this result.</returns>
+  ///
+  /// Returns: A ParseResult for the target type, with the same error as this result.
   ParseResult<TTarget> ConvertError<TTarget>() {
     if (Success) {
       // InvalidOperationException
@@ -119,26 +105,24 @@ import 'package:time_machine/time_machine_text.dart';
     return new ParseResult<TTarget>.error(errorProvider, ContinueAfterErrorWithMultipleFormats);
   }
 
-  // #region Factory methods and readonly static fields
+// #region Factory methods and readonly static fields
 
-  /// <summary>
   /// Produces a ParseResult which represents a successful parse operation.
-  /// </summary>
-  /// <remarks>When T is a reference type, <paramref name="value"/> should not be null,
-  /// but this isn't currently checked.</remarks>
-  /// <param name="value">The successfully parsed value.</param>
-  /// <returns>A ParseResult representing a successful parsing operation.</returns>
+  ///
+  /// When T is a reference type, [value] should not be null,
+  /// but this isn't currently checked.
+  /// [value]: The successfully parsed value.
+  /// Returns: A ParseResult representing a successful parsing operation.
   static ParseResult<T> ForValue<T>(T value) => new ParseResult<T>(value);
 
-  /// <summary>
   /// Produces a ParseResult which represents a failed parsing operation.
-  /// </summary>
-  /// <remarks>This method accepts a delegate rather than the exception itself, as creating an
+  ///
+  /// This method accepts a delegate rather than the exception itself, as creating an
   /// exception can be relatively slow: if the client doesn't need the actual exception, just the information
-  /// that the parse failed, there's no point in creating the exception.</remarks>
-  /// <param name="exceptionProvider">A delegate that produces the exception representing the error that
-  /// caused the parse to fail.</param>
-  /// <returns>A ParseResult representing a failed parsing operation.</returns>
+  /// that the parse failed, there's no point in creating the exception.
+  /// [exceptionProvider]: A delegate that produces the exception representing the error that
+  /// caused the parse to fail.
+  /// Returns: A ParseResult representing a failed parsing operation.
   static ParseResult<T> ForException<T>(Error Function() exceptionProvider) =>
       new ParseResult<T>.error(Preconditions.checkNotNull(exceptionProvider, 'exceptionProvider'), false);
 
@@ -196,9 +180,7 @@ import 'package:time_machine/time_machine_text.dart';
 
   @internal static ParseResult<T> UnexpectedNegative<T>(ValueCursor cursor) => ParseResult.ForInvalidValue<T>(cursor, TextErrorMessages.UnexpectedNegative);
 
-  /// <summary>
   /// This isn't really an issue with the value so much as the pattern... but the result is the same.
-  /// </summary>
   @internal static final ParseResult FormatOnlyPattern =
   new ParseResult.error(() => new UnparsableValueError(TextErrorMessages.FormatOnlyPattern), true);
 
@@ -232,28 +214,20 @@ import 'package:time_machine/time_machine_text.dart';
   @internal static ParseResult<T> FieldValueOutOfRangePostParse<T>(String text, int value, String field, String tType) =>
       ForInvalidValuePostParse(text, TextErrorMessages.FieldValueOutOfRange, [value, field, tType]);
 
-  /// <summary>
   /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
-  /// </summary>
   @internal static ParseResult<T> InconsistentValues<T>(String text, String field1, String field2, String tType) =>
       ForInvalidValuePostParse(text, TextErrorMessages.InconsistentValues2, [field1, field2, tType]);
 
-  /// <summary>
   /// The month of year is inconsistent between the text and numeric specifications.
   /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
-  /// </summary>
   @internal static ParseResult<T> InconsistentMonthValues<T>(String text) => ForInvalidValuePostParse(text, TextErrorMessages.InconsistentMonthTextValue);
 
-  /// <summary>
   /// The day of month is inconsistent with the day of week value.
   /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
-  /// </summary>
   @internal static ParseResult<T> InconsistentDayOfWeekTextValue<T>(String text) =>
       ForInvalidValuePostParse(text, TextErrorMessages.InconsistentDayOfWeekTextValue);
 
-  /// <summary>
   /// We'd expected to get to the end of the string now, but we haven't.
-  /// </summary>
   @internal static ParseResult<T> ExpectedEndOfString<T>(ValueCursor cursor) => ForInvalidValue(cursor, TextErrorMessages.ExpectedEndOfString);
 
   @internal static ParseResult<T> YearOfEraOutOfRange<T>(String text, int value, Era era, CalendarSystem calendar) =>

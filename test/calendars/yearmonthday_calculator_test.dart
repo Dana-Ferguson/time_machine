@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Calendars/YearMonthDayCalculatorTest.cs
-// 10dbf36  24 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -26,12 +27,12 @@ List<TestCaseData> NonIslamicCalculators = [
   new TestCaseData(new GregorianYearMonthDayCalculator())..name="Gregorian",
   //new TestCaseData(new CopticYearMonthDayCalculator())..name="Coptic",
   new TestCaseData(new JulianYearMonthDayCalculator())..name="Julian",
-  //new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName("Hebrew Civil"),
-  //new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName("Hebrew Scriptural"),
-  //new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName("Persian Simple"),
-  //new TestCaseData(new PersianYearMonthDayCalculator.Arithmetic()).SetName("Persian Arithmetic"),
-  //new TestCaseData(new PersianYearMonthDayCalculator.Astronomical()).SetName("Persian Astronomoical"),
-  //new TestCaseData(new UmAlQuraYearMonthDayCalculator()).SetName("Um Al Qura"),
+//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName("Hebrew Civil"),
+//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName("Hebrew Scriptural"),
+//new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName("Persian Simple"),
+//new TestCaseData(new PersianYearMonthDayCalculator.Arithmetic()).SetName("Persian Arithmetic"),
+//new TestCaseData(new PersianYearMonthDayCalculator.Astronomical()).SetName("Persian Astronomoical"),
+//new TestCaseData(new UmAlQuraYearMonthDayCalculator()).SetName("Um Al Qura"),
 ];
 
 List<TestCaseData> IslamicCalculators = [];
@@ -85,3 +86,4 @@ void GetYearConsistentWithGetYearDays(Object calculatorAsObject)
     expect(calculator.getDaysInYear(year - 1) - 1, dayOfYear);
   }
 }
+

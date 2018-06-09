@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/LocalDateTimePatternParser.cs
-// 69dedbc  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -12,11 +13,9 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 
-/// <summary>
-/// Parser for patterns of <see cref="LocalDateTime"/> values.
-/// </summary>
+/// Parser for patterns of [LocalDateTime] values.
 @internal /*sealed*/ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
-// Split the template value into date and time once, to avoid doing it every time we parse.
+  // Split the template value into date and time once, to avoid doing it every time we parse.
   @private final LocalDate templateValueDate;
   @private final LocalTime templateValueTime;
 
@@ -66,8 +65,8 @@ import 'package:time_machine/time_machine_patterns.dart';
       : templateValueDate = templateValue.Date,
         templateValueTime = templateValue.TimeOfDay;
 
-// Note: to implement the interface. It does no harm, and it's simpler than using explicit
-// interface implementation.
+  // Note: to implement the interface. It does no harm, and it's simpler than using explicit
+  // interface implementation.
   IPattern<LocalDateTime> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
     if (patternText.length == 0) {
@@ -126,14 +125,11 @@ import 'package:time_machine/time_machine_patterns.dart';
       : Date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
         Time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
 
-  /// <summary>
   /// Combines the values in a date bucket with the values in a time bucket.
-  /// </summary>
-  /// <remarks>
-  /// This would normally be the <see cref="CalculateValue"/> method, but we want
-  /// to be able to use the same logic when parsing an <see cref="OffsetDateTime"/>
-  /// and <see cref="ZonedDateTime"/>.
-  /// </remarks>
+  ///
+  /// This would normally be the [CalculateValue] method, but we want
+  /// to be able to use the same logic when parsing an [OffsetDateTime]
+  /// and [ZonedDateTime].
   @internal static ParseResult<LocalDateTime> CombineBuckets(PatternFields usedFields,
 /*LocalDatePatternParser.*/LocalDateParseBucket dateBucket,
 /*LocalTimePatternParser.*/LocalTimeParseBucket timeBucket,
@@ -171,3 +167,4 @@ import 'package:time_machine/time_machine_patterns.dart';
   ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields, String text) =>
       CombineBuckets(usedFields, Date, Time, text);
 }
+

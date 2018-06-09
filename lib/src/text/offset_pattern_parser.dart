@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/OffsetPatternParser.cs
-// 69dedbc  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -107,14 +108,10 @@ import 'package:time_machine/time_machine_patterns.dart';
     return zPrefix ? new ZPrefixPattern(pattern) : pattern;
   }
 
-  /// <summary>
   /// Returns true if the offset is representable just in hours and minutes (no seconds).
-  /// </summary>
   @private static bool HasZeroSeconds(Offset offset) => (offset.seconds % TimeConstants.secondsPerMinute) == 0;
 
-  /// <summary>
   /// Returns true if the offset is representable just in hours (no minutes or seconds).
-  /// </summary>
   @private static bool HasZeroSecondsAndMinutes(Offset offset) => (offset.seconds % TimeConstants.secondsPerHour) == 0;
 
   // #region Character handlers
@@ -127,12 +124,10 @@ import 'package:time_machine/time_machine_patterns.dart';
     builder.AddField(PatternFields.sign, pattern.Current);
     builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, (offset) => offset.milliseconds >= 0);
   }
-  // #endregion
+// #endregion
 }
 
-/// <summary>
 /// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as "Z".
-/// </summary>
 @private /*sealed*/ class ZPrefixPattern implements IPartialPattern<Offset> {
   @private final IPartialPattern<Offset> fullPattern;
 
@@ -156,36 +151,25 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 }
 
-/// <summary>
-/// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
-/// </summary>
+/// Provides a container for the interim parsed pieces of an [Offset] value.
 @private /*sealed*/ class OffsetParseBucket extends ParseBucket<Offset> {
-  /// <summary>
   /// The hours in the range [0, 23].
-  /// </summary>
   @internal int Hours = 0;
 
-  /// <summary>
   /// The minutes in the range [0, 59].
-  /// </summary>
   @internal int Minutes = 0;
 
-  /// <summary>
   /// The seconds in the range [0, 59].
-  /// </summary>
   @internal int Seconds = 0;
 
-  /// <summary>
   /// Gets a value indicating whether this instance is negative.
-  /// </summary>
+  ///
   /// <value>
-  /// <c>true</c> if this instance is negative; otherwise, <c>false</c>.
+  /// `true` if this instance is negative; otherwise, `false`.
   /// </value>
   bool IsNegative = false;
 
-  /// <summary>
   /// Calculates the value from the parsed pieces.
-  /// </summary>
   @internal
   @override
   ParseResult<Offset> CalculateValue(PatternFields usedFields, String text) {
@@ -197,3 +181,4 @@ import 'package:time_machine/time_machine_patterns.dart';
     return ParseResult.ForValue<Offset>(new Offset.fromSeconds(seconds));
   }
 }
+

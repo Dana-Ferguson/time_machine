@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/CalendarOrdinal.cs
-// f4ced3a  on Dec 7, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
@@ -54,7 +55,7 @@ class CalendarOrdinal {
     UmAlQura, Wondrous, Size
   ];
 
-  // todo: lowercase the members IAW dart-style guidelines (atm of porting this file, it crashed the analyzer, bad ... so, we have to do it later)
+// todo: lowercase the members IAW dart-style guidelines (atm of porting this file, it crashed the analyzer, bad ... so, we have to do it later)
 
   /// Value indicating no day of the week; this will never be returned
   /// by any IsoDayOfWeek property, and is not valid as an argument to

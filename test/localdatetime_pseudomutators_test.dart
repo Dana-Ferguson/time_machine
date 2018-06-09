@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalDateTimeTest.Pseudomutators.cs
-// f211fe7  on Dec 31, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -366,4 +367,5 @@ void PlusHours_Overflow(int year, int month, int day, int hours)
 {
   TestHelper.AssertOverflow(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).PlusHours, hours);
 }
+
 

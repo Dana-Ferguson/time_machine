@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Globalization/PatternResources.resx
-// 816afe8  on Dec 9, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 // https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Globalization/PatternResources.cs
 // 632d984  on Sep 15, 2017
 
@@ -9,7 +10,7 @@ import 'package:time_machine/time_machine_globalization.dart';
 
 abstract class PatternResources
 {
-  // @internal static final ResourceManager ResourceManager = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).GetTypeInfo().Assembly);
+// @internal static final ResourceManager ResourceManager = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).GetTypeInfo().Assembly);
 
   // Resource files have a structure similar to:
   // ResourcesName.resx           Default resources
@@ -43,3 +44,4 @@ abstract class PatternResources
     'OffsetPatternShortNoPunctuation': '+HH'
   };
 }
+

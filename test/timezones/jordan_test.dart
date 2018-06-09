@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/JordanTest.cs
-// 8d5399d  on Feb 26, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -27,10 +28,8 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
 /// If all of these transitions are right, we're probably okay... in particular,
 /// checking the 2005 transition occurs on the 1st of April is important.
-/// </summary>
 @Test()
 void Transitions2000To2010() {
   // These were fetched with Joda Time 1.6.2, which definitely uses the new rules.
@@ -55,3 +54,4 @@ void Transitions2000To2010() {
     expect(expectedDates[year - 2000], intervalPair.EarlyInterval.IsoLocalStart.Date);
   }
 }
+

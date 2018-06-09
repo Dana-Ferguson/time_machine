@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:mirrors';
 import 'dart:io';
@@ -72,10 +75,10 @@ class TestCaseData {
 int _skippedTotal = 0;
 
 Future runTests() async {
-  // this doesn't work, but I believe it should
-  // var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
-  // this works! (but will require more boilerplate than I want)
-  // var lib4 = currentMirrorSystem().findLibrary(new Symbol("testFx"));
+// this doesn't work, but I believe it should
+// var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
+// this works! (but will require more boilerplate than I want)
+// var lib4 = currentMirrorSystem().findLibrary(new Symbol("testFx"));
 
   var testLibs = currentMirrorSystem()
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))
@@ -141,8 +144,8 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
     var name = testName; // '${method.simpleName}';
 
     if (method.returnType.hasReflectedType && method.returnType.reflectedType == Future) {
-      // var returnMirror = mirror.invoke(method.simpleName, []);
-      // futures.add(returnMirror.reflectee);
+// var returnMirror = mirror.invoke(method.simpleName, []);
+// futures.add(returnMirror.reflectee);
 
       test(name, () async {
         var returnMirror = mirror.invoke(method.simpleName, []);
@@ -158,8 +161,8 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
       var name = '$testName.${testCase.description ?? testCase.arguments}'; // '${method.simpleName}_${i++}';
 
       if (method.returnType.hasReflectedType && method.returnType.reflectedType == Future) {
-        //var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
-        //futures.add(returnMirror.reflectee);
+//var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
+//futures.add(returnMirror.reflectee);
 
         test(name, () async {
           var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);

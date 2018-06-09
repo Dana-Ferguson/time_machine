@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/Patterns/SteppedPatternBuilder.cs
-// 10dbf36  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -24,10 +25,8 @@ class _findLongestMatchCursor {
   int longestMatch = 0;
 }
 
-/// <summary>
 /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
 /// in turn.
-/// </summary>
 // where TBucket : ParseBucket<TResult>
 @internal /*sealed*/ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _aCodeUnit = 97;
@@ -48,31 +47,25 @@ class _findLongestMatchCursor {
   @internal PatternFields get UsedFields => _usedFields;
 
   @internal SteppedPatternBuilder(this.FormatInfo, this._bucketProvider);
-      // : _formatActions ,
-        // _parseActions = new List<ParseAction<TResult, TBucket>>();
+// : _formatActions ,
+// _parseActions = new List<ParseAction<TResult, TBucket>>();
 
-  /// <summary>
   /// Calls the bucket provider and returns a sample bucket. This means that any values
   /// normally propagated via the bucket can also be used when building the pattern.
-  /// </summary>
   @internal TBucket CreateSampleBucket() {
     return _bucketProvider();
   }
 
-  /// <summary>
   /// Sets this pattern to only be capable of formatting; any attempt to parse using the
   /// built pattern will fail immediately.
-  /// </summary>
   @internal void SetFormatOnly() {
     _formatOnly = true;
   }
 
-  /// <summary>
   /// Performs common parsing operations: start with a parse action to move the
   /// value cursor onto the first character, then call a character handler for each
   /// character in the pattern to build up the steps. If any handler fails,
   /// that failure is returned - otherwise the return value is null.
-  /// </summary>
   @internal void ParseCustomPattern(String patternText, Map<String, CharacterHandler<TResult, TBucket>> characterHandlers) {
     var patternCursor = new PatternCursor(patternText);
 
@@ -95,13 +88,11 @@ class _findLongestMatchCursor {
     }
   }
 
-  /// <summary>
   /// Validates the combination of fields used.
-  /// </summary>
   @internal void ValidateUsedFields() {
-  // We assume invalid combinations are global across all parsers. The way that
-  // the patterns are parsed ensures we never end up with any invalid individual fields
-  // (e.g. time fields within a date pattern).
+// We assume invalid combinations are global across all parsers. The way that
+// the patterns are parsed ensures we never end up with any invalid individual fields
+// (e.g. time fields within a date pattern).
 
     if ((_usedFields & (PatternFields.era | PatternFields.yearOfEra)) == PatternFields.era) {
       throw new InvalidPatternError(TextErrorMessages.EraWithoutYearOfEra);
@@ -112,11 +103,9 @@ class _findLongestMatchCursor {
     }
   }
 
-  /// <summary>
   /// Returns a built pattern. This is mostly to keep the API for the builder separate from that of the pattern,
   /// and for thread safety (publishing a new object, thus leading to a memory barrier).
   /// Note that this builder *must not* be used after the result has been built.
-  /// </summary>
   @internal IPartialPattern<TResult> Build(TResult sample) {
     // If we've got an embedded date and any *other* date fields, throw.
     if (_usedFields.HasAny(PatternFields.embeddedDate) &&
@@ -137,16 +126,14 @@ class _findLongestMatchCursor {
         formatDelegate.add(formatAction);
       }
 
-      // IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
-      // formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
+    // IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
+    // formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
     }
     return new SteppedPattern(formatDelegate, _formatOnly ? null : _parseActions, _bucketProvider, _usedFields, sample);
   }
 
-  /// <summary>
   /// Registers that a pattern field has been used in this pattern, and throws a suitable error
   /// result if it's already been used.
-  /// </summary>
   @internal void AddField(PatternFields field, String characterInPattern) {
     PatternFields newUsedFields = _usedFields | field;
     if (newUsedFields == _usedFields) {
@@ -161,10 +148,8 @@ class _findLongestMatchCursor {
 
   @internal void AddPostPatternParseFormatAction(IPostPatternParseFormatAction formatAction) => _formatActions.add(formatAction);
 
-  /// <summary>
-  /// Equivalent of <see cref="AddParseValueAction"/> but for 64-bit integers. Currently only
+  /// Equivalent of [AddParseValueAction] but for 64-bit integers. Currently only
   /// positive values are supported.
-  /// </summary>
   @internal void AddParseInt64ValueAction(int minimumDigits, int maximumDigits, String patternChar,
       int minimumValue, int maximumValue, Function(TBucket, int) valueSetter) {
     Preconditions.debugCheckArgumentRange('minimumValue', minimumValue, 0, Utility.int64MaxValue);
@@ -216,15 +201,13 @@ class _findLongestMatchCursor {
     });
   }
 
-  // ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
-  // internal void AddParseAction(ParseAction parseAction) => parseActions.Add(parseAction);
+// ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
+// internal void AddParseAction(ParseAction parseAction) => parseActions.Add(parseAction);
 
 
-  /// <summary>
   /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
-  /// </summary>
   @internal void AddLiteral1(String expectedText, ParseResult<TResult> Function(ValueCursor) failure) {
-// Common case - single character literal, often a date or time separator.
+    // Common case - single character literal, often a date or time separator.
     if (expectedText.length == 1) {
       String expectedChar = expectedText[0];
       AddParseAction((ValueCursor str, TBucket bucket) => str.MatchSingle(expectedChar) ? null : failure(str));
@@ -247,14 +230,12 @@ class _findLongestMatchCursor {
     builder.AddLiteral2(pattern.Current, ParseResult.EscapedCharacterMismatch);
   }
 
-  /// <summary>
   /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
   /// "use a custom format string consisting of H instead of a standard pattern H".
-  /// </summary>
   @internal static void HandlePercent<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     if (pattern.HasMoreCharacters) {
       if (pattern.PeekNext() != '%') {
-// Handle the next character as normal
+        // Handle the next character as normal
         return;
       }
       throw new InvalidPatternError(TextErrorMessages.PercentDoubled);
@@ -262,16 +243,15 @@ class _findLongestMatchCursor {
     throw new InvalidPatternError(TextErrorMessages.PercentAtEndOfString);
   }
 
-  /// <summary>
   /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
-  /// </summary>
-  /// <param name="maxCount">Maximum permissable count (usually two)</param>
-  /// <param name="field">Field to remember that we've seen</param>
-  /// <param name="minValue">Minimum valid value for the field (inclusive)</param>
-  /// <param name="maxValue">Maximum value value for the field (inclusive)</param>
-  /// <param name="getter">Delegate to retrieve the field value when formatting</param>
-  /// <param name="setter">Delegate to set the field value into a bucket when parsing</param>
-  /// <returns>The pattern parsing failure, or null on success.</returns>
+  ///
+  /// [maxCount]: Maximum permissable count (usually two)
+  /// [field]: Field to remember that we've seen
+  /// [minValue]: Minimum valid value for the field (inclusive)
+  /// [maxValue]: Maximum value value for the field (inclusive)
+  /// [getter]: Delegate to retrieve the field value when formatting
+  /// [setter]: Delegate to set the field value into a bucket when parsing
+  /// Returns: The pattern parsing failure, or null on success.
   @internal static CharacterHandler<TResult, TBucket> HandlePaddedField<TResult, TBucket extends ParseBucket<TResult>>(int maxCount, PatternFields field, int minValue, int maxValue,
       int Function(TResult) getter, int Function(TBucket, int) setter) {
     return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) {
@@ -282,24 +262,19 @@ class _findLongestMatchCursor {
     };
   }
 
-  /// <summary>
   /// Adds a character which must be matched exactly when parsing, and appended directly when formatting.
-  /// </summary>
   @internal void AddLiteral2(String expectedChar, ParseResult<TResult> Function(ValueCursor, String) failureSelector) {
     AddParseAction((ValueCursor str, TBucket bucket) => str.MatchSingle(expectedChar) ? null : failureSelector(str, expectedChar));
     AddFormatAction((TResult value, StringBuffer builder) => builder.write(expectedChar));
   }
 
-  /// <summary>
   /// Adds parse actions for a list of strings, such as days of the week or month names.
   /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
   /// match is used.
-  /// </summary>
-  /// <summary>
+  ///
   /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
   /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
   /// match is used.
-  /// </summary>
   @internal void AddParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo compareInfo, Iterable<String> textValues1,
       [Iterable<String> textValues2 = null]) {
     AddParseAction((ValueCursor str, TBucket bucket) {
@@ -334,10 +309,9 @@ class _findLongestMatchCursor {
         }
   */
 
-  /// <summary>
   /// Find the longest match from a given set of candidate strings, updating the index/length of the best value
   /// accordingly.
-  /// </summary> // todo: _findLongestMatchCursor should be a return value
+  ///  // todo: _findLongestMatchCursor should be a return value
   @private static void FindLongestMatch(CompareInfo compareInfo, ValueCursor cursor, List<String> values, _findLongestMatchCursor matchCursor) {
     for (int i = 0; i < values.length; i++) {
       String candidate = values[i];
@@ -351,11 +325,10 @@ class _findLongestMatchCursor {
     }
   }
 
-  /// <summary>
   /// Adds parse and format actions for a mandatory positive/negative sign.
-  /// </summary>
-  /// <param name="signSetter">Action to take when to set the given sign within the bucket</param>
-  /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
+  ///
+  /// [signSetter]: Action to take when to set the given sign within the bucket
+  /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void AddRequiredSign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     AddParseAction((ValueCursor str, TBucket bucket) {
       if (str.MatchSingle("-")) {
@@ -372,11 +345,10 @@ class _findLongestMatchCursor {
     AddFormatAction((TResult value, StringBuffer sb) => sb.write(nonNegativePredicate(value) ? "+" : "-"));
   }
 
-  /// <summary>
   /// Adds parse and format actions for an "negative only" sign.
-  /// </summary>
-  /// <param name="signSetter">Action to take when to set the given sign within the bucket</param>
-  /// <param name="nonNegativePredicate">Predicate to detect whether the value being formatted is non-negative</param>
+  ///
+  /// [signSetter]: Action to take when to set the given sign within the bucket
+  /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void AddNegativeOnlySign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     AddParseAction((ValueCursor str, TBucket bucket) {
       if (str.MatchSingle("-")) {
@@ -396,13 +368,12 @@ class _findLongestMatchCursor {
     });
   }
 
-  /// <summary>
   /// Adds an action to pad a selected value to a given minimum lenth.
-  /// </summary>
-  /// <param name="count">The minimum length to pad to</param>
-  /// <param name="selector">The selector function to apply to obtain a value to format</param>
-  /// <param name="assumeNonNegative">Whether it is safe to assume the value will be non-negative</param>
-  /// <param name="assumeFitsInCount">Whether it is safe to assume the value will not exceed the specified length</param>
+  ///
+  /// [count]: The minimum length to pad to
+  /// [selector]: The selector function to apply to obtain a value to format
+  /// [assumeNonNegative]: Whether it is safe to assume the value will be non-negative
+  /// [assumeFitsInCount]: Whether it is safe to assume the value will not exceed the specified length
   @internal void AddFormatLeftPad(int count, int Function(TResult) selector, {bool assumeNonNegative, bool assumeFitsInCount}) {
     if (count == 2 && assumeNonNegative && assumeFitsInCount) {
       AddFormatAction((TResult value, StringBuffer sb) => FormatHelper.Format2DigitsNonNegative(selector(value), sb));
@@ -424,9 +395,7 @@ class _findLongestMatchCursor {
   @internal void AddFormatFractionTruncate(int width, int scale, int Function(TResult) selector) =>
       AddFormatAction((TResult value, StringBuffer sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
 
-  /// <summary>
   /// Handles date, time and date/time embedded patterns.
-  /// </summary>
   @internal void AddEmbeddedLocalPartial(PatternCursor pattern,
       /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketExtractor,
       /*LocalTimePatternParser.*/LocalTimeParseBucket Function(TBucket) timeBucketExtractor,
@@ -523,9 +492,7 @@ class _findLongestMatchCursor {
         timeExtractor);
   }
 
-  /// <summary>
   /// Adds parsing/formatting of an embedded pattern, e.g. an offset within a ZonedDateTime/OffsetDateTime.
-  /// </summary>
   @internal void AddEmbeddedPattern<TEmbedded>(
       IPartialPattern<TEmbedded> embeddedPattern,
       Function(TBucket, TEmbedded) parseAction,
@@ -544,9 +511,7 @@ class _findLongestMatchCursor {
 }
 
 // todo: this was a C# hack ... it was inside SteppedPatternBuilder original ... this hack is messy
-/// <summary>
 /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
-/// </summary>
 @internal abstract class IPostPatternParseFormatAction<TResult>
 {
   Function(TResult, StringBuffer) BuildFormatAction(PatternFields finalFields);
@@ -556,7 +521,7 @@ class _findLongestMatchCursor {
 {
   // @private final Function(TResult, StringBuffer) formatActions;
   @private final List<Function(TResult, StringBuffer)> formatActions;
-// This will be null if the pattern is only capable of formatting.
+  // This will be null if the pattern is only capable of formatting.
   @private final Iterable<ParseAction<TResult, TBucket>> parseActions;
   @private final TBucket Function() bucketProvider;
   @private final PatternFields usedFields;

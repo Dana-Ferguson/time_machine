@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/OffsetDateTime.cs
-// 27cf251  on Nov 11, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
@@ -13,49 +14,47 @@ import 'package:time_machine/time_machine_calendars.dart';
 @immutable
 class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
-      // todo: We can't use this either
-  // @private static const int NanosecondsBits = 47;
+// todo: We can't use this either
+// @private static const int NanosecondsBits = 47;
 
-// todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
-//@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
-//@private static const int OffsetMask = ~NanosecondsMask;
+  // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
+  //@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
+  //@private static const int OffsetMask = ~NanosecondsMask;
   @private static const int MinBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
   @private static const int MaxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
-// These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
-// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
-// should allow us to optimize memory usage too. todo: this may not be the same in Dart
+  // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
+  // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
+  // should allow us to optimize memory usage too. todo: this may not be the same in Dart
   @private final YearMonthDayCalendar yearMonthDayCalendar;
 
 // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
 // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
 // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
-  // @private final int nanosecondsAndOffset;
+// @private final int nanosecondsAndOffset;
 
   @private final int _nanosecondOfDay;
   @private final Offset _offset;
 
-// TRUSTED
+  // TRUSTED
   @internal OffsetDateTime.fullTrust(this.yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
   {
     Calendar.ValidateYearMonthDay_(yearMonthDay);
   }
 
-// TRUSTED
+  // TRUSTED
   @internal OffsetDateTime.lessTrust(this.yearMonthDayCalendar, LocalTime time, Offset offset)
       : _nanosecondOfDay = time.NanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
     Calendar.ValidateYearMonthDay_(yearMonthDay);
   }
 
-  /// <summary>
   /// Optimized conversion from an Instant to an OffsetDateTime in the ISO calendar.
-  /// This is equivalent to <c>new OffsetDateTime(new LocalDateTime(instant.Plus(offset)), offset)</c>
+  /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset)), offset)`
   /// but with less overhead.
-  /// </summary>
   @internal factory OffsetDateTime.instant(Instant instant, Offset offset)
   {
-// unchecked
+    // unchecked
     int days = instant.daysSinceEpoch;
     int nanoOfDay = instant.nanosecondOfDay + offset.nanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) {
@@ -67,19 +66,17 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
     var yearMonthDayCalendar = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
-    // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
+// var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
 
     return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
-  /// <summary>
   /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
-  /// This is equivalent to <c>new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)</c>
+  /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)`
   /// but with less overhead.
-  /// </summary>
   @internal factory OffsetDateTime.instantCalendar(Instant instant, Offset offset, CalendarSystem calendar)
   {
-// unchecked
+    // unchecked
     int days = instant.daysSinceEpoch;
     int nanoOfDay = instant.nanosecondOfDay + offset.nanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) {
@@ -95,271 +92,201 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
-  /// <summary>
   /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
-  /// </summary>
-  /// <param name="localDateTime">Local date and time to represent</param>
-  /// <param name="offset">Offset from UTC</param>
+  ///
+  /// [localDateTime]: Local date and time to represent
+  /// [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
       : this.fullTrust(localDateTime.Date.yearMonthDayCalendar, localDateTime.NanosecondOfDay, offset); // _combineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
 
   static int _combineNanoOfDayAndOffset(int nanoOfDay, Offset offset) {
     return nanoOfDay + offset.nanoseconds;
-    // I don't think this will work for me, like it does in .NET (no 64 bit boolean operations in JSVM)
-    // return nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
+  // I don't think this will work for me, like it does in .NET (no 64 bit boolean operations in JSVM)
+  // return nanoOfDay | (((long) offset.Seconds) << NanosecondsBits);
   }
 
-  /// <summary>Gets the calendar system associated with this offset date and time.</summary>
-  /// <value>The calendar system associated with this offset date and time.</value>
+  /// Gets the calendar system associated with this offset date and time.
   CalendarSystem get Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.calendarOrdinal);
 
-  /// <summary>Gets the year of this offset date and time.</summary>
-  /// <remarks>This returns the "absolute year", so, for the ISO calendar,
-  /// a value of 0 means 1 BC, for example.</remarks>
-  /// <value>The year of this offset date and time.</value>
+  /// Gets the year of this offset date and time.
+  /// This returns the "absolute year", so, for the ISO calendar,
+  /// a value of 0 means 1 BC, for example.
   int get Year => yearMonthDayCalendar.year;
 
-  /// <summary>Gets the month of this offset date and time within the year.</summary>
-  /// <value>The month of this offset date and time within the year.</value>
+  /// Gets the month of this offset date and time within the year.
   int get Month => yearMonthDayCalendar.month;
 
-  /// <summary>Gets the day of this offset date and time within the month.</summary>
-  /// <value>The day of this offset date and time within the month.</value>
+  /// Gets the day of this offset date and time within the month.
   int get Day => yearMonthDayCalendar.day;
 
   @internal YearMonthDay get yearMonthDay => yearMonthDayCalendar.toYearMonthDay();
 
-  /// <summary>
-  /// Gets the week day of this offset date and time expressed as an <see cref="NodaTime.IsoDayOfWeek"/> value.
-  /// </summary>
-  /// <value>The week day of this offset date and time expressed as an <c>IsoDayOfWeek</c>.</value>
+  /// Gets the week day of this offset date and time expressed as an [IsoDayOfWeek] value.
   IsoDayOfWeek get DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.toYearMonthDay());
 
-  /// <summary>Gets the year of this offset date and time within the era.</summary>
-  /// <value>The year of this offset date and time within the era.</value>
+  /// Gets the year of this offset date and time within the era.
   int get YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.year);
 
-  /// <summary>Gets the era of this offset date and time.</summary>
-  /// <value>The era of this offset date and time.</value>
+  /// Gets the era of this offset date and time.
   Era get era => Calendar.GetEra(yearMonthDayCalendar.year);
 
-  /// <summary>Gets the day of this offset date and time within the year.</summary>
-  /// <value>The day of this offset date and time within the year.</value>
+  /// Gets the day of this offset date and time within the year.
   int get DayOfYear => Calendar.GetDayOfYear(yearMonthDayCalendar.toYearMonthDay());
 
-  /// <summary>
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
-  /// </summary>
-  /// <value>The hour of day of this offest date and time, in the range 0 to 23 inclusive.</value>
   int get Hour =>
-// Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
+  // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
   ((NanosecondOfDay >> 13) ~/ 439453125);
 
-  /// <summary>
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
-  /// </summary>
-  /// <value>The hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.</value>
   int get ClockHourOfHalfDay {
     int hourOfHalfDay = HourOfHalfDay;
     return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
   }
 
-// TODO(feature): Consider exposing this.
-  /// <summary>
+  // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
-  /// </summary>
-  /// <value>The hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.</value>
   @internal int get HourOfHalfDay => (Hour % 12);
 
-  /// <summary>
   /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
-  /// </summary>
-  /// <value>The minute of this offset date and time, in the range 0 to 59 inclusive.</value>
   int get Minute {
-// Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
+    // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
     int minuteOfDay = ((NanosecondOfDay >> 11) ~/ 29296875);
     return minuteOfDay % TimeConstants.minutesPerHour;
   }
 
-  /// <summary>
   /// Gets the second of this offset date and time within the minute, in the range 0 to 59 inclusive.
-  /// </summary>
-  /// <value>The second of this offset date and time within the minute, in the range 0 to 59 inclusive.</value>
   int get Second {
     int secondOfDay = (NanosecondOfDay ~/ TimeConstants.nanosecondsPerSecond);
     return secondOfDay % TimeConstants.secondsPerMinute;
   }
 
-  /// <summary>
   /// Gets the millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.
-  /// </summary>
-  /// <value>The millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.</value>
   int get Millisecond {
     int milliSecondOfDay = (NanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
     return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
   }
 
-// TODO(optimization): Rewrite for performance?
-  /// <summary>
+  // TODO(optimization): Rewrite for performance?
   /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
-  /// </summary>
-  /// <value>The tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.</value>
   int get TickOfSecond => ((TickOfDay % TimeConstants.ticksPerSecond));
 
-  /// <summary>
   /// Gets the tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  /// </summary>
-  /// <value>The tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.</value>
   int get TickOfDay => NanosecondOfDay ~/ TimeConstants.nanosecondsPerTick;
 
-  /// <summary>
   /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
-  /// </summary>
-  /// <value>The nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.</value>
   int get NanosecondOfSecond => ((NanosecondOfDay % TimeConstants.nanosecondsPerSecond));
 
-  /// <summary>
   /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  /// </summary>
-  /// <value>The nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.</value>
   int get NanosecondOfDay => _nanosecondOfDay; // nanosecondsAndOffset & NanosecondsMask;
 
-  /// <summary>
   /// Returns the local date and time represented within this offset date and time.
-  /// </summary>
-  /// <value>The local date and time represented within this offset date and time.</value>
-// todo: should this be a const? or cached -- or???
+  // todo: should this be a const? or cached -- or???
   LocalDateTime get localDateTime => new LocalDateTime(Date, TimeOfDay);
 
-  /// <summary>
   /// Gets the local date represented by this offset date and time.
-  /// </summary>
-  /// <remarks>
-  /// The returned <see cref="LocalDate"/>
+  ///
+  /// The returned [LocalDate]
   /// will have the same calendar system and return the same values for each of the date-based calendar
   /// properties (Year, MonthOfYear and so on), but will not have any offset information.
-  /// </remarks>
-  /// <value>The local date represented by this offset date and time.</value>
   LocalDate get Date => new LocalDate.trusted(yearMonthDayCalendar);
 
-  /// <summary>
   /// Gets the time portion of this offset date and time.
-  /// </summary>
-  /// <remarks>
-  /// The returned <see cref="LocalTime"/> will
+  ///
+  /// The returned [LocalTime] will
   /// return the same values for each of the time-based properties (Hour, Minute and so on), but
   /// will not have any offset information.
-  /// </remarks>
-  /// <value>The time portion of this offset date and time.</value>
   LocalTime get TimeOfDay => new LocalTime.fromNanoseconds(NanosecondOfDay);
 
-  /// <summary>
   /// Gets the offset from UTC.
-  /// </summary>
-  /// <value>The offset from UTC.</value>
   Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
-  /// <summary>
   /// Returns the number of nanoseconds in the offset, without going via an Offset.
-  /// </summary>
   @private int get OffsetNanoseconds => _offset.nanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
 
-  /// <summary>
-  /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
-  /// </summary>
-  /// <returns>The instant represented by this offset date and time</returns>
+/// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
+///
+/// Returns: The instant represented by this offset date and time
 
   Instant ToInstant() => new Instant.untrusted(ToElapsedTimeSinceEpoch());
 
   @private Span ToElapsedTimeSinceEpoch() {
-// Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
+    // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
     int days = Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.toYearMonthDay());
     Span elapsedTime = new Span(days: days, nanoseconds: NanosecondOfDay - OffsetNanoseconds);
-// Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
+    // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
   }
 
-  /// <summary>
-  /// Returns this value as a <see cref="ZonedDateTime"/>.
-  /// </summary>
-  /// <remarks>
-  /// <para>
-  /// This method returns a <see cref="ZonedDateTime"/> with the same local date and time as this value, using a
-  /// fixed time zone with the same offset as the offset for this value.
-  /// </para>
-  /// <para>
-  /// Note that because the resulting <c>ZonedDateTime</c> has a fixed time zone, it is generally not useful to
-  /// use this result for arithmetic operations, as the zone will not adjust to account for daylight savings.
-  /// </para>
-  /// </remarks>
-  /// <returns>A zoned date/time with the same local time and a fixed time zone using the offset from this value.</returns>
+/// Returns this value as a [ZonedDateTime].
+///
+/// This method returns a [ZonedDateTime] with the same local date and time as this value, using a
+/// fixed time zone with the same offset as the offset for this value.
+///
+/// Note that because the resulting `ZonedDateTime` has a fixed time zone, it is generally not useful to
+/// use this result for arithmetic operations, as the zone will not adjust to account for daylight savings.
+///
+/// Returns: A zoned date/time with the same local time and a fixed time zone using the offset from this value.
 
   ZonedDateTime get InFixedZone => new ZonedDateTime.trusted(this, DateTimeZone.ForOffset(offset));
 
-  /// <summary>
-  /// Returns this value in ths specified time zone. This method does not expect
-  /// the offset in the zone to be the same as for the current value; it simply converts
-  /// this value into an <see cref="Instant"/> and finds the <see cref="ZonedDateTime"/>
-  /// for that instant in the specified zone.
-  /// </summary>
-  /// <param name="zone">The time zone of the new value.</param>
-  /// <returns>The instant represented by this value, in the specified time zone.</returns>
+/// Returns this value in ths specified time zone. This method does not expect
+/// the offset in the zone to be the same as for the current value; it simply converts
+/// this value into an [Instant] and finds the [ZonedDateTime]
+/// for that instant in the specified zone.
+///
+/// [zone]: The time zone of the new value.
+/// Returns: The instant represented by this value, in the specified time zone.
 
   ZonedDateTime InZone(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
     return ToInstant().InZone(zone);
   }
 
-  /// <summary>
-  /// Creates a new OffsetDateTime representing the same physical date, time and offset, but in a different calendar.
-  /// The returned OffsetDateTime is likely to have different date field values to this one.
-  /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
-  /// </summary>
-  /// <param name="calendar">The calendar system to convert this offset date and time to.</param>
-  /// <returns>The converted OffsetDateTime.</returns>
+/// Creates a new OffsetDateTime representing the same physical date, time and offset, but in a different calendar.
+/// The returned OffsetDateTime is likely to have different date field values to this one.
+/// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+///
+/// [calendar]: The calendar system to convert this offset date and time to.
+/// Returns: The converted OffsetDateTime.
 
   OffsetDateTime WithCalendar(CalendarSystem calendar) {
     LocalDate newDate = Date.WithCalendar(calendar);
     return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
-  /// <summary>
-  /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
-  /// </summary>
-  /// <remarks>
-  /// If the adjuster attempts to construct an
-  /// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
-  /// that construction attempt will be propagated through this method.
-  /// </remarks>
-  /// <param name="adjuster">The adjuster to apply.</param>
-  /// <returns>The adjusted offset date/time.</returns>
+/// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
+///
+/// If the adjuster attempts to construct an
+/// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
+/// that construction attempt will be propagated through this method.
+///
+/// [adjuster]: The adjuster to apply.
+/// Returns: The adjusted offset date/time.
 
   OffsetDateTime WithDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = Date.With(adjuster);
     return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
-  /// <summary>
-  /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
-  /// </summary>
-  /// <remarks>
-  /// If the adjuster attempts to construct an invalid time, any exception thrown by
-  /// that construction attempt will be propagated through this method.
-  /// </remarks>
-  /// <param name="adjuster">The adjuster to apply.</param>
-  /// <returns>The adjusted offset date/time.</returns>
+/// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
+///
+/// If the adjuster attempts to construct an invalid time, any exception thrown by
+/// that construction attempt will be propagated through this method.
+///
+/// [adjuster]: The adjuster to apply.
+/// Returns: The adjusted offset date/time.
 
   OffsetDateTime WithTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = TimeOfDay.With(adjuster);
     return new OffsetDateTime.fullTrust(yearMonthDayCalendar, newTime.NanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
-  /// <summary>
-  /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
-  /// but with a different offset. The local date and time is adjusted accordingly.
-  /// </summary>
-  /// <param name="offset">The new offset to use.</param>
-  /// <returns>The converted OffsetDateTime.</returns>
+/// Creates a new OffsetDateTime representing the instant in time in the same calendar,
+/// but with a different offset. The local date and time is adjusted accordingly.
+///
+/// [offset]: The new offset to use.
+/// Returns: The converted OffsetDateTime.
 
   OffsetDateTime WithOffset(Offset offset) {
     // Slight change to the normal operation, as it's *just* about plausible that we change day
@@ -386,239 +313,204 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
         days == 0 ? yearMonthDayCalendar : Date
             .PlusDays(days)
             .yearMonthDayCalendar, nanos, offset);
-        // _combineNanoOfDayAndOffset(nanos, offset));
+  // _combineNanoOfDayAndOffset(nanos, offset));
   }
 
-  /// <summary>
-  /// Constructs a new <see cref="OffsetDate"/> from the date and offset of this value,
-  /// but omitting the time-of-day.
-  /// </summary>
-  /// <returns>A value representing the date and offset aspects of this value.</returns>
+/// Constructs a new [OffsetDate] from the date and offset of this value,
+/// but omitting the time-of-day.
+///
+/// Returns: A value representing the date and offset aspects of this value.
 
   OffsetDate ToOffsetDate() => new OffsetDate(Date, offset);
 
-  /// <summary>
-  /// Constructs a new <see cref="OffsetTime"/> from the time and offset of this value,
-  /// but omitting the date.
-  /// </summary>
-  /// <returns>A value representing the time and offset aspects of this value.</returns>
+/// Constructs a new [OffsetTime] from the time and offset of this value,
+/// but omitting the date.
+///
+/// Returns: A value representing the time and offset aspects of this value.
 
   OffsetTime ToOffsetTime() => new OffsetTime(TimeOfDay, offset);
 
-  /// <summary>
   /// Returns a hash code for this offset date and time.
-  /// </summary>
-  /// <returns>A hash code for this offset date and time.</returns>
+  ///
+  /// Returns: A hash code for this offset date and time.
   @override int get hashCode => hash2(LocalDateTime, offset);
 
-  /// <summary>
-  /// Compares two <see cref="OffsetDateTime"/> values for equality. This requires
+  /// Compares two [OffsetDateTime] values for equality. This requires
   /// that the local date/time values be the same (in the same calendar) and the offsets.
-  /// </summary>
-  /// <param name="other">The value to compare this offset date/time with.</param>
-  /// <returns>True if the given value is another offset date/time equal to this one; false otherwise.</returns>
+  ///
+  /// [other]: The value to compare this offset date/time with.
+  /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
       this.yearMonthDayCalendar == other.yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this._offset == other._offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
 
-  /// <summary>
-  /// Returns a <see cref="System.String" /> that represents this instance.
-  /// </summary>
-  /// <returns>
+  /// Returns a [String] that represents this instance.
+  ///
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
-  /// </returns>
   // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       OffsetDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
-  /// <summary>
-  /// Formats the value of the current instance using the specified pattern.
-  /// </summary>
-  /// <returns>
-  /// A <see cref="T:System.String" /> containing the value of the current instance in the specified format.
-  /// </returns>
-  /// <param name="patternText">The <see cref="T:System.String" /> specifying the pattern to use,
-  /// or null to use the default format pattern ("G").
-  /// </param>
-  /// <param name="formatProvider">The <see cref="T:System.IFormatProvider" /> to use when formatting the value,
-  /// or null to use the current thread's culture to obtain a format provider.
-  /// </param>
-  /// <filterpriority>2</filterpriority>
+/// Formats the value of the current instance using the specified pattern.
+///
+/// A [String] containing the value of the current instance in the specified format.
+///
+/// [patternText]: The [String] specifying the pattern to use,
+/// or null to use the default format pattern ("G").
+///
+/// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
+/// or null to use the current thread's culture to obtain a format provider.
+///
+/// <filterpriority>2</filterpriority>
 //  String toString_Format(String patternText, IFormatProvider formatProvider) =>
 //      OffsetDateTimePattern.Patterns.BclSupport.Format(this, patternText, formatProvider);
 
-  /// <summary>
   /// Adds a duration to an offset date and time.
-  /// </summary>
-  /// <remarks>
-  /// This is an alternative way of calling <see cref="op_Addition(OffsetDateTime, Duration)"/>.
-  /// </remarks>
-  /// <param name="offsetDateTime">The value to add the duration to.</param>
-  /// <param name="duration">The duration to add</param>
-  /// <returns>A new value with the time advanced by the given duration, in the same calendar system and with the same offset.</returns>
+  ///
+  /// This is an alternative way of calling [op_Addition(OffsetDateTime, Duration)].
+  ///
+  /// [offsetDateTime]: The value to add the duration to.
+  /// [duration]: The duration to add
+  /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
   static OffsetDateTime Add(OffsetDateTime offsetDateTime, Span span) => offsetDateTime + span;
 
-  /// <summary>
-  /// Returns the result of adding a duration to this offset date and time.
-  /// </summary>
-  /// <remarks>
-  /// This is an alternative way of calling <see cref="op_Addition(OffsetDateTime, Duration)"/>.
-  /// </remarks>
-  /// <param name="duration">The duration to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding a duration to this offset date and time.
+///
+/// This is an alternative way of calling [op_Addition(OffsetDateTime, Duration)].
+///
+/// [duration]: The duration to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime Plus(Span span) => this + span;
 
-  /// <summary>
-  /// Returns the result of adding a increment of hours to this zoned date and time
-  /// </summary>
-  /// <param name="hours">The number of hours to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding a increment of hours to this zoned date and time
+///
+/// [hours]: The number of hours to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusHours(int hours) => this + new Span(hours: hours);
 
-  /// <summary>
-  /// Returns the result of adding an increment of minutes to this zoned date and time
-  /// </summary>
-  /// <param name="minutes">The number of minutes to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding an increment of minutes to this zoned date and time
+///
+/// [minutes]: The number of minutes to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusMinutes(int minutes) => this + new Span(minutes: minutes);
 
-  /// <summary>
-  /// Returns the result of adding an increment of seconds to this zoned date and time
-  /// </summary>
-  /// <param name="seconds">The number of seconds to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding an increment of seconds to this zoned date and time
+///
+/// [seconds]: The number of seconds to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusSeconds(int seconds) => this + new Span(seconds: seconds);
 
-  /// <summary>
-  /// Returns the result of adding an increment of milliseconds to this zoned date and time
-  /// </summary>
-  /// <param name="milliseconds">The number of milliseconds to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding an increment of milliseconds to this zoned date and time
+///
+/// [milliseconds]: The number of milliseconds to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusMilliseconds(int milliseconds) => this + new Span(milliseconds: milliseconds);
 
-  /// <summary>
-  /// Returns the result of adding an increment of ticks to this zoned date and time
-  /// </summary>
-  /// <param name="ticks">The number of ticks to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding an increment of ticks to this zoned date and time
+///
+/// [ticks]: The number of ticks to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusTicks(int ticks) => this + new Span(ticks: ticks);
 
-  /// <summary>
-  /// Returns the result of adding an increment of nanoseconds to this zoned date and time
-  /// </summary>
-  /// <param name="nanoseconds">The number of nanoseconds to add</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the addition.</returns>
+/// Returns the result of adding an increment of nanoseconds to this zoned date and time
+///
+/// [nanoseconds]: The number of nanoseconds to add
+/// Returns: A new [OffsetDateTime] representing the result of the addition.
 
   OffsetDateTime PlusNanoseconds(int nanoseconds) => this + new Span(nanoseconds: nanoseconds);
 
-  /// <summary>
-  /// Returns a new <see cref="OffsetDateTime"/> with the time advanced by the given duration.
-  /// </summary>
-  /// <remarks>
-  /// The returned value retains the calendar system and offset of the <paramref name="offsetDateTime"/>.
-  /// </remarks>
-  /// <param name="offsetDateTime">The <see cref="OffsetDateTime"/> to add the duration to.</param>
-  /// <param name="duration">The duration to add.</param>
-  /// <returns>A new value with the time advanced by the given duration, in the same calendar system and with the same offset.</returns>
+  /// Returns a new [OffsetDateTime] with the time advanced by the given duration.
+  ///
+  /// The returned value retains the calendar system and offset of the [offsetDateTime].
+  ///
+  /// [offsetDateTime]: The [OffsetDateTime] to add the duration to.
+  /// [duration]: The duration to add.
+  /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
   OffsetDateTime operator +(Span span) =>
       new OffsetDateTime.instant(ToInstant() + span, offset);
 
-  /// <summary>
   /// Subtracts a duration from an offset date and time.
-  /// </summary>
-  /// <remarks>
-  /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, Duration)"/>.
-  /// </remarks>
-  /// <param name="offsetDateTime">The value to subtract the duration from.</param>
-  /// <param name="duration">The duration to subtract.</param>
-  /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.</returns>
+  ///
+  /// This is an alternative way of calling [op_Subtraction(OffsetDateTime, Duration)].
+  ///
+  /// [offsetDateTime]: The value to subtract the duration from.
+  /// [duration]: The duration to subtract.
+  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
   static OffsetDateTime Subtract(OffsetDateTime offsetDateTime, Span span) => offsetDateTime - span;
 
-  /// <summary>
-  /// Returns the result of subtracting a duration from this offset date and time, for a fluent alternative to
-  /// <see cref="op_Subtraction(OffsetDateTime, Duration)"/>
-  /// </summary>
-  /// <param name="duration">The duration to subtract</param>
-  /// <returns>A new <see cref="OffsetDateTime" /> representing the result of the subtraction.</returns>
+/// Returns the result of subtracting a duration from this offset date and time, for a fluent alternative to
+/// [op_Subtraction(OffsetDateTime, Duration)]
+///
+/// [duration]: The duration to subtract
+/// Returns: A new [OffsetDateTime] representing the result of the subtraction.
 
   OffsetDateTime MinusSpan(Span span) => new OffsetDateTime.instant(ToInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
-  /// <summary>
-  /// Returns a new <see cref="OffsetDateTime"/> with the duration subtracted.
-  /// </summary>
-  /// <remarks>
-  /// The returned value retains the calendar system and offset of the <paramref name="offsetDateTime"/>.
-  /// </remarks>
-  /// <param name="offsetDateTime">The value to subtract the duration from.</param>
-  /// <param name="duration">The duration to subtract.</param>
-  /// <returns>A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.</returns>
-  /// <summary>
-  /// Subtracts one <see cref="OffsetDateTime"/> from another, resulting in the elapsed time between
-  /// the two values.
-  /// </summary>
-  /// <remarks>
-  /// This is equivalent to <c>end.ToInstant() - start.ToInstant()</c>; in particular:
-  /// <list type="bullet">
-  ///   <item><description>The two values can use different calendar systems</description></item>
-  ///   <item><description>The two values can have different UTC offsets</description></item>
-  /// </list>
-  /// </remarks>
-  /// <param name="end">The offset date and time value to subtract from; if this is later than <paramref name="start"/>
-  /// then the result will be positive.</param>
-  /// <param name="start">The offset date and time to subtract from <paramref name="end"/>.</param>
-  /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
+/// Returns a new [OffsetDateTime] with the duration subtracted.
+///
+/// The returned value retains the calendar system and offset of the [offsetDateTime].
+///
+/// [offsetDateTime]: The value to subtract the duration from.
+/// [duration]: The duration to subtract.
+/// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
+/// Subtracts one [OffsetDateTime] from another, resulting in the elapsed time between
+/// the two values.
+///
+/// This is equivalent to `end.ToInstant() - start.ToInstant()`; in particular:
+/// <list type="bullet">
+///   <item><description>The two values can use different calendar systems</description></item>
+///   <item><description>The two values can have different UTC offsets</description></item>
+/// </list>
+///
+/// [end]: The offset date and time value to subtract from; if this is later than [start]
+/// then the result will be positive.
+/// [start]: The offset date and time to subtract from [end].
+/// Returns: The elapsed duration from [start] to [end].
 
   dynamic operator -(dynamic value) =>
-// todo: dynamic dispatch... still complaining... change API to prevent dynamic dispatch?
+  // todo: dynamic dispatch... still complaining... change API to prevent dynamic dispatch?
   value is Span ? MinusSpan(value) : value is OffsetDateTime ? MinusOffsetDateTime(value) : throw new TypeError();
 
-  // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
+// static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
 
-  /// <summary>
   /// Subtracts one offset date and time from another, returning an elapsed duration.
-  /// </summary>
-  /// <remarks>
-  /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, OffsetDateTime)"/>.
-  /// </remarks>
-  /// <param name="end">The offset date and time value to subtract from; if this is later than <paramref name="start"/>
-  /// then the result will be positive.</param>
-  /// <param name="start">The offset date and time to subtract from <paramref name="end"/>.</param>
-  /// <returns>The elapsed duration from <paramref name="start"/> to <paramref name="end"/>.</returns>
+  ///
+  /// This is an alternative way of calling [op_Subtraction(OffsetDateTime, OffsetDateTime)].
+  ///
+  /// [end]: The offset date and time value to subtract from; if this is later than [start]
+  /// then the result will be positive.
+  /// [start]: The offset date and time to subtract from [end].
+  /// Returns: The elapsed duration from [start] to [end].
   static Span SubtractOffsetDateTimes(OffsetDateTime end, OffsetDateTime start) => end.MinusOffsetDateTime(start);
 
-  /// <summary>
-  /// Returns the result of subtracting another offset date and time from this one, resulting in the elapsed duration
-  /// between the two instants represented in the values.
-  /// </summary>
-  /// <remarks>
-  /// This is an alternative way of calling <see cref="op_Subtraction(OffsetDateTime, OffsetDateTime)"/>.
-  /// </remarks>
-  /// <param name="other">The offset date and time to subtract from this one.</param>
-  /// <returns>The elapsed duration from <paramref name="other"/> to this value.</returns>
+/// Returns the result of subtracting another offset date and time from this one, resulting in the elapsed duration
+/// between the two instants represented in the values.
+///
+/// This is an alternative way of calling [op_Subtraction(OffsetDateTime, OffsetDateTime)].
+///
+/// [other]: The offset date and time to subtract from this one.
+/// Returns: The elapsed duration from [other] to this value.
 
   Span MinusOffsetDateTime(OffsetDateTime other) => ToInstant() - other.ToInstant();
 
 
-  /// <summary>
   /// Implements the operator == (equality).
-  /// </summary>
-  /// <param name="left">The left hand side of the operator.</param>
-  /// <param name="right">The right hand side of the operator.</param>
-  /// <returns><c>true</c> if values are equal to each other, otherwise <c>false</c>.</returns>
+  ///
+  /// [left]: The left hand side of the operator.
+  /// [right]: The right hand side of the operator.
+  /// Returns: `true` if values are equal to each other, otherwise `false`.
   bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
 }
 
 // todo: very unsure about what to do with these
 
-/// <summary>
-/// Implementation for <see cref="Comparer.Local"/>
-/// </summary>
+/// Implementation for [Comparer.Local]
 @private class OffsetDateTime_LocalComparer extends OffsetDateTimeComparer {
   @internal static final OffsetDateTimeComparer Instance = new OffsetDateTime_LocalComparer();
 
@@ -645,57 +537,45 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 }
 
 
-/// <summary>
-/// Base class for <see cref="OffsetDateTime"/> comparers.
-/// </summary>
-/// <remarks>
+/// Base class for [OffsetDateTime] comparers.
+///
 /// Use the static properties of this class to obtain instances. This type is exposed so that the
 /// same value can be used for both equality and ordering comparisons.
-/// </remarks>
 @immutable
 abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> // : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
     {
 // TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
 // but still uses the offset?
 
-  /// <summary>
-  /// Gets a comparer which compares <see cref="OffsetDateTime"/> values by their local date/time, without reference to
-  /// the offset. Comparisons between two values of different calendar systems will fail with <see cref="ArgumentException"/>.
-  /// </summary>
-  /// <remarks>
-  /// <para>For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
-  /// the second value represents a later instant in time.</para>
-  /// <para>This property will return a reference to the same instance every time it is called.</para>
-  /// </remarks>
-  /// <value>A comparer which compares values by their local date/time, without reference to the offset.</value>
+  /// Gets a comparer which compares [OffsetDateTime] values by their local date/time, without reference to
+  /// the offset. Comparisons between two values of different calendar systems will fail with [ArgumentException].
+  ///
+  /// For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
+  /// the second value represents a later instant in time.
+  /// This property will return a reference to the same instance every time it is called.
   static OffsetDateTimeComparer get local => OffsetDateTime_LocalComparer.Instance;
 
-  /// <summary>
-  /// Returns a comparer which compares <see cref="OffsetDateTime"/> values by the instant values obtained by applying the offset to
+  /// Returns a comparer which compares [OffsetDateTime] values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
-  /// </summary>
-  /// <remarks>
-  /// <para>For example, this comparer considers 2013-03-04T20:21:00+0100 to be earlier than 2013-03-04T19:21:00-0700 even though
-  /// the second value has a local time which is earlier.</para>
-  /// <para>This property will return a reference to the same instance every time it is called.</para>
-  /// </remarks>
+  ///
+  /// For example, this comparer considers 2013-03-04T20:21:00+0100 to be earlier than 2013-03-04T19:21:00-0700 even though
+  /// the second value has a local time which is earlier.
+  /// This property will return a reference to the same instance every time it is called.
+  ///
   /// <value>A comparer which compares values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
   static OffsetDateTimeComparer get instant => OffsetDateTime_InstantComparer.Instance;
 
-  /// <summary>
   /// @internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  /// </summary>
   @internal Comparer() {
   }
 
-  /// <summary>
-  /// Compares two <see cref="OffsetDateTime"/> values and returns a value indicating whether one is less than, equal to, or greater than the other.
-  /// </summary>
-  /// <param name="x">The first value to compare.</param>
-  /// <param name="y">The second value to compare.</param>
-  /// <returns>A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>, as shown in the following table.
+  /// Compares two [OffsetDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
+  ///
+  /// [x]: The first value to compare.
+  /// [y]: The second value to compare.
+  /// A signed integer that indicates the relative values of [x] and [y], as shown in the following table.
   ///   <list type = "table">
   ///     <listheader>
   ///       <term>Value</term>
@@ -703,40 +583,35 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   ///     </listheader>
   ///     <item>
   ///       <term>Less than zero</term>
-  ///       <description><paramref name="x"/> is less than <paramref name="y"/>.</description>
+  ///       <description>[x] is less than [y].</description>
   ///     </item>
   ///     <item>
   ///       <term>Zero</term>
-  ///       <description><paramref name="x"/> is equals to <paramref name="y"/>.</description>
+  ///       <description>[x] is equals to [y].</description>
   ///     </item>
   ///     <item>
   ///       <term>Greater than zero</term>
-  ///       <description><paramref name="x"/> is greater than <paramref name="y"/>.</description>
+  ///       <description>[x] is greater than [y].</description>
   ///     </item>
   ///   </list>
-  /// </returns>
   int compare(OffsetDateTime x, OffsetDateTime y);
 
-  /// <summary>
-  /// Determines whether the specified <c>OffsetDateTime</c> values are equal.
-  /// </summary>
-  /// <param name="x">The first <c>OffsetDateTime</c> to compare.</param>
-  /// <param name="y">The second <c>OffsetDateTime</c> to compare.</param>
-  /// <returns><c>true</c> if the specified objects are equal; otherwise, <c>false</c>.</returns>
+  /// Determines whether the specified `OffsetDateTime` values are equal.
+  ///
+  /// [x]: The first `OffsetDateTime` to compare.
+  /// [y]: The second `OffsetDateTime` to compare.
+  /// Returns: `true` if the specified objects are equal; otherwise, `false`.
   bool equals(OffsetDateTime x, OffsetDateTime y);
 
-  /// <summary>
-  /// Returns a hash code for the specified <c>OffsetDateTime</c>.
-  /// </summary>
-  /// <param name="obj">The <c>OffsetDateTime</c> for which a hash code is to be returned.</param>
-  /// <returns>A hash code for the specified value.</returns>
+  /// Returns a hash code for the specified `OffsetDateTime`.
+  ///
+  /// [obj]: The `OffsetDateTime` for which a hash code is to be returned.
+  /// Returns: A hash code for the specified value.
   int getHashCode(OffsetDateTime obj);
 }
 
 
-/// <summary>
-/// Implementation for <see cref="Comparer.Instant"/>.
-/// </summary>
+/// Implementation for [Comparer.Instant].
 @private class OffsetDateTime_InstantComparer extends OffsetDateTimeComparer {
   @internal static final OffsetDateTimeComparer Instance = new OffsetDateTime_InstantComparer();
 
@@ -745,7 +620,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) =>
-// TODO(optimization): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
+  // TODO(optimization): Optimize cases which are more than 2 days apart, by avoiding the arithmetic?
   x.ToElapsedTimeSinceEpoch().compareTo(y.ToElapsedTimeSinceEpoch());
 
   /// <inheritdoc />

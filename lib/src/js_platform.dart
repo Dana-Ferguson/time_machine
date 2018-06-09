@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
@@ -19,7 +22,7 @@ class TimeMachine {
   String _monthFormat;
   String _dayFormat;
 
-  // todo: Set DateFormat class ??? -- I could also use the Intl regular magic it provides!?
+// todo: Set DateFormat class ??? -- I could also use the Intl regular magic it provides!?
 
   TimeMachine _init() {
     try {

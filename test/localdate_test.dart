@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalDateTest.cs
-// 773f136  on Nov 8, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -17,9 +18,7 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
 /// Using the default constructor is equivalent to January 1st 1970, UTC, ISO calendar
-/// </summary>
 @Test()
 void DefaultConstructor()
 {

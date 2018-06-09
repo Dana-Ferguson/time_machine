@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 
 import 'package:time_machine/src/utility/preconditions.dart';
@@ -5,8 +8,6 @@ import 'package:time_machine/src/utility/preconditions.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine.dart';
 
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Calendars/GregorianYearMonthDayCalculator.cs
-// fe70212  on Apr 26, 2017
 
 @internal
 class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
@@ -78,7 +79,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
         isLeap = _isGregorianLeapYear(year);
       }
 
-      // The remaining code is copied from GJYearMonthDayCalculator (and tweaked)
+// The remaining code is copied from GJYearMonthDayCalculator (and tweaked)
 
       int startOfMonth;
       // Perform a hard-coded binary search to get the month.
@@ -109,8 +110,8 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
 
   @internal @override
   int getStartOfYearInDays(int year) {
-// 2014-06-28: Tried removing this entirely (optimized: 5ns => 8ns; unoptimized: 11ns => 8ns)
-// Decided to leave it in, as the optimized case is so much more common.
+    // 2014-06-28: Tried removing this entirely (optimized: 5ns => 8ns; unoptimized: 11ns => 8ns)
+    // Decided to leave it in, as the optimized case is so much more common.
     if (year < _firstOptimizedYear || year > _lastOptimizedYear) {
       return super.getStartOfYearInDays(year);
     }
@@ -185,3 +186,4 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
 
   static bool _isGregorianLeapYear(int year) => ((year & 3) == 0) && (csharpMod(year, 100) != 0 || csharpMod(year, 400) == 0);
 }
+

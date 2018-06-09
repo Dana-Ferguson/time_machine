@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/DurationPatternParser.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -145,7 +146,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 // todo: convert int to BigInt for Dart 2.0
-/// Provides a container for the interim parsed pieces of an <see cref="Offset" /> value.
+/// Provides a container for the interim parsed pieces of an [Offset] value.
 @private /*sealed*/ class SpanParseBucket extends ParseBucket<Span> {
   @private static final /*BigInt*/ int BigIntegerNanosecondsPerDay = TimeConstants.nanosecondsPerDay;
 

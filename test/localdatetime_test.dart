@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalDateTimeTest.cs
-// 69dedbc  9 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -70,7 +71,7 @@ void FromDateTime_WithCalendar()
 {
   // Julian calendar is 13 days behind Gregorian calendar in the 21st century
   LocalDateTime expected = new LocalDateTime.fromYMDHMC(2011, 08, 05, 20, 53, CalendarSystem.Julian);
-  // print('Expected day of year: ${expected.date.DaysSinceEpoch}');
+// print('Expected day of year: ${expected.date.DaysSinceEpoch}');
 
   // todo: I don't understand what the test is doing here, this doesn't work with DateTime() local.
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
@@ -259,12 +260,10 @@ void CompareTo_DifferentCalendars_Throws()
   LocalDateTime value2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 10, 30, islamic);
 
   expect(() => value1.compareTo(value2), throwsArgumentError);
-  // expect(() => ((IComparable)value1).CompareTo(value2), throwsArgumentError);
+// expect(() => ((IComparable)value1).CompareTo(value2), throwsArgumentError);
 }
 
-/// <summary>
 /// IComparable.CompareTo works properly for LocalDateTime inputs with different calendars.
-/// </summary>
 @Test()
 void IComparableCompareTo_SameCalendar()
 {
@@ -280,9 +279,7 @@ void IComparableCompareTo_SameCalendar()
   expect(i_value3.compareTo(value2),  greaterThan(0));
 }
 
-/// <summary>
 /// IComparable.CompareTo returns a positive number for a null input.
-/// </summary>
 @Test()
 void IComparableCompareTo_Null_Positive()
 {
@@ -293,10 +290,8 @@ void IComparableCompareTo_Null_Positive()
   expect(result,  greaterThan(0));
 }
 
-/// <summary>
 /// IComparable.CompareTo throws an ArgumentException for non-null arguments
 /// that are not a LocalDateTime.
-/// </summary>
 @Test()
 void IComparableCompareTo_WrongType_ArgumentException()
 {
@@ -345,10 +340,8 @@ void InZoneStrictly_InSummer()
   expect(new Offset.fromHours(-7), zoned.offset);
 }
 
-/// <summary>
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
 /// so 2am became 1am.
-/// </summary>
 @Test()
 void InZoneStrictly_ThrowsWhenAmbiguous()
 {
@@ -356,10 +349,8 @@ void InZoneStrictly_ThrowsWhenAmbiguous()
   expect(() => local.InZoneStrictly(Pacific), willThrow<AmbiguousTimeError>());
 }
 
-/// <summary>
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
 /// so 2am became 3am. This means that 2.30am doesn't exist on that day.
-/// </summary>
 @Test()
 void InZoneStrictly_ThrowsWhenSkipped()
 {
@@ -367,10 +358,8 @@ void InZoneStrictly_ThrowsWhenSkipped()
   expect(() => local.InZoneStrictly(Pacific), willThrow<SkippedTimeError>());
 }
 
-/// <summary>
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
 /// so 2am became 1am. We'll return the earlier result, i.e. with the offset of -7
-/// </summary>
 @Test()
 void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
@@ -380,11 +369,9 @@ void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
   expect(new Offset.fromHours(-7), zoned.offset);
 }
 
-/// <summary>
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
 /// so 2am became 3am. This means that 2:30am doesn't exist on that day.
 /// We'll return 3:30am, the forward-shifted value.
-/// </summary>
 @Test()
 void InZoneLeniently_ReturnsStartOfSecondInterval()
 {
@@ -404,9 +391,7 @@ void InZone()
   expect(Pacific.AtLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
 }
 
-/// <summary>
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
@@ -481,4 +466,5 @@ void MinMax_SameCalendar()
 //  expect(expectedTime, actualTime);
 //  });
 //}
+
 

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/PeriodTest.cs
-// 048d8db  on Mar 7
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -445,7 +446,7 @@ void Equality_WhenUnequal()
   expect(new Period.fromHours(1).Equals(new Period.fromMinutes(60)), isFalse);
   // expect(new Period.fromHours(1).Equals(new Object()), isFalse);
   expect(new Period.fromHours(1).Equals(null), isFalse);
-  // expect(new Period.fromHours(1).Equals(null), isFalse);
+// expect(new Period.fromHours(1).Equals(null), isFalse);
 }
 
 @Test()
@@ -973,10 +974,9 @@ void AddPeriodToPeriod_Overflow()
   expect(() => (p1 + p2).hashCode, throwsStateError);
 }*/
 
-/// <summary>
 /// Just a simple way of parsing a period string. It's a more compact period representation.
-/// </summary>
 Period Parse(String text)
 {
   return PeriodPattern.Roundtrip.Parse(text).Value;
 }
+

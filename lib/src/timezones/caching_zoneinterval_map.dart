@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/CachingZoneIntervalMap.cs
-// 16aacad  on Aug 26, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -11,17 +12,13 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-/// <summary>
 /// Helper methods for creating IZoneIntervalMaps which cache results.
-/// </summary>
 @internal abstract class CachingZoneIntervalMap
 {
-  // Currently the only implementation is HashArrayCache. This container class is mostly for historical
-  // reasons; it's not really necessary but it does no harm.
+// Currently the only implementation is HashArrayCache. This container class is mostly for historical
+// reasons; it's not really necessary but it does no harm.
 
-  /// <summary>
   /// Returns a caching map for the given input map.
-  /// </summary>
   @internal static IZoneIntervalMap CacheMap(IZoneIntervalMap map)
   {
     return new HashArrayCache(map);
@@ -29,11 +26,9 @@ import 'package:time_machine/time_machine_timezones.dart';
 }
 
 // #region Nested type: HashArrayCache
-/// <summary>
 /// This provides a simple cache based on two hash tables (one for local instants, another
 /// for instants).
-/// </summary>
-/// <remarks>
+///
 /// Each hash table entry is either entry or contains a node with enough
 /// information for a particular "period" of 32 days - so multiple calls for time
 /// zone information within the same few years are likely to hit the cache. Note that
@@ -42,7 +37,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 ///
 /// If another call is made which maps to the same cache entry number but is for a different
 /// period, the existing hash entry is simply overridden.
-/// </remarks>
 // sealed
 @private class HashArrayCache implements IZoneIntervalMap {
   // Currently we have no need or way to create hash cache zones with
@@ -54,10 +48,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   // result will always be in the range [0, CacheSize).
   @private static const int CachePeriodMask = CacheSize - 1;
 
-  /// <summary>
   /// Defines the number of bits to shift an instant's "days since epoch" to get the period. This
   /// converts an instant into a number of 32 day periods.
-  /// </summary>
   @private static const int PeriodShift = 5;
 
   @private final List<HashCacheNode> instantCache = new List<HashCacheNode>(CacheSize);
@@ -65,15 +57,14 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal HashArrayCache(this.map) {
     Preconditions.checkNotNull(map, 'map');
-    // instantCache = new HashCacheNode[CacheSize];
+  // instantCache = new HashCacheNode[CacheSize];
   }
 
-  /// <summary>
   /// Gets the zone offset period for the given instant. Null is returned if no period is
   /// defined by the time zone for the given instant.
-  /// </summary>
-  /// <param name="instant">The Instant to test.</param>
-  /// <returns>The defined ZoneOffsetPeriod or null.</returns>
+  ///
+  /// [instant]: The Instant to test.
+  /// Returns: The defined ZoneOffsetPeriod or null.
   ZoneInterval GetZoneInterval(Instant instant) {
     int period = instant.daysSinceEpoch >> PeriodShift;
     int index = period & CachePeriodMask;
@@ -104,13 +95,11 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal final HashCacheNode Previous;
 
-  /// <summary>
   /// Creates a hash table node with all the information for this period.
   /// We start off by finding the interval for the start of the period, and
   /// then repeatedly check whether that interval ends after the end of the
   /// period - at which point we're done. If not, find the next interval, create
   /// a new node referring to that interval and the previous interval, and keep going.
-  /// </summary>
   @internal static HashCacheNode CreateNode(int period, IZoneIntervalMap map) {
     var days = period << HashArrayCache.PeriodShift;
     var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
@@ -132,11 +121,11 @@ import 'package:time_machine/time_machine_timezones.dart';
     return node;
   }
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="HashCacheNode"/> class.
-  /// </summary>
-  /// <param name="interval">The zone interval.</param>
-  /// <param name="period"></param>
-  /// <param name="previous">The previous <see cref="HashCacheNode"/> node.</param>
+  /// Initializes a new instance of the [HashCacheNode] class.
+  ///
+  /// [interval]: The zone interval.
+  /// [period]: 
+  /// [previous]: The previous [HashCacheNode] node.
   @private HashCacheNode(this.Interval, this.Period, this.Previous);
 }
+

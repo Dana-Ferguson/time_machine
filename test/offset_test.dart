@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/OffsetTest.cs
-// 74067a7  12 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -73,12 +74,11 @@ void FromTimeSpan_Simple()
   expect(Offset.FromHours(2), Offset.FromTimeSpan(ts));
 }*/
 
-/// <summary>
 ///   Using the default constructor is equivalent to Offset.Zero
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
   var actual = new Offset();
   expect(Offset.zero, actual);
 }
+

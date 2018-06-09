@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/MiscellaneousBugReports.cs
-// 8d5399d  on Feb 26, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -67,9 +68,7 @@ Future Khartoum() async
   expect(expectedLocal, inKhartoum.localDateTime);
 }
 
-/// <summary>
 /// Tbilisi used daylight saving time for winter 1996/1997 too.
-/// </summary>
 @Test()
 Future Tbilisi() async
 {
@@ -79,3 +78,4 @@ Future Tbilisi() async
   expect(new LocalDateTime.fromYMDHM(1996, 3, 31, 1, 0), interval.IsoLocalStart);
   expect(new LocalDateTime.fromYMDHM(1997, 10, 26, 0, 0), interval.IsoLocalEnd);
 }
+

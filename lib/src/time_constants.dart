@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/NodaConstants.cs
-// 9ab1f86  on Feb 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 // https://www.dartlang.org/guides/language/effective-dart/style#prefer-using-lowercamelcase-for-constant-names
 
@@ -36,8 +37,8 @@ class TimeConstants {
   static const int millisecondsPerDay = millisecondsPerHour * hoursPerDay;
   static const int millisecondsPerWeek = millisecondsPerDay * daysPerWeek;
 
-  // todo: we are probably not using Durations
-  // static const Duration ZERO = const Duration(seconds: 0);
+// todo: we are probably not using Durations
+// static const Duration ZERO = const Duration(seconds: 0);
 
   static const int nanosecondsPerTick = 100;
   static const int nanosecondsPerMicrosecond = 1000;

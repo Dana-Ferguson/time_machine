@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/PeriodPatternTest.cs
-// cae7975  on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -25,9 +26,7 @@ Future main() async {
   await runTests();
 }
 
-/// <summary>
-/// A container for test data for formatting and parsing <see cref="Period" /> objects.
-/// </summary>
+/// A container for test data for formatting and parsing [Period] objects.
 /*sealed*/ class Data extends PatternTestData<Period> {
 // Irrelevant
 /*protected*/ @override Period get DefaultTemplate => new Period.fromDays(0);

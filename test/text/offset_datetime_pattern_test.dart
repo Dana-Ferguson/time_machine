@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/OffsetDateTimePatternTest.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -28,8 +29,8 @@ Future main() async {
 
 @Test()
 class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns. We've got an offset of 1 hour though.
+  // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+  // the expected results of the standard patterns. We've got an offset of 1 hour though.
   @private static final OffsetDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.WithOffset(new Offset.fromHours(1));
   @private static final OffsetDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.WithOffset(new Offset.fromHours(1));
 
@@ -46,11 +47,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "dd MM yyyy HH:MM:SS"
       ..Message = TextErrorMessages.RepeatedFieldInPattern
       ..Parameters.addAll(['M']),
-// Note incorrect use of "u" (year) instead of "y" (year of era)
+    // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
       ..Message = TextErrorMessages.EraWithoutYearOfEra,
-// Era specifier and calendar specifier in the same pattern.
+    // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
       ..Message = TextErrorMessages.CalendarAndEra,
@@ -58,7 +59,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "g"
       ..Message = TextErrorMessages.UnknownStandardFormat
       ..Parameters.addAll(['g', 'OffsetDateTime']),
-// Invalid patterns involving embedded values
+    // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "ld<d> yyyy"
       ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
@@ -101,7 +102,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   ];
 
   @internal List<Data> ParseFailureData = [
-// Failures copied from LocalDateTimePatternTest
+    // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
       ..Text = "Complete mismatch"
@@ -111,7 +112,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "(c)"
       ..Text = "(xxx)"
       ..Message = TextErrorMessages.NoMatchingCalendarSystem,
-// 24 as an hour is only valid when the time is midnight
+    // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:05"
@@ -142,7 +143,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-// Parse-only tests from LocalDateTimeTest.
+    // Parse-only tests from LocalDateTimeTest.
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
       ..Text = "19 10 2011"
@@ -152,7 +153,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Text = "16:05:20"
       ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).WithOffset(Offset.zero),
 
-// Parsing using the semi-colon "comma dot" specifier
+    // Parsing using the semi-colon "comma dot" specifier
     new Data.e(
         2011,
         10,
@@ -174,7 +175,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm:ss;FFF"
       ..Text = "2011-10-19 16:05:20,352",
 
-// 24:00 meaning "start of next day"
+    // 24:00 meaning "start of next day"
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:00",
@@ -195,15 +196,15 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "ddd yyyy"
       ..Text = "Wed 2011",
 
-// Our template value has an offset of 0, but the value has an offset of 1... which is ignored by the pattern
+    // Our template value has an offset of 0, but the value has an offset of 1... which is ignored by the pattern
     new Data(MsdnStandardExample)
       ..Pattern = "yyyy-MM-dd HH:mm:ss.FF"
       ..Text = "2009-06-15 13:45:30.09"
   ];
 
   @internal List<Data> FormatAndParseData = [
-// Copied from LocalDateTimePatternTest
-// Calendar patterns are invariant
+    // Copied from LocalDateTimePatternTest
+    // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFF o<G>"
       ..Text = "(ISO) 2009-06-15T13:45:30.09 +01"
@@ -217,7 +218,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 //new Data(SampleOffsetDateTimeCoptic) ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF o<G>"..Text = "(Coptic) 1976-06-19T21:13:34.123456789 Z"..Culture = TestCultures.FrFr ,
 //new Data(SampleOffsetDateTimeCoptic) ..Pattern = "uuuu-MM-dd'C'c'T'HH:mm:ss.FFFFFFFFF o<g>"..Text = "1976-06-19CCopticT21:13:34.123456789 +00"..Culture = TestCultures.EnUs ,
 
-// Standard patterns (all invariant)
+    // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDateTimePattern.GeneralIso
       ..Pattern = "G"
@@ -234,14 +235,14 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Text = "2009-06-15T13:45:30.09+01 (ISO)"
       ..Culture = TestCultures.FrFr,
 
-// Property-only patterns            
+    // Property-only patterns            
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.Rfc3339
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..Text = "2009-06-15T13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,
 
-// Custom embedded patterns (or mixture of custom and standard)
+    // Custom embedded patterns (or mixture of custom and standard)
     new Data.d(
         2015,
         10,
@@ -293,7 +294,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "ld<yyyy*MM*dd>'X'lt<T> o<g>"
       ..Text = "2015*10*24X11:55:30 +03",
 
-// Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
+    // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
     new Data.d(
         2015,
         10,
@@ -345,7 +346,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "l<G> o<g>"
       ..Text = "10/24/2015 11:55:30 +03",
 
-// Nested embedded patterns
+    // Nested embedded patterns
     new Data.d(
         2015,
         10,
@@ -367,12 +368,12 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> o<g>"
       ..Text = "X11_55_30Y2015*10*24X +03",
 
-// Check that unquoted T still works.
+    // Check that unquoted T still works.
     new Data.c(2012, 1, 31, 17, 36, 45)
       ..Text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-ddTHH:mm:ss",
 
-// Fields not otherwise covered
+    // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "d MMMM yyyy (g) h:mm:ss.FF tt o<g>"
       ..Text = "15 June 2009 (A.D.) 1:45:30.09 PM +01",
@@ -399,12 +400,12 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       expect("23/08/2017 12:34 +02", pattern.Format(odt));
     }
 
-    // todo: @SkipMe() -- This is the same FrCA we've been seeing (.netCore ICU culture is different than windows culture)
-//    CultureInfo.currentCulture = TestCultures.FrCa;
-//    {
-//      var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
-//      expect("2017-08-23 12:34 +02", pattern.Format(odt));
-//    }
+  // todo: @SkipMe() -- This is the same FrCA we've been seeing (.netCore ICU culture is different than windows culture)
+  //    CultureInfo.currentCulture = TestCultures.FrCa;
+  //    {
+  //      var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
+  //      expect("2017-08-23 12:34 +02", pattern.Format(odt));
+  //    }
   }
 
   @Test()
@@ -429,7 +430,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     var parsed = pattern
         .Parse("2017-08-23")
         .Value;
-// Local time of template value was 13:30
+    // Local time of template value was 13:30
     expect(new LocalDateTime.fromYMDHMS(2017, 8, 23, 13, 30, 0), parsed.localDateTime);
     expect(new Offset.fromHours(2), parsed.offset);
   }
@@ -453,10 +454,9 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   // Default to the start of the year 2000 UTC
   /*protected*/ @override OffsetDateTime get DefaultTemplate => OffsetDateTimePattern.DefaultTemplateValue;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePattern.DefaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
@@ -487,3 +487,4 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   IPattern<OffsetDateTime> CreatePattern() =>
       OffsetDateTimePattern.Create2(super.Pattern, super.Culture, Template);
 }
+

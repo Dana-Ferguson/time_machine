@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/InstantPatternTest.cs
-// 57e7c6f  on Nov 8, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -43,7 +44,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..Pattern = "\\"
       ..Message = TextErrorMessages.UnknownStandardFormat
       ..Parameters.addAll(['\\', 'Instant']),
-// Just a few - these are taken from other tests
+    // Just a few - these are taken from other tests
     new Data()
       ..Pattern = "%%"
       ..Message = TextErrorMessages.PercentDoubled,
@@ -93,7 +94,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   @Test()
   void CreateWithCurrentCulture() {
-// using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
+    // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = InstantPattern.CreateWithCurrentCulture("HH:mm:ss");
@@ -112,15 +113,13 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @Test()
   void ParseNull() => AssertParseNull(InstantPattern.General);
 
-  /// <summary>
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  /// </summary>
   @internal final List<Data> FormatAndParseData = [
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..Text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-dd'T'HH:mm:ss",
-// Check that unquoted T still works.
+    // Check that unquoted T still works.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       .. Text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-ddTHH:mm:ss",
@@ -138,7 +137,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..Text = "9999-12-31T23:59:59.999999999Z"
       ..Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
 
-// General pattern has no standard single character.
+    // General pattern has no standard single character.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..StandardPattern = InstantPattern.General
       ..Text = "2012-01-31T17:36:45Z"
@@ -150,9 +149,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 }
 
-/// <summary>
-/// A container for test data for formatting and parsing <see cref="LocalTime" /> objects.
-/// </summary>
+/// A container for test data for formatting and parsing [LocalTime] objects.
 /*sealed*/ class Data extends PatternTestData<Instant> {
 /*protected*/ @override Instant get DefaultTemplate => TimeConstants.unixEpoch;
 
@@ -166,3 +163,4 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   IPattern<Instant> CreatePattern() =>
       InstantPattern.CreateWithInvariantCulture(super.Pattern).WithCulture(Culture);
 }
+

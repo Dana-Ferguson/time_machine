@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -9,29 +12,22 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 
-/// <summary>
-/// Extends <see cref="TextCursor"/> to simplify parsing patterns such as "uuuu-MM-dd".
-/// </summary>
+/// Extends [TextCursor] to simplify parsing patterns such as "uuuu-MM-dd".
 @internal /*sealed*/ class PatternCursor extends TextCursor {
-  /// <summary>
   /// The character signifying the start of an embedded pattern.
-  /// </summary>
   @internal static const String EmbeddedPatternStart = '<';
 
-  /// <summary>
   /// The character signifying the end of an embedded pattern.
-  /// </summary>
   @internal static const String EmbeddedPatternEnd = '>';
 
   @internal PatternCursor(String pattern)
       : super(pattern);
 
-  /// <summary>
   /// Gets the quoted string.
-  /// </summary>
-  /// <remarks>The cursor is left positioned at the end of the quoted region.</remarks>
-  /// <param name="closeQuote">The close quote character to match for the end of the quoted string.</param>
-  /// <returns>The quoted string sans open and close quotes. This can be an empty string but will not be null.</returns>
+  ///
+  /// The cursor is left positioned at the end of the quoted region.
+  /// [closeQuote]: The close quote character to match for the end of the quoted string.
+  /// Returns: The quoted string sans open and close quotes. This can be an empty string but will not be null.
   @internal String GetQuotedString(String closeQuote) {
     var builder = new StringBuffer(); //Length - Index);
     bool endQuoteFound = false;
@@ -55,12 +51,11 @@ import 'package:time_machine/time_machine_patterns.dart';
     return builder.toString();
   }
 
-  /// <summary>
   /// Gets the pattern repeat count. The cursor is left on the final character of the
   /// repeated sequence.
-  /// </summary>
-  /// <param name="maximumCount">The maximum number of repetitions allowed.</param>
-  /// <returns>The repetition count which is alway at least <c>1</c>.</returns>
+  ///
+  /// [maximumCount]: The maximum number of repetitions allowed.
+  /// Returns: The repetition count which is alway at least `1`.
   @internal int GetRepeatCount(int maximumCount) {
     String patternCharacter = Current;
     int startPos = Index;
@@ -74,23 +69,19 @@ import 'package:time_machine/time_machine_patterns.dart';
     return repeatLength;
   }
 
-  /// <summary>
   /// Returns a string containing the embedded pattern within this one.
-  /// </summary>
-  /// <remarks>
-  /// <para>
-  /// The cursor is expected to be positioned immediately before the <see cref="EmbeddedPatternStart"/> character (<c>&lt;</c>),
-  /// and on success the cursor will be positioned on the <see cref="EmbeddedPatternEnd" /> character (<c>&gt;</c>).
-  /// </para>
-  /// <para>Quote characters (' and ") and escaped characters (escaped with a backslash) are handled
+  ///
+  /// The cursor is expected to be positioned immediately before the [EmbeddedPatternStart] character (`&lt;`),
+  /// and on success the cursor will be positioned on the [EmbeddedPatternEnd] character (`&gt;`).
+  ///
+  /// Quote characters (' and ") and escaped characters (escaped with a backslash) are handled
   /// but not unescaped: the resulting pattern should be ready for parsing as normal. It is assumed that the
-  /// embedded pattern will itself handle embedded patterns, so if the input is on the first <c>&lt;</c>
-  /// of <c>"before &lt;outer1 &lt;inner&gt; outer2&gt; after"</c>
-  /// this method will return <c>"outer1 &lt;inner&gt; outer2"</c> and the cursor will be positioned
-  /// on the final <c>&gt;</c> afterwards.
-  /// </para>
-  /// </remarks>
-  /// <returns>The embedded pattern, not including the start/end pattern characters.</returns>
+  /// embedded pattern will itself handle embedded patterns, so if the input is on the first `&lt;`
+  /// of `"before &lt;outer1 &lt;inner&gt; outer2&gt; after"`
+  /// this method will return `"outer1 &lt;inner&gt; outer2"` and the cursor will be positioned
+  /// on the final `&gt;` afterwards.
+  ///
+  /// Returns: The embedded pattern, not including the start/end pattern characters.
   @internal String GetEmbeddedPattern() {
     if (!MoveNext() || Current != EmbeddedPatternStart) {
       throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternStart, [EmbeddedPatternStart]));

@@ -1,58 +1,43 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:test/test.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
-/// <summary>
 /// Alternative to AbstractFormattingData for tests which deal with patterns directly. This does not
 /// include properties which are irrelevant to the pattern tests but which are used by the BCL-style
 /// formatting tests (e.g. thread culture).
-/// </summary>
 abstract class PatternTestData<T> {
   @internal final T Value;
 
   /*final*/
   T DefaultTemplate;
 
-  /// <summary>
   /// Culture of the pattern.
-  /// </summary>
   @internal CultureInfo Culture = CultureInfo.invariantCulture;
 
-  /// <summary>
   /// Standard pattern, expected to format/parse the same way as Pattern.
-  /// </summary>
   @internal IPattern<T> StandardPattern;
 
-  /// <summary>
   /// Pattern text.
-  /// </summary>
   @internal String Pattern;
 
-  /// <summary>
   /// String value to be parsed, and expected result of formatting.
-  /// </summary>
   @internal String Text;
 
-  /// <summary>
   /// Template value to specify in the pattern
-  /// </summary>
   @internal T Template;
 
-  /// <summary>
   /// Extra description for the test case
-  /// </summary>
   @internal String Description;
 
-  /// <summary>
   /// Message format to verify for exceptions.
-  /// </summary>
   @internal String Message;
 
-  /// <summary>
   /// Message parameters to verify for exceptions.
-  /// </summary>
   @internal final List Parameters = new List();
 
   @internal PatternTestData(this.Value) {
@@ -167,10 +152,8 @@ abstract class PatternTestData<T> {
     }
   }
 
-  /// <summary>
   /// Formats a message, giving a *useful* error message on failure. It can be a pain checking exactly what
   /// the message format is when writing tests...
-  /// </summary>
   @private static String FormatMessage(String message, List parameters) {
     try {
       return stringFormat(message, parameters);

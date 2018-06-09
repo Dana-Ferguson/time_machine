@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -37,14 +40,10 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   }
 }
 
-/// <summary>
 /// Common methods used when parsing dates - these are used from both LocalDateTimePatternParser
 /// and LocalDatePatternParser.
-/// </summary>
 @internal abstract class DatePatternHelper {
-  /// <summary>
   /// Creates a character handler for the year-of-era specifier (y).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) yearGetter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder builder) {
@@ -61,7 +60,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
           builder.AddField(PatternFields.yearTwoDigits, pattern.Current);
           break;
         case 4:
-        // Left-pad to 4 digits when formatting; parse exactly 4 digits.
+          // Left-pad to 4 digits when formatting; parse exactly 4 digits.
           builder.AddParseValueAction(4, 4, 'y', 1, 9999, setter);
           builder.AddFormatLeftPad(4, yearGetter,
               assumeNonNegative: false,
@@ -72,12 +71,10 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
       }
     };
 
-    // (pattern, builder) => _createYearofEraHandler(pattern, builder);
+  // (pattern, builder) => _createYearofEraHandler(pattern, builder);
   }
 
-  /// <summary>
   /// Creates a character handler for the month-of-year specifier (M).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) numberGetter, Function(TBucket, int) textSetter, Function(TBucket, int) numberSetter) {
     return (PatternCursor pattern, SteppedPatternBuilder builder) {
@@ -118,9 +115,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   }
 
 
-  /// <summary>
   /// Creates a character handler for the day specifier (d).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateDayHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) dayOfMonthGetter, int Function(TResult) dayOfWeekGetter,
       Function(TBucket, int) dayOfMonthSetter, Function(TBucket, int) dayOfWeekSetter) {
@@ -150,9 +145,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     };
   }
 
-  /// <summary>
   /// Creates a character handler for the era specifier (g).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (Era Function(TResult) eraFromValue, /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketFromBucket) {
     return (pattern, builder) {
@@ -172,9 +165,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     };
   }
 
-  /// <summary>
   /// Creates a character handler for the calendar specifier (c).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCalendarHandler<TResult, TBucket extends ParseBucket<TResult>>
       (CalendarSystem Function(TResult) getter, Function(TBucket, CalendarSystem) setter) {
     return (pattern, builder) {
@@ -193,3 +184,4 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     };
   }
 }
+

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/OffsetDateTest.cs
-// 90fe960  on Nov 27, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -20,7 +21,7 @@ Future main() async {
 @Test()
 void LocalDateProperties()
 {
-  // todo: determine equivalent of this test
+// todo: determine equivalent of this test
 //  LocalDate local = new LocalDate.forCalendar(2012, 6, 19, CalendarSystem.Julian);
 //  Offset offset = new Offset.fromHours(5);
 //
@@ -143,3 +144,4 @@ void ToString_NoFormat()
 }
 
 */
+

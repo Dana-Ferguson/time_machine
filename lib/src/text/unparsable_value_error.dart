@@ -1,6 +1,8 @@
-/// <summary>
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 /// Exception thrown to indicate that the specified value could not be parsed.
-/// </summary>
+///
 /// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
 /// See the thread safety section of the user guide for more information.
 /// </threadsafety>
@@ -8,10 +10,9 @@
 class UnparsableValueError extends Error { // extends FormatException {
   final String message;
 
-  /// <summary>
   /// Creates a new UnparsableValueException with the given message.
-  /// </summary>
-  /// <param name="message">The failure message</param>
+  ///
+  /// [message]: The failure message
   UnparsableValueError(this.message);
 
   @override String toString() => message;

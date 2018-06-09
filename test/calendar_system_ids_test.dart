@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
@@ -22,7 +25,7 @@ final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.
 void ValidId(String id)
 {
   expect(CalendarSystem.ForId(id), new isInstanceOf<CalendarSystem>());
-  // Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
+// Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
 }
 
 @Test()
@@ -30,7 +33,7 @@ void ValidId(String id)
 void IdsAreCaseSensitive(String id)
 {
   expect(() => CalendarSystem.ForId(id.toLowerCase()), throwsArgumentError);
-  // Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
+// Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
 }
 
 @Test()
@@ -38,14 +41,14 @@ void AllIdsGiveDifferentCalendars()
 {
     var allCalendars = SupportedIds.map(CalendarSystem.ForId).toList();
     expect(SupportedIds.length, allCalendars.toSet().length);
-    // Assert.AreEqual(SupportedIds.Count(), allCalendars.Distinct().Count());
+// Assert.AreEqual(SupportedIds.Count(), allCalendars.Distinct().Count());
 }
 
 @Test()
 void BadId()
 {
   expect(() => CalendarSystem.ForId("bad"), throwsArgumentError);
-  // Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
+// Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
 }
 
 @Test()
@@ -66,8 +69,8 @@ void NoSubstrings()
                 isNot(0),
                 reason: "$firstId is a leading substring of $secondId");
 
-            // Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.length, secondId, 0, firstId.length, CompareOptions.IgnoreCase),
-            //     "$firstId is a leading substring of $secondId");
+        // Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.length, secondId, 0, firstId.length, CompareOptions.IgnoreCase),
+        //     "$firstId is a leading substring of $secondId");
         }
     }
 }
@@ -79,7 +82,7 @@ void NoSubstrings()
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
   expect(calendar, CalendarSystem.ForOrdinal(calendar.ordinal));
-  // Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
+// Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
 }
 
 @Test()
@@ -87,12 +90,12 @@ void ForOrdinal_Roundtrip(CalendarSystem calendar)
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
   expect(calendar, CalendarSystem.ForOrdinalUncached(calendar.ordinal));
-  // Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
+// Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
 }
 
 @Test()
 void ForOrdinalUncached_Invalid()
 {
   expect(() => CalendarSystem.ForOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
-  // Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
+// Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
 }

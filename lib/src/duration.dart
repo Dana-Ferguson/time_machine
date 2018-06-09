@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 //import 'dart:core' as core show Duration;
 //import 'dart:core' hide Duration;
 import 'dart:math' as math;
@@ -48,8 +51,8 @@ class Span implements Comparable<Span> {
   static const int _minNano = 0;
   static const int _maxNano = TimeConstants.nanosecondsPerMillisecond - 1; // 999999;
 
-  // this is only true on the VM....
-  // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
+// this is only true on the VM....
+// static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
   static const Span zero = const Span._trusted(0);
   /// Gets a [Span] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
@@ -133,7 +136,7 @@ class Span implements Comparable<Span> {
     intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
     intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
 
-    // print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
+// print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
 
     return new Span._untrusted(totalMilliseconds, intervalNanoseconds);
   }
@@ -149,11 +152,11 @@ class Span implements Comparable<Span> {
       microseconds: milliseconds * TimeConstants.microsecondsPerMillisecond
           + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
-  // todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
-  // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
-  // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
-  //  where I use floor() if it's negative) .. or does the VM basically already cover that.
-  // int get days2 => floorDays;
+// todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
+// todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
+// todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
+//  where I use floor() if it's negative) .. or does the VM basically already cover that.
+// int get days2 => floorDays;
 
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
   int get hours => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
@@ -208,8 +211,8 @@ class Span implements Comparable<Span> {
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
 
-  // todo: we need a good formatting story -- work with (or be compatible with DateFormat class)
-  // @override toString() => '$totalSeconds seconds';
+// todo: we need a good formatting story -- work with (or be compatible with DateFormat class)
+// @override toString() => '$totalSeconds seconds';
 
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       SpanPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
@@ -223,14 +226,14 @@ class Span implements Comparable<Span> {
   Span minus(Span other) => this - other;
 
   Span operator*(num factor) => new Span._untrusted(_milliseconds * factor, _nanosecondsInterval * factor);
-  // Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
+// Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
 
   // note: this is wrong'ish*
   // Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
   // note: this works on VM (because of BigInt)
   Span operator/(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
-  // This is what it will look like in JS -- only fails 1 unit test though
-  // Span operator/(num factor) => new Span(nanoseconds: ((_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) / factor).toInt());
+// This is what it will look like in JS -- only fails 1 unit test though
+// Span operator/(num factor) => new Span(nanoseconds: ((_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) / factor).toInt());
 
   Span multiply(num factor) => this * factor;
   Span divide(num factor) => this / factor;

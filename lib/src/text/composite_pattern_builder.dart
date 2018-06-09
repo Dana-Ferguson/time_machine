@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/CompositePatternBuilder.cs
-// 95327c5  on Apr 10, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -12,22 +13,20 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-/// <summary>
 /// A builder for composite patterns.
-/// </summary>
-/// <remarks>
+///
 /// A composite pattern is a combination of multiple patterns. When parsing, these are checked
-/// in the order in which they are added to the builder with the <see cref="Add(IPattern{T}, Func{T, bool})"/>
+/// in the order in which they are added to the builder with the [Add(IPattern{T}, Func{T, bool})]
 /// method, by trying to parse and seeing if the result is a successful one. When formatting,
 /// the patterns are checked in the reverse order, using the predicate provided along with the pattern
-/// when calling <c>Add</c>. The intention is that patterns are added in "most precise first" order,
+/// when calling `Add`. The intention is that patterns are added in "most precise first" order,
 /// and the predicate should indicate whether it can fully represent the given value - so the "less precise"
 /// (and therefore usually shorter) pattern can be used first.
-/// </remarks>
+///
 /// <typeparam name="T">The type of value to be parsed or formatted by the resulting pattern.</typeparam>
 /// <threadsafety>
 /// This type is mutable, and should not be used between multiple threads. The patterns created
-/// by the <see cref="Build"/> method are immutable and can be used between multiple threads, assuming
+/// by the [Build] method are immutable and can be used between multiple threads, assuming
 /// that each component (both pattern and predicate) is also immutable.
 /// </threadsafety>
 /*sealed*/ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
@@ -35,29 +34,25 @@ import 'package:time_machine/time_machine_text.dart';
   @private final List<IPattern<T>> patterns = new List<IPattern<T>>();
   @private final List<bool Function(T)> formatPredicates = new List<bool Function(T)>();
 
-  /// <summary>
   /// Constructs a new instance which initially has no component patterns. At least one component
-  /// pattern must be added before <see cref="Build"/> is called.
-  /// </summary>
+  /// pattern must be added before [Build] is called.
   CompositePatternBuilder();
 
-  /// <summary>
   /// Adds a component pattern to this builder.
-  /// </summary>
-  /// <param name="pattern">The component pattern to use as part of the eventual composite pattern.</param>
-  /// <param name="formatPredicate">A predicate to determine whether or not this pattern is suitable for
-  /// formatting the given value.</param>
+  ///
+  /// [pattern]: The component pattern to use as part of the eventual composite pattern.
+  /// [formatPredicate]: A predicate to determine whether or not this pattern is suitable for
+  /// formatting the given value.
   void Add(IPattern<T> pattern, bool Function(T) formatPredicate) {
     patterns.add(Preconditions.checkNotNull(pattern, 'pattern'));
     formatPredicates.add(Preconditions.checkNotNull(formatPredicate, 'formatPredicate'));
   }
 
-  /// <summary>
   /// Builds a composite pattern from this builder. Further changes to this builder
   /// will have no impact on the returned pattern.
-  /// </summary>
-  /// <exception cref="InvalidOperationException">No component patterns have been added.</exception>
-  /// <returns>A pattern using the patterns added to this builder.</returns>
+  ///
+  /// [InvalidOperationException]: No component patterns have been added.
+  /// Returns: A pattern using the patterns added to this builder.
   IPattern<T> Build() {
     Preconditions.checkState(patterns.length != 0, "A composite pattern must have at least one component pattern.");
     return new CompositePattern(patterns, formatPredicates);
@@ -70,8 +65,8 @@ import 'package:time_machine/time_machine_text.dart';
 
   /// <inheritdoc />
   Iterable<IPattern<T>> GetEnumerator() => patterns; // GetEnumerator();
-  /// <inheritdoc />
-  // Iterable GetEnumerator() => patterns;
+/// <inheritdoc />
+// Iterable GetEnumerator() => patterns;
 }
 
 @private /*sealed*/ class CompositePattern<T> implements IPartialPattern<T> {

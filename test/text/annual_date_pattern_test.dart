@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/AnnualDatePatternTest.cs
-// c77bb7b  23 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -74,12 +75,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..Message = TextErrorMessages.MissingEndQuote
       ..Parameters.addAll([ '\'']),
 
-// Common typo (m doesn't mean months)
+    // Common typo (m doesn't mean months)
     new Data()
       ..Pattern = "mm-dd"
       ..Message = TextErrorMessages.UnquotedLiteral
       ..Parameters.addAll([ 'm']),
-// T isn't valid in a date pattern
+    // T isn't valid in a date pattern
     new Data()
       ..Pattern = "MM-ddT00:00:00"
       ..Message = TextErrorMessages.UnquotedLiteral
@@ -100,20 +101,20 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..Pattern = "MM/dd"
       ..Text = "02-29"
       ..Message = TextErrorMessages.DateSeparatorMismatch,
-// Don't match a short name against a long pattern
+    // Don't match a short name against a long pattern
     new Data()
       ..Pattern = "MMMM dd"
       ..Text = "Oct 09"
       ..Message = TextErrorMessages.MismatchedText
       ..Parameters.addAll(['M']),
-// Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
+    // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
     new Data()
       ..Pattern = "MMM dd"
       ..Text = "October 09"
       ..Message = TextErrorMessages.MismatchedCharacter
       ..Parameters.addAll([' ']),
 
-// Invalid month, day
+    // Invalid month, day
     new Data()
       ..Pattern = "MM dd"
       ..Text = "15 29"
@@ -127,7 +128,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-// Month parsing should be case-insensitive
+    // Month parsing should be case-insensitive
     new Data.monthDay(10, 3)
       ..Pattern = "MMM dd"
       ..Text = "OcT 03",
@@ -135,7 +136,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..Pattern = "MMMM dd"
       ..Text = "OcToBeR 03",
 
-// Genitive name is an extension of the non-genitive name; parse longer first.
+    // Genitive name is an extension of the non-genitive name; parse longer first.
     new Data.monthDay(1, 10)
       ..Pattern = "MMMM dd"
       ..Text = "MonthName-Genitive 10"
@@ -157,12 +158,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   @internal List<Data> FormatOnlyData = [];
 
   @internal List<Data> FormatAndParseData = [
-// Standard patterns
+    // Standard patterns
     new Data.monthDay(10, 20)
       ..Pattern = "G"
       ..Text = "10-20",
 
-// Custom patterns
+    // Custom patterns
     new Data.monthDay(10, 3)
       ..Pattern = "MM/dd"
       ..Text = "10/03",
@@ -177,20 +178,20 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..Pattern = "M d"
       ..Text = "7 3",
 
-// Template value provides the month when we only specify the day
+    // Template value provides the month when we only specify the day
     new Data.monthDay(5, 10)
       ..Pattern = "dd"
       ..Text = "10"
       ..Template = new AnnualDate(5, 20),
-// Template value provides the day when we only specify the month
+    // Template value provides the day when we only specify the month
     new Data.monthDay(10, 20)
       ..Pattern = "MM"
       ..Text = "10"
       ..Template = new AnnualDate(5, 20),
 
-// When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
-// the template value is specified to allow simple roundtripping.
-// Non-genitive month name when there's no "day of month"
+    // When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
+    // the template value is specified to allow simple roundtripping.
+    // Non-genitive month name when there's no "day of month"
     new Data.monthDay(1, 3)
       ..Pattern = "MMMM"
       ..Text = "FullNonGenName"
@@ -201,20 +202,20 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..Text = "AbbrNonGenName"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new AnnualDate(5, 3),
-// Genitive month name when the pattern includes "day of month"
+    // Genitive month name when the pattern includes "day of month"
     new Data.monthDay(1, 3)
       ..Pattern = "MMMM dd"
       ..Text = "FullGenName 03"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new AnnualDate(5, 3),
-// TODO: Check whether or not this is actually appropriate
+    // TODO: Check whether or not this is actually appropriate
     new Data.monthDay(1, 3)
       ..Pattern = "MMM dd"
       ..Text = "AbbrGenName 03"
       ..Culture = TestCultures.GenitiveNameTestCulture
       ..Template = new AnnualDate(5, 3),
 
-// Month handling with both text and numeric
+    // Month handling with both text and numeric
     new Data.monthDay(10, 9)
       ..Pattern = "MMMM dd MM"
       ..Text = "October 09 10",
@@ -274,13 +275,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
 }
 
 /*sealed*/ class Data extends PatternTestData<AnnualDate> {
-// Default to January 1st
+  // Default to January 1st
   @override AnnualDate get DefaultTemplate => AnnualDatePattern.DefaultTemplateValue;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   Data([AnnualDate value = null]) : super(value ?? AnnualDatePattern.DefaultTemplateValue)
   {
   }
@@ -294,3 +294,4 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
           .WithTemplateValue(Template)
           .WithCulture(Culture);
 }
+

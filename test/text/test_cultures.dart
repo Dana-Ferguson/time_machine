@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/Cultures.cs
-// d7bc0f8  12 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -42,8 +43,8 @@ import 'text_cursor_test_base_tests.dart';
       34,
       CalendarSystem.Coptic).PlusNanoseconds(123456789);*/
 
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns.
+  // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+  // the expected results of the standard patterns.
   @internal static final LocalDateTime MsdnStandardExample = new LocalDateTime.fromYMDHMSM(
       2009,
       06,
@@ -56,9 +57,7 @@ import 'text_cursor_test_base_tests.dart';
   @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.fromYMDHM(2009, 06, 15, 13, 45);
 }
 
-/// <summary>
 /// Cultures to use from various tests.
-/// </summary>
 @internal abstract class TestCultures {
   /*
   // Force the cultures to be read-only for tests, to take advantage of caching. Note that on .NET Core,
@@ -83,8 +82,8 @@ import 'text_cursor_test_base_tests.dart';
     return null;
   }
 
-  // Specify en-US patterns explicitly, as .NET Core on Linux gives a different answer. We
-  // don't need it to be US English really, just an example...
+// Specify en-US patterns explicitly, as .NET Core on Linux gives a different answer. We
+// don't need it to be US English really, just an example...
 
   // Generated this from C#
   static final CultureInfo EnUs =

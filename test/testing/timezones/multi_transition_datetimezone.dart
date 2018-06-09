@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Testing/TimeZones/MultiTransitionDateTimeZone.cs
-// 9b8ed83  on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:math' as math;
 
@@ -9,20 +10,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 T min<T extends Comparable>(x, y) => x < y ? x : y;
 T max<T extends Comparable>(x, y) => x > y ? x : y;
 
-/// <summary>
 /// Time zone with multiple transitions, created via a builder.
-/// </summary>
 class MultiTransitionDateTimeZone extends DateTimeZone {
-  /// <summary>
   /// Gets the zone intervals within this time zone, in chronological order, spanning the whole time line.
-  /// </summary>
-  /// <value>The zone intervals within this time zone, in chronological order, spanning the whole time line.</value>
   final List<ZoneInterval> Intervals;
 
-  /// <summary>
   /// Gets the transition points between intervals.
-  /// </summary>
-  /// <value>The transition points between intervals.</value>
   final List<Instant> Transitions;
 
   MultiTransitionDateTimeZone(String id, List<ZoneInterval> intervals)
@@ -55,10 +48,8 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
   }
 }
 
-/// <summary>
-/// Builder to create instances of <see cref="MultiTransitionDateTimeZone"/>. Each builder
+/// Builder to create instances of [MultiTransitionDateTimeZone]. Each builder
 /// can only be built once.
-/// </summary>
 class MtdtzBuilder {
   final List<ZoneInterval> intervals = new List<ZoneInterval>();
   Offset currentStandardOffset;
@@ -66,10 +57,7 @@ class MtdtzBuilder {
   String currentName;
   bool built = false;
 
-  /// <summary>
   /// Gets the ID of the time zone which will be built.
-  /// </summary>
-  /// <value>The ID of the time zone which will be built.</value>
   String id;
 
 //  /// <summary>
@@ -78,12 +66,11 @@ class MtdtzBuilder {
 //  /// </summary>
 //  Builder() : this(0, 0);
 
-  /// <summary>
   /// Constructs a builder using the given first name, standard offset, and a daylight saving
   /// offset of 0. The ID is initially "MultiZone".
-  /// </summary>
-  /// <param name="firstName">Name of the first zone interval.</param>
-  /// <param name="firstOffsetHours">Standard offset in hours in the first zone interval.</param>
+  ///
+  /// [firstName]: Name of the first zone interval.
+  /// [firstOffsetHours]: Standard offset in hours in the first zone interval.
   MtdtzBuilder.withName(int firstOffsetHours, String firstName)
       : this(firstOffsetHours, 0, firstName);
 
@@ -96,13 +83,12 @@ class MtdtzBuilder {
 //      : this(firstStandardOffsetHours, firstSavingOffsetHours, "First") {
 //  }
 
-  /// <summary>
   /// Constructs a builder using the given first name, standard offset, and daylight saving offset.
   /// The ID is initially "MultiZone".
-  /// </summary>
-  /// <param name="firstStandardOffsetHours">Standard offset in hours in the first zone interval.</param>
-  /// <param name="firstSavingOffsetHours">Daylight saving offset in hours in the first zone interval.</param>
-  /// <param name="firstName">Name of the first zone interval.</param>
+  ///
+  /// [firstStandardOffsetHours]: Standard offset in hours in the first zone interval.
+  /// [firstSavingOffsetHours]: Daylight saving offset in hours in the first zone interval.
+  /// [firstName]: Name of the first zone interval.
   MtdtzBuilder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0, String firstName = "First"]) {
     id = "MultiZone";
     currentName = firstName;
@@ -110,14 +96,13 @@ class MtdtzBuilder {
     currentSavings = new Offset.fromHours(firstSavingOffsetHours);
   }
 
-  /// <summary>
   /// Adds a transition at the given instant, to the specified new standard offset,
   /// with the new specified daylight saving. The name is generated from the transition.
-  /// </summary>
-  /// <param name="transition">Instant at which the zone changes.</param>
-  /// <param name="newStandardOffsetHours">The new standard offset, in hours.</param>
-  /// <param name="newSavingOffsetHours">The new daylight saving offset, in hours.</param>
-  /// <param name="newName">The new zone interval name.</param>
+  ///
+  /// [transition]: Instant at which the zone changes.
+  /// [newStandardOffsetHours]: The new standard offset, in hours.
+  /// [newSavingOffsetHours]: The new daylight saving offset, in hours.
+  /// [newName]: The new zone interval name.
   void Add(Instant transition, int newStandardOffsetHours, [int newSavingOffsetHours = 0, String newName = null]) {
     if (newName == null) newName = "Interval from $transition";
 
@@ -130,10 +115,9 @@ class MtdtzBuilder {
     currentSavings = new Offset.fromHours(newSavingOffsetHours);
   }
 
-  /// <summary>
-  /// Builds a <see cref="MultiTransitionDateTimeZone"/> from this builder, invalidating it in the process.
-  /// </summary>
-  /// <returns>The newly-built zone.</returns>
+  /// Builds a [MultiTransitionDateTimeZone] from this builder, invalidating it in the process.
+  ///
+  /// Returns: The newly-built zone.
   MultiTransitionDateTimeZone Build() {
     EnsureNotBuilt();
     built = true;

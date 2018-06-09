@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
@@ -9,69 +12,59 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-/// <summary>
-/// Represents a pattern for parsing and formatting <see cref="Period"/> values.
-/// </summary>
+/// Represents a pattern for parsing and formatting [Period] values.
+///
 /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
 /*sealed*/ class PeriodPattern implements IPattern<Period> {
-  /// <summary>
   /// Pattern which uses the normal ISO format for all the supported ISO
   /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
   /// No normalization is carried out, and a period may contain weeks as well as years, months and days.
   /// Each element may also be negative, independently of other elements. This pattern round-trips its
   /// values: a parse/format cycle will produce an identical period, including units.
-  /// </summary>
+  ///
   /// <value>
   /// Pattern which uses the normal ISO format for all the supported ISO
   /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
   /// </value>
   static final PeriodPattern Roundtrip = new PeriodPattern(new _RoundtripPatternImpl());
 
-  /// <summary>
   /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
   /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized
   /// (extending into days where necessary), and fractions of seconds are represented within the
   /// seconds part. Unlike ISO-8601, which pattern allows for negative values within a period.
-  /// </summary>
-  /// <remarks>
-  /// Note that normalizing the period when formatting will cause an <see cref="System.OverflowException"/>
-  /// if the period contains more than <see cref="System.Int64.MaxValue"/> ticks when the
+  ///
+  /// Note that normalizing the period when formatting will cause an [System.OverflowException]
+  /// if the period contains more than [System.Int64.MaxValue] ticks when the
   /// combined weeks/days/time portions are considered. Such a period could never
   /// be useful anyway, however.
-  /// </remarks>
-  /// <value>A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.</value>
   static final PeriodPattern NormalizingIso = new PeriodPattern(new _NormalizingIsoPatternImpl());
 
   @private final IPattern<Period> pattern;
 
   @private PeriodPattern(IPattern<Period> pattern) : this.pattern = Preconditions.checkNotNull(pattern, 'pattern');
 
-  /// <summary>
   /// Parses the given text value according to the rules of this pattern.
-  /// </summary>
-  /// <remarks>
+  ///
   /// This method never throws an exception (barring a bug in Noda Time itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
-  /// </remarks>
-  /// <param name="text">The text value to parse.</param>
-  /// <returns>The result of parsing, which may be successful or unsuccessful.</returns>
+  ///
+  /// [text]: The text value to parse.
+  /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<Period> Parse(String text) => pattern.Parse(text);
 
-  /// <summary>
   /// Formats the given period as text according to the rules of this pattern.
-  /// </summary>
-  /// <param name="value">The period to format.</param>
-  /// <returns>The period formatted according to this pattern.</returns>
+  ///
+  /// [value]: The period to format.
+  /// Returns: The period formatted according to this pattern.
   String Format(Period value) => pattern.Format(value);
 
-  /// <summary>
   /// Formats the given value as text according to the rules of this pattern,
-  /// appending to the given <see cref="StringBuffer"/>.
-  /// </summary>
-  /// <param name="value">The value to format.</param>
-  /// <param name="builder">The <c>StringBuffer</c> to append to.</param>
-  /// <returns>The builder passed in as <paramref name="builder"/>.</returns>
+  /// appending to the given [StringBuffer].
+  ///
+  /// [value]: The value to format.
+  /// [builder]: The `StringBuffer` to append to.
+  /// Returns: The builder passed in as [builder].
   StringBuffer AppendFormat(Period value, StringBuffer builder) => pattern.AppendFormat(value, builder);
 
   @private static void AppendValue(StringBuffer builder, int value, String suffix) {
@@ -207,7 +200,7 @@ import 'package:time_machine/time_machine_text.dart';
 }
 
 @private /*sealed*/ class _NormalizingIsoPatternImpl implements IPattern<Period> {
-// TODO(misc): Tidy this up a *lot*.
+  // TODO(misc): Tidy this up a *lot*.
   ParseResult<Period> Parse(String text) {
     if (text == null) {
       return ParseResult.ArgumentNull<Period>("text");

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/PrecalculatedDateTimeZoneTest.cs
-// cae7975  on Aug 24, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -237,7 +238,7 @@ void Validation_BadFirstStartingPoint() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(10), new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
-// Assert.Throws<ArgumentException>
+  // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc), throwsArgumentError);
 }
 
@@ -248,7 +249,7 @@ void Validation_NonAdjoiningIntervals() {
     new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(25), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
-// Assert.Throws<ArgumentException>
+  // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc), throwsArgumentError);
 }
 
@@ -302,3 +303,4 @@ PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
 //  var reloadedZoneIntervals = TestZone.GetZoneIntervals(interval, ZoneEqualityComparer.Options.StrictestMatch).ToList();
 //  Collectionexpect(originalZoneIntervals, reloadedZoneIntervals);
 //}
+

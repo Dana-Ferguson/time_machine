@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/ValueCursorTest.cs
-// 10dbf36  on Apr 23
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -86,7 +87,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var value = new ValueCursor("abcd");
     expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
     expect(value.MatchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, false), isTrue);
-// We're still looking at the start
+    // We're still looking at the start
     ValidateCurrentCharacter(value, 0, 'a');
   }
 
@@ -122,7 +123,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     ValidateCurrentCharacter(value, 0, 'a');
     expect(value.MoveNext(), isTrue);
-// expect(value.ParseDigits(3, 3, out int actual), isFalse);
+    // expect(value.ParseDigits(3, 3, out int actual), isFalse);
     expect(value.ParseDigits(3, 3), isNull);
     ValidateCurrentCharacter(value, 1, '1');
   }
@@ -131,7 +132,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseDigits_NoNumber() {
     var value = new ValueCursor("abc");
     expect(value.MoveNext(), isTrue);
-// expect(value.ParseDigits(1, 2, out int actual), isFalse);
+    // expect(value.ParseDigits(1, 2, out int actual), isFalse);
     expect(value.ParseDigits(1, 2), isNull);
     ValidateCurrentCharacter(value, 0, 'a');
   }
@@ -140,7 +141,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseDigits_Maximum() {
     var value = new ValueCursor("12");
     expect(value.MoveNext(), isTrue);
-// expect(value.ParseDigits(1, 2, out int actual), isTrue);
+    // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
     expect(actual = value.ParseDigits(1, 2), isNotNull);
     expect(actual, 12);
@@ -150,7 +151,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseDigits_MaximumMoreDigits() {
     var value = new ValueCursor("1234");
     expect(value.MoveNext(), isTrue);
-// expect(value.ParseDigits(1, 2, out int actual), isTrue);
+    // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
     expect(actual = value.ParseDigits(1, 2), isNotNull);
     expect(actual, 12);
@@ -161,7 +162,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseDigits_Minimum() {
     var value = new ValueCursor("1");
     value.MoveNext();
-// expect(value.ParseDigits(1, 2, out int actual), isTrue);
+    // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
     expect(actual = value.ParseDigits(1, 2), isNotNull);
     expect(actual, 1);
@@ -172,7 +173,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseDigits_MinimumNonDigits() {
     var value = new ValueCursor("1abc");
     expect(value.MoveNext(), isTrue);
-// expect(value.ParseDigits(1, 2, out int actual), isTrue);
+    // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
     expect(actual = value.ParseDigits(1, 2), isNotNull);
     expect(1, actual);
@@ -181,8 +182,8 @@ class ValueCursorTest extends TextCursorTestBase {
 
   @Test()
   void ParseDigits_NonAscii_NeverMatches() {
-// Arabic-Indic digits 0 and 1. See
-// http://www.unicode.org/charts/PDF/U0600.pdf
+    // Arabic-Indic digits 0 and 1. See
+    // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
     expect(value.MoveNext(), isTrue);
     expect(value.ParseDigits(1, 2), isNull);
@@ -247,8 +248,8 @@ class ValueCursorTest extends TextCursorTestBase {
 
   @Test()
   void ParseInt64Digits_NonAscii_NeverMatches() {
-// Arabic-Indic digits 0 and 1. See
-// http://www.unicode.org/charts/PDF/U0600.pdf
+    // Arabic-Indic digits 0 and 1. See
+    // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
     expect(value.MoveNext(), isTrue);
     expect(value.ParseInt64Digits(1, 2), isNull);
@@ -261,14 +262,14 @@ class ValueCursorTest extends TextCursorTestBase {
     int actual;
     expect(actual = value.ParseInt64Digits(1, 13), isNotNull);
     expect(actual, 9999999999999 /*L*/);
-// Assert.Greater(9999999999999/*L*/, Utility.int32MaxValue);
+    // Assert.Greater(9999999999999/*L*/, Utility.int32MaxValue);
     expect(9999999999999 /*L*/, greaterThan(Utility.int32MaxValue));
   }
 
   @Test()
   void ParseFraction_NonAscii_NeverMatches() {
-// Arabic-Indic digits 0 and 1. See
-// http://www.unicode.org/charts/PDF/U0600.pdf
+    // Arabic-Indic digits 0 and 1. See
+    // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
     expect(value.MoveNext(), isTrue);
     expect(value.ParseFraction(2, 2, 2), isNull);
@@ -281,7 +282,7 @@ class ValueCursorTest extends TextCursorTestBase {
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNull);
     expect(56 /*L*/, result.value);
-// Cursor ends up post-number
+    // Cursor ends up post-number
     expect(2, value.Index);
   }
 
@@ -300,7 +301,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -310,7 +311,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -320,7 +321,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -330,7 +331,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -340,7 +341,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -350,7 +351,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -360,7 +361,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.MoveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.ParseInt64<String>(result, 'String'), isNotNull);
-// Cursor has not moved
+    // Cursor has not moved
     expect(0, value.Index);
   }
 
@@ -402,7 +403,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void CompareOrdinal_ValueIsEarlier() {
     var value = new ValueCursor("xabc");
     value.Move(1);
-// Assert.Less(value.CompareOrdinal("mm"), 0);
+    // Assert.Less(value.CompareOrdinal("mm"), 0);
     expect(value.CompareOrdinal("mm"), lessThan(0));
     expect(1, value.Index); // Cursor hasn't moved
   }
@@ -411,7 +412,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void CompareOrdinal_ValueIsLater() {
     var value = new ValueCursor("xabc");
     value.Move(1);
-// Assert.Greater(value.CompareOrdinal("aa"), 0);
+    // Assert.Greater(value.CompareOrdinal("aa"), 0);
     expect(value.CompareOrdinal("aa"), greaterThan(0));
     expect(1, value.Index); // Cursor hasn't moved
   }
@@ -420,7 +421,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void CompareOrdinal_LongMatch_EqualToEnd() {
     var value = new ValueCursor("xabc");
     value.Move(1);
-// Assert.Less(value.CompareOrdinal("abcd"), 0);
+    // Assert.Less(value.CompareOrdinal("abcd"), 0);
     expect(value.CompareOrdinal("abcd"), lessThan(0));
     expect(1, value.Index); // Cursor hasn't moved
   }
@@ -429,7 +430,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void CompareOrdinal_LongMatch_ValueIsEarlier() {
     var value = new ValueCursor("xabc");
     value.Move(1);
-// Assert.Less(value.CompareOrdinal("cccc"), 0);
+    // Assert.Less(value.CompareOrdinal("cccc"), 0);
     expect(value.CompareOrdinal("cccc"), lessThan(0));
     expect(1, value.Index); // Cursor hasn't moved
   }
@@ -438,24 +439,25 @@ class ValueCursorTest extends TextCursorTestBase {
   void CompareOrdinal_LongMatch_ValueIsLater() {
     var value = new ValueCursor("xabc");
     value.Move(1);
-// Assert.Greater(value.CompareOrdinal("aaaa"), 0);
+    // Assert.Greater(value.CompareOrdinal("aaaa"), 0);
     expect(value.CompareOrdinal("aaaa"), greaterThan(0));
     expect(1, value.Index); // Cursor hasn't moved
   }
 
   @Test()
   void ParseInt64_TooManyDigits() {
-// We can cope as far as 9223372036854775807, but the trailing 1 causes a failure.
+    // We can cope as far as 9223372036854775807, but the trailing 1 causes a failure.
     var value = new ValueCursor("92233720368547758071");
     value.Move(0);
     OutBox<int> result = new OutBox<int>(0);
     var parseResult = value.ParseInt64<String>(result, 'String');
     expect(parseResult.Success, isFalse);
-// Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
+    // Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
     expect(parseResult.Exception, new isInstanceOf<UnparsableValueError>());
     expect(0, value.Index); // Cursor hasn't moved
   }
 }
+
 
 
 

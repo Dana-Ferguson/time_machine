@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/LocalDateTimePatternTest.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -59,8 +60,8 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       34,
       CalendarSystem.Coptic).PlusNanoseconds(123456789);*/
 
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns.
+  // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+  // the expected results of the standard patterns.
   @internal static final LocalDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample;
   @internal static final LocalDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis;
   @private static final LocalDateTime MsdnStandardExampleNoSeconds = TestLocalDateTimes.MsdnStandardExampleNoSeconds;
@@ -77,24 +78,24 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "dd MM yyyy HH:MM:SS"
       ..Message = TextErrorMessages.RepeatedFieldInPattern
       ..Parameters.addAll(['M']),
-// Note incorrect use of "u" (year) instead of "y" (year of era)
+    // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
       ..Message = TextErrorMessages.EraWithoutYearOfEra,
-// Era specifier and calendar specifier in the same pattern.
+    // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
       ..Message = TextErrorMessages.CalendarAndEra,
-// Embedded pattern start without ld or lt
+    // Embedded pattern start without ld or lt
     new Data()
       ..Pattern = "yyyy MM dd <"
       ..Message = TextErrorMessages.UnquotedLiteral
       ..Parameters.addAll(['<']),
-// Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
+    // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
     new Data()
       ..Pattern = "l<yyyy MM dd HH:mm>"
       ..Message = TextErrorMessages.InvalidEmbeddedPatternType,
-// Invalid nested pattern (local date pattern doesn't know about embedded patterns)
+    // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
     new Data()
       ..Pattern = "ld<<D>>"
       ..Message = TextErrorMessages.UnquotedLiteral
@@ -111,7 +112,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "(c)"
       ..Text = "(xxx)"
       ..Message = TextErrorMessages.NoMatchingCalendarSystem,
-// 24 as an hour is only valid when the time is midnight
+    // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd"
       ..Text = "2017-02-30"
@@ -150,7 +151,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "HH:mm:ss"
       ..Text = "16:05:20"
       ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0),
-// Parsing using the semi-colon "comma dot" specifier
+    // Parsing using the semi-colon "comma dot" specifier
     new Data.ymd(
         2011,
         10,
@@ -172,7 +173,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "yyyy-MM-dd HH:mm:ss;FFF"
       ..Text = "2011-10-19 16:05:20,352",
 
-// 24:00 meaning "start of next day"
+    // 24:00 meaning "start of next day"
     new Data.ymd(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:00",
@@ -202,28 +203,28 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   ];
 
   @internal List<Data> FormatAndParseData = [
-// Standard patterns (US)
-// Full date/time (short time)
+    // Standard patterns (US)
+    // Full date/time (short time)
     new Data(MsdnStandardExampleNoSeconds)
       ..Pattern = "f"
       ..Text = "Monday, June 15, 2009 1:45 PM"
       ..Culture = TestCultures.EnUs,
-// Full date/time (long time)
+    // Full date/time (long time)
     new Data(MsdnStandardExampleNoMillis)
       ..Pattern = "F"
       ..Text = "Monday, June 15, 2009 1:45:30 PM"
       ..Culture = TestCultures.EnUs,
-// General date/time (short time)
+    // General date/time (short time)
     new Data(MsdnStandardExampleNoSeconds)
       ..Pattern = "g"
       ..Text = "6/15/2009 1:45 PM"
       ..Culture = TestCultures.EnUs,
-// General date/time (longtime)
+    // General date/time (longtime)
     new Data(MsdnStandardExampleNoMillis)
       ..Pattern = "G"
       ..Text = "6/15/2009 1:45:30 PM"
       ..Culture = TestCultures.EnUs,
-// Round-trip (o and O - same effect)
+    // Round-trip (o and O - same effect)
     new Data(MsdnStandardExample)
       ..Pattern = "o"
       ..Text = "2009-06-15T13:45:30.0900000"
@@ -240,14 +241,14 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "r"
       ..Text = "1976-06-19T21:13:34.123456789 (Coptic)"
       ..Culture = TestCultures.EnUs,*/
-// Note: No RFC1123, as that requires a time zone.
-// Sortable / ISO8601
+    // Note: No RFC1123, as that requires a time zone.
+    // Sortable / ISO8601
     new Data(MsdnStandardExampleNoMillis)
       ..Pattern = "s"
       ..Text = "2009-06-15T13:45:30"
       ..Culture = TestCultures.EnUs,
 
-// Standard patterns (French)
+    // Standard patterns (French)
     new Data(MsdnStandardExampleNoSeconds)
       ..Pattern = "f"
       ..Text = "lundi 15 juin 2009 13:45"
@@ -264,7 +265,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Pattern = "G"
       ..Text = "15/06/2009 13:45:30"
       ..Culture = TestCultures.FrFr,
-// Culture has no impact on round-trip or sortable formats
+    // Culture has no impact on round-trip or sortable formats
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.BclRoundtrip
       ..Pattern = "o"
@@ -301,7 +302,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Text = "1976-06-19T21:13:34.123456789 (ISO)"
       ..Culture = TestCultures.FrFr,
 
-// Calendar patterns are invariant
+    // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF"
       ..Text = "(ISO) 2009-06-15T13:45:30.09"
@@ -594,10 +595,9 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   // Default to the start of the year 2000.
   /*protected*/ @override LocalDateTime get DefaultTemplate => LocalDateTimePattern.DefaultTemplateValue;
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="Data" /> class.
-  /// </summary>
-  /// <param name="value">The value.</param>
+  /// Initializes a new instance of the [Data] class.
+  ///
+  /// [value]: The value.
   Data([LocalDateTime value = null])
       : super(value ?? LocalDateTimePattern.DefaultTemplateValue);
 
@@ -621,4 +621,5 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
           .WithTemplateValue(Template)
           .WithCulture(Culture);
 }
+
 

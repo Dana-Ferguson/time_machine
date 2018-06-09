@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Text/AnnualDatePatternParser.cs
-// c77bb7b  19 days ago
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -10,9 +11,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
-/// Parser for patterns of <see cref="AnnualDate"/> values.
-/// </summary>
+/// Parser for patterns of [AnnualDate] values.
 @internal /*sealed*/ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
   @private final AnnualDate templateValue;
 
@@ -71,10 +70,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 }
 
-/// <summary>
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by AnnualDateTimePattern to store and calculate values.
-/// </summary>
 @internal /*sealed*/ class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
   @internal final AnnualDate TemplateValue;
   @internal int MonthOfYearNumeric = 0;
@@ -101,13 +98,13 @@ import 'package:time_machine/time_machine_patterns.dart';
     return ParseResult.ForValue<AnnualDate>(new AnnualDate(MonthOfYearNumeric, day));
   }
 
-  // PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText
-  // static final PatternFields monthOfYearNumeric_booleanOR_monthOfYearText = new PatternFields(_value)
+// PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText
+// static final PatternFields monthOfYearNumeric_booleanOR_monthOfYearText = new PatternFields(_value)
 
   @private ParseResult<AnnualDate> DetermineMonth(PatternFields usedFields, String text) {
     var x = usedFields & (PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText);
     if (x == PatternFields.monthOfYearNumeric) {
-      // No-op
+    // No-op
     }
     else if (x == PatternFields.monthOfYearText) {
       MonthOfYearNumeric = MonthOfYearText;
@@ -116,7 +113,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (MonthOfYearNumeric != MonthOfYearText) {
         return ParseResult.InconsistentMonthValues<AnnualDate>(text);
       }
-      // No need to change MonthOfYearNumeric - this was just a check
+    // No need to change MonthOfYearNumeric - this was just a check
     }
     else if (x == PatternFields.none) {
       MonthOfYearNumeric = TemplateValue.month;

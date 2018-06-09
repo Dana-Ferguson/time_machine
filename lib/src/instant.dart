@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs
-// c1fb0aa  on Oct 5, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:intl/intl.dart';
 
@@ -17,8 +18,8 @@ import 'dart:core' hide Duration;
 /*
  TODO: BeforeMinValue / AfterMaxValue were being used to deal with nullable Instants -- Dart is struct-less -- everything can be nulled
 
- //ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
-  //    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
+//ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
+//    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
 
 
  */
@@ -42,11 +43,11 @@ class Instant implements Comparable<Instant> {
   static const int _maxSeconds = (maxDays + 1) * TimeConstants.secondsPerDay - 1;
 
   // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
-  /// Represents the smallest possible <see cref="Instant"/>.
-  /// <remarks>This value is equivalent to -9998-01-01T00:00:00Z</remarks>
+  /// Represents the smallest possible [Instant].
+  /// This value is equivalent to -9998-01-01T00:00:00Z
   static final Instant minValue = new Instant.trusted(new Span(days: minDays));
-  /// Represents the largest possible <see cref="Instant"/>.
-  /// <remarks>This value is equivalent to 9999-12-31T23:59:59.999999999Z</remarks>
+  /// Represents the largest possible [Instant].
+  /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
   static final Instant maxValue = new Instant.trusted(new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
@@ -117,7 +118,7 @@ class Instant implements Comparable<Instant> {
     return new LocalInstant(asDuration);
   }
 
-  // Span operator-(Instant instant) => _span - instant._span;
+// Span operator-(Instant instant) => _span - instant._span;
 
   // todo: is there any clever way to add type annotations to this?
   dynamic operator-(dynamic other) =>
@@ -149,7 +150,7 @@ class Instant implements Comparable<Instant> {
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       InstantPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
-  // todo: you are here: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L507
+// todo: you are here: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L507
 
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
@@ -211,7 +212,7 @@ class Instant implements Comparable<Instant> {
   }
 
 // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255
-  // Add LocalInstant code
+// Add LocalInstant code
 
 //  int _epochMilliseconds;
 //  /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
@@ -224,3 +225,4 @@ class Instant implements Comparable<Instant> {
 //  int get getEpochSeconds => _epochMilliseconds ~/ TimeConstants.millisecondsPerSecond;
 
 }
+

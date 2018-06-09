@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/OffsetDatePatternTest.cs
-// 41dc54e  on Nov 8, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:math' as math;
 import 'dart:mirrors';
@@ -27,8 +28,8 @@ Future main() async {
 
 @Test()
 class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
-// The standard example date/time used in all the MSDN samples, which means we can just cut and paste
-// the expected results of the standard patterns. We've got an offset of 1 hour though.
+  // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
+  // the expected results of the standard patterns. We've got an offset of 1 hour though.
   @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.Date.WithOffset(new Offset.fromHours(1));
   @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.Date.WithOffset(new Offset.fromHours(1));
 
@@ -41,11 +42,11 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     new Data()
       ..Pattern = ""
       ..Message = TextErrorMessages.FormatStringEmpty,
-// Note incorrect use of "u" (year) instead of "y" (year of era)
+    // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu gg"
       ..Message = TextErrorMessages.EraWithoutYearOfEra,
-// Era specifier and calendar specifier in the same pattern.
+    // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy gg c"
       ..Message = TextErrorMessages.CalendarAndEra,
@@ -53,7 +54,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..Pattern = "g"
       ..Message = TextErrorMessages.UnknownStandardFormat
       ..Parameters.addAll(['g', 'OffsetDate']),
-// Invalid patterns involving embedded values
+    // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "l<d> yyyy"
       ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
@@ -93,16 +94,16 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..Pattern = "ddd yyyy"
       ..Text = "Wed 2011",
 
-// Our template value has an offset of 0, but the value has an offset of 1.
-// The pattern doesn't include the offset, so that information is lost - no round-trip.
+    // Our template value has an offset of 0, but the value has an offset of 1.
+    // The pattern doesn't include the offset, so that information is lost - no round-trip.
     new Data(MsdnStandardExample)
       ..Pattern = "yyyy-MM-dd"
       ..Text = "2009-06-15"
   ];
 
   @internal List<Data> FormatAndParseData = [
-// Copied from LocalDateTimePatternTest
-// Calendar patterns are invariant
+    // Copied from LocalDateTimePatternTest
+    // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd o<G>"
       ..Text = "(ISO) 2009-06-15 +01"
@@ -114,7 +115,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 //new Data(SampleOffsetDateCoptic) ..Pattern = "(c) uuuu-MM-dd o<G>"..Text = "(Coptic) 1976-06-19 Z"..Culture = TestCultures.FrFr ,
 //new Data(SampleOffsetDateCoptic) ..Pattern = "uuuu-MM-dd'C'c o<g>"..Text = "1976-06-19CCoptic +00"..Culture = TestCultures.EnUs ,
 
-// Standard patterns (all invariant)
+    // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDatePattern.GeneralIso
       ..Pattern = "G"
@@ -126,7 +127,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..Text = "2009-06-15+01 (ISO)"
       ..Culture = TestCultures.FrFr,
 
-// Custom embedded patterns (or mixture of custom and standard)
+    // Custom embedded patterns (or mixture of custom and standard)
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<yyyy*MM*dd>'X'o<g>"
       ..Text = "2015*10*24X+03",
@@ -134,7 +135,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..Pattern = "l<d>'X'o<g>"
       ..Text = "10/24/2015X+03",
 
-// Standard embedded patterns.
+    // Standard embedded patterns.
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<D> o<g>"
       ..Text = "Saturday, 24 October 2015 +03",
@@ -142,7 +143,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..Pattern = "l<d> o<g>"
       ..Text = "10/24/2015 +03",
 
-// Fields not otherwise covered
+    // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "d MMMM yyyy (g) o<g>"
       ..Text = "15 June 2009 (A.D.) +01",
@@ -155,7 +156,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @Test()
   void CreateWithInvariantCulture() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-ddo<g>");
-// Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
+    // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
     expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
     var od = new LocalDate(2017, 8, 23).WithOffset(new Offset.fromHours(2));
     expect("2017-08-23+02", pattern.Format(od));
@@ -222,10 +223,9 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 // Default to the start of the year 2000 UTC
 /*protected*/ @override OffsetDate get DefaultTemplate => OffsetDatePattern.DefaultTemplateValue;
 
-/// <summary>
-/// Initializes a new instance of the <see cref="Data" /> class.
-/// </summary>
-/// <param name="value">The value.</param>
+/// Initializes a new instance of the [Data] class.
+///
+/// [value]: The value.
 @internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePattern.DefaultTemplateValue)
 {
 }
@@ -236,4 +236,5 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 @internal @override IPattern<OffsetDate> CreatePattern() =>
     OffsetDatePattern.Create2(super.Pattern, super.Culture, Template);
 }
+
 

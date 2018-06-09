@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalTimeTest.cs
-// ead2fb4  on Nov 11, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -39,9 +40,7 @@ void ClockHourOfHalfDay()
   expect(11, new LocalTime(23, 0).ClockHourOfHalfDay);
 }
 
-/// <summary>
 ///   Using the default constructor is equivalent to midnight
-/// </summary>
 @Test()
 void DefaultConstructor()
 {
@@ -84,3 +83,4 @@ void WithOffset()
   var expected = new OffsetTime(time, offset);
   expect(expected, time.WithOffset(offset));
 }
+

@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -8,21 +11,17 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-/// <summary>
 /// Common methods used when parsing dates - these are used from LocalDateTimePatternParser,
 /// OffsetPatternParser and LocalTimePatternParser.
-/// </summary>
 @internal abstract class TimePatternHelper
 {
-  /// <summary>
   /// Creates a character handler for a dot (period). This is *not* culture sensitive - it is
   /// always treated as a literal, but with the additional behaviour that if it's followed by an 'F' pattern,
   /// that makes the period optional.
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-      // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+// Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
       // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
@@ -57,15 +56,13 @@ import 'package:time_machine/time_machine_patterns.dart';
     };
   }
 
-  /// <summary>
   /// Creates a character handler for a dot (period) or comma, which have the same meaning.
   /// Formatting always uses a dot, but parsing will allow a comma instead, to conform with
   /// ISO-8601. This is *not* culture sensitive.
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-      // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+// Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
       // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
@@ -106,9 +103,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     };
   }
 
-  /// <summary>
   /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
-  /// </summary>
   @internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {

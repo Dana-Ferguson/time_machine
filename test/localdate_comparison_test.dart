@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/LocalDateTest.Comparison.cs
-// 63e9065  on Aug 3, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 
@@ -141,9 +142,7 @@ void CompareTo_DifferentCalendars_Throws()
   expect(() => date1.compareTo(date2), throwsArgumentError);
 }
 
-/// <summary>
 /// IComparable.CompareTo works properly with LocalDate inputs with same calendar.
-/// </summary>
 @Test()
 void IComparableCompareTo_SameCalendar()
 {
@@ -159,9 +158,8 @@ void IComparableCompareTo_SameCalendar()
   expect(i_instance.compareTo(same), 0);
 }
 
-///// <summary>
 ///// IComparable.CompareTo returns a positive number for a null input.
-///// </summary>
+///// 
 //@Test()
 //void IComparableCompareTo_Null_Positive()
 //{
@@ -172,10 +170,9 @@ void IComparableCompareTo_SameCalendar()
 //  expect(result, greaterThan(0));
 //}
 
-///// <summary>
 ///// IComparable.CompareTo throws an ArgumentException for non-null arguments
 ///// that are not a LocalDate.
-///// </summary>
+///// 
 //@Test()
 //void IComparableCompareTo_WrongType_ArgumentException()
 //{

@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/Text/SpanPatternTest.cs
-// e81483f  on Sep 15, 2017
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -28,9 +29,7 @@ Future main() async {
 
 @Test()
 class SpanPatternTest extends PatternTestBase<Span> {
-  /// <summary>
   /// Test data that can only be used to test formatting.
-  /// </summary>
   @internal  final List<Data> FormatOnlyData = [
     // No sign, so we can't parse it.
     new Data.hm(-1, 0)
@@ -46,14 +45,10 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Text = "1:02:03:04.1234",
   ];
 
-  /// <summary>
   /// Test data that can only be used to test successful parsing.
-  /// </summary>
   @internal  final List<Data> ParseOnlyData = [];
 
-  /// <summary>
   /// Test data for invalid patterns
-  /// </summary>
   @internal  final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
@@ -74,16 +69,14 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Parameters.addAll(['G', 'Span'])
   ];
 
-  /// <summary>
   /// Tests for parsing failures (of values)
-  /// </summary>
   @internal  final List<Data> ParseFailureData = [
     new Data(Span.zero)
       ..Pattern = "H:mm"
       ..Text = "1:60"
       ..Message = TextErrorMessages.FieldValueOutOfRange
       ..Parameters.addAll([60, 'm', 'Span']),
-// Total field values out of range
+    // Total field values out of range
     new Data(Span.minValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "16777217:00:00:00.000000000"
@@ -158,10 +151,8 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Parameters.addAll(["S"])
   ];
 
-  /// <summary>
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  /// </summary>
   @internal  final List<Data> FormatAndParseData = [
     new Data.hm(1, 2)
       ..Pattern = "+HH:mm"
@@ -231,7 +222,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Text = "1.02.03.04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,
 
-// Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
+    // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
     new Data.dhmsn(1, 2, 3, 4, 123456789)
       ..StandardPattern = SpanPattern.Roundtrip
       ..Pattern = "o"
@@ -243,7 +234,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Text = "-1:02:03:04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,
 
-// Extremes...
+  // Extremes...
   /* todo: our extremes are different (could be different based on platform?)
     new Data(Span.minValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
@@ -288,7 +279,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
   @Test()
   void CreateWithCurrentCulture() {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
-    // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
+        // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
         {
       var pattern = SpanPattern.CreateWithCurrentCulture("H:mm");
       var text = pattern.Format(new Span(minutes: 90));
@@ -297,9 +288,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
   }
 }
 
-/// <summary>
-/// A container for test data for formatting and parsing <see cref="Duration" /> objects.
-/// </summary>
+/// A container for test data for formatting and parsing [Duration] objects.
 /*sealed*/ class Data extends PatternTestData<Span> {
 // Ignored anyway...
 /*protected*/ @override Span get DefaultTemplate => Span.zero;
@@ -319,3 +308,4 @@ class SpanPatternTest extends PatternTestBase<Span> {
   @override
   IPattern<Span> CreatePattern() => SpanPattern.Create2(super.Pattern, Culture);
 }
+

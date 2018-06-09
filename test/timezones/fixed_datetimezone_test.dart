@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime.Test/TimeZones/FixedDateTimeZoneTest.cs
-// b9ee218  on Dec 22, 2016
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
 import 'dart:math' as math;
@@ -157,3 +158,4 @@ void Equals()
       new FixedDateTimeZone.forIdOffset("Foo", new Offset.fromSeconds(300)),
       [new FixedDateTimeZone.forIdOffset("Bar", new Offset.fromSeconds(300))]);
 }
+

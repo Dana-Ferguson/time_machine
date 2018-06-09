@@ -1,5 +1,6 @@
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Calendars/JulianYearMonthDayCalculator.cs
-// 7208243  on Mar 18, 2015
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
 
@@ -20,9 +21,9 @@ import 'package:time_machine/time_machine_calendars.dart';
   @protected
   @override
   int calculateStartOfYearDays(int year) {
-    // Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
-    // Calculate relative to the nearest leap year and account for the
-    // difference later.
+// Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
+// Calculate relative to the nearest leap year and account for the
+// difference later.
 
     int relativeYear = year - 1968;
     int leapYears;

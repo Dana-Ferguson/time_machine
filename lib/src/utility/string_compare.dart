@@ -1,3 +1,6 @@
+// Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
+// Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
+// Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 bool stringOrdinalIgnoreCaseEquals(String a, String b) {
   if (a.length != b.length) return false;
@@ -17,12 +20,12 @@ bool stringOrdinalIgnoreCaseEquals(String a, String b) {
 
     if (aRune != bRune) {
       return false;
-      // return aRune - bRune; // If we want to do a standard Compare Operation
+    // return aRune - bRune; // If we want to do a standard Compare Operation
     }
   }
 
   return true;
-  // return a.length-b.length;
+// return a.length-b.length;
 }
 
 /*
@@ -57,7 +60,7 @@ Parameters
 
 // string.CompareOrdinal
 int stringOrdinalCompare(String a, int aIndex, String b, int bIndex, int length) {
-  // if (a.length != b.length) return false;
+// if (a.length != b.length) return false;
 
   var aRunes = a.codeUnits;
   var bRunes = b.codeUnits;
@@ -77,7 +80,7 @@ int stringOrdinalCompare(String a, int aIndex, String b, int bIndex, int length)
 
     if (aRune != bRune) {
       return aRune.compareTo(bRune);
-      // return aRune - bRune; // If we want to do a standard Compare Operation
+    // return aRune - bRune; // If we want to do a standard Compare Operation
     }
   }
 
@@ -86,7 +89,7 @@ int stringOrdinalCompare(String a, int aIndex, String b, int bIndex, int length)
 }
 
 int stringOrdinalIgnoreCaseCompare(String a, int aIndex, String b, int bIndex, int length) {
-  // if (a.length != b.length) return false;
+// if (a.length != b.length) return false;
 
   var aRunes = a.codeUnits;
   var bRunes = b.codeUnits;
@@ -106,7 +109,7 @@ int stringOrdinalIgnoreCaseCompare(String a, int aIndex, String b, int bIndex, i
 
     if (aRune != bRune) {
       return aRune.compareTo(bRune);
-      // return aRune - bRune; // If we want to do a standard Compare Operation
+    // return aRune - bRune; // If we want to do a standard Compare Operation
     }
   }
 
