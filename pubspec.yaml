@@ -1,5 +1,5 @@
 name: time_machine
-description: Port of nodatime <https://nodatime.org/>
+description: Time and date library.
 version: 0.0.1
 #homepage: https://www.example.com
 #author: dana ferguson <email@example.com>
