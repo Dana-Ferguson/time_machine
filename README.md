@@ -3,10 +3,8 @@
 Time Machine is a date and time API for Dart (port of Noda Time). Time Machine is timezone and culture sensitive. Intended targets are DartVM and Dart4Web.
 
 A lot of functionality works at this time, but the public API is still changing a lot. TZDB needs
-QoL changes that are coming, but not here yet. This is a preview release. Documentation was also ported
-and still needs to be gone over and corrected.
-
---> Documentation builds locally with 0.15.1 but failed to build on pub.dartlang.org.
+QoL changes that are coming, but not here yet. This is a preview release. Documentation was also ported,
+but some things changed for Dart and the documentation will have minor inaccuracies in some places.
 
 Todo:
  - [x] Port over major classes
