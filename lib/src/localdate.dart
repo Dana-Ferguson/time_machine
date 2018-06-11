@@ -134,7 +134,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
   factory LocalDate.fromDateTime(DateTime dateTime, [CalendarSystem calendar])
   {
-    // todo: we might want to make this so it's microseconds on VM and milliseconds on JS -- but I don't know how .. yet
+    // todo: we might want to make this so it's microseconds on VM and milliseconds on JS
     int days = _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
     return new LocalDate.fromDaysSinceEpoch(days, calendar);
   }
