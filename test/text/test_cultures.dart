@@ -21,18 +21,18 @@ import 'pattern_test_data.dart';
 import 'text_cursor_test_base_tests.dart';
 
 @internal abstract class TestLocalDateTimes {
-  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456789);
-  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456700);
-  @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.fromYMDHMSM(
+  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34).plusNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34).plusNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.at(
       1976,
       6,
       19,
       21,
       13,
-      34,
-      123);
-  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34);
-  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.fromYMDHM(1976, 6, 19, 21, 13);
+      seconds: 34,
+      milliseconds: 123);
+  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34);
+  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.at(1976, 6, 19, 21, 13);
 
 /*@internal static final LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime.fromYMDHMSC(
       1976,
@@ -45,16 +45,16 @@ import 'text_cursor_test_base_tests.dart';
 
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns.
-  @internal static final LocalDateTime MsdnStandardExample = new LocalDateTime.fromYMDHMSM(
+  @internal static final LocalDateTime MsdnStandardExample = new LocalDateTime.at(
       2009,
       06,
       15,
       13,
       45,
-      30,
-      90);
-  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.fromYMDHMS(2009, 06, 15, 13, 45, 30);
-  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.fromYMDHM(2009, 06, 15, 13, 45);
+      seconds: 30,
+      milliseconds: 90);
+  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.at(2009, 06, 15, 13, 45, seconds: 30);
+  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.at(2009, 06, 15, 13, 45);
 }
 
 /// Cultures to use from various tests.

@@ -30,8 +30,8 @@ void GetCurrent()
   expect(TimeConstants.unixEpoch, zonedClock.getCurrentInstant());
   expect(new ZonedDateTime.withCalendar(underlyingClock.getCurrentInstant(), SampleZone, julian),
       zonedClock.getCurrentZonedDateTime());
-  expect(new LocalDateTime.fromYMDHMC(1969, 12, 19, 2, 0, julian), zonedClock.getCurrentLocalDateTime());
-  expect(new LocalDateTime.fromYMDHMC(1969, 12, 19, 2, 0, julian).withOffset(new Offset.fromHours(2)),
+  expect(new LocalDateTime.at(1969, 12, 19, 2, 0, calendar: julian), zonedClock.getCurrentLocalDateTime());
+  expect(new LocalDateTime.at(1969, 12, 19, 2, 0, calendar: julian).withOffset(new Offset.fromHours(2)),
       zonedClock.getCurrentOffsetDateTime());
   expect(new LocalDate(1969, 12, 19, julian), zonedClock.getCurrentDate());
   expect(new LocalTime(2, 0, 0), zonedClock.getCurrentTimeOfDay());

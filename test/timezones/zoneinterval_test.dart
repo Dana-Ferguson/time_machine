@@ -42,8 +42,8 @@ void PassthroughProperties()
 @Test()
 void ComputedProperties()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHM(2011, 6, 3, 19, 15);
-  LocalDateTime end = new LocalDateTime.fromYMDHM(2011, 8, 2, 22, 45);
+  LocalDateTime start = new LocalDateTime.at(2011, 6, 3, 19, 15);
+  LocalDateTime end = new LocalDateTime.at(2011, 8, 2, 22, 45);
   expect(start, SampleInterval.IsoLocalStart);
   expect(end, SampleInterval.IsoLocalEnd);
   expect(SampleEnd - SampleStart, SampleInterval.span);

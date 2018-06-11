@@ -34,7 +34,7 @@ void CombinationWithTime()
   var calendar = CalendarSystem.julian;
   LocalDate date = new LocalDate(2014, 3, 28, calendar);
   LocalTime time = new LocalTime(20, 17, 30);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMSC(2014, 3, 28, 20, 17, 30, calendar);
+  LocalDateTime expected = new LocalDateTime.at(2014, 3, 28, 20, 17, seconds: 30, calendar: calendar);
   // expect(expected, date + time);
   expect(expected, date.at(time));
   expect(expected, time.atDate(date));

@@ -86,7 +86,7 @@ void FieldsOf_GreatAchievement()
 @Test()
 void ConstructLocalInstant_WithAllFields()
 {
-  LocalInstant localAchievement = new LocalDateTime.fromYMDHMSM(2009, 11, 27, 18, 38, 25, 345).plusTicks(extraTicks).toLocalInstant();
+  LocalInstant localAchievement = new LocalDateTime.at(2009, 11, 27, 18, 38, seconds: 25, milliseconds: 345).plusTicks(extraTicks).toLocalInstant();
   int bclTicks = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds * TimeConstants.ticksPerMicrosecond;
   int bclDays = (bclTicks ~/ TimeConstants.ticksPerDay);
   int bclTickOfDay = bclTicks % TimeConstants.ticksPerDay;

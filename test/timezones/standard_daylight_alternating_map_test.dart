@@ -53,8 +53,8 @@ void GetZoneInterval_Instant_Summer()
   expect(new Offset.fromHours(6), interval.wallOffset);
   expect(new Offset.fromHours(5), interval.StandardOffset);
   expect(new Offset.fromHours(1), interval.savings);
-  expect(new LocalDateTime.fromYMDHM(2010, 3, 10, 2, 0), interval.IsoLocalStart);
-  expect(new LocalDateTime.fromYMDHM(2010, 10, 5, 2, 0), interval.IsoLocalEnd);
+  expect(new LocalDateTime.at(2010, 3, 10, 2, 0), interval.IsoLocalStart);
+  expect(new LocalDateTime.at(2010, 10, 5, 2, 0), interval.IsoLocalEnd);
 }
 
 @Test()
@@ -65,8 +65,8 @@ void GetZoneInterval_Instant_Winter()
   expect(new Offset.fromHours(5), interval.wallOffset);
   expect(new Offset.fromHours(5), interval.StandardOffset);
   expect(new Offset.fromHours(0), interval.savings);
-  expect(new LocalDateTime.fromYMDHM(2010, 10, 5, 1, 0), interval.IsoLocalStart);
-  expect(new LocalDateTime.fromYMDHM(2011, 3, 10, 1, 0), interval.IsoLocalEnd);
+  expect(new LocalDateTime.at(2010, 10, 5, 1, 0), interval.IsoLocalStart);
+  expect(new LocalDateTime.at(2011, 3, 10, 1, 0), interval.IsoLocalEnd);
 }
 
 @Test()
@@ -81,112 +81,112 @@ void GetZoneInterval_Instant_StartOfFirstSummer()
 @Test()
 void MapLocal_WithinFirstSummer()
 {
-  var early = new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0);
+  var early = new LocalDateTime.at(2000, 6, 1, 0, 0);
   CheckMapping(TestZone.mapLocal(early), "Summer", "Summer", 1);
 }
 
 @Test()
 void MapLocal_WithinFirstWinter()
 {
-  var winter = new LocalDateTime.fromYMDHM(2000, 12, 1, 0, 0);
+  var winter = new LocalDateTime.at(2000, 12, 1, 0, 0);
   CheckMapping(TestZone.mapLocal(winter), "Winter", "Winter", 1);
 }
 
 @Test()
 void MapLocal_AtFirstGapStart()
 {
-  var startOfFirstGap = new LocalDateTime.fromYMDHM(2000, 3, 10, 1, 0);
+  var startOfFirstGap = new LocalDateTime.at(2000, 3, 10, 1, 0);
   CheckMapping(TestZone.mapLocal(startOfFirstGap), "Winter", "Summer", 0);
 }
 
 @Test()
 void MapLocal_WithinFirstGap()
 {
-  var middleOfFirstGap = new LocalDateTime.fromYMDHM(2000, 3, 10, 1, 30);
+  var middleOfFirstGap = new LocalDateTime.at(2000, 3, 10, 1, 30);
   CheckMapping(TestZone.mapLocal(middleOfFirstGap), "Winter", "Summer", 0);
 }
 
 @Test()
 void MapLocal_EndOfFirstGap()
 {
-  var endOfFirstGap = new LocalDateTime.fromYMDHM(2000, 3, 10, 2, 0);
+  var endOfFirstGap = new LocalDateTime.at(2000, 3, 10, 2, 0);
   CheckMapping(TestZone.mapLocal(endOfFirstGap), "Summer", "Summer", 1);
 }
 
 @Test()
 void MapLocal_StartOfFirstAmbiguity()
 {
-  var firstAmbiguity = new LocalDateTime.fromYMDHM(2000, 10, 5, 1, 0);
+  var firstAmbiguity = new LocalDateTime.at(2000, 10, 5, 1, 0);
   CheckMapping(TestZone.mapLocal(firstAmbiguity), "Summer", "Winter", 2);
 }
 
 @Test()
 void MapLocal_MiddleOfFirstAmbiguity()
 {
-  var firstAmbiguity = new LocalDateTime.fromYMDHM(2000, 10, 5, 1, 30);
+  var firstAmbiguity = new LocalDateTime.at(2000, 10, 5, 1, 30);
   CheckMapping(TestZone.mapLocal(firstAmbiguity), "Summer", "Winter", 2);
 }
 
 @Test()
 void MapLocal_AfterFirstAmbiguity()
 {
-  var unambiguousWinter = new LocalDateTime.fromYMDHM(2000, 10, 5, 2, 0);
+  var unambiguousWinter = new LocalDateTime.at(2000, 10, 5, 2, 0);
   CheckMapping(TestZone.mapLocal(unambiguousWinter), "Winter", "Winter", 1);
 }
 
 @Test()
 void MapLocal_WithinArbitrarySummer()
 {
-  var summer = new LocalDateTime.fromYMDHM(2010, 6, 1, 0, 0);
+  var summer = new LocalDateTime.at(2010, 6, 1, 0, 0);
   CheckMapping(TestZone.mapLocal(summer), "Summer", "Summer", 1);
 }
 
 @Test()
 void MapLocal_WithinArbitraryWinter()
 {
-  var winter = new LocalDateTime.fromYMDHM(2010, 12, 1, 0, 0);
+  var winter = new LocalDateTime.at(2010, 12, 1, 0, 0);
   CheckMapping(TestZone.mapLocal(winter), "Winter", "Winter", 1);
 }
 
 @Test()
 void MapLocal_AtArbitraryGapStart()
 {
-  var startOfGap = new LocalDateTime.fromYMDHM(2010, 3, 10, 1, 0);
+  var startOfGap = new LocalDateTime.at(2010, 3, 10, 1, 0);
   CheckMapping(TestZone.mapLocal(startOfGap), "Winter", "Summer", 0);
 }
 
 @Test()
 void MapLocal_WithinArbitraryGap()
 {
-  var middleOfGap = new LocalDateTime.fromYMDHM(2010, 3, 10, 1, 30);
+  var middleOfGap = new LocalDateTime.at(2010, 3, 10, 1, 30);
   CheckMapping(TestZone.mapLocal(middleOfGap), "Winter", "Summer", 0);
 }
 
 @Test()
 void MapLocal_EndOfArbitraryGap()
 {
-  var endOfGap = new LocalDateTime.fromYMDHM(2010, 3, 10, 2, 0);
+  var endOfGap = new LocalDateTime.at(2010, 3, 10, 2, 0);
   CheckMapping(TestZone.mapLocal(endOfGap), "Summer", "Summer", 1);
 }
 
 @Test()
 void MapLocal_StartOfArbitraryAmbiguity()
 {
-  var ambiguity = new LocalDateTime.fromYMDHM(2010, 10, 5, 1, 0);
+  var ambiguity = new LocalDateTime.at(2010, 10, 5, 1, 0);
   CheckMapping(TestZone.mapLocal(ambiguity), "Summer", "Winter", 2);
 }
 
 @Test()
 void MapLocal_MiddleOfArbitraryAmbiguity()
 {
-  var ambiguity = new LocalDateTime.fromYMDHM(2010, 10, 5, 1, 30);
+  var ambiguity = new LocalDateTime.at(2010, 10, 5, 1, 30);
   CheckMapping(TestZone.mapLocal(ambiguity), "Summer", "Winter", 2);
 }
 
 @Test()
 void MapLocal_AfterArbitraryAmbiguity()
 {
-  var unambiguousWinter = new LocalDateTime.fromYMDHM(2010, 10, 5, 2, 0);
+  var unambiguousWinter = new LocalDateTime.at(2010, 10, 5, 2, 0);
   CheckMapping(TestZone.mapLocal(unambiguousWinter), "Winter", "Winter", 1);
 }
 

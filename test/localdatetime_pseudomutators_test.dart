@@ -21,73 +21,73 @@ Future main() async {
 @Test()
 void PlusYear_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 6, 26, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2016, 6, 26, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 6, 26, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2016, 6, 26, 12, 15, seconds: 8);
   expect(expected, start.plusYears(5));
 
-  expected = new LocalDateTime.fromYMDHMS(2006, 6, 26, 12, 15, 8);
+  expected = new LocalDateTime.at(2006, 6, 26, 12, 15, seconds: 8);
   expect(expected, start.plusYears(-5));
 }
 
 @Test()
 void PlusYear_LeapToNonLeap()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2012, 2, 29, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2013, 2, 28, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2013, 2, 28, 12, 15, seconds: 8);
   expect(expected, start.plusYears(1));
 
-  expected = new LocalDateTime.fromYMDHMS(2011, 2, 28, 12, 15, 8);
+  expected = new LocalDateTime.at(2011, 2, 28, 12, 15, seconds: 8);
   expect(expected, start.plusYears(-1));
 }
 
 @Test()
 void PlusYear_LeapToLeap()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2012, 2, 29, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2016, 2, 29, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2016, 2, 29, 12, 15, seconds: 8);
   expect(expected, start.plusYears(4));
 }
 
 @Test()
 void PlusMonth_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2012, 4, 15, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2012, 8, 15, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2012, 4, 15, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2012, 8, 15, 12, 15, seconds: 8);
   expect(expected, start.plusMonths(4));
 }
 
 @Test()
 void PlusMonth_ChangingYear()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2012, 10, 15, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2013, 2, 15, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2012, 10, 15, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2013, 2, 15, 12, 15, seconds: 8);
   expect(expected, start.plusMonths(4));
 }
 
 @Test()
 void PlusMonth_WithTruncation()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 30, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 2, 28, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 30, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2011, 2, 28, 12, 15, seconds: 8);
   expect(expected, start.plusMonths(1));
 }
 
 @Test()
 void PlusDays_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 15, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 1, 23, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 15, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2011, 1, 23, 12, 15, seconds: 8);
   expect(expected, start.plusDays(8));
 
-  expected = new LocalDateTime.fromYMDHMS(2011, 1, 7, 12, 15, 8);
+  expected = new LocalDateTime.at(2011, 1, 7, 12, 15, seconds: 8);
   expect(expected, start.plusDays(-8));
 }
 
 @Test()
 void PlusDays_MonthBoundary()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 26, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 2, 3, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 26, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2011, 2, 3, 12, 15, seconds: 8);
   expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
@@ -97,8 +97,8 @@ void PlusDays_MonthBoundary()
 @Test()
 void PlusDays_YearBoundary()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 12, 26, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2012, 1, 3, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 12, 26, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2012, 1, 3, 12, 15, seconds: 8);
   expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
@@ -108,8 +108,8 @@ void PlusDays_YearBoundary()
 @Test()
 void PlusDays_EndOfFebruary_InLeapYear()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2012, 2, 26, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2012, 3, 5, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 26, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2012, 3, 5, 12, 15, seconds: 8);
   expect(expected, start.plusDays(8));
   // Round-trip back across the boundary
   expect(start, start.plusDays(8).plusDays(-8));
@@ -118,8 +118,8 @@ void PlusDays_EndOfFebruary_InLeapYear()
 @Test()
 void PlusDays_EndOfFebruary_NotInLeapYear()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 2, 26, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 3, 6, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 2, 26, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2011, 3, 6, 12, 15, seconds: 8);
   expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
@@ -129,9 +129,9 @@ void PlusDays_EndOfFebruary_NotInLeapYear()
 @Test()
 void PlusWeeks_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 23, 12, 15, 8);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 3, 12, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 23, 12, 15, seconds: 8);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 3, 12, 12, 15, seconds: 8);
   expect(expectedForward, start.plusWeeks(3));
   expect(expectedBackward, start.plusWeeks(-3));
 }
@@ -139,9 +139,9 @@ void PlusWeeks_Simple()
 @Test()
 void PlusHours_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 14, 15, 8);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 10, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 2, 14, 15, seconds: 8);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 2, 10, 15, seconds: 8);
   expect(expectedForward, start.plusHours(2));
   expect(expectedBackward, start.plusHours(-2));
 }
@@ -149,8 +149,8 @@ void PlusHours_Simple()
 @Test()
 void PlusHours_CrossingDayBoundary()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 4, 3, 8, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2011, 4, 3, 8, 15, seconds: 8);
   expect(expected, start.plusHours(20));
   expect(start, start.plusHours(20).plusHours(-20));
 }
@@ -159,8 +159,8 @@ void PlusHours_CrossingDayBoundary()
 void PlusHours_CrossingYearBoundary()
 {
   // Christmas day + 10 days and 1 hour
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 12, 25, 12, 15, 8);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2012, 1, 4, 13, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 12, 25, 12, 15, seconds: 8);
+  LocalDateTime expected = new LocalDateTime.at(2012, 1, 4, 13, 15, seconds: 8);
   expect(start.plusHours(241), expected);
   expect(start.plusHours(241).plusHours(-241), start);
 }
@@ -170,9 +170,9 @@ void PlusHours_CrossingYearBoundary()
 @Test()
 void PlusMinutes_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 17, 8);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 13, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 2, 12, 17, seconds: 8);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 2, 12, 13, seconds: 8);
   expect(expectedForward, start.plusMinutes(2));
   expect(expectedBackward, start.plusMinutes(-2));
 }
@@ -180,9 +180,9 @@ void PlusMinutes_Simple()
 @Test()
 void PlusSeconds_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 18);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 14, 58);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 18);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 2, 12, 14, seconds: 58);
   expect(expectedForward, start.plusSeconds(10));
   expect(expectedBackward, start.plusSeconds(-10));
 }
@@ -190,9 +190,9 @@ void PlusSeconds_Simple()
 @Test()
 void PlusMilliseconds_Simple()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMSM(2011, 4, 2, 12, 15, 8, 300);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMSM(2011, 4, 2, 12, 15, 8, 700);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMSM(2011, 4, 2, 12, 15, 7, 900);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8, milliseconds: 300);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8, milliseconds: 700);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 7, milliseconds: 900);
   expect(expectedForward, start.plusMilliseconds(400));
   expect(expectedBackward, start.plusMilliseconds(-400));
 }
@@ -212,9 +212,9 @@ void PlusTicks_Simple()
 void PlusTicks_Long()
 {
   expect(TimeConstants.ticksPerDay > Utility.int32MaxValue, isTrue);
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 3, 12, 15, 8);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 4, 1, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 3, 12, 15, seconds: 8);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 1, 12, 15, seconds: 8);
   expect(expectedForward, start.plusTicks(TimeConstants.ticksPerDay));
   expect(expectedBackward, start.plusTicks(-TimeConstants.ticksPerDay));
 }
@@ -234,16 +234,16 @@ void PlusNanoseconds_Simple()
 @Test()
 void PlusTicks_CrossingDay()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
-  LocalDateTime expectedForward = new LocalDateTime.fromYMDHMS(2011, 4, 3, 12, 15, 8);
-  LocalDateTime expectedBackward = new LocalDateTime.fromYMDHMS(2011, 4, 1, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
+  LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 3, 12, 15, seconds: 8);
+  LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 1, 12, 15, seconds: 8);
   expect(expectedForward, start.plusNanoseconds(TimeConstants.nanosecondsPerDay));
   expect(expectedBackward, start.plusNanoseconds(-TimeConstants.nanosecondsPerDay));
 }
 
 @Test()
 void Plus_FullPeriod() {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 4, 2, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
   var builder = new PeriodBuilder()
     ..Years = 1
     ..Months = 2
@@ -258,7 +258,7 @@ void Plus_FullPeriod() {
 
   var period = builder.Build();
   var actual = start.plus(period);
-  var expected = new LocalDateTime.fromYMDHMS(2012, 6, 27, 17, 21, 15).plusNanoseconds(8000911);
+  var expected = new LocalDateTime.at(2012, 6, 27, 17, 21, seconds: 15).plusNanoseconds(8000911);
 
   expect(expected, actual, reason: "{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
 }
@@ -278,7 +278,7 @@ void Plus_FullPeriod() {
 @TestCase(const [13, IsoDayOfWeek.friday, 18])
 void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 11, dayOfMonth, 15, 25, 30).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2011, 11, dayOfMonth, 15, 25, seconds: 30).plusNanoseconds(123456789);
   LocalDateTime target = start.next(targetDayOfWeek);
   expect(2011, target.year);
   expect(11, target.month);
@@ -291,7 +291,7 @@ void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [8])
 void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 1, 15, 25, 30).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 1, 15, 25, seconds: 30).plusNanoseconds(123456789);
   expect(() => start.next(targetDayOfWeek), throwsRangeError);
 }
 
@@ -309,7 +309,7 @@ void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 @TestCase(const [13, IsoDayOfWeek.friday, 11])
 void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 11, dayOfMonth, 15, 25, 30).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2011, 11, dayOfMonth, 15, 25, seconds: 30).plusNanoseconds(123456789);
   LocalDateTime target = start.previous(targetDayOfWeek);
   expect(2011, target.year);
   expect(11, target.month);
@@ -321,7 +321,7 @@ void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [8])
 void Previous_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 1, 15, 25, 30).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 1, 15, 25, seconds: 30).plusNanoseconds(123456789);
   expect(() => start.previous(targetDayOfWeek), throwsRangeError);
 }
 
@@ -330,7 +330,7 @@ void Previous_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 @Test()
 void Operator_MethodEquivalents()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2011, 1, 1, 15, 25, 30).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2011, 1, 1, 15, 25, seconds: 30).plusNanoseconds(123456789);
   Period period = new Period.fromHours(1) + new Period.fromDays(1);
   LocalDateTime end = start + period;
   expect(start + period, LocalDateTime.add(start, period));
@@ -345,16 +345,16 @@ void Operator_MethodEquivalents()
 @Test()
 void With_TimeAdjuster()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8);
+  LocalDateTime start = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).plusNanoseconds(123456789);
+  LocalDateTime expected = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8);
   expect(expected, start.adjustTime(TimeAdjusters.TruncateToSecond));
 }
 
 @Test()
 void With_DateAdjuster()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 5, 8).plusNanoseconds(123456789);
-  LocalDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 30, 12, 5, 8).plusNanoseconds(123456789);
+  LocalDateTime start = new LocalDateTime.at(2014, 6, 27, 12, 5, seconds: 8).plusNanoseconds(123456789);
+  LocalDateTime expected = new LocalDateTime.at(2014, 6, 30, 12, 5, seconds: 8).plusNanoseconds(123456789);
   expect(expected, start.adjustDate(DateAdjusters.endOfMonth));
 }
 
@@ -365,7 +365,7 @@ void With_DateAdjuster()
 @TestCase(const [1970, 1, 1, Utility.int64MinValue])
 void PlusHours_Overflow(int year, int month, int day, int hours)
 {
-  TestHelper.AssertOverflow(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).plusHours, hours);
+  TestHelper.AssertOverflow(new LocalDateTime.at(year, month, day, 0, 0).plusHours, hours);
 }
 
 

@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
-  @internal static final ZonedDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0).inUtc();
+  @internal static final ZonedDateTime DefaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0).inUtc();
 
   /// Gets an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
   /// It corresponds to a custom pattern of "uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available

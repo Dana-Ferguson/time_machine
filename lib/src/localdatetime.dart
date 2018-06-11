@@ -26,16 +26,13 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// a value in a different calendar system. However, ordering comparisons (either via the [CompareTo] method
 /// or via operators) fail with [ArgumentException]; attempting to compare values in different calendars
 /// almost always indicates a bug in the calling code.
-///
-/// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
-    {
+class LocalDateTime implements Comparable<LocalDateTime> {
   /// Gets the date portion of this local date and time as a [LocalDate] in the same calendar system as this value.
   final LocalDate date;
   /// Gets the time portion of this local date and time as a [LocalTime].
   final LocalTime time;
-  
+
   /// Initializes a new instance of the [LocalDateTime] struct using the ISO
   /// calendar system.
   ///
@@ -45,21 +42,6 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
       : date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch),
         time = new LocalTime.fromNanoseconds(localInstant.NanosecondOfDay);
 
-
-  /// Initializes a new instance of the [LocalDateTime] struct using the ISO calendar system.
-  ///
-  /// * [year]: The year. This is the "absolute year",
-  /// so a value of 0 means 1 BC, for example.
-  /// * [month]: The month of year.
-  /// * [day]: The day of month.
-  /// * [hour]: The hour.
-  /// * [minute]: The minute.
-  /// * Returns: The resulting date/time.
-  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHM(int year, int month, int day, int hour, int minute)
-      : this(new LocalDate(year, month, day), new LocalTime(hour, minute));
-
-
   /// Initializes a new instance of [LocalDateTime].
   ///
   /// * [year]: The year. This is the "absolute year", so, for
@@ -68,75 +50,15 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [day]: The day of month.
   /// * [hour]: The hour.
   /// * [minute]: The minute.
-  /// * [calendar]: The calendar.
-  ///
-  /// Returns: The resulting date/time.  
-  /// [RangeError]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHMC(int year, int month, int day, int hour, int minute, CalendarSystem calendar)
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute));
-
-
-  /// Initializes a new instance of the [LocalDateTime] struct using the ISO calendar system.
-  ///
-  /// * [year]: The year. This is the "absolute year",
-  /// so a value of 0 means 1 BC, for example.
-  /// * [month]: The month of year.
-  /// * [day]: The day of month.
-  /// * [hour]: The hour.
-  /// * [minute]: The minute.
-  /// * [second]: The second.
-  /// Returns: The resulting date/time.
-  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHMS(int year, int month, int day, int hour, int minute, int second)
-      : this(new LocalDate(year, month, day), new LocalTime(hour, minute, second));
-
-
-  /// Initializes a new instance of the [LocalDateTime] struct.
-  ///
-  /// * [year]: The year. This is the "absolute year", so, for
-  /// the ISO calendar, a value of 0 means 1 BC, for example.
-  /// * [month]: The month of year.
-  /// * [day]: The day of month.
-  /// * [hour]: The hour.
-  /// * [minute]: The minute.
-  /// * [second]: The second.
-  /// * [calendar]: The calendar.
-  /// Returns: The resulting date/time.
-  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHMSC(int year, int month, int day, int hour, int minute, int second, CalendarSystem calendar)
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, second));
-
-
-  /// Initializes a new instance of the [LocalDateTime] struct using the ISO calendar system.
-  ///
-  /// * [year]: The year. This is the "absolute year",
-  /// so a value of 0 means 1 BC, for example.
-  /// * [month]: The month of year.
-  /// * [day]: The day of month.
-  /// * [hour]: The hour.
-  /// * [minute]: The minute.
   /// * [second]: The second.
   /// * [millisecond]: The millisecond.
+  /// * [calendar]: The calendar. ISO calendar default.
   /// Returns: The resulting date/time.
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHMSM(int year, int month, int day, int hour, int minute, int second, int millisecond)
-      : this(new LocalDate(year, month, day), new LocalTime(hour, minute, second, millisecond));
-  
-  /// Initializes a new instance of the [LocalDateTime] struct.
-  ///
-  /// * [year]: The year. This is the "absolute year", so, for
-  /// the ISO calendar, a value of 0 means 1 BC, for example.
-  /// * [month]: The month of year.
-  /// * [day]: The day of month.
-  /// * [hour]: The hour.
-  /// * [minute]: The minute.
-  /// * [second]: The second.
-  /// * [millisecond]: The millisecond.
-  /// * [calendar]: The calendar.
-  /// Returns: The resulting date/time.
-  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.fromYMDHMSMC(int year, int month, int day, int hour, int minute, int second, int millisecond, CalendarSystem calendar)
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, second, millisecond));
+  LocalDateTime.at(int year, int month, int day, int hour, int minute, {int seconds = 0, int milliseconds = 0, CalendarSystem calendar})
+      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, milliseconds));
+  // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
+  // todo: I really don't like this one at all: LocalDateTime.at
 
   @internal LocalDateTime(this.date, this.time);
 

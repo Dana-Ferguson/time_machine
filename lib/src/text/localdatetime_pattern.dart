@@ -33,7 +33,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class LocalDateTimePattern implements IPattern<LocalDateTime> {
-  @internal static final LocalDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0);
+  @internal static final LocalDateTime DefaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0);
 
   @private static const String DefaultFormatPattern = "G"; // General (long time)
 

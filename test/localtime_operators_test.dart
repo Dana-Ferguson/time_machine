@@ -150,7 +150,7 @@ void ComparisonOperators()
 @Test()
 void Comparison_IgnoresOriginalCalendar()
 {
-  LocalDateTime dateTime1 = new LocalDateTime.fromYMDHMS(1900, 1, 1, 10, 30, 0);
+  LocalDateTime dateTime1 = new LocalDateTime.at(1900, 1, 1, 10, 30);
   LocalDateTime dateTime2 = dateTime1.withCalendar(CalendarSystem.julian);
 
   // Calendar information is propagated into LocalDate, but not into LocalTime

@@ -21,9 +21,9 @@ Future main() async {
 }
 
 // June 19th 2010, 2:30:15am
-final LocalDateTime TestDateTime1 = new LocalDateTime.fromYMDHMS(2010, 6, 19, 2, 30, 15);
+final LocalDateTime TestDateTime1 = new LocalDateTime.at(2010, 6, 19, 2, 30, seconds: 15);
 // June 19th 2010, 4:45:10am
-final LocalDateTime TestDateTime2 = new LocalDateTime.fromYMDHMS(2010, 6, 19, 4, 45, 10);
+final LocalDateTime TestDateTime2 = new LocalDateTime.at(2010, 6, 19, 4, 45, seconds: 10);
 // June 19th 2010
 final LocalDate TestDate1 = new LocalDate(2010, 6, 19);
 // March 1st 2011
@@ -38,7 +38,7 @@ final List<PeriodUnits> AllPeriodUnits = PeriodUnits.values;
 @Test()
 void BetweenLocalDateTimes_WithoutSpecifyingUnits_OmitsWeeks()
 {
-  Period actual = Period.Between(new LocalDateTime.fromYMDHM(2012, 2, 21, 0, 0), new LocalDateTime.fromYMDHM(2012, 2, 28, 0, 0));
+  Period actual = Period.Between(new LocalDateTime.at(2012, 2, 21, 0, 0), new LocalDateTime.at(2012, 2, 28, 0, 0));
   Period expected = new Period.fromDays(7);
   expect(expected, actual);
 }
@@ -94,8 +94,8 @@ void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
 @Test()
 void BetweenLocalDateTimes_NotInt64Representable()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMSM(-5000, 1, 1, 0, 1, 2, 123);
-  LocalDateTime end = new LocalDateTime.fromYMDHMSM(9000, 1, 1, 1, 2, 3, 456);
+  LocalDateTime start = new LocalDateTime.at(-5000, 1, 1, 0, 1, seconds: 2, milliseconds: 123);
+  LocalDateTime end = new LocalDateTime.at(9000, 1, 1, 1, 2, seconds: 3, milliseconds: 456);
   expect((end.toLocalInstant().TimeSinceLocalEpoch - start.toLocalInstant().TimeSinceLocalEpoch).IsInt64Representable, isFalse);
 
   Period expected = (new PeriodBuilder()
@@ -236,9 +236,9 @@ void BetweenLocalDates_AfterLeapYear()
 @Test()
 void BetweenLocalDateTimes_OnLeapYear()
 {
-  LocalDateTime dt1 = new LocalDateTime.fromYMDHM(2012, 2, 29, 2, 0);
-  LocalDateTime dt2 = new LocalDateTime.fromYMDHM(2012, 2, 29, 4, 0);
-  LocalDateTime dt3 = new LocalDateTime.fromYMDHM(2013, 2, 28, 3, 0);
+  LocalDateTime dt1 = new LocalDateTime.at(2012, 2, 29, 2, 0);
+  LocalDateTime dt2 = new LocalDateTime.at(2012, 2, 29, 4, 0);
+  LocalDateTime dt3 = new LocalDateTime.at(2013, 2, 28, 3, 0);
   expect(Parse("P1YT1H"), Period.Between(dt1, dt3));
   expect(Parse("P11M29DT23H"), Period.Between(dt2, dt3));
 
@@ -253,9 +253,9 @@ void BetweenLocalDateTimes_OnLeapYearIslamic()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(3), isFalse);
 
-  LocalDateTime dt1 = new LocalDateTime.fromYMDHMC(2, 12, 30, 2, 0, calendar);
-  LocalDateTime dt2 = new LocalDateTime.fromYMDHMC(2, 12, 30, 4, 0, calendar);
-  LocalDateTime dt3 = new LocalDateTime.fromYMDHMC(3, 12, 29, 3, 0, calendar);
+  LocalDateTime dt1 = new LocalDateTime.at(2, 12, 30, 2, 0, calendar: calendar);
+  LocalDateTime dt2 = new LocalDateTime.at(2, 12, 30, 4, 0, calendar: calendar);
+  LocalDateTime dt3 = new LocalDateTime.at(3, 12, 29, 3, 0, calendar: calendar);
 
   // Adding a year truncates to 0003-12-28T02:00:00, then add an hour.
   expect(Parse("P1YT1H"), Period.Between(dt1, dt3));
@@ -365,27 +365,27 @@ void Addition_With_IdenticalPeriodTypes()
 @Test()
 void Addition_DayCrossingMonthBoundary()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHM(2010, 2, 20, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2010, 2, 20, 10, 0);
   LocalDateTime result = start + new Period.fromDays(10);
-  expect(new LocalDateTime.fromYMDHM(2010, 3, 2, 10, 0), result);
+  expect(new LocalDateTime.at(2010, 3, 2, 10, 0), result);
 }
 
 @Test()
 void Addition_OneYearOnLeapDay()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHM(2012, 2, 29, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0);
   LocalDateTime result = start + new Period.fromYears(1);
   // Feb 29th becomes Feb 28th
-  expect(new LocalDateTime.fromYMDHM(2013, 2, 28, 10, 0), result);
+  expect(new LocalDateTime.at(2013, 2, 28, 10, 0), result);
 }
 
 @Test()
 void Addition_FourYearsOnLeapDay()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHM(2012, 2, 29, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0);
   LocalDateTime result = start + new Period.fromYears(4);
   // Feb 29th is still valid in 2016
-  expect(new LocalDateTime.fromYMDHM(2016, 2, 29, 10, 0), result);
+  expect(new LocalDateTime.at(2016, 2, 29, 10, 0), result);
 }
 
 @Test()
@@ -393,14 +393,14 @@ void Addition_YearMonthDay()
 {
   // One year, one month, two days
   Period period = new Period.fromYears(1) + new Period.fromMonths(1) + new Period.fromDays(2);
-  LocalDateTime start = new LocalDateTime.fromYMDHM(2007, 1, 30, 0, 0);
+  LocalDateTime start = new LocalDateTime.at(2007, 1, 30, 0, 0);
   // Periods are added in order, so this becomes...
   // Add one year: Jan 30th 2008
   // Add one month: Feb 29th 2008
   // Add two days: March 2nd 2008
   // If we added the days first, we'd end up with March 1st instead.
   LocalDateTime result = start + period;
-  expect(new LocalDateTime.fromYMDHM(2008, 3, 2, 0, 0), result);
+  expect(new LocalDateTime.at(2008, 3, 2, 0, 0), result);
 }
 
 @Test()
@@ -486,8 +486,8 @@ expect(hasDateComponent, period.HasDateComponent);
 @Test()
 void HasTimeComponent_Compound()
 {
-  LocalDateTime dt1 = new LocalDateTime.fromYMDHMS(2000, 1, 1, 10, 45, 00);
-  LocalDateTime dt2 = new LocalDateTime.fromYMDHMS(2000, 2, 4, 11, 50, 00);
+  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45);
+  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50);
 
   // Case 1: Entire period is date-based (no time units available)
   expect(Period.BetweenDates(dt1.date, dt2.date).HasTimeComponent, isFalse);
@@ -508,8 +508,8 @@ void HasTimeComponent_Compound()
 @Test()
 void HasDateComponent_Compound()
 {
-  LocalDateTime dt1 = new LocalDateTime.fromYMDHMS(2000, 1, 1, 10, 45, 00);
-  LocalDateTime dt2 = new LocalDateTime.fromYMDHMS(2000, 2, 4, 11, 50, 00);
+  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45);
+  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50);
 
   // Case 1: Entire period is time-based (no date units available)
   expect(Period.BetweenTimes(dt1.time, dt2.time).HasDateComponent, isFalse);
@@ -834,21 +834,21 @@ void NormalizingEqualityComparer_GetHashCodeAfterNormalization()
 @Test()
 void Comparer_NullWithNull()
 {
-  var comparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+  var comparer = Period.CreateComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
   expect(0, comparer.Compare(null, null));
 }
 
 @Test()
 void Comparer_NullWithNonNull()
 {
-  var comparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+  var comparer = Period.CreateComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
   expect(comparer.Compare(null, Period.Zero),  lessThan(0));
 }
 
 @Test()
 void Comparer_NonNullWithNull()
 {
-  var comparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+  var comparer = Period.CreateComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
   expect(comparer.Compare(Period.Zero, null),  greaterThan(0));
 }
 
@@ -857,7 +857,7 @@ void Comparer_DurationablePeriods()
 {
   var bigger = new Period.fromHours(25);
   var smaller = new Period.fromDays(1);
-  var comparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+  var comparer = Period.CreateComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
   expect(comparer.Compare(bigger, smaller),  greaterThan(0));
   expect(comparer.Compare(smaller, bigger),  lessThan(0));
   expect(0, comparer.Compare(bigger, bigger));
@@ -869,13 +869,13 @@ void Comparer_NonDurationablePeriods()
   var month = new Period.fromMonths(1);
   var days = new Period.fromDays(30);
   // At the start of January, a month is longer than 30 days
-  var januaryComparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+  var januaryComparer = Period.CreateComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
   expect(januaryComparer.Compare(month, days),  greaterThan(0));
   expect(januaryComparer.Compare(days, month),  lessThan(0));
   expect(0, januaryComparer.Compare(month, month));
 
   // At the start of February, a month is shorter than 30 days
-  var februaryComparer = Period.CreateComparer(new LocalDateTime.fromYMDHM(2000, 2, 1, 0, 0));
+  var februaryComparer = Period.CreateComparer(new LocalDateTime.at(2000, 2, 1, 0, 0));
   expect(februaryComparer.Compare(month, days),  lessThan(0));
   expect(februaryComparer.Compare(days, month),  greaterThan(0));
   expect(0, februaryComparer.Compare(month, month));
@@ -922,15 +922,15 @@ void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, Stri
 @Test()
 void Between_LocalDateTime_SameValue()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2014, 1, 1, 16, 0, 0);
+  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0);
   expect(Period.Zero, Period.Between(start, start));
 }
 
 @Test()
 void Between_LocalDateTime_AwkwardTimeOfDayWithMultipleUnits()
 {
-  LocalDateTime start = new LocalDateTime.fromYMDHMS(2014, 1, 1, 16, 0, 0);
-  LocalDateTime end = new LocalDateTime.fromYMDHMS(2015, 2, 3, 8, 0, 0);
+  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0);
+  LocalDateTime end = new LocalDateTime.at(2015, 2, 3, 8, 0);
   Period actual = Period.Between(start, end, PeriodUnits.yearMonthDay | PeriodUnits.allTimeUnits);
   Period expected = (new PeriodBuilder()..Years = 1..Months = 1..Days = 1..Hours = 16).Build();
 expect(expected, actual);

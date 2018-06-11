@@ -55,7 +55,7 @@ void SimpleProperties_ReturnValuesFromConstructor()
 @Test()
 void GetZoneIntervals_ReturnsSingleInterval()
 {
-  var mapping = TestZone.mapLocal(new LocalDateTime.fromYMDHMS(2001, 7, 1, 1, 0, 0));
+  var mapping = TestZone.mapLocal(new LocalDateTime.at(2001, 7, 1, 1, 0));
   expect(FixedPeriod, mapping.EarlyInterval);
   expect(FixedPeriod, mapping.LateInterval);
   expect(1, mapping.Count);

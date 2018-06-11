@@ -133,12 +133,12 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 5)
+      ..Template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5)
       ..Message = TextErrorMessages.InvalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0)
+      ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5)
       ..Message = TextErrorMessages.InvalidHour24,
   ];
 
@@ -146,11 +146,11 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data.ymd(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
       ..Text = "19 10 2011"
-      ..Template = new LocalDateTime.fromYMDHMS(2000, 1, 1, 16, 05, 20),
+      ..Template = new LocalDateTime.at(2000, 1, 1, 16, 05, seconds: 20),
     new Data.ymd(2011, 10, 19, 16, 05, 20)
       ..Pattern = "HH:mm:ss"
       ..Text = "16:05:20"
-      ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0),
+      ..Template = new LocalDateTime.at(2011, 10, 19, 0, 0),
     // Parsing using the semi-colon "comma dot" specifier
     new Data.ymd(
         2011,
@@ -180,7 +180,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data.ymd(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:00"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0),
+      ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5),
     new Data.ymd(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00",
@@ -462,19 +462,19 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     var value = pattern
         .Parse("0284-08-29T12:34:56")
         .Value;
-    expect(new LocalDateTime.fromYMDHMSC(
+    expect(new LocalDateTime.at(
         284,
         8,
         29,
         12,
         34,
-        56,
-        CalendarSystem.coptic), value);
+        seconds: 56,
+        calendar: CalendarSystem.coptic), value);
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var dateTime = new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 34, 56);
+    var dateTime = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56);
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
@@ -501,7 +501,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   @Test()
   @TestCaseSource(#AllCulturesStandardPatterns)
   void ParseFormattedStandardPattern(CultureInfo culture, String patternText) {
-    var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0));
+    var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime.at(2000, 1, 1, 0, 0));
     if (pattern == null) {
       return;
     }
@@ -516,7 +516,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
     if (culture.dateTimeFormat.amDesignator == "" &&
         culture.dateTimeFormat.pmDesignator == "") {
-      pattern = pattern.WithTemplateValue(new LocalDateTime.fromYMDHM(2000, 1, 1, 12, 0));
+      pattern = pattern.WithTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0));
     }
 
     String formatted = pattern.Format(SampleLocalDateTime);
@@ -602,14 +602,14 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       : super(value ?? LocalDateTimePattern.DefaultTemplateValue);
 
   Data.ymd(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0, int millis = 0])
-      : super(new LocalDateTime.fromYMDHMSM(
+      : super(new LocalDateTime.at(
       year,
       month,
       day,
       hour,
       minute,
-      second,
-      millis));
+      seconds: second,
+      milliseconds: millis));
 
   Data.dt(LocalDate date, LocalTime time) : super(date.at(time));
 
