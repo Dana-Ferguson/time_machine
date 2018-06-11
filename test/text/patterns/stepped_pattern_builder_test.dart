@@ -75,7 +75,7 @@ void AppendFormat()
 @TestCase(const ["<aBaB", false]) // < is reserved
 @TestCase(const ["aBaB>", false]) // > is reserved
 void UnhandledLiteral(String text, bool valid) {
-  CharacterHandler<LocalDate, SampleBucket> handler = (x, y) => null; // = delegate { };
+  CharacterHandler<LocalDate, SampleBucket> handler = (PatternCursor x, SteppedPatternBuilder<LocalDate, SampleBucket> y) => null; // = delegate { };
   var handlers = new Map<String, CharacterHandler<LocalDate, SampleBucket>>.from(
       {
         'a': handler,

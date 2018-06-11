@@ -121,7 +121,7 @@ abstract class Resolvers
   /// [skippedTimeResolver]: Resolver to use for "skipped" mappings.
   /// Returns: The logical combination of the two resolvers.
   static ZoneLocalMappingResolver CreateMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver) {
-    // typedef ZonedDateTime ZoneLocalMappingResolver(ZoneLocalMapping mapping);
+    // typedef ZoneLocalMappingResolver = ZonedDateTime Function(ZoneLocalMapping mapping);
     Preconditions.checkNotNull(ambiguousTimeResolver, 'ambiguousTimeResolver');
     Preconditions.checkNotNull(skippedTimeResolver, 'skippedTimeResolver');
 

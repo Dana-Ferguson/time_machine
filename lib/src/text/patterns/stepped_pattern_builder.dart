@@ -13,8 +13,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 // was originally a class inside SteppedPatternBuilder
 // internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
-@internal typedef ParseResult<TResult>
-  ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
+// @internal typedef ParseAction = ParseResult<TResult> Function<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
+@internal typedef ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
 
 class _findLongestMatchCursor {
   int bestIndex = -1;

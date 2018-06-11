@@ -32,7 +32,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// [AmbiguousTimeException]: The implementation rejects requests to map ambiguous times.
 ///
 /// A [ZonedDateTime] in the target time zone; typically, one of the two input parameters.
-typedef ZonedDateTime AmbiguousTimeResolver(ZonedDateTime earlier, ZonedDateTime later);
+// typedef AmbiguousTimeResolver = ZonedDateTime Function(ZonedDateTime earlier, ZonedDateTime later);
+typedef ZonedDateTime AmbiguousTimeResolver (ZonedDateTime earlier, ZonedDateTime later);
 
 /// Resolves a [LocalDateTime] to a [ZonedDateTime] in the situation
 /// where the requested local time does not exist in the target time zone.
@@ -59,7 +60,8 @@ typedef ZonedDateTime AmbiguousTimeResolver(ZonedDateTime earlier, ZonedDateTime
 /// [intervalAfter]: The zone interval directly after the target local date and time would have occurred
 /// [SkippedTimeException]: The implementation rejects requests to map skipped times.
 /// Returns: A [ZonedDateTime] in the target time zone.
-typedef ZonedDateTime SkippedTimeResolver(LocalDateTime localDateTime,  DateTimeZone zone,
+// typedef SkippedTimeResolver = ZonedDateTime Function(LocalDateTime localDateTime,  DateTimeZone zone,
+typedef ZonedDateTime SkippedTimeResolver (LocalDateTime localDateTime,  DateTimeZone zone,
  ZoneInterval intervalBefore,  ZoneInterval intervalAfter);
 
 /// Resolves the result of attempting to map a local date and time to a target time zone.
@@ -75,5 +77,6 @@ typedef ZonedDateTime SkippedTimeResolver(LocalDateTime localDateTime,  DateTime
 /// [AmbiguousTimeException]: The implementation rejects requests to map ambiguous times.
 /// [SkippedTimeException]: The implementation rejects requests to map skipped times.
 /// Returns: A [ZonedDateTime] in the target time zone.
-typedef ZonedDateTime ZoneLocalMappingResolver(ZoneLocalMapping mapping);
+// typedef ZoneLocalMappingResolver = ZonedDateTime Function(ZoneLocalMapping mapping);
+typedef ZonedDateTime ZoneLocalMappingResolver (ZoneLocalMapping mapping);
 
