@@ -373,11 +373,11 @@ class Period // : IEquatable<Period>
     LocalDate endDate = end.Date;
     if (start < end) {
       if (start.TimeOfDay > end.TimeOfDay) {
-        endDate = endDate.PlusDays(-1);
+        endDate = endDate.plusDays(-1);
       }
     }
     else if (start > end && start.TimeOfDay < end.TimeOfDay) {
-      endDate = endDate.PlusDays(1);
+      endDate = endDate.plusDays(1);
     }
 
     // Optimization for single field
@@ -593,10 +593,10 @@ class Period // : IEquatable<Period>
 /// Adds the date components of this period to the given time, scaled accordingly.
 
   @internal LocalDate AddDateTo(LocalDate date, int scalar) =>
-      date.PlusYears(Years * scalar)
-          .PlusMonths(Months * scalar)
-          .PlusWeeks(Weeks * scalar)
-          .PlusDays(Days * scalar);
+      date.plusYears(Years * scalar)
+          .plusMonths(Months * scalar)
+          .plusWeeks(Weeks * scalar)
+          .plusDays(Days * scalar);
 
 
   /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
@@ -618,7 +618,7 @@ class Period // : IEquatable<Period>
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
-    return new LocalDateTime(date.PlusDays(extraDays), time);
+    return new LocalDateTime(date.plusDays(extraDays), time);
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
@@ -646,8 +646,8 @@ class Period // : IEquatable<Period>
     Preconditions.checkArgument((units.value & PeriodUnits.allTimeUnits.value) == 0, 'units', "Units contains time units: $units");
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
-    CalendarSystem calendar = start.Calendar;
-    Preconditions.checkArgument(calendar == end.Calendar, 'end', "start and end must use the same calendar system");
+    CalendarSystem calendar = start.calendar;
+    Preconditions.checkArgument(calendar == end.calendar, 'end', "start and end must use the same calendar system");
 
     if (start == end) {
       return Zero;
@@ -720,8 +720,8 @@ class Period // : IEquatable<Period>
     // It helps a little if they're in the same month, but just that test has a cost for other situations.
     // Being able to find the day of year if they're in the same year but different months doesn't help,
     // somewhat surprisingly.
-    int startDays = start.DaysSinceEpoch;
-    int endDays = end.DaysSinceEpoch;
+    int startDays = start.daysSinceEpoch;
+    int endDays = end.daysSinceEpoch;
     return endDays - startDays;
   }
 

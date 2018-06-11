@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           .localDateTime, builder);
 
   ParseResult<Instant> Parse(String text) =>
-      pattern.Parse(text).Convert((local) => new Instant.trusted(new Span(days: local.date.DaysSinceEpoch, nanoseconds: local.NanosecondOfDay))
+      pattern.Parse(text).Convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.NanosecondOfDay))
 
       );
 }

@@ -23,10 +23,10 @@ void PlusYear_Simple()
 {
   LocalDate start = new LocalDate(2011, 6, 26);
   LocalDate expected = new LocalDate(2016, 6, 26);
-  expect(expected, start.PlusYears(5));
+  expect(expected, start.plusYears(5));
 
   expected = new LocalDate(2006, 6, 26);
-  expect(expected, start.PlusYears(-5));
+  expect(expected, start.plusYears(-5));
 }
 
 @Test()
@@ -34,10 +34,10 @@ void PlusYear_LeapToNonLeap()
 {
   LocalDate start = new LocalDate(2012, 2, 29);
   LocalDate expected = new LocalDate(2013, 2, 28);
-  expect(expected, start.PlusYears(1));
+  expect(expected, start.plusYears(1));
 
   expected = new LocalDate(2011, 2, 28);
-  expect(expected, start.PlusYears(-1));
+  expect(expected, start.plusYears(-1));
 }
 
 @Test()
@@ -45,7 +45,7 @@ void PlusYear_LeapToLeap()
 {
   LocalDate start = new LocalDate(2012, 2, 29);
   LocalDate expected = new LocalDate(2016, 2, 29);
-  expect(expected, start.PlusYears(4));
+  expect(expected, start.plusYears(4));
 }
 
 @Test()
@@ -53,7 +53,7 @@ void PlusMonth_Simple()
 {
   LocalDate start = new LocalDate(2012, 4, 15);
   LocalDate expected = new LocalDate(2012, 8, 15);
-  expect(expected, start.PlusMonths(4));
+  expect(expected, start.plusMonths(4));
 }
 
 @Test()
@@ -61,7 +61,7 @@ void PlusMonth_ChangingYear()
 {
   LocalDate start = new LocalDate(2012, 10, 15);
   LocalDate expected = new LocalDate(2013, 2, 15);
-  expect(expected, start.PlusMonths(4));
+  expect(expected, start.plusMonths(4));
 }
 
 @Test()
@@ -69,7 +69,7 @@ void PlusMonth_WithTruncation()
 {
   LocalDate start = new LocalDate(2011, 1, 30);
   LocalDate expected = new LocalDate(2011, 2, 28);
-  expect(expected, start.PlusMonths(1));
+  expect(expected, start.plusMonths(1));
 }
 
 @Test()
@@ -77,10 +77,10 @@ void PlusDays_SameMonth()
 {
   LocalDate start = new LocalDate(2011, 1, 15);
   LocalDate expected = new LocalDate(2011, 1, 23);
-  expect(expected, start.PlusDays(8));
+  expect(expected, start.plusDays(8));
 
   expected = new LocalDate(2011, 1, 7);
-  expect(expected, start.PlusDays(-8));
+  expect(expected, start.plusDays(-8));
 }
 
 @Test()
@@ -88,10 +88,10 @@ void PlusDays_MonthBoundary()
 {
   LocalDate start = new LocalDate(2011, 1, 26);
   LocalDate expected = new LocalDate(2011, 2, 3);
-  expect(expected, start.PlusDays(8));
+  expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
-  expect(start, start.PlusDays(8).PlusDays(-8));
+  expect(start, start.plusDays(8).plusDays(-8));
 }
 
 @Test()
@@ -99,10 +99,10 @@ void PlusDays_YearBoundary()
 {
   LocalDate start = new LocalDate(2011, 12, 26);
   LocalDate expected = new LocalDate(2012, 1, 3);
-  expect(expected, start.PlusDays(8));
+  expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
-  expect(start, start.PlusDays(8).PlusDays(-8));
+  expect(start, start.plusDays(8).plusDays(-8));
 }
 
 @Test()
@@ -110,9 +110,9 @@ void PlusDays_EndOfFebruary_InLeapYear()
 {
   LocalDate start = new LocalDate(2012, 2, 26);
   LocalDate expected = new LocalDate(2012, 3, 5);
-  expect(expected, start.PlusDays(8));
+  expect(expected, start.plusDays(8));
   // Round-trip back across the boundary
-  expect(start, start.PlusDays(8).PlusDays(-8));
+  expect(start, start.plusDays(8).plusDays(-8));
 }
 
 @Test()
@@ -120,10 +120,10 @@ void PlusDays_EndOfFebruary_NotInLeapYear()
 {
   LocalDate start = new LocalDate(2011, 2, 26);
   LocalDate expected = new LocalDate(2011, 3, 6);
-  expect(expected, start.PlusDays(8));
+  expect(expected, start.plusDays(8));
 
   // Round-trip back across the boundary
-  expect(start, start.PlusDays(8).PlusDays(-8));
+  expect(start, start.plusDays(8).plusDays(-8));
 }
 
 @Test()
@@ -131,7 +131,7 @@ void PlusDays_LargeValue()
 {
   LocalDate start = new LocalDate(2013, 2, 26);
   LocalDate expected = new LocalDate(2015, 2, 26);
-  expect(expected, start.PlusDays(365 * 2));
+  expect(expected, start.plusDays(365 * 2));
 }
 
 @Test()
@@ -140,8 +140,8 @@ void PlusWeeks_Simple()
   LocalDate start = new LocalDate(2011, 4, 2);
   LocalDate expectedForward = new LocalDate(2011, 4, 23);
   LocalDate expectedBackward = new LocalDate(2011, 3, 12);
-  expect(expectedForward, start.PlusWeeks(3));
-  expect(expectedBackward, start.PlusWeeks(-3));
+  expect(expectedForward, start.plusWeeks(3));
+  expect(expectedBackward, start.plusWeeks(-3));
 }
 
 @Test()
@@ -154,7 +154,7 @@ void PlusWeeks_Simple()
 void PlusDays_OutOfRange(int year, int month, int day, int days)
 {
   var start = new LocalDate(year, month, day);
-  TestHelper.AssertOverflow(start.PlusDays, days);
+  TestHelper.AssertOverflow(start.plusDays, days);
 }
 
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";
@@ -173,10 +173,10 @@ void PlusDays_OutOfRange(int year, int month, int day, int days)
 void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDate start = new LocalDate(2011, 11, dayOfMonth);
-  LocalDate target = start.Next(targetDayOfWeek);
-  expect(2011, target.Year);
-  expect(11, target.Month);
-  expect(target.Day, expectedResult);
+  LocalDate target = start.next(targetDayOfWeek);
+  expect(2011, target.year);
+  expect(11, target.month);
+  expect(target.day, expectedResult);
 }
 
 @TestCase(const [0])
@@ -185,7 +185,7 @@ void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 {
   LocalDate start = new LocalDate(2011, 1, 1);
-  expect(() => start.Next(targetDayOfWeek), throwsRangeError);
+  expect(() => start.next(targetDayOfWeek), throwsRangeError);
 }
 
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";
@@ -203,10 +203,10 @@ void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDate start = new LocalDate(2011, 11, dayOfMonth);
-  LocalDate target = start.Previous(targetDayOfWeek);
-  expect(2011, target.Year);
-  expect(11, target.Month);
-  expect(target.Day, expectedResult);
+  LocalDate target = start.previous(targetDayOfWeek);
+  expect(2011, target.year);
+  expect(11, target.month);
+  expect(target.day, expectedResult);
 }
 
 @TestCase(const [0])
@@ -215,7 +215,7 @@ void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 void Previous_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 {
   LocalDate start = new LocalDate(2011, 1, 1);
-  expect(() => start.Previous(targetDayOfWeek), throwsRangeError);
+  expect(() => start.previous(targetDayOfWeek), throwsRangeError);
 }
 
 // No tests for non-ISO-day-of-week calendars as we don't have any yet.
@@ -225,5 +225,5 @@ void With()
 {
   LocalDate start = new LocalDate(2014, 6, 27);
   LocalDate expected = new LocalDate(2014, 6, 30);
-  expect(expected, start.With(DateAdjusters.EndOfMonth));
+  expect(expected, start.withAdjustment(DateAdjusters.EndOfMonth));
 }

@@ -13,80 +13,48 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
+@immutable
 class LocalDate implements Comparable<LocalDate> {
-  YearMonthDayCalendar _yearMonthDayCalendar;
+  final YearMonthDayCalendar _yearMonthDayCalendar;
 
   /// The maximum (latest) date representable in the ISO calendar system.
-  static LocalDate get MaxIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.Iso));
+  static LocalDate get maxIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.iso));
 
   /// The minimum (earliest) date representable in the ISO calendar system.
-  static LocalDate get MinIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.Iso));
+  static LocalDate get minIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.iso));
 
   /// Constructs an instance from values which are assumed to already have been validated.
   // todo: this one seems like it might be trouble (is this truly protected from being used as an external API?)
-  @internal LocalDate.trusted(YearMonthDayCalendar yearMonthDayCalendar)
-  {
-    this._yearMonthDayCalendar = yearMonthDayCalendar;
-  }
+  @internal LocalDate.trusted(this._yearMonthDayCalendar);
 
-  /// Constructs an instance from the number of days since the unix epoch, in the ISO
-  /// calendar system.
-  @internal LocalDate.fromDaysSinceEpoch(int daysSinceEpoch)
+  /// Constructs an instance from the number of days since the unix epoch, in the specified
+  /// or ISO calendar system.
+  @internal factory LocalDate.fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
   {
-  Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.Iso.minDays, CalendarSystem.Iso.maxDays);
-  this._yearMonthDayCalendar = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
+    if (calendar == null) {
+      Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.Iso.minDays, CalendarSystem.Iso.maxDays);
+      return new LocalDate.trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+    } else {
+      Preconditions.debugCheckNotNull(calendar, 'calendar');
+      return new LocalDate.trusted(calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+    }
   }
-
-  /// Constructs an instance from the number of days since the unix epoch, and a calendar
-  /// system. The calendar system is assumed to be non-null, but the days since the epoch are
-  /// validated.
-  @internal LocalDate.fromDaysSinceEpoch_forCalendar(int daysSinceEpoch, CalendarSystem calendar)
-  {
-  Preconditions.debugCheckNotNull(calendar, 'calendar');
-  this._yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
-  }
-
-  /// Constructs an instance for the given year, month and day in the ISO calendar.
+  
+  /// Constructs an instance for the given year, month and day in the specified or ISO calendar.
   ///
   /// [year]: The year. This is the "absolute year", so a value of 0 means 1 BC, for example.
   /// [month]: The month of year.
   /// [day]: The day of month.
+  /// [calendar]: Calendar system in which to create the date, which defaults to the ISO calendar.
   /// Returns: The resulting date.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
-  LocalDate(int year, int month, int day)
+  /// [RangeError]: The parameters do not form a valid date.
+  factory LocalDate(int year, int month, int day, [CalendarSystem calendar])
   {
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(year, month, day);
-    _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, CalendarOrdinal.Iso);
+    return new LocalDate.trusted(new YearMonthDayCalendar(year, month, day, calendar ?? CalendarOrdinal.iso));
   }
 
-  /// Constructs an instance for the given year, month and day in the specified calendar.
-  ///
-  /// [year]: The year. This is the "absolute year", so, for
-  /// the ISO calendar, a value of 0 means 1 BC, for example.
-  /// [month]: The month of year.
-  /// [day]: The day of month.
-  /// [calendar]: Calendar system in which to create the date.
-  /// Returns: The resulting date.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
-  LocalDate.forCalendar(int year, int month, int day, CalendarSystem calendar)
-  {
-  Preconditions.checkNotNull(calendar, 'calendar');
-  calendar.ValidateYearMonthDay(year, month, day);
-  _yearMonthDayCalendar = new YearMonthDayCalendar(year, month, day, calendar.ordinal);
-  }
-
-  /// Constructs an instance for the given era, year of era, month and day in the ISO calendar.
-  ///
-  /// [era]: The era within which to create a date. Must be a valid era within the ISO calendar.
-  /// [yearOfEra]: The year of era.
-  /// [month]: The month of year.
-  /// [day]: The day of month.
-  /// Returns: The resulting date.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
-  LocalDate.forIsoEra(Era era, int yearOfEra, int month, int day)
-      : this.forEra(era, yearOfEra, month, day, CalendarSystem.Iso);
-
-  /// Constructs an instance for the given era, year of era, month and day in the specified calendar.
+  /// Constructs an instance for the given era, year of era, month and day in the specified or ISO calendar.
   ///
   /// [era]: The era within which to create a date. Must be a valid era within the specified calendar.
   /// [yearOfEra]: The year of era.
@@ -95,37 +63,39 @@ class LocalDate implements Comparable<LocalDate> {
   /// [calendar]: Calendar system in which to create the date.
   /// Returns: The resulting date.
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
-  LocalDate.forEra(Era era, int yearOfEra, int month, int day, CalendarSystem calendar)
-      : this.forCalendar(Preconditions.checkNotNull(calendar, 'calendar').GetAbsoluteYear(yearOfEra, era), month, day, calendar);
+  factory LocalDate.forEra(Era era, int yearOfEra, int month, int day, [CalendarSystem calendar]) {
+    calendar ??= CalendarSystem.Iso;
+    return new LocalDate(calendar.GetAbsoluteYear(yearOfEra, era), month, day, calendar);
+  }
 
   /// Gets the calendar system associated with this local date.
-  CalendarSystem get Calendar => CalendarSystem.ForOrdinal(_yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get calendar => CalendarSystem.ForOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this local date.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get Year => _yearMonthDayCalendar.year;
+  int get year => _yearMonthDayCalendar.year;
 
   /// Gets the month of this local date within the year.
-  int get Month => _yearMonthDayCalendar.month;
+  int get month => _yearMonthDayCalendar.month;
 
   /// Gets the day of this local date within the month.
-  int get Day => _yearMonthDayCalendar.day;
+  int get day => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
-  @internal int get DaysSinceEpoch => Calendar.GetDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
+  @internal int get daysSinceEpoch => calendar.GetDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the week day of this local date expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get DayOfWeek => Calendar.GetDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  IsoDayOfWeek get dayOfWeek => calendar.GetDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this local date within the era.
-  int get YearOfEra => Calendar.GetYearOfEra(_yearMonthDayCalendar.year);
+  int get yearOfEra => calendar.GetYearOfEra(_yearMonthDayCalendar.year);
 
   /// Gets the era of this local date.
-  Era get era => Calendar.GetEra(_yearMonthDayCalendar.year);
+  Era get era => calendar.GetEra(_yearMonthDayCalendar.year);
 
   /// Gets the day of this local date within the year.
-  int get DayOfYear => Calendar.GetDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
+  int get dayOfYear => calendar.GetDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
 
   @internal YearMonthDay get yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
@@ -135,8 +105,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// The [LocalDateTime] representing midnight on this local date, in the same calendar
   /// system.
-  // todo: this should probably be a method? Check style guide.
-  LocalDateTime get AtMidnight => new LocalDateTime(this, LocalTime.Midnight);
+  LocalDateTime atMidnight() => new LocalDateTime(this, LocalTime.Midnight);
 
   /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
   /// of [DateTimeKind.Unspecified]. The result is midnight on the day represented
@@ -148,40 +117,26 @@ class LocalDate implements Comparable<LocalDate> {
   /// the Time Machine non-system-specific "local" concept as exists in .NET.
   ///
   /// Returns: A [DateTime] value for the same date and time as this value.
-  DateTime toDateTimeUnspecified() =>
-      new DateTime(Year, Month, Day);
-// new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
-// + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
+  DateTime toDateTimeUnspecified() => new DateTime(year, month, day);
+  // new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
+  // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
 
   // Helper method used by both FromDateTime overloads.
-  // todo: private
-  static int NonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
-// ((ticks >> 14) ~/ 52734375);
+  static int _nonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
+  // ((ticks >> 14) ~/ 52734375);
 
-  /// Converts a [DateTime] of any kind to a LocalDate in the ISO calendar, ignoring the time of day.
+  /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
   /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
   /// [DateTimeKind.Utc] will still represent the same year/month/day - it won't be converted into the local system time.
   ///
   /// [dateTime]: Value to convert into a Time Machine local date
+  /// [calendar]: The calendar system to convert into, defaults to ISO calendar
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
-  static LocalDate FromDateTime(DateTime dateTime)
+  factory LocalDate.fromDateTime(DateTime dateTime, [CalendarSystem calendar])
   {
     // todo: we might want to make this so it's microseconds on VM and milliseconds on JS -- but I don't know how .. yet
-    int days = NonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
-    return new LocalDate.fromDaysSinceEpoch(days);
-  }
-
-  /// Converts a [DateTime] of any kind to a LocalDate in the specified calendar, ignoring the time of day.
-  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
-  /// [DateTimeKind.Utc] will still represent the same year/month/day - it won't be converted into the local system time.
-  ///
-  /// [dateTime]: Value to convert into a Time Machine local date
-  /// [calendar]: The calendar system to convert into
-  /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
-  static LocalDate FromDateTimeAndCalendar(DateTime dateTime, CalendarSystem calendar)
-  {
-  int days = NonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch); // - TimeConstants.BclDaysAtUnixEpoch;
-  return new LocalDate.fromDaysSinceEpoch_forCalendar(days, calendar);
+    int days = _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
+    return new LocalDate.fromDaysSinceEpoch(days, calendar);
   }
 
   /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
@@ -191,7 +146,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [weekOfWeekYear]: ISO-8601 week of week year of value to return
   /// [dayOfWeek]: ISO-8601 day of week to return
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
-  static LocalDate FromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+  factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
   => WeekYearRules.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
@@ -209,7 +164,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [dayOfWeek]: The day-of-week of the value to return.
   /// The date corresponding to the given year and month, on the given occurrence of the
   /// given day of week.
-  static LocalDate FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek)
+  factory LocalDate.fromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek)
   {
     // This validates year and month as well as getting us a useful date.
     LocalDate startOfMonth = new LocalDate(year, month, 1);
@@ -217,7 +172,7 @@ class LocalDate implements Comparable<LocalDate> {
     Preconditions.checkArgumentRange('dayOfWeek', dayOfWeek.value, 1, 7);
 
     // Correct day of week, 1st week of month.
-    int week1Day = dayOfWeek - startOfMonth.DayOfWeek + 1;
+    int week1Day = dayOfWeek - startOfMonth.dayOfWeek + 1;
     if (week1Day <= 0)
     {
       week1Day += 7;
@@ -235,13 +190,13 @@ class LocalDate implements Comparable<LocalDate> {
   /// [date]: The date to add the period to
   /// [period]: The period to add. Must not contain any (non-zero) time units.
   /// Returns: The sum of the given date and period
-  static LocalDate Add(LocalDate date, Period period) => date + period;
+  static LocalDate add(LocalDate date, Period period) => date + period;
 
   /// Adds the specified period to this date. Fluent alternative to `operator+()`.
   ///
   /// [period]: The period to add. Must not contain any (non-zero) time units.
   /// Returns: The sum of this date and the given period
-  LocalDate Plus(Period period) => this + period;
+  LocalDate plus(Period period) => this + period;
 
   /// Adds the specified period to the date.
   ///
@@ -255,21 +210,12 @@ class LocalDate implements Comparable<LocalDate> {
     return period.AddDateTo(this, 1);
   }
 
-//  /// <summary>
-//  /// Combines the given <see cref="LocalDate"/> and <see cref="LocalTime"/> components
-//  /// into a single <see cref="LocalDateTime"/>.
-//  /// </summary>
-//  /// <param name="date">The date to add the time to</param>
-//  /// <param name="time">The time to add</param>
-//  /// <returns>The sum of the given date and time</returns>
-//  LocalDateTime AtTime(LocalTime time) => new LocalDateTime(this, time);
-
   /// Subtracts the specified period from the date. Friendly alternative to `operator-()`.
   ///
   /// [date]: The date to subtract the period from
   /// [period]: The period to subtract. Must not contain any (non-zero) time units.
   /// Returns: The result of subtracting the given period from the date.
-  static LocalDate Subtract(LocalDate date, Period period) => date - period;
+  static LocalDate subtract(LocalDate date, Period period) => date - period;
 
   /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
   ///
@@ -279,13 +225,13 @@ class LocalDate implements Comparable<LocalDate> {
   /// [lhs]: The date to subtract from
   /// [rhs]: The date to subtract
   /// Returns: The result of subtracting one date from another.
-  static Period Between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+  static Period between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
 
   /// Subtracts the specified period from this date. Fluent alternative to `operator-()`.
   ///
   /// [period]: The period to subtract. Must not contain any (non-zero) time units.
   /// Returns: The result of subtracting the given period from this date.
-  LocalDate MinusPeriod(Period period) {
+  LocalDate minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
     return period.AddDateTo(this, -1);
@@ -297,7 +243,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// The specified date must be in the same calendar system as this.
   /// [date]: The date to subtract from this
   /// Returns: The difference between the specified date and this one
-  Period MinusDate(LocalDate date) => Period.BetweenDates(date, this); // this - date;
+  Period minusDate(LocalDate date) => Period.BetweenDates(date, this); // this - date;
 
   /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
   ///
@@ -317,7 +263,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [period]: The period to subtract. Must not contain any (non-zero) time units.
   /// Returns: The result of subtracting the given period from the date
   // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic rhs) => rhs is LocalDate ? MinusDate(rhs) : rhs is Period ? MinusPeriod(rhs) : throw new TypeError();
+  dynamic operator -(dynamic rhs) => rhs is LocalDate ? minusDate(rhs) : rhs is Period ? minusPeriod(rhs) : throw new TypeError();
 
   /// Compares two [LocalDate] values for equality. This requires
   /// that the dates be the same, within the same calendar.
@@ -343,7 +289,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: true if the [lhs] is strictly earlier than [rhs], false otherwise.
   bool operator <(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.compareTo(rhs) < 0;
   }
 
@@ -360,7 +306,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: true if the [lhs] is earlier than or equal to [rhs], false otherwise.
   bool operator <=(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar== rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.calendar== rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.compareTo(rhs) <= 0;
   }
 
@@ -377,7 +323,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: true if the [lhs] is strictly later than [rhs], false otherwise.
   bool operator >(LocalDate rhs)
   {
-    Preconditions.checkArgument(this.Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.compareTo(rhs) > 0;
   }
 
@@ -394,7 +340,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: true if the [lhs] is later than or equal to [rhs], false otherwise.
   bool operator >=(LocalDate rhs)
   {
-    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) >= 0;
   }
 
@@ -413,28 +359,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// later than [other].
   int compareTo(LocalDate other)
   {
-    Preconditions.checkArgument(Calendar == other?.Calendar, 'other', "Only values with the same calendar system can be compared");
-    return Calendar.Compare(yearMonthDay, other.yearMonthDay);
-  }
-
-  /// Implementation of [IComparable.CompareTo] to compare two LocalDates.
-  ///
-  /// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
-  ///
-  /// [ArgumentException]: [obj] is non-null but does not refer to an instance of [LocalDate], or refers
-  /// to a date in a different calendar system.
-  /// [obj]: The object to compare this value with.
-  /// The result of comparing this LocalDate with another one; see [CompareTo(LocalDate)] for general details.
-  /// If [obj] is null, this method returns a value greater than 0.
-  // todo: Dart has a Comparable<T> something or another
-  int IComparable_CompareTo(dynamic obj)
-  {
-    if (obj == null)
-    {
-      return 1;
-    }
-    Preconditions.checkArgument(obj is LocalDate, 'obj', "Object must be of type NodaTime.LocalDate.");
-    return compareTo(obj as LocalDate);
+    Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
+    return calendar.Compare(yearMonthDay, other.yearMonthDay);
   }
 
   /// Returns the later date of the given two.
@@ -443,9 +369,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// [y]: The second date to compare.
   /// [ArgumentException]: The two dates have different calendar systems.
   /// Returns: The later date of [x] or [y].
-  static LocalDate Max(LocalDate x, LocalDate y)
+  static LocalDate max(LocalDate x, LocalDate y)
   {
-    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x > y ? x : y;
   }
 
@@ -455,9 +381,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// [y]: The second date to compare.
   /// [ArgumentException]: The two dates have different calendar systems.
   /// Returns: The earlier date of [x] or [y].
-  static LocalDate Min(LocalDate x, LocalDate y)
+  static LocalDate min(LocalDate x, LocalDate y)
   {
-    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x < y ? x : y;
   }
 
@@ -466,20 +392,13 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: A hash code for this local date.
   @override int get hashCode => _yearMonthDayCalendar.hashCode;
 
-//  /// <summary>
-//  /// Compares two <see cref="LocalDate"/> values for equality. This requires
-//  /// that the dates be the same, within the same calendar.
-//  /// </summary>
-//  /// <param name="obj">The object to compare this date with.</param>
-//  /// <returns>True if the given value is another local date equal to this one; false otherwise.</returns>
-//  bool Equals(dynamic obj) => obj is LocalDate && this == obj;
-
+  // todo: consider removing -- does this make since in Dart?
   /// Compares two [LocalDate] values for equality. This requires
   /// that the dates be the same, within the same calendar.
   ///
   /// [other]: The value to compare this date with.
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool Equals(LocalDate other) => this == other;
+  bool equals(LocalDate other) => this == other;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.
@@ -490,10 +409,10 @@ class LocalDate implements Comparable<LocalDate> {
   /// [SkippedTimeException]: The entire day was skipped due to a very large time zone transition.
   /// (This is extremely rare.)
   /// Returns: The [ZonedDateTime] representing the earliest time on this date, in the given time zone.
-  ZonedDateTime AtStartOfDayInZone(DateTimeZone zone)
+  ZonedDateTime atStartOfDayInZone(DateTimeZone zone)
   {
-  Preconditions.checkNotNull(zone, 'zone');
-  return zone.AtStartOfDay(this);
+    Preconditions.checkNotNull(zone, 'zone');
+    return zone.AtStartOfDay(this);
   }
 
   /// Creates a new LocalDate representing the same physical date, but in a different calendar.
@@ -502,10 +421,10 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [calendar]: The calendar system to convert this local date to.
   /// Returns: The converted LocalDate
-  LocalDate WithCalendar(CalendarSystem calendar)
+  LocalDate withCalendar(CalendarSystem calendar)
   {
-  Preconditions.checkNotNull(calendar, 'calendar');
-  return new LocalDate.fromDaysSinceEpoch_forCalendar(DaysSinceEpoch, calendar);
+    Preconditions.checkNotNull(calendar, 'calendar');
+    return new LocalDate.fromDaysSinceEpoch(daysSinceEpoch, calendar);
   }
 
   /// Returns a new LocalDate representing the current value with the given number of years added.
@@ -516,7 +435,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [years]: The number of years to add
   /// Returns: The current value plus the given number of years.
-  LocalDate PlusYears(int years) => DatePeriodFields.YearsField.Add(this, years);
+  LocalDate plusYears(int years) => DatePeriodFields.YearsField.Add(this, years);
 
   /// Returns a new LocalDate representing the current value with the given number of months added.
   ///
@@ -529,7 +448,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [months]: The number of months to add
   /// Returns: The current date plus the given number of months
-  LocalDate PlusMonths(int months) => DatePeriodFields.MonthsField.Add(this, months);
+  LocalDate plusMonths(int months) => DatePeriodFields.MonthsField.Add(this, months);
 
   /// Returns a new LocalDate representing the current value with the given number of days added.
   ///
@@ -538,13 +457,13 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [days]: The number of days to add
   /// Returns: The current value plus the given number of days.
-  LocalDate PlusDays(int days) => DatePeriodFields.DaysField.Add(this, days);
+  LocalDate plusDays(int days) => DatePeriodFields.DaysField.Add(this, days);
 
   /// Returns a new LocalDate representing the current value with the given number of weeks added.
   ///
   /// [weeks]: The number of weeks to add
   /// Returns: The current value plus the given number of weeks.
-  LocalDate PlusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
+  LocalDate plusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
 
   /// Returns the next [LocalDate] falling on the specified [IsoDayOfWeek].
   /// This is a strict "next" - if this date on already falls on the target
@@ -555,7 +474,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDate Next(IsoDayOfWeek targetDayOfWeek)
+  LocalDate next(IsoDayOfWeek targetDayOfWeek)
   {
     // Avoids boxing...
     if (targetDayOfWeek < IsoDayOfWeek.monday || targetDayOfWeek > IsoDayOfWeek.sunday)
@@ -563,13 +482,13 @@ class LocalDate implements Comparable<LocalDate> {
       throw new RangeError('targetDayOfWeek');
     }
     // This will throw the desired exception for calendars with different week systems.
-    IsoDayOfWeek thisDay = DayOfWeek;
+    IsoDayOfWeek thisDay = dayOfWeek;
     int difference = targetDayOfWeek - thisDay;
     if (difference <= 0)
     {
       difference += 7;
     }
-    return PlusDays(difference);
+    return plusDays(difference);
   }
 
   /// Returns the previous [LocalDate] falling on the specified [IsoDayOfWeek].
@@ -581,7 +500,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDate Previous(IsoDayOfWeek targetDayOfWeek)
+  LocalDate previous(IsoDayOfWeek targetDayOfWeek)
   {
     // Avoids boxing...
     if (targetDayOfWeek < IsoDayOfWeek.monday || targetDayOfWeek > IsoDayOfWeek.sunday)
@@ -589,13 +508,13 @@ class LocalDate implements Comparable<LocalDate> {
       throw new RangeError('targetDayOfWeek');
     }
     // This will throw the desired exception for calendars with different week systems.
-    IsoDayOfWeek thisDay = DayOfWeek;
+    IsoDayOfWeek thisDay = dayOfWeek;
     int difference = targetDayOfWeek - thisDay;
     if (difference >= 0)
     {
       difference -= 7;
     }
-    return PlusDays(difference);
+    return plusDays(difference);
   }
 
   /// Returns an [OffsetDate] for this local date with the given offset.
@@ -603,7 +522,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// This method is purely a convenient alternative to calling the [OffsetDate] constructor directly.
   /// [offset]: The offset to apply.
   /// Returns: The result of this date offset by the given amount.
-  OffsetDate WithOffset(Offset offset) => new OffsetDate(this, offset);
+  OffsetDate withOffset(Offset offset) => new OffsetDate(this, offset);
 
   /// Combines this [LocalDate] with the given [LocalTime]
   /// into a single [LocalDateTime].
@@ -611,9 +530,9 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [time]: The time to combine with this date.
   /// Returns: The [LocalDateTime] representation of the given time on this date
-  LocalDateTime At(LocalTime time) => new LocalDateTime(this, time);
+  LocalDateTime at(LocalTime time) => new LocalDateTime(this, time);
 
-  LocalDate With(LocalDate Function(LocalDate) adjuster) => adjuster(this);
+  LocalDate withAdjustment(LocalDate Function(LocalDate) adjuster) => adjuster(this);
 
   /// Returns a [String] that represents this instance.
   ///
@@ -622,20 +541,5 @@ class LocalDate implements Comparable<LocalDate> {
   // @override String toString() => TextShim.toStringLocalDate(this); // LocalDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       LocalDatePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
-
-/// Formats the value of the current instance using the specified pattern.
-///
-/// A [String] containing the value of the current instance in the specified format.
-///
-/// [patternText]: The [String] specifying the pattern to use,
-/// or null to use the default format pattern ("D").
-///
-/// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-/// or null to use the current thread's culture to obtain a format provider.
-///
-/// <filterpriority>2</filterpriority>
-//  String ToStringFormatted(string patternText, IFormatProvider formatProvider) =>
-//      LocalDatePattern.BclSupport.Format(this, patternText, formatProvider);
-
 }
 

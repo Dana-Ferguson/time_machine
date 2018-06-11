@@ -171,14 +171,14 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// (This is extremely rare.)
   /// Returns: The [ZonedDateTime] representing the earliest time in the given date, in this time zone.
   ZonedDateTime AtStartOfDay(LocalDate date) {
-    LocalDateTime midnight = date.AtMidnight;
+    LocalDateTime midnight = date.atMidnight();
     var mapping = MapLocal(midnight);
     switch (mapping.Count) {
       // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
       case 0:
         var interval = mapping.LateInterval;
         // Safe to use Start, as it can't extend to the start of time.
-        var offsetDateTime = new OffsetDateTime.instantCalendar(interval.start, interval.wallOffset, date.Calendar);
+        var offsetDateTime = new OffsetDateTime.instantCalendar(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
         if (offsetDateTime.yearMonthDay != date.yearMonthDay) {

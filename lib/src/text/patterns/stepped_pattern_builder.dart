@@ -420,7 +420,7 @@ class _findLongestMatchCursor {
           AddField(PatternFields.embeddedTime, 'l');
           AddEmbeddedPattern(
               LocalDateTimePattern
-                  .Create(embeddedPatternText, FormatInfo, templateDate.At(templateTime))
+                  .Create(embeddedPatternText, FormatInfo, templateDate.at(templateTime))
                   .UnderlyingPattern,
                   (TBucket bucket, LocalDateTime value) {
                 var dateBucket = dateBucketExtractor(bucket);
@@ -460,10 +460,10 @@ class _findLongestMatchCursor {
             .UnderlyingPattern,
             (TBucket bucket, LocalDate value) {
           var dateBucket = dateBucketExtractor(bucket);
-          dateBucket.Calendar = value.Calendar;
-          dateBucket.Year = value.Year;
-          dateBucket.MonthOfYearNumeric = value.Month;
-          dateBucket.DayOfMonth = value.Day;
+          dateBucket.Calendar = value.calendar;
+          dateBucket.Year = value.year;
+          dateBucket.MonthOfYearNumeric = value.month;
+          dateBucket.DayOfMonth = value.day;
         },
         dateExtractor);
   }

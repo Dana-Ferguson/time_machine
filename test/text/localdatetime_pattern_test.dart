@@ -611,7 +611,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       second,
       millis));
 
-  Data.dt(LocalDate date, LocalTime time) : super(date.At(time));
+  Data.dt(LocalDate date, LocalTime time) : super(date.at(time));
 
 
   @internal

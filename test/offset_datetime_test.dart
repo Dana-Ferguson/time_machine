@@ -437,7 +437,7 @@ void WithCalendar()
   CalendarSystem julianCalendar = CalendarSystem.Julian;
   OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.WithOffset(Offset.zero);
 
-  OffsetDateTime expected = new LocalDate.forCalendar(1969, 12, 19, julianCalendar).AtMidnight.WithOffset(new Offset.fromHours(0));
+  OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().WithOffset(new Offset.fromHours(0));
   OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.Julian);
   expect(expected, actual);
 }

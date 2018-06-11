@@ -80,7 +80,7 @@ class CalendarSystem {
   static CalendarSystem _generateIsoCalendarSystem() {
     var gregorianCalculator = new GregorianYearMonthDayCalculator();
     var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-    return new CalendarSystem(CalendarOrdinal.Iso, IsoId, IsoName, gregorianCalculator, gregorianEraCalculator);
+    return new CalendarSystem(CalendarOrdinal.iso, IsoId, IsoName, gregorianCalculator, gregorianEraCalculator);
   }
 
 // #region Public factory members for calendars
@@ -109,7 +109,7 @@ class CalendarSystem {
     Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.Size, 'ordinal',
         "Unknown ordinal value $ordinal");
     // Avoid an array lookup for the overwhelmingly common case.
-    if (ordinal == CalendarOrdinal.Iso) {
+    if (ordinal == CalendarOrdinal.iso) {
       return IsoCalendarSystem;
     }
     CalendarSystem calendar = CalendarByOrdinal[ordinal.value];
@@ -127,7 +127,7 @@ class CalendarSystem {
 
   // todo: how would caching work if this was inside the function body?
   static final Map<CalendarOrdinal, CalendarSystem> _forOrdinalUncached_referenceMap = {
-    CalendarOrdinal.Iso: Iso,
+    CalendarOrdinal.iso: Iso,
     CalendarOrdinal.Gregorian: Gregorian,
     CalendarOrdinal.Julian: Julian,
   // CalendarOrdinal.Coptic: Coptic

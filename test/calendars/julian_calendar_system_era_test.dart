@@ -25,23 +25,23 @@ CalendarSystem Julian = CalendarSystem.Julian;
 @Test()
 void GetMaxYearOfEra()
 {
-  LocalDate date = new LocalDate.forCalendar(Julian.maxYear, 1, 1, Julian);
-  expect(date.YearOfEra, Julian.GetMaxYearOfEra(Era.Common));
+  LocalDate date = new LocalDate(Julian.maxYear, 1, 1, Julian);
+  expect(date.yearOfEra, Julian.GetMaxYearOfEra(Era.Common));
   expect(Era.Common, date.era);
-  date = new LocalDate.forCalendar(Julian.minYear, 1, 1, Julian);
-  expect(Julian.minYear, date.Year);
-  expect(date.YearOfEra, Julian.GetMaxYearOfEra(Era.BeforeCommon));
+  date = new LocalDate(Julian.minYear, 1, 1, Julian);
+  expect(Julian.minYear, date.year);
+  expect(date.yearOfEra, Julian.GetMaxYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
 @Test()
 void GetMinYearOfEra()
 {
-  LocalDate date = new LocalDate.forCalendar(1, 1, 1, Julian);
-  expect(date.YearOfEra, Julian.GetMinYearOfEra(Era.Common));
+  LocalDate date = new LocalDate(1, 1, 1, Julian);
+  expect(date.yearOfEra, Julian.GetMinYearOfEra(Era.Common));
   expect(Era.Common, date.era);
-  date = new LocalDate.forCalendar(0, 1, 1, Julian);
-  expect(date.YearOfEra, Julian.GetMinYearOfEra(Era.BeforeCommon));
+  date = new LocalDate(0, 1, 1, Julian);
+  expect(date.yearOfEra, Julian.GetMinYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 

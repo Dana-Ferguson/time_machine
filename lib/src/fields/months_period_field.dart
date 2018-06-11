@@ -10,13 +10,13 @@ import 'package:time_machine/time_machine_fields.dart';
   @internal MonthsPeriodField();
 
   LocalDate Add(LocalDate localDate, int value) {
-    var calendar = localDate.Calendar;
+    var calendar = localDate.calendar;
     var calculator = calendar.yearMonthDayCalculator;
     var yearMonthDay = calculator.addMonths(localDate.yearMonthDay, value);
     return new LocalDate.trusted(yearMonthDay.WithCalendar(calendar));
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) =>
-      start.Calendar.yearMonthDayCalculator.monthsBetween(start.yearMonthDay, end.yearMonthDay);
+      start.calendar.yearMonthDayCalculator.monthsBetween(start.yearMonthDay, end.yearMonthDay);
 }
 

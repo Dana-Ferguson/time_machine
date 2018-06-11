@@ -25,9 +25,9 @@ void GetAbsoluteYear()
 {
   expect(5, CopticCalendar.GetAbsoluteYear(5, Era.AnnoMartyrum));
   // Prove it's right...
-  LocalDate localDate = new LocalDate.forCalendar(5, 1, 1, CopticCalendar);
-  expect(5, localDate.Year);
-  expect(5, localDate.YearOfEra);
+  LocalDate localDate = new LocalDate(5, 1, 1, CopticCalendar);
+  expect(5, localDate.year);
+  expect(5, localDate.yearOfEra);
   expect(Era.AnnoMartyrum, localDate.era);
 }
 

@@ -158,7 +158,7 @@ class _ZoneYearOffset {
       if (dayOfWeek != 0) {
         // Optimized "go to next or previous occurrence of day or week". Try to do as few comparisons
         // as possible, and only fetch DayOfWeek once. (If we call Next or Previous, it will work it out again.)
-        int currentDayOfWeek = date.DayOfWeek.value;
+        int currentDayOfWeek = date.dayOfWeek.value;
         if (currentDayOfWeek != dayOfWeek) {
           int diff = dayOfWeek - currentDayOfWeek;
           if (diff > 0) {
@@ -169,17 +169,17 @@ class _ZoneYearOffset {
           else if (advanceDayOfWeek) {
             diff += 7;
           }
-          date = date.PlusDays(diff);
+          date = date.plusDays(diff);
         }
       }
       if (addDay) {
         // Adding a day to the last representable day will fail, but we can return an infinite value instead.
-        if (year == 9999 && date.Month == 12 && date.Day == 31) {
+        if (year == 9999 && date.month == 12 && date.day == 31) {
           return LocalInstant.AfterMaxValue;
         }
-        date = date.PlusDays(1);
+        date = date.plusDays(1);
       }
-      return (date.At(timeOfDay)).ToLocalInstant();
+      return (date.at(timeOfDay)).ToLocalInstant();
     }
   }
 

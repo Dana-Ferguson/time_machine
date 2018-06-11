@@ -121,8 +121,8 @@ void BetweenLocalDates_InvalidUnits()
 @Test() @SkipMe.unimplemented()
 void BetweenLocalDates_DifferentCalendarSystems_Throws()
 {
-  LocalDate start = new LocalDate.forCalendar(2017, 11, 1, CalendarSystem.Coptic);
-  LocalDate end = new LocalDate.forCalendar(2017, 11, 5, CalendarSystem.Gregorian);
+  LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.Coptic);
+  LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.Gregorian);
   expect(() => Period.BetweenDates(start, end), throwsArgumentError);
 }
 
@@ -493,7 +493,7 @@ void HasTimeComponent_Compound()
   expect(Period.BetweenDates(dt1.Date, dt2.Date).HasTimeComponent, isFalse);
 
   // Case 2: Period contains date and time units, but time units are all zero
-  expect(Period.Between(dt1.Date.At(LocalTime.Midnight), dt2.Date.At(LocalTime.Midnight)).HasTimeComponent, isFalse);
+  expect(Period.Between(dt1.Date.at(LocalTime.Midnight), dt2.Date.at(LocalTime.Midnight)).HasTimeComponent, isFalse);
 
   // Case 3: Entire period is time-based, but 0. (Same local time twice here.)
   expect(Period.BetweenTimes(dt1.TimeOfDay, dt1.TimeOfDay).HasTimeComponent, isFalse);
@@ -515,7 +515,7 @@ void HasDateComponent_Compound()
   expect(Period.BetweenTimes(dt1.TimeOfDay, dt2.TimeOfDay).HasDateComponent, isFalse);
 
   // Case 2: Period contains date and time units, but date units are all zero
-  expect(Period.Between(dt1, dt1.Date.At(dt2.TimeOfDay)).HasDateComponent, isFalse);
+  expect(Period.Between(dt1, dt1.Date.at(dt2.TimeOfDay)).HasDateComponent, isFalse);
 
   // Case 3: Entire period is date-based, but 0. (Same local date twice here.)
   expect(Period.BetweenDates(dt1.Date, dt1.Date).HasDateComponent, isFalse);
@@ -891,16 +891,16 @@ void Between_ExtremeValues(PeriodUnits units)
   {
     return;
   }
-  var minValue = LocalDate.MinIsoValue.At(LocalTime.MinValue);
-  var maxValue = LocalDate.MaxIsoValue.At(LocalTime.MaxValue);
+  var minValue = LocalDate.minIsoValue.at(LocalTime.MinValue);
+  var maxValue = LocalDate.maxIsoValue.at(LocalTime.MaxValue);
   Period.Between(minValue, maxValue, units);
 }
 
 @Test()
 void Between_ExtremeValues_Overflow()
 {
-  var minValue = LocalDate.MinIsoValue.At(LocalTime.MinValue);
-  var maxValue = LocalDate.MaxIsoValue.At(LocalTime.MaxValue);
+  var minValue = LocalDate.minIsoValue.at(LocalTime.MinValue);
+  var maxValue = LocalDate.maxIsoValue.at(LocalTime.MaxValue);
   expect(() => Period.Between(minValue, maxValue, PeriodUnits.nanoseconds), throwsRangeError); // throwsStateError);
 }
 

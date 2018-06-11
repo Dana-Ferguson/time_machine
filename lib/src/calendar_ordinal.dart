@@ -48,7 +48,7 @@ class CalendarOrdinal {
   ];
 
   static const List<CalendarOrdinal> _enumConstants = const [
-    Iso, Gregorian, Julian, Coptic, HebrewCivil, HebrewScriptural,
+    iso, Gregorian, Julian, Coptic, HebrewCivil, HebrewScriptural,
     PersianSimple, PersianArithmetic, PersianAstronomical,
     IslamicAstronomicalBase15, IslamicAstronomicalBase16, IslamicAstronomicalIndian, IslamicAstronomicalHabashAlHasib,
     IslamicCivilBase15, IslamicCivilBase16, IslamicCivilIndian, IslamicAstronomicalHabashAlHasib,
@@ -60,7 +60,7 @@ class CalendarOrdinal {
   /// Value indicating no day of the week; this will never be returned
   /// by any IsoDayOfWeek property, and is not valid as an argument to
   /// any method.
-  static const CalendarOrdinal Iso = const CalendarOrdinal(0);
+  static const CalendarOrdinal iso = const CalendarOrdinal(0);
   static const CalendarOrdinal Gregorian = const CalendarOrdinal(1);
   static const CalendarOrdinal Julian = const CalendarOrdinal(2);
   static const CalendarOrdinal Coptic = const CalendarOrdinal(3);

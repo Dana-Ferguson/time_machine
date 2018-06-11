@@ -46,7 +46,7 @@ class _AddTimeResult {
     // int extraDays = 0;
     var addTimeResult = AddTime(start.TimeOfDay, units, 0);
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-    LocalDate date = addTimeResult.extraDays == 0 ? start.Date :  start.Date.PlusDays(addTimeResult.extraDays);
+    LocalDate date = addTimeResult.extraDays == 0 ? start.Date :  start.Date.plusDays(addTimeResult.extraDays);
     return new LocalDateTime(date, addTimeResult.time);
   }
 

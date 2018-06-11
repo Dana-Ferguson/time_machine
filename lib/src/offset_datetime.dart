@@ -251,7 +251,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 /// Returns: The converted OffsetDateTime.
 
   OffsetDateTime WithCalendar(CalendarSystem calendar) {
-    LocalDate newDate = Date.WithCalendar(calendar);
+    LocalDate newDate = Date.withCalendar(calendar);
     return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
@@ -265,7 +265,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 /// Returns: The adjusted offset date/time.
 
   OffsetDateTime WithDate(LocalDate Function(LocalDate) adjuster) {
-    LocalDate newDate = Date.With(adjuster);
+    LocalDate newDate = Date.withAdjustment(adjuster);
     return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
@@ -311,7 +311,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     }
     return new OffsetDateTime.fullTrust(
         days == 0 ? yearMonthDayCalendar : Date
-            .PlusDays(days)
+            .plusDays(days)
             .yearMonthDayCalendar, nanos, offset);
   // _combineNanoOfDayAndOffset(nanos, offset));
   }

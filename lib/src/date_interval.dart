@@ -42,7 +42,7 @@ final LocalDate end;
 DateInterval(this.start, this.end)
 {
   // todo: will this equivalence work out?
-  Preconditions.checkArgument(start.Calendar == end.Calendar, 'end',
+  Preconditions.checkArgument(start.calendar == end.calendar, 'end',
       "Calendars of start and end dates must be the same.");
   Preconditions.checkArgument(!(end < start), 'end', "End date must not be earlier than the start date");
 }
@@ -82,7 +82,7 @@ bool equals(DateInterval other) => this == other;
 bool contains(LocalDate date)
 {
   if (date == null) throw new ArgumentError.notNull('date');
-  Preconditions.checkArgument(date.Calendar == start.Calendar, 'date',
+  Preconditions.checkArgument(date.calendar == start.calendar, 'date',
       "The date to check must be in the same calendar as the start and end dates");
   return start <= date && date <= end;
 }
@@ -113,7 +113,7 @@ int get length =>
 
 
 /// Gets the calendar system of the dates in this interval.
-CalendarSystem get Calendar => start.Calendar;
+CalendarSystem get Calendar => start.calendar;
 
 
   /// Returns a string representation of this interval.
@@ -159,8 +159,8 @@ DateInterval Union(DateInterval interval)
 {
 _validateInterval(interval);
 
-var _start = LocalDate.Min(start, interval.start);
-var _end = LocalDate.Max(end, interval.end);
+var _start = LocalDate.min(start, interval.start);
+var _end = LocalDate.max(end, interval.end);
 
 // Check whether the length of the interval we *would* construct is greater
 // than the sum of the lengths - if it is, there's a day in that candidate union
@@ -175,7 +175,7 @@ return Period.DaysBetween(_start, _end) >= length + interval.length
 void _validateInterval(DateInterval interval)
 {
   Preconditions.checkNotNull(interval, 'interval');
-  Preconditions.checkArgument(interval.Calendar == start.Calendar, 'interval',
+  Preconditions.checkArgument(interval.Calendar == start.calendar, 'interval',
       "The specified interval uses a different calendar system to this one");
 }
 }

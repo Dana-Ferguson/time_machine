@@ -26,10 +26,10 @@ Future main() async {
 void Constructor_WithDays(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = start.DaysSinceEpoch;
+  int startDays = start.daysSinceEpoch;
   for (int i = 0; i < 366; i++)
   {
-    expect(start.PlusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i));
+    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i));
   }
 }
 
@@ -41,10 +41,10 @@ void Constructor_WithDays(int year)
 void Constructor_WithDaysAndCalendar(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = start.DaysSinceEpoch;
+  int startDays = start.daysSinceEpoch;
   for (int i = 0; i < 366; i++)
   {
-    expect(start.PlusDays(i), new LocalDate.fromDaysSinceEpoch_forCalendar(startDays + i, CalendarSystem.Iso));
+    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.Iso));
   }
 }
 
@@ -52,25 +52,25 @@ void Constructor_WithDaysAndCalendar(int year)
 void Constructor_CalendarDefaultsToIso()
 {
   LocalDate date = new LocalDate(2000, 1, 1);
-  expect(CalendarSystem.Iso, date.Calendar);
+  expect(CalendarSystem.Iso, date.calendar);
 }
 
 @Test()
 void Constructor_PropertiesRoundTrip()
 {
   LocalDate date = new LocalDate(2023, 7, 27);
-  expect(2023, date.Year);
-  expect(7, date.Month);
-  expect(27, date.Day);
+  expect(2023, date.year);
+  expect(7, date.month);
+  expect(27, date.day);
 }
 
 @Test()
 void Constructor_PropertiesRoundTrip_CustomCalendar()
 {
-  LocalDate date = new LocalDate.forCalendar(2023, 7, 27, CalendarSystem.Julian);
-  expect(2023, date.Year);
-  expect(7, date.Month);
-  expect(27, date.Day);
+  LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.Julian);
+  expect(2023, date.year);
+  expect(7, date.month);
+  expect(27, date.day);
 }
 
 @Test()
@@ -98,25 +98,25 @@ void Constructor_Invalid(int year, int month, int day)
 void Constructor_Invalid_WithCalendar(int year, int month, int day)
 {
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate.forCalendar(year, month, day, CalendarSystem.Iso), throwsRangeError);
+  expect(() => new LocalDate(year, month, day, CalendarSystem.Iso), throwsRangeError);
 }
 
 @Test()
 void Constructor_InvalidYearOfEra()
 {
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate.forIsoEra(Era.Common, 0, 1, 1), throwsRangeError);
-  expect(() => new LocalDate.forIsoEra(Era.BeforeCommon, 0, 1, 1), throwsRangeError);
-  expect(() => new LocalDate.forIsoEra(Era.Common, 10000, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.Common, 0, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.BeforeCommon, 0, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.Common, 10000, 1, 1), throwsRangeError);
   // Although our minimum year is -9998, that's 9999 BC.
-  expect(() => new LocalDate.forIsoEra(Era.BeforeCommon, 10000, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.BeforeCommon, 10000, 1, 1), throwsRangeError);
 }
 
 @Test()
 void Constructor_WithYearOfEra_BC()
 {
   LocalDate absolute = new LocalDate(-10, 1, 1);
-  LocalDate withEra = new LocalDate.forIsoEra(Era.BeforeCommon, 11, 1, 1);
+  LocalDate withEra = new LocalDate.forEra(Era.BeforeCommon, 11, 1, 1);
   expect(absolute, withEra);
 }
 
@@ -124,7 +124,7 @@ void Constructor_WithYearOfEra_BC()
 void Constructor_WithYearOfEra_AD()
 {
   LocalDate absolute = new LocalDate(50, 6, 19);
-  LocalDate withEra = new LocalDate.forIsoEra(Era.Common, 50, 6, 19);
+  LocalDate withEra = new LocalDate.forEra(Era.Common, 50, 6, 19);
   expect(absolute, withEra);
 }
 
@@ -132,7 +132,7 @@ void Constructor_WithYearOfEra_AD()
 void Constructor_WithYearOfEra_NonIsoCalendar()
 {
   var calendar = CalendarSystem.Coptic;
-  LocalDate absolute = new LocalDate.forCalendar(50, 6, 19, calendar);
+  LocalDate absolute = new LocalDate(50, 6, 19, calendar);
   LocalDate withEra = new LocalDate.forEra(Era.AnnoMartyrum, 50, 6, 19, calendar);
   expect(absolute, withEra);
 }
@@ -143,7 +143,7 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 {
   // Week year 2005 only has 52 weeks
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => LocalDate.FromWeekYearWeekAndDay(2005, 53, IsoDayOfWeek.sunday), throwsRangeError);
+  expect(() => new LocalDate.fromWeekYearWeekAndDay(2005, 53, IsoDayOfWeek.sunday), throwsRangeError);
 }
 
 @Test()
@@ -156,8 +156,8 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 @TestCase(const [2014, 8, 5, IsoDayOfWeek.monday, 25])
 void FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek, int expectedDay)
 {
-  var date = LocalDate.FromYearMonthWeekAndDay(year, month, occurrence, dayOfWeek);
-  expect(year, date.Year);
-  expect(month, date.Month);
-  expect(expectedDay, date.Day);
+  var date = new LocalDate.fromYearMonthWeekAndDay(year, month, occurrence, dayOfWeek);
+  expect(year, date.year);
+  expect(month, date.month);
+  expect(expectedDay, date.day);
 }

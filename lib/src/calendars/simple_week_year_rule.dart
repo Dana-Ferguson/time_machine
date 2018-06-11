@@ -68,7 +68,7 @@ import 'package:time_machine/time_machine_calendars.dart';
       // the full check if the requested week-year is different to the calendar year of the result.
       // We don't need to check for this in regular rules, because the computation we've already performed
       // will always be right.
-      if (irregularWeeks && weekYear != ret.Year) {
+      if (irregularWeeks && weekYear != ret.year) {
         if (GetWeekYear(ret) != weekYear) {
           throw new ArgumentError.value(weekYear, 'weekYear',
               "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
@@ -81,7 +81,7 @@ import 'package:time_machine/time_machine_calendars.dart';
   /// <inheritdoc />
   int GetWeekOfWeekYear(LocalDate date) {
     YearMonthDay yearMonthDay = date.yearMonthDay;
-    YearMonthDayCalculator yearMonthDayCalculator = date.Calendar.yearMonthDayCalculator;
+    YearMonthDayCalculator yearMonthDayCalculator = date.calendar.yearMonthDayCalculator;
     // This is a bit inefficient, as we'll be converting forms several times. However, it's
     // understandable... we might want to optimize in the future if it's reported as a bottleneck.
     int weekYear = GetWeekYear(date);
@@ -126,7 +126,7 @@ import 'package:time_machine/time_machine_calendars.dart';
   /// <inheritdoc />
   int GetWeekYear(LocalDate date) {
     YearMonthDay yearMonthDay = date.yearMonthDay;
-    YearMonthDayCalculator yearMonthDayCalculator = date.Calendar.yearMonthDayCalculator;
+    YearMonthDayCalculator yearMonthDayCalculator = date.calendar.yearMonthDayCalculator;
         // unchecked
         {
       // Let's guess that it's in the same week year as calendar year, and check that.
@@ -151,7 +151,7 @@ import 'package:time_machine/time_machine_calendars.dart';
       // Otherwise, check using the number of
       // weeks in the year. Note that this will fetch the start of the calendar year and the week year
       // again, so could be optimized by copying some logic here - but only when we find we need to.
-      int weeksInWeekYear = GetWeeksInWeekYear(calendarYear, date.Calendar);
+      int weeksInWeekYear = GetWeeksInWeekYear(calendarYear, date.calendar);
 
       // We assume that even for the maximum year, we've got just about enough leeway to get to the
       // start of the week year. (If not, we should adjust the maximum.)

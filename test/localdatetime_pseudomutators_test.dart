@@ -204,8 +204,8 @@ void PlusTicks_Simple()
   LocalTime startTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
   LocalTime expectedForwardTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
   LocalTime expectedBackwardTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
-  expect(date.At(expectedForwardTime), (date.At(startTime)).PlusTicks(4000));
-  expect(date.At(expectedBackwardTime), (date.At(startTime)).PlusTicks(-4000));
+  expect(date.at(expectedForwardTime), (date.at(startTime)).PlusTicks(4000));
+  expect(date.at(expectedBackwardTime), (date.at(startTime)).PlusTicks(-4000));
 }
 
 @Test()
@@ -227,8 +227,8 @@ void PlusNanoseconds_Simple()
   LocalTime startTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
   LocalTime expectedForwardTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7540);
   LocalTime expectedBackwardTime = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7460);
-  expect(date.At(expectedForwardTime), (date.At(startTime)).PlusNanoseconds(4000));
-  expect(date.At(expectedBackwardTime), (date.At(startTime)).PlusNanoseconds(-4000));
+  expect(date.at(expectedForwardTime), (date.at(startTime)).PlusNanoseconds(4000));
+  expect(date.at(expectedBackwardTime), (date.at(startTime)).PlusNanoseconds(-4000));
 }
 
 @Test()

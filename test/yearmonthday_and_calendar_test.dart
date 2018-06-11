@@ -29,7 +29,7 @@ void AllYears()
     expect(year, ymdc.year);
     expect(5, ymdc.month);
     expect(20, ymdc.day);
-    expect(CalendarOrdinal.Iso, ymdc.calendarOrdinal);
+    expect(CalendarOrdinal.iso, ymdc.calendarOrdinal);
   }
 }
 
@@ -91,7 +91,7 @@ void Equality()
 
 @Test()
 @TestCase(const ["2017-08-21-Julian", 2017, 8, 21, CalendarOrdinal.Julian])
-@TestCase(const ["-0005-08-21-Iso", -5, 8, 21, CalendarOrdinal.Iso])
+@TestCase(const ["-0005-08-21-Iso", -5, 8, 21, CalendarOrdinal.iso])
 void Parse(String text, int year, int month, int day, CalendarOrdinal calendar)
 {
   var value = YearMonthDayCalendar.Parse(text);

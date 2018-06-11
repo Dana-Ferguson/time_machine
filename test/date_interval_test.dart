@@ -24,7 +24,7 @@ final CalendarSystem JulianCalendar = CalendarSystem.Julian;
 void Construction_DifferentCalendars()
 {
   LocalDate start = new LocalDate(1600, 1, 1);
-  LocalDate end = new LocalDate.forCalendar(1800, 1, 1, JulianCalendar);
+  LocalDate end = new LocalDate(1800, 1, 1, JulianCalendar);
   expect(() => new DateInterval(start, end), throwsArgumentError);
 // Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
 }
@@ -94,8 +94,8 @@ void Equals_DifferentCalendars()
   LocalDate start1 = new LocalDate(2000, 1, 1);
   LocalDate end1 = new LocalDate(2001, 6, 19);
   // This is a really, really similar calendar to ISO, but we do distinguish.
-  LocalDate start2 = start1.WithCalendar(CalendarSystem.Gregorian);
-  LocalDate end2 = end1.WithCalendar(CalendarSystem.Gregorian);
+  LocalDate start2 = start1.withCalendar(CalendarSystem.Gregorian);
+  LocalDate end2 = end1.withCalendar(CalendarSystem.Gregorian);
   var interval1 = new DateInterval(start1, end1);
   var interval2 = new DateInterval(start2, end2);
 
@@ -181,8 +181,8 @@ void Length()
 void Calendar()
 {
   var calendar = CalendarSystem.Julian;
-  LocalDate start = new LocalDate.forCalendar(2000, 1, 1, calendar);
-  LocalDate end = new LocalDate.forCalendar(2000, 2, 10, calendar);
+  LocalDate start = new LocalDate(2000, 1, 1, calendar);
+  LocalDate end = new LocalDate(2000, 2, 10, calendar);
   var interval = new DateInterval(start, end);
   expect(calendar, interval.Calendar);
 }
@@ -208,7 +208,7 @@ void Contains_DifferentCalendar()
   var start = new LocalDate(2000, 1, 1);
   var end = new LocalDate(2014, 06, 30);
   var interval = new DateInterval(start, end);
-  var candidate = new LocalDate.forCalendar(2000, 1, 1, JulianCalendar);
+  var candidate = new LocalDate(2000, 1, 1, JulianCalendar);
   // Assert.Throws<ArgumentException>(() => interval.Contains(candidate));
   expect(() => interval.contains(candidate), throwsArgumentError);
 }
@@ -243,12 +243,12 @@ void Contains_NullInterval_Throws()
 void Contains_IntervalWithinAnotherCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
 
   var other = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Contains(other));
   expect(() => value.containsInterval(other), throwsArgumentError);
@@ -282,12 +282,12 @@ void Intersection_NullInterval_Throws()
 void Intersection_IntervalInDifferentCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
 
   var other = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Intersection(other));
   expect(() => value.Intersection(other), throwsArgumentError);
@@ -322,12 +322,12 @@ void Union_NullInterval_Throws()
 void Union_DifferentCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
 
   var other = new DateInterval(
-      new LocalDate.forCalendar(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate.forCalendar(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Union(other));
   expect(() => value.Union(other), throwsArgumentError);

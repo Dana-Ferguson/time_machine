@@ -64,7 +64,7 @@ void AmbiguousStartOfDay_TransitionAtMidnight()
       TransitionBackwardToMidnightZone);
   var actual = TransitionBackwardToMidnightZone.AtStartOfDay(TransitionDate);
   expect(expected, actual);
-  expect(expected, TransitionDate.AtStartOfDayInZone(TransitionBackwardToMidnightZone));
+  expect(expected, TransitionDate.atStartOfDayInZone(TransitionBackwardToMidnightZone));
 }
 
 @Test()
@@ -75,7 +75,7 @@ void AmbiguousStartOfDay_TransitionAfterMidnight()
       TransitionBackwardAfterMidnightZone);
   var actual = TransitionBackwardAfterMidnightZone.AtStartOfDay(TransitionDate);
   expect(expected, actual);
-  expect(expected, TransitionDate.AtStartOfDayInZone(TransitionBackwardAfterMidnightZone));
+  expect(expected, TransitionDate.atStartOfDayInZone(TransitionBackwardAfterMidnightZone));
 }
 
 @Test()
@@ -86,7 +86,7 @@ void SkippedStartOfDay_TransitionAtMidnight()
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.AtStartOfDay(TransitionDate);
   expect(expected, actual);
-  expect(expected, TransitionDate.AtStartOfDayInZone(TransitionForwardAtMidnightZone));
+  expect(expected, TransitionDate.atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
 
 @Test()
@@ -97,7 +97,7 @@ void SkippedStartOfDay_TransitionBeforeMidnight()
       TransitionForwardBeforeMidnightZone);
   var actual = TransitionForwardBeforeMidnightZone.AtStartOfDay(TransitionDate);
   expect(expected, actual);
-  expect(expected, TransitionDate.AtStartOfDayInZone(TransitionForwardBeforeMidnightZone));
+  expect(expected, TransitionDate.atStartOfDayInZone(TransitionForwardBeforeMidnightZone));
 }
 
 @Test()
@@ -108,7 +108,7 @@ void UnambiguousStartOfDay()
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.AtStartOfDay(new LocalDate(2000, 3, 1));
   expect(expected, actual);
-  expect(expected, new LocalDate(2000, 3, 1).AtStartOfDayInZone(TransitionForwardAtMidnightZone));
+  expect(expected, new LocalDate(2000, 3, 1).atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
 
 T capture<T extends Error>(action()) {
@@ -297,7 +297,7 @@ Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
   DateTimeZone zone = await (await DateTimeZoneProviders.Tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
   expect(exception = capture(() => zone.AtStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
-  expect(badDate.At(LocalTime.Midnight), exception.localDateTime);
+  expect(badDate.at(LocalTime.Midnight), exception.localDateTime);
 }
 
 @Test()

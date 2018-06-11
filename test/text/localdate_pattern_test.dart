@@ -537,7 +537,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
     var value = pattern
         .Parse("0284-08-29")
         .Value;
-    expect(new LocalDate.forCalendar(284, 8, 29, CalendarSystem.Coptic), value);
+    expect(new LocalDate(284, 8, 29, CalendarSystem.Coptic), value);
   }
 
   @Test()
@@ -594,7 +594,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
   Data.ymd(int year, int month, int day) : super(new LocalDate(year, month, day));
 
   Data.ymdc(int year, int month, int day, CalendarSystem calendar)
-      : super(new LocalDate.forCalendar(year, month, day, calendar));
+      : super(new LocalDate(year, month, day, calendar));
 
   @internal @override IPattern<LocalDate> CreatePattern() =>
   LocalDatePattern.CreateWithInvariantCulture(super.Pattern)

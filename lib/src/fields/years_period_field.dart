@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_fields.dart';
       return localDate;
     }
     YearMonthDay yearMonthDay = localDate.yearMonthDay;
-    var calendar = localDate.Calendar;
+    var calendar = localDate.calendar;
     var calculator = calendar.yearMonthDayCalculator;
     int currentYear = yearMonthDay.year;
     // Adjust argument range based on current year
@@ -24,7 +24,7 @@ import 'package:time_machine/time_machine_fields.dart';
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) {
-    int diff = end.Year - start.Year;
+    int diff = end.year - start.year;
 
     // If we just add the difference in years to subtrahendInstant, what do we get?
     LocalDate simpleAddition = Add(start, diff);

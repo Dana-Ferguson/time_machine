@@ -92,7 +92,7 @@ import 'package:time_machine/time_machine_patterns.dart';
             () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
     patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
     patternBuilder.ValidateUsedFields();
-    return patternBuilder.Build(templateValueDate.At(templateValueTime));
+    return patternBuilder.Build(templateValueDate.at(templateValueTime));
   }
 
   @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, NodaFormatInfo formatInfo) {
@@ -152,9 +152,9 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (time != LocalTime.Midnight) {
         return ParseResult.InvalidHour24<LocalDateTime>(text);
       }
-      date = date.PlusDays(1);
+      date = date.plusDays(1);
     }
-    return ParseResult.ForValue<LocalDateTime>(date.At(time));
+    return ParseResult.ForValue<LocalDateTime>(date.at(time));
   }
 
   @internal

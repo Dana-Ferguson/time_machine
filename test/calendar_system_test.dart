@@ -40,8 +40,8 @@ void MinDate(CalendarSystem calendar)
 
 void ValidateProperties(CalendarSystem calendar, int daysSinceEpoch, int expectedYear)
 {
-  var localDate = new LocalDate.fromDaysSinceEpoch_forCalendar(daysSinceEpoch, calendar);
-  expect(localDate.Year, expectedYear);
+  var localDate = new LocalDate.fromDaysSinceEpoch(daysSinceEpoch, calendar);
+  expect(localDate.year, expectedYear);
 
 // todo: investigate test and replicate
 //  for (var property in typeof(LocalDate).GetTypeInfo().DeclaredProperties)

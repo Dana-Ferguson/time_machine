@@ -17,7 +17,7 @@ class DateAdjusters {
   /// A date adjuster to move to the first day of the current month.
   /// </value>
   static final LocalDate Function(LocalDate) StartOfMonth =
-      (date) => new LocalDate.forCalendar(date.Year, date.Month, 1, date.Calendar);
+      (date) => new LocalDate(date.year, date.month, 1, date.calendar);
 
 
   /// A date adjuster to move to the last day of the current month.
@@ -26,7 +26,7 @@ class DateAdjusters {
   /// A date adjuster to move to the last day of the current month.
   /// </value>
   static final LocalDate Function(LocalDate) EndOfMonth =
-      (date) => new LocalDate.forCalendar(date.Year, date.Month, date.Calendar.GetDaysInMonth(date.Year, date.Month), date.Calendar);
+      (date) => new LocalDate(date.year, date.month, date.calendar.GetDaysInMonth(date.year, date.month), date.calendar);
 
 
   /// A date adjuster to move to the specified day of the current month.
@@ -38,7 +38,7 @@ class DateAdjusters {
   /// An adjuster which changes the day to [day],
   /// retaining the same year and month.
   static LocalDate Function(LocalDate) DayOfMonth(int day) =>
-          (date) => new LocalDate.forCalendar(date.Year, date.Month, day, date.Calendar);
+          (date) => new LocalDate(date.year, date.month, day, date.calendar);
 
 
   /// A date adjuster to move to the same day of the specified month.
@@ -50,7 +50,7 @@ class DateAdjusters {
   /// An adjuster which changes the month to [month],
   /// retaining the same year and day of month.
   static LocalDate Function(LocalDate) Month(int month) =>
-          (date) => new LocalDate.forCalendar(date.Year, month, date.Day, date.Calendar);
+          (date) => new LocalDate(date.year, month, date.day, date.calendar);
 
 
   /// A date adjuster to move to the next specified day-of-week, but return the
@@ -64,7 +64,7 @@ class DateAdjusters {
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
     }
-    return (date) => date.DayOfWeek == dayOfWeek ? date : date.Next(dayOfWeek);
+    return (date) => date.dayOfWeek == dayOfWeek ? date : date.next(dayOfWeek);
   }
 
 
@@ -79,14 +79,14 @@ class DateAdjusters {
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
     }
-    return (date) => date.DayOfWeek == dayOfWeek ? date : date.Previous(dayOfWeek);
+    return (date) => date.dayOfWeek == dayOfWeek ? date : date.previous(dayOfWeek);
   }
 
 
   /// A date adjuster to move to the next specified day-of-week, adding
   /// a week if the day is already correct.
   ///
-  /// This is the adjuster equivalent of [LocalDate.Next].
+  /// This is the adjuster equivalent of [LocalDate.next].
   ///
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the next occurrence of the
@@ -96,14 +96,14 @@ class DateAdjusters {
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
     }
-    return (date) => date.Next(dayOfWeek);
+    return (date) => date.next(dayOfWeek);
   }
 
 
   /// A date adjuster to move to the previous specified day-of-week, subtracting
   /// a week if the day is already correct.
   ///
-  /// This is the adjuster equivalent of [LocalDate.Previous].
+  /// This is the adjuster equivalent of [LocalDate.previous].
   ///
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the previous occurrence of the
@@ -113,6 +113,6 @@ class DateAdjusters {
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
     }
-    return (date) => date.Previous(dayOfWeek);
+    return (date) => date.previous(dayOfWeek);
   }
 }

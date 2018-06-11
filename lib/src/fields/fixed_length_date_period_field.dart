@@ -21,7 +21,7 @@ import 'package:time_machine/time_machine_fields.dart';
       return localDate;
     }
     int daysToAdd = value * _unitDays;
-    var calendar = localDate.Calendar;
+    var calendar = localDate.calendar;
     // If we know it will be in this year, next year, or the previous year...
     if (daysToAdd < 300 && daysToAdd > -300) {
       YearMonthDayCalculator calculator = calendar.yearMonthDayCalculator;
@@ -56,8 +56,8 @@ import 'package:time_machine/time_machine_fields.dart';
       return new LocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).WithCalendarOrdinal(calendar.ordinal));
     }
     // LocalDate constructor will validate.
-    int days = localDate.DaysSinceEpoch + daysToAdd;
-    return new LocalDate.fromDaysSinceEpoch_forCalendar(days, calendar);
+    int days = localDate.daysSinceEpoch + daysToAdd;
+    return new LocalDate.fromDaysSinceEpoch(days, calendar);
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) =>

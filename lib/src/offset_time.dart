@@ -85,7 +85,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
 /// [date]: The date to combine with this time-of-day.
 /// Returns: The [OffsetDateTime] representation of this time-of-day on the given date.
 
-  OffsetDateTime On(LocalDate date) => new OffsetDateTime(date.At(_time), offset);
+  OffsetDateTime On(LocalDate date) => new OffsetDateTime(date.at(_time), offset);
 
   /// Returns a hash code for this offset time.
   ///

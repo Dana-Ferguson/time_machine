@@ -26,11 +26,11 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\"': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash/**<LocalDate, LocalDateParseBucket>*/,
     '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
-    'y': DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.YearOfEra, (bucket, value) => bucket.YearOfEra = value),
-    'u': SteppedPatternBuilder.HandlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.Year, (bucket, value) => bucket.Year = value),
-    'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.Month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
-    'd': DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>((value) => value.Day, (value) => /*(int)*/ value.DayOfWeek.value, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value),
-    'c': DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>((value) => value.Calendar, (bucket, value) => bucket.Calendar = value),
+    'y': DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.yearOfEra, (bucket, value) => bucket.YearOfEra = value),
+    'u': SteppedPatternBuilder.HandlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Year = value),
+    'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
+    'd': DatePatternHelper.CreateDayHandler<LocalDate, LocalDateParseBucket>((value) => value.day, (value) => /*(int)*/ value.dayOfWeek.value, (bucket, value) => bucket.DayOfMonth = value, (bucket, value) => bucket.DayOfWeek = value),
+    'c': DatePatternHelper.CreateCalendarHandler<LocalDate, LocalDateParseBucket>((value) => value.calendar, (bucket, value) => bucket.Calendar = value),
     'g': DatePatternHelper.CreateEraHandler<LocalDate, LocalDateParseBucket>((date) => date.era, (bucket) => bucket),
   };
 
@@ -92,7 +92,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal LocalDateParseBucket(this.TemplateValue) {
     // Only fetch this once.
-    this.Calendar = TemplateValue.Calendar;
+    this.Calendar = TemplateValue.calendar;
   }
 
   @internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor) {
@@ -112,7 +112,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @override
   ParseResult<LocalDate> CalculateValue(PatternFields usedFields, String text) {
     if (usedFields.HasAny(PatternFields.embeddedDate)) {
-      return ParseResult.ForValue<LocalDate>(new LocalDate.forCalendar(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
+      return ParseResult.ForValue<LocalDate>(new LocalDate(Year, MonthOfYearNumeric, DayOfMonth, Calendar));
     }
     // This will set Year if necessary
     ParseResult<LocalDate> failure = DetermineYear(usedFields, text);
@@ -125,14 +125,14 @@ import 'package:time_machine/time_machine_patterns.dart';
       return failure;
     }
 
-    int day = usedFields.HasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.Day;
+    int day = usedFields.HasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.day;
     if (day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric)) {
       return ParseResult.DayOfMonthOutOfRange<LocalDate>(text, day, MonthOfYearNumeric, Year);
     }
 
-    LocalDate value = new LocalDate.forCalendar(Year, MonthOfYearNumeric, day, Calendar);
+    LocalDate value = new LocalDate(Year, MonthOfYearNumeric, day, Calendar);
 
-    if (usedFields.HasAny(PatternFields.dayOfWeek) && DayOfWeek != value.DayOfWeek.value) {
+    if (usedFields.HasAny(PatternFields.dayOfWeek) && DayOfWeek != value.dayOfWeek.value) {
       return ParseResult.InconsistentDayOfWeekTextValue<LocalDate>(text);
     }
 
@@ -186,7 +186,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     // Use the year from the template value, possibly checking the era.
     if (!usedFields.HasAny(PatternFields.yearOfEra)) {
-      Year = TemplateValue.Year;
+      Year = TemplateValue.year;
       return usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)
           ? ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
     }
@@ -196,7 +196,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     if (usedFields.HasAny(PatternFields.yearTwoDigits)) {
-      int century = TemplateValue.YearOfEra ~/ 100;
+      int century = TemplateValue.yearOfEra ~/ 100;
       if (YearOfEra > TwoDigitYearMax && century > 1) {
         century--;
       }
@@ -230,7 +230,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     // No need to change MonthOfYearNumeric - this was just a check
     }
     else if (x == PatternFields.none) {
-      MonthOfYearNumeric = TemplateValue.Month;
+      MonthOfYearNumeric = TemplateValue.month;
     }
 
     /*

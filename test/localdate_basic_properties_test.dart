@@ -22,12 +22,12 @@ Future main() async {
 void EpochProperties()
 {
   LocalDate date = TimeConstants.unixEpoch.inUtc().Date;
-  expect(1970, date.Year);
-  expect(1970, date.YearOfEra);
-  expect(1, date.Day);
-  expect(IsoDayOfWeek.thursday, date.DayOfWeek);
-  expect(1, date.DayOfYear);
-  expect(1, date.Month);
+  expect(1970, date.year);
+  expect(1970, date.yearOfEra);
+  expect(1, date.day);
+  expect(IsoDayOfWeek.thursday, date.dayOfWeek);
+  expect(1, date.dayOfYear);
+  expect(1, date.month);
 }
 
 @Test()
@@ -37,13 +37,13 @@ void ArbitraryDateProperties()
   DateTime bclEpoch = new DateTime.utc(1970, 1, 1, 0, 0, 0);
   int bclMilliseconds = bclDate.millisecondsSinceEpoch - bclEpoch.millisecondsSinceEpoch;
   int bclDays = (bclMilliseconds ~/ TimeConstants.millisecondsPerDay);
-  LocalDate date = new LocalDate.fromDaysSinceEpoch_forCalendar(bclDays, CalendarSystem.Iso);
-  expect(2011, date.Year);
-  expect(2011, date.YearOfEra);
-  expect(5, date.Day);
-  expect(IsoDayOfWeek.saturday, date.DayOfWeek);
-  expect(64, date.DayOfYear);
-  expect(3, date.Month);
+  LocalDate date = new LocalDate.fromDaysSinceEpoch(bclDays, CalendarSystem.Iso);
+  expect(2011, date.year);
+  expect(2011, date.yearOfEra);
+  expect(5, date.day);
+  expect(IsoDayOfWeek.saturday, date.dayOfWeek);
+  expect(64, date.dayOfYear);
+  expect(3, date.month);
 }
 
 @Test()
@@ -55,9 +55,9 @@ void DayOfWeek_AroundEpoch()
   {
     // BclConversions.ToIsoDayOfWeek(date.AtMidnight.ToDateTimeUnspecified().DayOfWeek),
     expect(
-        date.DayOfWeek.value,
-        date.AtMidnight.ToDateTimeUnspecified().weekday
+        date.dayOfWeek.value,
+        date.atMidnight().ToDateTimeUnspecified().weekday
         );
-    date = date.PlusDays(1);
+    date = date.plusDays(1);
   }
 }

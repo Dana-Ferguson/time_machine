@@ -22,46 +22,46 @@ Future main() async {
 void Equals_EqualValues()
 {
   CalendarSystem calendar = CalendarSystem.Julian;
-  LocalDate date1 = new LocalDate.forCalendar(2011, 1, 2, calendar);
-  LocalDate date2 = new LocalDate.forCalendar(2011, 1, 2, calendar);
+  LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
+  LocalDate date2 = new LocalDate(2011, 1, 2, calendar);
   expect(date1, date2);
   expect(date1.hashCode, date2.hashCode);
   expect(date1 == date2, isTrue);
   expect(date1 != date2, isFalse);
-  expect(date1.Equals(date2), isTrue); // IEquatable implementation
+  expect(date1.equals(date2), isTrue); // IEquatable implementation
 }
 
 @Test()
 void Equals_DifferentDates()
 {
   CalendarSystem calendar = CalendarSystem.Julian;
-  LocalDate date1 = new LocalDate.forCalendar(2011, 1, 2, calendar);
-  LocalDate date2 = new LocalDate.forCalendar(2011, 1, 3, calendar);
+  LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
+  LocalDate date2 = new LocalDate(2011, 1, 3, calendar);
   expect(date1, isNot(date2));
   expect(date1.hashCode, isNot(date2.hashCode));
   expect(date1 == date2, isFalse);
   expect(date1 != date2, isTrue);
-  expect(date1.Equals(date2), isFalse); // IEquatable implementation
+  expect(date1.equals(date2), isFalse); // IEquatable implementation
 }
 
 @Test()
 void Equals_DifferentCalendars()
 {
   CalendarSystem calendar = CalendarSystem.Julian;
-  LocalDate date1 = new LocalDate.forCalendar(2011, 1, 2, calendar);
-  LocalDate date2 = new LocalDate.forCalendar(2011, 1, 2, CalendarSystem.Iso);
+  LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
+  LocalDate date2 = new LocalDate(2011, 1, 2, CalendarSystem.Iso);
   expect(date1, isNot(date2));
   expect(date1.hashCode, isNot(date2.hashCode));
   expect(date1 == date2, isFalse);
   expect(date1 != date2, isTrue);
-  expect(date1.Equals(date2), isFalse); // IEquatable implementation
+  expect(date1.equals(date2), isFalse); // IEquatable implementation
 }
 
 @Test()
 void Equals_DifferentToNull()
 {
   LocalDate date = new LocalDate(2011, 1, 2);
-  expect(date.Equals(null), isFalse);
+  expect(date.equals(null), isFalse);
 }
 
 @Test()
@@ -104,7 +104,7 @@ void ComparisonOperators_SameCalendar()
 void ComparisonOperators_DifferentCalendars_Throws()
 {
   LocalDate date1 = new LocalDate(2011, 1, 2);
-  LocalDate date2 = new LocalDate.forCalendar(2011, 1, 3, CalendarSystem.Julian);
+  LocalDate date2 = new LocalDate(2011, 1, 3, CalendarSystem.Julian);
 
   // Assert.Throws<ArgumentException>
   expect(() => (date1 < date2).toString(), throwsArgumentError);
@@ -133,7 +133,7 @@ void CompareTo_DifferentCalendars_Throws()
 
   CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
   LocalDate date1 = new LocalDate(2011, 1, 2);
-  LocalDate date2 = new LocalDate.forCalendar(1500, 1, 1, islamic);
+  LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
 
   // Assert.Throws<ArgumentException>
   expect(() => date1.compareTo(date2), throwsArgumentError);
@@ -187,21 +187,21 @@ void IComparableCompareTo_SameCalendar()
 void MinMax_DifferentCalendars_Throws()
 {
   LocalDate date1 = new LocalDate(2011, 1, 2);
-  LocalDate date2 = new LocalDate.forCalendar(1500, 1, 1, CalendarSystem.Julian);
+  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
 
   // Assert.Throws<ArgumentException>
-  expect(() => LocalDate.Max(date1, date2), throwsArgumentError);
-  expect(() => LocalDate.Min(date1, date2), throwsArgumentError);
+  expect(() => LocalDate.max(date1, date2), throwsArgumentError);
+  expect(() => LocalDate.min(date1, date2), throwsArgumentError);
 }
 
 @Test()
 void MinMax_SameCalendar()
 {
-  LocalDate date1 = new LocalDate.forCalendar(1500, 1, 2, CalendarSystem.Julian);
-  LocalDate date2 = new LocalDate.forCalendar(1500, 1, 1, CalendarSystem.Julian);
+  LocalDate date1 = new LocalDate(1500, 1, 2, CalendarSystem.Julian);
+  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
 
-  expect(date1, LocalDate.Max(date1, date2));
-  expect(date1, LocalDate.Max(date2, date1));
-  expect(date2, LocalDate.Min(date1, date2));
-  expect(date2, LocalDate.Min(date2, date1));
+  expect(date1, LocalDate.max(date1, date2));
+  expect(date1, LocalDate.max(date2, date1));
+  expect(date2, LocalDate.min(date1, date2));
+  expect(date2, LocalDate.min(date2, date1));
 }

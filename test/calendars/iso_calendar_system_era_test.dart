@@ -25,11 +25,11 @@ CalendarSystem Iso = CalendarSystem.Iso;
 void GetMaxYearOfEra()
 {
   LocalDate date = new LocalDate(Iso.maxYear, 1, 1);
-  expect(date.YearOfEra, Iso.GetMaxYearOfEra(Era.Common));
+  expect(date.yearOfEra, Iso.GetMaxYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(Iso.minYear, 1, 1);
-  expect(Iso.minYear, date.Year);
-  expect(date.YearOfEra, Iso.GetMaxYearOfEra(Era.BeforeCommon));
+  expect(Iso.minYear, date.year);
+  expect(date.yearOfEra, Iso.GetMaxYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
@@ -37,10 +37,10 @@ void GetMaxYearOfEra()
 void GetMinYearOfEra()
 {
   LocalDate date = new LocalDate(1, 1, 1);
-  expect(date.YearOfEra, Iso.GetMinYearOfEra(Era.Common));
+  expect(date.yearOfEra, Iso.GetMinYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(0, 1, 1);
-  expect(date.YearOfEra, Iso.GetMinYearOfEra(Era.BeforeCommon));
+  expect(date.yearOfEra, Iso.GetMinYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 

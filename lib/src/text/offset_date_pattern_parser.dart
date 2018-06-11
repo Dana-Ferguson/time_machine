@@ -26,7 +26,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     'd': DatePatternHelper.CreateDayHandler<OffsetDate, OffsetDateParseBucket>
       ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) =>
     bucket.Date.DayOfWeek = value),
-    'c': DatePatternHelper.CreateCalendarHandler<OffsetDate, OffsetDateParseBucket>((value) => value.date.Calendar, (bucket, value) =>
+    'c': DatePatternHelper.CreateCalendarHandler<OffsetDate, OffsetDateParseBucket>((value) => value.date.calendar, (bucket, value) =>
     bucket.Date.Calendar = value),
     'g': DatePatternHelper.CreateEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.era, (bucket) => bucket.Date),
     'o': HandleOffset,
@@ -89,7 +89,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return dateResult.ConvertError<OffsetDate>();
     }
     LocalDate date = dateResult.Value;
-    return ParseResult.ForValue<OffsetDate>(date.WithOffset(offset));
+    return ParseResult.ForValue<OffsetDate>(date.withOffset(offset));
   }
 }
 

@@ -118,17 +118,17 @@ void BeforeCommonEra()
   // Year -1 in absolute terms is 2BCE
   LocalDate localDate = new LocalDate(-1, 1, 1);
   expect(Era.BeforeCommon, localDate.era);
-  expect(-1, localDate.Year);
-  expect(2, localDate.YearOfEra);
+  expect(-1, localDate.year);
+  expect(2, localDate.yearOfEra);
 }
 
 @Test()
 void BeforeCommonEra_BySpecifyingEra()
 {
   // Year -1 in absolute terms is 2BCE
-  LocalDate localDate = new LocalDate.forIsoEra(Era.BeforeCommon, 2, 1, 1);
+  LocalDate localDate = new LocalDate.forEra(Era.BeforeCommon, 2, 1, 1);
   expect(Era.BeforeCommon, localDate.era);
-  expect(-1, localDate.Year);
-  expect(2, localDate.YearOfEra);
+  expect(-1, localDate.year);
+  expect(2, localDate.yearOfEra);
 }
 

@@ -79,7 +79,7 @@ void Equality()
 void On()
 {
   var time = new LocalTime(14, 15, 12).PlusNanoseconds(123456789);
-  var date = new LocalDate.forCalendar(2012, 6, 19, CalendarSystem.Julian);
+  var date = new LocalDate(2012, 6, 19, CalendarSystem.Julian);
   var offset = new Offset.fromHours(5);
 
   expect(new OffsetTime(time, offset).On(date), time.On(date).WithOffset(offset));

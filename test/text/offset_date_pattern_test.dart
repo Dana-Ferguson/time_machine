@@ -30,8 +30,8 @@ Future main() async {
 class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
-  @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.Date.WithOffset(new Offset.fromHours(1));
-  @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.Date.WithOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.Date.withOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.Date.withOffset(new Offset.fromHours(1));
 
 // todo: @SkipMe.unimplemented()
 // @private static final OffsetDate SampleOffsetDateCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.Date.WithOffset(Offset.zero);
@@ -158,13 +158,13 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-ddo<g>");
     // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
     expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
-    var od = new LocalDate(2017, 8, 23).WithOffset(new Offset.fromHours(2));
+    var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     expect("2017-08-23+02", pattern.Format(od));
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var od = new LocalDate(2017, 8, 23).WithOffset(new Offset.fromHours(2));
+    var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetDatePattern.CreateWithCurrentCulture("l<d> o<g>");
@@ -180,14 +180,14 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @Test()
   void WithCulture() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy/MM/dd o<G>").WithCulture(TestCultures.FrCa);
-    var text = pattern.Format(new LocalDate(2000, 1, 1).WithOffset(new Offset.fromHours(1)));
+    var text = pattern.Format(new LocalDate(2000, 1, 1).withOffset(new Offset.fromHours(1)));
     expect("2000-01-01 +01", text);
   }
 
   @Test()
   void WithPatternText() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("dd MM yyyy o<g>");
-    var value = new LocalDate(1970, 1, 1).WithOffset(new Offset.fromHours(2));
+    var value = new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2));
     var text = pattern.Format(value);
     expect("01 01 1970 +02", text);
   }
@@ -195,7 +195,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @Test()
   void WithTemplateValue() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("MM-dd")
-        .WithTemplateValue(new LocalDate(1970, 1, 1).WithOffset(new Offset.fromHours(2)));
+        .WithTemplateValue(new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2)));
     var parsed = pattern
         .Parse("08-23")
         .Value;
@@ -211,7 +211,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var parsed = pattern
         .Parse("0284-08-29")
         .Value;
-    expect(new LocalDate.forCalendar(284, 8, 29, CalendarSystem.Coptic), parsed.date);
+    expect(new LocalDate(284, 8, 29, CalendarSystem.Coptic), parsed.date);
   }
 
   @Test()
@@ -231,7 +231,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 }
 
 @internal Data.ymdo(int year, int month, int day, [Offset offset = null])
-    : super(new LocalDate(year, month, day).WithOffset(offset ?? Offset.zero));
+    : super(new LocalDate(year, month, day).withOffset(offset ?? Offset.zero));
 
 @internal @override IPattern<OffsetDate> CreatePattern() =>
     OffsetDatePattern.Create2(super.Pattern, super.Culture, Template);

@@ -33,6 +33,6 @@ void GetCurrent()
   expect(new LocalDateTime.fromYMDHMC(1969, 12, 19, 2, 0, julian), zonedClock.getCurrentLocalDateTime());
   expect(new LocalDateTime.fromYMDHMC(1969, 12, 19, 2, 0, julian).WithOffset(new Offset.fromHours(2)),
       zonedClock.getCurrentOffsetDateTime());
-  expect(new LocalDate.forCalendar(1969, 12, 19, julian), zonedClock.getCurrentDate());
+  expect(new LocalDate(1969, 12, 19, julian), zonedClock.getCurrentDate());
   expect(new LocalTime(2, 0, 0), zonedClock.getCurrentTimeOfDay());
 }

@@ -23,17 +23,17 @@ void AtMidnight()
 {
   LocalDate date = new LocalDate(2011, 6, 29);
   LocalDateTime expected = new LocalDateTime.fromYMDHMS(2011, 6, 29, 0, 0, 0);
-  expect(expected, date.AtMidnight);
+  expect(expected, date.atMidnight);
 }
 
 @Test()
 void WithCalendar()
 {
   LocalDate isoEpoch = new LocalDate(1970, 1, 1);
-  LocalDate julianEpoch = isoEpoch.WithCalendar(CalendarSystem.Julian);
-  expect(1969, julianEpoch.Year);
-  expect(12, julianEpoch.Month);
-  expect(19, julianEpoch.Day);
+  LocalDate julianEpoch = isoEpoch.withCalendar(CalendarSystem.Julian);
+  expect(1969, julianEpoch.year);
+  expect(12, julianEpoch.month);
+  expect(19, julianEpoch.day);
 }
 
 @Test()
@@ -42,7 +42,7 @@ void WithOffset()
   var date = new LocalDate(2011, 6, 29);
   var offset = new Offset.fromHours(5);
   var expected = new OffsetDate(date, offset);
-  expect(expected, date.WithOffset(offset));
+  expect(expected, date.withOffset(offset));
 }
 
 @Test()
@@ -84,5 +84,5 @@ void WithCalendar_OutOfRange()
 {
   LocalDate start = new LocalDate(1, 1, 1);
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => start.WithCalendar(CalendarSystem.PersianSimple), throwsRangeError);
+  expect(() => start.withCalendar(CalendarSystem.PersianSimple), throwsRangeError);
 }

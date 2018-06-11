@@ -32,31 +32,31 @@ class OffsetDate // : IEquatable<OffsetDate>
   Offset get offset => _offset;
 
   /// Gets the calendar system associated with this offset date.
-  CalendarSystem get calendar => date.Calendar;
+  CalendarSystem get calendar => date.calendar;
 
   /// Gets the year of this offset date.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get year => date.Year;
+  int get year => date.year;
 
   /// Gets the month of this offset date within the year.
-  int get month => date.Month;
+  int get month => date.month;
 
   /// Gets the day of this offset date within the month.
-  int get day => date.Day;
+  int get day => date.day;
 
 
   /// Gets the week day of this offset date expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => date.DayOfWeek;
+  IsoDayOfWeek get dayOfWeek => date.dayOfWeek;
 
   /// Gets the year of this offset date within the era.
-  int get yearOfEra => date.YearOfEra;
+  int get yearOfEra => date.yearOfEra;
 
   /// Gets the era of this offset date.
   Era get era => date.era;
 
   /// Gets the day of this offset date within the year.
-  int get dayOfYear => date.DayOfYear;
+  int get dayOfYear => date.dayOfYear;
 
 
 /// Creates a new [OffsetDate] for the same date, but with the specified UTC offset.
@@ -77,7 +77,7 @@ class OffsetDate // : IEquatable<OffsetDate>
 /// Returns: The adjusted offset date.
 
   OffsetDate With(LocalDate Function(LocalDate) adjuster) =>
-      new OffsetDate(date.With(adjuster), _offset);
+      new OffsetDate(date.withAdjustment(adjuster), _offset);
 
 
 /// Creates a new [OffsetDate] representing the same physical date and offset, but in a different calendar.
@@ -88,7 +88,7 @@ class OffsetDate // : IEquatable<OffsetDate>
 /// Returns: The converted `OffsetDate`.
 
   OffsetDate WithCalendar(CalendarSystem calendar) =>
-      new OffsetDate(date.WithCalendar(calendar), _offset);
+      new OffsetDate(date.withCalendar(calendar), _offset);
 
 
 /// Combines this [OffsetDate] with the given [LocalTime]
@@ -97,7 +97,7 @@ class OffsetDate // : IEquatable<OffsetDate>
 /// [time]: The time to combine with this date.
 /// Returns: The [OffsetDateTime] representation of the given time on this date.
 
-  OffsetDateTime At(LocalTime time) => new OffsetDateTime(date.At(time), offset);
+  OffsetDateTime At(LocalTime time) => new OffsetDateTime(date.at(time), offset);
 
 
   /// Returns a hash code for this offset date.

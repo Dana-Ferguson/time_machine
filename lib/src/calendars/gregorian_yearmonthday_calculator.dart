@@ -99,7 +99,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
       }
       int month = startOfMonth ~/ 29 + 1;
       int dayOfMonth = d - startOfMonth;
-      return new YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.Iso);
+      return new YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.iso);
     }
   }
 
