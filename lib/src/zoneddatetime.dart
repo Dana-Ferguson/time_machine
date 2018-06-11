@@ -45,7 +45,7 @@ class ZonedDateTime // : IEquatable<ZonedDateTime>, IFormattable, IXmlSerializab
 ZonedDateTime.withCalendar(Instant instant, DateTimeZone zone, CalendarSystem calendar)
 :
 this.zone = Preconditions.checkNotNull(zone, 'zone'),
-offsetDateTime = new OffsetDateTime.instantCalendar(instant, zone.GetUtcOffset(instant), Preconditions.checkNotNull(calendar, 'calendar'));
+offsetDateTime = new OffsetDateTime.instantCalendar(instant, zone.getUtcOffset(instant), Preconditions.checkNotNull(calendar, 'calendar'));
 
 /// Initializes a new instance of the [ZonedDateTime] struct in the specified time zone
 /// and the ISO calendar.
@@ -54,8 +54,8 @@ offsetDateTime = new OffsetDateTime.instantCalendar(instant, zone.GetUtcOffset(i
 /// [zone]: The time zone.
 ZonedDateTime([Instant instant = const Instant(), DateTimeZone zone = null])
 :
-this.zone = zone ?? DateTimeZone.Utc /*Preconditions.checkNotNull(zone, 'zone')*/,
-offsetDateTime = new OffsetDateTime.instant(instant, (zone ?? DateTimeZone.Utc).GetUtcOffset(instant));
+this.zone = zone ?? DateTimeZone.utc /*Preconditions.checkNotNull(zone, 'zone')*/,
+offsetDateTime = new OffsetDateTime.instant(instant, (zone ?? DateTimeZone.utc).getUtcOffset(instant));
 
 /// Initializes a new instance of the [ZonedDateTime] struct in the specified time zone
 /// from a given local time and offset. The offset is validated to be correct as part of initialization.
@@ -71,7 +71,7 @@ factory ZonedDateTime.fromLocal(LocalDateTime localDateTime, DateTimeZone zone, 
 {
 zone = Preconditions.checkNotNull(zone, 'zone');
 Instant candidateInstant = localDateTime.ToLocalInstant().Minus(offset);
-Offset correctOffset = zone.GetUtcOffset(candidateInstant);
+Offset correctOffset = zone.getUtcOffset(candidateInstant);
 // Not using Preconditions, to avoid building the string unnecessarily.
 if (correctOffset != offset)
 {
@@ -86,7 +86,7 @@ return new ZonedDateTime.trusted(offsetDateTime, zone);
 Offset get offset => offsetDateTime.offset;
 
 /// Gets the time zone associated with this value.
-DateTimeZone get Zone => zone ?? DateTimeZone.Utc;
+DateTimeZone get Zone => zone ?? DateTimeZone.utc;
 
 /// Gets the local date and time represented by this zoned date and time.
 ///
@@ -361,7 +361,7 @@ dynamic operator -(dynamic start) => start is Span ? MinusSpan(start) : start is
 /// for the `ZoneInterval` containing that instant.
 ///
 /// Returns: The `ZoneInterval` containing this value.
-ZoneInterval GetZoneInterval() => Zone.GetZoneInterval(ToInstant());
+ZoneInterval GetZoneInterval() => Zone.getZoneInterval(ToInstant());
 
 /// Indicates whether or not this [ZonedDateTime] is in daylight saving time
 /// for its time zone. This is determined by checking the [ZoneInterval.Savings] property
@@ -425,7 +425,7 @@ bool IsDaylightSavingTime() => GetZoneInterval().savings != Offset.zero;
 //new FixedDateTimeZone(Offset.FromTimeSpan(dateTimeOffset.Offset)));
 
 /// Constructs a [DateTime] from this [ZonedDateTime] which has a
-/// [DateTime.Kind] of [DateTimeKind.Utc] and represents the same instant of time as
+/// [DateTime.Kind] of [DateTimeKind.utc] and represents the same instant of time as
 /// this value rather than the same local time.
 ///
 /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated

@@ -14,7 +14,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// In the future, this struct may be expanded to support other calendar systems,
 /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
 /// with its leap month.
-class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, IComparable<AnnualDate>, IFormattable
+class AnnualDate implements Comparable<AnnualDate>
     {
   // The underlying value. We only care about the month and day, but for the sake of
   // compatibility with the default value, this ends up being in year 1. This would
@@ -53,12 +53,11 @@ class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, 
   ///
   /// [year]: The year component of the required date.
   /// Returns: A date in the given year, suitable for this annual date.
-  // todo: does this name fit dart style?
   LocalDate inYear(int year) {
     Preconditions.checkArgumentRange('year', year,
         GregorianYearMonthDayCalculator.minGregorianYear,
         GregorianYearMonthDayCalculator.maxGregorianYear);
-    var ymd = CalendarSystem.Iso.yearMonthDayCalculator.setYear(_value, year);
+    var ymd = CalendarSystem.iso.yearMonthDayCalculator.setYear(_value, year);
     return new LocalDate.trusted(ymd.WithCalendarOrdinal(new CalendarOrdinal(0))); // ISO calendar
   }
 
@@ -70,7 +69,7 @@ class AnnualDate implements Comparable<AnnualDate> // : IEquatable<AnnualDate>, 
   /// `true` if the current value occurs within the given year;
   /// `false` otherwise.
   bool isValidYear(int year) {
-    return month != 2 || day != 29 || CalendarSystem.Iso.IsLeapYear(year);
+    return month != 2 || day != 29 || CalendarSystem.iso.isLeapYear(year);
   }
 
   /// Returns a hash code for this annual date.

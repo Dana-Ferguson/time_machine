@@ -74,7 +74,7 @@ void Equality()
 @Test()
 void At()
 {
-  var date = new LocalDate(2012, 6, 19, CalendarSystem.Julian);
+  var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var offset = new Offset.fromHours(5);
   var time = new LocalTime(14, 15, 12).PlusNanoseconds(123456789);
 
@@ -94,10 +94,10 @@ void WithOffset()
 @Test()
 void WithCalendar()
 {
-  var julianDate = new LocalDate(2012, 6, 19, CalendarSystem.Julian);
-  var isoDate = julianDate.withCalendar(CalendarSystem.Iso);
+  var julianDate = new LocalDate(2012, 6, 19, CalendarSystem.julian);
+  var isoDate = julianDate.withCalendar(CalendarSystem.iso);
   var offset = new Offset.fromHours(5);
-  var actual = new OffsetDate(julianDate, offset).WithCalendar(CalendarSystem.Iso);
+  var actual = new OffsetDate(julianDate, offset).WithCalendar(CalendarSystem.iso);
   var expected = new OffsetDate(isoDate, offset);
   expect(expected, actual);
 }
@@ -106,7 +106,7 @@ void WithCalendar()
 void WithAdjuster()
 {
   var initial = new OffsetDate(new LocalDate(2016, 6, 19), new Offset.fromHours(-5));
-  var actual = initial.With(DateAdjusters.StartOfMonth);
+  var actual = initial.With(DateAdjusters.startOfMonth);
   var expected = new OffsetDate(new LocalDate(2016, 6, 1), new Offset.fromHours(-5));
   expect(expected, actual);
 }

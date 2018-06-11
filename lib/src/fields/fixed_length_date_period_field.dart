@@ -61,5 +61,5 @@ import 'package:time_machine/time_machine_fields.dart';
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) =>
-      Period.DaysBetween(start, end) ~/ _unitDays;
+      Period.daysBetween(start, end) ~/ _unitDays;
 }

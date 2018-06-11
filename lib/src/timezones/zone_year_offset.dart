@@ -145,8 +145,8 @@ class _ZoneYearOffset {
   @internal LocalInstant GetOccurrenceForYear(int year) {
     // unchecked
     {
-      int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.Iso.GetDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
-      if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.Iso.IsLeapYear(year)) {
+      int actualDayOfMonth = dayOfMonth > 0 ? dayOfMonth : CalendarSystem.iso.getDaysInMonth(year, monthOfYear) + dayOfMonth + 1;
+      if (monthOfYear == 2 && dayOfMonth == 29 && !CalendarSystem.iso.isLeapYear(year)) {
         // In zic.c, this would result in an error if dayOfWeek is 0 or AdvanceDayOfWeek is true.
         // However, it's very convenient to be able to ask any rule for its occurrence in any year.
         // We rely on genuine rules being well-written - and before releasing an nzd file we always

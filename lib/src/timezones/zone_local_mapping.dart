@@ -18,7 +18,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// The result of mapping a [LocalDateTime] within a time zone, i.e. finding out
 /// at what "global" time the "local" time occurred.
 ///
-/// This class is used as the return type of [DateTimeZone.MapLocal]. It allows for
+/// This class is used as the return type of [DateTimeZone.mapLocal]. It allows for
 /// finely-grained handling of the three possible results:
 ///
 /// <list type="bullet">

@@ -25,18 +25,18 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Constructs an instance from values which are assumed to already have been validated.
   // todo: this one seems like it might be trouble (is this truly protected from being used as an external API?)
-  @internal LocalDate.trusted(this._yearMonthDayCalendar);
+  @visibleForTesting @internal LocalDate.trusted(this._yearMonthDayCalendar);
 
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
-  @internal factory LocalDate.fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
+  /*@internal*/ factory LocalDate.fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
   {
     if (calendar == null) {
-      Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.Iso.minDays, CalendarSystem.Iso.maxDays);
+      Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.iso.minDays, CalendarSystem.iso.maxDays);
       return new LocalDate.trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     } else {
       Preconditions.debugCheckNotNull(calendar, 'calendar');
-      return new LocalDate.trusted(calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+      return new LocalDate.trusted(calendar.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     }
   }
   
@@ -64,12 +64,12 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The resulting date.
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
   factory LocalDate.forEra(Era era, int yearOfEra, int month, int day, [CalendarSystem calendar]) {
-    calendar ??= CalendarSystem.Iso;
-    return new LocalDate(calendar.GetAbsoluteYear(yearOfEra, era), month, day, calendar);
+    calendar ??= CalendarSystem.iso;
+    return new LocalDate(calendar.getAbsoluteYear(yearOfEra, era), month, day, calendar);
   }
 
   /// Gets the calendar system associated with this local date.
-  CalendarSystem get calendar => CalendarSystem.ForOrdinal(_yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this local date.
   /// This returns the "absolute year", so, for the ISO calendar,
@@ -83,19 +83,19 @@ class LocalDate implements Comparable<LocalDate> {
   int get day => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
-  @internal int get daysSinceEpoch => calendar.GetDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
+  @internal int get daysSinceEpoch => calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the week day of this local date expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => calendar.GetDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  IsoDayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this local date within the era.
-  int get yearOfEra => calendar.GetYearOfEra(_yearMonthDayCalendar.year);
+  int get yearOfEra => calendar.getYearOfEra(_yearMonthDayCalendar.year);
 
   /// Gets the era of this local date.
-  Era get era => calendar.GetEra(_yearMonthDayCalendar.year);
+  Era get era => calendar.getEra(_yearMonthDayCalendar.year);
 
   /// Gets the day of this local date within the year.
-  int get dayOfYear => calendar.GetDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
+  int get dayOfYear => calendar.getDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
 
   @internal YearMonthDay get yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
@@ -127,7 +127,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
   /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
-  /// [DateTimeKind.Utc] will still represent the same year/month/day - it won't be converted into the local system time.
+  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
   ///
   /// [dateTime]: Value to convert into a Time Machine local date
   /// [calendar]: The calendar system to convert into, defaults to ISO calendar
@@ -147,7 +147,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [dayOfWeek]: ISO-8601 day of week to return
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
   factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
-  => WeekYearRules.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
+  => WeekYearRules.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
   /// within a year and month. For example, this method can be used to ask for "the third Monday in April 2012".
@@ -178,7 +178,7 @@ class LocalDate implements Comparable<LocalDate> {
       week1Day += 7;
     }
     int targetDay = week1Day + (occurrence - 1) * 7;
-    if (targetDay > CalendarSystem.Iso.GetDaysInMonth(year, month))
+    if (targetDay > CalendarSystem.iso.getDaysInMonth(year, month))
     {
       targetDay -= 7;
     }
@@ -360,7 +360,7 @@ class LocalDate implements Comparable<LocalDate> {
   int compareTo(LocalDate other)
   {
     Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
-    return calendar.Compare(yearMonthDay, other.yearMonthDay);
+    return calendar.compare(yearMonthDay, other.yearMonthDay);
   }
 
   /// Returns the later date of the given two.
@@ -412,7 +412,7 @@ class LocalDate implements Comparable<LocalDate> {
   ZonedDateTime atStartOfDayInZone(DateTimeZone zone)
   {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.AtStartOfDay(this);
+    return zone.atStartOfDay(this);
   }
 
   /// Creates a new LocalDate representing the same physical date, but in a different calendar.

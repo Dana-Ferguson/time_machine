@@ -86,7 +86,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     int day = usedFields.HasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.day;
     // Validate for the year 2000, just like the AnnualDate constructor does.
-    if (day > CalendarSystem.Iso.GetDaysInMonth(2000, MonthOfYearNumeric)) {
+    if (day > CalendarSystem.iso.getDaysInMonth(2000, MonthOfYearNumeric)) {
       return ParseResult.DayOfMonthOutOfRangeNoYear<AnnualDate>(text, day, MonthOfYearNumeric);
     }
 
@@ -132,7 +132,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         break;
     }*/
 
-    if (MonthOfYearNumeric > CalendarSystem.Iso.GetMonthsInYear(2000)) {
+    if (MonthOfYearNumeric > CalendarSystem.iso.getMonthsInYear(2000)) {
       return ParseResult.IsoMonthOutOfRange<AnnualDate>(text, MonthOfYearNumeric);
     }
     return null;

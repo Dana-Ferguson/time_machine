@@ -38,7 +38,7 @@ void IsFixed_ReturnsTrue()
 @Test()
 void GetZoneIntervalInstant_ZoneInterval()
 {
-  var actual = TestZone.GetZoneInterval(TimeConstants.unixEpoch);
+  var actual = TestZone.getZoneInterval(TimeConstants.unixEpoch);
   expect(FixedPeriod, actual);
 }
 
@@ -46,8 +46,8 @@ void GetZoneIntervalInstant_ZoneInterval()
 void SimpleProperties_ReturnValuesFromConstructor()
 {
   expect(TestZone.id, "UTC-08", reason: "TestZone.id");
-  expect(TestZone.GetZoneInterval(TimeConstants.unixEpoch).name, "UTC-08");
-  expect(TestZone.GetUtcOffset(TimeConstants.unixEpoch), ZoneOffset);
+  expect(TestZone.getZoneInterval(TimeConstants.unixEpoch).name, "UTC-08");
+  expect(TestZone.getUtcOffset(TimeConstants.unixEpoch), ZoneOffset);
   expect(TestZone.minOffset, ZoneOffset);
   expect(TestZone.maxOffset, ZoneOffset);
 }
@@ -55,7 +55,7 @@ void SimpleProperties_ReturnValuesFromConstructor()
 @Test()
 void GetZoneIntervals_ReturnsSingleInterval()
 {
-  var mapping = TestZone.MapLocal(new LocalDateTime.fromYMDHMS(2001, 7, 1, 1, 0, 0));
+  var mapping = TestZone.mapLocal(new LocalDateTime.fromYMDHMS(2001, 7, 1, 1, 0, 0));
   expect(FixedPeriod, mapping.EarlyInterval);
   expect(FixedPeriod, mapping.LateInterval);
   expect(1, mapping.Count);
@@ -66,7 +66,7 @@ void For_Id_FixedOffset()
 {
   String id = "UTC+05:30";
   DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
-  expect(DateTimeZone.ForOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
+  expect(new DateTimeZone.forOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
 }
 
@@ -75,7 +75,7 @@ void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = "UTC+05:00:00";
   DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
-  expect(zone, DateTimeZone.ForOffset(new Offset.fromHours(5)));
+  expect(zone, new DateTimeZone.forOffset(new Offset.fromHours(5)));
   expect("UTC+05", zone.id);
 }
 
@@ -89,7 +89,7 @@ void For_Id_InvalidFixedOffset()
 void ExplicitNameAppearsInZoneInterval()
 {
   var zone = new FixedDateTimeZone("id", new Offset.fromHours(5), "name");
-  var interval = zone.GetZoneInterval(TimeConstants.unixEpoch);
+  var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", zone.id); // Check we don't get this wrong...
   expect("name", interval.name);
   expect("name", zone.Name);
@@ -99,7 +99,7 @@ void ExplicitNameAppearsInZoneInterval()
 void ZoneIntervalNameDefaultsToZoneId()
 {
   var zone = new FixedDateTimeZone.forIdOffset("id", new Offset.fromHours(5));
-  var interval = zone.GetZoneInterval(TimeConstants.unixEpoch);
+  var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", interval.name);
   expect("id", zone.Name);
 }

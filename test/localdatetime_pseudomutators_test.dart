@@ -355,7 +355,7 @@ void With_DateAdjuster()
 {
   LocalDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 5, 8).PlusNanoseconds(123456789);
   LocalDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 30, 12, 5, 8).PlusNanoseconds(123456789);
-  expect(expected, start.WithDate(DateAdjusters.EndOfMonth));
+  expect(expected, start.WithDate(DateAdjusters.endOfMonth));
 }
 
 @Test()

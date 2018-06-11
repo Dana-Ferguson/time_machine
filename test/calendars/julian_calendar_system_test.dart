@@ -19,13 +19,13 @@ Future main() async {
   await runTests();
 }
 
-CalendarSystem Julian = CalendarSystem.Julian;
+CalendarSystem Julian = CalendarSystem.julian;
 
 /// The Unix epoch is equivalent to December 19th 1969 in the Julian calendar.
 @Test()
 void Epoch()
 {
-  LocalDateTime julianEpoch = TimeConstants.unixEpoch.InZone_Calendar(DateTimeZone.Utc, Julian).localDateTime;
+  LocalDateTime julianEpoch = TimeConstants.unixEpoch.InZone_Calendar(DateTimeZone.utc, Julian).localDateTime;
   expect(1969, julianEpoch.Year);
   expect(12, julianEpoch.Month);
   expect(19, julianEpoch.Day);
@@ -34,14 +34,14 @@ void Epoch()
 @Test()
 void LeapYears()
 {
-  expect(Julian.IsLeapYear(1900), isTrue); // No 100 year rule...
-  expect(Julian.IsLeapYear(1901), isFalse);
-  expect(Julian.IsLeapYear(1904), isTrue);
-  expect(Julian.IsLeapYear(2000), isTrue);
-  expect(Julian.IsLeapYear(2100), isTrue); // No 100 year rule...
-  expect(Julian.IsLeapYear(2400), isTrue);
+  expect(Julian.isLeapYear(1900), isTrue); // No 100 year rule...
+  expect(Julian.isLeapYear(1901), isFalse);
+  expect(Julian.isLeapYear(1904), isTrue);
+  expect(Julian.isLeapYear(2000), isTrue);
+  expect(Julian.isLeapYear(2100), isTrue); // No 100 year rule...
+  expect(Julian.isLeapYear(2400), isTrue);
   // Check 1BC, 5BC etc...
-  expect(Julian.IsLeapYear(0), isTrue);
-  expect(Julian.IsLeapYear(-4), isTrue);
+  expect(Julian.isLeapYear(0), isTrue);
+  expect(Julian.isLeapYear(-4), isTrue);
 }
 

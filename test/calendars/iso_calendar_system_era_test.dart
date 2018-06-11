@@ -19,17 +19,17 @@ Future main() async {
   await runTests();
 }
 
-CalendarSystem Iso = CalendarSystem.Iso;
+CalendarSystem Iso = CalendarSystem.iso;
 
 @Test()
 void GetMaxYearOfEra()
 {
   LocalDate date = new LocalDate(Iso.maxYear, 1, 1);
-  expect(date.yearOfEra, Iso.GetMaxYearOfEra(Era.Common));
+  expect(date.yearOfEra, Iso.getMaxYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(Iso.minYear, 1, 1);
   expect(Iso.minYear, date.year);
-  expect(date.yearOfEra, Iso.GetMaxYearOfEra(Era.BeforeCommon));
+  expect(date.yearOfEra, Iso.getMaxYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
@@ -37,20 +37,20 @@ void GetMaxYearOfEra()
 void GetMinYearOfEra()
 {
   LocalDate date = new LocalDate(1, 1, 1);
-  expect(date.yearOfEra, Iso.GetMinYearOfEra(Era.Common));
+  expect(date.yearOfEra, Iso.getMinYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(0, 1, 1);
-  expect(date.yearOfEra, Iso.GetMinYearOfEra(Era.BeforeCommon));
+  expect(date.yearOfEra, Iso.getMinYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
 @Test()
 void GetAbsoluteYear()
 {
-  expect(1, Iso.GetAbsoluteYear(1, Era.Common));
-  expect(0, Iso.GetAbsoluteYear(1, Era.BeforeCommon));
-  expect(-1, Iso.GetAbsoluteYear(2, Era.BeforeCommon));
-  expect(Iso.maxYear, Iso.GetAbsoluteYear(Iso.GetMaxYearOfEra(Era.Common), Era.Common));
-  expect(Iso.minYear, Iso.GetAbsoluteYear(Iso.GetMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
+  expect(1, Iso.getAbsoluteYear(1, Era.Common));
+  expect(0, Iso.getAbsoluteYear(1, Era.BeforeCommon));
+  expect(-1, Iso.getAbsoluteYear(2, Era.BeforeCommon));
+  expect(Iso.maxYear, Iso.getAbsoluteYear(Iso.getMaxYearOfEra(Era.Common), Era.Common));
+  expect(Iso.minYear, Iso.getAbsoluteYear(Iso.getMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
 }
 

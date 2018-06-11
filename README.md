@@ -7,6 +7,10 @@ A lot of functionality works at this time, but the public API is still changing 
 QoL changes that are coming, but are not here yet. This is a preview release. Documentation was also ported,
 but some things changed for Dart and the documentation will have minor inaccuracies in some places.
 
+Don't use any functions annotated with `@internal`. I don't intend to keep this annotation, but with
+`part` \ `part of` [usage discouraged](https://www.dartlang.org/guides/libraries/create-library-packages#organizing-a-library-package)
+and no [friend](https://github.com/dart-lang/sdk/issues/22841) semantics, I'm unsure of the direction to go with this. 
+
 Todo:
  - [x] Port over major classes
  - [x] Port over corresponding unit tests

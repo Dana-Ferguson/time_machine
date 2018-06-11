@@ -26,7 +26,7 @@ final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone
 @Test()
 void SimpleProperties()
 {
-  var value = SampleZone.AtStrictly(new LocalDateTime.fromYMDHMS(2012, 2, 10, 8, 9, 10).PlusNanoseconds(123456789));
+  var value = SampleZone.atStrictly(new LocalDateTime.fromYMDHMS(2012, 2, 10, 8, 9, 10).PlusNanoseconds(123456789));
   expect(new LocalDate(2012, 2, 10), value.Date);
   expect(LocalTime.FromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.TimeOfDay);
   expect(Era.Common, value.era);
@@ -58,9 +58,9 @@ void SimpleProperties()
 void Add_AroundTimeZoneTransition()
 {
   // Before the transition at 3pm...
-  ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
+  ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
   // 24 hours elapsed, and it's 4pm
-  ZonedDateTime afterExpected = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
+  ZonedDateTime afterExpected = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
   ZonedDateTime afterAdd = ZonedDateTime.AddSpan(before, Span.oneDay);
   ZonedDateTime afterOperator = before + Span.oneDay;
 
@@ -78,7 +78,7 @@ void Add_MethodEquivalents()
   const int nanoseconds = 12345;
   const int ticks = 5432112345;
 
-  ZonedDateTime before = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
+  ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
   expect(before + Span.oneDay, ZonedDateTime.AddSpan(before, Span.oneDay));
   expect(before + Span.oneDay, before.PlusSpan(Span.oneDay));
 
@@ -105,9 +105,9 @@ void Add_MethodEquivalents()
 void Subtract_AroundTimeZoneTransition()
 {
   // After the transition at 4pm...
-  ZonedDateTime after = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
+  ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
   // 24 hours earlier, and it's 3pm
-  ZonedDateTime beforeExpected = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
+  ZonedDateTime beforeExpected = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 12, 15, 0));
   ZonedDateTime beforeSubtract = ZonedDateTime.SubtractSpan(after, Span.oneDay);
   ZonedDateTime beforeOperator = after - Span.oneDay;
 
@@ -118,7 +118,7 @@ void Subtract_AroundTimeZoneTransition()
 @Test()
 void SubtractDuration_MethodEquivalents()
 {
-  ZonedDateTime after = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
+  ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2011, 6, 13, 16, 0));
   expect(after - Span.oneDay, ZonedDateTime.SubtractSpan(after, Span.oneDay));
   expect(after - Span.oneDay, after.MinusSpan(Span.oneDay));
 }
@@ -130,7 +130,7 @@ void Subtraction_ZonedDateTime()
   // but we'll use two different time zones.
   ZonedDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 5, 51).InUtc();
   // Sample zone is UTC+4 at this point, so this is 14:00Z.
-  ZonedDateTime end = SampleZone.AtStrictly(new LocalDateTime.fromYMDHM(2014, 08, 14, 18, 0));
+  ZonedDateTime end = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2014, 08, 14, 18, 0));
   Span expected = new Span(hours: 8) + new Span(minutes: 9);
   expect(expected, end - start);
   expect(expected, end.Minus(start));
@@ -158,7 +158,7 @@ Future IsDaylightSavings() async
   // a savings offset.
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
   var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
-  var winter = (winterSummerTransition - Span.epsilon).InZone(zone);
+  var winter = (winterSummerTransition - Span.epsilon).inZone(zone);
   var summer = winterSummerTransition.InZone(zone);
   expect(winter.IsDaylightSavingTime(), isFalse);
   expect(summer.IsDaylightSavingTime(), isTrue);
@@ -259,7 +259,7 @@ void ToBclTypes_TruncateNanosTowardStartOfTime(int year)
 @Test()
 void ToDateTimeUtc()
 {
-  ZonedDateTime zoned = SampleZone.AtStrictly(new LocalDateTime.fromYMDHMS(2011, 3, 5, 1, 0, 0));
+  ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.fromYMDHMS(2011, 3, 5, 1, 0, 0));
   // Note that this is 10pm the previous day, UTC - so 1am local time
   DateTime expected = new DateTime.utc(2011, 3, 4, 22, 0, 0);
   DateTime actual = zoned.ToDateTimeUtc();
@@ -271,7 +271,7 @@ void ToDateTimeUtc()
 @Test()
 void ToDateTimeUtc_InRangeAfterUtcAdjustment()
 {
-  var zone = DateTimeZone.ForOffset(new Offset.fromHours(-1));
+  var zone = new DateTimeZone.forOffset(new Offset.fromHours(-1));
   var zdt = new LocalDateTime.fromYMDHM(0, 12, 31, 23, 30).InZoneStrictly(zone);
   // Sanity check: without reversing the offset, we're out of range
   // ToDateTimeUnspecified() works in dart:core
@@ -285,7 +285,7 @@ void ToDateTimeUtc_InRangeAfterUtcAdjustment()
 @Test()
 void ToDateTimeUnspecified()
 {
-  ZonedDateTime zoned = SampleZone.AtStrictly(new LocalDateTime.fromYMDHMS(2011, 3, 5, 1, 0, 0));
+  ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.fromYMDHMS(2011, 3, 5, 1, 0, 0));
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0);
   DateTime actual = zoned.ToDateTimeUnspecified();
   expect(actual, expected);
@@ -297,7 +297,7 @@ void ToDateTimeUnspecified()
 void ToOffsetDateTime()
 {
   var local = new LocalDateTime.fromYMDHMS(1911, 3, 5, 1, 0, 0); // Early interval
-  var zoned = SampleZone.AtStrictly(local);
+  var zoned = SampleZone.atStrictly(local);
   var offsetDateTime = zoned.ToOffsetDateTime();
   expect(local, offsetDateTime.localDateTime);
   expect(SampleZone.EarlyInterval.wallOffset, offsetDateTime.offset);
@@ -308,7 +308,7 @@ void Equality()
 {
   // Goes back from 2am to 1am on June 13th
   SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
-  var sample = zone.MapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 30)).First();
+  var sample = zone.mapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 30)).First();
   var fromUtc = new Instant.fromUtc(2011, 6, 12, 21, 30).InZone(zone);
 
   // Checks all the overloads etc: first check is that the zone matters
@@ -318,16 +318,16 @@ void Equality()
 // Now just use a simple inequality check for other aspects...
 
   // Different offset
-  var later = zone.MapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 30)).Last();
+  var later = zone.mapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 30)).Last();
   expect(sample.localDateTime, later.localDateTime);
   expect(sample.offset, isNot(later.offset));
   expect(sample, isNot(later));
 
   // Different local time
-  expect(sample, isNot(zone.MapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 19)).First()));
+  expect(sample, isNot(zone.mapLocal(new LocalDateTime.fromYMDHM(2011, 6, 13, 1, 19)).First()));
 
   // Different calendar
-  var withOtherCalendar = zone.MapLocal(new LocalDateTime.fromYMDHMC(2011, 6, 13, 1, 30, CalendarSystem.Gregorian)).First();
+  var withOtherCalendar = zone.mapLocal(new LocalDateTime.fromYMDHMC(2011, 6, 13, 1, 30, CalendarSystem.gregorian)).First();
   expect(sample, isNot(withOtherCalendar));
 }
 
@@ -336,7 +336,7 @@ void Constructor_ArgumentValidation()
 {
   // This first one passes b/c of how we implemented the default constructor, now defaults to CalendarSystem.Iso
   // expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), null), throwsArgumentError);
-  expect(() => new ZonedDateTime.withCalendar(new Instant.fromUnixTimeTicks(1000), null, CalendarSystem.Iso), throwsArgumentError);
+  expect(() => new ZonedDateTime.withCalendar(new Instant.fromUnixTimeTicks(1000), null, CalendarSystem.iso), throwsArgumentError);
   expect(() => new ZonedDateTime.withCalendar(new Instant.fromUnixTimeTicks(1000), SampleZone, null), throwsArgumentError);
 }
 
@@ -396,7 +396,7 @@ void DefaultConstructor()
   var actual = new ZonedDateTime();
   expect(new LocalDateTime.fromYMDHM(1970, 1, 1, 0, 0), actual.localDateTime);
   expect(Offset.zero, actual.offset);
-  expect(DateTimeZone.Utc, actual.Zone);
+  expect(DateTimeZone.utc, actual.Zone);
 }
 
 /*
@@ -538,7 +538,7 @@ Future LocalComparer() async
   var londonAfternoon = losAngelesAfternoon.localDateTime.InZoneStrictly(london);
 
   var londonPersian = londonEvening.localDateTime
-      .WithCalendar(CalendarSystem.PersianSimple)
+      .WithCalendar(CalendarSystem.persianSimple)
       .InZoneStrictly(london);
 
   var comparer = ZonedDateTime_LocalComparer.Instance; // ZonedDateTime.Comparer.Local;
@@ -566,7 +566,7 @@ Future InstantComparer() async
   var losAngelesLunchtime = new LocalDateTime.fromYMDHM(2014, 7, 9, 12, 32).InZoneStrictly(losAngeles);
 
   var londonPersian = londonEvening.localDateTime
-      .WithCalendar(CalendarSystem.PersianSimple)
+      .WithCalendar(CalendarSystem.persianSimple)
       .InZoneStrictly(london);
 
   var comparer = ZonedDateTime_InstantComparer.Instance; // ZonedDateTime.Comparer.Instant;

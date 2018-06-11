@@ -49,7 +49,7 @@ Future InvalidSource_ReturnsNullForAdvertisedId() async
 {
   var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(() => cache.GetZoneOrNull("foo"), willThrow<InvalidDateTimeZoneSourceError>());
+  expect(() => cache.getZoneOrNull("foo"), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
@@ -85,7 +85,7 @@ Future SourceIsNotAskedForUtcIfNotAdvertised() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  var zone = await provider[DateTimeZone.UtcId];
+  var zone = await provider[DateTimeZone.utcId];
   expect(zone, isNotNull);
   expect(source.LastRequestedId, isNull);
 }
@@ -95,7 +95,7 @@ Future SourceIsAskedForUtcIfAdvertised() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  var zone = await provider[DateTimeZone.UtcId];
+  var zone = await provider[DateTimeZone.utcId];
   expect(zone, isNotNull);
   expect("UTC", source.LastRequestedId);
 }
@@ -114,7 +114,7 @@ Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider.Ids.contains(DateTimeZone.UtcId), isTrue);
+  expect(provider.ids.contains(DateTimeZone.utcId), isTrue);
 }
 
 @Test()
@@ -122,7 +122,7 @@ Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider.Ids.contains(DateTimeZone.UtcId), isFalse);
+  expect(provider.ids.contains(DateTimeZone.utcId), isFalse);
 }
 
 @Test()
@@ -132,7 +132,7 @@ Future FixedOffsetSucceedsWhenNotAdvertised() async
   var provider = await DateTimeZoneCache.getCache(source);
   String id = "UTC+05:30";
   DateTimeZone zone = await provider[id];
-  expect(DateTimeZone.ForOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
+  expect(new DateTimeZone.forOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
   expect(source.LastRequestedId, isNull);
 }
@@ -167,7 +167,7 @@ Future FixedOffsetZeroReturnsUtc() async
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone = await provider[id];
-  expect(DateTimeZone.Utc, zone);
+  expect(DateTimeZone.utc, zone);
   expect(source.LastRequestedId, isNull);
 }
 
@@ -195,24 +195,24 @@ Future EmptyIdAccepted() async
 Future VersionIdPassThrough() async
 {
   var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"])..VersionId = new Future(() => "foo"));
-  expect("foo", provider.VersionId);
+  expect("foo", provider.versionId);
 }
 
 @Test("Test for issue 7 in bug tracker")
 Future Tzdb_IterateOverIds() async
 {
   // According to bug, this would go bang
-  int count = Tzdb.Ids.length;
+  int count = Tzdb.ids.length;
 
   expect(count > 1, isTrue);
-  int utcCount = Tzdb.Ids.where((id) => id == DateTimeZone.UtcId).length;
+  int utcCount = Tzdb.ids.where((id) => id == DateTimeZone.utcId).length;
   expect(1, utcCount);
 }
 
 @Test()
 Future Tzdb_Indexer_UtcId() async
 {
-  expect(DateTimeZone.Utc, await Tzdb[DateTimeZone.UtcId]);
+  expect(DateTimeZone.utc, await Tzdb[DateTimeZone.utcId]);
 }
 
 @Test()
@@ -221,7 +221,7 @@ Future Tzdb_Indexer_AmericaLosAngeles() async
   const String americaLosAngeles = "America/Los_Angeles";
   var actual = await Tzdb[americaLosAngeles];
   expect(actual, isNotNull);
-  expect(DateTimeZone.Utc, isNot(actual));
+  expect(DateTimeZone.utc, isNot(actual));
   expect(americaLosAngeles, actual.id);
 }
 
@@ -229,11 +229,11 @@ Future Tzdb_Indexer_AmericaLosAngeles() async
 Future Tzdb_Ids_All() async
 {
   // todo: we don't have Utc in here.... is this what we want? Need to refer to our faux TZDB
-  var actual = Tzdb.Ids;
+  var actual = Tzdb.ids;
   var actualCount = actual.length;
   expect(actualCount > 1, isTrue);
-  var utc = actual.firstWhere((id) => id == DateTimeZone.UtcId);
-  expect(DateTimeZone.UtcId, utc);
+  var utc = actual.firstWhere((id) => id == DateTimeZone.utcId);
+  expect(DateTimeZone.utcId, utc);
 }
 
 /// Simply tests that every ID in the built-in database can be fetched. This is also
@@ -242,7 +242,7 @@ Future Tzdb_Ids_All() async
 @Test()
 void Tzdb_Indexer_AllIds()
 {
-  for (String id in Tzdb.Ids)
+  for (String id in Tzdb.ids)
   {
     expect(Tzdb[id], isNotNull);
   }
@@ -253,7 +253,7 @@ Future GetSystemDefault_SourceReturnsNullId() async
 {
   var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(cache.GetSystemDefault(), willThrow<DateTimeZoneNotFoundException>());
+  expect(cache.getSystemDefault(), willThrow<DateTimeZoneNotFoundException>());
 }
 
 

@@ -46,5 +46,5 @@ class SingleTransitionDateTimeZone extends DateTimeZone {
   /// <inheritdoc />
   ///
   /// This returns either the zone interval before or after the transition, based on the instant provided.
-  @override ZoneInterval GetZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
+  @override ZoneInterval getZoneInterval(Instant instant) => EarlyInterval.Contains(instant) ? EarlyInterval : LateInterval;
 }

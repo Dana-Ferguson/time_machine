@@ -50,7 +50,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Delegates fetching a zone interval to the caching map.
-  @override ZoneInterval GetZoneInterval(Instant instant) {
-    return map.GetZoneInterval(instant);
+  @override ZoneInterval getZoneInterval(Instant instant) {
+    return map.getZoneInterval(instant);
   }
 }

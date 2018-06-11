@@ -30,7 +30,7 @@ void AtMidnight()
 void WithCalendar()
 {
   LocalDate isoEpoch = new LocalDate(1970, 1, 1);
-  LocalDate julianEpoch = isoEpoch.withCalendar(CalendarSystem.Julian);
+  LocalDate julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.month);
   expect(19, julianEpoch.day);
@@ -84,5 +84,5 @@ void WithCalendar_OutOfRange()
 {
   LocalDate start = new LocalDate(1, 1, 1);
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => start.withCalendar(CalendarSystem.PersianSimple), throwsRangeError);
+  expect(() => start.withCalendar(CalendarSystem.persianSimple), throwsRangeError);
 }

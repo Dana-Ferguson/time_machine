@@ -533,11 +533,11 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
   @Test()
   @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.Coptic);
+    var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.coptic);
     var value = pattern
         .Parse("0284-08-29")
         .Value;
-    expect(new LocalDate(284, 8, 29, CalendarSystem.Coptic), value);
+    expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), value);
   }
 
   @Test()

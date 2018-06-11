@@ -32,13 +32,13 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
 
   /// Gets the version ID of this provider. This is simply the [IDateTimeZoneSource.VersionId] returned by
   /// the underlying source.
-  final String VersionId;
+  final String versionId;
 
   /// <inheritdoc />
   // todo:  ReadOnlyCollection<String>
-  final List<String> Ids;
+  final List<String> ids;
 
-  DateTimeZoneCache._(this.source, this.Ids, this.VersionId);
+  DateTimeZoneCache._(this.source, this.ids, this.versionId);
 
   // todo: anyway I can make this a regular constructor???
   // note: this is a Static Constructor (against the requirements of the Style guide), because it's a future
@@ -79,16 +79,16 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   }
 
   /// <inheritdoc />
-  Future<DateTimeZone> GetSystemDefault() async {
+  Future<DateTimeZone> getSystemDefault() async {
     String id = source.GetSystemDefaultId();
     if (id == null) {
-      throw new DateTimeZoneNotFoundException("System default time zone is unknown to source $VersionId");
+      throw new DateTimeZoneNotFoundException("System default time zone is unknown to source $versionId");
     }
     return await this[id];
   }
 
   /// <inheritdoc />
-  Future<DateTimeZone> GetZoneOrNull(String id) async {
+  Future<DateTimeZone> getZoneOrNull(String id) async {
     Preconditions.checkNotNull(id, 'id');
     return (await GetZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
   }
@@ -110,7 +110,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
       zone = await source.ForId(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
-            "Time zone $id is supported by source $VersionId but not returned");
+            "Time zone $id is supported by source $versionId but not returned");
       }
       timeZoneMap[id] = zone;
     }
@@ -129,7 +129,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
       zone = source.ForIdSync(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
-            "Time zone $id is supported by source $VersionId but not returned");
+            "Time zone $id is supported by source $versionId but not returned");
       }
       timeZoneMap[id] = zone;
     }
@@ -138,9 +138,9 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   }
 
   Future<DateTimeZone> operator [](String id) async {
-    var zone = await GetZoneOrNull(id);
+    var zone = await getZoneOrNull(id);
     if (zone == null) {
-      throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $VersionId");
+      throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $versionId");
     }
     return zone;
   }
@@ -148,7 +148,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   DateTimeZone getDateTimeZoneSync(String id) {
     var zone = GetZoneOrNullSync(id);
     if (zone == null) {
-      throw new DateTimeZoneNotFoundException("Time zone $id is unknown or unavailable synchronously to source $VersionId");
+      throw new DateTimeZoneNotFoundException("Time zone $id is unknown or unavailable synchronously to source $versionId");
     }
     return zone;
   }

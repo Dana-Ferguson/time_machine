@@ -18,7 +18,7 @@ Future main() async {
 }
 
 final Iterable<String> SupportedIds = CalendarSystem.Ids.toList();
-final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.ForId).toList();
+final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
 @TestCaseSource(const Symbol('SupportedCalendars'))

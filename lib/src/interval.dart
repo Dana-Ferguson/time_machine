@@ -17,8 +17,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 ///
 /// The end may equal the start (resulting in an empty interval), but will not be before the start.
 @immutable
-class Interval // : IEquatable<Interval>
-    {
+class Interval {
   /// The start of the interval.
   final Instant _start;
 
@@ -40,11 +39,11 @@ class Interval // : IEquatable<Interval>
 
   /// Gets the start instant - the inclusive lower bound of the interval.
   ///
-  /// This will never be later than [End], though it may be equal to it.
+  /// This will never be later than [end], though it may be equal to it.
   ///
   /// [InvalidOperationException]: The interval extends to the start of time.
   /// <seealso cref="HasStart"/>
-  Instant get Start {
+  Instant get start {
     // todo: IsValid .. replace with a null check???
     Preconditions.checkState(_start.IsValid, "Interval extends to start of time");
     return _start;
@@ -55,40 +54,39 @@ class Interval // : IEquatable<Interval>
   ///
   /// <value>`true` if this interval has a fixed start point, or `false` if it
   /// extends to the start of time.</value>
-  bool get HasStart => _start.IsValid;
+  bool get hasStart => _start.IsValid;
 
   /// Gets the end instant - the exclusive upper bound of the interval.
   ///
   /// [InvalidOperationException]: The interval extends to the end of time.
   /// <seealso cref="HasEnd"/>
-  Instant get End {
+  Instant get end {
     Preconditions.checkState(_end.IsValid, "Interval extends to end of time");
     return _end;
   }
 
   /// Returns the raw end value of the interval: a normal instant or [Instant.AfterMaxValue].
   /// This value should never be exposed.
-  @internal Instant get RawEnd => _end;
+  @internal Instant get rawEnd => _end;
 
   /// Returns `true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.
   ///
   /// <value>`true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.</value>
-  bool get HasEnd => _end.IsValid;
+  bool get hasEnd => _end.IsValid;
 
   /// Returns the duration of the interval.
   ///
   /// This will always be a non-negative duration, though it may be zero.
   ///
   /// [InvalidOperationException]: The interval extends to the start or end of time.
-  Span get span => End - Start;
+  Span get span => end - start;
 
-/// Returns whether or not this interval contains the given instant.
-///
-/// [instant]: Instant to test.
-/// Returns: True if this interval contains the given instant; false otherwise.
-
+  /// Returns whether or not this interval contains the given instant.
+  ///
+  /// [instant]: Instant to test.
+  /// Returns: True if this interval contains the given instant; false otherwise.
   bool contains(Instant instant) => instant >= _start && instant < _end;
 
   /// Indicates whether the value of this interval is equal to the value of the specified interval.

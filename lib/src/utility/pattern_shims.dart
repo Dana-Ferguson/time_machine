@@ -84,7 +84,7 @@ abstract class TextShim {
   }
 
   static String toStringInterval(Interval interval) {
-    return '${interval.Start ?? 'noStart'} to ${interval.End ?? 'noEnd'}';
+    return '${interval.start ?? 'noStart'} to ${interval.end ?? 'noEnd'}';
   }
 
   static String toStringDateInterval(DateInterval dateInterval) {

@@ -31,7 +31,7 @@ DateTimeZone Algiers;
 void GetPeriod_BeforeLast()
 {
   Instant april1981 = new Instant.fromUtc(1981, 4, 1, 0, 0);
-  var actual = Algiers.GetZoneInterval(april1981);
+  var actual = Algiers.getZoneInterval(april1981);
   var expected = new ZoneInterval("WET", new Instant.fromUnixTimeTicks(3418020000000000), new Instant.fromUnixTimeTicks(3575232000000000), Offset.zero, Offset.zero);
   expect(expected, actual);
 }
@@ -39,8 +39,8 @@ void GetPeriod_BeforeLast()
 @Test()
 void GetPeriod_AfterLastTransition()
 {
-  var may1981 = DateTimeZone.Utc.AtStrictly(new LocalDateTime.fromYMDHMS(1981, 5, 1, 0, 0, 1)).ToInstant();
-  var actual = Algiers.GetZoneInterval(may1981);
+  var may1981 = DateTimeZone.utc.atStrictly(new LocalDateTime.fromYMDHMS(1981, 5, 1, 0, 0, 1)).ToInstant();
+  var actual = Algiers.getZoneInterval(may1981);
   var expected = new ZoneInterval("CET", new Instant.fromUnixTimeTicks(3575232000000000), null, new Offset.fromSeconds(TimeConstants.secondsPerHour), Offset.zero);
   expect(expected, actual);
 }

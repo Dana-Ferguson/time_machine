@@ -20,14 +20,14 @@ Future main() async {
 @Test()
 Future TzdbProviderUsesTzdbSource () async
 {
-  expect((await DateTimeZoneProviders.Tzdb).VersionId.startsWith("TZDB: "), isTrue);
+  expect((await DateTimeZoneProviders.Tzdb).versionId.startsWith("TZDB: "), isTrue);
 }
 
 @Test()
 Future AllTzdbTimeZonesLoad() async
 {
   var tzdb = await DateTimeZoneProviders.Tzdb;
-  var allZones = tzdb.Ids.map((id) => tzdb[id]).toList();
+  var allZones = tzdb.ids.map((id) => tzdb[id]).toList();
   // Just to stop the variable from being lonely. In reality, it's likely there'll be a breakpoint here to inspect a particular zone...
   expect(allZones.length > 50, isTrue);
 }

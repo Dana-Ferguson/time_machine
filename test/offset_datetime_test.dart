@@ -55,7 +55,7 @@ void OffsetProperty()
 @Test()
 void LocalDateTimeProperty()
 {
-  LocalDateTime local = new LocalDateTime.fromYMDHMSC(2012, 6, 19, 1, 2, 3, CalendarSystem.Julian).PlusNanoseconds(123456789);
+  LocalDateTime local = new LocalDateTime.fromYMDHMSC(2012, 6, 19, 1, 2, 3, CalendarSystem.julian).PlusNanoseconds(123456789);
   Offset offset = new Offset.fromHours(5);
 
   OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -197,7 +197,7 @@ void InFixedZone()
   OffsetDateTime odt = new OffsetDateTime(local, offset);
 
   ZonedDateTime zoned = odt.InFixedZone;
-  expect(DateTimeZone.ForOffset(offset).AtStrictly(local), zoned);
+  expect(new DateTimeZone.forOffset(offset).atStrictly(local), zoned);
 }
 
 @Test()
@@ -243,7 +243,7 @@ void LocalComparer()
   var control = new OffsetDateTime(localControl, Offset.zero);
   var negativeOffset = control.localDateTime.WithOffset(new Offset.fromHours(-1));
   var positiveOffset = control.localDateTime.WithOffset(new Offset.fromHours(1));
-  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.Coptic).WithOffset(new Offset.fromHours(5));
+  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.coptic).WithOffset(new Offset.fromHours(5));
   // Later instant, earlier local
   var earlierLocal = control.localDateTime.PlusHours(-2).WithOffset(new Offset.fromHours(-10));
   // Same offset, previous day
@@ -289,7 +289,7 @@ void InstantComparer()
   var localControl = new LocalDateTime.fromYMDHM(2013, 4, 2, 19, 54);
   var control = new OffsetDateTime(localControl, Offset.zero);
   var equalAndOppositeChanges = control.localDateTime.PlusHours(1).WithOffset(new Offset.fromHours(1));
-  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.Coptic).WithOffset(Offset.zero);
+  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.coptic).WithOffset(Offset.zero);
 
   // Negative offset means later instant
   var negativeOffset = control.localDateTime.WithOffset(new Offset.fromHours(-1));
@@ -434,11 +434,11 @@ void WithOffset_TwoDaysForwardAndBack()
 @Test()
 void WithCalendar()
 {
-  CalendarSystem julianCalendar = CalendarSystem.Julian;
+  CalendarSystem julianCalendar = CalendarSystem.julian;
   OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.WithOffset(Offset.zero);
 
   OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().WithOffset(new Offset.fromHours(0));
-  OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.Julian);
+  OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.julian);
   expect(expected, actual);
 }
 
@@ -457,7 +457,7 @@ void With_DateAdjuster()
   Offset offset = new Offset.fromHoursAndMinutes(2, 30);
   OffsetDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
   OffsetDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 30, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
-  expect(expected, start.WithDate(DateAdjusters.EndOfMonth));
+  expect(expected, start.WithDate(DateAdjusters.endOfMonth));
 }
 
 @Test()

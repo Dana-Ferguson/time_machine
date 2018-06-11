@@ -24,6 +24,6 @@ Future main() async {
 @Test()
 void UtcIsNotNull()
 {
-  expect(DateTimeZone.Utc, isNotNull);
+  expect(DateTimeZone.utc, isNotNull);
 }
 

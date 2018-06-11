@@ -45,7 +45,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     // We want this to be AfterMaxValue for tail-less zones.
     var tailZoneStart = intervals[intervals.length - 1].RawEnd;
     // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
-    var firstTailZoneInterval = tailZone?.GetZoneInterval(tailZoneStart)?.WithStart(tailZoneStart);
+    var firstTailZoneInterval = tailZone?.getZoneInterval(tailZoneStart)?.WithStart(tailZoneStart);
     ValidatePeriods(intervals, tailZone);
 
     return new PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
@@ -80,11 +80,11 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [instant]: The Instant to find.
   /// Returns: The ZoneInterval including the given instant.
-  @override ZoneInterval GetZoneInterval(Instant instant) {
+  @override ZoneInterval getZoneInterval(Instant instant) {
     if (tailZone != null && instant >= tailZoneStart) {
       // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
       // join is seamless.
-      ZoneInterval intervalFromTailZone = tailZone.GetZoneInterval(instant);
+      ZoneInterval intervalFromTailZone = tailZone.getZoneInterval(instant);
       return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
     }
 

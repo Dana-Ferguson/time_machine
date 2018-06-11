@@ -18,13 +18,13 @@ Future main() async {
 }
 
 final Iterable<String> SupportedIds = CalendarSystem.Ids.toList();
-final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.ForId).toList();
+final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
 @TestCaseSource(const Symbol("SupportedIds"))
 void ValidId(String id)
 {
-  expect(CalendarSystem.ForId(id), new isInstanceOf<CalendarSystem>());
+  expect(CalendarSystem.forId(id), new isInstanceOf<CalendarSystem>());
 // Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
 }
 
@@ -32,14 +32,14 @@ void ValidId(String id)
 @TestCaseSource(const Symbol("SupportedIds"))
 void IdsAreCaseSensitive(String id)
 {
-  expect(() => CalendarSystem.ForId(id.toLowerCase()), throwsArgumentError);
+  expect(() => CalendarSystem.forId(id.toLowerCase()), throwsArgumentError);
 // Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId(id.ToLowerInvariant()));
 }
 
 @Test()
 void AllIdsGiveDifferentCalendars()
 {
-    var allCalendars = SupportedIds.map(CalendarSystem.ForId).toList();
+    var allCalendars = SupportedIds.map(CalendarSystem.forId).toList();
     expect(SupportedIds.length, allCalendars.toSet().length);
 // Assert.AreEqual(SupportedIds.Count(), allCalendars.Distinct().Count());
 }
@@ -47,7 +47,7 @@ void AllIdsGiveDifferentCalendars()
 @Test()
 void BadId()
 {
-  expect(() => CalendarSystem.ForId("bad"), throwsArgumentError);
+  expect(() => CalendarSystem.forId("bad"), throwsArgumentError);
 // Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
 }
 
@@ -81,7 +81,7 @@ void NoSubstrings()
 @TestCaseSource(const Symbol("SupportedCalendars"))
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
-  expect(calendar, CalendarSystem.ForOrdinal(calendar.ordinal));
+  expect(calendar, CalendarSystem.forOrdinal(calendar.ordinal));
 // Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
 }
 
@@ -89,13 +89,13 @@ void ForOrdinal_Roundtrip(CalendarSystem calendar)
 @TestCaseSource(const Symbol("SupportedCalendars"))
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
-  expect(calendar, CalendarSystem.ForOrdinalUncached(calendar.ordinal));
+  expect(calendar, CalendarSystem.forOrdinalUncached(calendar.ordinal));
 // Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
 }
 
 @Test()
 void ForOrdinalUncached_Invalid()
 {
-  expect(() => CalendarSystem.ForOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
+  expect(() => CalendarSystem.forOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
 // Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
 }

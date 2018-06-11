@@ -43,9 +43,9 @@ void FirstTransitions()
   var nameChangeInstant = new Instant.fromUtc(1891, 3, 14, 23, 51, 39);
   var utcChangeInstant = new Instant.fromUtc(1911, 3, 10, 23, 51, 39);
 
-  var beforeNameChange = Paris.GetZoneInterval(nameChangeInstant - Span.epsilon);
-  var afterNameChange = Paris.GetZoneInterval(nameChangeInstant);
-  var afterSmallChange = Paris.GetZoneInterval(utcChangeInstant);
+  var beforeNameChange = Paris.getZoneInterval(nameChangeInstant - Span.epsilon);
+  var afterNameChange = Paris.getZoneInterval(nameChangeInstant);
+  var afterSmallChange = Paris.getZoneInterval(utcChangeInstant);
 
   expect("LMT", beforeNameChange.name);
   expect(InitialOffset, beforeNameChange.wallOffset);

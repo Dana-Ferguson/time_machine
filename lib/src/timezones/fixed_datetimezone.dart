@@ -53,14 +53,14 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Returns: The generated id string.
 @private static String MakeId(Offset offset) {
   if (offset == Offset.zero) {
-    return DateTimeZone.UtcId;
+    return DateTimeZone.utcId;
   }
 
   if (csharpMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
-    return '${DateTimeZone.UtcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
+    return '${DateTimeZone.utcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
   }
 
-  return DateTimeZone.UtcId + OffsetPattern.GeneralInvariant.Format(offset);
+  return DateTimeZone.utcId + OffsetPattern.GeneralInvariant.Format(offset);
 }
 
 /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
@@ -69,18 +69,18 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// [id]: ID 
 /// Returns: The parsed time zone, or null if the ID doesn't match.
 @internal static DateTimeZone GetFixedZoneOrNull(String id) {
-  if (!id.startsWith(DateTimeZone.UtcId)) {
+  if (!id.startsWith(DateTimeZone.utcId)) {
     return null;
   }
-  if (id == DateTimeZone.UtcId) {
-    return DateTimeZone.Utc;
+  if (id == DateTimeZone.utcId) {
+    return DateTimeZone.utc;
   }
 
 //print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // ${StackTrace.current}'); // todo: get real parsing
 //return null;
 
-  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.UtcId.length));
-  return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : null;
+  var parseResult = OffsetPattern.GeneralInvariant.Parse(id.substring(DateTimeZone.utcId.length));
+  return parseResult.Success ? new DateTimeZone.forOffset(parseResult.Value) : null;
 }
 
 /// Returns the fixed offset for this time zone.
@@ -94,10 +94,10 @@ Offset get offset => maxOffset;
 String get Name => interval.name;
 
 /// Gets the zone interval for the given instant. This implementation always returns the same interval.
-@override ZoneInterval GetZoneInterval(Instant instant) => interval;
+@override ZoneInterval getZoneInterval(Instant instant) => interval;
 
 /// @override for efficiency: we know we'll always have an unambiguous mapping for any LocalDateTime.
-@override ZoneLocalMapping MapLocal(LocalDateTime localDateTime) =>
+@override ZoneLocalMapping mapLocal(LocalDateTime localDateTime) =>
 new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 
 /// Returns the offset from UTC, where a positive duration indicates that local time is later
@@ -106,7 +106,7 @@ new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
 /// [instant]: The instant for which to calculate the offset.
 ///
 /// The offset from UTC at the specified instant.
-@override Offset GetUtcOffset(Instant instant) => maxOffset;
+@override Offset getUtcOffset(Instant instant) => maxOffset;
 
 /// Writes the time zone to the specified writer.
 ///

@@ -20,17 +20,17 @@ Future main() async {
   await runTests();
 }
 
-CalendarSystem Julian = CalendarSystem.Julian;
+CalendarSystem Julian = CalendarSystem.julian;
 
 @Test()
 void GetMaxYearOfEra()
 {
   LocalDate date = new LocalDate(Julian.maxYear, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.GetMaxYearOfEra(Era.Common));
+  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(Julian.minYear, 1, 1, Julian);
   expect(Julian.minYear, date.year);
-  expect(date.yearOfEra, Julian.GetMaxYearOfEra(Era.BeforeCommon));
+  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
@@ -38,27 +38,27 @@ void GetMaxYearOfEra()
 void GetMinYearOfEra()
 {
   LocalDate date = new LocalDate(1, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.GetMinYearOfEra(Era.Common));
+  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.Common));
   expect(Era.Common, date.era);
   date = new LocalDate(0, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.GetMinYearOfEra(Era.BeforeCommon));
+  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.BeforeCommon));
   expect(Era.BeforeCommon, date.era);
 }
 
 @Test()
 void GetAbsoluteYear()
 {
-  expect(1, Julian.GetAbsoluteYear(1, Era.Common));
-  expect(0, Julian.GetAbsoluteYear(1, Era.BeforeCommon));
-  expect(-1, Julian.GetAbsoluteYear(2, Era.BeforeCommon));
-  expect(Julian.maxYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.Common), Era.Common));
-  expect(Julian.minYear, Julian.GetAbsoluteYear(Julian.GetMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
+  expect(1, Julian.getAbsoluteYear(1, Era.Common));
+  expect(0, Julian.getAbsoluteYear(1, Era.BeforeCommon));
+  expect(-1, Julian.getAbsoluteYear(2, Era.BeforeCommon));
+  expect(Julian.maxYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.Common), Era.Common));
+  expect(Julian.minYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
 }
 
 @Test()
 void EraProperty()
 {
-  CalendarSystem calendar = CalendarSystem.Julian;
+  CalendarSystem calendar = CalendarSystem.julian;
   LocalDateTime startOfEra = new LocalDateTime.fromYMDHMSC(1, 1, 1, 0, 0, 0, calendar);
   expect(Era.Common, startOfEra.era);
   expect(Era.BeforeCommon, startOfEra.PlusTicks(-1).era);

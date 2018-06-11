@@ -19,7 +19,7 @@ import 'package:time_machine/time_machine.dart';
 /// provider may do so, as it has more detailed knowledge of what can go wrong and how it can best be handled.
 abstract class IDateTimeZoneProvider {
   /// Gets the version ID of this provider.
-  final String VersionId = null;
+  final String versionId = null;
 
   /// Gets the list of valid time zone ids advertised by this provider.
   ///
@@ -29,7 +29,7 @@ abstract class IDateTimeZoneProvider {
   ///
   /// In addition to the list returned here, providers always support the fixed-offset timezones with IDs "UTC"
   /// and "UTC+/-Offset". These may or may not be included explicitly in this list.
-  final List<String> Ids = null;
+  final List<String> ids = null;
 
   /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
   /// available.
@@ -44,7 +44,7 @@ abstract class IDateTimeZoneProvider {
   /// this provider.
   ///
   /// The provider-specific representation of the system default time zone.
-  Future<DateTimeZone> GetSystemDefault();
+  Future<DateTimeZone> getSystemDefault();
 
   /// Returns the time zone for the given ID, if it's available.
   ///
@@ -60,11 +60,11 @@ abstract class IDateTimeZoneProvider {
   /// [id]: The time zone ID to find.
   /// The [DateTimeZone] for the given ID or null if the provider does not support
   /// the given ID.
-  Future<DateTimeZone> GetZoneOrNull(String id);
+  Future<DateTimeZone> getZoneOrNull(String id);
 
   /// Returns the time zone for the given ID.
   ///
-  /// Unlike [GetZoneOrNull], this indexer will never return a null reference. If the ID is not
+  /// Unlike [getZoneOrNull], this indexer will never return a null reference. If the ID is not
   /// supported by this provider, it will throw [DateTimeZoneNotFoundException].
   ///
   /// Note that this may return a [DateTimeZone] that has a different ID to that requested, if the ID
@@ -86,9 +86,9 @@ abstract class IDateTimeZoneProvider {
 
   /// Returns a sequence of time zones from the specified provider,
   /// in the same order in which the IDs are returned by the provider.
-  Future<Iterable<DateTimeZone>> GetAllZones() async {
+  Future<Iterable<DateTimeZone>> getAllZones() async {
     // var ids = await GetIds();
-    var futureZones = Ids.map((id) => this[id]);
+    var futureZones = ids.map((id) => this[id]);
     return await Future.wait(futureZones);
   }
 

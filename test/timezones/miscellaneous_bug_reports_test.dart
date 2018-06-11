@@ -31,7 +31,7 @@ Future main() async {
 Future Niue() async
 {
   DateTimeZone niue = await Tzdb["Pacific/Niue"];
-  var offset = niue.GetUtcOffset(niue.AtStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
+  var offset = niue.getUtcOffset(niue.atStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
   expect(new Offset.fromHours(-11), offset);
 }
 
@@ -39,7 +39,7 @@ Future Niue() async
 Future Kiritimati() async
 {
   DateTimeZone kiritimati = await Tzdb["Pacific/Kiritimati"];
-  var offset = kiritimati.GetUtcOffset(kiritimati.AtStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
+  var offset = kiritimati.getUtcOffset(kiritimati.atStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
   expect(new Offset.fromHours(14), offset);
 }
 
@@ -47,7 +47,7 @@ Future Kiritimati() async
 Future Pyongyang() async
 {
   DateTimeZone pyongyang = await Tzdb["Asia/Pyongyang"];
-  var offset = pyongyang.GetUtcOffset(pyongyang.AtStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
+  var offset = pyongyang.getUtcOffset(pyongyang.atStrictly(new LocalDateTime.fromYMDHMS(2010, 1, 1, 0, 0, 0)).ToInstant());
   expect(new Offset.fromHours(9), offset);
 }
 
@@ -74,7 +74,7 @@ Future Tbilisi() async
 {
   var zone = await Tzdb["Asia/Tbilisi"];
   Instant summer1996 = new Instant.fromUtc(1996, 6, 1, 0, 0);
-  var interval = zone.GetZoneInterval(summer1996);
+  var interval = zone.getZoneInterval(summer1996);
   expect(new LocalDateTime.fromYMDHM(1996, 3, 31, 1, 0), interval.IsoLocalStart);
   expect(new LocalDateTime.fromYMDHM(1997, 10, 26, 0, 0), interval.IsoLocalEnd);
 }

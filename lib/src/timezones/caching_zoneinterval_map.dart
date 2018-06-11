@@ -65,7 +65,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [instant]: The Instant to test.
   /// Returns: The defined ZoneOffsetPeriod or null.
-  ZoneInterval GetZoneInterval(Instant instant) {
+  ZoneInterval getZoneInterval(Instant instant) {
     int period = instant.daysSinceEpoch >> PeriodShift;
     int index = period & CachePeriodMask;
     var node = instantCache[index];
@@ -105,7 +105,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
     var nextPeriodStartDays = days + (1 << HashArrayCache.PeriodShift);
 
-    var interval = map.GetZoneInterval(periodStart);
+    var interval = map.getZoneInterval(periodStart);
     var node = new HashCacheNode(interval, period, null);
 
     // Keep going while the current interval ends before the period.
@@ -114,7 +114,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     // If the raw end is the end of time, the condition will definitely
     // evaluate to false.
     while (interval.RawEnd.daysSinceEpoch < nextPeriodStartDays) {
-      interval = map.GetZoneInterval(interval.end);
+      interval = map.getZoneInterval(interval.end);
       node = new HashCacheNode(interval, period, node);
     }
 

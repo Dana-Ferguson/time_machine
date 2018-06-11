@@ -16,7 +16,7 @@ class DateAdjusters {
   /// <value>
   /// A date adjuster to move to the first day of the current month.
   /// </value>
-  static final LocalDate Function(LocalDate) StartOfMonth =
+  static final LocalDate Function(LocalDate) startOfMonth =
       (date) => new LocalDate(date.year, date.month, 1, date.calendar);
 
 
@@ -25,8 +25,8 @@ class DateAdjusters {
   /// <value>
   /// A date adjuster to move to the last day of the current month.
   /// </value>
-  static final LocalDate Function(LocalDate) EndOfMonth =
-      (date) => new LocalDate(date.year, date.month, date.calendar.GetDaysInMonth(date.year, date.month), date.calendar);
+  static final LocalDate Function(LocalDate) endOfMonth =
+      (date) => new LocalDate(date.year, date.month, date.calendar.getDaysInMonth(date.year, date.month), date.calendar);
 
 
   /// A date adjuster to move to the specified day of the current month.
@@ -37,7 +37,7 @@ class DateAdjusters {
   /// [day]: The day of month to adjust dates to.
   /// An adjuster which changes the day to [day],
   /// retaining the same year and month.
-  static LocalDate Function(LocalDate) DayOfMonth(int day) =>
+  static LocalDate Function(LocalDate) dayOfMonth(int day) =>
           (date) => new LocalDate(date.year, date.month, day, date.calendar);
 
 
@@ -49,7 +49,7 @@ class DateAdjusters {
   /// [month]: The month to adjust dates to.
   /// An adjuster which changes the month to [month],
   /// retaining the same year and day of month.
-  static LocalDate Function(LocalDate) Month(int month) =>
+  static LocalDate Function(LocalDate) month(int month) =>
           (date) => new LocalDate(date.year, month, date.day, date.calendar);
 
 
@@ -59,7 +59,7 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the next occurrence of the
   /// specified day-of-week, or the original date if the day is already corret.
-  static LocalDate Function(LocalDate) NextOrSame(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) nextOrSame(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
@@ -74,7 +74,7 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the previous occurrence of the
   /// specified day-of-week, or the original date if the day is already corret.
-  static LocalDate Function(LocalDate) PreviousOrSame(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) previousOrSame(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
@@ -91,7 +91,7 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the next occurrence of the
   /// specified day-of-week.
-  static LocalDate Function(LocalDate) Next(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) next(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
@@ -108,7 +108,7 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the previous occurrence of the
   /// specified day-of-week.
-  static LocalDate Function(LocalDate) Previous(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) previous(IsoDayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
       throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');

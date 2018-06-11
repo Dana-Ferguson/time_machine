@@ -36,14 +36,14 @@ abstract class Clock
   /// [zone]: Time zone to use in the returned object.
   /// [calendar]: Calendar to use in the returned object.
   /// Returns: A [ZonedClock] with the given clock, time zone and calendar system.
-  ZonedClock InZone(DateTimeZone zone, [CalendarSystem calendar = null]) => new ZonedClock(this, zone, calendar ?? CalendarSystem.Iso);
+  ZonedClock inZone(DateTimeZone zone, [CalendarSystem calendar = null]) => new ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
 
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// using the UTC time zone and ISO calendar system.
   ///
   /// [clock]: Clock to use in the returned object.
   /// Returns: A [ZonedClock] with the given clock, in the UTC time zone and ISO calendar system.
-  ZonedClock InUtc() => new ZonedClock(this, DateTimeZone.Utc, CalendarSystem.Iso);
+  ZonedClock inUtc() => new ZonedClock(this, DateTimeZone.utc, CalendarSystem.iso);
 
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// in the TZDB mapping for the system default time zone time zone and the ISO calendar system.
@@ -54,10 +54,10 @@ abstract class Clock
   /// [DateTimeZoneNotFoundException]: The system default time zone is not mapped by
   /// TZDB.
   /// <seealso cref="DateTimeZoneProviders.Tzdb"/>
-  Future<ZonedClock> InTzdbSystemDefaultZone() async
+  Future<ZonedClock> inTzdbSystemDefaultZone() async
   {
-    var zone = await (await DateTimeZoneProviders.Tzdb).GetSystemDefault();
-    return new ZonedClock(this, zone, CalendarSystem.Iso);
+    var zone = await (await DateTimeZoneProviders.Tzdb).getSystemDefault();
+    return new ZonedClock(this, zone, CalendarSystem.iso);
   }
 }
 

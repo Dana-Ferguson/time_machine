@@ -29,7 +29,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 
   @internal
   @override
-  int GetAbsoluteYear(int yearOfEra, Era era) {
+  int getAbsoluteYear(int yearOfEra, Era era) {
     ValidateEra(era);
     if (era == Era.Common) {
       Preconditions.checkArgumentRange('yearOfEra', yearOfEra, 1, maxYearOfAd);
@@ -51,14 +51,14 @@ import 'package:time_machine/time_machine_utilities.dart';
 
   @internal
   @override
-  int GetMinYearOfEra(Era era) {
+  int getMinYearOfEra(Era era) {
     ValidateEra(era);
     return 1;
   }
 
   @internal
   @override
-  int GetMaxYearOfEra(Era era) {
+  int getMaxYearOfEra(Era era) {
     ValidateEra(era);
     return era == Era.Common ? maxYearOfAd : maxYearOfBc;
   }

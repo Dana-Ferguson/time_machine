@@ -22,20 +22,20 @@ Future main() async {
 @Test()
 void LeapYears()
 {
-  var calendar = CalendarSystem.Gregorian;
-  expect(calendar.IsLeapYear(1900), isFalse);
-  expect(calendar.IsLeapYear(1901), isFalse);
-  expect(calendar.IsLeapYear(1904), isTrue);
-  expect(calendar.IsLeapYear(1996), isTrue);
-  expect(calendar.IsLeapYear(2000), isTrue);
-  expect(calendar.IsLeapYear(2100), isFalse);
-  expect(calendar.IsLeapYear(2400), isTrue);
+  var calendar = CalendarSystem.gregorian;
+  expect(calendar.isLeapYear(1900), isFalse);
+  expect(calendar.isLeapYear(1901), isFalse);
+  expect(calendar.isLeapYear(1904), isTrue);
+  expect(calendar.isLeapYear(1996), isTrue);
+  expect(calendar.isLeapYear(2000), isTrue);
+  expect(calendar.isLeapYear(2100), isFalse);
+  expect(calendar.isLeapYear(2400), isTrue);
 }
 
 @Test()
 void EraProperty()
 {
-  CalendarSystem calendar = CalendarSystem.Gregorian;
+  CalendarSystem calendar = CalendarSystem.gregorian;
   LocalDateTime startOfEra = new LocalDateTime.fromYMDHMSC(1, 1, 1, 0, 0, 0, calendar);
   expect(Era.Common, startOfEra.era);
   expect(Era.BeforeCommon, startOfEra.PlusTicks(-1).era);

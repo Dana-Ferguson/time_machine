@@ -27,17 +27,17 @@ Instant summer = new Instant.fromUtc(2010, 6, 1, 0, 0);
 @Test()
 void GetZoneIntervalInstant_NotNull()
 {
-  var actual = timeZone.GetZoneInterval(summer);
+  var actual = timeZone.getZoneInterval(summer);
   expect(actual, isNotNull);
 }
 
 @Test()
 void GetZoneIntervalInstant_RepeatedCallsReturnSameObject()
 {
-  var actual = timeZone.GetZoneInterval(summer);
+  var actual = timeZone.getZoneInterval(summer);
   for (int i = 0; i < 100; i++)
   {
-    var newPeriod = timeZone.GetZoneInterval(summer);
+    var newPeriod = timeZone.getZoneInterval(summer);
     expect(identical(actual, newPeriod), isTrue);
   }
 }
@@ -45,12 +45,12 @@ void GetZoneIntervalInstant_RepeatedCallsReturnSameObject()
 @Test()
 void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed()
 {
-  var actual = timeZone.GetZoneInterval(summer);
-  expect(timeZone.GetZoneInterval(TimeConstants.unixEpoch), isNotNull);
-  expect(timeZone.GetZoneInterval(TimeConstants.unixEpoch + new Span(days: 2000 * 7)), isNotNull);
-  expect(timeZone.GetZoneInterval(TimeConstants.unixEpoch + new Span(days: 3000 * 7)), isNotNull);
-  expect(timeZone.GetZoneInterval(TimeConstants.unixEpoch + new Span(days: 4000 * 7)), isNotNull);
-  var newPeriod = timeZone.GetZoneInterval(summer);
+  var actual = timeZone.getZoneInterval(summer);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 2000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 3000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 4000 * 7)), isNotNull);
+  var newPeriod = timeZone.getZoneInterval(summer);
   expect(identical(actual, newPeriod), isTrue);
 }
 
@@ -64,7 +64,7 @@ void MinMaxOffsets()
 @Test()
 void ForZone_Fixed()
 {
-  var zone = DateTimeZone.ForOffset(new Offset.fromHours(1));
+  var zone = new DateTimeZone.forOffset(new Offset.fromHours(1));
   expect(identical(zone, CachedDateTimeZone.ForZone(zone)), isTrue);
 }
 

@@ -250,7 +250,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   @internal LocalInstant ToLocalInstant() => new LocalInstant.daysNanos(date.daysSinceEpoch, time.NanosecondOfDay);
 
   /// Converts a [DateTime] of any kind to a LocalDateTime in the specified or ISO calendar. This does not perform
-  /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.Utc]
+  /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.utc]
   /// will still have the same day/hour/minute etc - it won't be converted into the local system time.
   ///
   /// * [dateTime]: Value to convert into a Time Machine local date and time
@@ -676,14 +676,14 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.lessTrust(date.yearMonthDayCalendar, time, offset);
 
 
-/// Returns the mapping of this local date/time within [DateTimeZone.Utc].
+/// Returns the mapping of this local date/time within [DateTimeZone.utc].
 ///
 /// As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.
 /// Returns: The result of mapping this local date/time in UTC.
 
   ZonedDateTime InUtc() =>
   // Use the @internal constructors to avoid validation. We know it will be fine.
-  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay, Offset.zero), DateTimeZone.Utc);
+  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
 /// Returns the mapping of this local date/time within the given [DateTimeZone],
@@ -692,7 +692,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 ///
 /// See [InZoneLeniently] and [InZone] for alternative ways to map a local time to a
 /// specific instant.
-/// This is solely a convenience method for calling [DateTimeZone.AtStrictly].
+/// This is solely a convenience method for calling [DateTimeZone.atStrictly].
 ///
 /// * [zone]: The time zone in which to map this local date/time.
 /// * [SkippedTimeException]: This local date/time is skipped in the given time zone.
@@ -701,7 +701,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 
   ZonedDateTime InZoneStrictly(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.AtStrictly(this);
+    return zone.atStrictly(this);
   }
 
 
@@ -711,7 +711,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 ///
 /// See [InZoneStrictly] and [InZone] for alternative ways to map a local time to a
 /// specific instant.
-/// This is solely a convenience method for calling [DateTimeZone.AtLeniently].
+/// This is solely a convenience method for calling [DateTimeZone.atLeniently].
 /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
 /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
 /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
@@ -723,7 +723,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
 
   ZonedDateTime InZoneLeniently(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.AtLeniently(this);
+    return zone.atLeniently(this);
   }
 
 
@@ -741,7 +741,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(resolver, 'resolver');
-    return zone.ResolveLocal(this, resolver);
+    return zone.resolveLocal(this, resolver);
   }
 
 

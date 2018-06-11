@@ -62,7 +62,7 @@ class ZoneEqualityComparerOptions {
   };
 
   /// The default comparison, which only cares about the wall offset at any particular
-  /// instant, within the interval of the comparer. In other words, if [DateTimeZone.GetUtcOffset]
+  /// instant, within the interval of the comparer. In other words, if [DateTimeZone.getUtcOffset]
   /// returns the same value for all instants in the interval, the comparer will consider the zones to be equal.
   static const ZoneEqualityComparerOptions OnlyMatchWallOffset = const ZoneEqualityComparerOptions(0);
   /// Instead of only comparing wall offsets, the standard/savings split is also considered. So when this
@@ -179,7 +179,7 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   /// [interval]: The interval over which to compare time zones. This must have both a start and an end.
   /// Returns: A ZoneEqualityComparer for the given interval with the default options.
   static ZoneEqualityComparer ForInterval(Interval interval) {
-    Preconditions.checkArgument(interval.HasStart && interval.HasEnd, 'interval',
+    Preconditions.checkArgument(interval.hasStart && interval.hasEnd, 'interval',
         "The interval must have both a start and an end.");
     return new ZoneEqualityComparer(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
   }
@@ -259,7 +259,7 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   }
 
   @private Iterable<ZoneInterval> GetIntervals(DateTimeZone zone) {
-    var allIntervals = zone.getZoneIntervals(new Interval(interval.Start, interval.End));
+    var allIntervals = zone.getZoneIntervals(new Interval(interval.start, interval.end));
     return _checkOption(options, ZoneEqualityComparerOptions.MatchAllTransitions) ? allIntervals : zoneIntervalComparer.CoalesceIntervals(allIntervals);
   }
 }
@@ -318,11 +318,11 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
 
   @private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>
       _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
-          ? zoneInterval.RawStart : Instant.max(zoneInterval.RawStart, interval.Start);
+          ? zoneInterval.RawStart : Instant.max(zoneInterval.RawStart, interval.start);
 
   @private Instant GetEffectiveEnd(ZoneInterval zoneInterval) =>
       _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
-          ? zoneInterval.RawEnd : Instant.min(zoneInterval.RawEnd, interval.End);
+          ? zoneInterval.RawEnd : Instant.min(zoneInterval.RawEnd, interval.end);
 
   /// Compares the parts of two zone intervals which are deemed "interesting" by the options.
   /// The wall offset is always compared, regardless of options, but the start/end points are

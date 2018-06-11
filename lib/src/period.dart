@@ -386,7 +386,7 @@ class Period // : IEquatable<Period>
       PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate)),
       PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate)),
       PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate)),
-      PeriodUnits.days: () => new Period.fromDays(DaysBetween(start.Date, endDate)),
+      PeriodUnits.days: () => new Period.fromDays(daysBetween(start.Date, endDate)),
       PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.Hours.UnitsBetween(start, end)),
       PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end)),
       PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end)),
@@ -625,7 +625,7 @@ class Period // : IEquatable<Period>
     PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start, end)),
     PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end)),
     PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end)),
-    PeriodUnits.days: (start, end) => new Period.fromDays(DaysBetween(start, end))
+    PeriodUnits.days: (start, end) => new Period.fromDays(daysBetween(start, end))
   };
 
   /// Returns the exact difference between two dates or returns the period between a start and an end date, using only the given units.
@@ -711,7 +711,7 @@ class Period // : IEquatable<Period>
 
   /// Returns the number of days between two dates. This allows optimizations in DateInterval,
   /// and for date calculations which just use days - we don't need state or a virtual method invocation.
-  @internal static int DaysBetween(LocalDate start, LocalDate end) {
+  @internal static int daysBetween(LocalDate start, LocalDate end) {
     // We already assume the calendars are the same.
     if (start.yearMonthDay == end.yearMonthDay) {
       return 0;

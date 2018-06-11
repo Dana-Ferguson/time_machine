@@ -28,7 +28,7 @@ DateTime UnixEpochDateTime = new DateTime.utc(1970, 1, 1, 0, 0, 0);
 DateTime TimeOfGreatAchievement = new DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
     .add(new Duration(microseconds: extraTicks ~/ TimeConstants.ticksPerMicrosecond)); // + TimeSpan.FromTicks(8765);
 
-CalendarSystem Iso = CalendarSystem.Iso;
+CalendarSystem Iso = CalendarSystem.iso;
 
 @Test()
 void FieldsOf_UnixEpoch()
@@ -97,19 +97,19 @@ void ConstructLocalInstant_WithAllFields()
 @Test()
 void IsLeapYear()
 {
-  expect(CalendarSystem.Iso.IsLeapYear(2012), isTrue); // 4 year rule
-  expect(CalendarSystem.Iso.IsLeapYear(2011), isFalse); // 4 year rule
-  expect(CalendarSystem.Iso.IsLeapYear(2100), isFalse); // 100 year rule
-  expect(CalendarSystem.Iso.IsLeapYear(2000), isTrue); // 400 year rule
+  expect(CalendarSystem.iso.isLeapYear(2012), isTrue); // 4 year rule
+  expect(CalendarSystem.iso.isLeapYear(2011), isFalse); // 4 year rule
+  expect(CalendarSystem.iso.isLeapYear(2100), isFalse); // 100 year rule
+  expect(CalendarSystem.iso.isLeapYear(2000), isTrue); // 400 year rule
 }
 
 @Test()
 void GetDaysInMonth()
 {
-  expect(30, CalendarSystem.Iso.GetDaysInMonth(2010, 9));
-  expect(31, CalendarSystem.Iso.GetDaysInMonth(2010, 1));
-  expect(28, CalendarSystem.Iso.GetDaysInMonth(2010, 2));
-  expect(29, CalendarSystem.Iso.GetDaysInMonth(2012, 2));
+  expect(30, CalendarSystem.iso.getDaysInMonth(2010, 9));
+  expect(31, CalendarSystem.iso.getDaysInMonth(2010, 1));
+  expect(28, CalendarSystem.iso.getDaysInMonth(2010, 2));
+  expect(29, CalendarSystem.iso.getDaysInMonth(2012, 2));
 }
 
 @Test()

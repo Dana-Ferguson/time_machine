@@ -44,7 +44,7 @@ void Constructor_WithDaysAndCalendar(int year)
   int startDays = start.daysSinceEpoch;
   for (int i = 0; i < 366; i++)
   {
-    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.Iso));
+    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
   }
 }
 
@@ -52,7 +52,7 @@ void Constructor_WithDaysAndCalendar(int year)
 void Constructor_CalendarDefaultsToIso()
 {
   LocalDate date = new LocalDate(2000, 1, 1);
-  expect(CalendarSystem.Iso, date.calendar);
+  expect(CalendarSystem.iso, date.calendar);
 }
 
 @Test()
@@ -67,7 +67,7 @@ void Constructor_PropertiesRoundTrip()
 @Test()
 void Constructor_PropertiesRoundTrip_CustomCalendar()
 {
-  LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.Julian);
+  LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.julian);
   expect(2023, date.year);
   expect(7, date.month);
   expect(27, date.day);
@@ -98,7 +98,7 @@ void Constructor_Invalid(int year, int month, int day)
 void Constructor_Invalid_WithCalendar(int year, int month, int day)
 {
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate(year, month, day, CalendarSystem.Iso), throwsRangeError);
+  expect(() => new LocalDate(year, month, day, CalendarSystem.iso), throwsRangeError);
 }
 
 @Test()
@@ -131,7 +131,7 @@ void Constructor_WithYearOfEra_AD()
 @Test() @SkipMe.unimplemented()
 void Constructor_WithYearOfEra_NonIsoCalendar()
 {
-  var calendar = CalendarSystem.Coptic;
+  var calendar = CalendarSystem.coptic;
   LocalDate absolute = new LocalDate(50, 6, 19, calendar);
   LocalDate withEra = new LocalDate.forEra(Era.AnnoMartyrum, 50, 6, 19, calendar);
   expect(absolute, withEra);

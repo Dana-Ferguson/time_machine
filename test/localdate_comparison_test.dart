@@ -21,7 +21,7 @@ Future main() async {
 @Test()
 void Equals_EqualValues()
 {
-  CalendarSystem calendar = CalendarSystem.Julian;
+  CalendarSystem calendar = CalendarSystem.julian;
   LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
   LocalDate date2 = new LocalDate(2011, 1, 2, calendar);
   expect(date1, date2);
@@ -34,7 +34,7 @@ void Equals_EqualValues()
 @Test()
 void Equals_DifferentDates()
 {
-  CalendarSystem calendar = CalendarSystem.Julian;
+  CalendarSystem calendar = CalendarSystem.julian;
   LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
   LocalDate date2 = new LocalDate(2011, 1, 3, calendar);
   expect(date1, isNot(date2));
@@ -47,9 +47,9 @@ void Equals_DifferentDates()
 @Test()
 void Equals_DifferentCalendars()
 {
-  CalendarSystem calendar = CalendarSystem.Julian;
+  CalendarSystem calendar = CalendarSystem.julian;
   LocalDate date1 = new LocalDate(2011, 1, 2, calendar);
-  LocalDate date2 = new LocalDate(2011, 1, 2, CalendarSystem.Iso);
+  LocalDate date2 = new LocalDate(2011, 1, 2, CalendarSystem.iso);
   expect(date1, isNot(date2));
   expect(date1.hashCode, isNot(date2.hashCode));
   expect(date1 == date2, isFalse);
@@ -104,7 +104,7 @@ void ComparisonOperators_SameCalendar()
 void ComparisonOperators_DifferentCalendars_Throws()
 {
   LocalDate date1 = new LocalDate(2011, 1, 2);
-  LocalDate date2 = new LocalDate(2011, 1, 3, CalendarSystem.Julian);
+  LocalDate date2 = new LocalDate(2011, 1, 3, CalendarSystem.julian);
 
   // Assert.Throws<ArgumentException>
   expect(() => (date1 < date2).toString(), throwsArgumentError);
@@ -131,7 +131,7 @@ void CompareTo_DifferentCalendars_Throws()
   dynamic IslamicLeapYearPattern = null;
   dynamic IslamicEpoch = null;
 
-  CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
   LocalDate date1 = new LocalDate(2011, 1, 2);
   LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
 
@@ -187,7 +187,7 @@ void IComparableCompareTo_SameCalendar()
 void MinMax_DifferentCalendars_Throws()
 {
   LocalDate date1 = new LocalDate(2011, 1, 2);
-  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
+  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.julian);
 
   // Assert.Throws<ArgumentException>
   expect(() => LocalDate.max(date1, date2), throwsArgumentError);
@@ -197,8 +197,8 @@ void MinMax_DifferentCalendars_Throws()
 @Test()
 void MinMax_SameCalendar()
 {
-  LocalDate date1 = new LocalDate(1500, 1, 2, CalendarSystem.Julian);
-  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.Julian);
+  LocalDate date1 = new LocalDate(1500, 1, 2, CalendarSystem.julian);
+  LocalDate date2 = new LocalDate(1500, 1, 1, CalendarSystem.julian);
 
   expect(date1, LocalDate.max(date1, date2));
   expect(date1, LocalDate.max(date2, date1));

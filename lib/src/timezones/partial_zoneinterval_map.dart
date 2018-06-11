@@ -45,7 +45,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   {
     Preconditions.debugCheckArgument(instant >= Start && instant < End, 'instant',
         "Value $instant was not in the range [$Start, $End)");
-    var interval = map.GetZoneInterval(instant);
+    var interval = map.getZoneInterval(instant);
     // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
     // but we're not expecting this to be called too often, due to caching.
     if (interval.RawStart < Start)
@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Returns true if this map only contains a single interval; that is, if the first interval includes the end of the map.
-  @private bool get IsSingleInterval => map.GetZoneInterval(Start).RawEnd >= End;
+  @private bool get IsSingleInterval => map.getZoneInterval(Start).RawEnd >= End;
 
   /// Returns a partial zone interval map equivalent to this one, but with the given start point.
   @internal PartialZoneIntervalMap WithStart(Instant start)
@@ -157,7 +157,7 @@ class _CombinedPartialZoneIntervalMap implements IZoneIntervalMap {
 
   @internal _CombinedPartialZoneIntervalMap(this.partialMaps);
 
-  ZoneInterval GetZoneInterval(Instant instant) {
+  ZoneInterval getZoneInterval(Instant instant) {
     // We assume the maps are ordered, and start with "beginning of time"
     // which means we only need to find the first partial map which ends after
     // the instant we're interested in. This is just a linear search - a binary search

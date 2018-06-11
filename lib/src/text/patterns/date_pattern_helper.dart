@@ -174,7 +174,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
       builder.AddParseAction((cursor, bucket) {
         for (var id in CalendarSystem.Ids) {
           if (cursor.MatchText(id)) {
-            setter(bucket, CalendarSystem.ForId(id));
+            setter(bucket, CalendarSystem.forId(id));
             return null;
           }
         }

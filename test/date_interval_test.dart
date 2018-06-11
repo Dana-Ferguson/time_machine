@@ -18,7 +18,7 @@ Future main() async {
   await runTests();
 }
 
-final CalendarSystem JulianCalendar = CalendarSystem.Julian;
+final CalendarSystem JulianCalendar = CalendarSystem.julian;
 
 @Test()
 void Construction_DifferentCalendars()
@@ -94,8 +94,8 @@ void Equals_DifferentCalendars()
   LocalDate start1 = new LocalDate(2000, 1, 1);
   LocalDate end1 = new LocalDate(2001, 6, 19);
   // This is a really, really similar calendar to ISO, but we do distinguish.
-  LocalDate start2 = start1.withCalendar(CalendarSystem.Gregorian);
-  LocalDate end2 = end1.withCalendar(CalendarSystem.Gregorian);
+  LocalDate start2 = start1.withCalendar(CalendarSystem.gregorian);
+  LocalDate end2 = end1.withCalendar(CalendarSystem.gregorian);
   var interval1 = new DateInterval(start1, end1);
   var interval2 = new DateInterval(start2, end2);
 
@@ -180,11 +180,11 @@ void Length()
 @Test()
 void Calendar()
 {
-  var calendar = CalendarSystem.Julian;
+  var calendar = CalendarSystem.julian;
   LocalDate start = new LocalDate(2000, 1, 1, calendar);
   LocalDate end = new LocalDate(2000, 2, 10, calendar);
   var interval = new DateInterval(start, end);
-  expect(calendar, interval.Calendar);
+  expect(calendar, interval.calendar);
 }
 
 @Test()
@@ -243,12 +243,12 @@ void Contains_NullInterval_Throws()
 void Contains_IntervalWithinAnotherCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
   var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Contains(other));
   expect(() => value.containsInterval(other), throwsArgumentError);
@@ -275,22 +275,22 @@ void Intersection_NullInterval_Throws()
 {
   var value = new DateInterval(new LocalDate.fromDaysSinceEpoch(100), new LocalDate.fromDaysSinceEpoch(200));
   // Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
-  expect(() => value.Intersection(null), throwsArgumentError);
+  expect(() => value.intersection(null), throwsArgumentError);
 }
 
 @Test() @SkipMe.unimplemented()
 void Intersection_IntervalInDifferentCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
   var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Intersection(other));
-  expect(() => value.Intersection(other), throwsArgumentError);
+  expect(() => value.intersection(other), throwsArgumentError);
 }
 
 @TestCase(const ["2014-03-07,2014-03-07", "2014-03-07,2014-03-07", "2014-03-07,2014-03-07"])
@@ -307,7 +307,7 @@ void Intersection(String firstInterval, String secondInterval, String expectedIn
   var value = ParseInterval(firstInterval);
   var other = ParseInterval(secondInterval);
   var expectedResult = ParseInterval(expectedInterval);
-  expect(expectedResult, value.Intersection(other));
+  expect(expectedResult, value.intersection(other));
 }
 
 @Test()
@@ -315,22 +315,22 @@ void Union_NullInterval_Throws()
 {
   var value = new DateInterval(new LocalDate.fromDaysSinceEpoch(100), new LocalDate.fromDaysSinceEpoch(200));
   // Assert.Throws<ArgumentNullException>(() => value.Union(null));
-  expect(() => value.Union(null), throwsArgumentError);
+  expect(() => value.union(null), throwsArgumentError);
 }
 
 @Test() @SkipMe.unimplemented()
 void Union_DifferentCalendar_Throws()
 {
   var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.Gregorian));
+      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
   var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.Coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.Coptic));
+      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Union(other));
-  expect(() => value.Union(other), throwsArgumentError);
+  expect(() => value.union(other), throwsArgumentError);
 }
 
 @TestCase(const ["2014-03-07,2014-03-20", "2015-03-07,2015-03-20", null], "Disjointed intervals")
@@ -344,8 +344,8 @@ void Union(String first, String second, String expected)
   DateInterval secondInterval = ParseInterval(second);
   DateInterval expectedResult = ParseInterval(expected);
 
-  expect(expectedResult, firstInterval.Union(secondInterval), reason: "First union failed.");
-  expect(expectedResult, secondInterval.Union(firstInterval), reason: "Second union failed.");
+  expect(expectedResult, firstInterval.union(secondInterval), reason: "First union failed.");
+  expect(expectedResult, secondInterval.union(firstInterval), reason: "Second union failed.");
 }
 
 DateInterval ParseInterval(String textualInterval)

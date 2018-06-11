@@ -58,70 +58,70 @@ final ZoneInterval IntervalAfterAmbiguity = ZoneWithAmbiguity.LateInterval;
 @Test()
 void ZoneWithAmbiguity_NearStartOfTime()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(new LocalDateTime.fromYMDHM(-9998, 1, 5, 0, 0));
+  var mapping = ZoneWithAmbiguity.mapLocal(new LocalDateTime.fromYMDHM(-9998, 1, 5, 0, 0));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_NearEndOfTime()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(NearEndOfTime);
+  var mapping = ZoneWithAmbiguity.mapLocal(NearEndOfTime);
   CheckMapping(mapping, IntervalAfterAmbiguity, IntervalAfterAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_WellBeforeTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(YearBeforeTransition);
+  var mapping = ZoneWithAmbiguity.mapLocal(YearBeforeTransition);
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_WellAfterTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(YearAfterTransition);
+  var mapping = ZoneWithAmbiguity.mapLocal(YearAfterTransition);
   CheckMapping(mapping, IntervalAfterAmbiguity, IntervalAfterAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_JustBeforeAmbiguity()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(TransitionMinus5.PlusNanoseconds(-1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionMinus5.PlusNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_JustAfterTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(TransitionPlus10.PlusNanoseconds(1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.PlusNanoseconds(1));
   CheckMapping(mapping, IntervalAfterAmbiguity, IntervalAfterAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_StartOfTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(TransitionMinus5);
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionMinus5);
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalAfterAmbiguity, 2);
 }
 
 @Test()
 void ZoneWithAmbiguity_MidTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(MidTransition);
+  var mapping = ZoneWithAmbiguity.mapLocal(MidTransition);
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalAfterAmbiguity, 2);
 }
 
 @Test()
 void ZoneWithAmbiguity_LastTickOfTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(TransitionPlus10.PlusNanoseconds(-1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.PlusNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalAfterAmbiguity, 2);
 }
 
 @Test()
 void ZoneWithAmbiguity_FirstTickAfterTransition()
 {
-  var mapping = ZoneWithAmbiguity.MapLocal(TransitionPlus10);
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10);
   CheckMapping(mapping, IntervalAfterAmbiguity, IntervalAfterAmbiguity, 1);
 }
 
@@ -129,70 +129,70 @@ void ZoneWithAmbiguity_FirstTickAfterTransition()
 @Test()
 void ZoneWithGap_NearStartOfTime()
 {
-  var mapping = ZoneWithGap.MapLocal(NearStartOfTime);
+  var mapping = ZoneWithGap.mapLocal(NearStartOfTime);
   CheckMapping(mapping, IntervalBeforeGap, IntervalBeforeGap, 1);
 }
 
 @Test()
 void ZoneWithGap_NearEndOfTime()
 {
-  var mapping = ZoneWithGap.MapLocal(NearEndOfTime);
+  var mapping = ZoneWithGap.mapLocal(NearEndOfTime);
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
 @Test()
 void ZoneWithGap_WellBeforeTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(YearBeforeTransition);
+  var mapping = ZoneWithGap.mapLocal(YearBeforeTransition);
   CheckMapping(mapping, IntervalBeforeGap, IntervalBeforeGap, 1);
 }
 
 @Test()
 void ZoneWithGap_WellAfterTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(YearAfterTransition);
+  var mapping = ZoneWithGap.mapLocal(YearAfterTransition);
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
 @Test()
 void ZoneWithGap_JustBeforeGap()
 {
-  var mapping = ZoneWithGap.MapLocal(TransitionMinus5.PlusNanoseconds(-1));
+  var mapping = ZoneWithGap.mapLocal(TransitionMinus5.PlusNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeGap, IntervalBeforeGap, 1);
 }
 
 @Test()
 void ZoneWithGap_JustAfterTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(TransitionPlus10.PlusNanoseconds(1));
+  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.PlusNanoseconds(1));
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
 @Test()
 void ZoneWithGap_StartOfTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(TransitionMinus5);
+  var mapping = ZoneWithGap.mapLocal(TransitionMinus5);
   CheckMapping(mapping, IntervalBeforeGap, IntervalAfterGap, 0);
 }
 
 @Test()
 void ZoneWithGap_MidTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(MidTransition);
+  var mapping = ZoneWithGap.mapLocal(MidTransition);
   CheckMapping(mapping, IntervalBeforeGap, IntervalAfterGap, 0);
 }
 
 @Test()
 void ZoneWithGap_LastTickOfTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(TransitionPlus10.PlusNanoseconds(-1));
+  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.PlusNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeGap, IntervalAfterGap, 0);
 }
 
 @Test()
 void ZoneWithGap_FirstTickAfterTransition()
 {
-  var mapping = ZoneWithGap.MapLocal(TransitionPlus10);
+  var mapping = ZoneWithGap.mapLocal(TransitionPlus10);
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
@@ -205,7 +205,7 @@ void TrickyCase()
 {
   // 1am occurs unambiguously in the early zone.
   var zone = new SingleTransitionDateTimeZone(Transition, new Offset.fromHours(3), new Offset.fromHours(5));
-  var mapping = zone.MapLocal(new LocalDateTime.fromYMDHM(2000, 1, 1, 1, 0));
+  var mapping = zone.mapLocal(new LocalDateTime.fromYMDHM(2000, 1, 1, 1, 0));
   CheckMapping(mapping, zone.EarlyInterval, zone.EarlyInterval, 1);
 }
 

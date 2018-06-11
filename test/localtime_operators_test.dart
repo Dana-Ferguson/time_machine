@@ -151,7 +151,7 @@ void ComparisonOperators()
 void Comparison_IgnoresOriginalCalendar()
 {
   LocalDateTime dateTime1 = new LocalDateTime.fromYMDHMS(1900, 1, 1, 10, 30, 0);
-  LocalDateTime dateTime2 = dateTime1.WithCalendar(CalendarSystem.Julian);
+  LocalDateTime dateTime2 = dateTime1.WithCalendar(CalendarSystem.julian);
 
   // Calendar information is propagated into LocalDate, but not into LocalTime
   expect(dateTime1.Date == dateTime2.Date, isFalse);

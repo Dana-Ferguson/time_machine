@@ -39,14 +39,14 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   // TRUSTED
   @internal OffsetDateTime.fullTrust(this.yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
   {
-    Calendar.ValidateYearMonthDay_(yearMonthDay);
+    Calendar.validateYearMonthDay_(yearMonthDay);
   }
 
   // TRUSTED
   @internal OffsetDateTime.lessTrust(this.yearMonthDayCalendar, LocalTime time, Offset offset)
       : _nanosecondOfDay = time.NanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
-    Calendar.ValidateYearMonthDay_(yearMonthDay);
+    Calendar.validateYearMonthDay_(yearMonthDay);
   }
 
   /// Optimized conversion from an Instant to an OffsetDateTime in the ISO calendar.
@@ -87,7 +87,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
       days--;
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
-    var yearMonthDayCalendar = calendar.GetYearMonthDayCalendarFromDaysSinceEpoch(days);
+    var yearMonthDayCalendar = calendar.getYearMonthDayCalendarFromDaysSinceEpoch(days);
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
     return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
@@ -106,7 +106,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   }
 
   /// Gets the calendar system associated with this offset date and time.
-  CalendarSystem get Calendar => CalendarSystem.ForOrdinal(yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get Calendar => CalendarSystem.forOrdinal(yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this offset date and time.
   /// This returns the "absolute year", so, for the ISO calendar,
@@ -122,16 +122,16 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   @internal YearMonthDay get yearMonthDay => yearMonthDayCalendar.toYearMonthDay();
 
   /// Gets the week day of this offset date and time expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get DayOfWeek => Calendar.GetDayOfWeek(yearMonthDayCalendar.toYearMonthDay());
+  IsoDayOfWeek get DayOfWeek => Calendar.getDayOfWeek(yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this offset date and time within the era.
-  int get YearOfEra => Calendar.GetYearOfEra(yearMonthDayCalendar.year);
+  int get YearOfEra => Calendar.getYearOfEra(yearMonthDayCalendar.year);
 
   /// Gets the era of this offset date and time.
-  Era get era => Calendar.GetEra(yearMonthDayCalendar.year);
+  Era get era => Calendar.getEra(yearMonthDayCalendar.year);
 
   /// Gets the day of this offset date and time within the year.
-  int get DayOfYear => Calendar.GetDayOfYear(yearMonthDayCalendar.toYearMonthDay());
+  int get DayOfYear => Calendar.getDayOfYear(yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
   int get Hour =>
@@ -212,7 +212,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   @private Span ToElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
-    int days = Calendar.GetDaysSinceEpoch(yearMonthDayCalendar.toYearMonthDay());
+    int days = Calendar.getDaysSinceEpoch(yearMonthDayCalendar.toYearMonthDay());
     Span elapsedTime = new Span(days: days, nanoseconds: NanosecondOfDay - OffsetNanoseconds);
     // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
@@ -228,7 +228,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 ///
 /// Returns: A zoned date/time with the same local time and a fixed time zone using the offset from this value.
 
-  ZonedDateTime get InFixedZone => new ZonedDateTime.trusted(this, DateTimeZone.ForOffset(offset));
+  ZonedDateTime get InFixedZone => new ZonedDateTime.trusted(this, new DateTimeZone.forOffset(offset));
 
 /// Returns this value in ths specified time zone. This method does not expect
 /// the offset in the zone to be the same as for the current value; it simply converts
@@ -521,7 +521,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
     Preconditions.checkArgument(x.Calendar == y.Calendar, 'y',
         "Only values with the same calendar system can be compared");
-    int dateComparison = x.Calendar.Compare(x.yearMonthDay, y.yearMonthDay);
+    int dateComparison = x.Calendar.compare(x.yearMonthDay, y.yearMonthDay);
     if (dateComparison != 0) {
       return dateComparison;
     }

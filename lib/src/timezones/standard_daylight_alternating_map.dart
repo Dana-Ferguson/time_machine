@@ -93,7 +93,7 @@ class _TransitionRecurrenceResult {
   /// Returns: The ZoneInterval in effect at the given instant.
   /// [ArgumentOutOfRangeException]: The instant falls outside the bounds
   /// of the recurrence rules of the zone.
-  ZoneInterval GetZoneInterval(Instant instant) {
+  ZoneInterval getZoneInterval(Instant instant) {
     var result = NextTransition(instant);
     ZoneRecurrence recurrence = result.zoneRecurrence;
     var next = result.transition;

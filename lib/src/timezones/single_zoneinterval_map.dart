@@ -19,6 +19,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   @internal SingleZoneIntervalMap(this._interval);
 
-  ZoneInterval GetZoneInterval(Instant instant) => _interval;
+  ZoneInterval getZoneInterval(Instant instant) => _interval;
 }
 

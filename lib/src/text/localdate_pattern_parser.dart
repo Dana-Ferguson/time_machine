@@ -126,7 +126,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     int day = usedFields.HasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.day;
-    if (day > Calendar.GetDaysInMonth(Year, MonthOfYearNumeric)) {
+    if (day > Calendar.getDaysInMonth(Year, MonthOfYearNumeric)) {
       return ParseResult.DayOfMonthOutOfRange<LocalDate>(text, day, MonthOfYearNumeric, Year);
     }
 
@@ -167,12 +167,12 @@ import 'package:time_machine/time_machine_patterns.dart';
         return ParseResult.FieldValueOutOfRangePostParse<LocalDate>(text, Year, 'u', 'LocalDate');
       }
 
-      if (usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)) {
+      if (usedFields.HasAny(PatternFields.era) && era != Calendar.getEra(Year)) {
         return ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate');
       }
 
       if (usedFields.HasAny(PatternFields.yearOfEra)) {
-        int yearOfEraFromYear = Calendar.GetYearOfEra(Year);
+        int yearOfEraFromYear = Calendar.getYearOfEra(Year);
         if (usedFields.HasAny(PatternFields.yearTwoDigits)) {
           // We're only checking the last two digits
           yearOfEraFromYear = yearOfEraFromYear % 100;
@@ -187,7 +187,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     // Use the year from the template value, possibly checking the era.
     if (!usedFields.HasAny(PatternFields.yearOfEra)) {
       Year = TemplateValue.year;
-      return usedFields.HasAny(PatternFields.era) && era != Calendar.GetEra(Year)
+      return usedFields.HasAny(PatternFields.era) && era != Calendar.getEra(Year)
           ? ParseResult.InconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
     }
 
@@ -203,11 +203,11 @@ import 'package:time_machine/time_machine_patterns.dart';
       YearOfEra += century * 100;
     }
 
-    if (YearOfEra < Calendar.GetMinYearOfEra(era) ||
-        YearOfEra > Calendar.GetMaxYearOfEra(era)) {
+    if (YearOfEra < Calendar.getMinYearOfEra(era) ||
+        YearOfEra > Calendar.getMaxYearOfEra(era)) {
       return ParseResult.YearOfEraOutOfRange<LocalDate>(text, YearOfEra, era, Calendar);
     }
-    Year = Calendar.GetAbsoluteYear(YearOfEra, era);
+    Year = Calendar.getAbsoluteYear(YearOfEra, era);
     return null;
   }
 
@@ -252,7 +252,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         break;
     }*/
 
-    if (MonthOfYearNumeric > Calendar.GetMonthsInYear(Year)) {
+    if (MonthOfYearNumeric > Calendar.getMonthsInYear(Year)) {
       return ParseResult.MonthOutOfRange<LocalDate>(text, MonthOfYearNumeric, Year);
     }
     return null;

@@ -458,7 +458,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   @Test() @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.Coptic);
+    var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.coptic);
     var value = pattern
         .Parse("0284-08-29T12:34:56")
         .Value;
@@ -469,7 +469,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
         12,
         34,
         56,
-        CalendarSystem.Coptic), value);
+        CalendarSystem.coptic), value);
   }
 
   @Test()

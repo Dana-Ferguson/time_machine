@@ -8,29 +8,28 @@ import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-// todo: IZoneIntervalMapWithMinMax ??? (not sure if it matters)
 @immutable
 abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
-  /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.GetZoneOrNull], but otherwise
-  /// the value of the [Utc] property will be returned.
-  @internal static const String UtcId = "UTC";
+  /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.getZoneOrNull], but otherwise
+  /// the value of the [utc] property will be returned.
+  @internal static const String utcId = "UTC";
 
   /// Gets the UTC (Coordinated Universal Time) time zone.
   ///
   /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to
-  /// compare equal to an instance returned by calling [ForOffset] with an offset of zero, but it may
+  /// compare equal to an instance returned by calling [forOffset] with an offset of zero, but it may
   /// or may not compare equal to an instance returned by e.g. `DateTimeZoneProviders.Tzdb["UTC"]`.
-  static final DateTimeZone Utc = new FixedDateTimeZone.forOffset(Offset.zero);
-  static const int FixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
-  static const int FixedZoneCacheMinimumSeconds = -FixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
-  static const int FixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
-  static final List<DateTimeZone> FixedZoneCache = _buildFixedZoneCache();
+  static final DateTimeZone utc = new FixedDateTimeZone.forOffset(Offset.zero);
+  static const int fixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
+  static const int fixedZoneCacheMinimumSeconds = -fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
+  static const int fixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
+  static final List<DateTimeZone> fixedZoneCache = _buildFixedZoneCache();
 
   /// Returns a fixed time zone with the given offset.
   ///
   /// The returned time zone will have an ID of "UTC" if the offset is zero, or "UTC+/-Offset"
-  /// otherwise. In the former case, the returned instance will be equal to [Utc].
+  /// otherwise. In the former case, the returned instance will be equal to [utc].
   ///
   /// Note also that this method is not required to return the same [DateTimeZone] instance for
   /// successive requests for the same offset; however, all instances returned for a given offset will compare
@@ -38,16 +37,16 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   ///
   /// [offset]: The offset for the returned time zone
   /// Returns: A fixed time zone with the given offset.
-  static DateTimeZone ForOffset(Offset offset) {
+  factory DateTimeZone.forOffset(Offset offset) {
     int seconds = offset.seconds;
-    if (csharpMod(seconds, FixedZoneCacheGranularitySeconds) != 0) {
+    if (csharpMod(seconds, fixedZoneCacheGranularitySeconds) != 0) {
       return new FixedDateTimeZone.forOffset(offset);
     }
-    int index = (seconds - FixedZoneCacheMinimumSeconds) ~/ FixedZoneCacheGranularitySeconds;
-    if (index < 0 || index >= FixedZoneCacheSize) {
+    int index = (seconds - fixedZoneCacheMinimumSeconds) ~/ fixedZoneCacheGranularitySeconds;
+    if (index < 0 || index >= fixedZoneCacheSize) {
       return new FixedDateTimeZone.forOffset(offset);
     }
-    return FixedZoneCache[index];
+    return fixedZoneCache[index];
   }
 
 
@@ -96,7 +95,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [instant]: The instant for which to calculate the offset.
   ///
   /// The offset from UTC at the specified instant.
-  @virtual Offset GetUtcOffset(Instant instant) => GetZoneInterval(instant).wallOffset;
+  @virtual Offset getUtcOffset(Instant instant) => getZoneInterval(instant).wallOffset;
 
 
   /// Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
@@ -107,7 +106,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [instant]: The [Instant] to query.
   /// Returns: The defined [TimeZones.ZoneInterval].
   /// <seealso cref="GetZoneIntervals(Interval)"/>
-  ZoneInterval GetZoneInterval(Instant instant);
+  ZoneInterval getZoneInterval(Instant instant);
 
 
   /// Returns complete information about how the given [LocalDateTime] is mapped in this time zone.
@@ -121,14 +120,14 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   ///
   /// [localDateTime]: The local date and time to map in this time zone.
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
-  @virtual ZoneLocalMapping MapLocal(LocalDateTime localDateTime) {
+  @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
     LocalInstant localInstant = localDateTime.ToLocalInstant();
     Instant firstGuess = localInstant.MinusZeroOffset();
-    ZoneInterval interval = GetZoneInterval(firstGuess);
+    ZoneInterval interval = getZoneInterval(firstGuess);
 
     // Most of the time we'll go into here... the local instant and the instant
     // are close enough that we've found the right instant.
-    if (interval.ContainsLocal(localInstant)) {
+    if (interval.containsLocal(localInstant)) {
       ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
       if (earlier != null) {
         return new ZoneLocalMapping(this, localDateTime, earlier, interval, 2);
@@ -154,10 +153,6 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     }
   }
 
-// #endregion
-
-//#region Conversion between local dates/times and ZonedDateTime
-
   /// Returns the earliest valid [ZonedDateTime] with the given local date.
   ///
   /// If midnight exists unambiguously on the given date, it is returned.
@@ -167,12 +162,12 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// of the transition.
   ///
   /// [date]: The local date to map in this time zone.
-  /// [SkippedTimeException]: The entire day was skipped due to a very large time zone transition.
+  /// [SkippedTimeError]: The entire day was skipped due to a very large time zone transition.
   /// (This is extremely rare.)
   /// Returns: The [ZonedDateTime] representing the earliest time in the given date, in this time zone.
-  ZonedDateTime AtStartOfDay(LocalDate date) {
+  ZonedDateTime atStartOfDay(LocalDate date) {
     LocalDateTime midnight = date.atMidnight();
-    var mapping = MapLocal(midnight);
+    var mapping = mapLocal(midnight);
     switch (mapping.Count) {
       // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
       case 0:
@@ -198,42 +193,42 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime], following
   /// the given [ZoneLocalMappingResolver] to handle ambiguity and skipped times.
   ///
-  /// This is a convenience method for calling [MapLocal] and passing the result to the resolver.
+  /// This is a convenience method for calling [mapLocal] and passing the result to the resolver.
   /// Common options for resolvers are provided in the static [Resolvers] class.
   ///
-  /// See [AtStrictly] and [AtLeniently] for alternative ways to map a local time to a
+  /// See [atStrictly] and [atLeniently] for alternative ways to map a local time to a
   /// specific instant.
   ///
   /// [localDateTime]: The local date and time to map in this time zone.
   /// [resolver]: The resolver to apply to the mapping.
   /// Returns: The result of resolving the mapping.
-  ZonedDateTime ResolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver) {
+  ZonedDateTime resolveLocal(LocalDateTime localDateTime, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(resolver, 'resolver');
-    return resolver(MapLocal(localDateTime));
+    return resolver(mapLocal(localDateTime));
   }
 
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime], if and only if
-  /// that mapping is unambiguous in this time zone.  Otherwise, [SkippedTimeException] or
+  /// that mapping is unambiguous in this time zone.  Otherwise, [SkippedTimeError] or
   /// [AmbiguousTimeException] is thrown, depending on whether the mapping is ambiguous or the local
   /// date/time is skipped entirely.
   ///
-  /// See [AtLeniently] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
+  /// See [atLeniently] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
   /// specific instant.
   ///
   /// [localDateTime]: The local date and time to map into this time zone.
-  /// [SkippedTimeException]: The given local date/time is skipped in this time zone.
+  /// [SkippedTimeError]: The given local date/time is skipped in this time zone.
   /// [AmbiguousTimeException]: The given local date/time is ambiguous in this time zone.
   /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
-  ZonedDateTime AtStrictly(LocalDateTime localDateTime) =>
-      ResolveLocal(localDateTime, Resolvers.StrictResolver);
+  ZonedDateTime atStrictly(LocalDateTime localDateTime) =>
+      resolveLocal(localDateTime, Resolvers.StrictResolver);
 
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
   /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
   /// by the duration of the "gap".
   ///
-  /// See [AtStrictly] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
+  /// See [atStrictly] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
   /// specific instant.
   /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
   /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
@@ -244,8 +239,8 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [localDateTime]: The local date/time to map.
   /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
   /// or the forward-shifted value if the given local date/time is skipped.
-  ZonedDateTime AtLeniently(LocalDateTime localDateTime) =>
-      ResolveLocal(localDateTime, Resolvers.LenientResolver);
+  ZonedDateTime atLeniently(LocalDateTime localDateTime) =>
+      resolveLocal(localDateTime, Resolvers.LenientResolver);
 
 // #endregion
 
@@ -261,8 +256,8 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     if (localInstant.DaysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
-      ZoneInterval candidate = GetZoneInterval(intervalStart - Span.epsilon);
-      if (candidate.ContainsLocal(localInstant)) {
+      ZoneInterval candidate = getZoneInterval(intervalStart - Span.epsilon);
+      if (candidate.containsLocal(localInstant)) {
         return candidate;
       }
     }
@@ -283,8 +278,8 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     if (localInstant.DaysSinceEpoch >= intervalEnd.daysSinceEpoch - 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
-      ZoneInterval candidate = GetZoneInterval(intervalEnd);
-      if (candidate.ContainsLocal(localInstant)) {
+      ZoneInterval candidate = getZoneInterval(intervalEnd);
+      if (candidate.containsLocal(localInstant)) {
         return candidate;
       }
     }
@@ -293,12 +288,12 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
 
   ZoneInterval _getIntervalBeforeGap(LocalInstant localInstant) {
     Instant guess = localInstant.MinusZeroOffset();
-    ZoneInterval guessInterval = GetZoneInterval(guess);
+    ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // we need to find the earlier one; otherwise this interval must come after the gap, and
     // it's therefore the one we want.
     if (localInstant.Minus(guessInterval.wallOffset) < guessInterval.RawStart) {
-      return GetZoneInterval(guessInterval.start - Span.epsilon);
+      return getZoneInterval(guessInterval.start - Span.epsilon);
     }
     else {
       return guessInterval;
@@ -307,7 +302,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
 
   ZoneInterval _getIntervalAfterGap(LocalInstant localInstant) {
     Instant guess = localInstant.MinusZeroOffset();
-    ZoneInterval guessInterval = GetZoneInterval(guess);
+    ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // it's the one we're looking for. Otherwise, we need to find the next interval.
     if (localInstant.Minus(guessInterval.wallOffset) < guessInterval.RawStart) {
@@ -315,31 +310,24 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     }
     else {
       // Will definitely be valid - there can't be a gap after an infinite interval.
-      return GetZoneInterval(guessInterval.end);
+      return getZoneInterval(guessInterval.end);
     }
   }
-
-// #region Object overrides
 
   /// Returns the ID of this time zone.
   ///
   /// The ID of this time zone.
-  ///
-  /// <filterpriority>2</filterpriority>
   @override String toString() => id;
-
-// #endregion
-
 
   /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
   /// fixing the 0 offset as DateTimeZone.Utc.
   static List<DateTimeZone> _buildFixedZoneCache() {
-    List<DateTimeZone> ret = new List<DateTimeZone>(FixedZoneCacheSize);
-    for (int i = 0; i < FixedZoneCacheSize; i++) {
-      int offsetSeconds = i * FixedZoneCacheGranularitySeconds + FixedZoneCacheMinimumSeconds;
+    List<DateTimeZone> ret = new List<DateTimeZone>(fixedZoneCacheSize);
+    for (int i = 0; i < fixedZoneCacheSize; i++) {
+      int offsetSeconds = i * fixedZoneCacheGranularitySeconds + fixedZoneCacheMinimumSeconds;
       ret[i] = new FixedDateTimeZone.forOffset(new Offset.fromSeconds(offsetSeconds));
     }
-    ret[-FixedZoneCacheMinimumSeconds ~/ FixedZoneCacheGranularitySeconds] = Utc;
+    ret[-fixedZoneCacheMinimumSeconds ~/ fixedZoneCacheGranularitySeconds] = utc;
     return ret;
   }
 
@@ -353,7 +341,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [end]: Exclusive end point of the interval for which to retrieve zone intervals.
   /// [ArgumentOutOfRangeException]: [end] is earlier than [start].
   /// Returns: A sequence of zone intervals covering the given interval.
-  /// <seealso cref="DateTimeZone.GetZoneInterval"/>
+  /// see also: [DateTimeZone.GetZoneInterval]
   Iterable<ZoneInterval> getZoneIntervalsFromTo(Instant start, Instant end) =>
   //    // The static constructor performs all the validation we need.
   getZoneIntervals(new Interval(start, end));
@@ -362,7 +350,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Returns all the zone intervals which occur for any instant in the given interval.
   ///
   /// The zone intervals are returned in chronological order.
-  /// This method is equivalent to calling [DateTimeZone.GetZoneInterval] for every
+  /// This method is equivalent to calling [DateTimeZone.getZoneInterval] for every
   /// instant in the interval and then collapsing to a set of distinct zone intervals.
   /// The first and last zone intervals are likely to also cover instants outside the given interval;
   /// the zone intervals returned are not truncated to match the start and end points.
@@ -370,12 +358,12 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
   /// infinite in both directions).
   /// Returns: A sequence of zone intervals covering the given interval.
-  /// <seealso cref="DateTimeZone.GetZoneInterval"/>
+  /// see also: [DateTimeZone.GetZoneInterval]
   Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync* {
-    var current = interval.HasStart ? interval.Start : Instant.minValue;
-    var end = interval.RawEnd;
+    var current = interval.hasStart ? interval.start : Instant.minValue;
+    var end = interval.rawEnd;
     while (current < end) {
-      var zoneInterval = GetZoneInterval(current);
+      var zoneInterval = getZoneInterval(current);
       yield zoneInterval;
       // If this is the end of time, this will just fail on the next comparison.
       current = zoneInterval.RawEnd;

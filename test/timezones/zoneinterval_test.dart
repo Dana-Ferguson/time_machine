@@ -83,9 +83,9 @@ void Contains_LocalInstant_WholeOfTime()
 {
   ZoneInterval interval = new ZoneInterval("All Time", Instant.beforeMinValue, Instant.afterMaxValue,
       new Offset.fromHours(9), new Offset.fromHours(1));
-  expect(interval.ContainsLocal(SampleStart.plusOffset(Offset.zero)), isTrue);
-  expect(interval.ContainsLocal(Instant.minValue.plusOffset(Offset.zero)), isTrue);
-  expect(interval.ContainsLocal(Instant.maxValue.plusOffset(Offset.zero)), isTrue);
+  expect(interval.containsLocal(SampleStart.plusOffset(Offset.zero)), isTrue);
+  expect(interval.containsLocal(Instant.minValue.plusOffset(Offset.zero)), isTrue);
+  expect(interval.containsLocal(Instant.maxValue.plusOffset(Offset.zero)), isTrue);
 }
 
 @Test()
@@ -97,8 +97,8 @@ void Contains_OutsideLocalInstantange()
   expect(veryEarly.Contains(Instant.minValue + new Span(hours: 4)), isTrue);
   expect(veryLate.Contains(Instant.maxValue - new Span(hours: 4)), isTrue);
   // But there are no valid local instants
-  expect(veryEarly.ContainsLocal(Instant.minValue.plusOffset(Offset.zero)), isFalse);
-  expect(veryLate.ContainsLocal(Instant.maxValue.plusOffset(Offset.zero)), isFalse);
+  expect(veryEarly.containsLocal(Instant.minValue.plusOffset(Offset.zero)), isFalse);
+  expect(veryLate.containsLocal(Instant.maxValue.plusOffset(Offset.zero)), isFalse);
 }
 
 @Test()

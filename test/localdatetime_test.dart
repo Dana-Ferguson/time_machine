@@ -70,14 +70,14 @@ void FromDateTime()
 void FromDateTime_WithCalendar()
 {
   // Julian calendar is 13 days behind Gregorian calendar in the 21st century
-  LocalDateTime expected = new LocalDateTime.fromYMDHMC(2011, 08, 05, 20, 53, CalendarSystem.Julian);
+  LocalDateTime expected = new LocalDateTime.fromYMDHMC(2011, 08, 05, 20, 53, CalendarSystem.julian);
 // print('Expected day of year: ${expected.date.DaysSinceEpoch}');
 
   // todo: I don't understand what the test is doing here, this doesn't work with DateTime() local.
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   {
   DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.Julian);
+  LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.julian);
   expect(actual, expected);
   }
 }
@@ -135,7 +135,7 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
   LocalDateTime noda = LocalDateTime.FromDateTime(original);
   // The DateTime only knows about the ISO version...
   expect(1376, isNot(1376));
-  expect(CalendarSystem.Iso, noda.Calendar);
+  expect(CalendarSystem.iso, noda.Calendar);
   DateTime _final = noda.ToDateTimeUnspecified();
   expect(original, _final);
 }
@@ -144,7 +144,7 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
 void WithCalendar()
 {
   LocalDateTime isoEpoch = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 0);
-  LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.Julian);
+  LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.Year);
   expect(12, julianEpoch.Month);
   expect(19, julianEpoch.Day);
@@ -226,7 +226,7 @@ void Operators_SameCalendar()
 void Operators_DifferentCalendars_Throws()
 {
   LocalDateTime value1 = new LocalDateTime.fromYMDHM(2011, 1, 2, 10, 30);
-  LocalDateTime value2 = new LocalDateTime.fromYMDHMC(2011, 1, 3, 10, 30, CalendarSystem.Julian);
+  LocalDateTime value2 = new LocalDateTime.fromYMDHMC(2011, 1, 3, 10, 30, CalendarSystem.julian);
 
   expect(value1 == value2, isFalse);
   expect(value1 != value2, isTrue);
@@ -255,7 +255,7 @@ void CompareTo_DifferentCalendars_Throws()
   dynamic IslamicLeapYearPattern = null;
   dynamic IslamicEpoch = null;
 
-  CalendarSystem islamic = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
   LocalDateTime value1 = new LocalDateTime.fromYMDHM(2011, 1, 2, 10, 30);
   LocalDateTime value2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 10, 30, islamic);
 
@@ -319,7 +319,7 @@ void InUtc()
   expect(local, zoned.localDateTime);
   expect(Offset.zero, zoned.offset);
   // Assert.AreSame(DateTimeZone.Utc, zoned.Zone);
-  expect(identical(DateTimeZone.Utc, zoned.Zone), isTrue);
+  expect(identical(DateTimeZone.utc, zoned.Zone), isTrue);
 }
 
 @Test()
@@ -387,8 +387,8 @@ void InZone()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
   var skipped = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(Pacific.AtLeniently(ambiguous), ambiguous.InZone(Pacific, Resolvers.LenientResolver));
-  expect(Pacific.AtLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(ambiguous), ambiguous.InZone(Pacific, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
 }
 
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
@@ -433,7 +433,7 @@ void DefaultConstructor()
 void MinMax_DifferentCalendars_Throws()
 {
   LocalDateTime ldt1 = new LocalDateTime.fromYMDHM(2011, 1, 2, 2, 20);
-  LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.Julian);
+  LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.julian);
 
   expect(() => LocalDateTime.Max(ldt1, ldt2), throwsArgumentError);
   expect(() => LocalDateTime.Min(ldt1, ldt2), throwsArgumentError);
@@ -442,8 +442,8 @@ void MinMax_DifferentCalendars_Throws()
 @Test()
 void MinMax_SameCalendar()
 {
-  LocalDateTime ldt1 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 7, 20, CalendarSystem.Julian);
-  LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.Julian);
+  LocalDateTime ldt1 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 7, 20, CalendarSystem.julian);
+  LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.julian);
 
   expect(ldt1, LocalDateTime.Max(ldt1, ldt2));
   expect(ldt1, LocalDateTime.Max(ldt2, ldt1));

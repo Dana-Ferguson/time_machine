@@ -48,11 +48,11 @@ class CalendarOrdinal {
   ];
 
   static const List<CalendarOrdinal> _enumConstants = const [
-    iso, Gregorian, Julian, Coptic, HebrewCivil, HebrewScriptural,
-    PersianSimple, PersianArithmetic, PersianAstronomical,
-    IslamicAstronomicalBase15, IslamicAstronomicalBase16, IslamicAstronomicalIndian, IslamicAstronomicalHabashAlHasib,
-    IslamicCivilBase15, IslamicCivilBase16, IslamicCivilIndian, IslamicAstronomicalHabashAlHasib,
-    UmAlQura, Wondrous, Size
+    iso, gregorian, julian, coptic, hebrewCivil, hebrewScriptural,
+    persianSimple, persianArithmetic, persianAstronomical,
+    islamicAstronomicalBase15, islamicAstronomicalBase16, islamicAstronomicalIndian, islamicAstronomicalHabashAlHasib,
+    islamicCivilBase15, islamicCivilBase16, islamicCivilIndian, islamicAstronomicalHabashAlHasib,
+    umAlQura, wondrous, size
   ];
 
 // todo: lowercase the members IAW dart-style guidelines (atm of porting this file, it crashed the analyzer, bad ... so, we have to do it later)
@@ -61,26 +61,26 @@ class CalendarOrdinal {
   /// by any IsoDayOfWeek property, and is not valid as an argument to
   /// any method.
   static const CalendarOrdinal iso = const CalendarOrdinal(0);
-  static const CalendarOrdinal Gregorian = const CalendarOrdinal(1);
-  static const CalendarOrdinal Julian = const CalendarOrdinal(2);
-  static const CalendarOrdinal Coptic = const CalendarOrdinal(3);
-  static const CalendarOrdinal HebrewCivil = const CalendarOrdinal(4);
-  static const CalendarOrdinal HebrewScriptural = const CalendarOrdinal(5);
-  static const CalendarOrdinal PersianSimple = const CalendarOrdinal(6);
-  static const CalendarOrdinal PersianArithmetic = const CalendarOrdinal(7);
-  static const CalendarOrdinal PersianAstronomical = const CalendarOrdinal(8);
-  static const CalendarOrdinal IslamicAstronomicalBase15 = const CalendarOrdinal(9);
-  static const CalendarOrdinal IslamicAstronomicalBase16 = const CalendarOrdinal(10);
-  static const CalendarOrdinal IslamicAstronomicalIndian = const CalendarOrdinal(11);
-  static const CalendarOrdinal IslamicAstronomicalHabashAlHasib = const CalendarOrdinal(12);
-  static const CalendarOrdinal IslamicCivilBase15 = const CalendarOrdinal(13);
-  static const CalendarOrdinal IslamicCivilBase16 = const CalendarOrdinal(14);
-  static const CalendarOrdinal IslamicCivilIndian = const CalendarOrdinal(15);
-  static const CalendarOrdinal IslamicCivilHabashAlHasib = const CalendarOrdinal(16);
-  static const CalendarOrdinal UmAlQura = const CalendarOrdinal(17);
-  static const CalendarOrdinal Wondrous = const CalendarOrdinal(18);
+  static const CalendarOrdinal gregorian = const CalendarOrdinal(1);
+  static const CalendarOrdinal julian = const CalendarOrdinal(2);
+  static const CalendarOrdinal coptic = const CalendarOrdinal(3);
+  static const CalendarOrdinal hebrewCivil = const CalendarOrdinal(4);
+  static const CalendarOrdinal hebrewScriptural = const CalendarOrdinal(5);
+  static const CalendarOrdinal persianSimple = const CalendarOrdinal(6);
+  static const CalendarOrdinal persianArithmetic = const CalendarOrdinal(7);
+  static const CalendarOrdinal persianAstronomical = const CalendarOrdinal(8);
+  static const CalendarOrdinal islamicAstronomicalBase15 = const CalendarOrdinal(9);
+  static const CalendarOrdinal islamicAstronomicalBase16 = const CalendarOrdinal(10);
+  static const CalendarOrdinal islamicAstronomicalIndian = const CalendarOrdinal(11);
+  static const CalendarOrdinal islamicAstronomicalHabashAlHasib = const CalendarOrdinal(12);
+  static const CalendarOrdinal islamicCivilBase15 = const CalendarOrdinal(13);
+  static const CalendarOrdinal islamicCivilBase16 = const CalendarOrdinal(14);
+  static const CalendarOrdinal islamicCivilIndian = const CalendarOrdinal(15);
+  static const CalendarOrdinal islamicCivilHabashAlHasib = const CalendarOrdinal(16);
+  static const CalendarOrdinal umAlQura = const CalendarOrdinal(17);
+  static const CalendarOrdinal wondrous = const CalendarOrdinal(18);
   // Not a real ordinal; just present to keep a count. Increase this as the number increases...
-  static const CalendarOrdinal Size = const CalendarOrdinal(19);
+  static const CalendarOrdinal size = const CalendarOrdinal(19);
 
   const CalendarOrdinal(this._value);
 

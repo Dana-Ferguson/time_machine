@@ -17,13 +17,13 @@ Future main() async {
 }
 
 // Todo: all tests fail because Coptic is not yet implemented
-final CalendarSystem CopticCalendar = CalendarSystem.Coptic;
+final CalendarSystem CopticCalendar = CalendarSystem.coptic;
 
 // Tests using CopticCalendar as a simple example which doesn't override anything.
 @Test() @SkipMe.unimplemented()
 void GetAbsoluteYear()
 {
-  expect(5, CopticCalendar.GetAbsoluteYear(5, Era.AnnoMartyrum));
+  expect(5, CopticCalendar.getAbsoluteYear(5, Era.AnnoMartyrum));
   // Prove it's right...
   LocalDate localDate = new LocalDate(5, 1, 1, CopticCalendar);
   expect(5, localDate.year);
@@ -34,13 +34,13 @@ void GetAbsoluteYear()
 @Test() @SkipMe.unimplemented()
 void GetMinYearOfEra()
 {
-  expect(1, CopticCalendar.GetMinYearOfEra(Era.AnnoMartyrum));
+  expect(1, CopticCalendar.getMinYearOfEra(Era.AnnoMartyrum));
 }
 
 @Test() @SkipMe.unimplemented()
 void GetMaxYearOfEra()
 {
-  expect(CopticCalendar.maxYear, CopticCalendar.GetMaxYearOfEra(Era.AnnoMartyrum));
+  expect(CopticCalendar.maxYear, CopticCalendar.getMaxYearOfEra(Era.AnnoMartyrum));
 }
 
 

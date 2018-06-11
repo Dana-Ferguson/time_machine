@@ -18,10 +18,10 @@ import 'package:time_machine/time_machine_calendars.dart';
 
   @protected EraCalculator(Iterable<Era> eras) : eras = eras; // new ReadOnlyCollection<Era>(eras);
 
-  @internal int GetMinYearOfEra(Era era);
-  @internal int GetMaxYearOfEra(Era era);
+  @internal int getMinYearOfEra(Era era);
+  @internal int getMaxYearOfEra(Era era);
   @internal Era GetEra(int absoluteYear);
   @internal int GetYearOfEra(int absoluteYear);
-  @internal int GetAbsoluteYear(int yearOfEra, Era era);
+  @internal int getAbsoluteYear(int yearOfEra, Era era);
 }
 

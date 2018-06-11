@@ -89,7 +89,7 @@ Iterable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map) sync*
   var current = Instant.minValue;
   while (current < Instant.afterMaxValue)
   {
-    var zoneInterval = map.GetZoneInterval(current);
+    var zoneInterval = map.getZoneInterval(current);
     yield zoneInterval;
     // If this is the end of time, this will just fail on the next comparison.
     current = zoneInterval.RawEnd;

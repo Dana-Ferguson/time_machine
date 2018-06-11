@@ -369,7 +369,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data.b(2013, 01, 13, 15, 44, FixedMinus1)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC-01",
-    new Data.b(2013, 01, 13, 15, 44, DateTimeZone.Utc)
+    new Data.b(2013, 01, 13, 15, 44, DateTimeZone.utc)
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC",
 
@@ -389,7 +389,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data.b(2013, 01, 13, 15, 44, FixedMinus1)
       ..Pattern = "z yyyy-MM-dd HH:mm"
       ..Text = "UTC-01 2013-01-13 15:44",
-    new Data.b(2013, 01, 13, 15, 44, DateTimeZone.Utc)
+    new Data.b(2013, 01, 13, 15, 44, DateTimeZone.utc)
       ..Pattern = "z yyyy-MM-dd HH:mm"
       ..Text = "UTC 2013-01-13 15:44",
 
@@ -711,11 +711,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.Coptic);
+    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.coptic);
     var parsed = pattern
         .Parse("0284-08-29")
         .Value;
-    expect(new LocalDateTime.fromYMDHMC(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.localDateTime);
+    expect(new LocalDateTime.fromYMDHMC(284, 8, 29, 0, 0, CalendarSystem.coptic), parsed.localDateTime);
   }
 
   @Test()
@@ -761,7 +761,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     var pattern = ZonedDateTimePattern.Create2("z 'x'", CultureInfo.invariantCulture, Resolvers.StrictResolver,
         provider, TimeConstants.unixEpoch.inUtc());
 
-    for (var id in provider.Ids) {
+    for (var id in provider.ids) {
       var value = pattern
           .Parse("$id x")
           .Value;

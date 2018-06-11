@@ -69,20 +69,7 @@ export 'src/period_builder.dart';
 
 
 // There are several calendar systems implemented -- We should experiment with the deferred loading
-
-// files skipped:
-//  AssemblyInfo.cs -- well, obviously -- this include the friend references for testing
-//  DateTimeZoneProviders.cs -- only doing TSDB -- this might take a different form?
-//  (X) [Must have done it later] IDateTimeZoneProvider.cs -- looks like this is sort of part of the js\vm_platform functionality
-//  NamespaceDoc.cs -- just namespace documentation -- add to library level documentation?
-//  NodaTime.csproj -- sort of like a pubspec.yaml
-//
-
-int calculate() {
-  return 6 * 7;
-}
-
-class _Internal {
+class _Internal{
   const _Internal();
 }
 

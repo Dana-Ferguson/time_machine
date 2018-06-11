@@ -62,7 +62,7 @@ void AmbiguousStartOfDay_TransitionAtMidnight()
   // Occurrence before transition
   var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
       TransitionBackwardToMidnightZone);
-  var actual = TransitionBackwardToMidnightZone.AtStartOfDay(TransitionDate);
+  var actual = TransitionBackwardToMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
   expect(expected, TransitionDate.atStartOfDayInZone(TransitionBackwardToMidnightZone));
 }
@@ -73,7 +73,7 @@ void AmbiguousStartOfDay_TransitionAfterMidnight()
   // Occurrence before transition
   var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
       TransitionBackwardAfterMidnightZone);
-  var actual = TransitionBackwardAfterMidnightZone.AtStartOfDay(TransitionDate);
+  var actual = TransitionBackwardAfterMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
   expect(expected, TransitionDate.atStartOfDayInZone(TransitionBackwardAfterMidnightZone));
 }
@@ -84,7 +84,7 @@ void SkippedStartOfDay_TransitionAtMidnight()
   // 1am because of the skip
   var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 1, 0).WithOffset(new Offset.fromHours(-1)),
       TransitionForwardAtMidnightZone);
-  var actual = TransitionForwardAtMidnightZone.AtStartOfDay(TransitionDate);
+  var actual = TransitionForwardAtMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
   expect(expected, TransitionDate.atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
@@ -95,7 +95,7 @@ void SkippedStartOfDay_TransitionBeforeMidnight()
   // 12.20am because of the skip
   var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 20).WithOffset(new Offset.fromHours(-1)),
       TransitionForwardBeforeMidnightZone);
-  var actual = TransitionForwardBeforeMidnightZone.AtStartOfDay(TransitionDate);
+  var actual = TransitionForwardBeforeMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
   expect(expected, TransitionDate.atStartOfDayInZone(TransitionForwardBeforeMidnightZone));
 }
@@ -106,7 +106,7 @@ void UnambiguousStartOfDay()
   // Just a simple midnight in March.
   var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 3, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
       TransitionForwardAtMidnightZone);
-  var actual = TransitionForwardAtMidnightZone.AtStartOfDay(new LocalDate(2000, 3, 1));
+  var actual = TransitionForwardAtMidnightZone.atStartOfDay(new LocalDate(2000, 3, 1));
   expect(expected, actual);
   expect(expected, new LocalDate(2000, 3, 1).atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
@@ -123,7 +123,7 @@ T capture<T extends Error>(action()) {
 
 void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
 {
-  var mapping = zone.MapLocal(localTime);
+  var mapping = zone.mapLocal(localTime);
   expect(0, mapping.Count);
 
   SkippedTimeError e; // = Assert.Throws<SkippedTimeException>(() => mapping.Single());
@@ -144,13 +144,13 @@ void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
 
 void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
 {
-  ZonedDateTime earlier = zone.MapLocal(localTime).First();
-  ZonedDateTime later = zone.MapLocal(localTime).Last();
+  ZonedDateTime earlier = zone.mapLocal(localTime).First();
+  ZonedDateTime later = zone.mapLocal(localTime).Last();
   expect(localTime, earlier.localDateTime);
   expect(localTime, later.localDateTime);
   expect(earlier.ToInstant(), lessThan(later.ToInstant()));
 
-  var mapping = zone.MapLocal(localTime);
+  var mapping = zone.mapLocal(localTime);
   expect(2, mapping.Count);
   AmbiguousTimeError e; // = Assert.Throws<AmbiguousTimeException>(() => mapping.Single());
   expect(e = capture(() => mapping.Single()), new isInstanceOf<AmbiguousTimeError>());
@@ -165,7 +165,7 @@ void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
 
 void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
 {
-  var mapping = zone.MapLocal(localTime);
+  var mapping = zone.mapLocal(localTime);
   expect(1, mapping.Count);
   var zoned = mapping.Single();
   expect(zoned, mapping.First());
@@ -261,7 +261,7 @@ void MapLocalDateTime_UnambiguousDateReturnsUnambiguousMapping()
 {
   //2011-11-09 01:30:00 - not ambiguous in America/New York timezone
   var unambigiousTime = new LocalDateTime.fromYMDHM(2011, 11, 9, 1, 30);
-  var mapping = NewYork.MapLocal(unambigiousTime);
+  var mapping = NewYork.mapLocal(unambigiousTime);
   expect(1, mapping.Count);
 }
 
@@ -270,7 +270,7 @@ void MapLocalDateTime_AmbiguousDateReturnsAmbigousMapping()
 {
   //2011-11-06 01:30:00 - falls during DST - EST conversion in America/New York timezone
   var ambiguousTime = new LocalDateTime.fromYMDHM(2011, 11, 6, 1, 30);
-  var mapping = NewYork.MapLocal(ambiguousTime);
+  var mapping = NewYork.mapLocal(ambiguousTime);
   expect(2, mapping.Count);
 }
 
@@ -279,7 +279,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 {
   //2011-03-13 02:30:00 - falls during EST - DST conversion in America/New York timezone
   var skippedTime = new LocalDateTime.fromYMDHM(2011, 3, 13, 2, 30);
-  var mapping = NewYork.MapLocal(skippedTime);
+  var mapping = NewYork.mapLocal(skippedTime);
   expect(0, mapping.Count);
 }
 
@@ -296,14 +296,14 @@ Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
   LocalDate badDate = LocalDatePattern.Iso.Parse(localDate).Value;
   DateTimeZone zone = await (await DateTimeZoneProviders.Tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
-  expect(exception = capture(() => zone.AtStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
+  expect(exception = capture(() => zone.atStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
   expect(badDate.at(LocalTime.Midnight), exception.localDateTime);
 }
 
 @Test()
 void AtStrictly_InWinter()
 {
-  var when = Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 12, 22, 21, 39, 30));
+  var when = Pacific.atStrictly(new LocalDateTime.fromYMDHMS(2009, 12, 22, 21, 39, 30));
 
   expect(2009, when.Year);
   expect(12, when.Month);
@@ -318,7 +318,7 @@ void AtStrictly_InWinter()
 @Test()
 void AtStrictly_InSummer()
 {
-  var when = Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 6, 22, 21, 39, 30));
+  var when = Pacific.atStrictly(new LocalDateTime.fromYMDHMS(2009, 6, 22, 21, 39, 30));
 
   expect(2009, when.Year);
   expect(6, when.Month);
@@ -335,7 +335,7 @@ void AtStrictly_InSummer()
 void AtStrictly_ThrowsWhenAmbiguous()
 {
   // Assert.Throws<AmbiguousTimeException>(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)));
-  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)), willThrow<AmbiguousTimeError>());
+  expect(() => Pacific.atStrictly(new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0)), willThrow<AmbiguousTimeError>());
 }
 
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
@@ -344,7 +344,7 @@ void AtStrictly_ThrowsWhenAmbiguous()
 void AtStrictly_ThrowsWhenSkipped()
 {
   // Assert.Throws<SkippedTimeException>(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)));
-  expect(() => Pacific.AtStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)), willThrow<SkippedTimeError>());
+  expect(() => Pacific.atStrictly(new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0)), willThrow<SkippedTimeError>());
 }
 
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
@@ -353,7 +353,7 @@ void AtStrictly_ThrowsWhenSkipped()
 void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
-  var zoned = Pacific.AtLeniently(local);
+  var zoned = Pacific.atLeniently(local);
   expect(zoned.localDateTime, local);
   expect(zoned.offset, new Offset.fromHours(-7));
 }
@@ -365,7 +365,7 @@ void AtLeniently_AmbiguousTime_ReturnsEarlierMapping()
 void AtLeniently_ReturnsForwardShiftedValue()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  var zoned = Pacific.AtLeniently(local);
+  var zoned = Pacific.atLeniently(local);
   expect(new LocalDateTime.fromYMDHMS(2009, 3, 8, 3, 30, 0), zoned.localDateTime);
   expect(new Offset.fromHours(-7), zoned.offset);
 }
@@ -376,6 +376,6 @@ void ResolveLocal()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
   var skipped = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(Pacific.AtLeniently(ambiguous), Pacific.ResolveLocal(ambiguous, Resolvers.LenientResolver));
-  expect(Pacific.AtLeniently(skipped), Pacific.ResolveLocal(skipped, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(ambiguous), Pacific.resolveLocal(ambiguous, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(skipped), Pacific.resolveLocal(skipped, Resolvers.LenientResolver));
 }

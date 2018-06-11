@@ -29,19 +29,19 @@ final SingleTransitionDateTimeZone TestZone = new SingleTransitionDateTimeZone.a
 void GetZoneIntervals_EndBeforeStart()
 {
   // Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeZone.Utc.GetZoneIntervals(new Instant.fromUnixTimeTicks(100L), new Instant.fromUnixTimeTicks(99L)));
-  expect(() => DateTimeZone.Utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(99)), throwsArgumentError);
+  expect(() => DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(99)), throwsArgumentError);
 }
 
 @Test()
 void GetZoneIntervals_EndEqualToStart()
 {
-  expect(DateTimeZone.Utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(100)), isEmpty);
+  expect(DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(100)), isEmpty);
 }
 
 @Test()
 void GetZoneIntervals_InvalidOptions()
 {
-  var zone = DateTimeZone.Utc;
+  var zone = DateTimeZone.utc;
   var interval = new Interval(new Instant.fromUtc(2000, 1, 1, 0, 0), new Instant.fromUtc(2001, 1, 1, 0, 0));
   // Assert.Throws<ArgumentOutOfRangeException>(() => zone.GetZoneIntervals(interval, (ZoneEqualityComparer.Options) 1234567));
   expect(() => zone.getZoneIntervalsOptions(interval, new ZoneEqualityComparerOptions(1234567)), throwsArgumentError);
@@ -50,8 +50,8 @@ void GetZoneIntervals_InvalidOptions()
 @Test()
 void GetZoneIntervals_FixedZone()
 {
-  var zone = DateTimeZone.ForOffset(new Offset.fromHours(3));
-  var expected = [ zone.GetZoneInterval(Instant.minValue) ];
+  var zone = new DateTimeZone.forOffset(new Offset.fromHours(3));
+  var expected = [ zone.getZoneInterval(Instant.minValue) ];
   // Give a reasonably wide interval...
   var actual = zone.getZoneIntervalsFromTo(new Instant.fromUtc(1900, 1, 1, 0, 0), new Instant.fromUtc(2100, 1, 1, 0, 0));
   // CollectionAssert.AreEqual(expected, actual.toList());
@@ -108,12 +108,12 @@ Future GetZoneIntervals_Complex() async
   var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
   // Transitions are always Spring/Autumn, so June and January should be clear.
   var expected = [
-    london.GetZoneInterval(new Instant.fromUtc(1999, 6, 1, 0, 0)),
-    london.GetZoneInterval(new Instant.fromUtc(2000, 1, 1, 0, 0)),
-    london.GetZoneInterval(new Instant.fromUtc(2000, 6, 1, 0, 0)),
-    london.GetZoneInterval(new Instant.fromUtc(2001, 1, 1, 0, 0)),
-    london.GetZoneInterval(new Instant.fromUtc(2001, 6, 1, 0, 0)),
-    london.GetZoneInterval(new Instant.fromUtc(2002, 1, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(1999, 6, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(2000, 1, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(2000, 6, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(2001, 1, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(2001, 6, 1, 0, 0)),
+    london.getZoneInterval(new Instant.fromUtc(2002, 1, 1, 0, 0)),
   ];
   // After the instant we used to fetch the expected zone interval, but that's fine:
   // it'll be the same one, as there's no transition within June.

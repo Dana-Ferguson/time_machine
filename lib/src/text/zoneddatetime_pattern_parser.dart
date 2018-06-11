@@ -156,13 +156,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// zone. Otherwise, it will return null and the cursor will remain where
   /// it was.
   @private DateTimeZone TryParseFixedZone(ValueCursor value) {
-    if (value.CompareOrdinal(DateTimeZone.UtcId) != 0) {
+    if (value.CompareOrdinal(DateTimeZone.utcId) != 0) {
       return null;
     }
     value.Move(value.Index + 3);
     var pattern = OffsetPattern.GeneralInvariant.UnderlyingPattern;
     var parseResult = pattern.ParsePartial(value);
-    return parseResult.Success ? DateTimeZone.ForOffset(parseResult.Value) : DateTimeZone.Utc;
+    return parseResult.Success ? new DateTimeZone.forOffset(parseResult.Value) : DateTimeZone.utc;
   }
 
   /// Tries to parse a time zone ID from the provider. Returns the zone
@@ -171,7 +171,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private DateTimeZone TryParseProviderZone(ValueCursor value) {
     // The IDs from the provider are guaranteed to be in order (using ordinal comparisons).
     // Use a binary search to find a match, then make sure it's the longest possible match.
-    var ids = zoneProvider.Ids;
+    var ids = zoneProvider.ids;
     int lowerBound = 0; // Inclusive
     int upperBound = ids.length; // Exclusive
     while (lowerBound < upperBound) {
@@ -234,7 +234,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     // No offset - so just use the resolver
     if ((usedFields & PatternFields.embeddedOffset).value == 0) {
       try {
-        return ParseResult.ForValue<ZonedDateTime>(Zone.ResolveLocal(localDateTime, resolver));
+        return ParseResult.ForValue<ZonedDateTime>(Zone.resolveLocal(localDateTime, resolver));
       }
       on SkippedTimeError {
         return ParseResult.SkippedLocalTime<ZonedDateTime>(text);
@@ -245,7 +245,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     // We were given an offset, so we can resolve and validate using that
-    var mapping = Zone.MapLocal(localDateTime);
+    var mapping = Zone.mapLocal(localDateTime);
     ZonedDateTime result;
     switch (mapping.Count) {
       // If the local time was skipped, the offset has to be invalid.

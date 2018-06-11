@@ -30,7 +30,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);
-  var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.Julian).InUtc().ToInstant();
+  var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.julian).InUtc().ToInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
@@ -48,14 +48,14 @@ void BasicSpanTests() {
 @Test()
 void FromUtcNoSeconds()
 {
-  Instant viaUtc = DateTimeZone.Utc.AtStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 0)).ToInstant();
+  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 0)).ToInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
-  Instant viaUtc = DateTimeZone.Utc.AtStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 23)).ToInstant();
+  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 23)).ToInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35, 23));
 }
 
@@ -64,7 +64,7 @@ void FromUtcWithSeconds()
 void InUtc()
 {
   ZonedDateTime viaInstant = new Instant.fromUtc(2008, 4, 3, 10, 35, 23).inUtc();
-  ZonedDateTime expected = DateTimeZone.Utc.AtStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 23));
+  ZonedDateTime expected = DateTimeZone.utc.atStrictly(new LocalDateTime.fromYMDHMS(2008, 4, 3, 10, 35, 23));
   expect(expected, viaInstant);
 }
 
@@ -77,7 +77,7 @@ Future InZone () async
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
   LocalDateTime local = new LocalDateTime.fromYMDHMS(2008, 6, 10, 14, 16, 17);
-  ZonedDateTime expected = london.AtStrictly(local);
+  ZonedDateTime expected = london.atStrictly(local);
 
   expect(expected, viaInstant);
 }
@@ -102,7 +102,7 @@ void WithOffset_NonIsoCalendar()
   dynamic IslamicEpoch = null;
 
   // October 12th 2013 ISO is 1434-12-07 Islamic
-  CalendarSystem calendar = CalendarSystem.GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
+  CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.WithOffset_Calendar(offset, calendar);
@@ -222,13 +222,13 @@ void UnixConversions_ExtremeValues()
 @Test() @SkipMe.unimplemented()
 Future InZoneWithCalendar () async
 {
-  CalendarSystem copticCalendar = CalendarSystem.Coptic;
+  CalendarSystem copticCalendar = CalendarSystem.coptic;
   DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
   ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).InZone_Calendar(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
   LocalDateTime local = new LocalDateTime.fromYMDHMSC(1720, 10, 2, 12, 10, 0, copticCalendar);
-  ZonedDateTime expected = london.AtStrictly(local);
+  ZonedDateTime expected = london.atStrictly(local);
   expect(viaInstant, expected);
 }
 

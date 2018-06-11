@@ -123,7 +123,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     else {
       // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
-      targetYear = CalendarSystem.Iso.yearMonthDayCalculator
+      targetYear = CalendarSystem.iso.yearMonthDayCalculator
           .getYear(safeLocal.DaysSinceEpoch)
           .first; //.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
     }
@@ -189,7 +189,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     else {
       // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
-      targetYear = CalendarSystem.Iso.yearMonthDayCalculator
+      targetYear = CalendarSystem.iso.yearMonthDayCalculator
           .getYear(safeLocal.DaysSinceEpoch)
           .first; //, out ignoredDayOfYear);
     }

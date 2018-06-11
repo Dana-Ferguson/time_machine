@@ -19,7 +19,7 @@ import '../time_machine_testing.dart';
 Iterable<DateTimeZone> AllTzdbZones;
 
 Future main() async {
-  AllTzdbZones = await (await DateTimeZoneProviders.Tzdb).GetAllZones();
+  AllTzdbZones = await (await DateTimeZoneProviders.Tzdb).getAllZones();
 
   await runTests();
 }
@@ -28,9 +28,9 @@ Future main() async {
 @TestCaseSource(#AllTzdbZones)
 void AllZonesStartAndEndOfTime(DateTimeZone zone)
 {
-  var firstInterval = zone.GetZoneInterval(Instant.minValue);
+  var firstInterval = zone.getZoneInterval(Instant.minValue);
   expect(firstInterval.HasStart, isFalse);
-  var lastInterval = zone.GetZoneInterval(Instant.maxValue);
+  var lastInterval = zone.getZoneInterval(Instant.maxValue);
   expect(lastInterval.HasEnd, isFalse);
 }
 

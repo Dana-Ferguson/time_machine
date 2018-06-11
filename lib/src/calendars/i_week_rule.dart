@@ -109,7 +109,7 @@ abstract class WeekYearRuleExtensions
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
   static LocalDate GetLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
-  Preconditions.checkNotNull(rule, 'rule').GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.Iso);
+  Preconditions.checkNotNull(rule, 'rule').GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Convenience overload to call [IWeekYearRule.GetWeeksInWeekYear(int, CalendarSystem)] with
   /// the ISO calendar system.
@@ -118,5 +118,5 @@ abstract class WeekYearRuleExtensions
   /// [weekYear]: The week year to calculate the number of contained weeks.
   /// Returns: The number of weeks in the given week year.
   static int GetWeeksInWeekYear(IWeekYearRule rule, int weekYear) =>
-  Preconditions.checkNotNull(rule, 'rule').GetWeeksInWeekYear(weekYear, CalendarSystem.Iso);
+  Preconditions.checkNotNull(rule, 'rule').GetWeeksInWeekYear(weekYear, CalendarSystem.iso);
 }

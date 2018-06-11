@@ -24,9 +24,9 @@ final DateTimeZone SampleZone = new SingleTransitionDateTimeZone.around(TimeCons
 @Test()
 void GetCurrent()
 {
-  var julian = CalendarSystem.Julian;
+  var julian = CalendarSystem.julian;
   FakeClock underlyingClock = new FakeClock(TimeConstants.unixEpoch);
-  ZonedClock zonedClock = underlyingClock.InZone(SampleZone, julian);
+  ZonedClock zonedClock = underlyingClock.inZone(SampleZone, julian);
   expect(TimeConstants.unixEpoch, zonedClock.getCurrentInstant());
   expect(new ZonedDateTime.withCalendar(underlyingClock.getCurrentInstant(), SampleZone, julian),
       zonedClock.getCurrentZonedDateTime());

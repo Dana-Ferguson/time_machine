@@ -439,11 +439,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @SkipMe.unimplemented()
   void WithCalendar() {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
-        .WithCalendar(CalendarSystem.Coptic);
+        .WithCalendar(CalendarSystem.coptic);
     var parsed = pattern
         .Parse("0284-08-29")
         .Value;
-    expect(new LocalDateTime.fromYMDHMC(284, 8, 29, 0, 0, CalendarSystem.Coptic), parsed.localDateTime);
+    expect(new LocalDateTime.fromYMDHMC(284, 8, 29, 0, 0, CalendarSystem.coptic), parsed.localDateTime);
   }
 
   @Test()

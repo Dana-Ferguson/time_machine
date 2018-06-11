@@ -26,7 +26,7 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
           intervals.map((x) => x.wallOffset).reduce(max));
 
   /// <inheritdoc />
-  @override ZoneInterval GetZoneInterval(Instant instant) {
+  @override ZoneInterval getZoneInterval(Instant instant) {
     int lower = 0; // Inclusive
     int upper = Intervals.length; // Exclusive
 

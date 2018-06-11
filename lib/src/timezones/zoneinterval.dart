@@ -182,7 +182,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 ///
 ///   `true` if this period contains the given LocalInstant in its range; otherwise, `false`.
 
-  @internal bool ContainsLocal(LocalInstant localInstant) => _localStart <= localInstant && localInstant < _localEnd;
+  @internal bool containsLocal(LocalInstant localInstant) => _localStart <= localInstant && localInstant < _localEnd;
 
   /// Returns whether this zone interval has the same offsets and name as another.
   @internal bool EqualIgnoreBounds(ZoneInterval other) {

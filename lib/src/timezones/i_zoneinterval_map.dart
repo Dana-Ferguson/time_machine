@@ -18,7 +18,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// feeling slightly cleaner elsewhere in the code.
 @internal abstract class IZoneIntervalMap
 {
-  ZoneInterval GetZoneInterval(Instant instant);
+  ZoneInterval getZoneInterval(Instant instant);
 }
 
 // This is slightly ugly, but it allows us to use any time zone as the tail

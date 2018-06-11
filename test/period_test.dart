@@ -121,8 +121,8 @@ void BetweenLocalDates_InvalidUnits()
 @Test() @SkipMe.unimplemented()
 void BetweenLocalDates_DifferentCalendarSystems_Throws()
 {
-  LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.Coptic);
-  LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.Gregorian);
+  LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.coptic);
+  LocalDate end = new LocalDate(2017, 11, 5, CalendarSystem.gregorian);
   expect(() => Period.BetweenDates(start, end), throwsArgumentError);
 }
 
@@ -249,9 +249,9 @@ void BetweenLocalDateTimes_OnLeapYear()
 @Test() @SkipMe.unimplemented()
 void BetweenLocalDateTimes_OnLeapYearIslamic()
 {
-  var calendar = CalendarSystem.GetIslamicCalendar(null, null/*IslamicLeapYearPattern.Base15, IslamicEpoch.Civil*/);
-  expect(calendar.IsLeapYear(2), isTrue);
-  expect(calendar.IsLeapYear(3), isFalse);
+  var calendar = CalendarSystem.getIslamicCalendar(null, null/*IslamicLeapYearPattern.Base15, IslamicEpoch.Civil*/);
+  expect(calendar.isLeapYear(2), isTrue);
+  expect(calendar.isLeapYear(3), isFalse);
 
   LocalDateTime dt1 = new LocalDateTime.fromYMDHMC(2, 12, 30, 2, 0, calendar);
   LocalDateTime dt2 = new LocalDateTime.fromYMDHMC(2, 12, 30, 4, 0, calendar);

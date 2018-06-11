@@ -39,7 +39,7 @@ new StandardDaylightAlternatingMap(new Offset.fromHours(-6), Winter, Summer);
 
 // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
 // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
-final ZoneInterval ClampedTailZoneInterval = TailZone.GetZoneInterval(ThirdInterval.end).WithStart(ThirdInterval.end);
+final ZoneInterval ClampedTailZoneInterval = TailZone.getZoneInterval(ThirdInterval.end).WithStart(ThirdInterval.end);
 
 final PrecalculatedDateTimeZone TestZone =
 new PrecalculatedDateTimeZone("Test", [ FirstInterval, SecondInterval, ThirdInterval ], TailZone);
@@ -74,31 +74,31 @@ void MinMaxOffsetsWithNullTailZone()
 @Test()
 void GetZoneIntervalInstant_End()
 {
-  expect(SecondInterval, TestZone.GetZoneInterval(SecondInterval.end - Span.epsilon));
+  expect(SecondInterval, TestZone.getZoneInterval(SecondInterval.end - Span.epsilon));
 }
 
 @Test()
 void GetZoneIntervalInstant_Start()
 {
-  expect(SecondInterval, TestZone.GetZoneInterval(SecondInterval.start));
+  expect(SecondInterval, TestZone.getZoneInterval(SecondInterval.start));
 }
 
 @Test()
 void GetZoneIntervalInstant_FinalInterval_End()
 {
-  expect(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.end - Span.epsilon));
+  expect(ThirdInterval, TestZone.getZoneInterval(ThirdInterval.end - Span.epsilon));
 }
 
 @Test()
 void GetZoneIntervalInstant_FinalInterval_Start()
 {
-  expect(ThirdInterval, TestZone.GetZoneInterval(ThirdInterval.start));
+  expect(ThirdInterval, TestZone.getZoneInterval(ThirdInterval.start));
 }
 
 @Test()
 void GetZoneIntervalInstant_TailZone()
 {
-  expect(ClampedTailZoneInterval, TestZone.GetZoneInterval(ThirdInterval.end));
+  expect(ClampedTailZoneInterval, TestZone.getZoneInterval(ThirdInterval.end));
 }
 
 @Test()
@@ -139,7 +139,7 @@ void MapLocal_AmbiguousButTooEarlyInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Span(hours: 1), 10, 8);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd.PlusHours(-1));
+  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.PlusHours(-1));
   expect(ThirdInterval, mapping.EarlyInterval);
   expect(ThirdInterval, mapping.LateInterval);
   expect(1, mapping.Count);
@@ -163,7 +163,7 @@ void MapLocal_SingleIntervalAroundTailZoneTransition()
   var tailZone = new FixedDateTimeZone.forOffset(new Offset.fromHours(5));
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd.PlusHours(-1));
+  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.PlusHours(-1));
   expect(ThirdInterval, mapping.EarlyInterval);
   expect(ThirdInterval, mapping.LateInterval);
   expect(1, mapping.Count);
@@ -179,7 +179,7 @@ void MapLocal_GapAroundTailZoneTransition()
   var tailZone = new FixedDateTimeZone.forOffset(new Offset.fromHours(5));
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd);
+  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd);
   expect(ThirdInterval, mapping.EarlyInterval);
   expect(mapping.LateInterval,
       new ZoneInterval("UTC+05", ThirdInterval.end, Instant.afterMaxValue, new Offset.fromHours(5), Offset.zero));
@@ -196,7 +196,7 @@ void MapLocal_GapAroundAndInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Span(hours: 1), -10, 5);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.MapLocal(ThirdInterval.IsoLocalEnd.PlusHours(1));
+  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.PlusHours(1));
   expect(ThirdInterval, mapping.EarlyInterval);
   expect(new ZoneInterval("Single-Early", ThirdInterval.end, tailZone.Transition, new Offset.fromHours(-10), Offset.zero),
       mapping.LateInterval);
@@ -212,12 +212,12 @@ void GetZoneIntervals_NullTailZone_Eot()
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), Instant.afterMaxValue, Offset.zero, Offset.zero)
 ];
 var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
-expect(intervals[1], zone.GetZoneInterval(Instant.maxValue));
+expect(intervals[1], zone.getZoneInterval(Instant.maxValue));
 }
 
 void CheckMapping(LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
 {
-  var mapping = TestZone.MapLocal(localDateTime);
+  var mapping = TestZone.mapLocal(localDateTime);
   expect(earlyInterval, mapping.EarlyInterval);
   expect(lateInterval, mapping.LateInterval);
   expect(count, mapping.Count);
@@ -228,7 +228,7 @@ void Validation_EmptyPeriodArray() {
   // Assert.Throws<ArgumentException>
   expect(() =>
       PrecalculatedDateTimeZone.ValidatePeriods([] /*new ZoneInterval[0]*/,
-          DateTimeZone.Utc), throwsArgumentError);
+          DateTimeZone.utc), throwsArgumentError);
 }
 
 @Test()
@@ -239,7 +239,7 @@ void Validation_BadFirstStartingPoint() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
-  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc), throwsArgumentError);
+  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
 }
 
 @Test()
@@ -250,7 +250,7 @@ void Validation_NonAdjoiningIntervals() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(25), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
-  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc), throwsArgumentError);
+  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
 }
 
 @Test()
@@ -263,7 +263,7 @@ void Validation_Success()
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(30), new Instant.fromUnixTimeTicks(100), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(200), Offset.zero, Offset.zero)
   ];
-  PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.Utc);
+  PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc);
 }
 
 @Test()

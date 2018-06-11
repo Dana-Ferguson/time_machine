@@ -31,7 +31,7 @@ void DefaultConstructor()
 void CombinationWithTime()
 {
   // Test all three approaches in the same test - they're logically equivalent.
-  var calendar = CalendarSystem.Julian;
+  var calendar = CalendarSystem.julian;
   LocalDate date = new LocalDate(2014, 3, 28, calendar);
   LocalTime time = new LocalTime(20, 17, 30);
   LocalDateTime expected = new LocalDateTime.fromYMDHMSC(2014, 3, 28, 20, 17, 30, calendar);
@@ -51,7 +51,7 @@ void Construction_NullCalendar_Throws()
 void MaxIsoValue()
 {
   var value = LocalDate.maxIsoValue;
-  expect(CalendarSystem.Iso, value.calendar);
+  expect(CalendarSystem.iso, value.calendar);
   expect(() => value.plusDays(1), throwsRangeError);
 }
 
@@ -59,6 +59,6 @@ void MaxIsoValue()
 void MinIsoValue()
 {
   var value = LocalDate.minIsoValue;
-  expect(CalendarSystem.Iso, value.calendar);
+  expect(CalendarSystem.iso, value.calendar);
   expect(() => value.plusDays(-1), throwsRangeError);
 }
