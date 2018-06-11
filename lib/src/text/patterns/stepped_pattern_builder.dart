@@ -425,14 +425,14 @@ class _findLongestMatchCursor {
                   (TBucket bucket, LocalDateTime value) {
                 var dateBucket = dateBucketExtractor(bucket);
                 var timeBucket = timeBucketExtractor(bucket);
-                dateBucket.Calendar = value.Calendar;
-                dateBucket.Year = value.Year;
-                dateBucket.MonthOfYearNumeric = value.Month;
-                dateBucket.DayOfMonth = value.Day;
-                timeBucket.Hours24 = value.Hour;
-                timeBucket.Minutes = value.Minute;
-                timeBucket.Seconds = value.Second;
-                timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+                dateBucket.Calendar = value.calendar;
+                dateBucket.Year = value.year;
+                dateBucket.MonthOfYearNumeric = value.month;
+                dateBucket.DayOfMonth = value.day;
+                timeBucket.Hours24 = value.hour;
+                timeBucket.Minutes = value.minute;
+                timeBucket.Seconds = value.second;
+                timeBucket.FractionalSeconds = value.nanosecondOfSecond;
               },
               dateTimeExtractor);
           break;
@@ -480,10 +480,10 @@ class _findLongestMatchCursor {
             .UnderlyingPattern,
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
-          timeBucket.Hours24 = value.Hour;
-          timeBucket.Minutes = value.Minute;
-          timeBucket.Seconds = value.Second;
-          timeBucket.FractionalSeconds = value.NanosecondOfSecond;
+          timeBucket.Hours24 = value.hour;
+          timeBucket.Minutes = value.minute;
+          timeBucket.Seconds = value.second;
+          timeBucket.FractionalSeconds = value.nanosecondOfSecond;
         },
         timeExtractor);
   }

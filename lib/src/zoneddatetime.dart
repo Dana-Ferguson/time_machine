@@ -70,7 +70,7 @@ offsetDateTime = new OffsetDateTime.instant(instant, (zone ?? DateTimeZone.utc).
 factory ZonedDateTime.fromLocal(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
 {
 zone = Preconditions.checkNotNull(zone, 'zone');
-Instant candidateInstant = localDateTime.ToLocalInstant().Minus(offset);
+Instant candidateInstant = localDateTime.toLocalInstant().Minus(offset);
 Offset correctOffset = zone.getUtcOffset(candidateInstant);
 // Not using Preconditions, to avoid building the string unnecessarily.
 if (correctOffset != offset)
@@ -452,7 +452,7 @@ DateTime ToDateTimeUtc() => ToInstant().toDateTimeUtc();
 /// A [DateTime] representation of this value with an "unspecified" kind, with the same
 /// local date and time as this value.
 
-DateTime ToDateTimeUnspecified() => localDateTime.ToDateTimeUnspecified();
+DateTime ToDateTimeUnspecified() => localDateTime.toDateTimeUnspecified();
 
 /// Constructs an [OffsetDateTime] with the same local date and time, and the same offset
 /// as this zoned date and time, effectively just "removing" the time zone itself.

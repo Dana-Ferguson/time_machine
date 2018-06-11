@@ -31,18 +31,18 @@ import 'package:time_machine/time_machine_utilities.dart';
 @immutable
 class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDateTime>, IComparable<LocalDateTime>, IComparable, IFormattable, IXmlSerializable
     {
-  @private final LocalDate date;
-  @private final LocalTime time;
-
-
+  /// Gets the date portion of this local date and time as a [LocalDate] in the same calendar system as this value.
+  final LocalDate date;
+  /// Gets the time portion of this local date and time as a [LocalTime].
+  final LocalTime time;
+  
   /// Initializes a new instance of the [LocalDateTime] struct using the ISO
   /// calendar system.
   ///
   /// * [localInstant]: The local instant.
   /// Returns: The resulting date/time.
   @internal LocalDateTime.fromInstant(LocalInstant localInstant)
-      :
-        date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch),
+      : date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch),
         time = new LocalTime.fromNanoseconds(localInstant.NanosecondOfDay);
 
 
@@ -121,8 +121,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
   LocalDateTime.fromYMDHMSM(int year, int month, int day, int hour, int minute, int second, int millisecond)
       : this(new LocalDate(year, month, day), new LocalTime(hour, minute, second, millisecond));
-
-
+  
   /// Initializes a new instance of the [LocalDateTime] struct.
   ///
   /// * [year]: The year. This is the "absolute year", so, for
@@ -142,79 +141,57 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   @internal LocalDateTime(this.date, this.time);
 
   /// Gets the calendar system associated with this local date and time.
-  CalendarSystem get Calendar => date.calendar;
+  CalendarSystem get calendar => date.calendar;
 
   /// Gets the year of this local date and time.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get Year => date.year;
+  int get year => date.year;
 
   /// Gets the year of this local date and time within its era.
-  int get YearOfEra => date.yearOfEra;
+  int get yearOfEra => date.yearOfEra;
 
   /// Gets the era of this local date and time.
   Era get era => date.era;
 
-
   /// Gets the month of this local date and time within the year.
-  int get Month => date.month;
-
+  int get month => date.month;
 
   /// Gets the day of this local date and time within the year.
-  int get DayOfYear => date.dayOfYear;
-
+  int get dayOfYear => date.dayOfYear;
 
   /// Gets the day of this local date and time within the month.
-  int get Day => date.day;
-
+  int get day => date.day;
 
   /// Gets the week day of this local date and time expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get DayOfWeek => date.dayOfWeek;
-
+  IsoDayOfWeek get dayOfWeek => date.dayOfWeek;
 
   /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
-  int get Hour => time.Hour;
-
+  int get hour => time.hour;
 
   /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
-  int get ClockHourOfHalfDay => time.ClockHourOfHalfDay;
-
+  int get clockHourOfHalfDay => time.clockHourOfHalfDay;
 
   /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
-  int get Minute => time.Minute;
-
+  int get minute => time.minute;
 
   /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
-  int get Second => time.Second;
-
+  int get second => time.second;
 
   /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
-  int get Millisecond => time.Millisecond;
-
+  int get millisecond => time.millisecond;
 
   /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
-  int get TickOfSecond => time.TickOfSecond;
-
+  int get tickOfSecond => time.tickOfSecond;
 
   /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  int get TickOfDay => time.TickOfDay;
-
+  int get tickOfDay => time.tickOfDay;
 
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
-  int get NanosecondOfSecond => time.NanosecondOfSecond;
-
+  int get nanosecondOfSecond => time.nanosecondOfSecond;
 
   /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get NanosecondOfDay => time.NanosecondOfDay;
-
-
-  /// Gets the time portion of this local date and time as a [LocalTime].
-  LocalTime get TimeOfDay => time;
-
-
-  /// Gets the date portion of this local date and time as a [LocalDate] in the same calendar system as this value.
-  LocalDate get Date => date;
-
+  int get nanosecondOfDay => time.nanosecondOfDay;
 
   /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
   /// of [DateTimeKind.Unspecified].
@@ -229,7 +206,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   ///
   /// * [InvalidOperationException]: The date/time is outside the range of `DateTime`.
   /// Returns: A [DateTime] value for the same date and time as this value.
-  DateTime ToDateTimeUnspecified() {
+  DateTime toDateTimeUnspecified() {
     //int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
     //if (ticks < 0)
     //{
@@ -240,14 +217,14 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
         date.year,
         date.month,
         date.day,
-        time.Hour,
-        time.Minute,
-        time.Second,
-        time.Millisecond);
+        time.hour,
+        time.minute,
+        time.second,
+        time.millisecond);
   }
 
 
-  @internal LocalInstant ToLocalInstant() => new LocalInstant.daysNanos(date.daysSinceEpoch, time.NanosecondOfDay);
+  @internal LocalInstant toLocalInstant() => new LocalInstant.daysNanos(date.daysSinceEpoch, time.nanosecondOfDay);
 
   /// Converts a [DateTime] of any kind to a LocalDateTime in the specified or ISO calendar. This does not perform
   /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.utc]
@@ -256,7 +233,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [dateTime]: Value to convert into a Time Machine local date and time
   /// * [calendar]: The calendar system to convert into, defaults to [LocalDateTime] in the ISO calendar.
   /// Returns: A new [LocalDateTime] with the same values as the specified `DateTime`.
-  static LocalDateTime FromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
+  factory LocalDateTime.fromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
     var ms = dateTime.millisecondsSinceEpoch;
     var days = ms ~/ TimeConstants.millisecondsPerDay; // - 1;
     ms -= days * TimeConstants.millisecondsPerDay;
@@ -272,14 +249,14 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [other]: An object to compare with this object.
   ///
   /// true if the current object is equal to the [other] parameter; otherwise, false.
-  bool Equals(LocalDateTime other) => date == other.date && time == other.time;
+  bool equals(LocalDateTime other) => date == other.date && time == other.time;
 
   /// Implements the operator == (equality).
   ///
   /// * [left]: The left hand side of the operator.
   /// * [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is LocalDateTime && Equals(right);
+  bool operator ==(dynamic right) => right is LocalDateTime && equals(right);
 
 
   /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
@@ -295,7 +272,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// Returns: true if the [lhs] is strictly earlier than [rhs], false otherwise.
   bool operator <(LocalDateTime rhs) {
     if (rhs == null) return false;
-    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) < 0;
   }
 
@@ -313,7 +290,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// Returns: true if the [lhs] is earlier than or equal to [rhs], false otherwise.
   bool operator <=(LocalDateTime rhs) {
     if (rhs == null) return false;
-    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) <= 0;
   }
 
@@ -331,7 +308,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// Returns: true if the [lhs] is strictly later than [rhs], false otherwise.
   bool operator >(LocalDateTime rhs) {
     if (rhs == null) return true;
-    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) > 0;
   }
 
@@ -349,7 +326,7 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// Returns: true if the [lhs] is later than or equal to [rhs], false otherwise.
   bool operator >=(LocalDateTime rhs) {
     if (rhs == null) return true;
-    Preconditions.checkArgument(Calendar == rhs.Calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(rhs) >= 0;
   }
 
@@ -376,36 +353,13 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
     return time.compareTo(other.time);
   }
 
-
-///// Implementation of [IComparable.CompareTo] to compare two LocalDateTimes.
-/////
-///// 
-///// This uses explicit interface implementation to avoid it being called accidentally. The generic implementation should usually be preferred.
-///// 
-///// * [ArgumentException]: [obj] is non-null but does not refer to an instance of [LocalDateTime],
-///// or refers to a adate/time in a different calendar system.
-///// * [obj]: The object to compare this value with.
-///// The result of comparing this LocalDateTime with another one; see [CompareTo(LocalDateTime)] for general details.
-///// If [obj] is null, this method returns a value greater than 0.
-///// 
-//int IComparable.CompareTo(object obj)
-//{
-//if (obj == null)
-//{
-//return 1;
-//}
-//Preconditions.checkArgument(obj is LocalDateTime, 'obj', "Object must be of type NodaTime.LocalDateTime.");
-//return CompareTo(obj);
-//}
-
-
   /// Adds a period to a local date/time. Fields are added in the order provided by the period.
-  /// This is a convenience operator over the [Plus] method.
+  /// This is a convenience operator over the [plus] method.
   ///
   /// * [localDateTime]: Initial local date and time
   /// * [period]: Period to add
   /// Returns: The resulting local date and time
-  LocalDateTime operator +(Period period) => Plus(period);
+  LocalDateTime operator +(Period period) => plus(period);
 
 
   /// Add the specified period to the date and time. Friendly alternative to `operator+()`.
@@ -413,14 +367,14 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [localDateTime]: Initial local date and time
   /// * [period]: Period to add
   /// Returns: The resulting local date and time
-  static LocalDateTime Add(LocalDateTime localDateTime, Period period) => localDateTime.Plus(period);
+  static LocalDateTime add(LocalDateTime localDateTime, Period period) => localDateTime.plus(period);
 
 
   /// Adds a period to this local date/time. Fields are added in the order provided by the period.
   ///
   /// * [period]: Period to add
   /// Returns: The resulting local date and time
-  LocalDateTime Plus(Period period) {
+  LocalDateTime plus(Period period) {
     Preconditions.checkNotNull(period, 'period');
     return period.AddDateTimeTo(date, time, 1);
   }
@@ -443,21 +397,21 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   // LocalDateTime operator -(Period period) => MinusPeriod(period);
   // Period operator -(LocalDateTime rhs) => Period.Between(rhs, this);
   // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic value) => value is Period ? MinusPeriod(value) : value is LocalDateTime ? MinusLocalDateTime(value) : throw new TypeError();
+  dynamic operator -(dynamic value) => value is Period ? minusPeriod(value) : value is LocalDateTime ? MinusLocalDateTime(value) : throw new TypeError();
 
   /// Subtracts the specified period from the date and time. Friendly alternative to `operator-()`.
   ///
   /// * [localDateTime]: Initial local date and time
   /// * [period]: Period to subtract
   /// Returns: The resulting local date and time
-  static LocalDateTime SubtractPeriod(LocalDateTime localDateTime, Period period) => localDateTime.MinusPeriod(period);
+  static LocalDateTime subtractPeriod(LocalDateTime localDateTime, Period period) => localDateTime.minusPeriod(period);
 
 
   /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
   ///
   /// * [period]: Period to subtract
   /// Returns: The resulting local date and time
-  LocalDateTime MinusPeriod(Period period) {
+  LocalDateTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
     return period.AddDateTimeTo(date, time, -1);
   }
@@ -471,274 +425,234 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [lhs]: The date/time to subtract from
   /// * [rhs]: The date/time to subtract
   /// Returns: The result of subtracting one date/time from another.
-  static Period SubtractLocalDateTime(LocalDateTime lhs, LocalDateTime rhs) => lhs.MinusLocalDateTime(rhs);
+  static Period subtractLocalDateTime(LocalDateTime lhs, LocalDateTime rhs) => lhs.MinusLocalDateTime(rhs);
 
 
-/// Subtracts the specified date/time from this date/time, returning the result as a [Period].
-/// Fluent alternative to `operator-()`.
-///
-/// The specified date/time must be in the same calendar system as this.
-/// * [localDateTime]: The date/time to subtract from this
-/// Returns: The difference between the specified date/time and this one
-
-
+  /// Subtracts the specified date/time from this date/time, returning the result as a [Period].
+  /// Fluent alternative to `operator-()`.
+  ///
+  /// The specified date/time must be in the same calendar system as this.
+  /// * [localDateTime]: The date/time to subtract from this
+  /// Returns: The difference between the specified date/time and this one
   Period MinusLocalDateTime(LocalDateTime localDateTime) => Period.Between(localDateTime, this);
-
-// #endregion
-
-// #region object overrides
-
-
-///// Determines whether the specified [System.Object] is equal to this instance.
-/////
-///// * [obj]: The [System.Object] to compare with this instance.
-///// 
-///// `true` if the specified [System.Object] is equal to this instance;
-///// otherwise, `false`.
-///// 
-//@override bool Equals(object obj) => obj is LocalDateTime && Equals(obj);
-
-
+  
   /// Returns a hash code for this instance.
   ///
   /// A hash code for this instance, suitable for use in hashing algorithms and data
   /// structures like a hash table.
-  @override int get hashCode => hash3(date, time, Calendar); // HashCodeHelper.Hash(date, time, Calendar);
-//#endregion
+  @override int get hashCode => hash3(date, time, calendar);
+
+  /// Returns this date/time, with the given date adjuster applied to it, maintaining the existing time of day.
+  ///
+  /// If the adjuster attempts to construct an
+  /// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
+  /// that construction attempt will be propagated through this method.
+  ///
+  /// * [adjuster]: The adjuster to apply.
+  /// Returns: The adjusted date/time.
+  LocalDateTime adjustDate(LocalDate Function(LocalDate) adjuster) => date.adjust(adjuster).at(time);
 
 
-/// Returns this date/time, with the given date adjuster applied to it, maintaing the existing time of day.
-///
-/// If the adjuster attempts to construct an
-/// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
-/// that construction attempt will be propagated through this method.
-///
-/// * [adjuster]: The adjuster to apply.
-/// Returns: The adjusted date/time.
-
-  LocalDateTime WithDate(LocalDate Function(LocalDate) adjuster) =>
-      date.withAdjustment(adjuster).at(time);
+  /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
+  ///
+  /// If the adjuster attempts to construct an invalid time, any exception thrown by
+  /// that construction attempt will be propagated through this method.
+  ///
+  /// * [adjuster]: The adjuster to apply.
+  /// Returns: The adjusted date/time.
+  LocalDateTime adjustTime(LocalTime Function(LocalTime) adjuster) => date.at(time.adjust(adjuster));
 
 
-/// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
-///
-/// If the adjuster attempts to construct an invalid time, any exception thrown by
-/// that construction attempt will be propagated through this method.
-///
-/// * [adjuster]: The adjuster to apply.
-/// Returns: The adjusted date/time.
-
-  LocalDateTime WithTime(LocalTime Function(LocalTime) adjuster) => date.at(time.With(adjuster));
-
-
-/// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
-/// The returned LocalDateTime is likely to have different date field values to this one.
-/// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
-///
-/// * [calendar]: The calendar system to convert this local date to.
-/// Returns: The converted LocalDateTime.
-
-  LocalDateTime WithCalendar(CalendarSystem calendar) {
+  /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
+  /// The returned LocalDateTime is likely to have different date field values to this one.
+  /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
+  ///
+  /// * [calendar]: The calendar system to convert this local date to.
+  /// Returns: The converted LocalDateTime.
+  LocalDateTime withCalendar(CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
     return new LocalDateTime(date.withCalendar(calendar), time);
   }
 
 
-/// Returns a new LocalDateTime representing the current value with the given number of years added.
-///
-/// If the resulting date is invalid, lower fields (typically the day of month) are reduced to find a valid value.
-/// For example, adding one year to February 29th 2012 will return February 28th 2013; subtracting one year from
-/// February 29th 2012 will return February 28th 2011.
-///
-/// * [years]: The number of years to add
-/// Returns: The current value plus the given number of years.
-
-  LocalDateTime PlusYears(int years) => new LocalDateTime(date.plusYears(years), time);
-
-
-/// Returns a new LocalDateTime representing the current value with the given number of months added.
-///
-/// This method does not try to maintain the year of the current value, so adding four months to a value in
-/// October will result in a value in the following February.
-///
-/// If the resulting date is invalid, the day of month is reduced to find a valid value.
-/// For example, adding one month to January 30th 2011 will return February 28th 2011; subtracting one month from
-/// March 30th 2011 will return February 28th 2011.
-///
-/// * [months]: The number of months to add
-/// Returns: The current value plus the given number of months.
-
-  LocalDateTime PlusMonths(int months) => new LocalDateTime(date.plusMonths(months), time);
+  /// Returns a new LocalDateTime representing the current value with the given number of years added.
+  ///
+  /// If the resulting date is invalid, lower fields (typically the day of month) are reduced to find a valid value.
+  /// For example, adding one year to February 29th 2012 will return February 28th 2013; subtracting one year from
+  /// February 29th 2012 will return February 28th 2011.
+  ///
+  /// * [years]: The number of years to add
+  /// Returns: The current value plus the given number of years.
+  LocalDateTime plusYears(int years) => new LocalDateTime(date.plusYears(years), time);
 
 
-/// Returns a new LocalDateTime representing the current value with the given number of days added.
-///
-/// This method does not try to maintain the month or year of the current value, so adding 3 days to a value on January 30th
-/// will result in a value on February 2nd.
-///
-/// * [days]: The number of days to add
-/// Returns: The current value plus the given number of days.
-
-  LocalDateTime PlusDays(int days) => new LocalDateTime(date.plusDays(days), time);
-
-
-/// Returns a new LocalDateTime representing the current value with the given number of weeks added.
-///
-/// * [weeks]: The number of weeks to add
-/// Returns: The current value plus the given number of weeks.
-
-  LocalDateTime PlusWeeks(int weeks) => new LocalDateTime(date.plusWeeks(weeks), time);
+  /// Returns a new LocalDateTime representing the current value with the given number of months added.
+  ///
+  /// This method does not try to maintain the year of the current value, so adding four months to a value in
+  /// October will result in a value in the following February.
+  ///
+  /// If the resulting date is invalid, the day of month is reduced to find a valid value.
+  /// For example, adding one month to January 30th 2011 will return February 28th 2011; subtracting one month from
+  /// March 30th 2011 will return February 28th 2011.
+  ///
+  /// * [months]: The number of months to add
+  /// Returns: The current value plus the given number of months.
+  LocalDateTime plusMonths(int months) => new LocalDateTime(date.plusMonths(months), time);
 
 
-/// Returns a new LocalDateTime representing the current value with the given number of hours added.
-///
-/// * [hours]: The number of hours to add
-/// Returns: The current value plus the given number of hours.
-
-  LocalDateTime PlusHours(int hours) => TimePeriodField.Hours.AddDateTime(this, hours);
-
-
-/// Returns a new LocalDateTime representing the current value with the given number of minutes added.
-///
-/// * [minutes]: The number of minutes to add
-/// Returns: The current value plus the given number of minutes.
-
-  LocalDateTime PlusMinutes(int minutes) => TimePeriodField.Minutes.AddDateTime(this, minutes);
+  /// Returns a new LocalDateTime representing the current value with the given number of days added.
+  ///
+  /// This method does not try to maintain the month or year of the current value, so adding 3 days to a value on January 30th
+  /// will result in a value on February 2nd.
+  ///
+  /// * [days]: The number of days to add
+  /// Returns: The current value plus the given number of days.
+  LocalDateTime plusDays(int days) => new LocalDateTime(date.plusDays(days), time);
 
 
-/// Returns a new LocalDateTime representing the current value with the given number of seconds added.
-///
-/// * [seconds]: The number of seconds to add
-/// Returns: The current value plus the given number of seconds.
-
-  LocalDateTime PlusSeconds(int seconds) => TimePeriodField.Seconds.AddDateTime(this, seconds);
-
-
-/// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
-///
-/// * [milliseconds]: The number of milliseconds to add
-/// Returns: The current value plus the given number of milliseconds.
-
-  LocalDateTime PlusMilliseconds(int milliseconds) =>
-      TimePeriodField.Milliseconds.AddDateTime(this, milliseconds);
+  /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
+  ///
+  /// * [weeks]: The number of weeks to add
+  /// Returns: The current value plus the given number of weeks.
+  LocalDateTime plusWeeks(int weeks) => new LocalDateTime(date.plusWeeks(weeks), time);
 
 
-/// Returns a new LocalDateTime representing the current value with the given number of ticks added.
-///
-/// * [ticks]: The number of ticks to add
-/// Returns: The current value plus the given number of ticks.
-
-  LocalDateTime PlusTicks(int ticks) => TimePeriodField.Ticks.AddDateTime(this, ticks);
-
-
-/// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
-///
-/// * [nanoseconds]: The number of nanoseconds to add
-/// Returns: The current value plus the given number of nanoseconds.
-
-  LocalDateTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.AddDateTime(this, nanoseconds);
+  /// Returns a new LocalDateTime representing the current value with the given number of hours added.
+  ///
+  /// * [hours]: The number of hours to add
+  /// Returns: The current value plus the given number of hours.
+  LocalDateTime plusHours(int hours) => TimePeriodField.hours.addDateTime(this, hours);
 
 
-/// Returns the next [LocalDateTime] falling on the specified [IsoDayOfWeek],
-/// at the same time of day as this value.
-/// This is a strict "next" - if this value on already falls on the target
-/// day of the week, the returned value will be a week later.
-///
-/// * [targetDayOfWeek]: The ISO day of the week to return the next date of.
-/// Returns: The next [LocalDateTime] falling on the specified day of the week.
-/// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
-/// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
-/// week (Monday to Sunday).
-
-  LocalDateTime Next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.next(targetDayOfWeek), time);
+  /// Returns a new LocalDateTime representing the current value with the given number of minutes added.
+  ///
+  /// * [minutes]: The number of minutes to add
+  /// Returns: The current value plus the given number of minutes.
+  LocalDateTime plusMinutes(int minutes) => TimePeriodField.minutes.addDateTime(this, minutes);
 
 
-/// Returns the previous [LocalDateTime] falling on the specified [IsoDayOfWeek],
-/// at the same time of day as this value.
-/// This is a strict "previous" - if this value on already falls on the target
-/// day of the week, the returned value will be a week earlier.
-///
-/// * [targetDayOfWeek]: The ISO day of the week to return the previous date of.
-/// Returns: The previous [LocalDateTime] falling on the specified day of the week.
-/// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
-/// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
-/// week (Monday to Sunday).
-
-  LocalDateTime Previous(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.previous(targetDayOfWeek), time);
+  /// Returns a new LocalDateTime representing the current value with the given number of seconds added.
+  ///
+  /// * [seconds]: The number of seconds to add
+  /// Returns: The current value plus the given number of seconds.
+  LocalDateTime plusSeconds(int seconds) => TimePeriodField.seconds.addDateTime(this, seconds);
 
 
-/// Returns an [OffsetDateTime] for this local date/time with the given offset.
-///
-/// This method is purely a convenient alternative to calling the [OffsetDateTime] constructor directly.
-/// * [offset]: The offset to apply.
-/// Returns: The result of this local date/time offset by the given amount.
+  /// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
+  ///
+  /// * [milliseconds]: The number of milliseconds to add
+  /// Returns: The current value plus the given number of milliseconds.
+  LocalDateTime plusMilliseconds(int milliseconds) =>
+      TimePeriodField.milliseconds.addDateTime(this, milliseconds);
 
-  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.lessTrust(date.yearMonthDayCalendar, time, offset);
+
+  /// Returns a new LocalDateTime representing the current value with the given number of ticks added.
+  ///
+  /// * [ticks]: The number of ticks to add
+  /// Returns: The current value plus the given number of ticks.
+  LocalDateTime plusTicks(int ticks) => TimePeriodField.ticks.addDateTime(this, ticks);
 
 
-/// Returns the mapping of this local date/time within [DateTimeZone.utc].
-///
-/// As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.
-/// Returns: The result of mapping this local date/time in UTC.
+  /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.
+  ///
+  /// * [nanoseconds]: The number of nanoseconds to add
+  /// Returns: The current value plus the given number of nanoseconds.
+  LocalDateTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addDateTime(this, nanoseconds);
 
-  ZonedDateTime InUtc() =>
+
+  /// Returns the next [LocalDateTime] falling on the specified [IsoDayOfWeek],
+  /// at the same time of day as this value.
+  /// This is a strict "next" - if this value on already falls on the target
+  /// day of the week, the returned value will be a week later.
+  ///
+  /// * [targetDayOfWeek]: The ISO day of the week to return the next date of.
+  /// Returns: The next [LocalDateTime] falling on the specified day of the week.
+  /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
+  /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
+  /// week (Monday to Sunday).
+  LocalDateTime next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.next(targetDayOfWeek), time);
+
+
+  /// Returns the previous [LocalDateTime] falling on the specified [IsoDayOfWeek],
+  /// at the same time of day as this value.
+  /// This is a strict "previous" - if this value on already falls on the target
+  /// day of the week, the returned value will be a week earlier.
+  ///
+  /// * [targetDayOfWeek]: The ISO day of the week to return the previous date of.
+  /// Returns: The previous [LocalDateTime] falling on the specified day of the week.
+  /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
+  /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
+  /// week (Monday to Sunday).
+  LocalDateTime previous(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.previous(targetDayOfWeek), time);
+
+
+  /// Returns an [OffsetDateTime] for this local date/time with the given offset.
+  ///
+  /// This method is purely a convenient alternative to calling the [OffsetDateTime] constructor directly.
+  /// * [offset]: The offset to apply.
+  /// Returns: The result of this local date/time offset by the given amount.
+  OffsetDateTime withOffset(Offset offset) => new OffsetDateTime.lessTrust(date.yearMonthDayCalendar, time, offset);
+
+
+  /// Returns the mapping of this local date/time within [DateTimeZone.utc].
+  ///
+  /// As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.
+  /// Returns: The result of mapping this local date/time in UTC.
+  ZonedDateTime inUtc() =>
   // Use the @internal constructors to avoid validation. We know it will be fine.
-  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.NanosecondOfDay, Offset.zero), DateTimeZone.utc);
+  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
-/// Returns the mapping of this local date/time within the given [DateTimeZone],
-/// with "strict" rules applied such that an exception is thrown if either the mapping is
-/// ambiguous or the time is skipped.
-///
-/// See [InZoneLeniently] and [InZone] for alternative ways to map a local time to a
-/// specific instant.
-/// This is solely a convenience method for calling [DateTimeZone.atStrictly].
-///
-/// * [zone]: The time zone in which to map this local date/time.
-/// * [SkippedTimeException]: This local date/time is skipped in the given time zone.
-/// * [AmbiguousTimeException]: This local date/time is ambiguous in the given time zone.
-/// Returns: The result of mapping this local date/time in the given time zone.
-
-  ZonedDateTime InZoneStrictly(DateTimeZone zone) {
+  /// Returns the mapping of this local date/time within the given [DateTimeZone],
+  /// with "strict" rules applied such that an exception is thrown if either the mapping is
+  /// ambiguous or the time is skipped.
+  ///
+  /// See [inZoneLeniently] and [inZone] for alternative ways to map a local time to a
+  /// specific instant.
+  /// This is solely a convenience method for calling [DateTimeZone.atStrictly].
+  ///
+  /// * [zone]: The time zone in which to map this local date/time.
+  /// * [SkippedTimeException]: This local date/time is skipped in the given time zone.
+  /// * [AmbiguousTimeException]: This local date/time is ambiguous in the given time zone.
+  /// Returns: The result of mapping this local date/time in the given time zone.
+  ZonedDateTime inZoneStrictly(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
     return zone.atStrictly(this);
   }
 
 
-/// Returns the mapping of this local date/time within the given [DateTimeZone],
-/// with "lenient" rules applied such that ambiguous values map to the earlier of the alternatives, and
-/// "skipped" values are shifted forward by the duration of the "gap".
-///
-/// See [InZoneStrictly] and [InZone] for alternative ways to map a local time to a
-/// specific instant.
-/// This is solely a convenience method for calling [DateTimeZone.atLeniently].
-/// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
-/// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
-/// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
-/// by using [InZone(DateTimeZone, ZoneLocalMappingResolver)] and passing a resolver that combines the
-/// * [Resolvers.ReturnLater] and [Resolvers.ReturnStartOfIntervalAfter] resolvers.
-///
-/// * [zone]: The time zone in which to map this local date/time.
-/// Returns: The result of mapping this local date/time in the given time zone.
-
-  ZonedDateTime InZoneLeniently(DateTimeZone zone) {
+  /// Returns the mapping of this local date/time within the given [DateTimeZone],
+  /// with "lenient" rules applied such that ambiguous values map to the earlier of the alternatives, and
+  /// "skipped" values are shifted forward by the duration of the "gap".
+  ///
+  /// See [inZoneStrictly] and [inZone] for alternative ways to map a local time to a
+  /// specific instant.
+  /// This is solely a convenience method for calling [DateTimeZone.atLeniently].
+  /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
+  /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
+  /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
+  /// by using [InZone(DateTimeZone, ZoneLocalMappingResolver)] and passing a resolver that combines the
+  /// * [Resolvers.returnLater] and [Resolvers.returnStartOfIntervalAfter] resolvers.
+  ///
+  /// * [zone]: The time zone in which to map this local date/time.
+  /// Returns: The result of mapping this local date/time in the given time zone.
+  ZonedDateTime inZoneLeniently(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
     return zone.atLeniently(this);
   }
 
 
-/// Resolves this local date and time into a [ZonedDateTime] in the given time zone, following
-/// the given [ZoneLocalMappingResolver] to handle ambiguity and skipped times.
-///
-/// See [InZoneStrictly] and [InZoneLeniently] for alternative ways to map a local time
-/// to a specific instant.
-/// This is a convenience method for calling [DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)].
-///
-/// * [zone]: The time zone to map this local date and time into
-/// * [resolver]: The resolver to apply to the mapping.
-/// Returns: The result of resolving the mapping.
-
-  ZonedDateTime InZone(DateTimeZone zone, ZoneLocalMappingResolver resolver) {
+  /// Resolves this local date and time into a [ZonedDateTime] in the given time zone, following
+  /// the given [ZoneLocalMappingResolver] to handle ambiguity and skipped times.
+  ///
+  /// See [inZoneStrictly] and [inZoneLeniently] for alternative ways to map a local time
+  /// to a specific instant.
+  /// This is a convenience method for calling [DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)].
+  ///
+  /// * [zone]: The time zone to map this local date and time into
+  /// * [resolver]: The resolver to apply to the mapping.
+  /// Returns: The result of resolving the mapping.
+  ZonedDateTime inZone(DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(resolver, 'resolver');
     return zone.resolveLocal(this, resolver);
@@ -751,8 +665,8 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [y]: The second date/time to compare.
   /// * [ArgumentException]: The two date/times have different calendar systems.
   /// Returns: The later date/time of [x] or [y].
-  static LocalDateTime Max(LocalDateTime x, LocalDateTime y) {
-    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
+  static LocalDateTime max(LocalDateTime x, LocalDateTime y) {
+    Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x > y ? x : y;
   }
 
@@ -763,13 +677,10 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   /// * [y]: The second date/time to compare.
   /// * [ArgumentException]: The two date/times have different calendar systems.
   /// Returns: The earlier date/time of [x] or [y].
-  static LocalDateTime Min(LocalDateTime x, LocalDateTime y) {
-    Preconditions.checkArgument(x.Calendar == y.Calendar, 'y', "Only values with the same calendar system can be compared");
+  static LocalDateTime min(LocalDateTime x, LocalDateTime y) {
+    Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x < y ? x : y;
   }
-
-// #region Formatting
-
 
   /// Returns a [String] that represents this instance.
   ///
@@ -778,22 +689,4 @@ class LocalDateTime implements Comparable<LocalDateTime> // : IEquatable<LocalDa
   // @override String toString() => TextShim.toStringLocalDateTime(this);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
-
-
-
-/// Formats the value of the current instance using the specified pattern.
-///
-/// A [String] containing the value of the current instance in the specified format.
-///
-/// * [patternText]: The [String] specifying the pattern to use,
-/// or null to use the default format pattern ("G").
-///
-/// * [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-/// or null to use the current thread's culture to obtain a format provider.
-///
-/// <filterpriority>2</filterpriority>
-//String ToString(String patternText, IFormatProvider formatProvider) =>
-//LocalDateTimePattern.BclSupport.Format(this, patternText, formatProvider);
-//#endregion Formatting
-
 }

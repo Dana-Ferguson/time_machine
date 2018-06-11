@@ -139,7 +139,7 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
   {
     var days = new LocalDate(year, monthOfYear, dayOfMonth).daysSinceEpoch;
-    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).NanosecondOfDay;
+    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
     return new Instant.trusted(new Span(days: days, nanoseconds:  nanoOfDay));
   }
 

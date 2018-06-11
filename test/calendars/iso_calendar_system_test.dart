@@ -37,21 +37,21 @@ void FieldsOf_UnixEpoch()
   // LocalDateTime just passes everything through anyway.
   LocalDateTime epoch = TimeConstants.unixEpoch.inUtc().localDateTime;
 
-  expect(1970, epoch.Year);
-  expect(1970, epoch.YearOfEra);
-  expect(1970, WeekYearRules.Iso.GetWeekYear(epoch.Date));
-  expect(1, WeekYearRules.Iso.GetWeekOfWeekYear(epoch.Date));
-  expect(1, epoch.Month);
-  expect(1, epoch.Day);
-  expect(1, epoch.DayOfYear);
-  expect(IsoDayOfWeek.thursday, epoch.DayOfWeek);
+  expect(1970, epoch.year);
+  expect(1970, epoch.yearOfEra);
+  expect(1970, WeekYearRules.Iso.GetWeekYear(epoch.date));
+  expect(1, WeekYearRules.Iso.GetWeekOfWeekYear(epoch.date));
+  expect(1, epoch.month);
+  expect(1, epoch.day);
+  expect(1, epoch.dayOfYear);
+  expect(IsoDayOfWeek.thursday, epoch.dayOfWeek);
   expect(Era.Common, epoch.era);
-  expect(0, epoch.Hour);
-  expect(0, epoch.Minute);
-  expect(0, epoch.Second);
-  expect(0, epoch.Millisecond);
-  expect(0, epoch.TickOfDay);
-  expect(0, epoch.TickOfSecond);
+  expect(0, epoch.hour);
+  expect(0, epoch.minute);
+  expect(0, epoch.second);
+  expect(0, epoch.millisecond);
+  expect(0, epoch.tickOfDay);
+  expect(0, epoch.tickOfSecond);
 }
 
 @Test()
@@ -62,31 +62,31 @@ void FieldsOf_GreatAchievement()
       TimeOfGreatAchievement.difference(UnixEpochDateTime))
       .inMicroseconds * TimeConstants.ticksPerMicrosecond).inUtc().localDateTime;
 
-  expect(2009, now.Year);
-  expect(2009, now.YearOfEra);
-  expect(2009, WeekYearRules.Iso.GetWeekYear(now.Date));
-  expect(48, WeekYearRules.Iso.GetWeekOfWeekYear(now.Date));
-  expect(11, now.Month);
-  expect(27, now.Day);
+  expect(2009, now.year);
+  expect(2009, now.yearOfEra);
+  expect(2009, WeekYearRules.Iso.GetWeekYear(now.date));
+  expect(48, WeekYearRules.Iso.GetWeekOfWeekYear(now.date));
+  expect(11, now.month);
+  expect(27, now.day);
   // expect(TimeOfGreatAchievement.dayOfYear, now.DayOfYear);
-  expect(IsoDayOfWeek.friday, now.DayOfWeek);
+  expect(IsoDayOfWeek.friday, now.dayOfWeek);
   expect(Era.Common, now.era);
-  expect(18, now.Hour);
-  expect(38, now.Minute);
-  expect(25, now.Second);
-  expect(345, now.Millisecond);
-  expect(3458760, now.TickOfSecond); // 3458765
+  expect(18, now.hour);
+  expect(38, now.minute);
+  expect(25, now.second);
+  expect(345, now.millisecond);
+  expect(3458760, now.tickOfSecond); // 3458765
   expect(18 * TimeConstants.ticksPerHour +
       38 * TimeConstants.ticksPerMinute +
       25 * TimeConstants.ticksPerSecond +
       3458760, // 3458765
-      now.TickOfDay);
+      now.tickOfDay);
 }
 
 @Test()
 void ConstructLocalInstant_WithAllFields()
 {
-  LocalInstant localAchievement = new LocalDateTime.fromYMDHMSM(2009, 11, 27, 18, 38, 25, 345).PlusTicks(extraTicks).ToLocalInstant();
+  LocalInstant localAchievement = new LocalDateTime.fromYMDHMSM(2009, 11, 27, 18, 38, 25, 345).plusTicks(extraTicks).toLocalInstant();
   int bclTicks = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds * TimeConstants.ticksPerMicrosecond;
   int bclDays = (bclTicks ~/ TimeConstants.ticksPerDay);
   int bclTickOfDay = bclTicks % TimeConstants.ticksPerDay;

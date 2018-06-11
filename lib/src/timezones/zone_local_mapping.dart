@@ -145,5 +145,5 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   @private ZonedDateTime BuildZonedDateTime(ZoneInterval interval) =>
-      new ZonedDateTime.trusted(localDateTime.WithOffset(interval.wallOffset), Zone);
+      new ZonedDateTime.trusted(localDateTime.withOffset(interval.wallOffset), Zone);
 }

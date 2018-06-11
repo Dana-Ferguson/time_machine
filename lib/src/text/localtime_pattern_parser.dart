@@ -20,23 +20,23 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\"': SteppedPatternBuilder.HandleQuote /**<LocalTime, LocalTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<LocalTime, LocalTimeParseBucket>*/,
     '.': TimePatternHelper.CreatePeriodHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
     ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours12, 1, 12, (value) => value.ClockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours24, 0, 23, (value) => value.Hour, (bucket, value) => bucket.Hours24 = value),
+        2, PatternFields.hours24, 0, 23, (value) => value.hour, (bucket, value) => bucket.Hours24 = value),
     'm': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.minutes, 0, 59, (value) => value.Minute, (bucket, value) => bucket.Minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Minutes = value),
     's': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.seconds, 0, 59, (value) => value.Second, (bucket, value) => bucket.Seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Seconds = value),
     'f': TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
     'F': TimePatternHelper.CreateFractionHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
-    't': TimePatternHelper.CreateAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.Hour, (bucket, value) => bucket.AmPm = value)
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+    't': TimePatternHelper.CreateAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.AmPm = value)
   };
 
   LocalTimePatternParser(this.templateValue);
@@ -110,20 +110,20 @@ import 'package:time_machine/time_machine_patterns.dart';
   @override
   ParseResult<LocalTime> CalculateValue(PatternFields usedFields, String text) {
     if (usedFields.HasAny(PatternFields.embeddedTime)) {
-      return ParseResult.ForValue<LocalTime>(LocalTime.FromHourMinuteSecondNanosecond(Hours24, Minutes, Seconds, FractionalSeconds));
+      return ParseResult.ForValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(Hours24, Minutes, Seconds, FractionalSeconds));
     }
     if (AmPm == 2) {
-      AmPm = TemplateValue.Hour ~/ 12;
+      AmPm = TemplateValue.hour ~/ 12;
     }
     var hour = new OutBox<int>(0);
     ParseResult<LocalTime> failure = DetermineHour(usedFields, text, /*todo:out int*/ hour);
     if (failure != null) {
       return failure;
     }
-    int minutes = usedFields.HasAny(PatternFields.minutes) ? Minutes : TemplateValue.Minute;
-    int seconds = usedFields.HasAny(PatternFields.seconds) ? Seconds : TemplateValue.Second;
-    int fraction = usedFields.HasAny(PatternFields.fractionalSeconds) ? FractionalSeconds : TemplateValue.NanosecondOfSecond;
-    return ParseResult.ForValue<LocalTime>(LocalTime.FromHourMinuteSecondNanosecond(hour.value, minutes, seconds, fraction));
+    int minutes = usedFields.HasAny(PatternFields.minutes) ? Minutes : TemplateValue.minute;
+    int seconds = usedFields.HasAny(PatternFields.seconds) ? Seconds : TemplateValue.second;
+    int fraction = usedFields.HasAny(PatternFields.fractionalSeconds) ? FractionalSeconds : TemplateValue.nanosecondOfSecond;
+    return ParseResult.ForValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(hour.value, minutes, seconds, fraction));
   }
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);
@@ -153,13 +153,13 @@ import 'package:time_machine/time_machine_patterns.dart';
       hour.value = (Hours12 % 12) + AmPm * 12;
     }
     else if (x == PatternFields.hours12) {
-      hour.value = (Hours12 % 12) + (TemplateValue.Hour ~/ 12) * 12;
+      hour.value = (Hours12 % 12) + (TemplateValue.hour ~/ 12) * 12;
     }
     else if (x == PatternFields.amPm) {
-      hour.value = (TemplateValue.Hour % 12) + AmPm * 12;
+      hour.value = (TemplateValue.hour % 12) + AmPm * 12;
     }
     else {
-      hour.value = TemplateValue.Hour;
+      hour.value = TemplateValue.hour;
     }
 
     /*

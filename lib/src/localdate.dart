@@ -105,7 +105,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// The [LocalDateTime] representing midnight on this local date, in the same calendar
   /// system.
-  LocalDateTime atMidnight() => new LocalDateTime(this, LocalTime.Midnight);
+  LocalDateTime atMidnight() => new LocalDateTime(this, LocalTime.midnight);
 
   /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
   /// of [DateTimeKind.Unspecified]. The result is midnight on the day represented
@@ -532,7 +532,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The [LocalDateTime] representation of the given time on this date
   LocalDateTime at(LocalTime time) => new LocalDateTime(this, time);
 
-  LocalDate withAdjustment(LocalDate Function(LocalDate) adjuster) => adjuster(this);
+  LocalDate adjust(LocalDate Function(LocalDate) adjuster) => adjuster(this);
 
   /// Returns a [String] that represents this instance.
   ///

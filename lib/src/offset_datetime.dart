@@ -44,7 +44,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   // TRUSTED
   @internal OffsetDateTime.lessTrust(this.yearMonthDayCalendar, LocalTime time, Offset offset)
-      : _nanosecondOfDay = time.NanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
+      : _nanosecondOfDay = time.nanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
     Calendar.validateYearMonthDay_(yearMonthDay);
   }
@@ -97,7 +97,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// [localDateTime]: Local date and time to represent
   /// [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this.fullTrust(localDateTime.Date.yearMonthDayCalendar, localDateTime.NanosecondOfDay, offset); // _combineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
+      : this.fullTrust(localDateTime.date.yearMonthDayCalendar, localDateTime.nanosecondOfDay, offset); // _combineNanoOfDayAndOffset(localDateTime.NanosecondOfDay, offset));
 
   static int _combineNanoOfDayAndOffset(int nanoOfDay, Offset offset) {
     return nanoOfDay + offset.nanoseconds;
@@ -265,7 +265,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 /// Returns: The adjusted offset date/time.
 
   OffsetDateTime WithDate(LocalDate Function(LocalDate) adjuster) {
-    LocalDate newDate = Date.withAdjustment(adjuster);
+    LocalDate newDate = Date.adjust(adjuster);
     return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
@@ -278,8 +278,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 /// Returns: The adjusted offset date/time.
 
   OffsetDateTime WithTime(LocalTime Function(LocalTime) adjuster) {
-    LocalTime newTime = TimeOfDay.With(adjuster);
-    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, newTime.NanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+    LocalTime newTime = TimeOfDay.adjust(adjuster);
+    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, newTime.nanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
 /// Creates a new OffsetDateTime representing the instant in time in the same calendar,

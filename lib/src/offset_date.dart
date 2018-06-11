@@ -77,7 +77,7 @@ class OffsetDate // : IEquatable<OffsetDate>
 /// Returns: The adjusted offset date.
 
   OffsetDate With(LocalDate Function(LocalDate) adjuster) =>
-      new OffsetDate(date.withAdjustment(adjuster), _offset);
+      new OffsetDate(date.adjust(adjuster), _offset);
 
 
 /// Creates a new [OffsetDate] representing the same physical date and offset, but in a different calendar.

@@ -95,7 +95,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return timeResult.ConvertError<OffsetTime>();
     }
     LocalTime date = timeResult.Value;
-    return ParseResult.ForValue<OffsetTime>(date.WithOffset(offset));
+    return ParseResult.ForValue<OffsetTime>(date.withOffset(offset));
   }
 }
 

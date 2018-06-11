@@ -25,12 +25,12 @@ class _AddTimeResult {
 /// of code elegance.
 @internal /*sealed*/ class TimePeriodField
 {
-  @internal static final TimePeriodField Nanoseconds = new TimePeriodField(1);
-  @internal static final TimePeriodField Ticks = new TimePeriodField(TimeConstants.nanosecondsPerTick);
-  @internal static final TimePeriodField Milliseconds = new TimePeriodField(TimeConstants.nanosecondsPerMillisecond);
-  @internal static final TimePeriodField Seconds = new TimePeriodField(TimeConstants.nanosecondsPerSecond);
-  @internal static final TimePeriodField Minutes = new TimePeriodField(TimeConstants.nanosecondsPerMinute);
-  @internal static final TimePeriodField Hours = new TimePeriodField(TimeConstants.nanosecondsPerHour);
+  @internal static final TimePeriodField nanoseconds = new TimePeriodField(1);
+  @internal static final TimePeriodField ticks = new TimePeriodField(TimeConstants.nanosecondsPerTick);
+  @internal static final TimePeriodField milliseconds = new TimePeriodField(TimeConstants.nanosecondsPerMillisecond);
+  @internal static final TimePeriodField seconds = new TimePeriodField(TimeConstants.nanosecondsPerSecond);
+  @internal static final TimePeriodField minutes = new TimePeriodField(TimeConstants.nanosecondsPerMinute);
+  @internal static final TimePeriodField hours = new TimePeriodField(TimeConstants.nanosecondsPerHour);
 
   @private final int unitNanoseconds;
   // The largest number of units (positive or negative) we can multiply unitNanoseconds by without overflowing a long.
@@ -41,17 +41,17 @@ class _AddTimeResult {
         maxLongUnits = Utility.intMaxValue ~/ unitNanoseconds,
         unitsPerDay = TimeConstants.nanosecondsPerDay ~/ unitNanoseconds;
 
-  @internal LocalDateTime AddDateTime(LocalDateTime start, int units)
+  @internal LocalDateTime addDateTime(LocalDateTime start, int units)
   {
     // int extraDays = 0;
-    var addTimeResult = AddTime(start.TimeOfDay, units, 0);
+    var addTimeResult = addTime(start.time, units, 0);
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-    LocalDate date = addTimeResult.extraDays == 0 ? start.Date :  start.Date.plusDays(addTimeResult.extraDays);
+    LocalDate date = addTimeResult.extraDays == 0 ? start.date :  start.date.plusDays(addTimeResult.extraDays);
     return new LocalDateTime(date, addTimeResult.time);
   }
 
   // todo: is this actually used anywhere?
-  @internal LocalTime AddTimeSimple(LocalTime localTime, int value)
+  @internal LocalTime addTimeSimple(LocalTime localTime, int value)
   {
     // unchecked
     {
@@ -64,7 +64,7 @@ class _AddTimeResult {
           value = value % unitsPerDay;
         }
         int nanosToAdd = value * unitNanoseconds;
-        int newNanos = localTime.NanosecondOfDay + nanosToAdd;
+        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos >= TimeConstants.nanosecondsPerDay)
         {
           newNanos -= TimeConstants.nanosecondsPerDay;
@@ -78,7 +78,7 @@ class _AddTimeResult {
           value = -(-value % unitsPerDay);
         }
         int nanosToAdd = value * unitNanoseconds;
-        int newNanos = localTime.NanosecondOfDay + nanosToAdd;
+        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos < 0)
         {
           newNanos += TimeConstants.nanosecondsPerDay;
@@ -88,8 +88,8 @@ class _AddTimeResult {
     }
   }
 
-  @internal _AddTimeResult AddTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
-// if (extraDays == null) return AddTimeSimple(localTime, value);
+  @internal _AddTimeResult addTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
+    // if (extraDays == null) return AddTimeSimple(localTime, value);
 
     // unchecked
     {
@@ -106,7 +106,7 @@ class _AddTimeResult {
           value = value % unitsPerDay;
         }
         int nanosToAdd = value * unitNanoseconds;
-        int newNanos = localTime.NanosecondOfDay + nanosToAdd;
+        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos >= TimeConstants.nanosecondsPerDay) {
           newNanos -= TimeConstants.nanosecondsPerDay;
           days = /*checked*/(days + 1);
@@ -122,7 +122,7 @@ class _AddTimeResult {
           value = -(-value % unitsPerDay);
         }
         int nanosToAdd = value * unitNanoseconds;
-        int newNanos = localTime.NanosecondOfDay + nanosToAdd;
+        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos < 0) {
           newNanos += TimeConstants.nanosecondsPerDay;
           days = /*checked*/(days - 1);
@@ -133,23 +133,23 @@ class _AddTimeResult {
     }
   }
 
-  @internal int UnitsBetween(LocalDateTime start, LocalDateTime end)
+  @internal int unitsBetween(LocalDateTime start, LocalDateTime end)
   {
-    LocalInstant startLocalInstant = start.ToLocalInstant();
-    LocalInstant endLocalInstant = end.ToLocalInstant();
+    LocalInstant startLocalInstant = start.toLocalInstant();
+    LocalInstant endLocalInstant = end.toLocalInstant();
     Span span = endLocalInstant.TimeSinceLocalEpoch - startLocalInstant.TimeSinceLocalEpoch;
-    return GetUnitsInDuration(span);
+    return getUnitsInDuration(span);
   }
 
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
-  @internal int GetUnitsInDuration(Span span) => span.totalNanoseconds ~/ unitNanoseconds;
+  @internal int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ unitNanoseconds;
 //      span.IsInt64Representable
 //          ? span.ToInt64Nanoseconds() / unitNanoseconds
 //          : (span.ToDecimalNanoseconds() / unitNanoseconds);
 
-  /// Returns a [Duration] representing the given number of units.
-  @internal Span ToDuration(int units) =>
+  /// Returns a [Span] representing the given number of units.
+  @internal Span toSpan(int units) =>
       units >= -maxLongUnits && units <= maxLongUnits
           ? new Span(nanoseconds: units * unitNanoseconds)
           : new Span(nanoseconds: units * /*(decimal)*/unitNanoseconds);

@@ -30,8 +30,8 @@ Future main() async {
 class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
-  @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.Date.withOffset(new Offset.fromHours(1));
-  @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.Date.withOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.date.withOffset(new Offset.fromHours(1));
+  @private static final OffsetDate MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.date.withOffset(new Offset.fromHours(1));
 
 // todo: @SkipMe.unimplemented()
 // @private static final OffsetDate SampleOffsetDateCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.Date.WithOffset(Offset.zero);

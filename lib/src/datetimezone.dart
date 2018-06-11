@@ -121,7 +121,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [localDateTime]: The local date and time to map in this time zone.
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
   @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
-    LocalInstant localInstant = localDateTime.ToLocalInstant();
+    LocalInstant localInstant = localDateTime.toLocalInstant();
     Instant firstGuess = localInstant.MinusZeroOffset();
     ZoneInterval interval = getZoneInterval(firstGuess);
 
@@ -183,7 +183,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
       case 1:
       case 2:
-        return new ZonedDateTime.trusted(midnight.WithOffset(mapping.EarlyInterval.wallOffset), this);
+        return new ZonedDateTime.trusted(midnight.withOffset(mapping.EarlyInterval.wallOffset), this);
       default:
         throw new StateError("This won't happen.");
     }
@@ -221,7 +221,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [AmbiguousTimeException]: The given local date/time is ambiguous in this time zone.
   /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
   ZonedDateTime atStrictly(LocalDateTime localDateTime) =>
-      resolveLocal(localDateTime, Resolvers.StrictResolver);
+      resolveLocal(localDateTime, Resolvers.strictResolver);
 
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
@@ -234,13 +234,13 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
   /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
   /// by using [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)], passing in a resolver
-  /// created from [Resolvers.ReturnLater] and [Resolvers.ReturnStartOfIntervalAfter].
+  /// created from [Resolvers.returnLater] and [Resolvers.returnStartOfIntervalAfter].
   ///
   /// [localDateTime]: The local date/time to map.
   /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
   /// or the forward-shifted value if the given local date/time is skipped.
   ZonedDateTime atLeniently(LocalDateTime localDateTime) =>
-      resolveLocal(localDateTime, Resolvers.LenientResolver);
+      resolveLocal(localDateTime, Resolvers.lenientResolver);
 
 // #endregion
 

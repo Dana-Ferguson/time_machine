@@ -14,7 +14,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 /// Chooses between two [ZonedDateTime] values that resolve to the same [LocalDateTime].
 ///
-/// This delegate is used by [Resolvers.CreateMappingResolver] when handling an ambiguous local time,
+/// This delegate is used by [Resolvers.createMappingResolver] when handling an ambiguous local time,
 /// due to clocks moving backward in a time zone transition (usually due to an autumnal daylight saving transition).
 ///
 /// The returned value should be one of the two parameter values, based on the policy of the specific
@@ -38,7 +38,7 @@ typedef ZonedDateTime AmbiguousTimeResolver (ZonedDateTime earlier, ZonedDateTim
 /// Resolves a [LocalDateTime] to a [ZonedDateTime] in the situation
 /// where the requested local time does not exist in the target time zone.
 ///
-/// This delegate is used by [Resolvers.CreateMappingResolver] when handling the situation where the
+/// This delegate is used by [Resolvers.createMappingResolver] when handling the situation where the
 /// requested local time does not exist, due to clocks moving forward in a time zone transition (usually due to a
 /// spring daylight saving transition).
 ///
@@ -66,7 +66,7 @@ typedef ZonedDateTime SkippedTimeResolver (LocalDateTime localDateTime,  DateTim
 
 /// Resolves the result of attempting to map a local date and time to a target time zone.
 ///
-/// This delegate is consumed by [LocalDateTime.InZone] and [DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)],
+/// This delegate is consumed by [LocalDateTime.inZone] and [DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)],
 /// among others. It provides the strategy for converting a [ZoneLocalMapping] (the result of attempting
 /// to map a local date and time to a target time zone) to a [ZonedDateTime].
 ///

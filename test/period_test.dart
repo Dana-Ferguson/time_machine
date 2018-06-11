@@ -79,7 +79,7 @@ void BetweenLocalDateTimes_MovingBackwardWithHoursAndMinutes_RoundsTowardsStart(
 void BetweenLocalDateTimes_AcrossDays()
 {
   Period expected = new Period.fromHours(23) + new Period.fromMinutes(59);
-  Period actual = Period.Between(TestDateTime1, TestDateTime1.PlusDays(1).PlusMinutes(-1));
+  Period actual = Period.Between(TestDateTime1, TestDateTime1.plusDays(1).plusMinutes(-1));
   expect(expected, actual);
 }
 
@@ -87,7 +87,7 @@ void BetweenLocalDateTimes_AcrossDays()
 void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
 {
   Period expected = new Period.fromMinutes(24 * 60 - 1) + new Period.fromSeconds(59);
-  Period actual = Period.Between(TestDateTime1, TestDateTime1.PlusDays(1).PlusSeconds(-1), PeriodUnits.minutes | PeriodUnits.seconds);
+  Period actual = Period.Between(TestDateTime1, TestDateTime1.plusDays(1).plusSeconds(-1), PeriodUnits.minutes | PeriodUnits.seconds);
   expect(expected, actual);
 }
 
@@ -96,7 +96,7 @@ void BetweenLocalDateTimes_NotInt64Representable()
 {
   LocalDateTime start = new LocalDateTime.fromYMDHMSM(-5000, 1, 1, 0, 1, 2, 123);
   LocalDateTime end = new LocalDateTime.fromYMDHMSM(9000, 1, 1, 1, 2, 3, 456);
-  expect((end.ToLocalInstant().TimeSinceLocalEpoch - start.ToLocalInstant().TimeSinceLocalEpoch).IsInt64Representable, isFalse);
+  expect((end.toLocalInstant().TimeSinceLocalEpoch - start.toLocalInstant().TimeSinceLocalEpoch).IsInt64Representable, isFalse);
 
   Period expected = (new PeriodBuilder()
     // 365.2425 * 14000 = 5113395
@@ -280,7 +280,7 @@ void BetweenLocalDateTimes_InvalidUnits()
 void BetweenLocalTimes_InvalidUnits()
 {
   LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t2 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
   expect(() => Period.BetweenTimes(t1, t2, new PeriodUnits(0)), throwsArgumentError);
   expect(() => Period.BetweenTimes(t1, t2, new PeriodUnits(-1)), throwsArgumentError);
   expect(() => Period.BetweenTimes(t1, t2, PeriodUnits.yearMonthDay), throwsArgumentError);
@@ -311,7 +311,7 @@ void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits 
 void BetweenLocalTimes_MovingForwards()
 {
   LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t2 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
   expect(new Period.fromHours(5) + new Period.fromMinutes(30) + new Period.fromSeconds(45) +
       new Period.fromMilliseconds(20) + new Period.fromTicks(5),
       Period.BetweenTimes(t1, t2));
@@ -320,7 +320,7 @@ void BetweenLocalTimes_MovingForwards()
 @Test()
 void BetweenLocalTimes_MovingBackwards()
 {
-  LocalTime t1 = LocalTime.FromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t1 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
   LocalTime t2 = new LocalTime(10, 0);
   expect(new Period.fromHours(-5) + new Period.fromMinutes(-30) + new Period.fromSeconds(-45) +
       new Period.fromMilliseconds(-20) + new Period.fromTicks(-5),
@@ -490,19 +490,19 @@ void HasTimeComponent_Compound()
   LocalDateTime dt2 = new LocalDateTime.fromYMDHMS(2000, 2, 4, 11, 50, 00);
 
   // Case 1: Entire period is date-based (no time units available)
-  expect(Period.BetweenDates(dt1.Date, dt2.Date).HasTimeComponent, isFalse);
+  expect(Period.BetweenDates(dt1.date, dt2.date).HasTimeComponent, isFalse);
 
   // Case 2: Period contains date and time units, but time units are all zero
-  expect(Period.Between(dt1.Date.at(LocalTime.Midnight), dt2.Date.at(LocalTime.Midnight)).HasTimeComponent, isFalse);
+  expect(Period.Between(dt1.date.at(LocalTime.midnight), dt2.date.at(LocalTime.midnight)).HasTimeComponent, isFalse);
 
   // Case 3: Entire period is time-based, but 0. (Same local time twice here.)
-  expect(Period.BetweenTimes(dt1.TimeOfDay, dt1.TimeOfDay).HasTimeComponent, isFalse);
+  expect(Period.BetweenTimes(dt1.time, dt1.time).HasTimeComponent, isFalse);
 
   // Case 4: Period contains date and time units, and some time units are non-zero
   expect(Period.Between(dt1, dt2).HasTimeComponent, isTrue);
 
   // Case 5: Entire period is time-based, and some time units are non-zero
-  expect(Period.BetweenTimes(dt1.TimeOfDay, dt2.TimeOfDay).HasTimeComponent, isTrue);
+  expect(Period.BetweenTimes(dt1.time, dt2.time).HasTimeComponent, isTrue);
 }
 
 @Test()
@@ -512,19 +512,19 @@ void HasDateComponent_Compound()
   LocalDateTime dt2 = new LocalDateTime.fromYMDHMS(2000, 2, 4, 11, 50, 00);
 
   // Case 1: Entire period is time-based (no date units available)
-  expect(Period.BetweenTimes(dt1.TimeOfDay, dt2.TimeOfDay).HasDateComponent, isFalse);
+  expect(Period.BetweenTimes(dt1.time, dt2.time).HasDateComponent, isFalse);
 
   // Case 2: Period contains date and time units, but date units are all zero
-  expect(Period.Between(dt1, dt1.Date.at(dt2.TimeOfDay)).HasDateComponent, isFalse);
+  expect(Period.Between(dt1, dt1.date.at(dt2.time)).HasDateComponent, isFalse);
 
   // Case 3: Entire period is date-based, but 0. (Same local date twice here.)
-  expect(Period.BetweenDates(dt1.Date, dt1.Date).HasDateComponent, isFalse);
+  expect(Period.BetweenDates(dt1.date, dt1.date).HasDateComponent, isFalse);
 
   // Case 4: Period contains date and time units, and some date units are non-zero
   expect(Period.Between(dt1, dt2).HasDateComponent, isTrue);
 
   // Case 5: Entire period is date-based, and some time units are non-zero
-  expect(Period.BetweenDates(dt1.Date, dt2.Date).HasDateComponent, isTrue);
+  expect(Period.BetweenDates(dt1.date, dt2.date).HasDateComponent, isTrue);
 }
 
 @Test()
@@ -891,16 +891,16 @@ void Between_ExtremeValues(PeriodUnits units)
   {
     return;
   }
-  var minValue = LocalDate.minIsoValue.at(LocalTime.MinValue);
-  var maxValue = LocalDate.maxIsoValue.at(LocalTime.MaxValue);
+  var minValue = LocalDate.minIsoValue.at(LocalTime.minValue);
+  var maxValue = LocalDate.maxIsoValue.at(LocalTime.maxValue);
   Period.Between(minValue, maxValue, units);
 }
 
 @Test()
 void Between_ExtremeValues_Overflow()
 {
-  var minValue = LocalDate.minIsoValue.at(LocalTime.MinValue);
-  var maxValue = LocalDate.maxIsoValue.at(LocalTime.MaxValue);
+  var minValue = LocalDate.minIsoValue.at(LocalTime.minValue);
+  var maxValue = LocalDate.maxIsoValue.at(LocalTime.maxValue);
   expect(() => Period.Between(minValue, maxValue, PeriodUnits.nanoseconds), throwsRangeError); // throwsStateError);
 }
 

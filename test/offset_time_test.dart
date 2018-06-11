@@ -78,17 +78,17 @@ void Equality()
 @Test()
 void On()
 {
-  var time = new LocalTime(14, 15, 12).PlusNanoseconds(123456789);
+  var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var offset = new Offset.fromHours(5);
 
-  expect(new OffsetTime(time, offset).On(date), time.On(date).WithOffset(offset));
+  expect(new OffsetTime(time, offset).On(date), time.atDate(date).withOffset(offset));
 }
 
 @Test()
 void WithOffset()
 {
-  var time = new LocalTime(14, 15, 12).PlusNanoseconds(123456789);
+  var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
   var initial = new OffsetTime(time, new Offset.fromHours(2));
   var actual = initial.WithOffset(new Offset.fromHours(5));
   var expected = new OffsetTime(time, new Offset.fromHours(5));

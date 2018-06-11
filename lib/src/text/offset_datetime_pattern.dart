@@ -37,7 +37,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
-  @internal static final OffsetDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0).WithOffset(Offset.zero);
+  @internal static final OffsetDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0).withOffset(Offset.zero);
 
   /// Gets an invariant offset date/time pattern based on ISO-8601 (down to the second), including offset from UTC.
   ///

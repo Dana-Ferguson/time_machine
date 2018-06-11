@@ -68,8 +68,8 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns.
-  @private static final ZonedDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.InUtc();
-  @private static final ZonedDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.InUtc();
+  @private static final ZonedDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.inUtc();
+  @private static final ZonedDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.inUtc();
 
   @internal final List<Data> InvalidPatternData = [
     new Data()
@@ -184,12 +184,12 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 5).InZoneStrictly(TestZone1)
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 5).inZoneStrictly(TestZone1)
       ..Message = TextErrorMessages.InvalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1)
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1)
       ..Message = TextErrorMessages.InvalidHour24,
 
     // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
@@ -230,23 +230,23 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data(TestZone1.Transition.InZone(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
-      ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnStartOfIntervalAfter),
+      ..Resolver = Resolvers.createMappingResolver(Resolvers.throwWhenAmbiguous, Resolvers.returnStartOfIntervalAfter),
 
     // Skipped value, resolver returns end of first interval
     new Data(TestZone1.Transition.minus(Span.epsilon).InZone(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
-      ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ThrowWhenAmbiguous, Resolvers.ReturnEndOfIntervalBefore),
+      ..Resolver = Resolvers.createMappingResolver(Resolvers.throwWhenAmbiguous, Resolvers.returnEndOfIntervalBefore),
 
     // Parse-only tests from LocalDateTimeTest.
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
       ..Text = "19 10 2011"
-      ..Template = new LocalDateTime.fromYMDHMS(2000, 1, 1, 16, 05, 20).InUtc(),
+      ..Template = new LocalDateTime.fromYMDHMS(2000, 1, 1, 16, 05, 20).inUtc(),
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "HH:mm:ss"
       ..Text = "16:05:20"
-      ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).InUtc(),
+      ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).inUtc(),
 
     // Parsing using the semi-colon "comma dot" specifier
     new Data.d(
@@ -277,7 +277,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data.b(2011, 10, 20, 0, 0, TestZone1)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:00"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).InZoneStrictly(TestZone1),
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1),
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00",
@@ -402,11 +402,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Text = "2013-01-13 15:44 UTC+00:00:05",
 
     // Valid offset for an unambiguous time
-    new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1))
+    new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).inZoneStrictly(TestZone1))
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2005-01-01 01:30 ab +01",
     // Valid offset (in the middle of the pattern) for an unambiguous time
-    new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).InZoneStrictly(TestZone1))
+    new Data(new LocalDateTime.fromYMDHM(2005, 1, 1, 1, 30).inZoneStrictly(TestZone1))
       ..Pattern = "yyyy-MM-dd o<g> HH:mm z"
       ..Text = "2005-01-01 +01 01:30 ab",
 
@@ -414,13 +414,13 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data(TestZone2.Transition.plus(new Span(minutes: 30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
-      ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped),
+      ..Resolver = Resolvers.createMappingResolver(Resolvers.returnLater, Resolvers.throwWhenSkipped),
 
     // Ambiguous value, resolver returns earlier value.
     new Data(TestZone2.Transition.plus(new Span(minutes: -30)).InZone(TestZone2))
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
-      ..Resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped),
+      ..Resolver = Resolvers.createMappingResolver(Resolvers.returnEarlier, Resolvers.throwWhenSkipped),
 
     // Ambiguous local value, but with offset for later value (smaller offset).
     new Data(TestZone2.Transition.plus(new Span(minutes: 30)).InZone(TestZone2))
@@ -758,7 +758,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     )).Build();
 
     var provider = await DateTimeZoneCache.getCache(source);
-    var pattern = ZonedDateTimePattern.Create2("z 'x'", CultureInfo.invariantCulture, Resolvers.StrictResolver,
+    var pattern = ZonedDateTimePattern.Create2("z 'x'", CultureInfo.invariantCulture, Resolvers.strictResolver,
         provider, TimeConstants.unixEpoch.inUtc());
 
     for (var id in provider.ids) {
@@ -784,20 +784,20 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   ///
   /// [value]: The value.
   Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePattern.DefaultTemplateValue) {
-    Resolver = Resolvers.StrictResolver;
+    Resolver = Resolvers.strictResolver;
     ZoneProvider = TestProvider;
   }
 
   Data.a(int year, int month, int day)
-      : this(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).InUtc());
+      : this(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).inUtc());
 
   // Coincidentally, we don't specify time zones in tests other than the
   // ones which just go down to the date and hour/minute.
   Data.b(int year, int month, int day, int hour, int minute, DateTimeZone zone)
-      : this(new LocalDateTime.fromYMDHM(year, month, day, hour, minute).InZoneStrictly(zone));
+      : this(new LocalDateTime.fromYMDHM(year, month, day, hour, minute).inZoneStrictly(zone));
 
   Data.c(int year, int month, int day, int hour, int minute, int second)
-      : this(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).InUtc());
+      : this(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).inUtc());
 
   Data.d(int year, int month, int day, int hour, int minute, int second, int millis)
       : this(new LocalDateTime.fromYMDHMSM(
@@ -807,7 +807,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       hour,
       minute,
       second,
-      millis).InUtc());
+      millis).inUtc());
 
   Data.e(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
       : this(new LocalDateTime.fromYMDHMSM(
@@ -817,7 +817,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       hour,
       minute,
       second,
-      millis).InZoneStrictly(zone));
+      millis).inZoneStrictly(zone));
 
   @internal
   @override

@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
-  @internal static final ZonedDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0).InUtc();
+  @internal static final ZonedDateTime DefaultTemplateValue = new LocalDateTime.fromYMDHM(2000, 1, 1, 0, 0).inUtc();
 
   /// Gets an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
   /// It corresponds to a custom pattern of "uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
@@ -149,7 +149,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern CreateWithInvariantCulture(String patternText, /*[CanBeNull]*/IDateTimeZoneProvider zoneProvider) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
+      Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
 
   /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the current
   /// culture, and a default template value of midnight January 1st 2000 UTC.
@@ -163,7 +163,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern CreateWithCurrentCulture(String patternText, /*[CanBeNull]*/IDateTimeZoneProvider zoneProvider) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.StrictResolver, zoneProvider, DefaultTemplateValue);
+      Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
 
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.

@@ -358,8 +358,8 @@ class Period // : IEquatable<Period>
   static Period Between(LocalDateTime start, LocalDateTime end, [PeriodUnits units = PeriodUnits.dateAndTime]) {
     Preconditions.checkArgument(units != PeriodUnits.none, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
-    CalendarSystem calendar = start.Calendar;
-    Preconditions.checkArgument(calendar == end.Calendar, 'end', "start and end must use the same calendar system");
+    CalendarSystem calendar = start.calendar;
+    Preconditions.checkArgument(calendar == end.calendar, 'end', "start and end must use the same calendar system");
 
     if (start == end) {
       return Zero;
@@ -370,29 +370,29 @@ class Period // : IEquatable<Period>
     // The date adjustment will always be valid, because it's just moving it towards start.
     // We need this for all date-based period fields. We could potentially optimize by not doing this
     // in cases where we've only got time fields...
-    LocalDate endDate = end.Date;
+    LocalDate endDate = end.date;
     if (start < end) {
-      if (start.TimeOfDay > end.TimeOfDay) {
+      if (start.time > end.time) {
         endDate = endDate.plusDays(-1);
       }
     }
-    else if (start > end && start.TimeOfDay < end.TimeOfDay) {
+    else if (start > end && start.time < end.time) {
       endDate = endDate.plusDays(1);
     }
 
     // Optimization for single field
     // todo: optimize me?
     Map betweenFunctionMap = {
-      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate)),
-      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.Date, endDate)),
-      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.Date, endDate)),
-      PeriodUnits.days: () => new Period.fromDays(daysBetween(start.Date, endDate)),
-      PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.Hours.UnitsBetween(start, end)),
-      PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.Minutes.UnitsBetween(start, end)),
-      PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.Seconds.UnitsBetween(start, end)),
-      PeriodUnits.milliseconds: () => new Period.fromMilliseconds(TimePeriodField.Milliseconds.UnitsBetween(start, end)),
-      PeriodUnits.ticks: () => new Period.fromTicks(TimePeriodField.Ticks.UnitsBetween(start, end)),
-      PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.Nanoseconds.UnitsBetween(start, end))
+      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.date, endDate)),
+      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.date, endDate)),
+      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.date, endDate)),
+      PeriodUnits.days: () => new Period.fromDays(daysBetween(start.date, endDate)),
+      PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.hours.unitsBetween(start, end)),
+      PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.minutes.unitsBetween(start, end)),
+      PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.seconds.unitsBetween(start, end)),
+      PeriodUnits.milliseconds: () => new Period.fromMilliseconds(TimePeriodField.milliseconds.unitsBetween(start, end)),
+      PeriodUnits.ticks: () => new Period.fromTicks(TimePeriodField.ticks.unitsBetween(start, end)),
+      PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.nanoseconds.unitsBetween(start, end))
     };
     
     if (betweenFunctionMap.containsKey(units)) return betweenFunctionMap[units]();
@@ -429,14 +429,14 @@ class Period // : IEquatable<Period>
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
       // LocalDate remainingDate = DateComponentsBetween(
       //  start.Date, endDate, units, out years, out months, out weeks, out days);
-      var result = DateComponentsBetween(start.Date, endDate, units);
+      var result = DateComponentsBetween(start.date, endDate, units);
       years = result.years;
       months = result.months;
       weeks = result.weeks;
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime(remainingDate, start.TimeOfDay);
+      remaining = new LocalDateTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(Years: years, Months: months, Weeks: weeks, Days: days);
@@ -449,9 +449,9 @@ class Period // : IEquatable<Period>
     // Otherwise (rare case), use duration arithmetic.
     int hours, minutes, seconds, milliseconds, ticks, nanoseconds;
     var duration = end
-        .ToLocalInstant()
+        .toLocalInstant()
         .TimeSinceLocalEpoch - remaining
-        .ToLocalInstant()
+        .toLocalInstant()
         .TimeSinceLocalEpoch;
     if (duration.IsInt64Representable) {
       var result = TimeComponentsBetween(duration.totalNanoseconds, units);
@@ -469,17 +469,17 @@ class Period // : IEquatable<Period>
         if ((mask.value & units.value) == 0) {
           return 0;
         }
-        int value = timeField.GetUnitsInDuration(duration);
-        duration -= timeField.ToDuration(value);
+        int value = timeField.getUnitsInDuration(duration);
+        duration -= timeField.toSpan(value);
         return value;
       }
 
-      hours = UnitsBetween(PeriodUnits.hours, TimePeriodField.Hours);
-      minutes = UnitsBetween(PeriodUnits.minutes, TimePeriodField.Minutes);
-      seconds = UnitsBetween(PeriodUnits.seconds, TimePeriodField.Seconds);
-      milliseconds = UnitsBetween(PeriodUnits.milliseconds, TimePeriodField.Milliseconds);
-      ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.Ticks);
-      nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.Nanoseconds);
+      hours = UnitsBetween(PeriodUnits.hours, TimePeriodField.hours);
+      minutes = UnitsBetween(PeriodUnits.minutes, TimePeriodField.minutes);
+      seconds = UnitsBetween(PeriodUnits.seconds, TimePeriodField.seconds);
+      milliseconds = UnitsBetween(PeriodUnits.milliseconds, TimePeriodField.milliseconds);
+      ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.ticks);
+      nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.nanoseconds);
     }
     return new Period(Years: years,
         Months: months,
@@ -582,12 +582,12 @@ class Period // : IEquatable<Period>
 /// Adds the time components of this period to the given time, scaled accordingly.
 
   @internal LocalTime AddTimeTo(LocalTime time, int scalar) =>
-      time.PlusHours(Hours * scalar)
-          .PlusMinutes(Minutes * scalar)
-          .PlusSeconds(Seconds * scalar)
-          .PlusMilliseconds(Milliseconds * scalar)
-          .PlusTicks(Ticks * scalar)
-          .PlusNanoseconds(Nanoseconds * scalar);
+      time.plusHours(Hours * scalar)
+          .plusMinutes(Minutes * scalar)
+          .plusSeconds(Seconds * scalar)
+          .plusMilliseconds(Milliseconds * scalar)
+          .plusTicks(Ticks * scalar)
+          .plusNanoseconds(Nanoseconds * scalar);
 
 
 /// Adds the date components of this period to the given time, scaled accordingly.
@@ -604,17 +604,17 @@ class Period // : IEquatable<Period>
     date = AddDateTo(date, scalar);
     // todo: probably a better way here
     int extraDays = 0;
-    var result = TimePeriodField.Hours.AddTime(time, Hours * scalar, /*ref*/ extraDays);
+    var result = TimePeriodField.hours.addTime(time, Hours * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.Minutes.AddTime(time, Minutes * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.minutes.addTime(time, Minutes * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.Seconds.AddTime(time, Seconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.seconds.addTime(time, Seconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.Milliseconds.AddTime(time, Milliseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.milliseconds.addTime(time, Milliseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.Ticks.AddTime(time, Ticks * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.ticks.addTime(time, Ticks * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.Nanoseconds.AddTime(time, Nanoseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.nanoseconds.addTime(time, Nanoseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
@@ -694,7 +694,7 @@ class Period // : IEquatable<Period>
 // number of nanoseconds. All the operations can be done with simple int division/remainder ops,
 // so we don't need to delegate to TimePeriodField.
 
-    int remaining = (end.NanosecondOfDay - start.NanosecondOfDay);
+    int remaining = (end.nanosecondOfDay - start.nanosecondOfDay);
 
     // Optimization for a single unit
     var singleFieldFunction = _functionMapBetweenTimes[units];
@@ -786,7 +786,7 @@ class Period // : IEquatable<Period>
   /// end up positive, or they all end up negative. "Week" and "tick" units in the returned period are always 0.
   ///
   /// [OverflowException]: The period doesn't have years or months, but it contains more than
-  /// [Int64.MaxValue] nanoseconds when the combined weeks/days/time portions are considered. This is
+  /// [Int64.maxValue] nanoseconds when the combined weeks/days/time portions are considered. This is
   /// over 292 years, so unlikely to be a problem in normal usage.
   /// In some cases this may occur even though the theoretical result would be valid due to balancing positive and
   /// negative values, but for simplicity there is no attempt to work around this.
@@ -909,6 +909,6 @@ class Period // : IEquatable<Period>
       // wouldn't, but it's highly unlikely
       return x.ToSpan().compareTo(y.ToSpan());
     }
-    return (baseDateTime.Plus(x)).compareTo(baseDateTime.Plus(y));
+    return (baseDateTime.plus(x)).compareTo(baseDateTime.plus(y));
   }
 }

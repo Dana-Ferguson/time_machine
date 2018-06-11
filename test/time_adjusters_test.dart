@@ -22,7 +22,7 @@ Future main() async {
 @Test()
 void TruncateToSecond()
 {
-  var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+  var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 4, 30);
   expect(end, TimeAdjusters.TruncateToSecond(start));
 }
@@ -30,7 +30,7 @@ void TruncateToSecond()
 @Test()
 void TruncateToMinute()
 {
-  var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+  var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 4, 0);
   expect(end, TimeAdjusters.TruncateToMinute(start));
 }
@@ -38,7 +38,7 @@ void TruncateToMinute()
 @Test()
 void TruncateToHour()
 {
-  var start = LocalTime.FromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
+  var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 0, 0);
   expect(end, TimeAdjusters.TruncateToHour(start));
 }

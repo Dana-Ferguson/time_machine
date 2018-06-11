@@ -225,5 +225,5 @@ void With()
 {
   LocalDate start = new LocalDate(2014, 6, 27);
   LocalDate expected = new LocalDate(2014, 6, 30);
-  expect(expected, start.withAdjustment(DateAdjusters.endOfMonth));
+  expect(expected, start.adjust(DateAdjusters.endOfMonth));
 }

@@ -34,7 +34,7 @@ void ReturnEarlier()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
   expect(2, mapping.Count);
-  var resolved = Resolvers.ReturnEarlier(mapping.First(), mapping.Last());
+  var resolved = Resolvers.returnEarlier(mapping.First(), mapping.Last());
   expect(mapping.First(), resolved);
 }
 
@@ -43,7 +43,7 @@ void ReturnLater()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
   expect(2, mapping.Count);
-  var resolved = Resolvers.ReturnLater(mapping.First(), mapping.Last());
+  var resolved = Resolvers.returnLater(mapping.First(), mapping.Last());
   expect(mapping.Last(), resolved);
 }
 
@@ -52,7 +52,7 @@ void ThrowWhenAmbiguous()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
   expect(2, mapping.Count);
-  expect(() => Resolvers.ThrowWhenAmbiguous(mapping.First(), mapping.Last()), willThrow<AmbiguousTimeError>());
+  expect(() => Resolvers.throwWhenAmbiguous(mapping.First(), mapping.Last()), willThrow<AmbiguousTimeError>());
 }
 
 @Test()
@@ -60,7 +60,7 @@ void ReturnEndOfIntervalBefore()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
-  var resolved = Resolvers.ReturnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  var resolved = Resolvers.returnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
   expect(GapZone.EarlyInterval.end - Span.epsilon, resolved.ToInstant());
   expect(GapZone, resolved.Zone);
 }
@@ -70,7 +70,7 @@ void ReturnStartOfIntervalAfter()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
-  var resolved = Resolvers.ReturnStartOfIntervalAfter(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  var resolved = Resolvers.returnStartOfIntervalAfter(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
   expect(GapZone.LateInterval.start, resolved.ToInstant());
   expect(GapZone, resolved.Zone);
 }
@@ -80,10 +80,10 @@ void ReturnForwardShifted()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
-  var resolved = Resolvers.ReturnForwardShifted(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
 
   var gap = mapping.LateInterval.wallOffset.ticks - mapping.EarlyInterval.wallOffset.ticks;
-  var expected = TimeInTransition.ToLocalInstant().Minus(mapping.LateInterval.wallOffset).plus(new Span(ticks: gap));
+  var expected = TimeInTransition.toLocalInstant().Minus(mapping.LateInterval.wallOffset).plus(new Span(ticks: gap));
   expect(expected, resolved.ToInstant());
   expect(mapping.LateInterval.wallOffset, resolved.offset);
   expect(GapZone, resolved.Zone);
@@ -94,7 +94,7 @@ void ThrowWhenSkipped()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
-  expect(() => Resolvers.ThrowWhenSkipped(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval), willThrow<SkippedTimeError>());
+  expect(() => Resolvers.throwWhenSkipped(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval), willThrow<SkippedTimeError>());
 }
 
 @Test()
@@ -108,22 +108,22 @@ void CreateResolver_Unambiguous() {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
     return null; /*default(ZonedDateTime);*/
   };
-  var resolver = Resolvers.CreateMappingResolver(ambiguityResolver, skippedTimeResolver);
+  var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
   LocalDateTime localTime = new LocalDateTime.fromYMDHM(1900, 1, 1, 0, 0);
   var resolved = resolver(GapZone.mapLocal(localTime));
-  expect(new ZonedDateTime.trusted(localTime.WithOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
+  expect(new ZonedDateTime.trusted(localTime.withOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
 }
 
 @Test()
 void CreateResolver_Ambiguous() {
-  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.PlusDays(1).WithOffset(GapZone.EarlyInterval.wallOffset), GapZone);
+  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) => zoned;
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
     return null; /*default(ZonedDateTime);*/
   };
-  var resolver = Resolvers.CreateMappingResolver(ambiguityResolver, skippedTimeResolver);
+  var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
   var resolved = resolver(AmbiguousZone.mapLocal(TimeInTransition));
   expect(zoned, resolved);
@@ -131,13 +131,13 @@ void CreateResolver_Ambiguous() {
 
 @Test()
 void CreateResolver_Skipped() {
-  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.PlusDays(1).WithOffset(GapZone.EarlyInterval.wallOffset), GapZone);
+  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
     return null; /*default(ZonedDateTime);*/
   };
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) => zoned;
-  var resolver = Resolvers.CreateMappingResolver(ambiguityResolver, skippedTimeResolver);
+  var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
   var resolved = resolver(GapZone.mapLocal(TimeInTransition));
   expect(zoned, resolved);

@@ -26,7 +26,7 @@ void ToDateTimeUnspecified()
 {
   LocalDateTime zoned = new LocalDateTime.fromYMDHMS(2011, 3, 5, 1, 0, 0);
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0); //, DateTimeKind.Unspecified);
-  DateTime actual = zoned.ToDateTimeUnspecified();
+  DateTime actual = zoned.toDateTimeUnspecified();
   expect(expected, actual);
   // Kind isn't checked by Equals...
   // expect(DateTimeKind.Unspecified, actual.Kind);
@@ -40,10 +40,10 @@ void ToDateTimeUnspecified()
 @TestCase(const [2900])
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
-  var ldt = new LocalDateTime.fromYMDHMS(year, 1, 1, 13, 15, 55).PlusMilliseconds(TimeConstants.millisecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
+  var ldt = new LocalDateTime.fromYMDHMS(year, 1, 1, 13, 15, 55).plusMilliseconds(TimeConstants.millisecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
   var expected = new DateTime(year, 1, 1, 13, 15, 55/*, DateTimeKind.Unspecified*/)
       .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
-  var actual = ldt.ToDateTimeUnspecified();
+  var actual = ldt.toDateTimeUnspecified();
   expect(actual, expected);
 }
 
@@ -62,7 +62,7 @@ void FromDateTime()
   LocalDateTime expected = new LocalDateTime.fromYMDHM(2011, 08, 18, 20, 53);
   // for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = LocalDateTime.FromDateTime(x);
+  LocalDateTime actual = new LocalDateTime.fromDateTime(x);
   expect(actual, expected);
 }
 
@@ -77,7 +77,7 @@ void FromDateTime_WithCalendar()
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   {
   DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = LocalDateTime.FromDateTime(x, CalendarSystem.julian);
+  LocalDateTime actual = new LocalDateTime.fromDateTime(x, CalendarSystem.julian);
   expect(actual, expected);
   }
 }
@@ -86,44 +86,44 @@ void FromDateTime_WithCalendar()
 void TimeProperties_AfterEpoch()
 {
   // Use the largest valid year as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime.fromYMDHMS(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).PlusNanoseconds(123456789);
-  expect(15, ldt.Hour);
-  expect(3, ldt.ClockHourOfHalfDay);
-  expect(48, ldt.Minute);
-  expect(25, ldt.Second);
-  expect(123, ldt.Millisecond);
-  expect(1234567, ldt.TickOfSecond);
+  LocalDateTime ldt = new LocalDateTime.fromYMDHMS(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).plusNanoseconds(123456789);
+  expect(15, ldt.hour);
+  expect(3, ldt.clockHourOfHalfDay);
+  expect(48, ldt.minute);
+  expect(25, ldt.second);
+  expect(123, ldt.millisecond);
+  expect(1234567, ldt.tickOfSecond);
   expect(15 * TimeConstants.ticksPerHour +
       48 * TimeConstants.ticksPerMinute +
       25 * TimeConstants.ticksPerSecond +
-      1234567, ldt.TickOfDay);
+      1234567, ldt.tickOfDay);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.NanosecondOfDay);
-  expect(123456789, ldt.NanosecondOfSecond);
+      123456789, ldt.nanosecondOfDay);
+  expect(123456789, ldt.nanosecondOfSecond);
 }
 
 @Test()
 void TimeProperties_BeforeEpoch()
 {
   // Use the smallest valid year number as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime.fromYMDHMS(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).PlusNanoseconds(123456789);
-  expect(15, ldt.Hour);
-  expect(3, ldt.ClockHourOfHalfDay);
-  expect(48, ldt.Minute);
-  expect(25, ldt.Second);
-  expect(123, ldt.Millisecond);
-  expect(1234567, ldt.TickOfSecond);
+  LocalDateTime ldt = new LocalDateTime.fromYMDHMS(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).plusNanoseconds(123456789);
+  expect(15, ldt.hour);
+  expect(3, ldt.clockHourOfHalfDay);
+  expect(48, ldt.minute);
+  expect(25, ldt.second);
+  expect(123, ldt.millisecond);
+  expect(1234567, ldt.tickOfSecond);
   expect(15 * TimeConstants.ticksPerHour +
       48 * TimeConstants.ticksPerMinute +
       25 * TimeConstants.ticksPerSecond +
-      1234567, ldt.TickOfDay);
+      1234567, ldt.tickOfDay);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.NanosecondOfDay);
-  expect(123456789, ldt.NanosecondOfSecond);
+      123456789, ldt.nanosecondOfDay);
+  expect(123456789, ldt.nanosecondOfSecond);
 }
 
 @Test() @SkipMe.unimplemented()
@@ -132,11 +132,11 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
   dynamic BclCalendars = null;
   var bcl = BclCalendars.Hijri;
   DateTime original = bcl.ToDateTime(1376, 6, 19, 0, 0, 0, 0);
-  LocalDateTime noda = LocalDateTime.FromDateTime(original);
+  LocalDateTime noda = new LocalDateTime.fromDateTime(original);
   // The DateTime only knows about the ISO version...
   expect(1376, isNot(1376));
-  expect(CalendarSystem.iso, noda.Calendar);
-  DateTime _final = noda.ToDateTimeUnspecified();
+  expect(CalendarSystem.iso, noda.calendar);
+  DateTime _final = noda.toDateTimeUnspecified();
   expect(original, _final);
 }
 
@@ -144,11 +144,11 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
 void WithCalendar()
 {
   LocalDateTime isoEpoch = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 0);
-  LocalDateTime julianEpoch = isoEpoch.WithCalendar(CalendarSystem.julian);
-  expect(1969, julianEpoch.Year);
-  expect(12, julianEpoch.Month);
-  expect(19, julianEpoch.Day);
-  expect(isoEpoch.TimeOfDay, julianEpoch.TimeOfDay);
+  LocalDateTime julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
+  expect(1969, julianEpoch.year);
+  expect(12, julianEpoch.month);
+  expect(19, julianEpoch.day);
+  expect(isoEpoch.time, julianEpoch.time);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -157,7 +157,7 @@ void TimeOfDay_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime.fromYMDHMS(1965, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.TimeOfDay);
+  expect(expected, dateTime.time);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -166,7 +166,7 @@ void TimeOfDay_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime.fromYMDHMS(1975, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.TimeOfDay);
+  expect(expected, dateTime.time);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -175,7 +175,7 @@ void Date_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime.fromYMDHMS(1965, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1965, 11, 8);
-  expect(expected, dateTime.Date);
+  expect(expected, dateTime.date);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -184,7 +184,7 @@ void Date_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime.fromYMDHMS(1975, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1975, 11, 8);
-  expect(expected, dateTime.Date);
+  expect(expected, dateTime.date);
 }
 
 @Test()
@@ -197,8 +197,8 @@ void DayOfWeek_AroundEpoch()
     // Check once per hour of the day, just in case something's messed up based on the time of day.
     for (int hour = 0; hour < 24; hour++)
     {
-      expect(new IsoDayOfWeek(dateTime.ToDateTimeUnspecified().weekday), dateTime.DayOfWeek);
-      dateTime = dateTime.PlusHours(1);
+      expect(new IsoDayOfWeek(dateTime.toDateTimeUnspecified().weekday), dateTime.dayOfWeek);
+      dateTime = dateTime.plusHours(1);
     }
   }
 }
@@ -206,11 +206,11 @@ void DayOfWeek_AroundEpoch()
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalDateTime.fromYMDHMS(1975, 11, 8, 0, 0, 0).ClockHourOfHalfDay);
-  expect(1, new LocalDateTime.fromYMDHMS(1975, 11, 8, 1, 0, 0).ClockHourOfHalfDay);
-  expect(12, new LocalDateTime.fromYMDHMS(1975, 11, 8, 12, 0, 0).ClockHourOfHalfDay);
-  expect(1, new LocalDateTime.fromYMDHMS(1975, 11, 8, 13, 0, 0).ClockHourOfHalfDay);
-  expect(11, new LocalDateTime.fromYMDHMS(1975, 11, 8, 23, 0, 0).ClockHourOfHalfDay);
+  expect(12, new LocalDateTime.fromYMDHMS(1975, 11, 8, 0, 0, 0).clockHourOfHalfDay);
+  expect(1, new LocalDateTime.fromYMDHMS(1975, 11, 8, 1, 0, 0).clockHourOfHalfDay);
+  expect(12, new LocalDateTime.fromYMDHMS(1975, 11, 8, 12, 0, 0).clockHourOfHalfDay);
+  expect(1, new LocalDateTime.fromYMDHMS(1975, 11, 8, 13, 0, 0).clockHourOfHalfDay);
+  expect(11, new LocalDateTime.fromYMDHMS(1975, 11, 8, 23, 0, 0).clockHourOfHalfDay);
 }
 
 @Test()
@@ -306,7 +306,7 @@ void WithOffset()
 {
   var offset = new Offset.fromHoursAndMinutes(5, 10);
   var localDateTime = new LocalDateTime.fromYMDHMS(2009, 12, 22, 21, 39, 30);
-  var offsetDateTime = localDateTime.WithOffset(offset);
+  var offsetDateTime = localDateTime.withOffset(offset);
   expect(localDateTime, offsetDateTime.localDateTime);
   expect(offset, offsetDateTime.offset);
 }
@@ -315,7 +315,7 @@ void WithOffset()
 void InUtc()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 12, 22, 21, 39, 30);
-  var zoned = local.InUtc();
+  var zoned = local.inUtc();
   expect(local, zoned.localDateTime);
   expect(Offset.zero, zoned.offset);
   // Assert.AreSame(DateTimeZone.Utc, zoned.Zone);
@@ -326,7 +326,7 @@ void InUtc()
 void InZoneStrictly_InWinter()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 12, 22, 21, 39, 30);
-  var zoned = local.InZoneStrictly(Pacific);
+  var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
   expect(new Offset.fromHours(-8), zoned.offset);
 }
@@ -335,7 +335,7 @@ void InZoneStrictly_InWinter()
 void InZoneStrictly_InSummer()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 6, 22, 21, 39, 30);
-  var zoned = local.InZoneStrictly(Pacific);
+  var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
   expect(new Offset.fromHours(-7), zoned.offset);
 }
@@ -346,7 +346,7 @@ void InZoneStrictly_InSummer()
 void InZoneStrictly_ThrowsWhenAmbiguous()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
-  expect(() => local.InZoneStrictly(Pacific), willThrow<AmbiguousTimeError>());
+  expect(() => local.inZoneStrictly(Pacific), willThrow<AmbiguousTimeError>());
 }
 
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
@@ -355,7 +355,7 @@ void InZoneStrictly_ThrowsWhenAmbiguous()
 void InZoneStrictly_ThrowsWhenSkipped()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(() => local.InZoneStrictly(Pacific), willThrow<SkippedTimeError>());
+  expect(() => local.inZoneStrictly(Pacific), willThrow<SkippedTimeError>());
 }
 
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
@@ -364,7 +364,7 @@ void InZoneStrictly_ThrowsWhenSkipped()
 void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
-  var zoned = local.InZoneLeniently(Pacific);
+  var zoned = local.inZoneLeniently(Pacific);
   expect(local, zoned.localDateTime);
   expect(new Offset.fromHours(-7), zoned.offset);
 }
@@ -376,7 +376,7 @@ void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
 void InZoneLeniently_ReturnsStartOfSecondInterval()
 {
   var local = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  var zoned = local.InZoneLeniently(Pacific);
+  var zoned = local.inZoneLeniently(Pacific);
   expect(new LocalDateTime.fromYMDHMS(2009, 3, 8, 3, 30, 0), zoned.localDateTime);
   expect(new Offset.fromHours(-7), zoned.offset);
 }
@@ -387,8 +387,8 @@ void InZone()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
   var skipped = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(Pacific.atLeniently(ambiguous), ambiguous.InZone(Pacific, Resolvers.LenientResolver));
-  expect(Pacific.atLeniently(skipped), skipped.InZone(Pacific, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(ambiguous), ambiguous.inZone(Pacific, Resolvers.lenientResolver));
+  expect(Pacific.atLeniently(skipped), skipped.inZone(Pacific, Resolvers.lenientResolver));
 }
 
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
@@ -435,8 +435,8 @@ void MinMax_DifferentCalendars_Throws()
   LocalDateTime ldt1 = new LocalDateTime.fromYMDHM(2011, 1, 2, 2, 20);
   LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.julian);
 
-  expect(() => LocalDateTime.Max(ldt1, ldt2), throwsArgumentError);
-  expect(() => LocalDateTime.Min(ldt1, ldt2), throwsArgumentError);
+  expect(() => LocalDateTime.max(ldt1, ldt2), throwsArgumentError);
+  expect(() => LocalDateTime.min(ldt1, ldt2), throwsArgumentError);
 }
 
 @Test()
@@ -445,10 +445,10 @@ void MinMax_SameCalendar()
   LocalDateTime ldt1 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 7, 20, CalendarSystem.julian);
   LocalDateTime ldt2 = new LocalDateTime.fromYMDHMC(1500, 1, 1, 5, 10, CalendarSystem.julian);
 
-  expect(ldt1, LocalDateTime.Max(ldt1, ldt2));
-  expect(ldt1, LocalDateTime.Max(ldt2, ldt1));
-  expect(ldt2, LocalDateTime.Min(ldt1, ldt2));
-  expect(ldt2, LocalDateTime.Min(ldt2, ldt1));
+  expect(ldt1, LocalDateTime.max(ldt1, ldt2));
+  expect(ldt1, LocalDateTime.max(ldt2, ldt1));
+  expect(ldt2, LocalDateTime.min(ldt1, ldt2));
+  expect(ldt2, LocalDateTime.min(ldt2, ldt1));
 }
 
 //@Test()

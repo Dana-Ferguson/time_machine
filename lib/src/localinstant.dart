@@ -154,7 +154,7 @@ import 'package:time_machine/time_machine_utilities.dart';
     }
     var date = new LocalDate.fromDaysSinceEpoch(_span.floorDays);
     var pattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
+    var utc = new LocalDateTime(date, new LocalTime.fromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
     return pattern.Format(utc);
   // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }

@@ -25,8 +25,8 @@ void PlusHours_Simple()
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(14, 15, 8);
   LocalTime expectedBackward = new LocalTime(10, 15, 8);
-  expect(expectedForward, start.PlusHours(2));
-  expect(expectedBackward, start.PlusHours(-2));
+  expect(expectedForward, start.plusHours(2));
+  expect(expectedBackward, start.plusHours(-2));
 }
 
 @Test()
@@ -34,8 +34,8 @@ void PlusHours_CrossingDayBoundary()
 {
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expected = new LocalTime(8, 15, 8);
-  expect(expected, start.PlusHours(20));
-  expect(start, start.PlusHours(20).PlusHours(-20));
+  expect(expected, start.plusHours(20));
+  expect(start, start.plusHours(20).plusHours(-20));
 }
 
 @Test()
@@ -44,8 +44,8 @@ void PlusHours_CrossingSeveralDaysBoundary()
   // Christmas day + 10 days and 1 hour
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expected = new LocalTime(13, 15, 8);
-  expect(expected, start.PlusHours(241));
-  expect(start, start.PlusHours(241).PlusHours(-241));
+  expect(expected, start.plusHours(241));
+  expect(start, start.plusHours(241).plusHours(-241));
 }
 
 // Having tested that hours cross boundaries correctly, the other time unit
@@ -56,8 +56,8 @@ void PlusMinutes_Simple()
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(12, 17, 8);
   LocalTime expectedBackward = new LocalTime(12, 13, 8);
-  expect(expectedForward, start.PlusMinutes(2));
-  expect(expectedBackward, start.PlusMinutes(-2));
+  expect(expectedForward, start.plusMinutes(2));
+  expect(expectedBackward, start.plusMinutes(-2));
 }
 
 @Test()
@@ -66,8 +66,8 @@ void PlusSeconds_Simple()
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(12, 15, 18);
   LocalTime expectedBackward = new LocalTime(12, 14, 58);
-  expect(expectedForward, start.PlusSeconds(10));
-  expect(expectedBackward, start.PlusSeconds(-10));
+  expect(expectedForward, start.plusSeconds(10));
+  expect(expectedBackward, start.plusSeconds(-10));
 }
 
 @Test()
@@ -76,18 +76,18 @@ void PlusMilliseconds_Simple()
   LocalTime start = new LocalTime(12, 15, 8, 300);
   LocalTime expectedForward = new LocalTime(12, 15, 8, 700);
   LocalTime expectedBackward = new LocalTime(12, 15, 7, 900);
-  expect(expectedForward, start.PlusMilliseconds(400));
-  expect(expectedBackward, start.PlusMilliseconds(-400));
+  expect(expectedForward, start.plusMilliseconds(400));
+  expect(expectedBackward, start.plusMilliseconds(-400));
 }
 
 @Test()
 void PlusTicks_Simple()
 {
-  LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
-  LocalTime expectedForward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
-  LocalTime expectedBackward = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
-  expect(expectedForward, start.PlusTicks(4000));
-  expect(expectedBackward, start.PlusTicks(-4000));
+  LocalTime start = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
+  LocalTime expectedForward = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
+  LocalTime expectedBackward = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
+  expect(expectedForward, start.plusTicks(4000));
+  expect(expectedBackward, start.plusTicks(-4000));
 }
 
 @Test()
@@ -97,16 +97,16 @@ void PlusTicks_Long()
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(12, 15, 9);
   LocalTime expectedBackward = new LocalTime(12, 15, 7);
-  expect(start.PlusTicks(TimeConstants.ticksPerDay + TimeConstants.ticksPerSecond), expectedForward);
-  expect(start.PlusTicks(-TimeConstants.ticksPerDay - TimeConstants.ticksPerSecond),  expectedBackward);
+  expect(start.plusTicks(TimeConstants.ticksPerDay + TimeConstants.ticksPerSecond), expectedForward);
+  expect(start.plusTicks(-TimeConstants.ticksPerDay - TimeConstants.ticksPerSecond),  expectedBackward);
 }
 
 @Test()
 void With()
 {
-  LocalTime start = LocalTime.FromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
+  LocalTime start = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
   LocalTime expected = new LocalTime(12, 15, 8);
-  expect(expected, start.With(TimeAdjusters.TruncateToSecond));
+  expect(expected, start.adjust(TimeAdjusters.TruncateToSecond));
 }
 
 @Test()
@@ -117,7 +117,7 @@ void PlusMinutes_WouldOverflowNaively()
   // There's no way we could compute that many nanoseconds.
   int value = (TimeConstants.nanosecondsPerDay << 15) + 1;
   LocalTime expected = new LocalTime(12, 35, 56);
-  LocalTime actual = start.PlusMinutes(value);
+  LocalTime actual = start.plusMinutes(value);
   expect(expected, actual);
 }
 

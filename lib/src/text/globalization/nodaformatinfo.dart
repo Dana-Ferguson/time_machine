@@ -176,7 +176,7 @@ import 'package:time_machine/time_machine_globalization.dart';
       _instantPatternParser = EnsureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
 
   @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser =>
-      _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.Midnight));
+      _localTimePatternParser = EnsureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.midnight));
 
   @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
       _localDatePatternParser = EnsureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.DefaultTemplateValue));
@@ -199,7 +199,7 @@ import 'package:time_machine/time_machine_globalization.dart';
 
   @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
       _zonedDateTimePatternParser = EnsureFixedFormatInitialized(
-          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.StrictResolver, null));
+          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.DefaultTemplateValue, Resolvers.strictResolver, null));
 
   @internal FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
       _annualDatePatternParser =
@@ -256,7 +256,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// Returns a read-only list of the names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-  /// [LocalDateTime.DayOfWeek] and similar properties.
+  /// [LocalDateTime.dayOfWeek] and similar properties.
   List<String> get LongDayNames {
     EnsureDaysInitialized();
     return longDayNames;
@@ -265,7 +265,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// Returns a read-only list of the abbreviated names of the days of the week for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
-  /// [LocalDateTime.DayOfWeek] and similar properties.
+  /// [LocalDateTime.dayOfWeek] and similar properties.
   List<String> get ShortDayNames {
     EnsureDaysInitialized();
     return shortDayNames;

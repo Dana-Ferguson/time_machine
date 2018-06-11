@@ -52,7 +52,7 @@ void NextOrSame(
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
-  LocalDate actual = start.withAdjustment(DateAdjusters.nextOrSame(dayOfWeek));
+  LocalDate actual = start.adjust(DateAdjusters.nextOrSame(dayOfWeek));
   LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
@@ -67,7 +67,7 @@ void PreviousOrSame(
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
-  LocalDate actual = start.withAdjustment(DateAdjusters.previousOrSame(dayOfWeek));
+  LocalDate actual = start.adjust(DateAdjusters.previousOrSame(dayOfWeek));
   LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
@@ -82,7 +82,7 @@ void Next(
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
-  LocalDate actual = start.withAdjustment(DateAdjusters.next(dayOfWeek));
+  LocalDate actual = start.adjust(DateAdjusters.next(dayOfWeek));
   LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
@@ -97,7 +97,7 @@ void Previous(
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
-  LocalDate actual = start.withAdjustment(DateAdjusters.previous(dayOfWeek));
+  LocalDate actual = start.adjust(DateAdjusters.previous(dayOfWeek));
   LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
@@ -107,7 +107,7 @@ void Month_Valid()
 {
   var adjuster = DateAdjusters.month(2);
   var start = new LocalDate(2017, 8, 21, CalendarSystem.julian);
-  var actual = start.withAdjustment(adjuster);
+  var actual = start.adjust(adjuster);
   var expected = new LocalDate(2017, 2, 21, CalendarSystem.julian);
   expect(expected, actual);
 }
@@ -118,7 +118,7 @@ void Month_InvalidAdjustment()
   var adjuster = DateAdjusters.month(2);
   var start = new LocalDate(2017, 8, 30, CalendarSystem.julian);
   // Assert.Throws<ArgumentOutOfRangeException>(() => start.With(adjuster));
-  expect(() => start.withAdjustment(adjuster), throwsRangeError);
+  expect(() => start.adjust(adjuster), throwsRangeError);
 }
 
 @Test()

@@ -27,7 +27,7 @@ void IsoPattern(String text) {
   var shortPattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
   var pattern = (new CompositePatternBuilder<LocalDateTime>()
     ..Add(LocalDateTimePattern.ExtendedIso, (_) => true)
-    ..Add(shortPattern, (ldt) => ldt.Second == 0 && ldt.NanosecondOfSecond == 0)).Build();
+    ..Add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).Build();
   var value = pattern
       .Parse(text)
       .Value;

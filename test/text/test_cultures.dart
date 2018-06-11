@@ -21,8 +21,8 @@ import 'pattern_test_data.dart';
 import 'text_cursor_test_base_tests.dart';
 
 @internal abstract class TestLocalDateTimes {
-  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456789);
-  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).PlusNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.fromYMDHMS(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456700);
   @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.fromYMDHMSM(
       1976,
       6,

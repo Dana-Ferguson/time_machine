@@ -508,7 +508,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
     // If the pattern really can't distinguish between AM and PM (e.g. it's 12 hour with an
     // abbreviated AM/PM designator) then let's let it go.
-    if (pattern.Format(SampleLocalDateTime) == pattern.Format(SampleLocalDateTime.PlusHours(-12))) {
+    if (pattern.Format(SampleLocalDateTime) == pattern.Format(SampleLocalDateTime.plusHours(-12))) {
       return;
     }
 

@@ -21,23 +21,23 @@ Future main() async {
 @Test()
 void MinValueEqualToMidnight()
 {
-  expect(LocalTime.Midnight, LocalTime.MinValue);
+  expect(LocalTime.midnight, LocalTime.minValue);
 }
 
 @Test()
 void MaxValue()
 {
-  expect(TimeConstants.nanosecondsPerDay - 1, LocalTime.MaxValue.NanosecondOfDay);
+  expect(TimeConstants.nanosecondsPerDay - 1, LocalTime.maxValue.nanosecondOfDay);
 }
 
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalTime(0, 0).ClockHourOfHalfDay);
-  expect(1, new LocalTime(1, 0).ClockHourOfHalfDay);
-  expect(12, new LocalTime(12, 0).ClockHourOfHalfDay);
-  expect(1, new LocalTime(13, 0).ClockHourOfHalfDay);
-  expect(11, new LocalTime(23, 0).ClockHourOfHalfDay);
+  expect(12, new LocalTime(0, 0).clockHourOfHalfDay);
+  expect(1, new LocalTime(1, 0).clockHourOfHalfDay);
+  expect(12, new LocalTime(12, 0).clockHourOfHalfDay);
+  expect(1, new LocalTime(13, 0).clockHourOfHalfDay);
+  expect(11, new LocalTime(23, 0).clockHourOfHalfDay);
 }
 
 ///   Using the default constructor is equivalent to midnight
@@ -46,7 +46,7 @@ void DefaultConstructor()
 {
   // todo: new LocalTime();
   var actual = new LocalTime(0, 0);
-  expect(LocalTime.Midnight, actual);
+  expect(LocalTime.midnight, actual);
 }
 
 @Test()
@@ -54,12 +54,12 @@ void Max()
 {
   LocalTime x = new LocalTime(5, 10);
   LocalTime y = new LocalTime(6, 20);
-  expect(y, LocalTime.Max(x, y));
-  expect(y, LocalTime.Max(y, x));
-  expect(x, LocalTime.Max(x, LocalTime.MinValue));
-  expect(x, LocalTime.Max(LocalTime.MinValue, x));
-  expect(LocalTime.MaxValue, LocalTime.Max(LocalTime.MaxValue, x));
-  expect(LocalTime.MaxValue, LocalTime.Max(x, LocalTime.MaxValue));
+  expect(y, LocalTime.max(x, y));
+  expect(y, LocalTime.max(y, x));
+  expect(x, LocalTime.max(x, LocalTime.minValue));
+  expect(x, LocalTime.max(LocalTime.minValue, x));
+  expect(LocalTime.maxValue, LocalTime.max(LocalTime.maxValue, x));
+  expect(LocalTime.maxValue, LocalTime.max(x, LocalTime.maxValue));
 }
 
 @Test()
@@ -67,12 +67,12 @@ void Min()
 {
   LocalTime x = new LocalTime(5, 10);
   LocalTime y = new LocalTime(6, 20);
-  expect(x, LocalTime.Min(x, y));
-  expect(x, LocalTime.Min(y, x));
-  expect(LocalTime.MinValue, LocalTime.Min(x, LocalTime.MinValue));
-  expect(LocalTime.MinValue, LocalTime.Min(LocalTime.MinValue, x));
-  expect(x, LocalTime.Min(LocalTime.MaxValue, x));
-  expect(x, LocalTime.Min(x, LocalTime.MaxValue));
+  expect(x, LocalTime.min(x, y));
+  expect(x, LocalTime.min(y, x));
+  expect(LocalTime.minValue, LocalTime.min(x, LocalTime.minValue));
+  expect(LocalTime.minValue, LocalTime.min(LocalTime.minValue, x));
+  expect(x, LocalTime.min(LocalTime.maxValue, x));
+  expect(x, LocalTime.min(x, LocalTime.maxValue));
 }
 
 @Test()
@@ -81,6 +81,6 @@ void WithOffset()
   var time = new LocalTime(3, 45, 12, 34);
   var offset = new Offset.fromHours(5);
   var expected = new OffsetTime(time, offset);
-  expect(expected, time.WithOffset(offset));
+  expect(expected, time.withOffset(offset));
 }
 

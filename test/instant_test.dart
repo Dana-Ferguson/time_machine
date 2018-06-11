@@ -30,7 +30,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);
-  var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.julian).InUtc().ToInstant();
+  var expected = new LocalDateTime.fromYMDHMSC(year, month, day, hour, minute, second, CalendarSystem.julian).inUtc().ToInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");

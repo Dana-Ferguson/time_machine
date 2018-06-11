@@ -92,7 +92,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
-    var pattern = templateValue == LocalTime.Midnight
+    var pattern = templateValue == LocalTime.midnight
         ? formatInfo.localTimePatternParser.ParsePattern(patternText)
         : new LocalTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
@@ -125,7 +125,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern Create3(String patternText, CultureInfo cultureInfo) =>
-      Create2(patternText, cultureInfo, LocalTime.Midnight);
+      Create2(patternText, cultureInfo, LocalTime.midnight);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -137,7 +137,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo, LocalTime.Midnight);
+      Create(patternText, NodaFormatInfo.CurrentInfo, LocalTime.midnight);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -149,7 +149,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo, LocalTime.Midnight);
+      Create(patternText, NodaFormatInfo.InvariantInfo, LocalTime.midnight);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.

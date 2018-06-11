@@ -20,28 +20,22 @@ import 'package:time_machine/time_machine_utilities.dart';
 ///
 /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, IComparable<LocalTime>, IFormattable, IComparable, IXmlSerializable
-    {
-
+class LocalTime implements Comparable<LocalTime> {
   /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
-  static final LocalTime Midnight = new LocalTime(0, 0, 0);
+  static final LocalTime midnight = new LocalTime(0, 0, 0);
 
-
-  /// The minimum value of this type; equivalent to [Midnight].
-  static final LocalTime MinValue = Midnight;
-
+  /// The minimum value of this type; equivalent to [midnight].
+  static final LocalTime minValue = midnight;
 
   /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
-  static final LocalTime Noon = new LocalTime(12, 0, 0);
-
+  static final LocalTime noon = new LocalTime(12, 0, 0);
 
   /// The maximum value of this type, one nanosecond before midnight.
   ///
   /// This is useful if you have to use an inclusive upper bound for some reason.
   /// In general, it's better to use an exclusive upper bound, in which case use midnight of
   /// the following day.
-  static final LocalTime MaxValue = new LocalTime.fromNanoseconds(TimeConstants.nanosecondsPerDay - 1);
-
+  static final LocalTime maxValue = new LocalTime.fromNanoseconds(TimeConstants.nanosecondsPerDay - 1);
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
@@ -76,6 +70,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
             millisecond * TimeConstants.nanosecondsPerMillisecond);
   }
 
+  // todo: this is a large amount of factory constructors -- can we condense with named parameters?
 
   /// Factory method to create a local time at the given hour, minute, second, millisecond and tick within millisecond.
   ///
@@ -86,7 +81,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [tickWithinMillisecond]: The tick within the millisecond.
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
   /// Returns: The resulting time.
-  static LocalTime FromHourMinuteSecondMillisecondTick(int hour, int minute, int second, int millisecond, int tickWithinMillisecond) {
+  factory LocalTime.fromHourMinuteSecondMillisecondTick(int hour, int minute, int second, int millisecond, int tickWithinMillisecond) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
         minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
@@ -119,7 +114,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [tickWithinSecond]: The tick within the second in the desired time, in the range [0, 9999999].
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
   /// Returns: The resulting time.
-  static LocalTime FromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond) {
+  factory LocalTime.fromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
         minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
@@ -148,7 +143,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [nanosecondWithinSecond]: The nanosecond within the second in the desired time, in the range [0, 999999999].
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
   /// Returns: The resulting time.
-  static LocalTime FromHourMinuteSecondNanosecond(int hour, int minute, int second, int nanosecondWithinSecond) {
+  factory LocalTime.fromHourMinuteSecondNanosecond(int hour, int minute, int second, int nanosecondWithinSecond) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
         minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
@@ -178,7 +173,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [nanoseconds]: The number of ticks, in the range [0, 863,999,999,999]
   /// Returns: The resulting time.
-  @internal static LocalTime FromNanosecondsSinceMidnight(int nanoseconds) {
+  @internal factory LocalTime.fromNanosecondsSinceMidnight(int nanoseconds) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (nanoseconds < 0 || nanoseconds > TimeConstants.nanosecondsPerDay - 1) {
       Preconditions.checkArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
@@ -191,7 +186,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [ticks]: The number of ticks, in the range [0, 863,999,999,999]
   /// Returns: The resulting time.
-  static LocalTime FromTicksSinceMidnight(int ticks) {
+  factory LocalTime.fromTicksSinceMidnight(int ticks) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (ticks < 0 || ticks > TimeConstants.ticksPerDay - 1) {
       Preconditions.checkArgumentRange('ticks', ticks, 0, TimeConstants.ticksPerDay - 1);
@@ -204,46 +199,42 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [milliseconds]: The number of milliseconds, in the range [0, 86,399,999]
   /// Returns: The resulting time.
-  static LocalTime FromMillisecondsSinceMidnight(int milliseconds) {
+  factory LocalTime.fromMillisecondsSinceMidnight(int milliseconds) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (milliseconds < 0 || milliseconds > TimeConstants.millisecondsPerDay - 1) {
       Preconditions.checkArgumentRange('milliseconds', milliseconds, 0, TimeConstants.millisecondsPerDay - 1);
     }
     return new LocalTime.fromNanoseconds((milliseconds * TimeConstants.nanosecondsPerMillisecond));
   }
-
-
+  
   /// Factory method for creating a local time from the number of seconds which have elapsed since midnight.
   ///
   /// [seconds]: The number of seconds, in the range [0, 86,399]
   /// Returns: The resulting time.
-  static LocalTime FromSecondsSinceMidnight(int seconds) {
+  factory LocalTime.fromSecondsSinceMidnight(int seconds) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (seconds < 0 || seconds > TimeConstants.secondsPerDay - 1) {
       Preconditions.checkArgumentRange('seconds', seconds, 0, TimeConstants.secondsPerDay - 1);
     }
     return new LocalTime.fromNanoseconds((seconds * TimeConstants.nanosecondsPerSecond));
   }
-
-
+  
   /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
-  int get Hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
-
+  int get hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
 
   /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
-  int get ClockHourOfHalfDay {
-    int hourOfHalfDay = HourOfHalfDay;
-    return hourOfHalfDay == 0 ? 12 : hourOfHalfDay;
+  int get clockHourOfHalfDay {
+    int _hourOfHalfDay = hourOfHalfDay;
+    return _hourOfHalfDay == 0 ? 12 : _hourOfHalfDay;
   }
 
-// TODO(feature): Consider exposing this.
-
+  // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
-  @internal int get HourOfHalfDay => (Hour % 12);
+  @internal int get hourOfHalfDay => (hour % 12);
 
 
   /// Gets the minute of this local time, in the range 0 to 59 inclusive.
-  int get Minute {
+  int get minute {
     // Effectively nanoseconds / TimeConstants.nanosecondsPerMinute, but apparently rather more efficient.
     int minuteOfDay = _nanoseconds ~/ TimeConstants.nanosecondsPerMinute;
     return minuteOfDay % TimeConstants.minutesPerHour;
@@ -251,14 +242,14 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
 
 
   /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
-  int get Second {
+  int get second {
     int secondOfDay = (_nanoseconds ~/ TimeConstants.nanosecondsPerSecond);
     return secondOfDay % TimeConstants.secondsPerMinute;
   }
 
 
   /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
-  int get Millisecond {
+  int get millisecond {
     int milliSecondOfDay = (_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond);
     return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
   }
@@ -266,21 +257,21 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
 // TODO(optimization): Rewrite for performance?
 
   /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
-  int get TickOfSecond => ((TickOfDay % TimeConstants.ticksPerSecond));
+  int get tickOfSecond => ((tickOfDay % TimeConstants.ticksPerSecond));
 
 
   /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
   ///
   /// If the value does not fall on a tick boundary, it will be truncated towards zero.
-  int get TickOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerTick;
+  int get tickOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerTick;
 
 
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
-  int get NanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
+  int get nanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
 
 
   /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get NanosecondOfDay => _nanoseconds;
+  int get nanosecondOfDay => _nanoseconds;
 
 
   /// Creates a new local time by adding a period to an existing time. The period must not contain
@@ -301,15 +292,14 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [time]: The time to add the period to
   /// [period]: The period to add. Must not contain any (non-zero) date units.
   /// Returns: The sum of the given time and period
-  static LocalTime Add(LocalTime time, Period period) => time + period;
+  static LocalTime add(LocalTime time, Period period) => time + period;
 
 
-/// Adds the specified period to this time. Fluent alternative to `operator+()`.
-///
-/// [period]: The period to add. Must not contain any (non-zero) date units.
-/// Returns: The sum of this time and the given period
-
-  LocalTime Plus(Period period) => this + period;
+  /// Adds the specified period to this time. Fluent alternative to `operator+()`.
+  ///
+  /// [period]: The period to add. Must not contain any (non-zero) date units.
+  /// Returns: The sum of this time and the given period
+  LocalTime plus(Period period) => this + period;
 
 
   /// Creates a new local time by subtracting a period from an existing time. The period must not contain
@@ -328,22 +318,22 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [rhs]: The time to subtract
   /// Returns: The result of subtracting one time from another.
   // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic rhs) => rhs is Period ? MinusPeriod(rhs) : rhs is LocalTime ? Between(rhs) : throw new ArgumentError();
-//Period operator -(LocalTime rhs) => Period.BetweenTimes(rhs, this);
+  dynamic operator -(dynamic rhs) => rhs is Period ? minusPeriod(rhs) : rhs is LocalTime ? between(rhs) : throw new ArgumentError();
+  //Period operator -(LocalTime rhs) => Period.BetweenTimes(rhs, this);
 
   /// Subtracts the specified period from the time. Friendly alternative to `operator-()`.
   ///
   /// [time]: The time to subtract the period from
   /// [period]: The period to subtract. Must not contain any (non-zero) date units.
   /// Returns: The result of subtracting the given period from the time.
-  static LocalTime Subtract(LocalTime time, Period period) => time.MinusPeriod(period);
+  static LocalTime subtract(LocalTime time, Period period) => time.minusPeriod(period);
 
 /// Subtracts the specified period from this time. Fluent alternative to `operator-()`.
 ///
 /// [period]: The period to subtract. Must not contain any (non-zero) date units.
 /// Returns: The result of subtracting the given period from this time.
 
-  LocalTime MinusPeriod(Period period) {
+  LocalTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
     return period.AddTimeTo(this, -1);
@@ -367,7 +357,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [time]: The time to subtract from this
   /// Returns: The difference between the specified time and this one
-  Period Between(LocalTime time) => Period.BetweenTimes(time, this); // this - time;
+  Period between(LocalTime time) => Period.BetweenTimes(time, this);
 
 
   /// Compares two local times for equality, by checking whether they represent
@@ -377,9 +367,6 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [rhs]: The second value to compare
   /// Returns: True if the two times are the same; false otherwise
   @override bool operator ==(dynamic rhs) => rhs is LocalTime && this._nanoseconds == rhs._nanoseconds;
-
-// static bool operator !=(LocalTime lhs, LocalTime rhs) => lhs.nanoseconds != rhs.nanoseconds;
-
 
   /// Compares two LocalTime values to see if the left one is strictly earlier than the right
   /// one.
@@ -437,100 +424,82 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [other]: The other local time to compare this one with
   /// Returns: True if the specified time is equal to this one; false otherwise
-  bool Equals(LocalTime other) => this == other;
+  bool equals(LocalTime other) => this == other;
+
+  /// Returns a new LocalTime representing the current value with the given number of hours added.
+  ///
+  /// If the value goes past the start or end of the day, it wraps - so 11pm plus two hours is 1am, for example.
+  ///
+  /// [hours]: The number of hours to add
+  /// Returns: The current value plus the given number of hours.
+  LocalTime plusHours(int hours) => TimePeriodField.hours.addTimeSimple(this, hours);
+
+  /// Returns a new LocalTime representing the current value with the given number of minutes added.
+  ///
+  /// If the value goes past the start or end of the day, it wraps - so 11pm plus 120 minutes is 1am, for example.
+  ///
+  /// [minutes]: The number of minutes to add
+  /// Returns: The current value plus the given number of minutes.
+  LocalTime plusMinutes(int minutes) => TimePeriodField.minutes.addTimeSimple(this, minutes);
 
 
-//  /// Compares this local time with the specified reference. A local time is
-//  /// only equal to another local time with the same underlying tick value.
-//  ///
-//  /// <param name="obj">The object to compare this one with</param>
-//  /// <returns>True if the specified value is a local time which is equal to this one; false otherwise</returns>
-//  @override bool Equals(dynamic obj) => obj is LocalTime && this == obj;
+  /// Returns a new LocalTime representing the current value with the given number of seconds added.
+  ///
+  /// If the value goes past the start or end of the day, it wraps - so 11:59pm plus 120 seconds is 12:01am, for example.
+  ///
+  /// [seconds]: The number of seconds to add
+  /// Returns: The current value plus the given number of seconds.
+  LocalTime plusSeconds(int seconds) => TimePeriodField.seconds.addTimeSimple(this, seconds);
 
 
-/// Returns a new LocalTime representing the current value with the given number of hours added.
-///
-/// If the value goes past the start or end of the day, it wraps - so 11pm plus two hours is 1am, for example.
-///
-/// [hours]: The number of hours to add
-/// Returns: The current value plus the given number of hours.
-
-  LocalTime PlusHours(int hours) => TimePeriodField.Hours.AddTimeSimple(this, hours);
+  /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
+  ///
+  /// [milliseconds]: The number of milliseconds to add
+  /// Returns: The current value plus the given number of milliseconds.
+  LocalTime plusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTimeSimple(this, milliseconds);
 
 
-/// Returns a new LocalTime representing the current value with the given number of minutes added.
-///
-/// If the value goes past the start or end of the day, it wraps - so 11pm plus 120 minutes is 1am, for example.
-///
-/// [minutes]: The number of minutes to add
-/// Returns: The current value plus the given number of minutes.
-
-  LocalTime PlusMinutes(int minutes) => TimePeriodField.Minutes.AddTimeSimple(this, minutes);
+  /// Returns a new LocalTime representing the current value with the given number of ticks added.
+  ///
+  /// [ticks]: The number of ticks to add
+  /// Returns: The current value plus the given number of ticks.
+  LocalTime plusTicks(int ticks) => TimePeriodField.ticks.addTimeSimple(this, ticks);
 
 
-/// Returns a new LocalTime representing the current value with the given number of seconds added.
-///
-/// If the value goes past the start or end of the day, it wraps - so 11:59pm plus 120 seconds is 12:01am, for example.
-///
-/// [seconds]: The number of seconds to add
-/// Returns: The current value plus the given number of seconds.
-
-  LocalTime PlusSeconds(int seconds) => TimePeriodField.Seconds.AddTimeSimple(this, seconds);
+  /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
+  ///
+  /// [nanoseconds]: The number of nanoseconds to add
+  /// Returns: The current value plus the given number of ticks.
+  LocalTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addTimeSimple(this, nanoseconds);
 
 
-/// Returns a new LocalTime representing the current value with the given number of milliseconds added.
-///
-/// [milliseconds]: The number of milliseconds to add
-/// Returns: The current value plus the given number of milliseconds.
-
-  LocalTime PlusMilliseconds(int milliseconds) => TimePeriodField.Milliseconds.AddTimeSimple(this, milliseconds);
-
-
-/// Returns a new LocalTime representing the current value with the given number of ticks added.
-///
-/// [ticks]: The number of ticks to add
-/// Returns: The current value plus the given number of ticks.
-
-  LocalTime PlusTicks(int ticks) => TimePeriodField.Ticks.AddTimeSimple(this, ticks);
-
-
-/// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
-///
-/// [nanoseconds]: The number of nanoseconds to add
-/// Returns: The current value plus the given number of ticks.
-
-  LocalTime PlusNanoseconds(int nanoseconds) => TimePeriodField.Nanoseconds.AddTimeSimple(this, nanoseconds);
-
-
-/// Returns this time, with the given adjuster applied to it.
-///
-/// If the adjuster attempts to construct an invalid time, any exception thrown by
-/// that construction attempt will be propagated through this method.
-///
-/// [adjuster]: The adjuster to apply.
-/// Returns: The adjusted time.
-
-  LocalTime With(LocalTime Function(LocalTime) adjuster) =>
+  /// Returns this time, with the given adjuster applied to it.
+  ///
+  /// If the adjuster attempts to construct an invalid time, any exception thrown by
+  /// that construction attempt will be propagated through this method.
+  ///
+  /// [adjuster]: The adjuster to apply.
+  /// Returns: The adjusted time.
+  LocalTime adjust(LocalTime Function(LocalTime) adjuster) =>
       Preconditions.checkNotNull(adjuster, 'adjuster')(this);
 
 
-/// Returns an [OffsetTime] for this time-of-day with the given offset.
-///
-/// This method is purely a convenient alternative to calling the [OffsetTime] constructor directly.
-/// [offset]: The offset to apply.
-/// Returns: The result of this time-of-day offset by the given amount.
+  /// Returns an [OffsetTime] for this time-of-day with the given offset.
+  ///
+  /// This method is purely a convenient alternative to calling the [OffsetTime] constructor directly.
+  /// [offset]: The offset to apply.
+  /// Returns: The result of this time-of-day offset by the given amount.
+  OffsetTime withOffset(Offset offset) => new OffsetTime(this, offset);
 
-  OffsetTime WithOffset(Offset offset) => new OffsetTime(this, offset);
 
-
-/// Combines this [LocalTime] with the given [LocalDate]
-/// into a single [LocalDateTime].
-/// Fluent alternative to `operator+()`.
-///
-/// [date]: The date to combine with this time
-/// Returns: The [LocalDateTime] representation of the given time on this date
-
-  LocalDateTime On(LocalDate date) => new LocalDateTime(date, this);
+  // todo: reference style guide
+  /// Combines this [LocalTime] with the given [LocalDate]
+  /// into a single [LocalDateTime].
+  /// Fluent alternative to `operator+()`.
+  ///
+  /// [date]: The date to combine with this time
+  /// Returns: The [LocalDateTime] representation of the given time on this date
+  LocalDateTime atDate(LocalDate date) => new LocalDateTime(date, this);
 
 
   /// Returns the later time of the given two.
@@ -538,7 +507,7 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [x]: The first time to compare.
   /// [y]: The second time to compare.
   /// Returns: The later instant of [x] or [y].
-  static LocalTime Max(LocalTime x, LocalTime y) {
+  static LocalTime max(LocalTime x, LocalTime y) {
     return x > y ? x : y;
   }
 
@@ -548,16 +517,8 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   /// [x]: The first time to compare.
   /// [y]: The second time to compare.
   /// Returns: The earlier time of [x] or [y].
-  static LocalTime Min(LocalTime x, LocalTime y) => x < y ? x : y;
-
-
-/// Returns a [String] that represents this instance.
-///
-/// The value of the current instance in the default format pattern ("T"), using the current thread's
-/// culture to obtain a format provider.
-// @override String toString() => LocalTimePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-
-
+  static LocalTime min(LocalTime x, LocalTime y) => x < y ? x : y;
+  
   /// Formats the value of the current instance using the specified pattern.
   ///
   /// A [String] containing the value of the current instance in the specified format.
@@ -567,26 +528,6 @@ class LocalTime implements Comparable<LocalTime> // : IEquatable<LocalTime>, ICo
   ///
   /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
   /// or null to use the current thread's culture to obtain a format provider.
-  ///
-  /// <filterpriority>2</filterpriority>
-  // @override String toString() => TextShim.toStringLocalTime(this);
-  // @override String toString(String patternText, IFormatProvider formatProvider) =>
-  //    LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       LocalTimePattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
-
-/// Formats the value of the current instance using the specified pattern.
-///
-/// A [String] containing the value of the current instance in the specified format.
-///
-/// [patternText]: The [String] specifying the pattern to use,
-/// or null to use the default format pattern ("T").
-///
-/// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-/// or null to use the current thread's culture to obtain a format provider.
-///
-/// <filterpriority>2</filterpriority>
-//  public string ToString(string patternText, IFormatProvider formatProvider) =>
-//      LocalTimePattern.BclSupport.Format(this, patternText, formatProvider);
-
 }

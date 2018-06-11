@@ -37,7 +37,7 @@ void CombinationWithTime()
   LocalDateTime expected = new LocalDateTime.fromYMDHMSC(2014, 3, 28, 20, 17, 30, calendar);
   // expect(expected, date + time);
   expect(expected, date.at(time));
-  expect(expected, time.On(date));
+  expect(expected, time.atDate(date));
 }
 
 @Test()

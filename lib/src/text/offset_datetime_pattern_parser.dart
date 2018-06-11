@@ -45,7 +45,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     'F': TimePatternHelper.CreateFractionHandler<OffsetDateTime, OffsetDateTimeParseBucket>(
         9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     't': TimePatternHelper.CreateAmPmHandler<OffsetDateTime, OffsetDateTimeParseBucket>((time) => time.Hour, (bucket, value) => bucket.Time.AmPm = value),
-    'c': DatePatternHelper.CreateCalendarHandler<OffsetDateTime, OffsetDateTimeParseBucket>((value) => value.localDateTime.Calendar, (bucket, value) =>
+    'c': DatePatternHelper.CreateCalendarHandler<OffsetDateTime, OffsetDateTimeParseBucket>((value) => value.localDateTime.calendar, (bucket, value) =>
     bucket.Date.Calendar = value),
     'g': DatePatternHelper.CreateEraHandler<OffsetDateTime, OffsetDateTimeParseBucket>((value) => value.era, (bucket) => bucket.Date),
     'o': HandleOffset,
@@ -116,7 +116,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     var localDateTime = localResult.Value;
-    return ParseResult.ForValue<OffsetDateTime>(localDateTime.WithOffset(offset));
+    return ParseResult.ForValue<OffsetDateTime>(localDateTime.withOffset(offset));
   }
 }
 

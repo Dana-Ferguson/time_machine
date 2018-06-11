@@ -65,7 +65,7 @@ class PeriodUnits {
   static const PeriodUnits ticks = const PeriodUnits(256);
   /// Nanoseconds element within a [Period]
   static const PeriodUnits nanoseconds = const PeriodUnits(512);
-  /// Compound value representing the combination of [Hours], [Minutes] and [Seconds]
+  /// Compound value representing the combination of [hours], [minutes] and [seconds]
   static const PeriodUnits hourMinuteSecond = const PeriodUnits(112); // union(const [hours, minutes, seconds]);
   /// Compound value representing the combination of all time elements
   static const PeriodUnits allTimeUnits = const PeriodUnits(1008); // union(const [hours, minutes, seconds, milliseconds, ticks, nanoseconds]);

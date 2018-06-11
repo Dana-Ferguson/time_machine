@@ -51,7 +51,7 @@ void Transitions2000To2010() {
     LocalDate summer = new LocalDate(year, 6, 1);
     var intervalPair = Jordan.mapLocal(summer.atMidnight());
     expect(1, intervalPair.Count);
-    expect(expectedDates[year - 2000], intervalPair.EarlyInterval.IsoLocalStart.Date);
+    expect(expectedDates[year - 2000], intervalPair.EarlyInterval.IsoLocalStart.date);
   }
 }
 

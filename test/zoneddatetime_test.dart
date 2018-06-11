@@ -26,9 +26,9 @@ final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone
 @Test()
 void SimpleProperties()
 {
-  var value = SampleZone.atStrictly(new LocalDateTime.fromYMDHMS(2012, 2, 10, 8, 9, 10).PlusNanoseconds(123456789));
+  var value = SampleZone.atStrictly(new LocalDateTime.fromYMDHMS(2012, 2, 10, 8, 9, 10).plusNanoseconds(123456789));
   expect(new LocalDate(2012, 2, 10), value.Date);
-  expect(LocalTime.FromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.TimeOfDay);
+  expect(new LocalTime.fromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.TimeOfDay);
   expect(Era.Common, value.era);
   expect(2012, value.Year);
   expect(2012, value.YearOfEra);
@@ -128,7 +128,7 @@ void Subtraction_ZonedDateTime()
 {
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different time zones.
-  ZonedDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 5, 51).InUtc();
+  ZonedDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 5, 51).inUtc();
   // Sample zone is UTC+4 at this point, so this is 14:00Z.
   ZonedDateTime end = SampleZone.atStrictly(new LocalDateTime.fromYMDHM(2014, 08, 14, 18, 0));
   Span expected = new Span(hours: 8) + new Span(minutes: 9);
@@ -272,7 +272,7 @@ void ToDateTimeUtc()
 void ToDateTimeUtc_InRangeAfterUtcAdjustment()
 {
   var zone = new DateTimeZone.forOffset(new Offset.fromHours(-1));
-  var zdt = new LocalDateTime.fromYMDHM(0, 12, 31, 23, 30).InZoneStrictly(zone);
+  var zdt = new LocalDateTime.fromYMDHM(0, 12, 31, 23, 30).inZoneStrictly(zone);
   // Sanity check: without reversing the offset, we're out of range
   // ToDateTimeUnspecified() works in dart:core
   // expect(() => zdt.ToDateTimeUnspecified(), throwsStateError);
@@ -347,7 +347,7 @@ void Construct_FromLocal_ValidUnambiguousOffset()
 
   LocalDateTime local = new LocalDateTime.fromYMDHMS(2000, 1, 2, 3, 4, 5);
   ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.EarlyInterval.wallOffset);
-  expect(zoned, local.InZoneStrictly(zone));
+  expect(zoned, local.inZoneStrictly(zone));
 }
 
 @Test()
@@ -359,8 +359,8 @@ void Construct_FromLocal_ValidEarlierOffset()
   ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.EarlyInterval.wallOffset);
 
   // Map the local time to the earlier of the offsets in a way which is tested elsewhere.
-  var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnEarlier, Resolvers.ThrowWhenSkipped);
-  expect(zoned, local.InZone(zone, resolver));
+  var resolver = Resolvers.createMappingResolver(Resolvers.returnEarlier, Resolvers.throwWhenSkipped);
+  expect(zoned, local.inZone(zone, resolver));
 }
 
 @Test()
@@ -372,8 +372,8 @@ void Construct_FromLocal_ValidLaterOffset()
   ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.LateInterval.wallOffset);
 
   // Map the local time to the later of the offsets in a way which is tested elsewhere.
-  var resolver = Resolvers.CreateMappingResolver(Resolvers.ReturnLater, Resolvers.ThrowWhenSkipped);
-  expect(zoned, local.InZone(zone, resolver));
+  var resolver = Resolvers.createMappingResolver(Resolvers.returnLater, Resolvers.throwWhenSkipped);
+  expect(zoned, local.inZone(zone, resolver));
 }
 
 @Test()
@@ -512,7 +512,7 @@ void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
 void ZonedDateTime_ToString()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
-  ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
+  ZonedDateTime zoned = local.inZoneStrictly(SampleZone);
   expect("2013-07-23T13:05:20 Single (+04)", zoned.toString());
 }
 
@@ -520,7 +520,7 @@ void ZonedDateTime_ToString()
 void ZonedDateTime_ToString_WithFormat()
 {
   var local = new LocalDateTime.fromYMDHMS(2013, 7, 23, 13, 05, 20);
-  ZonedDateTime zoned = local.InZoneStrictly(SampleZone);
+  ZonedDateTime zoned = local.inZoneStrictly(SampleZone);
   expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", CultureInfo.invariantCulture));
 }
 
@@ -531,15 +531,15 @@ Future LocalComparer() async
   var losAngeles = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
-  var londonEvening = new LocalDateTime.fromYMDHM(2014, 7, 9, 20, 32).InZoneStrictly(london);
-  var losAngelesAfternoon = new LocalDateTime.fromYMDHM(2014, 7, 9, 14, 0).InZoneStrictly(losAngeles);
+  var londonEvening = new LocalDateTime.fromYMDHM(2014, 7, 9, 20, 32).inZoneStrictly(london);
+  var losAngelesAfternoon = new LocalDateTime.fromYMDHM(2014, 7, 9, 14, 0).inZoneStrictly(losAngeles);
 
   // Same local time as losAngelesAfternoon
-  var londonAfternoon = losAngelesAfternoon.localDateTime.InZoneStrictly(london);
+  var londonAfternoon = losAngelesAfternoon.localDateTime.inZoneStrictly(london);
 
   var londonPersian = londonEvening.localDateTime
-      .WithCalendar(CalendarSystem.persianSimple)
-      .InZoneStrictly(london);
+      .withCalendar(CalendarSystem.persianSimple)
+      .inZoneStrictly(london);
 
   var comparer = ZonedDateTime_LocalComparer.Instance; // ZonedDateTime.Comparer.Local;
   TestHelper.TestComparerStruct(comparer.compare, losAngelesAfternoon, londonAfternoon, londonEvening);
@@ -559,15 +559,15 @@ Future InstantComparer() async
   var losAngeles = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
-  var londonEvening = new LocalDateTime.fromYMDHM(2014, 7, 9, 20, 32).InZoneStrictly(london);
-  var losAngelesAfternoon = new LocalDateTime.fromYMDHM(2014, 7, 9, 14, 0).InZoneStrictly(losAngeles);
+  var londonEvening = new LocalDateTime.fromYMDHM(2014, 7, 9, 20, 32).inZoneStrictly(london);
+  var losAngelesAfternoon = new LocalDateTime.fromYMDHM(2014, 7, 9, 14, 0).inZoneStrictly(losAngeles);
 
   // Same instant as londonEvening
-  var losAngelesLunchtime = new LocalDateTime.fromYMDHM(2014, 7, 9, 12, 32).InZoneStrictly(losAngeles);
+  var losAngelesLunchtime = new LocalDateTime.fromYMDHM(2014, 7, 9, 12, 32).inZoneStrictly(losAngeles);
 
   var londonPersian = londonEvening.localDateTime
-      .WithCalendar(CalendarSystem.persianSimple)
-      .InZoneStrictly(london);
+      .withCalendar(CalendarSystem.persianSimple)
+      .inZoneStrictly(london);
 
   var comparer = ZonedDateTime_InstantComparer.Instance; // ZonedDateTime.Comparer.Instant;
   TestHelper.TestComparerStruct(comparer.compare, londonEvening, losAngelesLunchtime, losAngelesAfternoon);

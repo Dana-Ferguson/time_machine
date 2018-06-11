@@ -31,9 +31,9 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
   @private static final OffsetTime MsdnStandardExample =
-  TestLocalDateTimes.MsdnStandardExample.TimeOfDay.WithOffset(new Offset.fromHours(1));
+  TestLocalDateTimes.MsdnStandardExample.time.withOffset(new Offset.fromHours(1));
   @private static final OffsetTime MsdnStandardExampleNoMillis =
-  TestLocalDateTimes.MsdnStandardExampleNoMillis.TimeOfDay.WithOffset(new Offset.fromHours(1));
+  TestLocalDateTimes.MsdnStandardExampleNoMillis.time.withOffset(new Offset.fromHours(1));
 
   @private static final Offset AthensOffset = new Offset.fromHours(3);
 
@@ -151,13 +151,13 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:sso<g>");
     expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
-    var ot = new LocalTime(12, 34, 56).WithOffset(new Offset.fromHours(2));
+    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
     expect("12:34:56+02", pattern.Format(ot));
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var ot = new LocalTime(12, 34, 56).WithOffset(new Offset.fromHours(2));
+    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetTimePattern.CreateWithCurrentCulture("l<t> o<g>");
@@ -173,14 +173,14 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void WithCulture() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm").WithCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.Format(new LocalTime(19, 30).WithOffset(Offset.zero));
+    var text = pattern.Format(new LocalTime(19, 30).withOffset(Offset.zero));
     expect("19.30", text);
   }
 
   @Test()
   void WithPatternText() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:ss").WithPatternText("HH:mm");
-    var value = new LocalTime(13, 30).WithOffset(new Offset.fromHours(2));
+    var value = new LocalTime(13, 30).withOffset(new Offset.fromHours(2));
     var text = pattern.Format(value);
     expect("13:30", text);
   }
@@ -188,7 +188,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void WithTemplateValue() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("o<G>")
-        .WithTemplateValue(new LocalTime(13, 30).WithOffset(Offset.zero));
+        .WithTemplateValue(new LocalTime(13, 30).withOffset(Offset.zero));
     var parsed = pattern
         .Parse("+02")
         .Value;
@@ -221,7 +221,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       : this.e(hour, minute, second, millis, Offset.zero);
 
   @internal Data.e(int hour, int minute, int second, int millis, Offset offset)
-      : this(new LocalTime(hour, minute, second, millis).WithOffset(offset));
+      : this(new LocalTime(hour, minute, second, millis).withOffset(offset));
 
   @internal
   @override

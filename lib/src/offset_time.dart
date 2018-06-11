@@ -29,37 +29,37 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   Offset get offset => _offset;
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
-  int get Hour => _time.Hour;
+  int get Hour => _time.hour;
 
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
-  int get ClockHourOfHalfDay => _time.ClockHourOfHalfDay;
+  int get ClockHourOfHalfDay => _time.clockHourOfHalfDay;
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
-  @internal int get HourOfHalfDay => _time.HourOfHalfDay;
+  @internal int get HourOfHalfDay => _time.hourOfHalfDay;
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
-  int get Minute => _time.Minute;
+  int get Minute => _time.minute;
 
   /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
-  int get Second => _time.Second;
+  int get Second => _time.second;
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
-  int get Millisecond => _time.Millisecond;
+  int get Millisecond => _time.millisecond;
 
   /// Gets the tick of this offset time within the second, in the range 0 to 9,999,999 inclusive.
-  int get TickOfSecond => _time.TickOfSecond;
+  int get TickOfSecond => _time.tickOfSecond;
 
   /// Gets the tick of this offset time within the day, in the range 0 to 863,999,999,999 inclusive.
   ///
   /// If the value does not fall on a tick boundary, it will be truncated towards zero.
-  int get TickOfDay => _time.TickOfDay;
+  int get TickOfDay => _time.tickOfDay;
 
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
-  int get NanosecondOfSecond => _time.NanosecondOfSecond;
+  int get NanosecondOfSecond => _time.nanosecondOfSecond;
 
   /// Gets the nanosecond of this offset time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get NanosecondOfDay => _time.NanosecondOfDay;
+  int get NanosecondOfDay => _time.nanosecondOfDay;
 
 /// Creates a new [OffsetTime] for the same time-of-day, but with the specified UTC offset.
 ///
@@ -77,7 +77,7 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
 /// Returns: The adjusted offset date.
 
   OffsetTime With(LocalTime Function(LocalTime) adjuster) =>
-      new OffsetTime(TimeOfDay.With(adjuster), _offset);
+      new OffsetTime(TimeOfDay.adjust(adjuster), _offset);
 
 /// Combines this [OffsetTime] with the given [LocalDate]
 /// into an [OffsetDateTime].

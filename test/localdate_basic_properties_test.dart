@@ -56,7 +56,7 @@ void DayOfWeek_AroundEpoch()
     // BclConversions.ToIsoDayOfWeek(date.AtMidnight.ToDateTimeUnspecified().DayOfWeek),
     expect(
         date.dayOfWeek.value,
-        date.atMidnight().ToDateTimeUnspecified().weekday
+        date.atMidnight().toDateTimeUnspecified().weekday
         );
     date = date.plusDays(1);
   }

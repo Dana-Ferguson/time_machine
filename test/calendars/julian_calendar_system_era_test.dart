@@ -61,6 +61,6 @@ void EraProperty()
   CalendarSystem calendar = CalendarSystem.julian;
   LocalDateTime startOfEra = new LocalDateTime.fromYMDHMSC(1, 1, 1, 0, 0, 0, calendar);
   expect(Era.Common, startOfEra.era);
-  expect(Era.BeforeCommon, startOfEra.PlusTicks(-1).era);
+  expect(Era.BeforeCommon, startOfEra.plusTicks(-1).era);
 }
 

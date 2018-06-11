@@ -11,13 +11,13 @@ import 'package:time_machine/time_machine.dart';
 class TimeAdjusters {
   /// Gets a time adjuster to truncate the time to the second, discarding fractional seconds.
   static LocalTime Function(LocalTime) TruncateToSecond
-  = (time) => new LocalTime(time.Hour, time.Minute, time.Second);
+  = (time) => new LocalTime(time.hour, time.minute, time.second);
 
   /// Gets a time adjuster to truncate the time to the minute, discarding fractional minutes.
   static LocalTime Function(LocalTime) TruncateToMinute
-  = (time) => new LocalTime(time.Hour, time.Minute);
+  = (time) => new LocalTime(time.hour, time.minute);
 
   /// Get a time adjuster to truncate the time to the hour, discarding fractional hours.
   static LocalTime Function(LocalTime) TruncateToHour
-  = (time) => new LocalTime(time.Hour, 0);
+  = (time) => new LocalTime(time.hour, 0);
 }

@@ -55,7 +55,7 @@ void OffsetProperty()
 @Test()
 void LocalDateTimeProperty()
 {
-  LocalDateTime local = new LocalDateTime.fromYMDHMSC(2012, 6, 19, 1, 2, 3, CalendarSystem.julian).PlusNanoseconds(123456789);
+  LocalDateTime local = new LocalDateTime.fromYMDHMSC(2012, 6, 19, 1, 2, 3, CalendarSystem.julian).plusNanoseconds(123456789);
   Offset offset = new Offset.fromHours(5);
 
   OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -241,15 +241,15 @@ void LocalComparer()
 {
   var localControl = new LocalDateTime.fromYMDHM(2013, 4, 2, 19, 54);
   var control = new OffsetDateTime(localControl, Offset.zero);
-  var negativeOffset = control.localDateTime.WithOffset(new Offset.fromHours(-1));
-  var positiveOffset = control.localDateTime.WithOffset(new Offset.fromHours(1));
-  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.coptic).WithOffset(new Offset.fromHours(5));
+  var negativeOffset = control.localDateTime.withOffset(new Offset.fromHours(-1));
+  var positiveOffset = control.localDateTime.withOffset(new Offset.fromHours(1));
+  var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(new Offset.fromHours(5));
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.PlusHours(-2).WithOffset(new Offset.fromHours(-10));
+  var earlierLocal = control.localDateTime.plusHours(-2).withOffset(new Offset.fromHours(-10));
   // Same offset, previous day
   var muchEarlierLocal = control.PlusHours(-24);
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.PlusHours(2).WithOffset(new Offset.fromHours(10));
+  var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.fromHours(10));
   // Same offset, next day
   var muchLaterLocal = control.PlusHours(24);
 
@@ -288,18 +288,18 @@ void InstantComparer()
 {
   var localControl = new LocalDateTime.fromYMDHM(2013, 4, 2, 19, 54);
   var control = new OffsetDateTime(localControl, Offset.zero);
-  var equalAndOppositeChanges = control.localDateTime.PlusHours(1).WithOffset(new Offset.fromHours(1));
-  var differentCalendar = control.localDateTime.WithCalendar(CalendarSystem.coptic).WithOffset(Offset.zero);
+  var equalAndOppositeChanges = control.localDateTime.plusHours(1).withOffset(new Offset.fromHours(1));
+  var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(Offset.zero);
 
   // Negative offset means later instant
-  var negativeOffset = control.localDateTime.WithOffset(new Offset.fromHours(-1));
+  var negativeOffset = control.localDateTime.withOffset(new Offset.fromHours(-1));
   // Positive offset means earlier instant
-  var positiveOffset = control.localDateTime.WithOffset(new Offset.fromHours(1));
+  var positiveOffset = control.localDateTime.withOffset(new Offset.fromHours(1));
 
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.PlusHours(-2).WithOffset(new Offset.fromHours(-10));
+  var earlierLocal = control.localDateTime.plusHours(-2).withOffset(new Offset.fromHours(-10));
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.PlusHours(2).WithOffset(new Offset.fromHours(10));
+  var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.fromHours(10));
 
   var comparer = OffsetDateTime_InstantComparer.Instance; // OffsetDateTime.comparer.Instant;
 
@@ -340,9 +340,9 @@ void Subtraction_Duration()
 {
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime end = new LocalDateTime.fromYMDHM(2014, 08, 14, 15, 0).WithOffset(new Offset.fromHours(1));
+  OffsetDateTime end = new LocalDateTime.fromYMDHM(2014, 08, 14, 15, 0).withOffset(new Offset.fromHours(1));
   Span duration = new Span(hours: 8) + new Span(minutes: 9);
-  OffsetDateTime expected = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).WithOffset(new Offset.fromHours(1));
+  OffsetDateTime expected = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).withOffset(new Offset.fromHours(1));
   expect(expected, end - duration);
   expect(expected, end.MinusSpan(duration));
   expect(expected, OffsetDateTime.Subtract(end, duration));
@@ -360,9 +360,9 @@ void Addition_Duration()
 
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).WithOffset(new Offset.fromHours(1));
+  OffsetDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).withOffset(new Offset.fromHours(1));
   Span duration = new Span(hours: 8) + new Span(minutes: 9);
-  OffsetDateTime expected = new LocalDateTime.fromYMDHM(2014, 08, 14, 15, 0).WithOffset(new Offset.fromHours(1));
+  OffsetDateTime expected = new LocalDateTime.fromYMDHM(2014, 08, 14, 15, 0).withOffset(new Offset.fromHours(1));
   expect(expected, start + duration);
   expect(expected, start.Plus(duration));
   expect(expected, OffsetDateTime.Add(start, duration));
@@ -391,8 +391,8 @@ void Subtraction_OffsetDateTime()
 {
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).WithOffset(new Offset.fromHours(1));
-  OffsetDateTime end = new LocalDateTime.fromYMDHM(2014, 08, 14, 18, 0).WithOffset(new Offset.fromHours(4));
+  OffsetDateTime start = new LocalDateTime.fromYMDHM(2014, 08, 14, 6, 51).withOffset(new Offset.fromHours(1));
+  OffsetDateTime end = new LocalDateTime.fromYMDHM(2014, 08, 14, 18, 0).withOffset(new Offset.fromHours(4));
   Span expected = new Span(hours: 8) + new Span(minutes: 9);
   expect(expected, end - start);
   expect(expected, end.MinusOffsetDateTime(start));
@@ -437,7 +437,7 @@ void WithCalendar()
   CalendarSystem julianCalendar = CalendarSystem.julian;
   OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.WithOffset(Offset.zero);
 
-  OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().WithOffset(new Offset.fromHours(0));
+  OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().withOffset(new Offset.fromHours(0));
   OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.julian);
   expect(expected, actual);
 }
@@ -446,8 +446,8 @@ void WithCalendar()
 void With_TimeAdjuster()
 {
   Offset offset = new Offset.fromHoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
-  OffsetDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).WithOffset(offset);
+  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).withOffset(offset);
   expect(expected, start.WithTime(TimeAdjusters.TruncateToSecond));
 }
 
@@ -455,8 +455,8 @@ void With_TimeAdjuster()
 void With_DateAdjuster()
 {
   Offset offset = new Offset.fromHoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
-  OffsetDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 30, 12, 5, 8).PlusNanoseconds(123456789).WithOffset(offset);
+  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 5, 8).plusNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime expected = new LocalDateTime.fromYMDHMS(2014, 6, 30, 12, 5, 8).plusNanoseconds(123456789).withOffset(offset);
   expect(expected, start.WithDate(DateAdjusters.endOfMonth));
 }
 
@@ -464,14 +464,14 @@ void With_DateAdjuster()
 Future InZone() async
 {
   Offset offset = new Offset.fromHours(-7);
-  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2017, 10, 31, 18, 12, 0).WithOffset(offset);
+  OffsetDateTime start = new LocalDateTime.fromYMDHMS(2017, 10, 31, 18, 12, 0).withOffset(offset);
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
   var zoned = start.InZone(zone);
 
   // On October 31st, the UK had already gone back, so the offset is 0.
   // Importantly, it's not the offset of the original OffsetDateTime: we're testing
   // that InZone *doesn't* require that.
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHMS(2017, 11, 1, 1, 12, 0).WithOffset(Offset.zero), zone);
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHMS(2017, 11, 1, 1, 12, 0).withOffset(Offset.zero), zone);
   expect(expected, zoned);
 }
 
@@ -479,7 +479,7 @@ Future InZone() async
 void ToOffsetDate()
 {
   var offset = new Offset.fromHoursAndMinutes(2, 30);
-  var odt = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
+  var odt = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
   var expected = new OffsetDate(new LocalDate(2014, 6, 27), offset);
   expect(expected, odt.ToOffsetDate());
 }
@@ -488,8 +488,8 @@ void ToOffsetDate()
 void ToOffsetTime()
 {
   var offset = new Offset.fromHoursAndMinutes(2, 30);
-  var odt = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).PlusNanoseconds(123456789).WithOffset(offset);
-  var expected = new OffsetTime(new LocalTime(12, 15, 8).PlusNanoseconds(123456789), offset);
+  var odt = new LocalDateTime.fromYMDHMS(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
+  var expected = new OffsetTime(new LocalTime(12, 15, 8).plusNanoseconds(123456789), offset);
   expect(expected, odt.ToOffsetTime());
 }
 

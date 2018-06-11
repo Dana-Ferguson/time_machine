@@ -76,9 +76,9 @@ void At()
 {
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var offset = new Offset.fromHours(5);
-  var time = new LocalTime(14, 15, 12).PlusNanoseconds(123456789);
+  var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
 
-  expect(new OffsetDate(date, offset).At(time), date.at(time).WithOffset(offset));
+  expect(new OffsetDate(date, offset).At(time), date.at(time).withOffset(offset));
 }
 
 @Test()

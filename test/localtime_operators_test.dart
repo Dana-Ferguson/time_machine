@@ -78,7 +78,7 @@ void Addition_PeriodWithDate()
   LocalTime time = new LocalTime(20, 30);
   Period period = new Period.fromDays(1);
   // Use method not operator here to form a valid statement
-  expect(() => LocalTime.Add(time, period), throwsArgumentError);
+  expect(() => LocalTime.add(time, period), throwsArgumentError);
 }
 
 @Test()
@@ -87,7 +87,7 @@ void Subtraction_PeriodWithTime()
   LocalTime time = new LocalTime(20, 30);
   Period period = new Period.fromDays(1);
   // Use method not operator here to form a valid statement
-  expect(() => LocalTime.Subtract(time, period), throwsArgumentError);
+  expect(() => LocalTime.subtract(time, period), throwsArgumentError);
 }
 
 @Test()
@@ -95,8 +95,8 @@ void PeriodAddition_MethodEquivalents()
 {
   LocalTime start = new LocalTime(20, 30);
   Period period = new Period.fromHours(3) + new Period.fromMinutes(10);
-  expect(start + period, LocalTime.Add(start, period));
-  expect(start + period, start.Plus(period));
+  expect(start + period, LocalTime.add(start, period));
+  expect(start + period, start.plus(period));
 }
 
 @Test()
@@ -105,13 +105,13 @@ void PeriodSubtraction_MethodEquivalents()
   LocalTime start = new LocalTime(20, 30);
   Period period = new Period.fromHours(3) + new Period.fromMinutes(10);
   LocalTime end = start + period;
-  expect(start - period, LocalTime.Subtract(start, period));
-  expect(start - period, start.MinusPeriod(period));
+  expect(start - period, LocalTime.subtract(start, period));
+  expect(start - period, start.minusPeriod(period));
 
   expect(period, end - start);
   // todo: does not exist
   // expect(period, LocalTime.Subtract(end, start));
-  expect(period, end.Between(start));
+  expect(period, end.between(start));
 }
 
 @Test()
@@ -151,11 +151,11 @@ void ComparisonOperators()
 void Comparison_IgnoresOriginalCalendar()
 {
   LocalDateTime dateTime1 = new LocalDateTime.fromYMDHMS(1900, 1, 1, 10, 30, 0);
-  LocalDateTime dateTime2 = dateTime1.WithCalendar(CalendarSystem.julian);
+  LocalDateTime dateTime2 = dateTime1.withCalendar(CalendarSystem.julian);
 
   // Calendar information is propagated into LocalDate, but not into LocalTime
-  expect(dateTime1.Date == dateTime2.Date, isFalse);
-  expect(dateTime1.TimeOfDay == dateTime2.TimeOfDay, isTrue);
+  expect(dateTime1.date == dateTime2.date, isFalse);
+  expect(dateTime1.time == dateTime2.time, isTrue);
 }
 
 @Test()

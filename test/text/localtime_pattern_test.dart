@@ -47,7 +47,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       13,
       34,
       123); //.AddTicks(4567);
-  @private static final LocalTime SampleLocalTime = LocalTime.FromHourMinuteSecondMillisecondTick(21, 13, 34, 123, 4567);
+  @private static final LocalTime SampleLocalTime = new LocalTime.fromHourMinuteSecondMillisecondTick(21, 13, 34, 123, 4567);
 
 // No BCL here. (also we'd need ExpectedCharacters to be a string?)
 // Characters we expect to work the same in Noda Time as in the BCL.
@@ -439,32 +439,32 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
   @internal final List<Data> TemplateValueData = [
     // Pattern specifies nothing - template value is passed through
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "X"
       ..Pattern = "'X'"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     // Tests for each individual field being propagated
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "mm:ss.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "HH:ss.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07:08"
       ..Pattern = "HH:mm:ss"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
@@ -507,27 +507,27 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
   @internal final List<Data> FormatAndParseData = [
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.EnUs
       ..Text = "."
       ..Pattern = "%.",
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.EnUs
       ..Text = ":"
       ..Pattern = "%:",
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.DotTimeSeparator
       ..Text = "."
       ..Pattern = "%.",
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.DotTimeSeparator
       ..Text = "."
       ..Pattern = "%:",
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.EnUs
       ..Text = "H"
       ..Pattern = "\\H",
-    new Data(LocalTime.Midnight)
+    new Data(LocalTime.midnight)
       ..Culture = TestCultures.EnUs
       ..Text = "HHss"
       ..Pattern = "'HHss'",
@@ -797,37 +797,37 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..Pattern = "%t",
 
     // Pattern specifies nothing - template value is passed through
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "*"
       ..Pattern = "%*"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     // Tests for each individual field being propagated
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "mm:ss.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "HH:ss.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07.0080009"
       ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(LocalTime.FromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
       ..Culture = TestCultures.EnUs
       ..Text = "06:07:08"
       ..Pattern = "HH:mm:ss"
-      ..Template = LocalTime.FromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
@@ -1008,7 +1008,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
   @Test()
   void TemplateValue_DefaultsToMidnight() {
     var pattern = LocalTimePattern.CreateWithInvariantCulture("HH");
-    expect(LocalTime.Midnight, pattern.TemplateValue);
+    expect(LocalTime.midnight, pattern.TemplateValue);
   }
 
   @Test()
@@ -1070,15 +1070,15 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 /*sealed*/ class Data extends PatternTestData<LocalTime>
 {
   // Default to midnight
-  /*protected*/ @override LocalTime get DefaultTemplate => LocalTime.Midnight;
+  /*protected*/ @override LocalTime get DefaultTemplate => LocalTime.midnight;
 
-  Data([LocalTime value = null]) : super(value ?? LocalTime.Midnight);
+  Data([LocalTime value = null]) : super(value ?? LocalTime.midnight);
 
   Data.hms(int hours, int minutes, int seconds, [int milliseconds = 0, int ticksWithinMillisecond = 0])
-      : super(LocalTime.FromHourMinuteSecondMillisecondTick(hours, minutes, seconds, milliseconds, ticksWithinMillisecond));
+      : super(new LocalTime.fromHourMinuteSecondMillisecondTick(hours, minutes, seconds, milliseconds, ticksWithinMillisecond));
 
   Data.nano(int hours, int minutes, int seconds, int /*long*/ nanoOfSecond)
-      : super(new LocalTime(hours, minutes, seconds).PlusNanoseconds(nanoOfSecond))
+      : super(new LocalTime(hours, minutes, seconds).plusNanoseconds(nanoOfSecond))
   {
   }
 

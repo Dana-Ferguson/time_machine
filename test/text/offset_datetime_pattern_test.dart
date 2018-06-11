@@ -31,8 +31,8 @@ Future main() async {
 class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
-  @private static final OffsetDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.WithOffset(new Offset.fromHours(1));
-  @private static final OffsetDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.WithOffset(new Offset.fromHours(1));
+  @private static final OffsetDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.withOffset(new Offset.fromHours(1));
+  @private static final OffsetDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.withOffset(new Offset.fromHours(1));
 
 // todo: @SkipMe().unimplemented
 // @private static final OffsetDateTime SampleOffsetDateTimeCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.WithOffset(Offset.zero);
@@ -128,12 +128,12 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 5).WithOffset(Offset.zero)
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 0, 5).withOffset(Offset.zero)
       ..Message = TextErrorMessages.InvalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).WithOffset(Offset.zero)
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).withOffset(Offset.zero)
       ..Message = TextErrorMessages.InvalidHour24,
 
     new Data()
@@ -147,11 +147,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
       ..Text = "19 10 2011"
-      ..Template = new LocalDateTime.fromYMDHMS(2000, 1, 1, 16, 05, 20).WithOffset(Offset.zero),
+      ..Template = new LocalDateTime.fromYMDHMS(2000, 1, 1, 16, 05, 20).withOffset(Offset.zero),
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "HH:mm:ss"
       ..Text = "16:05:20"
-      ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).WithOffset(Offset.zero),
+      ..Template = new LocalDateTime.fromYMDHMS(2011, 10, 19, 0, 0, 0).withOffset(Offset.zero),
 
     // Parsing using the semi-colon "comma dot" specifier
     new Data.e(
@@ -182,7 +182,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data.b(2011, 10, 20, 0, 0, new Offset.fromHours(1))
       ..Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>"
       ..Text = "2011-10-19 24:00:00 +01"
-      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).WithOffset(new Offset.fromHours(-5)),
+      ..Template = new LocalDateTime.fromYMDHMS(1970, 1, 1, 0, 5, 0).withOffset(new Offset.fromHours(-5)),
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00",
@@ -387,13 +387,13 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
     expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
-    var odt = new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 34, 56).WithOffset(new Offset.fromHours(2));
+    var odt = new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 34, 56).withOffset(new Offset.fromHours(2));
     expect("2017-08-23T12:34:56+02", pattern.Format(odt));
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var odt = new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 34, 56).WithOffset(new Offset.fromHours(2));
+    var odt = new LocalDateTime.fromYMDHMS(2017, 8, 23, 12, 34, 56).withOffset(new Offset.fromHours(2));
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
@@ -460,16 +460,16 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePattern.DefaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
-      : super(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).WithOffset(Offset.zero));
+      : super(new LocalDateTime.fromYMDHM(year, month, day, 0, 0).withOffset(Offset.zero));
 
   @internal Data.b(int year, int month, int day, int hour, int minute, Offset offset)
-      : super(new LocalDateTime.fromYMDHM(year, month, day, hour, minute).WithOffset(offset));
+      : super(new LocalDateTime.fromYMDHM(year, month, day, hour, minute).withOffset(offset));
 
   @internal Data.c(int year, int month, int day, int hour, int minute, int second)
-      : super(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).WithOffset(Offset.zero));
+      : super(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).withOffset(Offset.zero));
 
   @internal Data.d(int year, int month, int day, int hour, int minute, int second, Offset offset)
-      : super(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).WithOffset(offset));
+      : super(new LocalDateTime.fromYMDHMS(year, month, day, hour, minute, second).withOffset(offset));
 
   @internal Data.e(int year, int month, int day, int hour, int minute, int second, int millis)
       : super(new LocalDateTime.fromYMDHMSM(
@@ -479,7 +479,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       hour,
       minute,
       second,
-      millis).WithOffset(Offset.zero));
+      millis).withOffset(Offset.zero));
 
 
   @internal

@@ -67,7 +67,7 @@ void InvalidConstructionToMillisecond(int hour, int minute, int second, int mill
 @TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond])
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
-  expect(() => LocalTime.FromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tick), throwsRangeError);
+  expect(() => new LocalTime.fromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tick), throwsRangeError);
 }
 
 @Test()
@@ -81,17 +81,17 @@ void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int secon
 @TestCase(const [0, 0, 0, TimeConstants.ticksPerSecond])
 void FromHourMinuteSecondTick_Invalid(int hour, int minute, int second, int tick)
 {
-  expect(() => LocalTime.FromHourMinuteSecondTick(hour, minute, second, tick), throwsRangeError);
+  expect(() => new LocalTime.fromHourMinuteSecondTick(hour, minute, second, tick), throwsRangeError);
 }
 
 @Test()
 void FromHourMinuteSecondTick_Valid()
 {
-  var result = LocalTime.FromHourMinuteSecondTick(1, 2, 3, (TimeConstants.ticksPerSecond - 1));
-  expect(1, result.Hour);
-  expect(2, result.Minute);
-  expect(3, result.Second);
-  expect((TimeConstants.ticksPerSecond - 1), result.TickOfSecond);
+  var result = new LocalTime.fromHourMinuteSecondTick(1, 2, 3, (TimeConstants.ticksPerSecond - 1));
+  expect(1, result.hour);
+  expect(2, result.minute);
+  expect(3, result.second);
+  expect((TimeConstants.ticksPerSecond - 1), result.tickOfSecond);
 }
 
 @Test()
@@ -105,63 +105,63 @@ void FromHourMinuteSecondTick_Valid()
 @TestCase(const [0, 0, 0, TimeConstants.nanosecondsPerSecond])
 void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, int nanosecond)
 {
-  expect(() => LocalTime.FromHourMinuteSecondNanosecond(hour, minute, second, nanosecond), throwsRangeError);
+  expect(() => new LocalTime.fromHourMinuteSecondNanosecond(hour, minute, second, nanosecond), throwsRangeError);
 }
 
 @Test()
 void FromNanosecondsSinceMidnight_Valid()
 {
-  expect(LocalTime.Midnight, LocalTime.FromNanosecondsSinceMidnight(0));
-  expect(LocalTime.Midnight.PlusNanoseconds(-1), LocalTime.FromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay - 1));
+  expect(LocalTime.midnight, new LocalTime.fromNanosecondsSinceMidnight(0));
+  expect(LocalTime.midnight.plusNanoseconds(-1), new LocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay - 1));
 }
 
 @Test()
 void FromNanosecondsSinceMidnight_RangeChecks()
 {
-  expect(() => LocalTime.FromNanosecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => LocalTime.FromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
+  expect(() => new LocalTime.fromNanosecondsSinceMidnight(-1), throwsRangeError);
+  expect(() => new LocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
 }
 
 @Test()
 void FromTicksSinceMidnight_Valid()
 {
-  expect(LocalTime.Midnight, LocalTime.FromTicksSinceMidnight(0));
-  expect(LocalTime.Midnight - new Period.fromTicks(1), LocalTime.FromTicksSinceMidnight(TimeConstants.ticksPerDay - 1));
+  expect(LocalTime.midnight, new LocalTime.fromTicksSinceMidnight(0));
+  expect(LocalTime.midnight - new Period.fromTicks(1), new LocalTime.fromTicksSinceMidnight(TimeConstants.ticksPerDay - 1));
 }
 
 @Test()
 void FromTicksSinceMidnight_RangeChecks()
 {
-  expect(() => LocalTime.FromTicksSinceMidnight(-1), throwsRangeError);
-  expect(() => LocalTime.FromTicksSinceMidnight(TimeConstants.ticksPerDay), throwsRangeError);
+  expect(() => new LocalTime.fromTicksSinceMidnight(-1), throwsRangeError);
+  expect(() => new LocalTime.fromTicksSinceMidnight(TimeConstants.ticksPerDay), throwsRangeError);
 }
 
 @Test()
 void FromMillisecondsSinceMidnight_Valid()
 {
-  expect(LocalTime.Midnight, LocalTime.FromMillisecondsSinceMidnight(0));
-  expect(LocalTime.Midnight - new Period.fromMilliseconds(1), LocalTime.FromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay - 1));
+  expect(LocalTime.midnight, new LocalTime.fromMillisecondsSinceMidnight(0));
+  expect(LocalTime.midnight - new Period.fromMilliseconds(1), new LocalTime.fromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay - 1));
 }
 
 @Test()
 void FromMillisecondsSinceMidnight_RangeChecks()
 {
-  expect(() => LocalTime.FromMillisecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => LocalTime.FromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay), throwsRangeError);
+  expect(() => new LocalTime.fromMillisecondsSinceMidnight(-1), throwsRangeError);
+  expect(() => new LocalTime.fromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay), throwsRangeError);
 }
 
 @Test()
 void FromSecondsSinceMidnight_Valid()
 {
-  expect(LocalTime.Midnight, LocalTime.FromSecondsSinceMidnight(0));
-  expect(LocalTime.Midnight - new Period.fromSeconds(1), LocalTime.FromSecondsSinceMidnight(TimeConstants.secondsPerDay - 1));
+  expect(LocalTime.midnight, new LocalTime.fromSecondsSinceMidnight(0));
+  expect(LocalTime.midnight - new Period.fromSeconds(1), new LocalTime.fromSecondsSinceMidnight(TimeConstants.secondsPerDay - 1));
 }
 
 @Test()
 void FromSecondsSinceMidnight_RangeChecks()
 {
-  expect(() => LocalTime.FromSecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => LocalTime.FromSecondsSinceMidnight(TimeConstants.secondsPerDay), throwsRangeError);
+  expect(() => new LocalTime.fromSecondsSinceMidnight(-1), throwsRangeError);
+  expect(() => new LocalTime.fromSecondsSinceMidnight(TimeConstants.secondsPerDay), throwsRangeError);
 }
 
 

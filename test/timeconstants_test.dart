@@ -24,7 +24,7 @@ void JulianEpoch()
   // Compute the Julian epoch using the Julian calendar, instead of the
   // Gregorian version.
   var localEpoch = new LocalDateTime.fromYMDHMC(-4712, 1, 1, 12, 0, CalendarSystem.julian);
-  var epoch = localEpoch.InZoneStrictly(DateTimeZone.utc).ToInstant();
+  var epoch = localEpoch.inZoneStrictly(DateTimeZone.utc).ToInstant();
   expect(epoch, TimeConstants.julianEpoch);
 }
 

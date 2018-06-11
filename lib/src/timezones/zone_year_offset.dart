@@ -42,7 +42,7 @@ class _ZoneYearOffset {
 /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
 /// offset is moved is determined by the [AdvanceDayOfWeek] property.
 ///
-/// Finally the [Mode] property deterines whether the [TimeOfDay] value
+/// Finally the [Mode] property deterines whether the [time] value
 /// is added to the calculated offset to generate an offset within the day.
 ///
 /// Immutable, thread safe
@@ -50,7 +50,7 @@ class _ZoneYearOffset {
 @internal /*sealed*/ class ZoneYearOffset // : IEquatable<ZoneYearOffset>
     {
   /// An offset that specifies the beginning of the year.
-  @internal static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.Midnight);
+  @internal static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
 
   @private final int dayOfMonth;
   @private final int dayOfWeek;
@@ -179,7 +179,7 @@ class _ZoneYearOffset {
         }
         date = date.plusDays(1);
       }
-      return (date.at(timeOfDay)).ToLocalInstant();
+      return (date.at(timeOfDay)).toLocalInstant();
     }
   }
 

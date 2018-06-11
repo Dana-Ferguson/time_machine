@@ -60,7 +60,7 @@ final LocalDate TransitionDate = new LocalDate(2000, 6, 1);
 void AmbiguousStartOfDay_TransitionAtMidnight()
 {
   // Occurrence before transition
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionBackwardToMidnightZone);
   var actual = TransitionBackwardToMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -71,7 +71,7 @@ void AmbiguousStartOfDay_TransitionAtMidnight()
 void AmbiguousStartOfDay_TransitionAfterMidnight()
 {
   // Occurrence before transition
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionBackwardAfterMidnightZone);
   var actual = TransitionBackwardAfterMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -82,7 +82,7 @@ void AmbiguousStartOfDay_TransitionAfterMidnight()
 void SkippedStartOfDay_TransitionAtMidnight()
 {
   // 1am because of the skip
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 1, 0).WithOffset(new Offset.fromHours(-1)),
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 1, 0).withOffset(new Offset.fromHours(-1)),
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -93,7 +93,7 @@ void SkippedStartOfDay_TransitionAtMidnight()
 void SkippedStartOfDay_TransitionBeforeMidnight()
 {
   // 12.20am because of the skip
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 20).WithOffset(new Offset.fromHours(-1)),
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 6, 1, 0, 20).withOffset(new Offset.fromHours(-1)),
       TransitionForwardBeforeMidnightZone);
   var actual = TransitionForwardBeforeMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -104,7 +104,7 @@ void SkippedStartOfDay_TransitionBeforeMidnight()
 void UnambiguousStartOfDay()
 {
   // Just a simple midnight in March.
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 3, 1, 0, 0).WithOffset(new Offset.fromHours(-2)),
+  var expected = new ZonedDateTime.trusted(new LocalDateTime.fromYMDHM(2000, 3, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.atStartOfDay(new LocalDate(2000, 3, 1));
   expect(expected, actual);
@@ -297,7 +297,7 @@ Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
   DateTimeZone zone = await (await DateTimeZoneProviders.Tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
   expect(exception = capture(() => zone.atStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
-  expect(badDate.at(LocalTime.Midnight), exception.localDateTime);
+  expect(badDate.at(LocalTime.midnight), exception.localDateTime);
 }
 
 @Test()
@@ -376,6 +376,6 @@ void ResolveLocal()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.fromYMDHMS(2009, 11, 1, 1, 30, 0);
   var skipped = new LocalDateTime.fromYMDHMS(2009, 3, 8, 2, 30, 0);
-  expect(Pacific.atLeniently(ambiguous), Pacific.resolveLocal(ambiguous, Resolvers.LenientResolver));
-  expect(Pacific.atLeniently(skipped), Pacific.resolveLocal(skipped, Resolvers.LenientResolver));
+  expect(Pacific.atLeniently(ambiguous), Pacific.resolveLocal(ambiguous, Resolvers.lenientResolver));
+  expect(Pacific.atLeniently(skipped), Pacific.resolveLocal(skipped, Resolvers.lenientResolver));
 }

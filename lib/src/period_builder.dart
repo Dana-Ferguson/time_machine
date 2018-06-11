@@ -99,7 +99,7 @@ class PeriodBuilder {
   /// The type of this indexer is [System.Int64] for uniformity, but any date unit (year, month, week, day) will only ever have a value
   /// in the range of [System.Int32].
   ///
-  /// For the [PeriodUnits.Nanoseconds] unit, the value is converted to `Int64` when reading from the indexer, causing it to
+  /// For the [PeriodUnits.nanoseconds] unit, the value is converted to `Int64` when reading from the indexer, causing it to
   /// fail if the value is out of range (around 250 years). To access the values of very large numbers of nanoseconds, use the [Nanoseconds]
   /// property directly.
   ///

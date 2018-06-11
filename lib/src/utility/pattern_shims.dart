@@ -54,7 +54,7 @@ abstract class TextShim {
   }
 
   static String toStringLocalTime(LocalTime time) {
-    return '${time.Hour}:${time.Minute}:${time.Second}';
+    return '${time.hour}:${time.minute}:${time.second}';
   }
 
   static String toStringOffsetTime(OffsetTime offsetTime) {
@@ -67,7 +67,7 @@ abstract class TextShim {
 
   static String toStringLocalInstant(LocalInstant localInstant) {
     var date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch);
-    var utc = new LocalDateTime(date, LocalTime.FromNanosecondsSinceMidnight(localInstant.NanosecondOfDay));
+    var utc = new LocalDateTime(date, new LocalTime.fromNanosecondsSinceMidnight(localInstant.NanosecondOfDay));
     return utc.toString();
   }
 

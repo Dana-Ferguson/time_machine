@@ -26,9 +26,9 @@ CalendarSystem Julian = CalendarSystem.julian;
 void Epoch()
 {
   LocalDateTime julianEpoch = TimeConstants.unixEpoch.InZone_Calendar(DateTimeZone.utc, Julian).localDateTime;
-  expect(1969, julianEpoch.Year);
-  expect(12, julianEpoch.Month);
-  expect(19, julianEpoch.Day);
+  expect(1969, julianEpoch.year);
+  expect(12, julianEpoch.month);
+  expect(19, julianEpoch.day);
 }
 
 @Test()
