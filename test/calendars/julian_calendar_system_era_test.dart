@@ -26,33 +26,33 @@ CalendarSystem Julian = CalendarSystem.julian;
 void GetMaxYearOfEra()
 {
   LocalDate date = new LocalDate(Julian.maxYear, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.Common));
-  expect(Era.Common, date.era);
+  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.common));
+  expect(Era.common, date.era);
   date = new LocalDate(Julian.minYear, 1, 1, Julian);
   expect(Julian.minYear, date.year);
-  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.BeforeCommon));
-  expect(Era.BeforeCommon, date.era);
+  expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.beforeCommon));
+  expect(Era.beforeCommon, date.era);
 }
 
 @Test()
 void GetMinYearOfEra()
 {
   LocalDate date = new LocalDate(1, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.Common));
-  expect(Era.Common, date.era);
+  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.common));
+  expect(Era.common, date.era);
   date = new LocalDate(0, 1, 1, Julian);
-  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.BeforeCommon));
-  expect(Era.BeforeCommon, date.era);
+  expect(date.yearOfEra, Julian.getMinYearOfEra(Era.beforeCommon));
+  expect(Era.beforeCommon, date.era);
 }
 
 @Test()
 void GetAbsoluteYear()
 {
-  expect(1, Julian.getAbsoluteYear(1, Era.Common));
-  expect(0, Julian.getAbsoluteYear(1, Era.BeforeCommon));
-  expect(-1, Julian.getAbsoluteYear(2, Era.BeforeCommon));
-  expect(Julian.maxYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.Common), Era.Common));
-  expect(Julian.minYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.BeforeCommon), Era.BeforeCommon));
+  expect(1, Julian.getAbsoluteYear(1, Era.common));
+  expect(0, Julian.getAbsoluteYear(1, Era.beforeCommon));
+  expect(-1, Julian.getAbsoluteYear(2, Era.beforeCommon));
+  expect(Julian.maxYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.common), Era.common));
+  expect(Julian.minYear, Julian.getAbsoluteYear(Julian.getMaxYearOfEra(Era.beforeCommon), Era.beforeCommon));
 }
 
 @Test()
@@ -60,7 +60,7 @@ void EraProperty()
 {
   CalendarSystem calendar = CalendarSystem.julian;
   LocalDateTime startOfEra = new LocalDateTime.at(1, 1, 1, 0, 0, calendar: calendar);
-  expect(Era.Common, startOfEra.era);
-  expect(Era.BeforeCommon, startOfEra.plusTicks(-1).era);
+  expect(Era.common, startOfEra.era);
+  expect(Era.beforeCommon, startOfEra.plusTicks(-1).era);
 }
 

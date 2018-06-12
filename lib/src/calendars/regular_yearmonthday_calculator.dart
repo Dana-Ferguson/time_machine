@@ -67,7 +67,7 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
         yearToUse++;
       }
     }
-// End of do not refactor.
+    // End of do not refactor.
 
     // Quietly force DOM to nearest sane value.
     int dayToUse = yearMonthDay.day;

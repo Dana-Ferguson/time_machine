@@ -16,15 +16,14 @@ import 'package:time_machine/time_machine_calendars.dart';
 
   @internal
   @override
-  bool IsLeapYear(int year) => (year & 3) == 0;
+  bool isLeapYear(int year) => (year & 3) == 0;
 
   @protected
   @override
   int calculateStartOfYearDays(int year) {
-// Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
-// Calculate relative to the nearest leap year and account for the
-// difference later.
-
+    // Unix epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
+    // Calculate relative to the nearest leap year and account for the
+    // difference later.
     int relativeYear = year - 1968;
     int leapYears;
     if (relativeYear <= 0) {
@@ -35,7 +34,7 @@ import 'package:time_machine/time_machine_calendars.dart';
     else {
       leapYears = relativeYear >> 2;
       // For post 1968 an adjustment is needed as jan1st is before leap day
-      if (!IsLeapYear(year)) {
+      if (!isLeapYear(year)) {
         leapYears++;
       }
     }

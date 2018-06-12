@@ -81,7 +81,7 @@ void IsLeapYear_Invalid(int year)
 @TestCase(const [9999])
 void GetAbsoluteYear_ValidCe(int year)
 {
-  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.Common);
+  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.common);
 }
 
 @Test() 
@@ -89,7 +89,7 @@ void GetAbsoluteYear_ValidCe(int year)
 @TestCase(const [9999])
 void GetAbsoluteYear_ValidBce(int year)
 {
-  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.BeforeCommon);
+  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.beforeCommon);
 }
 
 @Test() 
@@ -97,7 +97,7 @@ void GetAbsoluteYear_ValidBce(int year)
 @TestCase(const [10000])
 void GetAbsoluteYear_InvalidCe(int year)
 {
-  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.Common);
+  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.common);
 }
 
 @Test()
@@ -105,13 +105,13 @@ void GetAbsoluteYear_InvalidCe(int year)
 @TestCase(const [10000])
 void GetAbsoluteYear_InvalidBce(int year)
 {
-  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.BeforeCommon);
+  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.beforeCommon);
 }
 
 @Test()
 void GetAbsoluteYear_InvalidEra()
 {
-  TestHelper.AssertInvalid2(Iso.getAbsoluteYear, 1, Era.AnnoPersico);
+  TestHelper.AssertInvalid2(Iso.getAbsoluteYear, 1, Era.annoPersico);
 }
 
 @Test()
@@ -131,7 +131,7 @@ void GetMinYearOfEra_NullEra()
 @Test()
 void GetMinYearOfEra_InvalidEra()
 {
-  TestHelper.AssertInvalid(Iso.getMinYearOfEra, Era.AnnoPersico);
+  TestHelper.AssertInvalid(Iso.getMinYearOfEra, Era.annoPersico);
 }
 
 @Test()
@@ -144,5 +144,5 @@ void GetMaxYearOfEra_NullEra()
 @Test()
 void GetMaxYearOfEra_InvalidEra()
 {
-  TestHelper.AssertInvalid(Iso.getMaxYearOfEra, Era.AnnoPersico);
+  TestHelper.AssertInvalid(Iso.getMaxYearOfEra, Era.annoPersico);
 }

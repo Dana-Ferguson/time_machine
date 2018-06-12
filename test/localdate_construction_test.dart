@@ -105,18 +105,18 @@ void Constructor_Invalid_WithCalendar(int year, int month, int day)
 void Constructor_InvalidYearOfEra()
 {
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate.forEra(Era.Common, 0, 1, 1), throwsRangeError);
-  expect(() => new LocalDate.forEra(Era.BeforeCommon, 0, 1, 1), throwsRangeError);
-  expect(() => new LocalDate.forEra(Era.Common, 10000, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.common, 0, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.beforeCommon, 0, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.common, 10000, 1, 1), throwsRangeError);
   // Although our minimum year is -9998, that's 9999 BC.
-  expect(() => new LocalDate.forEra(Era.BeforeCommon, 10000, 1, 1), throwsRangeError);
+  expect(() => new LocalDate.forEra(Era.beforeCommon, 10000, 1, 1), throwsRangeError);
 }
 
 @Test()
 void Constructor_WithYearOfEra_BC()
 {
   LocalDate absolute = new LocalDate(-10, 1, 1);
-  LocalDate withEra = new LocalDate.forEra(Era.BeforeCommon, 11, 1, 1);
+  LocalDate withEra = new LocalDate.forEra(Era.beforeCommon, 11, 1, 1);
   expect(absolute, withEra);
 }
 
@@ -124,7 +124,7 @@ void Constructor_WithYearOfEra_BC()
 void Constructor_WithYearOfEra_AD()
 {
   LocalDate absolute = new LocalDate(50, 6, 19);
-  LocalDate withEra = new LocalDate.forEra(Era.Common, 50, 6, 19);
+  LocalDate withEra = new LocalDate.forEra(Era.common, 50, 6, 19);
   expect(absolute, withEra);
 }
 
@@ -133,7 +133,7 @@ void Constructor_WithYearOfEra_NonIsoCalendar()
 {
   var calendar = CalendarSystem.coptic;
   LocalDate absolute = new LocalDate(50, 6, 19, calendar);
-  LocalDate withEra = new LocalDate.forEra(Era.AnnoMartyrum, 50, 6, 19, calendar);
+  LocalDate withEra = new LocalDate.forEra(Era.annoMartyrum, 50, 6, 19, calendar);
   expect(absolute, withEra);
 }
 

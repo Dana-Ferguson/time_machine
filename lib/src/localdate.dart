@@ -147,7 +147,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [dayOfWeek]: ISO-8601 day of week to return
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
   factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
-  => WeekYearRules.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
+  => WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
   /// within a year and month. For example, this method can be used to ask for "the third Monday in April 2012".

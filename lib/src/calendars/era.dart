@@ -12,29 +12,28 @@ import 'package:time_machine/time_machine.dart';
 /// All the built-in calendars in Time Machine use the values specified by the static
 /// read-only fields in this class. These may be compared for reference equality to check for specific
 /// eras.
-// sealed
 @immutable
 class Era {
   /// The "Common" era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
-  static const Era Common = const Era("CE", "Eras_Common");
+  static const Era common = const Era("CE", "Eras_Common");
 
   /// The "before common" era (BCE), also known as Before Christ (BC). This is used in the ISO, Gregorian and Julian calendars.
-  static const Era BeforeCommon = const Era("BCE", "Eras_BeforeCommon");
+  static const Era beforeCommon = const Era("BCE", "Eras_BeforeCommon");
 
   /// The "Anno Martyrum" or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
-  static const Era AnnoMartyrum = const Era("AM", "Eras_AnnoMartyrum");
+  static const Era annoMartyrum = const Era("AM", "Eras_AnnoMartyrum");
 
   /// The "Anno Hegira" era. This is the sole era used in the Hijri (Islamic) calendar.
-  static const Era AnnoHegirae = const Era("EH", "Eras_AnnoHegirae");
+  static const Era annoHegirae = const Era("EH", "Eras_AnnoHegirae");
 
   /// The "Anno Mundi" era. This is the sole era used in the Hebrew calendar.
-  static const Era AnnoMundi = const Era("AM", "Eras_AnnoMundi");
+  static const Era annoMundi = const Era("AM", "Eras_AnnoMundi");
 
   /// The "Anno Persico" era. This is the sole era used in the Persian calendar.
-  static const Era AnnoPersico = const Era("AP", "Eras_AnnoPersico");
+  static const Era annoPersico = const Era("AP", "Eras_AnnoPersico");
 
   /// The "Bahá'í" era. This is the sole era used in the Wondrous calendar.
-  static const Era Bahai = const Era("BE", "Eras_Bahai");
+  static const Era bahai = const Era("BE", "Eras_Bahai");
 
   @internal final String resourceIdentifier;
 

@@ -169,7 +169,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     }
     else {
       leapYears = (year >> 2) - leapYears + (leapYears >> 2);
-      if (IsLeapYear(year)) {
+      if (isLeapYear(year)) {
         leapYears--;
       }
     }
@@ -182,7 +182,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   int getDaysInYear(int year) => _isGregorianLeapYear(year) ? 366 : 365;
 
   @internal @override
-  bool IsLeapYear(int year) => _isGregorianLeapYear(year);
+  bool isLeapYear(int year) => _isGregorianLeapYear(year);
 
   static bool _isGregorianLeapYear(int year) => ((year & 3) == 0) && (csharpMod(year, 100) != 0 || csharpMod(year, 400) == 0);
 }

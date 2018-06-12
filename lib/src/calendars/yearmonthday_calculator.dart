@@ -63,7 +63,7 @@ abstract class YearMonthDayCalculator {
   int getDaysInMonth(int year, int month);
 
   @internal
-  bool IsLeapYear(int year);
+  bool isLeapYear(int year);
 
   @internal
   YearMonthDay addMonths(YearMonthDay yearMonthDay, int months);
@@ -138,8 +138,6 @@ abstract class YearMonthDayCalculator {
 
 // #endregion Virtual Methods
 
-// #region Concrete methods (convenience methods delegating to virtual/abstract ones primarily)
-
   /// Converts from a YearMonthDay representation to "day of year".
   /// This assumes the parameter have been validated previously.
   @internal
@@ -199,6 +197,5 @@ abstract class YearMonthDayCalculator {
     var zeroBasedDayOfYear = daysFromCandidateStartToTarget;
     return [candidate, zeroBasedDayOfYear];
   }
-// #endregion
 }
 

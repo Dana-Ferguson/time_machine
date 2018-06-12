@@ -39,7 +39,7 @@ import 'package:time_machine/time_machine.dart';
 
   @internal
   @override
-  int GetYearOfEra(int absoluteYear) => absoluteYear;
+  int getYearOfEra(int absoluteYear) => absoluteYear;
 
   @internal
   @override
@@ -57,5 +57,5 @@ import 'package:time_machine/time_machine.dart';
 
   @internal
   @override
-  Era GetEra(int absoluteYear) => _era;
+  Era getEra(int absoluteYear) => _era;
 }

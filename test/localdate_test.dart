@@ -44,7 +44,7 @@ void CombinationWithTime()
 void Construction_NullCalendar_Throws()
 {
   expect(() => new LocalDate(2017, 11, 7, null), throwsArgumentError, reason: "Basic construction.");
-  expect(() => new LocalDate.forEra(Era.Common, 2017, 11, 7, null), throwsArgumentError, reason: "Construction including era.");
+  expect(() => new LocalDate.forEra(Era.common, 2017, 11, 7, null), throwsArgumentError, reason: "Construction including era.");
 }
 
 @Test()

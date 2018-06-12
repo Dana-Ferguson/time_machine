@@ -515,7 +515,7 @@ class CalendarSystem {
   /// Returns: True if the given year is a leap year; false otherwise.
   bool isLeapYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
-    return yearMonthDayCalculator.IsLeapYear(year);
+    return yearMonthDayCalculator.isLeapYear(year);
   }
 
 
@@ -560,12 +560,12 @@ class CalendarSystem {
 
   @internal int getYearOfEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
-    return eraCalculator.GetYearOfEra(absoluteYear);
+    return eraCalculator.getYearOfEra(absoluteYear);
   }
 
   @internal Era getEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
-    return eraCalculator.GetEra(absoluteYear);
+    return eraCalculator.getEra(absoluteYear);
   }
 
 

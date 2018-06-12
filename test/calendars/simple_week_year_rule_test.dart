@@ -28,11 +28,11 @@ void RoundtripFirstDay_Iso7()
   // In the Gregorian calendar with a minimum of 7 days in the first
   // week, Tuesday January 1st -9998 is in week year -9999. We should be able to
   // round-trip.
-  var rule = WeekYearRules.ForMinDaysInFirstWeek(7);
+  var rule = WeekYearRules.forMinDaysInFirstWeek(7);
   var date = new LocalDate(-9998, 1, 1);
-  expect(date, rule.GetLocalDate(
-      rule.GetWeekYear(date),
-      rule.GetWeekOfWeekYear(date),
+  expect(date, rule.getLocalDate(
+      rule.getWeekYear(date),
+      rule.getWeekOfWeekYear(date),
       date.dayOfWeek,
       CalendarSystem.iso));
 }
@@ -43,11 +43,11 @@ void RoundtripLastDay_Iso1()
   // In the Gregorian calendar with a minimum of 1 day in the first
   // week, Friday December 31st 9999 is in week year 10000. We should be able to
   // round-trip.
-  var rule = WeekYearRules.ForMinDaysInFirstWeek(1);
+  var rule = WeekYearRules.forMinDaysInFirstWeek(1);
   var date = new LocalDate(9999, 12, 31);
-  expect(date, rule.GetLocalDate(
-      rule.GetWeekYear(date),
-      rule.GetWeekOfWeekYear(date),
+  expect(date, rule.getLocalDate(
+      rule.getWeekYear(date),
+      rule.getWeekOfWeekYear(date),
       date.dayOfWeek,
       CalendarSystem.iso));
 }
@@ -58,10 +58,10 @@ void OutOfRange_ValidWeekYearAndWeek_TooEarly()
   // Gregorian 4: Week year 1 starts on Monday December 31st -9999,
   // and is therefore out of range, even though the week-year
   // and week-of-week-year are valid.
-  expect(() => WeekYearRules.Iso.GetLocalDate(-9998, 1, IsoDayOfWeek.monday, CalendarSystem.iso), willThrow<RangeError>());
+  expect(() => WeekYearRules.iso.getLocalDate(-9998, 1, IsoDayOfWeek.monday, CalendarSystem.iso), willThrow<RangeError>());
 
   // Sanity check: no exception for January 1st
-  WeekYearRules.Iso.GetLocalDate(-9998, 1, IsoDayOfWeek.tuesday, CalendarSystem.iso);
+  WeekYearRules.iso.getLocalDate(-9998, 1, IsoDayOfWeek.tuesday, CalendarSystem.iso);
 }
 
 @Test()
@@ -73,10 +73,10 @@ void OutOfRange_ValidWeekYearAndWeek_TooLate()
 //Assert.Throws<ArgumentOutOfRangeException>(
 //        () => WeekYearRules.Iso.GetLocalDate(9999, 52, Saturday));
 
-  expect(() => WeekYearRules.Iso.GetLocalDate(9999, 52, IsoDayOfWeek.saturday, CalendarSystem.iso), willThrow<ArgumentError>());
+  expect(() => WeekYearRules.iso.getLocalDate(9999, 52, IsoDayOfWeek.saturday, CalendarSystem.iso), willThrow<ArgumentError>());
 
   // Sanity check: no exception for December 31st
-  WeekYearRules.Iso.GetLocalDate(9999, 52, IsoDayOfWeek.friday, CalendarSystem.iso);
+  WeekYearRules.iso.getLocalDate(9999, 52, IsoDayOfWeek.friday, CalendarSystem.iso);
 }
 
 // Tests ported from IsoCalendarSystemTest and LocalDateTest.Construction
@@ -91,10 +91,10 @@ void OutOfRange_ValidWeekYearAndWeek_TooLate()
 void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
 {
   var date = new LocalDate(year, month, day);
-  expect(weekYear, WeekYearRules.Iso.GetWeekYear(date));
-  expect(weekOfWeekYear, WeekYearRules.Iso.GetWeekOfWeekYear(date));
+  expect(weekYear, WeekYearRules.iso.getWeekYear(date));
+  expect(weekOfWeekYear, WeekYearRules.iso.getWeekOfWeekYear(date));
   expect(dayOfWeek, date.dayOfWeek);
-  expect(date, WeekYearRules.Iso.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso));
+  expect(date, WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso));
 }
 
 // Ported from CalendarSystemTest.Validation
@@ -112,7 +112,7 @@ void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int wee
 @TestCase(const [2019, 52])
 void GetWeeksInWeekYear(int weekYear, int expectedResult)
 {
-  expect(expectedResult, WeekYearRules.Iso.GetWeeksInWeekYear(weekYear, CalendarSystem.iso));
+  expect(expectedResult, WeekYearRules.iso.getWeeksInWeekYear(weekYear, CalendarSystem.iso));
 }
 
 // Ported from LocalDateTest.BasicProperties
@@ -132,7 +132,7 @@ void GetWeeksInWeekYear(int weekYear, int expectedResult)
 void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekOfWeekYear)
 {
   var date = new LocalDate(year, month, day);
-  expect(weekOfWeekYear, WeekYearRules.Iso.GetWeekOfWeekYear(date));
+  expect(weekOfWeekYear, WeekYearRules.iso.getWeekOfWeekYear(date));
 }
 
 @Test()
@@ -151,16 +151,16 @@ void Gregorian(int year, IsoDayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekF
   // Rules which put the first day of the calendar year into the same week year
   for (int i = 1; i <= maxMinDaysInFirstWeekForSameWeekYear; i++)
   {
-    var rule = WeekYearRules.ForMinDaysInFirstWeek(i);
-    expect(year, rule.GetWeekYear(startOfCalendarYear));
-    expect(1, rule.GetWeekOfWeekYear(startOfCalendarYear));
+    var rule = WeekYearRules.forMinDaysInFirstWeek(i);
+    expect(year, rule.getWeekYear(startOfCalendarYear));
+    expect(1, rule.getWeekOfWeekYear(startOfCalendarYear));
   }
   // Rules which put the first day of the calendar year into the previous week year
   for (int i = maxMinDaysInFirstWeekForSameWeekYear + 1; i <= 7; i++)
   {
-    var rule = WeekYearRules.ForMinDaysInFirstWeek(i);
-    expect(year - 1, rule.GetWeekYear(startOfCalendarYear));
-    expect(rule.GetWeeksInWeekYear(year - 1, CalendarSystem.iso), rule.GetWeekOfWeekYear(startOfCalendarYear));
+    var rule = WeekYearRules.forMinDaysInFirstWeek(i);
+    expect(year - 1, rule.getWeekYear(startOfCalendarYear));
+    expect(rule.getWeeksInWeekYear(year - 1, CalendarSystem.iso), rule.getWeekOfWeekYear(startOfCalendarYear));
   }
 }
 
@@ -175,11 +175,11 @@ void Gregorian(int year, IsoDayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekF
 void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
 {
   var viaCalendar = new LocalDate(year, month, day);
-  var rule = WeekYearRules.Iso;
-  expect(weekYear, rule.GetWeekYear(viaCalendar));
-  expect(weekOfWeekYear, rule.GetWeekOfWeekYear(viaCalendar));
+  var rule = WeekYearRules.iso;
+  expect(weekYear, rule.getWeekYear(viaCalendar));
+  expect(weekOfWeekYear, rule.getWeekOfWeekYear(viaCalendar));
   expect(dayOfWeek, viaCalendar.dayOfWeek);
-  var viaRule = rule.GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
+  var viaRule = rule.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
   expect(viaCalendar, viaRule);
 }
 
@@ -201,22 +201,22 @@ void HebrewCalendar(int year, IsoDayOfWeek expectedFirstDay,
     int expectedWeeks, int expectedWeekYearOfFirstDay, int expectedWeekOfWeekYearOfFirstDay)
 {
   var civilDate = new LocalDate(year, 1, 1, CalendarSystem.hebrewCivil);
-  var rule = WeekYearRules.Iso;
+  var rule = WeekYearRules.iso;
   expect(expectedFirstDay, civilDate.dayOfWeek);
   expect(civilDate.withCalendar(CalendarSystem.iso), new LocalDate(isoYear, isoMonth, isoDay));
-  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, CalendarSystem.hebrewCivil));
-  expect(expectedWeekYearOfFirstDay, rule.GetWeekYear(civilDate));
-  expect(expectedWeekOfWeekYearOfFirstDay, rule.GetWeekOfWeekYear(civilDate));
+  expect(expectedWeeks, rule.getWeeksInWeekYear(year, CalendarSystem.hebrewCivil));
+  expect(expectedWeekYearOfFirstDay, rule.getWeekYear(civilDate));
+  expect(expectedWeekOfWeekYearOfFirstDay, rule.getWeekOfWeekYear(civilDate));
   expect(civilDate,
-      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.hebrewCivil));
+      rule.getLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.hebrewCivil));
 
   // The scriptural month numbering system should have the same week-year and week-of-week-year.
   var scripturalDate = civilDate.withCalendar(CalendarSystem.hebrewScriptural);
-  expect(expectedWeeks, rule.GetWeeksInWeekYear(year, CalendarSystem.hebrewScriptural));
-  expect(expectedWeekYearOfFirstDay, rule.GetWeekYear(scripturalDate));
-  expect(expectedWeekOfWeekYearOfFirstDay, rule.GetWeekOfWeekYear(scripturalDate));
+  expect(expectedWeeks, rule.getWeeksInWeekYear(year, CalendarSystem.hebrewScriptural));
+  expect(expectedWeekYearOfFirstDay, rule.getWeekYear(scripturalDate));
+  expect(expectedWeekOfWeekYearOfFirstDay, rule.getWeekOfWeekYear(scripturalDate));
   expect(scripturalDate,
-      rule.GetLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.hebrewScriptural));
+      rule.getLocalDate(expectedWeekYearOfFirstDay, expectedWeekOfWeekYearOfFirstDay, expectedFirstDay, CalendarSystem.hebrewScriptural));
 }
 
 // Jan 1st 2015 = Thursday
@@ -233,12 +233,12 @@ void NonMondayFirstDayOfWeek(int minDaysInFirstWeek, IsoDayOfWeek firstDayOfWeek
     int weekYear, int week, IsoDayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
-  var rule = WeekYearRules.ForMinDaysInFirstWeek(minDaysInFirstWeek, firstDayOfWeek);
-  var actual = rule.GetLocalDate(weekYear, week, dayOfWeek, CalendarSystem.iso);
+  var rule = WeekYearRules.forMinDaysInFirstWeek(minDaysInFirstWeek, firstDayOfWeek);
+  var actual = rule.getLocalDate(weekYear, week, dayOfWeek, CalendarSystem.iso);
   var expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
-  expect(weekYear, rule.GetWeekYear(actual));
-  expect(week, rule.GetWeekOfWeekYear(actual));
+  expect(weekYear, rule.getWeekYear(actual));
+  expect(week, rule.getWeekOfWeekYear(actual));
 }
 
 /*

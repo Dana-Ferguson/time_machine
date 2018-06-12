@@ -20,8 +20,8 @@ import 'package:time_machine/time_machine_calendars.dart';
 
   @internal int getMinYearOfEra(Era era);
   @internal int getMaxYearOfEra(Era era);
-  @internal Era GetEra(int absoluteYear);
-  @internal int GetYearOfEra(int absoluteYear);
+  @internal Era getEra(int absoluteYear);
+  @internal int getYearOfEra(int absoluteYear);
   @internal int getAbsoluteYear(int yearOfEra, Era era);
 }
 

@@ -68,26 +68,26 @@ abstract class IWeekYearRule
   /// [calendar]: The calendar system for the date.
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
-  LocalDate GetLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
+  LocalDate getLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
 
   /// Calculates the week-year in which the given date occurs, according to this rule.
   ///
   /// [date]: The date to compute the week-year of.
   /// Returns: The week-year of [date], according to this rule.
-  int GetWeekYear(LocalDate date);
+  int getWeekYear(LocalDate date);
 
   /// Calculates the week of the week-year in which the given date occurs, according to this rule.
   ///
   /// [date]: The date to compute the week of.
   /// Returns: The week of the week-year of [date], according to this rule.
-  int GetWeekOfWeekYear(LocalDate date);
+  int getWeekOfWeekYear(LocalDate date);
 
   /// Returns the number of weeks in the given week-year, within the specified calendar system.
   ///
   /// [weekYear]: The week-year to find the range of.
   /// [calendar]: The calendar system the calculation is relative to.
   /// Returns: The number of weeks in the given week-year within the given calendar.
-  int GetWeeksInWeekYear(int weekYear, CalendarSystem calendar);
+  int getWeeksInWeekYear(int weekYear, CalendarSystem calendar);
 }
 
 // todo: No extension methods in Dart ... look at ergonomics here
@@ -108,8 +108,8 @@ abstract class WeekYearRuleExtensions
   /// depending on [weekYear] and [weekOfWeekYear].
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
-  static LocalDate GetLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
-  Preconditions.checkNotNull(rule, 'rule').GetLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
+  static LocalDate getLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
+  Preconditions.checkNotNull(rule, 'rule').getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Convenience overload to call [IWeekYearRule.GetWeeksInWeekYear(int, CalendarSystem)] with
   /// the ISO calendar system.
@@ -117,6 +117,6 @@ abstract class WeekYearRuleExtensions
   /// [rule]: The rule to delegate the call to.
   /// [weekYear]: The week year to calculate the number of contained weeks.
   /// Returns: The number of weeks in the given week year.
-  static int GetWeeksInWeekYear(IWeekYearRule rule, int weekYear) =>
-  Preconditions.checkNotNull(rule, 'rule').GetWeeksInWeekYear(weekYear, CalendarSystem.iso);
+  static int getWeeksInWeekYear(IWeekYearRule rule, int weekYear) =>
+  Preconditions.checkNotNull(rule, 'rule').getWeeksInWeekYear(weekYear, CalendarSystem.iso);
 }

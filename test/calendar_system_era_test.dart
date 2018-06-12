@@ -23,24 +23,24 @@ final CalendarSystem CopticCalendar = CalendarSystem.coptic;
 @Test() @SkipMe.unimplemented()
 void GetAbsoluteYear()
 {
-  expect(5, CopticCalendar.getAbsoluteYear(5, Era.AnnoMartyrum));
+  expect(5, CopticCalendar.getAbsoluteYear(5, Era.annoMartyrum));
   // Prove it's right...
   LocalDate localDate = new LocalDate(5, 1, 1, CopticCalendar);
   expect(5, localDate.year);
   expect(5, localDate.yearOfEra);
-  expect(Era.AnnoMartyrum, localDate.era);
+  expect(Era.annoMartyrum, localDate.era);
 }
 
 @Test() @SkipMe.unimplemented()
 void GetMinYearOfEra()
 {
-  expect(1, CopticCalendar.getMinYearOfEra(Era.AnnoMartyrum));
+  expect(1, CopticCalendar.getMinYearOfEra(Era.annoMartyrum));
 }
 
 @Test() @SkipMe.unimplemented()
 void GetMaxYearOfEra()
 {
-  expect(CopticCalendar.maxYear, CopticCalendar.getMaxYearOfEra(Era.AnnoMartyrum));
+  expect(CopticCalendar.maxYear, CopticCalendar.getMaxYearOfEra(Era.annoMartyrum));
 }
 
 

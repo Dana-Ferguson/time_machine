@@ -29,7 +29,7 @@ void SimpleProperties()
   var value = SampleZone.atStrictly(new LocalDateTime.at(2012, 2, 10, 8, 9, seconds: 10).plusNanoseconds(123456789));
   expect(new LocalDate(2012, 2, 10), value.date);
   expect(new LocalTime.fromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.timeOfDay);
-  expect(Era.Common, value.era);
+  expect(Era.common, value.era);
   expect(2012, value.year);
   expect(2012, value.yearOfEra);
   expect(2, value.month);

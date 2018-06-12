@@ -83,7 +83,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal CalendarSystem Calendar;
   @internal int Year = 0;
-  @private Era era = Era.Common;
+  @private Era era = Era.common;
   @internal int YearOfEra = 0;
   @internal int MonthOfYearNumeric = 0;
   @internal int MonthOfYearText = 0;

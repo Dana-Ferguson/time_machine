@@ -39,13 +39,13 @@ void FieldsOf_UnixEpoch()
 
   expect(1970, epoch.year);
   expect(1970, epoch.yearOfEra);
-  expect(1970, WeekYearRules.Iso.GetWeekYear(epoch.date));
-  expect(1, WeekYearRules.Iso.GetWeekOfWeekYear(epoch.date));
+  expect(1970, WeekYearRules.iso.getWeekYear(epoch.date));
+  expect(1, WeekYearRules.iso.getWeekOfWeekYear(epoch.date));
   expect(1, epoch.month);
   expect(1, epoch.day);
   expect(1, epoch.dayOfYear);
   expect(IsoDayOfWeek.thursday, epoch.dayOfWeek);
-  expect(Era.Common, epoch.era);
+  expect(Era.common, epoch.era);
   expect(0, epoch.hour);
   expect(0, epoch.minute);
   expect(0, epoch.second);
@@ -64,13 +64,13 @@ void FieldsOf_GreatAchievement()
 
   expect(2009, now.year);
   expect(2009, now.yearOfEra);
-  expect(2009, WeekYearRules.Iso.GetWeekYear(now.date));
-  expect(48, WeekYearRules.Iso.GetWeekOfWeekYear(now.date));
+  expect(2009, WeekYearRules.iso.getWeekYear(now.date));
+  expect(48, WeekYearRules.iso.getWeekOfWeekYear(now.date));
   expect(11, now.month);
   expect(27, now.day);
   // expect(TimeOfGreatAchievement.dayOfYear, now.DayOfYear);
   expect(IsoDayOfWeek.friday, now.dayOfWeek);
-  expect(Era.Common, now.era);
+  expect(Era.common, now.era);
   expect(18, now.hour);
   expect(38, now.minute);
   expect(25, now.second);
@@ -117,7 +117,7 @@ void BeforeCommonEra()
 {
   // Year -1 in absolute terms is 2BCE
   LocalDate localDate = new LocalDate(-1, 1, 1);
-  expect(Era.BeforeCommon, localDate.era);
+  expect(Era.beforeCommon, localDate.era);
   expect(-1, localDate.year);
   expect(2, localDate.yearOfEra);
 }
@@ -126,8 +126,8 @@ void BeforeCommonEra()
 void BeforeCommonEra_BySpecifyingEra()
 {
   // Year -1 in absolute terms is 2BCE
-  LocalDate localDate = new LocalDate.forEra(Era.BeforeCommon, 2, 1, 1);
-  expect(Era.BeforeCommon, localDate.era);
+  LocalDate localDate = new LocalDate.forEra(Era.beforeCommon, 2, 1, 1);
+  expect(Era.beforeCommon, localDate.era);
   expect(-1, localDate.year);
   expect(2, localDate.yearOfEra);
 }
