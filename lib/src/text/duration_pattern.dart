@@ -48,13 +48,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Span> Parse(String text) => pattern.Parse(text);
+  ParseResult<Span> parse(String text) => pattern.parse(text);
 
   /// Formats the given Span as text according to the rules of this pattern.
   ///
   /// [value]: The Span to format.
   /// Returns: The Span formatted according to this pattern.
-  String Format(Span value) => pattern.Format(value);
+  String format(Span value) => pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -62,7 +62,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(Span value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(Span value, StringBuffer builder) => pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.
   ///

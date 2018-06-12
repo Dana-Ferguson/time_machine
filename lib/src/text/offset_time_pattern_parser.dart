@@ -12,37 +12,37 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static final Map<String/*char*/, CharacterHandler<OffsetTime, OffsetTimeParseBucket>> PatternCharacterHandlers =
   {
-    '%': SteppedPatternBuilder.HandlePercent /**<OffsetTime, OffsetTimeParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<OffsetTime, OffsetTimeParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetTime, OffsetTimeParseBucket>*/,
-    '.': TimePatternHelper.CreatePeriodHandler<OffsetTime, OffsetTimeParseBucket>(
+    '.': TimePatternHelper.createPeriodHandler<OffsetTime, OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ';': TimePatternHelper.CreateCommaDotHandler<OffsetTime, OffsetTimeParseBucket>(
+    ';': TimePatternHelper.createCommaDotHandler<OffsetTime, OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<OffsetTime>*/),
-    'h': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<OffsetTime>*/),
+    'h': SteppedPatternBuilder.handlePaddedField<OffsetTime, OffsetTimeParseBucket>(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
-    'H': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
+    'H': SteppedPatternBuilder.handlePaddedField<OffsetTime, OffsetTimeParseBucket>(
         2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.Time.Hours24 = value),
-    'm': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
+    'm': SteppedPatternBuilder.handlePaddedField<OffsetTime, OffsetTimeParseBucket>(
         2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Time.Minutes = value),
-    's': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
+    's': SteppedPatternBuilder.handlePaddedField<OffsetTime, OffsetTimeParseBucket>(
         2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Time.Seconds = value),
-    'f': TimePatternHelper.CreateFractionHandler<OffsetTime, OffsetTimeParseBucket>(
+    'f': TimePatternHelper.createFractionHandler<OffsetTime, OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    'F': TimePatternHelper.CreateFractionHandler<OffsetTime, OffsetTimeParseBucket>(
+    'F': TimePatternHelper.createFractionHandler<OffsetTime, OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    't': TimePatternHelper.CreateAmPmHandler<OffsetTime, OffsetTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
+    't': TimePatternHelper.createAmPmHandler<OffsetTime, OffsetTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
     'o': HandleOffset,
-    'l': (cursor, builder) => builder.AddEmbeddedTimePattern(cursor.Current, cursor.GetEmbeddedPattern(), (bucket) => bucket.Time, (value) => value.timeOfDay),
+    'l': (cursor, builder) => builder.addEmbeddedTimePattern(cursor.Current, cursor.getEmbeddedPattern(), (bucket) => bucket.Time, (value) => value.timeOfDay),
   };
 
   @internal OffsetTimePatternParser(this.templateValue);
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<OffsetTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<OffsetTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -61,20 +61,20 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     var patternBuilder = new SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket>(formatInfo, () => new OffsetTimeParseBucket(templateValue));
-    patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-    patternBuilder.ValidateUsedFields();
+    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+    patternBuilder.validateUsedFields();
     // Need to reconstruct the template value from the bits...
-    return patternBuilder.Build(templateValue);
+    return patternBuilder.build(templateValue);
   }
 
   @private static void HandleOffset(PatternCursor pattern,
       SteppedPatternBuilder<OffsetTime, OffsetTimeParseBucket> builder) {
-    builder.AddField(PatternFields.embeddedOffset, pattern.Current);
-    String embeddedPattern = pattern.GetEmbeddedPattern();
+    builder.addField(PatternFields.embeddedOffset, pattern.Current);
+    String embeddedPattern = pattern.getEmbeddedPattern();
     var offsetPattern = OffsetPattern
-        .Create(embeddedPattern, builder.FormatInfo)
+        .Create(embeddedPattern, builder.formatInfo)
         .UnderlyingPattern;
-    builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
+    builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 }
 

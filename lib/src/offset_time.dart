@@ -113,5 +113,5 @@ class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
   /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
   /// or null to use the current thread's culture to obtain a format provider.
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      OffsetTimePatterns.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 }

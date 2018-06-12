@@ -22,7 +22,7 @@ Future main() async {
 }
 
 @private final IPartialPattern<Offset> SimpleOffsetPattern =
-new OffsetPatternParser().ParsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
+new OffsetPatternParser().parsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
 
 @Test()
 void ParsePartial_ValidInMiddle()
@@ -32,7 +32,7 @@ void ParsePartial_ValidInMiddle()
   value.MoveNext();
   // Start already looking at the value to parse
   expect('1', value.Current);
-  var result = SimpleOffsetPattern.ParsePartial(value);
+  var result = SimpleOffsetPattern.parsePartial(value);
   expect(new Offset.fromHoursAndMinutes(17, 30), result.Value);
   // Finish just after the value
   expect('y', value.Current);
@@ -44,7 +44,7 @@ void ParsePartial_ValidAtEnd()
   var value = new ValueCursor("x17:30");
   value.MoveNext();
   value.MoveNext();
-  var result = SimpleOffsetPattern.ParsePartial(value);
+  var result = SimpleOffsetPattern.parsePartial(value);
   expect(new Offset.fromHoursAndMinutes(17, 30), result.Value);
   // Finish just after the value, which in this case is at the end.
   expect(TextCursor.Nul, value.Current);
@@ -56,7 +56,7 @@ void Parse_Partial_Invalid()
   var value = new ValueCursor("x17:y");
   value.MoveNext();
   value.MoveNext();
-  var result = SimpleOffsetPattern.ParsePartial(value);
+  var result = SimpleOffsetPattern.parsePartial(value);
   expect(() => result.GetValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
@@ -65,7 +65,7 @@ void AppendFormat()
 {
   var builder = new StringBuffer("x");
   var offset = new Offset.fromHoursAndMinutes(17, 30);
-  SimpleOffsetPattern.AppendFormat(offset, builder);
+  SimpleOffsetPattern.appendFormat(offset, builder);
   expect("x17:30", builder.toString());
 }
 
@@ -83,10 +83,10 @@ void UnhandledLiteral(String text, bool valid) {
       });
   var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(TimeMachineFormatInfo.invariantInfo, () => new SampleBucket());
   if (valid) {
-    builder.ParseCustomPattern(text, handlers);
+    builder.parseCustomPattern(text, handlers);
   }
   else {
-    expect(() => builder.ParseCustomPattern(text, handlers), willThrow<InvalidPatternError>());
+    expect(() => builder.parseCustomPattern(text, handlers), willThrow<InvalidPatternError>());
   }
 }
 

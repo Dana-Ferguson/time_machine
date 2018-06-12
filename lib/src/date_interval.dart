@@ -108,8 +108,8 @@ class DateInterval {
   /// A string representation of this interval, as `[start, end]`,
   /// where "start" and "end" are the dates formatted using an ISO-8601 compatible pattern.
   @override String toString() {
-    String a = LocalDatePattern.Iso.Format(start);
-    String b = LocalDatePattern.Iso.Format(end);
+    String a = LocalDatePattern.Iso.format(start);
+    String b = LocalDatePattern.Iso.format(end);
     return "[$a, $b]";
   }
 

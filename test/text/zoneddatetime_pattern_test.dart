@@ -699,7 +699,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider)
         .WithTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
     var parsed = pattern
-        .Parse("2017-08-23")
+        .parse("2017-08-23")
         .Value;
     expect(identical(TestZone3, parsed.zone), isTrue);
     // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
@@ -713,7 +713,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   void WithCalendar() {
     var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.coptic);
     var parsed = pattern
-        .Parse("0284-08-29")
+        .parse("0284-08-29")
         .Value;
     expect(new LocalDateTime.at(284, 8, 29, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }
@@ -721,7 +721,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   void WithPatternText() {
     var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy", TestProvider).WithPatternText("yyyy-MM-dd");
-    var text = pattern.Format(TimeConstants.unixEpoch.inUtc());
+    var text = pattern.format(TimeConstants.unixEpoch.inUtc());
     expect("1970-01-01", text);
   }
 
@@ -730,7 +730,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = ZonedDateTimePattern.CreateWithCurrentCulture("HH:mm", null);
-      var text = pattern.Format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
+      var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
       expect("19.30", text);
     }
   }
@@ -738,7 +738,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   void WithCulture() {
     var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("HH:mm", null).WithCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.Format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
+    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
     expect("19.30", text);
   }
 
@@ -763,7 +763,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
     for (var id in provider.ids) {
       var value = pattern
-          .Parse("$id x")
+          .parse("$id x")
           .Value;
       expect(id, value.zone.id);
     }

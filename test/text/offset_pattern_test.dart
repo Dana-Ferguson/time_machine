@@ -694,7 +694,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = OffsetPattern.CreateWithCurrentCulture("H:mm");
-      var text = pattern.Format(new Offset.fromHoursAndMinutes(1, 30));
+      var text = pattern.format(new Offset.fromHoursAndMinutes(1, 30));
       expect("1.30", text);
     }
   }

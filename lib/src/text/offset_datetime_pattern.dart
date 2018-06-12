@@ -99,13 +99,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<OffsetDateTime> Parse(String text) => pattern.Parse(text);
+  ParseResult<OffsetDateTime> parse(String text) => pattern.parse(text);
 
   /// Formats the given zoned date/time as text according to the rules of this pattern.
   ///
   /// [value]: The zoned date/time to format.
   /// Returns: The zoned date/time formatted according to this pattern.
-  String Format(OffsetDateTime value) => pattern.Format(value);
+  String format(OffsetDateTime value) => pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -113,7 +113,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(OffsetDateTime value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(OffsetDateTime value, StringBuffer builder) => pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
@@ -125,7 +125,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static OffsetDateTimePattern Create(String patternText, TimeMachineFormatInfo formatInfo, OffsetDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new OffsetDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
+    var pattern = new OffsetDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     return new OffsetDateTimePattern(patternText, formatInfo, templateValue, pattern);
   }
 

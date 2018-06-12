@@ -61,13 +61,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Instant> Parse(String text) => pattern.Parse(text);
+  ParseResult<Instant> parse(String text) => pattern.parse(text);
 
   /// Formats the given instant as text according to the rules of this pattern.
   ///
   /// [value]: The instant to format.
   /// Returns: The instant formatted according to this pattern.
-  String Format(Instant value) => pattern.Format(value);
+  String format(Instant value) => pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -75,7 +75,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(Instant value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(Instant value, StringBuffer builder) => pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.
   ///

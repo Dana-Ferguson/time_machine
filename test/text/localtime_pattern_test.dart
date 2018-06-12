@@ -1017,7 +1017,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = LocalTimePattern.CreateWithCurrentCulture("HH:mm");
-      var text = pattern.Format(new LocalTime(13, 45));
+      var text = pattern.format(new LocalTime(13, 45));
       expect("13.45", text);
     }
   }

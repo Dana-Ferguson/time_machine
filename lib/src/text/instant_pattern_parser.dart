@@ -19,7 +19,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal static const String BeforeMinValueText = "StartOfTime";
   @internal static const String AfterMaxValueText = "EndOfTime";
 
-  IPattern<Instant> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<Instant> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -45,22 +45,22 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal LocalDateTimePatternAdapter(this.pattern);
 
-  String Format(Instant value) =>
+  String format(Instant value) =>
   // We don't need to be able to parse before-min/after-max values, but it's convenient to be
   // able to format them - mostly for the sake of testing (but also for ZoneInterval).
-  value.IsValid ? pattern.Format(value
+  value.IsValid ? pattern.format(value
       .inUtc()
       .localDateTime)
       : value == Instant.beforeMinValue ? InstantPatternParser.BeforeMinValueText
       : InstantPatternParser.AfterMaxValueText;
 
-  StringBuffer AppendFormat(Instant value, StringBuffer builder) =>
-      pattern.AppendFormat(value
+  StringBuffer appendFormat(Instant value, StringBuffer builder) =>
+      pattern.appendFormat(value
           .inUtc()
           .localDateTime, builder);
 
-  ParseResult<Instant> Parse(String text) =>
-      pattern.Parse(text).Convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay))
+  ParseResult<Instant> parse(String text) =>
+      pattern.parse(text).Convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay))
 
       );
 }

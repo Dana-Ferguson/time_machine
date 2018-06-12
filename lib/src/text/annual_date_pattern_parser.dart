@@ -11,12 +11,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private final AnnualDate templateValue;
 
   @private static final Map<String /*char*/, CharacterHandler<AnnualDate, AnnualDateParseBucket>> PatternCharacterHandlers = {
-    '%': SteppedPatternBuilder.HandlePercent /**<AnnualDate, AnnualDateParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<AnnualDate, AnnualDateParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<AnnualDate, AnnualDateParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<AnnualDate>*/),
-    'M': DatePatternHelper.CreateMonthOfYearHandler<AnnualDate, AnnualDateParseBucket>
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<AnnualDate>*/),
+    'M': DatePatternHelper.createMonthOfYearHandler<AnnualDate, AnnualDateParseBucket>
       ((value) => value.month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
     'd': HandleDayOfMonth
   };
@@ -25,7 +25,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<AnnualDate> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<AnnualDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in AnnualDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -42,26 +42,26 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     var patternBuilder = new SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket>(formatInfo,
             () => new AnnualDateParseBucket(templateValue));
-    patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-    patternBuilder.ValidateUsedFields();
-    return patternBuilder.Build(templateValue);
+    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+    patternBuilder.validateUsedFields();
+    return patternBuilder.build(templateValue);
   }
 
   @private static void HandleDayOfMonth(PatternCursor pattern, SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket> builder) {
-    int count = pattern.GetRepeatCount(2);
+    int count = pattern.getRepeatCount(2);
     PatternFields field;
     switch (count) {
       case 1:
       case 2:
         field = PatternFields.dayOfMonth;
         // Handle real maximum value in the bucket
-        builder.AddParseValueAction(count, 2, pattern.Current, 1, 99, (bucket, value) => bucket.DayOfMonth = value);
-        builder.AddFormatLeftPad(count, (value) => value.day, assumeNonNegative: true, assumeFitsInCount: count == 2);
+        builder.addParseValueAction(count, 2, pattern.Current, 1, 99, (bucket, value) => bucket.DayOfMonth = value);
+        builder.addFormatLeftPad(count, (value) => value.day, assumeNonNegative: true, assumeFitsInCount: count == 2);
         break;
       default:
         throw new StateError/*InvalidOperationException*/("Invalid count!");
     }
-    builder.AddField(field, pattern.Current);
+    builder.addField(field, pattern.Current);
   }
 }
 
@@ -84,7 +84,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return failure;
     }
 
-    int day = usedFields.HasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.day;
+    int day = usedFields.hasAny(PatternFields.dayOfMonth) ? DayOfMonth : TemplateValue.day;
     // Validate for the year 2000, just like the AnnualDate constructor does.
     if (day > CalendarSystem.iso.getDaysInMonth(2000, MonthOfYearNumeric)) {
       return ParseResult.DayOfMonthOutOfRangeNoYear<AnnualDate>(text, day, MonthOfYearNumeric);

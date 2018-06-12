@@ -64,13 +64,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<LocalTime> Parse(String text) => UnderlyingPattern.Parse(text);
+  ParseResult<LocalTime> parse(String text) => UnderlyingPattern.parse(text);
 
   /// Formats the given local time as text according to the rules of this pattern.
   ///
   /// [value]: The local time to format.
   /// Returns: The local time formatted according to this pattern.
-  String Format(LocalTime value) => UnderlyingPattern.Format(value);
+  String format(LocalTime value) => UnderlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -78,7 +78,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(LocalTime value, StringBuffer builder) => UnderlyingPattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(LocalTime value, StringBuffer builder) => UnderlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
@@ -94,7 +94,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == LocalTime.midnight
         ? formatInfo.localTimePatternParser.ParsePattern(patternText)
-        : new LocalTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
+        : new LocalTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     // (Alternatively, we could just return it directly, instead of creating a new object.)
     pattern = pattern is LocalTimePattern ? pattern.UnderlyingPattern : pattern;

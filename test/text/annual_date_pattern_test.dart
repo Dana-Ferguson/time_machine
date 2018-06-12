@@ -234,12 +234,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     // using (CultureSaver.SetTestCultures(TestCultures.FrFr))
     CultureInfo.currentCulture = TestCultures.getCulture('fr-FR');
     var pattern = AnnualDatePattern.CreateWithCurrentCulture("MM/dd");
-    expect("08/23", pattern.Format(date));
+    expect("08/23", pattern.format(date));
 
     // using (CultureSaver.SetTestCultures(TestCultures.FrCa))
     CultureInfo.currentCulture = TestCultures.getCulture('fr-CA');
     pattern = AnnualDatePattern.CreateWithCurrentCulture("MM/dd");
-    expect("08-23", pattern.Format(date));
+    expect("08-23", pattern.format(date));
   }
 
   @TestCase(const ["fr-FR", "08/23"])
@@ -249,7 +249,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     var date = new AnnualDate(8, 23);
     var culture = TestCultures.getCulture(cultureId);
     var pattern = AnnualDatePattern.Create3("MM/dd", culture);
-    expect(expected, pattern.Format(date));
+    expect(expected, pattern.format(date));
   }
 
   @TestCase(const ["fr-FR", "08/23"])
@@ -261,11 +261,11 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     var culture = TestCultures.getCulture(cultureId);
     // Check the culture is still used
     var pattern1 = AnnualDatePattern.Create2("MM/dd", culture, template);
-    expect(expected, pattern1.Format(date));
+    expect(expected, pattern1.format(date));
     // And the template value
     var pattern2 = AnnualDatePattern.Create2("MM", culture, template);
     var parsed = pattern2
-        .Parse("08")
+        .parse("08")
         .Value;
     expect(new AnnualDate(8, 3), parsed);
   }

@@ -16,5 +16,5 @@ import 'package:time_machine/time_machine.dart';
   ///
   /// [cursor]: The cursor to parse from.
   /// Returns: The result of parsing from the cursor.
-  ParseResult<T> ParsePartial(ValueCursor cursor);
+  ParseResult<T> parsePartial(ValueCursor cursor);
 }

@@ -159,7 +159,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
     expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
-    expect("2017-08-23+02", pattern.Format(od));
+    expect("2017-08-23+02", pattern.format(od));
   }
 
   @Test()
@@ -168,19 +168,19 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetDatePattern.CreateWithCurrentCulture("l<d> o<g>");
-      expect("23/08/2017 +02", pattern.Format(od));
+      expect("23/08/2017 +02", pattern.format(od));
     }
     CultureInfo.currentCulture = TestCultures.FrCa;
     {
       var pattern = OffsetDatePattern.CreateWithCurrentCulture("l<d> o<g>");
-      expect("2017-08-23 +02", pattern.Format(od));
+      expect("2017-08-23 +02", pattern.format(od));
     }
   }
 
   @Test()
   void WithCulture() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy/MM/dd o<G>").WithCulture(TestCultures.FrCa);
-    var text = pattern.Format(new LocalDate(2000, 1, 1).withOffset(new Offset.fromHours(1)));
+    var text = pattern.format(new LocalDate(2000, 1, 1).withOffset(new Offset.fromHours(1)));
     expect("2000-01-01 +01", text);
   }
 
@@ -188,7 +188,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   void WithPatternText() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("dd MM yyyy o<g>");
     var value = new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2));
-    var text = pattern.Format(value);
+    var text = pattern.format(value);
     expect("01 01 1970 +02", text);
   }
 
@@ -197,7 +197,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("MM-dd")
         .WithTemplateValue(new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2)));
     var parsed = pattern
-        .Parse("08-23")
+        .parse("08-23")
         .Value;
     expect(new LocalDate(1970, 8, 23), parsed.date);
     expect(new Offset.fromHours(2), parsed.offset);
@@ -209,7 +209,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
         .WithCalendar(CalendarSystem.coptic);
     var parsed = pattern
-        .Parse("0284-08-29")
+        .parse("0284-08-29")
         .Value;
     expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), parsed.date);
   }

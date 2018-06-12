@@ -10,20 +10,20 @@ import 'package:time_machine/time_machine_text.dart';
 /// provided by individual types.
 @internal /*sealed*/ class PatternBclSupport<T>
 {
-  @private final FixedFormatInfoPatternParser<T> Function(TimeMachineFormatInfo) patternParser;
-  @private final String defaultFormatPattern;
+  final FixedFormatInfoPatternParser<T> Function(TimeMachineFormatInfo) _patternParser;
+  final String _defaultFormatPattern;
 
-  @internal PatternBclSupport(this.defaultFormatPattern, this.patternParser);
+  @internal PatternBclSupport(this._defaultFormatPattern, this._patternParser);
 
   // todo: do we want to provide an interface for formatProviders?
-  @internal String Format(T value, String patternText, /*IFormatProvider*/ Object formatProvider)
+  @internal String format(T value, String patternText, /*IFormatProvider*/ Object formatProvider)
   {
     if (patternText == null || patternText.length == 0)
     {
-      patternText = defaultFormatPattern;
+      patternText = _defaultFormatPattern;
     }
     TimeMachineFormatInfo formatInfo = TimeMachineFormatInfo.getInstance(formatProvider);
-    IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText);
-    return pattern.Format(value);
+    IPattern<T> pattern = _patternParser(formatInfo).ParsePattern(patternText);
+    return pattern.format(value);
   }
 }

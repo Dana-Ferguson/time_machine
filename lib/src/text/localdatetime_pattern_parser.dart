@@ -16,44 +16,44 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static final Map<String /*char*/, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> PatternCharacterHandlers =
   {
-    '%': SteppedPatternBuilder.HandlePercent /**<LocalDateTime, LocalDateTimeParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<LocalDateTime, LocalDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<LocalDateTime>*/),
-    'T': (pattern, builder) => builder.AddLiteral2('T', ParseResult.MismatchedCharacter /**<LocalDateTime>*/),
-    'y': DatePatternHelper.CreateYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<LocalDateTime>*/),
+    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.MismatchedCharacter /**<LocalDateTime>*/),
+    'y': DatePatternHelper.createYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
-    'u': SteppedPatternBuilder.HandlePaddedField /**<LocalDateTime, LocalDateTimeParseBucket>*/
+    'u': SteppedPatternBuilder.handlePaddedField /**<LocalDateTime, LocalDateTimeParseBucket>*/
       (4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Date.Year = value),
-    'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
+    'M': DatePatternHelper.createMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
       ((value) => value.month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value),
-    'd': DatePatternHelper.CreateDayHandler<LocalDateTime, LocalDateTimeParseBucket>
+    'd': DatePatternHelper.createDayHandler<LocalDateTime, LocalDateTimeParseBucket>
       ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) =>
     bucket.Date.DayOfWeek = value),
-    '.': TimePatternHelper.CreatePeriodHandler<LocalDateTime, LocalDateTimeParseBucket>(
+    '.': TimePatternHelper.createPeriodHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ';': TimePatternHelper.CreateCommaDotHandler<LocalDateTime, LocalDateTimeParseBucket>(
+    ';': TimePatternHelper.createCommaDotHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalDateTime>*/),
-    'h': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalDateTime>*/),
+    'h': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
-    'H': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
+    'H': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.Time.Hours24 = value),
-    'm': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
+    'm': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Time.Minutes = value),
-    's': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
+    's': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Time.Seconds = value),
-    'f': TimePatternHelper.CreateFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
+    'f': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    'F': TimePatternHelper.CreateFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
+    'F': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    't': TimePatternHelper.CreateAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
-    'c': DatePatternHelper.CreateCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.calendar, (bucket, value) =>
+    't': TimePatternHelper.createAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
+    'c': DatePatternHelper.createCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.calendar, (bucket, value) =>
     bucket.Date.Calendar = value),
-    'g': DatePatternHelper.CreateEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.Date),
+    'g': DatePatternHelper.createEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.Date),
     'l': (cursor, builder) =>
-        builder.AddEmbeddedLocalPartial(cursor, (bucket) => bucket.Date, (bucket) => bucket.Time, (value) => value.date, (value) => value.time, null),
+        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.Date, (bucket) => bucket.Time, (value) => value.date, (value) => value.time, null),
   };
 
   @internal LocalDateTimePatternParser(LocalDateTime templateValue)
@@ -62,7 +62,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<LocalDateTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<LocalDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -90,9 +90,9 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
             () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
-    patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-    patternBuilder.ValidateUsedFields();
-    return patternBuilder.Build(templateValueDate.at(templateValueTime));
+    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+    patternBuilder.validateUsedFields();
+    return patternBuilder.build(templateValueDate.at(templateValueTime));
   }
 
   @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {

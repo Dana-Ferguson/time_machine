@@ -113,7 +113,7 @@ class Interval {
   @override String toString() // => TextShim.toStringInterval(this);
   {
     var pattern = InstantPattern.ExtendedIso;
-    return pattern.Format(_start) + "/" + pattern.Format(_end);
+    return pattern.format(_start) + "/" + pattern.format(_end);
   }
 
   /// Implements the operator ==.

@@ -535,7 +535,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
   void WithCalendar() {
     var pattern = LocalDatePattern.Iso.WithCalendar(CalendarSystem.coptic);
     var value = pattern
-        .Parse("0284-08-29")
+        .parse("0284-08-29")
         .Value;
     expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), value);
   }
@@ -545,11 +545,11 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
     var date = new LocalDate(2017, 8, 23);
     CultureInfo.currentCulture = TestCultures.FrFr;
     var pattern = LocalDatePattern.CreateWithCurrentCulture("d");
-    expect("23/08/2017", pattern.Format(date));
+    expect("23/08/2017", pattern.format(date));
 
     CultureInfo.currentCulture = TestCultures.FrCa;
     pattern = LocalDatePattern.CreateWithCurrentCulture("d");
-    expect("2017-08-23", pattern.Format(date));
+    expect("2017-08-23", pattern.format(date));
   }
 
   @Test()

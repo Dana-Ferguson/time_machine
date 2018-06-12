@@ -72,9 +72,9 @@ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
 
   @internal _CompositePattern(this.patterns, this.formatPredicates);
 
-  ParseResult<T> Parse(String text) {
+  ParseResult<T> parse(String text) {
     for (IPattern<T> pattern in patterns) {
-      ParseResult<T> result = pattern.Parse(text);
+      ParseResult<T> result = pattern.parse(text);
       if (result.Success || !result.ContinueAfterErrorWithMultipleFormats) {
         return result;
       }
@@ -82,11 +82,11 @@ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
     return ParseResult.NoMatchingFormat<T>(new ValueCursor(text));
   }
 
-  ParseResult<T> ParsePartial(ValueCursor cursor) {
+  ParseResult<T> parsePartial(ValueCursor cursor) {
     int index = cursor.Index;
     for (IPartialPattern<T> pattern in patterns) {
       cursor.Move(index);
-      ParseResult<T> result = pattern.ParsePartial(cursor);
+      ParseResult<T> result = pattern.parsePartial(cursor);
       if (result.Success || !result.ContinueAfterErrorWithMultipleFormats) {
         return result;
       }
@@ -95,10 +95,10 @@ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
     return ParseResult.NoMatchingFormat<T>(cursor);
   }
 
-  String Format(T value) => FindFormatPattern(value).Format(value);
+  String format(T value) => FindFormatPattern(value).format(value);
 
-  StringBuffer AppendFormat(T value, StringBuffer builder) =>
-      FindFormatPattern(value).AppendFormat(value, builder);
+  StringBuffer appendFormat(T value, StringBuffer builder) =>
+      FindFormatPattern(value).appendFormat(value, builder);
 
   @private IPattern<T> FindFormatPattern(T value) {
     for (int i = formatPredicates.length - 1; i >= 0; i--) {

@@ -197,7 +197,7 @@ void Contains(String candidateText, bool expected)
 {
   var start = new LocalDate(2000, 1, 1);
   var end = new LocalDate(2014, 06, 30);
-  var candidate = LocalDatePattern.Iso.Parse(candidateText).Value;
+  var candidate = LocalDatePattern.Iso.parse(candidateText).Value;
   var interval = new DateInterval(start, end);
   expect(expected, interval.contains(candidate));
 }
@@ -356,8 +356,8 @@ DateInterval ParseInterval(String textualInterval)
   }
 
   var parts = textualInterval.split(','); //new char[] { ',' });
-  var start = LocalDatePattern.Iso.Parse(parts[0]).Value;
-  var end = LocalDatePattern.Iso.Parse(parts[1]).Value;
+  var start = LocalDatePattern.Iso.parse(parts[0]).Value;
+  var end = LocalDatePattern.Iso.parse(parts[1]).Value;
 
   return new DateInterval(start, end);
 }

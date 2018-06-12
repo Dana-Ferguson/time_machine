@@ -67,14 +67,14 @@ abstract class PatternTestBase<T>
 
   void AssertRoundTrip(T value, IPattern<T> pattern)
   {
-    String text = pattern.Format(value);
-    var parseResult = pattern.Parse(text);
+    String text = pattern.format(value);
+    var parseResult = pattern.parse(text);
     expect(value, parseResult.Value);
   }
 
   void AssertParseNull(IPattern<T> pattern)
   {
-    var result = pattern.Parse(null);
+    var result = pattern.parse(null);
     expect(result.Success, isFalse);
     // Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
     expect(result.Exception, new isInstanceOf<ArgumentError>());

@@ -101,13 +101,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<LocalDateTime> Parse(String text) => UnderlyingPattern.Parse(text);
+  ParseResult<LocalDateTime> parse(String text) => UnderlyingPattern.parse(text);
 
   /// Formats the given local date/time as text according to the rules of this pattern.
   ///
   /// [value]: The local date/time to format.
   /// Returns: The local date/time formatted according to this pattern.
-  String Format(LocalDateTime value) => UnderlyingPattern.Format(value);
+  String format(LocalDateTime value) => UnderlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -115,7 +115,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(LocalDateTime value, StringBuffer builder) => UnderlyingPattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(LocalDateTime value, StringBuffer builder) => UnderlyingPattern.appendFormat(value, builder);
 
 // todo: create, create2, create3
 
@@ -133,7 +133,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == DefaultTemplateValue
         ? formatInfo.localDateTimePatternParser.ParsePattern(patternText)
-        : new LocalDateTimePatternParser(templateValue).ParsePattern(patternText, formatInfo);
+        : new LocalDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = pattern is LocalDateTimePattern ? pattern.UnderlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDateTime>;

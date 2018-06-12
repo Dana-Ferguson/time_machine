@@ -20,13 +20,13 @@ abstract class IPattern<T> {
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<T> Parse(String text);
+  ParseResult<T> parse(String text);
 
   /// Formats the given value as text according to the rules of this pattern.
   ///
   /// [value]: The value to format.
   /// Returns: The value formatted according to this pattern.
-  String Format(T value);
+  String format(T value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -34,6 +34,6 @@ abstract class IPattern<T> {
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(T value, StringBuffer builder);
+  StringBuffer appendFormat(T value, StringBuffer builder);
 }
 

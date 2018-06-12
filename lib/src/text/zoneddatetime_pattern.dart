@@ -88,13 +88,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<ZonedDateTime> Parse(String text) => pattern.Parse(text);
+  ParseResult<ZonedDateTime> parse(String text) => pattern.parse(text);
 
   /// Formats the given zoned date/time as text according to the rules of this pattern.
   ///
   /// [value]: The zoned date/time to format.
   /// Returns: The zoned date/time formatted according to this pattern.
-  String Format(ZonedDateTime value) => pattern.Format(value);
+  String format(ZonedDateTime value) => pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -102,7 +102,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(ZonedDateTime value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(ZonedDateTime value, StringBuffer builder) => pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, template value, mapping resolver and time zone provider.
   ///
@@ -117,7 +117,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).ParsePattern(patternText, formatInfo);
+    var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).parsePattern(patternText, formatInfo);
     return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
   }
 

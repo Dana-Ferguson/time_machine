@@ -87,7 +87,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   void IsoHandlesCommas() {
     Instant expected = new Instant.fromUtc(2012, 1, 1, 0, 0) + Span.epsilon;
     Instant actual = InstantPattern.ExtendedIso
-        .Parse("2012-01-01T00:00:00,000000001Z")
+        .parse("2012-01-01T00:00:00,000000001Z")
         .Value;
     expect(expected, actual);
   }
@@ -98,7 +98,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = InstantPattern.CreateWithCurrentCulture("HH:mm:ss");
-      var text = pattern.Format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
+      var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
       expect("12.34.56", text);
     }
   }
@@ -106,7 +106,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @Test()
   void Create() {
     var pattern = InstantPattern.Create2("HH:mm:ss", TestCultures.DotTimeSeparator);
-    var text = pattern.Format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
+    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
     expect("12.34.56", text);
   }
 

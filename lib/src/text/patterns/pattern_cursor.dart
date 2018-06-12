@@ -15,10 +15,10 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// Extends [TextCursor] to simplify parsing patterns such as "uuuu-MM-dd".
 @internal /*sealed*/ class PatternCursor extends TextCursor {
   /// The character signifying the start of an embedded pattern.
-  @internal static const String EmbeddedPatternStart = '<';
+  @internal static const String embeddedPatternStart = '<';
 
   /// The character signifying the end of an embedded pattern.
-  @internal static const String EmbeddedPatternEnd = '>';
+  @internal static const String embeddedPatternEnd = '>';
 
   @internal PatternCursor(String pattern)
       : super(pattern);
@@ -28,7 +28,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// The cursor is left positioned at the end of the quoted region.
   /// [closeQuote]: The close quote character to match for the end of the quoted string.
   /// Returns: The quoted string sans open and close quotes. This can be an empty string but will not be null.
-  @internal String GetQuotedString(String closeQuote) {
+  @internal String getQuotedString(String closeQuote) {
     var builder = new StringBuffer(); //Length - Index);
     bool endQuoteFound = false;
     while (MoveNext()) {
@@ -56,7 +56,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [maximumCount]: The maximum number of repetitions allowed.
   /// Returns: The repetition count which is alway at least `1`.
-  @internal int GetRepeatCount(int maximumCount) {
+  @internal int getRepeatCount(int maximumCount) {
     String patternCharacter = Current;
     int startPos = Index;
     while (MoveNext() && Current == patternCharacter) {}
@@ -71,8 +71,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   /// Returns a string containing the embedded pattern within this one.
   ///
-  /// The cursor is expected to be positioned immediately before the [EmbeddedPatternStart] character (`&lt;`),
-  /// and on success the cursor will be positioned on the [EmbeddedPatternEnd] character (`&gt;`).
+  /// The cursor is expected to be positioned immediately before the [embeddedPatternStart] character (`&lt;`),
+  /// and on success the cursor will be positioned on the [embeddedPatternEnd] character (`&gt;`).
   ///
   /// Quote characters (' and ") and escaped characters (escaped with a backslash) are handled
   /// but not unescaped: the resulting pattern should be ready for parsing as normal. It is assumed that the
@@ -82,21 +82,21 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// on the final `&gt;` afterwards.
   ///
   /// Returns: The embedded pattern, not including the start/end pattern characters.
-  @internal String GetEmbeddedPattern() {
-    if (!MoveNext() || Current != EmbeddedPatternStart) {
-      throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternStart, [EmbeddedPatternStart]));
+  @internal String getEmbeddedPattern() {
+    if (!MoveNext() || Current != embeddedPatternStart) {
+      throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternStart, [embeddedPatternStart]));
     }
     int startIndex = Index + 1;
     int depth = 1; // For nesting
     while (MoveNext()) {
       var current = Current;
-      if (current == EmbeddedPatternEnd) {
+      if (current == embeddedPatternEnd) {
         depth--;
         if (depth == 0) {
           return Value.substring(startIndex, Index /*- startIndex*/);
         }
       }
-      else if (current == EmbeddedPatternStart) {
+      else if (current == embeddedPatternStart) {
         depth++;
       }
       else if (current == '\\') {
@@ -107,10 +107,10 @@ import 'package:time_machine/time_machine_patterns.dart';
       else if (current == '\'' || current == '\"') {
         // We really don't care about the value here. It's slightly inefficient to
         // create the substring and then ignore it, but it's unlikely to be significant.
-        GetQuotedString(current);
+        getQuotedString(current);
       }
     }
     // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
-    throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternEnd, [EmbeddedPatternEnd]));
+    throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternEnd, [embeddedPatternEnd]));
   }
 }

@@ -18,7 +18,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Creates a character handler for a dot (period). This is *not* culture sensitive - it is
   /// always treated as a literal, but with the additional behaviour that if it's followed by an 'F' pattern,
   /// that makes the period optional.
-  @internal static CharacterHandler<TResult, TBucket> CreatePeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
+  @internal static CharacterHandler<TResult, TBucket> createPeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
 // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
@@ -29,9 +29,9 @@ import 'package:time_machine/time_machine_patterns.dart';
       // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
       if (pattern.PeekNext() == 'F') {
         pattern.MoveNext();
-        int count = pattern.GetRepeatCount(maxCount);
-        builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
-        builder.AddParseAction((ValueCursor valueCursor, TBucket bucket) {
+        int count = pattern.getRepeatCount(maxCount);
+        builder.addField(PatternFields.fractionalSeconds, pattern.Current);
+        builder.addParseAction((ValueCursor valueCursor, TBucket bucket) {
           // If the next token isn't the decimal separator, we assume it's part of the next token in the pattern
           if (!valueCursor.MatchSingle('.')) {
             return null;
@@ -47,11 +47,11 @@ import 'package:time_machine/time_machine_patterns.dart';
           setter(bucket, fractionalSeconds);
           return null;
         });
-        builder.AddFormatAction((localTime, StringBuffer sb) => sb.write('.'));
-        builder.AddFormatFractionTruncate(count, maxCount, getter);
+        builder.addFormatAction((localTime, StringBuffer sb) => sb.write('.'));
+        builder.addFormatFractionTruncate(count, maxCount, getter);
       }
       else {
-        builder.AddLiteral2('.', ParseResult.MismatchedCharacter);
+        builder.addLiteral2('.', ParseResult.MismatchedCharacter);
       }
     };
   }
@@ -59,7 +59,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Creates a character handler for a dot (period) or comma, which have the same meaning.
   /// Formatting always uses a dot, but parsing will allow a comma instead, to conform with
   /// ISO-8601. This is *not* culture sensitive.
-  @internal static CharacterHandler<TResult, TBucket> CreateCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
+  @internal static CharacterHandler<TResult, TBucket> createCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
 // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
@@ -70,9 +70,9 @@ import 'package:time_machine/time_machine_patterns.dart';
       // At format time, we should always append the decimal separator, and then append using PadRightTruncate.
       if (pattern.PeekNext() == 'F') {
         pattern.MoveNext();
-        int count = pattern.GetRepeatCount(maxCount);
-        builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
-        builder.AddParseAction((ValueCursor valueCursor, ParseBucket bucket) {
+        int count = pattern.getRepeatCount(maxCount);
+        builder.addField(PatternFields.fractionalSeconds, pattern.Current);
+        builder.addParseAction((ValueCursor valueCursor, ParseBucket bucket) {
           // If the next token isn't a dot or comma, we assume
           // it's part of the next token in the pattern
           // todo: dart: look for this in other places; had to add 'valueCursor.Index >= valueCursor.Length' because our Match's stringOrdinalCompare doesn't work quite the same
@@ -90,28 +90,28 @@ import 'package:time_machine/time_machine_patterns.dart';
           setter(bucket, fractionalSeconds);
           return null;
         });
-        builder.AddFormatAction((TResult localTime, StringBuffer sb) => sb.write('.'));
-        builder.AddFormatFractionTruncate(count, maxCount, getter);
+        builder.addFormatAction((TResult localTime, StringBuffer sb) => sb.write('.'));
+        builder.addFormatFractionTruncate(count, maxCount, getter);
       }
       else {
-        builder.AddParseAction((ValueCursor str, ParseBucket bucket) =>
+        builder.addParseAction((ValueCursor str, ParseBucket bucket) =>
         str.MatchSingle('.') || str.MatchSingle(',')
             ? null
             : ParseResult.MismatchedCharacter<TResult>(str, ';'));
-        builder.AddFormatAction((TResult value, StringBuffer sb) => sb.write('.'));
+        builder.addFormatAction((TResult value, StringBuffer sb) => sb.write('.'));
       }
     };
   }
 
   /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
-  @internal static CharacterHandler<TResult, TBucket> CreateFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
+  @internal static CharacterHandler<TResult, TBucket> createFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       String patternCharacter = pattern.Current;
-      int count = pattern.GetRepeatCount(maxCount);
-      builder.AddField(PatternFields.fractionalSeconds, pattern.Current);
+      int count = pattern.getRepeatCount(maxCount);
+      builder.addField(PatternFields.fractionalSeconds, pattern.Current);
 
-      builder.AddParseAction((ValueCursor str, ParseBucket bucket) {
+      builder.addParseAction((ValueCursor str, ParseBucket bucket) {
         int fractionalSeconds = str.ParseFraction(count, maxCount, patternCharacter == 'f' ? count : 0);
         // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
         // "up to count" digits.
@@ -123,22 +123,22 @@ import 'package:time_machine/time_machine_patterns.dart';
         return null;
       });
       if (patternCharacter == 'f') {
-        builder.AddFormatFraction(count, maxCount, getter);
+        builder.addFormatFraction(count, maxCount, getter);
       }
       else {
-        builder.AddFormatFractionTruncate(count, maxCount, getter);
+        builder.addFormatFractionTruncate(count, maxCount, getter);
       }
     };
   }
 
-  @internal static CharacterHandler<TResult, TBucket> CreateAmPmHandler<TResult, TBucket extends ParseBucket<TResult>>
+  @internal static CharacterHandler<TResult, TBucket> createAmPmHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter) {
     return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-      int count = pattern.GetRepeatCount(2);
-      builder.AddField(PatternFields.amPm, pattern.Current);
+      int count = pattern.getRepeatCount(2);
+      builder.addField(PatternFields.amPm, pattern.Current);
 
-      String amDesignator = builder.FormatInfo.amDesignator;
-      String pmDesignator = builder.FormatInfo.pmDesignator;
+      String amDesignator = builder.formatInfo.amDesignator;
+      String pmDesignator = builder.formatInfo.pmDesignator;
 
       // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
       // to the special value of 2, meaning "take it from the template".
@@ -148,7 +148,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           return null;
         }
 
-        builder.AddParseAction(_parseAction);
+        builder.addParseAction(_parseAction);
         return;
       }
       // Odd scenario (but present in af-ZA for .NET 2) - exactly one of the AM/PM designator is valid.
@@ -156,11 +156,11 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (amDesignator == "" || pmDesignator == "") {
         int specifiedDesignatorValue = amDesignator == "" ? 1 : 0;
         String specifiedDesignator = specifiedDesignatorValue == 1 ? pmDesignator : amDesignator;
-        TimePatternHelper.HandleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
+        TimePatternHelper._handleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
         return;
       }
 
-      CompareInfo compareInfo = builder.FormatInfo.compareInfo;
+      CompareInfo compareInfo = builder.formatInfo.compareInfo;
       // Single character designator
       if (count == 1) {
         // It's not entirely clear whether this is the right thing to do... there's no nice
@@ -168,7 +168,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         String amFirst = amDesignator.substring(0, 1);
         String pmFirst = pmDesignator.substring(0, 1);
 
-        builder.AddParseAction((ValueCursor str, TBucket bucket) {
+        builder.addParseAction((ValueCursor str, TBucket bucket) {
           if (str.MatchCaseInsensitive(amFirst, compareInfo, true)) {
             amPmSetter(bucket, 0);
             return null;
@@ -179,12 +179,12 @@ import 'package:time_machine/time_machine_patterns.dart';
           }
           return ParseResult.MissingAmPmDesignator<TResult>(str);
         });
-        builder.AddFormatAction((value, sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
+        builder.addFormatAction((value, sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
         return;
       }
 
       // Full designator
-      builder.AddParseAction((ValueCursor str, TBucket bucket) {
+      builder.addParseAction((ValueCursor str, TBucket bucket) {
         // Could use the "match longest" approach, but with only two it feels a bit silly to build a list...
         bool pmLongerThanAm = pmDesignator.length > amDesignator.length;
         String longerDesignator = pmLongerThanAm ? pmDesignator : amDesignator;
@@ -200,24 +200,24 @@ import 'package:time_machine/time_machine_patterns.dart';
         }
         return ParseResult.MissingAmPmDesignator<TResult>(str);
       });
-      builder.AddFormatAction((TResult value, StringBuffer sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
+      builder.addFormatAction((TResult value, StringBuffer sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
     };
   }
 
-  @private static void HandleHalfAmPmDesignator<TResult, TBucket extends ParseBucket<TResult>>
+  static void _handleHalfAmPmDesignator<TResult, TBucket extends ParseBucket<TResult>>
       (int count, String specifiedDesignator, int specifiedDesignatorValue, int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter,
       SteppedPatternBuilder<TResult, TBucket> builder) {
-    CompareInfo compareInfo = builder.FormatInfo.compareInfo;
+    CompareInfo compareInfo = builder.formatInfo.compareInfo;
     if (count == 1) {
       String abbreviation = specifiedDesignator.substring(0, 1);
 
-      builder.AddParseAction((ValueCursor str, TBucket bucket) {
+      builder.addParseAction((ValueCursor str, TBucket bucket) {
         int value = str.MatchCaseInsensitive(abbreviation, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
         amPmSetter(bucket, value);
         return null;
       });
 
-      builder.AddFormatAction((TResult value, StringBuffer sb) {
+      builder.addFormatAction((TResult value, StringBuffer sb) {
         // Only append anything if it's the non-empty designator.
         if (hourOfDayGetter(value) ~/ 12 == specifiedDesignatorValue) {
           sb.write(specifiedDesignator[0]);
@@ -226,12 +226,12 @@ import 'package:time_machine/time_machine_patterns.dart';
       return;
     }
 
-    builder.AddParseAction((ValueCursor str, TBucket bucket) {
+    builder.addParseAction((ValueCursor str, TBucket bucket) {
       int value = str.MatchCaseInsensitive(specifiedDesignator, compareInfo, true) ? specifiedDesignatorValue : 1 - specifiedDesignatorValue;
       amPmSetter(bucket, value);
       return null;
     });
-    builder.AddFormatAction((TResult value, StringBuffer sb) {
+    builder.addFormatAction((TResult value, StringBuffer sb) {
       // Only append anything if it's the non-empty designator.
       if (hourOfDayGetter(value) ~/ 12 == specifiedDesignatorValue) {
         sb.write(specifiedDesignator);

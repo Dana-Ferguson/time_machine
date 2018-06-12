@@ -26,42 +26,42 @@ Future main() async {
 @Test()
 void IsUsed_NoMatch()
 {
-  expect((PatternFields.hours12 | PatternFields.minutes).HasAny(PatternFields.hours24), isFalse);
+  expect((PatternFields.hours12 | PatternFields.minutes).hasAny(PatternFields.hours24), isFalse);
 }
 
 @Test()
 void IsUsed_SingleValueMatch()
 {
-  expect(PatternFields.hours24.HasAny(PatternFields.hours24), isTrue);
+  expect(PatternFields.hours24.hasAny(PatternFields.hours24), isTrue);
 }
 
 @Test()
 void IsFieldUsed_MultiValueMatch()
 {
-  expect((PatternFields.hours24 | PatternFields.minutes).HasAny(PatternFields.hours24), isTrue);
+  expect((PatternFields.hours24 | PatternFields.minutes).hasAny(PatternFields.hours24), isTrue);
 }
 
 @Test()
 void AllAreUsed_NoMatch()
 {
-  expect((PatternFields.hours12 | PatternFields.minutes).HasAll(PatternFields.hours24 | PatternFields.seconds), isFalse);
+  expect((PatternFields.hours12 | PatternFields.minutes).hasAll(PatternFields.hours24 | PatternFields.seconds), isFalse);
 }
 
 @Test()
 void AllAreUsed_PartialMatch()
 {
-  expect((PatternFields.hours12 | PatternFields.minutes).HasAll(PatternFields.hours12 | PatternFields.seconds), isFalse);
+  expect((PatternFields.hours12 | PatternFields.minutes).hasAll(PatternFields.hours12 | PatternFields.seconds), isFalse);
 }
 
 @Test()
 void AllAreUsed_CompleteMatch()
 {
-  expect((PatternFields.hours12 | PatternFields.minutes).HasAll(PatternFields.hours12 | PatternFields.minutes), isTrue);
+  expect((PatternFields.hours12 | PatternFields.minutes).hasAll(PatternFields.hours12 | PatternFields.minutes), isTrue);
 }
 
 @Test()
 void AllAreUsed_CompleteMatchWithMore()
 {
-  expect((PatternFields.hours24 | PatternFields.minutes | PatternFields.hours12).HasAll(PatternFields.hours24 | PatternFields.minutes), isTrue);
+  expect((PatternFields.hours24 | PatternFields.minutes | PatternFields.hours12).hasAll(PatternFields.hours24 | PatternFields.minutes), isTrue);
 }
 

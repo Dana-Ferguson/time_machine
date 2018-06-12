@@ -12,32 +12,32 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static final Map<String/*char*/, CharacterHandler<OffsetDate, OffsetDateParseBucket>> PatternCharacterHandlers =
   {
-    '%': SteppedPatternBuilder.HandlePercent /**<OffsetDate, OffsetDateParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<OffsetDate, OffsetDateParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetDate, OffsetDateParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDate>*/),
-    'y': DatePatternHelper.CreateYearOfEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.yearOfEra, (bucket, value) =>
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDate>*/),
+    'y': DatePatternHelper.createYearOfEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
-    'u': SteppedPatternBuilder.HandlePaddedField<OffsetDate, OffsetDateParseBucket>(
+    'u': SteppedPatternBuilder.handlePaddedField<OffsetDate, OffsetDateParseBucket>(
         4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Date.Year = value),
-    'M': DatePatternHelper.CreateMonthOfYearHandler<OffsetDate, OffsetDateParseBucket>
+    'M': DatePatternHelper.createMonthOfYearHandler<OffsetDate, OffsetDateParseBucket>
       ((value) => value.month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value),
-    'd': DatePatternHelper.CreateDayHandler<OffsetDate, OffsetDateParseBucket>
+    'd': DatePatternHelper.createDayHandler<OffsetDate, OffsetDateParseBucket>
       ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) =>
     bucket.Date.DayOfWeek = value),
-    'c': DatePatternHelper.CreateCalendarHandler<OffsetDate, OffsetDateParseBucket>((value) => value.date.calendar, (bucket, value) =>
+    'c': DatePatternHelper.createCalendarHandler<OffsetDate, OffsetDateParseBucket>((value) => value.date.calendar, (bucket, value) =>
     bucket.Date.Calendar = value),
-    'g': DatePatternHelper.CreateEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.era, (bucket) => bucket.Date),
+    'g': DatePatternHelper.createEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.era, (bucket) => bucket.Date),
     'o': HandleOffset,
-    'l': (cursor, builder) => builder.AddEmbeddedDatePattern(cursor.Current, cursor.GetEmbeddedPattern(), (bucket) => bucket.Date, (value) => value.date)
+    'l': (cursor, builder) => builder.addEmbeddedDatePattern(cursor.Current, cursor.getEmbeddedPattern(), (bucket) => bucket.Date, (value) => value.date)
   };
 
   @internal OffsetDatePatternParser(this.templateValue);
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<OffsetDate> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<OffsetDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -56,20 +56,20 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
 
     var patternBuilder = new SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket>(formatInfo, () => new OffsetDateParseBucket(templateValue));
-    patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
-    patternBuilder.ValidateUsedFields();
+    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+    patternBuilder.validateUsedFields();
     // Need to reconstruct the template value from the bits...
-    return patternBuilder.Build(templateValue);
+    return patternBuilder.build(templateValue);
   }
 
   @private static void HandleOffset(PatternCursor pattern,
       SteppedPatternBuilder<OffsetDate, OffsetDateParseBucket> builder) {
-    builder.AddField(PatternFields.embeddedOffset, pattern.Current);
-    String embeddedPattern = pattern.GetEmbeddedPattern();
+    builder.addField(PatternFields.embeddedOffset, pattern.Current);
+    String embeddedPattern = pattern.getEmbeddedPattern();
     var offsetPattern = OffsetPattern
-        .Create(embeddedPattern, builder.FormatInfo)
+        .Create(embeddedPattern, builder.formatInfo)
         .UnderlyingPattern;
-    builder.AddEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
+    builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 }
 

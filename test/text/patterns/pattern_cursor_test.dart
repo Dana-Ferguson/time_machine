@@ -37,7 +37,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetQuotedString_Invalid(String pattern) {
     var cursor = new PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
-    expect(() => cursor.GetQuotedString('\''), willThrow<InvalidPatternError>());
+    expect(() => cursor.getQuotedString('\''), willThrow<InvalidPatternError>());
   }
 
   @Test()
@@ -49,7 +49,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetQuotedString_Valid(String pattern, String expected) {
     var cursor = new PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
-    String actual = cursor.GetQuotedString('\'');
+    String actual = cursor.getQuotedString('\'');
     expect(expected, actual);
     expect(cursor.MoveNext(), isFalse);
   }
@@ -58,7 +58,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetQuotedString_HandlesOtherQuote() {
     var cursor = new PatternCursor("[abc]");
     GetNextCharacter(cursor);
-    String actual = cursor.GetQuotedString(']');
+    String actual = cursor.getQuotedString(']');
     expect("abc", actual);
     expect(cursor.MoveNext(), isFalse);
   }
@@ -67,7 +67,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetQuotedString_NotAtEnd() {
     var cursor = new PatternCursor("'abc'more");
     String openQuote = GetNextCharacter(cursor);
-    String actual = cursor.GetQuotedString(openQuote);
+    String actual = cursor.getQuotedString(openQuote);
     expect("abc", actual);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, 4, '\'');
 
@@ -81,7 +81,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetRepeatCount_Valid(String text, int expectedCount) {
     var cursor = new PatternCursor(text);
     expect(cursor.MoveNext(), isTrue);
-    int actual = cursor.GetRepeatCount(10);
+    int actual = cursor.getRepeatCount(10);
     expect(expectedCount, actual);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedCount - 1, 'a');
   }
@@ -90,7 +90,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetRepeatCount_ExceedsMax() {
     var cursor = new PatternCursor("aaa");
     expect(cursor.MoveNext(), isTrue);
-    expect(() => cursor.GetRepeatCount(2), willThrow<InvalidPatternError>());
+    expect(() => cursor.getRepeatCount(2), willThrow<InvalidPatternError>());
   }
 
   @Test()
@@ -105,7 +105,7 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetEmbeddedPattern_Valid(String pattern, String expectedEmbedded) {
     var cursor = new PatternCursor(pattern);
     cursor.MoveNext();
-    String embedded = cursor.GetEmbeddedPattern();
+    String embedded = cursor.getEmbeddedPattern();
     expect(expectedEmbedded, embedded);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedEmbedded.length + 2, '>');
   }
@@ -119,6 +119,6 @@ class PatternCursorTest extends TextCursorTestBase {
   void GetEmbeddedPattern_Invalid(String text) {
     var cursor = new PatternCursor(text);
     cursor.MoveNext();
-    expect(() => cursor.GetEmbeddedPattern(), willThrow<InvalidPatternError>());
+    expect(() => cursor.getEmbeddedPattern(), willThrow<InvalidPatternError>());
   }
 }

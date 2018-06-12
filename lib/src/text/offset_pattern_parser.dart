@@ -11,17 +11,17 @@ import 'package:time_machine/time_machine_patterns.dart';
 @internal /*sealed*/ class OffsetPatternParser implements IPatternParser<Offset> {
   @private static final Map<String /*char*/, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers =
   {
-    '%': SteppedPatternBuilder.HandlePercent /**<Offset, OffsetParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<Offset, OffsetParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<Offset, OffsetParseBucket>*/,
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Offset>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Offset>*/),
     'h': (pattern, builder) => throw new InvalidPatternError.format(TextErrorMessages.Hour12PatternNotSupported, ['Offset']),
-    'H': SteppedPatternBuilder.HandlePaddedField<Offset, OffsetParseBucket>(
+    'H': SteppedPatternBuilder.handlePaddedField<Offset, OffsetParseBucket>(
         2, PatternFields.hours24, 0, 23, GetPositiveHours, (bucket, value) => bucket.Hours = value),
-    'm': SteppedPatternBuilder.HandlePaddedField<Offset, OffsetParseBucket>(
+    'm': SteppedPatternBuilder.handlePaddedField<Offset, OffsetParseBucket>(
         2, PatternFields.minutes, 0, 59, GetPositiveMinutes, (bucket, value) => bucket.Minutes = value),
-    's': SteppedPatternBuilder.HandlePaddedField<Offset, OffsetParseBucket>(
+    's': SteppedPatternBuilder.handlePaddedField<Offset, OffsetParseBucket>(
         2, PatternFields.seconds, 0, 59, GetPositiveSeconds, (bucket, value) => bucket.Seconds = value),
     '+': HandlePlus,
     '-': HandleMinus,
@@ -41,7 +41,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Offset> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) => ParsePartialPattern(patternText, formatInfo);
+  IPattern<Offset> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) => ParsePartialPattern(patternText, formatInfo);
 
   @private IPartialPattern<Offset> ParsePartialPattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetPattern.
@@ -97,10 +97,10 @@ import 'package:time_machine/time_machine_patterns.dart';
     bool zPrefix = patternText.startsWith("Z");
 
     var patternBuilder = new SteppedPatternBuilder<Offset, OffsetParseBucket>(formatInfo, () => new OffsetParseBucket());
-    patternBuilder.ParseCustomPattern(zPrefix ? patternText.substring(1) : patternText, PatternCharacterHandlers);
+    patternBuilder.parseCustomPattern(zPrefix ? patternText.substring(1) : patternText, PatternCharacterHandlers);
     // No need to validate field combinations here, but we do need to do something a bit special
     // for Z-handling.
-    IPartialPattern<Offset> pattern = patternBuilder.Build(new Offset.fromHoursAndMinutes(5, 30));
+    IPartialPattern<Offset> pattern = patternBuilder.build(new Offset.fromHoursAndMinutes(5, 30));
     return zPrefix ? new ZPrefixPattern(pattern) : pattern;
   }
 
@@ -112,13 +112,13 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // #region Character handlers
   @private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder) {
-    builder.AddField(PatternFields.sign, pattern.Current);
-    builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, (offset) => offset.milliseconds >= 0);
+    builder.addField(PatternFields.sign, pattern.Current);
+    builder.addRequiredSign((bucket, positive) => bucket.IsNegative = !positive, (offset) => offset.milliseconds >= 0);
   }
 
   @private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, OffsetParseBucket> builder) {
-    builder.AddField(PatternFields.sign, pattern.Current);
-    builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, (offset) => offset.milliseconds >= 0);
+    builder.addField(PatternFields.sign, pattern.Current);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, (offset) => offset.milliseconds >= 0);
   }
 // #endregion
 }
@@ -129,21 +129,21 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @internal ZPrefixPattern(this.fullPattern);
 
-  ParseResult<Offset> Parse(String text) => text == "Z" ? ParseResult.ForValue<Offset>(Offset.zero) : fullPattern.Parse(text);
+  ParseResult<Offset> parse(String text) => text == "Z" ? ParseResult.ForValue<Offset>(Offset.zero) : fullPattern.parse(text);
 
-  String Format(Offset value) => value == Offset.zero ? "Z" : fullPattern.Format(value);
+  String format(Offset value) => value == Offset.zero ? "Z" : fullPattern.format(value);
 
-  ParseResult<Offset> ParsePartial(ValueCursor cursor) {
+  ParseResult<Offset> parsePartial(ValueCursor cursor) {
     if (cursor.Current == 'Z') {
       cursor.MoveNext();
       return ParseResult.ForValue<Offset>(Offset.zero);
     }
-    return fullPattern.ParsePartial(cursor);
+    return fullPattern.parsePartial(cursor);
   }
 
-  StringBuffer AppendFormat(Offset value, StringBuffer builder) {
+  StringBuffer appendFormat(Offset value, StringBuffer builder) {
     Preconditions.checkNotNull(builder, 'builder');
-    return value == Offset.zero ? (builder..write("Z")) : fullPattern.AppendFormat(value, builder);
+    return value == Offset.zero ? (builder..write("Z")) : fullPattern.appendFormat(value, builder);
   }
 }
 

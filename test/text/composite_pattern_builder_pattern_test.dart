@@ -29,9 +29,9 @@ void IsoPattern(String text) {
     ..Add(LocalDateTimePattern.ExtendedIso, (_) => true)
     ..Add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).Build();
   var value = pattern
-      .Parse(text)
+      .parse(text)
       .Value;
-  String formatted = pattern.Format(value);
+  String formatted = pattern.format(value);
   expect(text, formatted);
 }
 
@@ -42,7 +42,7 @@ void Format_NoValidPattern()
     ..Add(LocalDatePattern.Iso, (_) => false)
     ..Add(LocalDatePattern.CreateWithInvariantCulture("yyyy"), (_) => false)).Build();
 
-  expect(() => pattern.Format(new LocalDate(2017, 1, 1)), willThrow<FormatException>());
+  expect(() => pattern.format(new LocalDate(2017, 1, 1)), willThrow<FormatException>());
 }
 
 @Test()
@@ -50,9 +50,9 @@ void Parse() {
   var pattern = (new CompositePatternBuilder<LocalDate>()
     ..Add(LocalDatePattern.Iso, (_) => true)
     ..Add(LocalDatePattern.CreateWithInvariantCulture("yyyy"), (_) => false)).Build();
-  expect(pattern.Parse("2017-03-20").Success, isTrue);
-  expect(pattern.Parse("2017-03").Success, isFalse);
-  expect(pattern.Parse("2017").Success, isTrue);
+  expect(pattern.parse("2017-03-20").Success, isTrue);
+  expect(pattern.parse("2017-03").Success, isFalse);
+  expect(pattern.parse("2017").Success, isTrue);
 }
 
 @Test()

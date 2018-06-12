@@ -49,13 +49,13 @@ abstract class PatternTestData<T> {
   @internal void TestParse() {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
-    var result = pattern.Parse(Text);
+    var result = pattern.parse(Text);
     var actualValue = result.Value;
     expect(actualValue, Value);
 
     if (StandardPattern != null) {
       assert(Value == StandardPattern
-          .Parse(Text)
+          .parse(Text)
           .Value);
     }
   }
@@ -63,10 +63,10 @@ abstract class PatternTestData<T> {
   @internal void TestFormat() {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
-    expect(pattern.Format(Value), Text);
+    expect(pattern.format(Value), Text);
 
     if (StandardPattern != null) {
-      expect(StandardPattern.Format(Value), Text);
+      expect(StandardPattern.format(Value), Text);
     }
   }
 
@@ -78,7 +78,7 @@ abstract class PatternTestData<T> {
     cursor.MoveNext();
     // Move to the start of the text
     cursor.MoveNext();
-    var result = pattern.ParsePartial(cursor);
+    var result = pattern.parsePartial(cursor);
     var actualValue = result.Value;
     assert(Value == actualValue);
     assert('#' == cursor.Current);
@@ -92,7 +92,7 @@ abstract class PatternTestData<T> {
     assert(Message == null);
     var pattern = CreatePattern();
     var builder = new StringBuffer("x");
-    pattern.AppendFormat(Value, builder);
+    pattern.appendFormat(Value, builder);
     // assert("x" + Text == builder.toString());
     expect(builder.toString(), "x" + Text );
   }
@@ -114,7 +114,7 @@ abstract class PatternTestData<T> {
     String expectedMessage = FormatMessage(Message, Parameters);
     IPattern<T> pattern = CreatePattern();
 
-    var result = pattern.Parse(Text);
+    var result = pattern.parse(Text);
     assert(result.Success == false);
     try {
       result.GetValueOrThrow();

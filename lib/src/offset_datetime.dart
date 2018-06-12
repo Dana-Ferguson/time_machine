@@ -312,7 +312,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetDateTimePatterns.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      OffsetDateTimePatterns.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// Adds a duration to an offset date and time.
   ///

@@ -49,13 +49,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Offset> Parse(String text) => UnderlyingPattern.Parse(text);
+  ParseResult<Offset> parse(String text) => UnderlyingPattern.parse(text);
 
   /// Formats the given offset as text according to the rules of this pattern.
   ///
   /// [value]: The offset to format.
   /// Returns: The offset formatted according to this pattern.
-  String Format(Offset value) => UnderlyingPattern.Format(value);
+  String format(Offset value) => UnderlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -63,7 +63,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(Offset value, StringBuffer builder) => UnderlyingPattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(Offset value, StringBuffer builder) => UnderlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.
   ///

@@ -107,8 +107,8 @@ class PatternFields {
   }
 
   /// Returns true if the given set of fields contains any of the target fields.
-  @internal bool HasAny(PatternFields target) => (_value & target._value) != 0;
+  @internal bool hasAny(PatternFields target) => (_value & target._value) != 0;
 
   /// Returns true if the given set of fields contains all of the target fields.
-  @internal bool HasAll(PatternFields target) => (_value & target._value) == target._value;
+  @internal bool hasAll(PatternFields target) => (_value & target._value) == target._value;
 }

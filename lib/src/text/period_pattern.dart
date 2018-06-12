@@ -51,13 +51,13 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Period> Parse(String text) => pattern.Parse(text);
+  ParseResult<Period> parse(String text) => pattern.parse(text);
 
   /// Formats the given period as text according to the rules of this pattern.
   ///
   /// [value]: The period to format.
   /// Returns: The period formatted according to this pattern.
-  String Format(Period value) => pattern.Format(value);
+  String format(Period value) => pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuffer].
@@ -65,7 +65,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuffer` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer AppendFormat(Period value, StringBuffer builder) => pattern.AppendFormat(value, builder);
+  StringBuffer appendFormat(Period value, StringBuffer builder) => pattern.appendFormat(value, builder);
 
   @private static void AppendValue(StringBuffer builder, int value, String suffix) {
     // Avoid having a load of conditions in the calling code by checking here
@@ -87,7 +87,7 @@ import 'package:time_machine/time_machine_text.dart';
 }
 
 @private /*sealed*/ class _RoundtripPatternImpl implements IPattern<Period> {
-  ParseResult<Period> Parse(String text) {
+  ParseResult<Period> parse(String text) {
     if (text == null) {
       return ParseResult.ArgumentNull<Period>("text");
     }
@@ -176,9 +176,9 @@ import 'package:time_machine/time_machine_text.dart';
     return ParseResult.ForValue<Period>(builder.build());
   }
 
-  String Format(Period value) => AppendFormat(value, new StringBuffer()).toString();
+  String format(Period value) => appendFormat(value, new StringBuffer()).toString();
 
-  StringBuffer AppendFormat(Period value, StringBuffer builder) {
+  StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
     builder.write("P");
@@ -201,7 +201,7 @@ import 'package:time_machine/time_machine_text.dart';
 
 @private /*sealed*/ class _NormalizingIsoPatternImpl implements IPattern<Period> {
   // TODO(misc): Tidy this up a *lot*.
-  ParseResult<Period> Parse(String text) {
+  ParseResult<Period> parse(String text) {
     if (text == null) {
       return ParseResult.ArgumentNull<Period>("text");
     }
@@ -325,9 +325,9 @@ import 'package:time_machine/time_machine_text.dart';
     return ParseResult.ForValue<Period>(builder.build());
   }
 
-  String Format(Period value) => AppendFormat(value, new StringBuffer()).toString();
+  String format(Period value) => appendFormat(value, new StringBuffer()).toString();
 
-  StringBuffer AppendFormat(Period value, StringBuffer builder) {
+  StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
     value = value.normalize();

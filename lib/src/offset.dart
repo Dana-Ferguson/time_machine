@@ -249,7 +249,7 @@ class Offset implements Comparable<Offset> {
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringOffset(this); // OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      OffsetPattern.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
   /// Returns an offset for the given seconds value, which may be negative.
   ///

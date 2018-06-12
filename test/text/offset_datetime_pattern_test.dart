@@ -388,7 +388,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
     expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var odt = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56).withOffset(new Offset.fromHours(2));
-    expect("2017-08-23T12:34:56+02", pattern.Format(odt));
+    expect("2017-08-23T12:34:56+02", pattern.format(odt));
   }
 
   @Test()
@@ -397,7 +397,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
-      expect("23/08/2017 12:34 +02", pattern.Format(odt));
+      expect("23/08/2017 12:34 +02", pattern.format(odt));
     }
 
   // todo: @SkipMe() -- This is the same FrCA we've been seeing (.netCore ICU culture is different than windows culture)
@@ -411,7 +411,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void WithCulture() {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("HH:mm").WithCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.Format(new Instant.fromUtc(2000, 1, 1, 19, 30).WithOffset(Offset.zero));
+    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).WithOffset(Offset.zero));
     expect("19.30", text);
   }
 
@@ -419,7 +419,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   void WithPatternText() {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("HH:mm");
     var value = new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2));
-    var text = pattern.Format(value);
+    var text = pattern.format(value);
     expect("13:30", text);
   }
 
@@ -428,7 +428,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
         .WithTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2)));
     var parsed = pattern
-        .Parse("2017-08-23")
+        .parse("2017-08-23")
         .Value;
     // Local time of template value was 13:30
     expect(new LocalDateTime.at(2017, 8, 23, 13, 30), parsed.localDateTime);
@@ -441,7 +441,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
         .WithCalendar(CalendarSystem.coptic);
     var parsed = pattern
-        .Parse("0284-08-29")
+        .parse("0284-08-29")
         .Value;
     expect(new LocalDateTime.at(284, 8, 29, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }

@@ -152,7 +152,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:sso<g>");
     expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
-    expect("12:34:56+02", pattern.Format(ot));
+    expect("12:34:56+02", pattern.format(ot));
   }
 
   @Test()
@@ -161,19 +161,19 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = OffsetTimePattern.CreateWithCurrentCulture("l<t> o<g>");
-      expect("12:34 +02", pattern.Format(ot));
+      expect("12:34 +02", pattern.format(ot));
     }
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
       var pattern = OffsetTimePattern.CreateWithCurrentCulture("l<t> o<g>");
-      expect("12.34 +02", pattern.Format(ot));
+      expect("12.34 +02", pattern.format(ot));
     }
   }
 
   @Test()
   void WithCulture() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm").WithCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.Format(new LocalTime(19, 30).withOffset(Offset.zero));
+    var text = pattern.format(new LocalTime(19, 30).withOffset(Offset.zero));
     expect("19.30", text);
   }
 
@@ -181,7 +181,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   void WithPatternText() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:ss").WithPatternText("HH:mm");
     var value = new LocalTime(13, 30).withOffset(new Offset.fromHours(2));
-    var text = pattern.Format(value);
+    var text = pattern.format(value);
     expect("13:30", text);
   }
 
@@ -190,7 +190,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("o<G>")
         .WithTemplateValue(new LocalTime(13, 30).withOffset(Offset.zero));
     var parsed = pattern
-        .Parse("+02")
+        .parse("+02")
         .Value;
     // Local time is taken from the template value; offset is from the text
     expect(new LocalTime(13, 30), parsed.timeOfDay);

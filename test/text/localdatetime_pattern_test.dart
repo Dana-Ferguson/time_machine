@@ -460,7 +460,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   void WithCalendar() {
     var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.coptic);
     var value = pattern
-        .Parse("0284-08-29T12:34:56")
+        .parse("0284-08-29T12:34:56")
         .Value;
     expect(new LocalDateTime.at(
         284,
@@ -478,7 +478,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
       var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
-      expect("23/08/2017 12:34", pattern.Format(dateTime));
+      expect("23/08/2017 12:34", pattern.format(dateTime));
     }
     /* todo: This test fails under .Net Core
     CultureInfo.currentCulture = TestCultures.FrCa;
@@ -508,7 +508,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
     // If the pattern really can't distinguish between AM and PM (e.g. it's 12 hour with an
     // abbreviated AM/PM designator) then let's let it go.
-    if (pattern.Format(SampleLocalDateTime) == pattern.Format(SampleLocalDateTime.plusHours(-12))) {
+    if (pattern.format(SampleLocalDateTime) == pattern.format(SampleLocalDateTime.plusHours(-12))) {
       return;
     }
 
@@ -519,8 +519,8 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       pattern = pattern.WithTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0));
     }
 
-    String formatted = pattern.Format(SampleLocalDateTime);
-    var parseResult = pattern.Parse(formatted);
+    String formatted = pattern.format(SampleLocalDateTime);
+    var parseResult = pattern.parse(formatted);
     expect(parseResult.Success, isTrue);
     var parsed = parseResult.Value;
     expect(parsed, anyOf(SampleLocalDateTime, SampleLocalDateTimeToTicks, SampleLocalDateTimeToMillis, SampleLocalDateTimeToSeconds, SampleLocalDateTimeToMinutes));

@@ -133,8 +133,8 @@ void BetweenLocalDates_DifferentCalendarSystems_Throws()
 @TestCase(const ["2016-05-16", "2016-07-13", PeriodUnits.days, 58])
 void BetweenLocalDates_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue)
 {
-  var start = LocalDatePattern.Iso.Parse(startText).Value;
-  var end = LocalDatePattern.Iso.Parse(endText).Value;
+  var start = LocalDatePattern.Iso.parse(startText).Value;
+  var end = LocalDatePattern.Iso.parse(endText).Value;
   var actual = Period.betweenDates(start, end, units);
   var expected = (new PeriodBuilder()..[units] = expectedValue).build();
 expect(expected, actual);
@@ -296,10 +296,10 @@ void BetweenLocalTimes_InvalidUnits()
 @TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.nanoseconds, 1123400000])
 void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue) {
   var start = LocalTimePattern.ExtendedIso
-      .Parse(startText)
+      .parse(startText)
       .Value;
   var end = LocalTimePattern.ExtendedIso
-      .Parse(endText)
+      .parse(endText)
       .Value;
   var actual = Period.betweenTimes(start, end, units);
   var expected = (new PeriodBuilder()
@@ -911,8 +911,8 @@ void Between_ExtremeValues_Overflow()
 @TestCase(const ["2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
 void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, String endText, PeriodUnits units, int expectedForward, int expectedBackward)
 {
-  LocalDateTime start = LocalDateTimePattern.ExtendedIso.Parse(startText).Value;
-  LocalDateTime end = LocalDateTimePattern.ExtendedIso.Parse(endText).Value;
+  LocalDateTime start = LocalDateTimePattern.ExtendedIso.parse(startText).Value;
+  LocalDateTime end = LocalDateTimePattern.ExtendedIso.parse(endText).Value;
   Period forward = Period.between(start, end, units);
   expect(expectedForward, forward.toBuilder()[units]);
   Period backward = Period.between(end, start, units);
@@ -977,6 +977,6 @@ void AddPeriodToPeriod_Overflow()
 /// Just a simple way of parsing a period string. It's a more compact period representation.
 Period Parse(String text)
 {
-  return PeriodPattern.Roundtrip.Parse(text).Value;
+  return PeriodPattern.Roundtrip.parse(text).Value;
 }
 

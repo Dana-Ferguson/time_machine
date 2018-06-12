@@ -10,12 +10,12 @@ import 'package:time_machine/time_machine_patterns.dart';
 @internal /*sealed*/ class SpanPatternParser implements IPatternParser<Span> {
   @private static final Map</*char*/String, CharacterHandler<Span, SpanParseBucket>> PatternCharacterHandlers =
   {
-    '%': SteppedPatternBuilder.HandlePercent /**<Span, SpanParseBucket>*/,
+    '%': SteppedPatternBuilder.handlePercent /**<Span, SpanParseBucket>*/,
     '\'': SteppedPatternBuilder.HandleQuote /**<Span, SpanParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<Span, SpanParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<Span, SpanParseBucket>*/,
-    '.': TimePatternHelper.CreatePeriodHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Span>*/),
+    '.': TimePatternHelper.createPeriodHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Span>*/),
     'D': CreateDayHandler(),
     'H': CreateTotalHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay, 402653184),
     'h': CreatePartialHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay),
@@ -23,15 +23,15 @@ import 'package:time_machine/time_machine_patterns.dart';
     'm': CreatePartialHandler(PatternFields.minutes, TimeConstants.nanosecondsPerMinute, TimeConstants.minutesPerHour),
     'S': CreateTotalHandler(PatternFields.seconds, TimeConstants.nanosecondsPerSecond, TimeConstants.secondsPerDay, 1449551462400),
     's': CreatePartialHandler(PatternFields.seconds, TimeConstants.nanosecondsPerSecond, TimeConstants.secondsPerMinute),
-    'f': TimePatternHelper.CreateFractionHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
-    'F': TimePatternHelper.CreateFractionHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
+    'f': TimePatternHelper.createFractionHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
+    'F': TimePatternHelper.createFractionHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
     '+': HandlePlus,
     '-': HandleMinus,
   };
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Span> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<Span> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -49,10 +49,10 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     var patternBuilder = new SteppedPatternBuilder<Span, SpanParseBucket>(formatInfo,
             () => new SpanParseBucket());
-    patternBuilder.ParseCustomPattern(patternText, PatternCharacterHandlers);
+    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
     // Somewhat random sample, admittedly...
     // dana: todo: why is this?
-    return patternBuilder.Build(new Span(hours: 1) + new Span(minutes: 30) + new Span(seconds: 5) + new Span(milliseconds: 500));
+    return patternBuilder.build(new Span(hours: 1) + new Span(minutes: 30) + new Span(seconds: 5) + new Span(milliseconds: 500));
   }
 
   @private static int GetPositiveNanosecondOfSecond(Span Span) {
@@ -63,30 +63,30 @@ import 'package:time_machine/time_machine_patterns.dart';
       (PatternFields field, int nanosecondsPerUnit, int unitsPerDay, int maxValue) {
     return (pattern, builder) {
       // Needs to be big enough for 1449551462400 seconds
-      int count = pattern.GetRepeatCount(13);
+      int count = pattern.getRepeatCount(13);
       // AddField would throw an inappropriate exception here, so handle it specially.
-      if ((builder.UsedFields & PatternFields.totalSpan).value != 0) {
+      if ((builder.usedFields & PatternFields.totalSpan).value != 0) {
         throw new InvalidPatternError(TextErrorMessages.MultipleCapitalSpanFields);
       }
-      builder.AddField(field, pattern.Current);
-      builder.AddField(PatternFields.totalSpan, pattern.Current);
-      builder.AddParseInt64ValueAction(count, 13, pattern.Current, 0, maxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
-      builder.AddFormatAction((Span value, StringBuffer sb) =>
+      builder.addField(field, pattern.Current);
+      builder.addField(PatternFields.totalSpan, pattern.Current);
+      builder.addParseInt64ValueAction(count, 13, pattern.Current, 0, maxValue, (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
+      builder.addFormatAction((Span value, StringBuffer sb) =>
           FormatHelper.LeftPadNonNegativeInt64(GetPositiveNanosecondUnits(value, nanosecondsPerUnit, unitsPerDay), count, sb));
     };
   }
 
   @private static CharacterHandler<Span, SpanParseBucket> CreateDayHandler() {
     return (pattern, builder) {
-      int count = pattern.GetRepeatCount(8); // Enough for 16777216
+      int count = pattern.getRepeatCount(8); // Enough for 16777216
       // AddField would throw an inappropriate exception here, so handle it specially.
-      if ((builder.UsedFields & PatternFields.totalSpan).value != 0) {
+      if ((builder.usedFields & PatternFields.totalSpan).value != 0) {
         throw new InvalidPatternError(TextErrorMessages.MultipleCapitalSpanFields);
       }
-      builder.AddField(PatternFields.dayOfMonth, pattern.Current);
-      builder.AddField(PatternFields.totalSpan, pattern.Current);
-      builder.AddParseValueAction(count, 8, pattern.Current, 0, 16777216, (bucket, value) => bucket.AddDays(value));
-      builder.AddFormatLeftPad(count, (Span) {
+      builder.addField(PatternFields.dayOfMonth, pattern.Current);
+      builder.addField(PatternFields.totalSpan, pattern.Current);
+      builder.addParseValueAction(count, 8, pattern.Current, 0, 16777216, (bucket, value) => bucket.AddDays(value));
+      builder.addFormatLeftPad(count, (Span) {
         int days = Span.floorDays;
         if (days >= 0) {
           return days;
@@ -102,12 +102,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static CharacterHandler<Span, SpanParseBucket> CreatePartialHandler
       (PatternFields field, int nanosecondsPerUnit, int unitsPerContainer) {
     return (pattern, builder) {
-      int count = pattern.GetRepeatCount(2);
-      builder.AddField(field, pattern.Current);
-      builder.AddParseValueAction(count, 2, pattern.Current, 0, unitsPerContainer - 1,
+      int count = pattern.getRepeatCount(2);
+      builder.addField(field, pattern.Current);
+      builder.addParseValueAction(count, 2, pattern.Current, 0, unitsPerContainer - 1,
               (bucket, value) => bucket.AddUnits(value, nanosecondsPerUnit));
       // This is never used for anything larger than a day, so the day part is irrelevant.
-      builder.AddFormatLeftPad(count,
+      builder.addFormatLeftPad(count,
               (Span) => (((Span.nanosecondOfFloorDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
           assumeNonNegative: true,
           assumeFitsInCount: count == 2);
@@ -115,13 +115,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 
   @private static void HandlePlus(PatternCursor pattern, SteppedPatternBuilder<Span, SpanParseBucket> builder) {
-    builder.AddField(PatternFields.sign, pattern.Current);
-    builder.AddRequiredSign((bucket, positive) => bucket.IsNegative = !positive, (Span) => Span.floorDays >= 0);
+    builder.addField(PatternFields.sign, pattern.Current);
+    builder.addRequiredSign((bucket, positive) => bucket.IsNegative = !positive, (Span) => Span.floorDays >= 0);
   }
 
   @private static void HandleMinus(PatternCursor pattern, SteppedPatternBuilder<Span, SpanParseBucket> builder) {
-    builder.AddField(PatternFields.sign, pattern.Current);
-    builder.AddNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, (Span) => Span.floorDays >= 0);
+    builder.addField(PatternFields.sign, pattern.Current);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.IsNegative = !positive, (Span) => Span.floorDays >= 0);
   }
 
   @private static int GetPositiveNanosecondUnits(Span Span, int nanosecondsPerUnit, int unitsPerDay) {

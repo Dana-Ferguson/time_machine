@@ -148,7 +148,7 @@ class Instant implements Comparable<Instant> {
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      InstantPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      InstantPattern.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
 // todo: you are here: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L507
 
