@@ -15,20 +15,12 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
 
 // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
 // using the genitive form or not.
-class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>>
-    extends /*SteppedPatternBuilder<TResult, TBucket>.*/IPostPatternParseFormatAction // where TBucket : ParseBucket<TResult>
-    {
+class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> extends IPostPatternParseFormatAction {
   final int _count;
   final TimeMachineFormatInfo _formatInfo;
   final int Function(TResult) _getter;
 
   @internal _MonthFormatActionHolder(this._formatInfo, this._count, this._getter);
-
-  @internal void dummyMethod(TResult value, StringBuffer builder) {
-    // This method is never called. We use it to create a delegate with a target that implements
-    // IPostPatternParseFormatAction. There's no test for this throwing.
-    throw new StateError("This method should never be called");
-  }
 
   @override
   Function(TResult, StringBuffer) buildFormatAction(PatternFields finalFields) {
