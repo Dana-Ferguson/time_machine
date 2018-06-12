@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_fields.dart';
 
   @internal FixedLengthDatePeriodField(this._unitDays);
 
-  LocalDate Add(LocalDate localDate, int value) {
+  LocalDate add(LocalDate localDate, int value) {
     if (value == 0) {
       return localDate;
     }
@@ -60,6 +60,6 @@ import 'package:time_machine/time_machine_fields.dart';
     return new LocalDate.fromDaysSinceEpoch(days, calendar);
   }
 
-  int UnitsBetween(LocalDate start, LocalDate end) =>
+  int unitsBetween(LocalDate start, LocalDate end) =>
       Period.daysBetween(start, end) ~/ _unitDays;
 }

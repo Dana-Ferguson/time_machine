@@ -330,9 +330,9 @@ class Period {
     // Optimization for single field
     // todo: optimize me?
     Map _betweenFunctionMap = {
-      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.date, endDate)),
-      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.date, endDate)),
-      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.date, endDate)),
+      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start.date, endDate)),
+      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start.date, endDate)),
+      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start.date, endDate)),
       PeriodUnits.days: () => new Period.fromDays(daysBetween(start.date, endDate)),
       PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.hours.unitsBetween(start, end)),
       PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.minutes.unitsBetween(start, end)),
@@ -474,15 +474,15 @@ class Period {
         return 0;
       }
 
-      int value = dateField.UnitsBetween(startDate.value, end);
-      startDate.value = dateField.Add(startDate.value, value);
+      int value = dateField.unitsBetween(startDate.value, end);
+      startDate.value = dateField.add(startDate.value, value);
       return value;
     }
 
-    var years = unitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.YearsField);
-    var months = unitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.MonthsField);
-    var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.WeeksField);
-    var days = unitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.DaysField);
+    var years = unitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.yearsField);
+    var months = unitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.monthsField);
+    var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.weeksField);
+    var days = unitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.daysField);
 
     return new DateComponentsBetweenResult(result.value, years, months, weeks, days);
   }
@@ -569,9 +569,9 @@ class Period {
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
-    PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start, end)),
-    PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start, end)),
-    PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start, end)),
+    PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start, end)),
+    PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start, end)),
+    PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start, end)),
     PeriodUnits.days: (start, end) => new Period.fromDays(daysBetween(start, end))
   };
 

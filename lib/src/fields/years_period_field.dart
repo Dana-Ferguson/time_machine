@@ -10,7 +10,7 @@ import 'package:time_machine/time_machine_fields.dart';
 @internal /*sealed*/ class YearsPeriodField implements IDatePeriodField {
   @internal YearsPeriodField();
 
-  LocalDate Add(LocalDate localDate, int value) {
+  LocalDate add(LocalDate localDate, int value) {
     if (value == 0) {
       return localDate;
     }
@@ -23,11 +23,11 @@ import 'package:time_machine/time_machine_fields.dart';
     return new LocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).withCalendarOrdinal(calendar.ordinal));
   }
 
-  int UnitsBetween(LocalDate start, LocalDate end) {
+  int unitsBetween(LocalDate start, LocalDate end) {
     int diff = end.year - start.year;
 
     // If we just add the difference in years to subtrahendInstant, what do we get?
-    LocalDate simpleAddition = Add(start, diff);
+    LocalDate simpleAddition = add(start, diff);
 
     if (start <= end) {
       // Moving forward: if the result of the simple addition is before or equal to the end,

@@ -435,7 +435,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [years]: The number of years to add
   /// Returns: The current value plus the given number of years.
-  LocalDate plusYears(int years) => DatePeriodFields.YearsField.Add(this, years);
+  LocalDate plusYears(int years) => DatePeriodFields.yearsField.add(this, years);
 
   /// Returns a new LocalDate representing the current value with the given number of months added.
   ///
@@ -448,7 +448,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [months]: The number of months to add
   /// Returns: The current date plus the given number of months
-  LocalDate plusMonths(int months) => DatePeriodFields.MonthsField.Add(this, months);
+  LocalDate plusMonths(int months) => DatePeriodFields.monthsField.add(this, months);
 
   /// Returns a new LocalDate representing the current value with the given number of days added.
   ///
@@ -457,13 +457,13 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [days]: The number of days to add
   /// Returns: The current value plus the given number of days.
-  LocalDate plusDays(int days) => DatePeriodFields.DaysField.Add(this, days);
+  LocalDate plusDays(int days) => DatePeriodFields.daysField.add(this, days);
 
   /// Returns a new LocalDate representing the current value with the given number of weeks added.
   ///
   /// [weeks]: The number of weeks to add
   /// Returns: The current value plus the given number of weeks.
-  LocalDate plusWeeks(int weeks) => DatePeriodFields.WeeksField.Add(this, weeks);
+  LocalDate plusWeeks(int weeks) => DatePeriodFields.weeksField.add(this, weeks);
 
   /// Returns the next [LocalDate] falling on the specified [IsoDayOfWeek].
   /// This is a strict "next" - if this date on already falls on the target

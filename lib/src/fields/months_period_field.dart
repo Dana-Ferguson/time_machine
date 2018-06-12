@@ -9,14 +9,14 @@ import 'package:time_machine/time_machine_fields.dart';
 @internal /*sealed*/ class MonthsPeriodField implements IDatePeriodField {
   @internal MonthsPeriodField();
 
-  LocalDate Add(LocalDate localDate, int value) {
+  LocalDate add(LocalDate localDate, int value) {
     var calendar = localDate.calendar;
     var calculator = calendar.yearMonthDayCalculator;
     var yearMonthDay = calculator.addMonths(localDate.yearMonthDay, value);
     return new LocalDate.trusted(yearMonthDay.withCalendar(calendar));
   }
 
-  int UnitsBetween(LocalDate start, LocalDate end) =>
+  int unitsBetween(LocalDate start, LocalDate end) =>
       start.calendar.yearMonthDayCalculator.monthsBetween(start.yearMonthDay, end.yearMonthDay);
 }
 

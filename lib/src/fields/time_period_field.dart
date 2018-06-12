@@ -25,21 +25,21 @@ class _AddTimeResult {
 /// of code elegance.
 @internal /*sealed*/ class TimePeriodField
 {
-  @internal static final TimePeriodField nanoseconds = new TimePeriodField(1);
-  @internal static final TimePeriodField ticks = new TimePeriodField(TimeConstants.nanosecondsPerTick);
-  @internal static final TimePeriodField milliseconds = new TimePeriodField(TimeConstants.nanosecondsPerMillisecond);
-  @internal static final TimePeriodField seconds = new TimePeriodField(TimeConstants.nanosecondsPerSecond);
-  @internal static final TimePeriodField minutes = new TimePeriodField(TimeConstants.nanosecondsPerMinute);
-  @internal static final TimePeriodField hours = new TimePeriodField(TimeConstants.nanosecondsPerHour);
+  @internal static final TimePeriodField nanoseconds = new TimePeriodField._(1);
+  @internal static final TimePeriodField ticks = new TimePeriodField._(TimeConstants.nanosecondsPerTick);
+  @internal static final TimePeriodField milliseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
+  @internal static final TimePeriodField seconds = new TimePeriodField._(TimeConstants.nanosecondsPerSecond);
+  @internal static final TimePeriodField minutes = new TimePeriodField._(TimeConstants.nanosecondsPerMinute);
+  @internal static final TimePeriodField hours = new TimePeriodField._(TimeConstants.nanosecondsPerHour);
 
-  @private final int unitNanoseconds;
+  final int _unitNanoseconds;
   // The largest number of units (positive or negative) we can multiply unitNanoseconds by without overflowing a long.
-  @private final int maxLongUnits;
-  @private final int unitsPerDay;
+  final int _maxLongUnits;
+  final int _unitsPerDay;
 
-  @private TimePeriodField(this.unitNanoseconds) :
-        maxLongUnits = Utility.intMaxValue ~/ unitNanoseconds,
-        unitsPerDay = TimeConstants.nanosecondsPerDay ~/ unitNanoseconds;
+  TimePeriodField._(this._unitNanoseconds) :
+        _maxLongUnits = Utility.intMaxValue ~/ _unitNanoseconds,
+        _unitsPerDay = TimeConstants.nanosecondsPerDay ~/ _unitNanoseconds;
 
   @internal LocalDateTime addDateTime(LocalDateTime start, int units)
   {
@@ -50,7 +50,7 @@ class _AddTimeResult {
     return new LocalDateTime(date, addTimeResult.time);
   }
 
-  // todo: is this actually used anywhere?
+  // todo: is this actually used anywhere? rename
   @internal LocalTime addTimeSimple(LocalTime localTime, int value)
   {
     // unchecked
@@ -59,11 +59,11 @@ class _AddTimeResult {
       // into a day, so we can make sure we add a value which is less than a day.
       if (value >= 0)
       {
-        if (value >= unitsPerDay)
+        if (value >= _unitsPerDay)
         {
-          value = value % unitsPerDay;
+          value = value % _unitsPerDay;
         }
-        int nanosToAdd = value * unitNanoseconds;
+        int nanosToAdd = value * _unitNanoseconds;
         int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos >= TimeConstants.nanosecondsPerDay)
         {
@@ -73,11 +73,11 @@ class _AddTimeResult {
       }
       else
       {
-        if (value <= -unitsPerDay)
+        if (value <= -_unitsPerDay)
         {
-          value = -(-value % unitsPerDay);
+          value = -(-value % _unitsPerDay);
         }
-        int nanosToAdd = value * unitNanoseconds;
+        int nanosToAdd = value * _unitNanoseconds;
         int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos < 0)
         {
@@ -99,13 +99,13 @@ class _AddTimeResult {
       int days = 0;
       // It's possible that there are better ways to do this, but this at least feels simple.
       if (value >= 0) {
-        if (value >= unitsPerDay) {
-          int longDays = value ~/ unitsPerDay;
+        if (value >= _unitsPerDay) {
+          int longDays = value ~/ _unitsPerDay;
           // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
           days = /*checked*/ (longDays);
-          value = value % unitsPerDay;
+          value = value % _unitsPerDay;
         }
-        int nanosToAdd = value * unitNanoseconds;
+        int nanosToAdd = value * _unitNanoseconds;
         int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos >= TimeConstants.nanosecondsPerDay) {
           newNanos -= TimeConstants.nanosecondsPerDay;
@@ -115,13 +115,13 @@ class _AddTimeResult {
         return new _AddTimeResult(new LocalTime.fromNanoseconds(newNanos), extraDays);
       }
       else {
-        if (value <= -unitsPerDay) {
-          int longDays = value ~/ unitsPerDay;
+        if (value <= -_unitsPerDay) {
+          int longDays = value ~/ _unitsPerDay;
           // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
           days = /*checked*/(longDays);
-          value = -(-value % unitsPerDay);
+          value = -(-value % _unitsPerDay);
         }
-        int nanosToAdd = value * unitNanoseconds;
+        int nanosToAdd = value * _unitNanoseconds;
         int newNanos = localTime.nanosecondOfDay + nanosToAdd;
         if (newNanos < 0) {
           newNanos += TimeConstants.nanosecondsPerDay;
@@ -143,14 +143,14 @@ class _AddTimeResult {
 
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
-  @internal int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ unitNanoseconds;
+  @internal int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ _unitNanoseconds;
 //      span.IsInt64Representable
 //          ? span.ToInt64Nanoseconds() / unitNanoseconds
 //          : (span.ToDecimalNanoseconds() / unitNanoseconds);
 
   /// Returns a [Span] representing the given number of units.
   @internal Span toSpan(int units) =>
-      units >= -maxLongUnits && units <= maxLongUnits
-          ? new Span(nanoseconds: units * unitNanoseconds)
-          : new Span(nanoseconds: units * /*(decimal)*/unitNanoseconds);
+      units >= -_maxLongUnits && units <= _maxLongUnits
+          ? new Span(nanoseconds: units * _unitNanoseconds)
+          : new Span(nanoseconds: units * /*(decimal)*/_unitNanoseconds);
 }

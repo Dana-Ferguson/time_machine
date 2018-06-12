@@ -14,7 +14,7 @@ import 'package:time_machine/time_machine.dart';
   /// [localDate]: The local date to add to
   /// [value]: The value to add, in the units of the field
   /// Returns: The updated local date
-  LocalDate Add(LocalDate localDate, int value);
+  LocalDate add(LocalDate localDate, int value);
 
   /// Computes the difference between two local dates, as measured in the units
   /// of this field, rounding towards zero. This rounding means that
@@ -24,5 +24,5 @@ import 'package:time_machine/time_machine.dart';
   /// [start]: The start date
   /// [end]: The end date
   /// Returns: The difference in the units of this field
-  int UnitsBetween(LocalDate start, LocalDate end);
+  int unitsBetween(LocalDate start, LocalDate end);
 }
