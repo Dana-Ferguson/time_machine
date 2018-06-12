@@ -49,7 +49,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   final String PatternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final NodaFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo FormatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
@@ -87,7 +87,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static LocalTimePattern Create(String patternText, NodaFormatInfo formatInfo,
+  @internal static LocalTimePattern Create(String patternText, TimeMachineFormatInfo formatInfo,
       LocalTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
@@ -114,7 +114,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern Create2(String patternText, CultureInfo cultureInfo, LocalTime templateValue) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text and culture, with a template value of midnight.
   ///
@@ -137,7 +137,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo, LocalTime.midnight);
+      Create(patternText, TimeMachineFormatInfo.currentInfo, LocalTime.midnight);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -149,14 +149,14 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo, LocalTime.midnight);
+      Create(patternText, TimeMachineFormatInfo.invariantInfo, LocalTime.midnight);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private LocalTimePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
+  @private LocalTimePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) =>
       Create(PatternText, formatInfo, TemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -165,7 +165,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
   LocalTimePattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.
   ///

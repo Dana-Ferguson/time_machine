@@ -386,7 +386,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void CreateWithInvariantCulture() {
     var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
-    expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var odt = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56).withOffset(new Offset.fromHours(2));
     expect("2017-08-23T12:34:56+02", pattern.Format(odt));
   }

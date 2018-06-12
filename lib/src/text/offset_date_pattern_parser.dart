@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetDate, OffsetDateParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDate>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDate>*/),
     'y': DatePatternHelper.CreateYearOfEraHandler<OffsetDate, OffsetDateParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
     'u': SteppedPatternBuilder.HandlePaddedField<OffsetDate, OffsetDateParseBucket>(
@@ -37,7 +37,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<OffsetDate> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<OffsetDate> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

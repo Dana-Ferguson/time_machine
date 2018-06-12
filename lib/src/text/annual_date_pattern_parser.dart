@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<AnnualDate, AnnualDateParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch /**<AnnualDate>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<AnnualDate>*/),
     'M': DatePatternHelper.CreateMonthOfYearHandler<AnnualDate, AnnualDateParseBucket>
       ((value) => value.month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
     'd': HandleDayOfMonth
@@ -25,7 +25,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<AnnualDate> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<AnnualDate> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in AnnualDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

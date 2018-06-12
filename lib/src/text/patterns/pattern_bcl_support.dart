@@ -10,7 +10,7 @@ import 'package:time_machine/time_machine_text.dart';
 /// provided by individual types.
 @internal /*sealed*/ class PatternBclSupport<T>
 {
-  @private final FixedFormatInfoPatternParser<T> Function(NodaFormatInfo) patternParser;
+  @private final FixedFormatInfoPatternParser<T> Function(TimeMachineFormatInfo) patternParser;
   @private final String defaultFormatPattern;
 
   @internal PatternBclSupport(this.defaultFormatPattern, this.patternParser);
@@ -22,7 +22,7 @@ import 'package:time_machine/time_machine_text.dart';
     {
       patternText = defaultFormatPattern;
     }
-    NodaFormatInfo formatInfo = NodaFormatInfo.GetInstance(formatProvider);
+    TimeMachineFormatInfo formatInfo = TimeMachineFormatInfo.getInstance(formatProvider);
     IPattern<T> pattern = patternParser(formatInfo).ParsePattern(patternText);
     return pattern.Format(value);
   }

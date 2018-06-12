@@ -17,7 +17,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDateTime>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDateTime>*/),
     'T': (pattern, builder) => builder.AddLiteral2('T', ParseResult.MismatchedCharacter /**<OffsetDateTime>*/),
     'y': DatePatternHelper.CreateYearOfEraHandler<OffsetDateTime, OffsetDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<OffsetDateTime, OffsetDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<OffsetDateTime>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<OffsetDateTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField<OffsetDateTime, OffsetDateTimeParseBucket>(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField<OffsetDateTime, OffsetDateTimeParseBucket>(
@@ -58,7 +58,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<OffsetDateTime> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<OffsetDateTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetDateTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

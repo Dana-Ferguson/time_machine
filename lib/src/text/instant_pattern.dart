@@ -83,7 +83,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [formatInfo]: The format info to use in the pattern
   /// Returns: A pattern for parsing and formatting instants.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @private static InstantPattern Create(String patternText, NodaFormatInfo formatInfo) {
+  @private static InstantPattern Create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.instantPatternParser.ParsePattern(patternText);
@@ -99,7 +99,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting instants.
   /// [InvalidPatternException]: The pattern text was invalid.
   static InstantPattern Create2(String patternText, CultureInfo cultureInfo) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -111,7 +111,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting instants.
   /// [InvalidPatternException]: The pattern text was invalid.
   static InstantPattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo);
+      Create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -121,14 +121,14 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting instants.
   /// [InvalidPatternException]: The pattern text was invalid.
   static InstantPattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo);
+      Create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private InstantPattern WithFormatInfo(NodaFormatInfo formatInfo) => Create(PatternText, formatInfo);
+  @private InstantPattern WithFormatInfo(TimeMachineFormatInfo formatInfo) => Create(PatternText, formatInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
@@ -136,6 +136,6 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
   InstantPattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }
 

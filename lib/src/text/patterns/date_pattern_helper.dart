@@ -19,7 +19,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
     extends /*SteppedPatternBuilder<TResult, TBucket>.*/IPostPatternParseFormatAction // where TBucket : ParseBucket<TResult>
     {
   @private final int count;
-  @private final NodaFormatInfo formatInfo;
+  @private final TimeMachineFormatInfo formatInfo;
   @private final int Function(TResult) getter;
 
   @internal MonthFormatActionHolder(this.formatInfo, this.count, this.getter);
@@ -34,8 +34,8 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
   Function(TResult, StringBuffer) BuildFormatAction(PatternFields finalFields) {
     bool genitive = (finalFields.value & PatternFields.dayOfMonth.value) != 0;
     List<String> textValues = count == 3
-        ? (genitive ? formatInfo.ShortMonthGenitiveNames : formatInfo.ShortMonthNames)
-        : (genitive ? formatInfo.LongMonthGenitiveNames : formatInfo.LongMonthNames);
+        ? (genitive ? formatInfo.shortMonthGenitiveNames : formatInfo.shortMonthNames)
+        : (genitive ? formatInfo.longMonthGenitiveNames : formatInfo.longMonthNames);
     return (value, sb) => sb.write(textValues[getter(value)]);
   }
 }
@@ -92,8 +92,8 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
         case 4:
           field = PatternFields.monthOfYearText;
           var format = builder.FormatInfo;
-          List<String> nonGenitiveTextValues = count == 3 ? format.ShortMonthNames : format.LongMonthNames;
-          List<String> genitiveTextValues = count == 3 ? format.ShortMonthGenitiveNames : format.LongMonthGenitiveNames;
+          List<String> nonGenitiveTextValues = count == 3 ? format.shortMonthNames : format.longMonthNames;
+          List<String> genitiveTextValues = count == 3 ? format.shortMonthGenitiveNames : format.longMonthGenitiveNames;
           if (nonGenitiveTextValues == genitiveTextValues) {
             builder.AddParseLongestTextAction(pattern.Current, textSetter, format.compareInfo, nonGenitiveTextValues);
           }
@@ -134,7 +134,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
         case 4:
           field = PatternFields.dayOfWeek;
           var format = builder.FormatInfo;
-          List<String> textValues = count == 3 ? format.ShortDayNames : format.LongDayNames;
+          List<String> textValues = count == 3 ? format.shortDayNames : format.longDayNames;
           builder.AddParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.compareInfo, textValues);
           builder.AddFormatAction((value, sb) => sb.write(textValues[dayOfWeekGetter(value)]));
           break;
@@ -161,7 +161,7 @@ import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
       // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
       builder.AddParseAction(_parseAction);
 
-      builder.AddFormatAction((value, sb) => sb.write(formatInfo.GetEraPrimaryName(eraFromValue(value))));
+      builder.AddFormatAction((value, sb) => sb.write(formatInfo.getEraPrimaryName(eraFromValue(value))));
     };
   }
 

@@ -48,7 +48,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   final String PatternText;
 
   /// Returns the localization information used in this pattern.
-  @internal final NodaFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo FormatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
@@ -86,7 +86,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static LocalDatePattern Create(String patternText, NodaFormatInfo formatInfo, LocalDate templateValue) {
+  @internal static LocalDatePattern Create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
@@ -110,7 +110,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalDatePattern Create2(String patternText, CultureInfo cultureInfo, LocalDate templateValue) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text and culture, with a template value of 2000-01-01.
   ///
@@ -131,7 +131,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDatePattern CreateWithCurrentCulture(String patternText) => Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+  static LocalDatePattern CreateWithCurrentCulture(String patternText) => Create(patternText, TimeMachineFormatInfo.currentInfo, DefaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -142,21 +142,21 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDatePattern CreateWithInvariantCulture(String patternText) => Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+  static LocalDatePattern CreateWithInvariantCulture(String patternText) => Create(patternText, TimeMachineFormatInfo.invariantInfo, DefaultTemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private LocalDatePattern WithFormatInfo(NodaFormatInfo formatInfo) => Create(PatternText, formatInfo, TemplateValue);
+  @private LocalDatePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) => Create(PatternText, formatInfo, TemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  LocalDatePattern WithCulture(CultureInfo cultureInfo) => WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+  LocalDatePattern WithCulture(CultureInfo cultureInfo) => WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.
   ///

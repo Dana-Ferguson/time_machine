@@ -1,17 +1,12 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
-// https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Globalization/PatternResources.cs
-// 632d984  on Sep 15, 2017
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 
-
 abstract class PatternResources
 {
-// @internal static final ResourceManager ResourceManager = new ResourceManager(typeof(PatternResources).FullName, typeof(PatternResources).GetTypeInfo().Assembly);
-
   // Resource files have a structure similar to:
   // ResourcesName.resx           Default resources
   //  ResourcesName.en.resx       General English Culture
@@ -26,7 +21,7 @@ abstract class PatternResources
   // A quick, totally non exhaustive test, seems to confirm that.
   // For now, we'll just include this in code, we may change this to an Future<String> and
   // load from data files if the resource files get branched out.
-  static String GetString(String name, CultureInfo cultureInfo) => _data[name];
+  static String getString(String name, CultureInfo cultureInfo) => _data[name];
 
   static Map<String, String> _data = {
     'Eras_AnnoHegirae': 'A.H.|AH',

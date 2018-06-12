@@ -49,7 +49,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   final String PatternText;
 
   /// Returns the localization information used in this pattern.
-  @internal final NodaFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo FormatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
@@ -87,7 +87,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static AnnualDatePattern Create(String patternText, NodaFormatInfo formatInfo,
+  @internal static AnnualDatePattern Create(String patternText, TimeMachineFormatInfo formatInfo,
       AnnualDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
@@ -111,7 +111,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern Create2(String patternText, CultureInfo cultureInfo, AnnualDate templateValue) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), templateValue);
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text and culture, with a template value of 2000-01-01.
   ///
@@ -134,7 +134,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo, DefaultTemplateValue);
+      Create(patternText, TimeMachineFormatInfo.currentInfo, DefaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -146,14 +146,14 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo, DefaultTemplateValue);
+      Create(patternText, TimeMachineFormatInfo.invariantInfo, DefaultTemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private AnnualDatePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
+  @private AnnualDatePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) =>
       Create(PatternText, formatInfo, TemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -162,7 +162,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
   AnnualDatePattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.
   ///

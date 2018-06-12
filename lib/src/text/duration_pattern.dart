@@ -70,7 +70,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [formatInfo]: Localization information
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @private static SpanPattern Create(String patternText, NodaFormatInfo formatInfo) {
+  @private static SpanPattern Create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternTex');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.spanPatternParser.ParsePattern(patternText);
@@ -86,7 +86,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static SpanPattern Create2(String patternText, CultureInfo cultureInfo) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -98,7 +98,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static SpanPattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo);
+      Create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -110,7 +110,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static SpanPattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo);
+      Create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
@@ -118,5 +118,5 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
   SpanPattern WithCulture(CultureInfo cultureInfo) =>
-      Create(PatternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
+      Create(PatternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

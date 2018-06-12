@@ -25,7 +25,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash/**<LocalDate, LocalDateParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
     'y': DatePatternHelper.CreateYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.yearOfEra, (bucket, value) => bucket.YearOfEra = value),
     'u': SteppedPatternBuilder.HandlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Year = value),
     'M': DatePatternHelper.CreateMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),
@@ -40,7 +40,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<LocalDate> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<LocalDate> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDatePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -62,12 +62,12 @@ import 'package:time_machine/time_machine_patterns.dart';
     return patternBuilder.Build(templateValue);
   }
 
-  @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, NodaFormatInfo formatInfo) {
+  @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'd':
-        return formatInfo.DateTimeFormat.shortDatePattern;
+        return formatInfo.dateTimeFormat.shortDatePattern;
       case 'D':
-        return formatInfo.DateTimeFormat.longDatePattern;
+        return formatInfo.dateTimeFormat.longDatePattern;
       default:
         // Will be turned into an exception.
         return null;
@@ -95,10 +95,10 @@ import 'package:time_machine/time_machine_patterns.dart';
     this.Calendar = TemplateValue.calendar;
   }
 
-  @internal ParseResult<TResult> ParseEra<TResult>(NodaFormatInfo formatInfo, ValueCursor cursor) {
+  @internal ParseResult<TResult> ParseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
     var compareInfo = formatInfo.compareInfo;
     for (var era in Calendar.eras) {
-      for (String eraName in formatInfo.GetEraNames(era)) {
+      for (String eraName in formatInfo.getEraNames(era)) {
         if (cursor.MatchCaseInsensitive(eraName, compareInfo, true)) {
           this.era = era;
           return null;

@@ -22,7 +22,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch /**<ZonedDateTime>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<ZonedDateTime>*/),
     'T': (pattern, builder) => builder.AddLiteral2('T', ParseResult.MismatchedCharacter /**<ZonedDateTime>*/),
     'y': DatePatternHelper.CreateYearOfEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
@@ -36,7 +36,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<ZonedDateTime, ZonedDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<ZonedDateTime>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<ZonedDateTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField<ZonedDateTime, ZonedDateTimeParseBucket>(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField<ZonedDateTime, ZonedDateTimeParseBucket>(
@@ -64,7 +64,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<ZonedDateTime> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<ZonedDateTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in ZonedDateTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

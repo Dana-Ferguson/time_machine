@@ -20,7 +20,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<LocalDateTime, LocalDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.DateSeparator, ParseResult.DateSeparatorMismatch /**<LocalDateTime>*/),
+    '/': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<LocalDateTime>*/),
     'T': (pattern, builder) => builder.AddLiteral2('T', ParseResult.MismatchedCharacter /**<LocalDateTime>*/),
     'y': DatePatternHelper.CreateYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.Date.YearOfEra = value),
@@ -35,7 +35,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalDateTime>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalDateTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
@@ -62,7 +62,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<LocalDateTime> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<LocalDateTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -95,16 +95,16 @@ import 'package:time_machine/time_machine_patterns.dart';
     return patternBuilder.Build(templateValueDate.at(templateValueTime));
   }
 
-  @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, NodaFormatInfo formatInfo) {
+  @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'f':
-        return formatInfo.DateTimeFormat.longDatePattern + " " + formatInfo.DateTimeFormat.shortTimePattern;
+        return formatInfo.dateTimeFormat.longDatePattern + " " + formatInfo.dateTimeFormat.shortTimePattern;
       case 'F':
-        return formatInfo.DateTimeFormat.fullDateTimePattern;
+        return formatInfo.dateTimeFormat.fullDateTimePattern;
       case 'g':
-        return formatInfo.DateTimeFormat.shortDatePattern + " " + formatInfo.DateTimeFormat.shortTimePattern;
+        return formatInfo.dateTimeFormat.shortDatePattern + " " + formatInfo.dateTimeFormat.shortTimePattern;
       case 'G':
-        return formatInfo.DateTimeFormat.shortDatePattern + " " + formatInfo.DateTimeFormat.longTimePattern;
+        return formatInfo.dateTimeFormat.shortDatePattern + " " + formatInfo.dateTimeFormat.longTimePattern;
       default:
         // Will be turned into an exception.
         return null;

@@ -150,7 +150,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void CreateWithInvariantCulture() {
     var pattern = OffsetTimePattern.CreateWithInvariantCulture("HH:mm:sso<g>");
-    expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
     expect("12:34:56+02", pattern.Format(ot));
   }

@@ -22,7 +22,7 @@ Future main() async {
 }
 
 @private final IPartialPattern<Offset> SimpleOffsetPattern =
-new OffsetPatternParser().ParsePattern("HH:mm", NodaFormatInfo.InvariantInfo);
+new OffsetPatternParser().ParsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
 
 @Test()
 void ParsePartial_ValidInMiddle()
@@ -81,7 +81,7 @@ void UnhandledLiteral(String text, bool valid) {
         'a': handler,
         'B': handler
       });
-  var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(NodaFormatInfo.InvariantInfo, () => new SampleBucket());
+  var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(TimeMachineFormatInfo.invariantInfo, () => new SampleBucket());
   if (valid) {
     builder.ParseCustomPattern(text, handlers);
   }

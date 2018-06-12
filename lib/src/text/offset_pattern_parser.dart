@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
     '\"': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<Offset, OffsetParseBucket>*/,
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<Offset>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Offset>*/),
     'h': (pattern, builder) => throw new InvalidPatternError.format(TextErrorMessages.Hour12PatternNotSupported, ['Offset']),
     'H': SteppedPatternBuilder.HandlePaddedField<Offset, OffsetParseBucket>(
         2, PatternFields.hours24, 0, 23, GetPositiveHours, (bucket, value) => bucket.Hours = value),
@@ -41,9 +41,9 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Offset> ParsePattern(String patternText, NodaFormatInfo formatInfo) => ParsePartialPattern(patternText, formatInfo);
+  IPattern<Offset> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) => ParsePartialPattern(patternText, formatInfo);
 
-  @private IPartialPattern<Offset> ParsePartialPattern(String patternText, NodaFormatInfo formatInfo) {
+  @private IPartialPattern<Offset> ParsePartialPattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetPattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -53,35 +53,35 @@ import 'package:time_machine/time_machine_patterns.dart';
       switch (patternText) {
         case "g":
           return (new CompositePatternBuilder<Offset>()
-            ..Add(ParsePartialPattern(formatInfo.OffsetPatternLong, formatInfo), (offset) => true)..Add(
-                ParsePartialPattern(formatInfo.OffsetPatternMedium, formatInfo), HasZeroSeconds)..Add(
-                ParsePartialPattern(formatInfo.OffsetPatternShort, formatInfo), HasZeroSecondsAndMinutes)).BuildAsPartial();
+            ..Add(ParsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)..Add(
+                ParsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), HasZeroSeconds)..Add(
+                ParsePartialPattern(formatInfo.offsetPatternShort, formatInfo), HasZeroSecondsAndMinutes)).BuildAsPartial();
         case "G":
           return new ZPrefixPattern(ParsePartialPattern("g", formatInfo));
         case "i":
           return (new CompositePatternBuilder<Offset>()
-            ..Add(ParsePartialPattern(formatInfo.OffsetPatternLongNoPunctuation, formatInfo), (offset) => true)..Add(
-                ParsePartialPattern(formatInfo.OffsetPatternMediumNoPunctuation, formatInfo), HasZeroSeconds)..Add(
-                ParsePartialPattern(formatInfo.OffsetPatternShortNoPunctuation, formatInfo), HasZeroSecondsAndMinutes)).BuildAsPartial();
+            ..Add(ParsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)..Add(
+                ParsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), HasZeroSeconds)..Add(
+                ParsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), HasZeroSecondsAndMinutes)).BuildAsPartial();
         case "I":
           return new ZPrefixPattern(ParsePartialPattern("i", formatInfo));
         case "l":
-          patternText = formatInfo.OffsetPatternLong;
+          patternText = formatInfo.offsetPatternLong;
           break;
         case "m":
-          patternText = formatInfo.OffsetPatternMedium;
+          patternText = formatInfo.offsetPatternMedium;
           break;
         case "s":
-          patternText = formatInfo.OffsetPatternShort;
+          patternText = formatInfo.offsetPatternShort;
           break;
         case "L":
-          patternText = formatInfo.OffsetPatternLongNoPunctuation;
+          patternText = formatInfo.offsetPatternLongNoPunctuation;
           break;
         case "M":
-          patternText = formatInfo.OffsetPatternMediumNoPunctuation;
+          patternText = formatInfo.offsetPatternMediumNoPunctuation;
           break;
         case "S":
-          patternText = formatInfo.OffsetPatternShortNoPunctuation;
+          patternText = formatInfo.offsetPatternShortNoPunctuation;
           break;
         default:
           throw new InvalidPatternError.format(TextErrorMessages.UnknownStandardFormat, [patternText, 'Offset']);

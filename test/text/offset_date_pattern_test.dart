@@ -157,7 +157,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-ddo<g>");
     // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
-    expect(identical(NodaFormatInfo.InvariantInfo, pattern.FormatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
     var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     expect("2017-08-23+02", pattern.Format(od));
   }

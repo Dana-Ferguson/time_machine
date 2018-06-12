@@ -38,7 +38,7 @@ class _findLongestMatchCursor {
   PatternFields _usedFields = PatternFields.none;
   bool _formatOnly = false;
 
-  @internal final NodaFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo FormatInfo;
 
   @internal PatternFields get UsedFields => _usedFields;
 

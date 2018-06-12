@@ -19,7 +19,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal static const String BeforeMinValueText = "StartOfTime";
   @internal static const String AfterMaxValueText = "EndOfTime";
 
-  IPattern<Instant> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<Instant> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

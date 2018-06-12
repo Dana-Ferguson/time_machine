@@ -71,7 +71,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [formatInfo]: Localization information
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static OffsetPattern Create(String patternText, NodaFormatInfo formatInfo) {
+  @internal static OffsetPattern Create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.offsetPatternParser.ParsePattern(patternText) as IPartialPattern<Offset>;
@@ -87,7 +87,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetPattern Create2(String patternText, CultureInfo cultureInfo) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -99,7 +99,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetPattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo);
+      Create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -110,12 +110,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetPattern CreateWithInvariantCulture(String patternText) => Create(patternText, NodaFormatInfo.InvariantInfo);
+  static OffsetPattern CreateWithInvariantCulture(String patternText) => Create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  OffsetPattern WithCulture(CultureInfo cultureInfo) => Create(PatternText, NodaFormatInfo.GetFormatInfo(cultureInfo));
+  OffsetPattern WithCulture(CultureInfo cultureInfo) => Create(PatternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

@@ -17,7 +17,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static const int CacheSize = 50;
   @private final Cache<String, IPattern<T>> cache;
 
-  @internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, NodaFormatInfo formatInfo)
+  @internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, TimeMachineFormatInfo formatInfo)
   : cache = new Cache<String, IPattern<T>>(CacheSize, (patternText) => patternParser.ParsePattern(patternText, formatInfo)
     // https://msdn.microsoft.com/en-us/library/system.stringcomparer.ordinal(v=vs.110).aspx
     // StringComparer object that performs a case-sensitive ordinal string comparison.

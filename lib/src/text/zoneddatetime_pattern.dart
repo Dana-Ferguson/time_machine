@@ -57,7 +57,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   final String PatternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final NodaFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo FormatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
@@ -113,7 +113,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
   /// Returns: A pattern for parsing and formatting zoned date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @private static ZonedDateTimePattern Create(String patternText, NodaFormatInfo formatInfo,
+  @private static ZonedDateTimePattern Create(String patternText, TimeMachineFormatInfo formatInfo,
       ZoneLocalMappingResolver resolver, IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
@@ -136,7 +136,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [InvalidPatternException]: The pattern text was invalid.
   static ZonedDateTimePattern Create2(String patternText, CultureInfo cultureInfo,
 /*[CanBeNull]*/ZoneLocalMappingResolver resolver, /*[CanBeNull]*/IDateTimeZoneProvider zoneProvider, ZonedDateTime templateValue) =>
-      Create(patternText, NodaFormatInfo.GetFormatInfo(cultureInfo), resolver, zoneProvider, templateValue);
+      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), resolver, zoneProvider, templateValue);
 
   /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the invariant
   /// culture, and a default template value of midnight January 1st 2000 UTC.
@@ -149,7 +149,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern CreateWithInvariantCulture(String patternText, /*[CanBeNull]*/IDateTimeZoneProvider zoneProvider) =>
-      Create(patternText, NodaFormatInfo.InvariantInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
+      Create(patternText, TimeMachineFormatInfo.invariantInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
 
   /// Creates a pattern for the given pattern text and time zone provider, using a strict resolver, the current
   /// culture, and a default template value of midnight January 1st 2000 UTC.
@@ -163,7 +163,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern CreateWithCurrentCulture(String patternText, /*[CanBeNull]*/IDateTimeZoneProvider zoneProvider) =>
-      Create(patternText, NodaFormatInfo.CurrentInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
+      Create(patternText, TimeMachineFormatInfo.currentInfo, Resolvers.strictResolver, zoneProvider, DefaultTemplateValue);
 
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
@@ -178,7 +178,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private ZonedDateTimePattern WithFormatInfo(NodaFormatInfo formatInfo) =>
+  @private ZonedDateTimePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) =>
       Create(PatternText, formatInfo, Resolver, ZoneProvider, TemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -187,7 +187,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
   ZonedDateTimePattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(NodaFormatInfo.GetFormatInfo(cultureInfo));
+      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// resolver.

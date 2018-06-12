@@ -23,7 +23,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<LocalTime, LocalTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalTime>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
@@ -43,7 +43,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<LocalTime> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<LocalTime> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalTimePattern.
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
@@ -64,12 +64,12 @@ import 'package:time_machine/time_machine_patterns.dart';
     return patternBuilder.Build(templateValue);
   }
 
-  @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, NodaFormatInfo formatInfo) {
+  @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 't':
-        return formatInfo.DateTimeFormat.shortTimePattern;
+        return formatInfo.dateTimeFormat.shortTimePattern;
       case 'T':
-        return formatInfo.DateTimeFormat.longTimePattern;
+        return formatInfo.dateTimeFormat.longTimePattern;
       case 'r':
         return "HH:mm:ss.FFFFFFFFF";
       default:

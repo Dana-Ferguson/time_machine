@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\"': SteppedPatternBuilder.HandleQuote /**<Span, SpanParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<Span, SpanParseBucket>*/,
     '.': TimePatternHelper.CreatePeriodHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
-    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<Span>*/),
+    ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Span>*/),
     'D': CreateDayHandler(),
     'H': CreateTotalHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay, 402653184),
     'h': CreatePartialHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay),
@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Span> ParsePattern(String patternText, NodaFormatInfo formatInfo) {
+  IPattern<Span> ParsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);

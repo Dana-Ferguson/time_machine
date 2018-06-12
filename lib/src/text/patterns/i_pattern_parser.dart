@@ -12,5 +12,5 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// or explicit interface implementation.
 @internal abstract class IPatternParser<T>
 {
-  IPattern<T> ParsePattern(String pattern, NodaFormatInfo formatInfo);
+  IPattern<T> ParsePattern(String pattern, TimeMachineFormatInfo formatInfo);
 }
