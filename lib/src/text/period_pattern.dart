@@ -173,7 +173,7 @@ import 'package:time_machine/time_machine_text.dart';
       builder[unit] = unitValue.value;
       unitsSoFar |= unit;
     }
-    return ParseResult.ForValue<Period>(builder.Build());
+    return ParseResult.ForValue<Period>(builder.build());
   }
 
   String Format(Period value) => AppendFormat(value, new StringBuffer()).toString();
@@ -182,18 +182,18 @@ import 'package:time_machine/time_machine_text.dart';
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
     builder.write("P");
-    PeriodPattern.AppendValue(builder, value.Years, "Y");
-    PeriodPattern.AppendValue(builder, value.Months, "M");
-    PeriodPattern.AppendValue(builder, value.Weeks, "W");
-    PeriodPattern.AppendValue(builder, value.Days, "D");
-    if (value.HasTimeComponent) {
+    PeriodPattern.AppendValue(builder, value.years, "Y");
+    PeriodPattern.AppendValue(builder, value.months, "M");
+    PeriodPattern.AppendValue(builder, value.weeks, "W");
+    PeriodPattern.AppendValue(builder, value.days, "D");
+    if (value.hasTimeComponent) {
       builder.write("T");
-      PeriodPattern.AppendValue(builder, value.Hours, "H");
-      PeriodPattern.AppendValue(builder, value.Minutes, "M");
-      PeriodPattern.AppendValue(builder, value.Seconds, "S");
-      PeriodPattern.AppendValue(builder, value.Milliseconds, "s");
-      PeriodPattern.AppendValue(builder, value.Ticks, "t");
-      PeriodPattern.AppendValue(builder, value.Nanoseconds, "n");
+      PeriodPattern.AppendValue(builder, value.hours, "H");
+      PeriodPattern.AppendValue(builder, value.minutes, "M");
+      PeriodPattern.AppendValue(builder, value.seconds, "S");
+      PeriodPattern.AppendValue(builder, value.milliseconds, "s");
+      PeriodPattern.AppendValue(builder, value.ticks, "t");
+      PeriodPattern.AppendValue(builder, value.nanoseconds, "n");
     }
     return builder;
   }
@@ -288,7 +288,7 @@ import 'package:time_machine/time_machine_text.dart';
         if ((unitsSoFar & PeriodUnits.seconds).value != 0) {
           return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
         }
-        builder.Seconds = unitValue.value;
+        builder.seconds = unitValue.value;
 
         if (!valueCursor.MoveNext()) {
           return ParseResult.MissingNumber<Period>(valueCursor);
@@ -303,9 +303,9 @@ import 'package:time_machine/time_machine_text.dart';
         if (negative) {
           totalNanoseconds = -totalNanoseconds;
         }
-        builder.Milliseconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond) % TimeConstants.millisecondsPerSecond;
-        builder.Ticks = (totalNanoseconds ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerMillisecond;
-        builder.Nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerTick;
+        builder.milliseconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond) % TimeConstants.millisecondsPerSecond;
+        builder.ticks = (totalNanoseconds ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerMillisecond;
+        builder.nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerTick;
 
         if (valueCursor.Current != 'S') {
           return ParseResult.MismatchedCharacter<Period>(valueCursor, 'S');
@@ -313,7 +313,7 @@ import 'package:time_machine/time_machine_text.dart';
         if (valueCursor.MoveNext()) {
           return ParseResult.ExpectedEndOfString<Period>(valueCursor);
         }
-        return ParseResult.ForValue<Period>(builder.Build());
+        return ParseResult.ForValue<Period>(builder.build());
       }
 
       builder[unit] = unitValue.value;
@@ -322,7 +322,7 @@ import 'package:time_machine/time_machine_text.dart';
     if (unitsSoFar.value == 0) {
       return ParseResult.ForInvalidValue<Period>(valueCursor, TextErrorMessages.EmptyPeriod);
     }
-    return ParseResult.ForValue<Period>(builder.Build());
+    return ParseResult.ForValue<Period>(builder.build());
   }
 
   String Format(Period value) => AppendFormat(value, new StringBuffer()).toString();
@@ -330,23 +330,23 @@ import 'package:time_machine/time_machine_text.dart';
   StringBuffer AppendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
-    value = value.Normalize();
+    value = value.normalize();
     // Always ensure we've got *some* unit; arbitrarily pick days.
-    if (value.Equals(Period.Zero)) {
+    if (value.equals(Period.Zero)) {
       builder.write("P0D");
       return builder;
     }
     builder.write("P");
-    PeriodPattern.AppendValue(builder, value.Years, "Y");
-    PeriodPattern.AppendValue(builder, value.Months, "M");
-    PeriodPattern.AppendValue(builder, value.Weeks, "W");
-    PeriodPattern.AppendValue(builder, value.Days, "D");
-    if (value.HasTimeComponent) {
+    PeriodPattern.AppendValue(builder, value.years, "Y");
+    PeriodPattern.AppendValue(builder, value.months, "M");
+    PeriodPattern.AppendValue(builder, value.weeks, "W");
+    PeriodPattern.AppendValue(builder, value.days, "D");
+    if (value.hasTimeComponent) {
       builder.write("T");
-      PeriodPattern.AppendValue(builder, value.Hours, "H");
-      PeriodPattern.AppendValue(builder, value.Minutes, "M");
-      int nanoseconds = value.Milliseconds * TimeConstants.nanosecondsPerMillisecond + value.Ticks * TimeConstants.nanosecondsPerTick + value.Nanoseconds;
-      int seconds = value.Seconds;
+      PeriodPattern.AppendValue(builder, value.hours, "H");
+      PeriodPattern.AppendValue(builder, value.minutes, "M");
+      int nanoseconds = value.milliseconds * TimeConstants.nanosecondsPerMillisecond + value.ticks * TimeConstants.nanosecondsPerTick + value.nanoseconds;
+      int seconds = value.seconds;
       if (nanoseconds != 0 || seconds != 0) {
         if (nanoseconds < 0 || seconds < 0) {
           builder.write("-");

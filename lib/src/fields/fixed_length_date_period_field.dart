@@ -53,7 +53,7 @@ import 'package:time_machine/time_machine_fields.dart';
           }
         }
       }
-      return new LocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).WithCalendarOrdinal(calendar.ordinal));
+      return new LocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(calendar.ordinal));
     }
     // LocalDate constructor will validate.
     int days = localDate.daysSinceEpoch + daysToAdd;

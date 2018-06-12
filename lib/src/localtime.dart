@@ -282,8 +282,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// Returns: The result of adding the period to the time, wrapping via midnight if necessary
   LocalTime operator +(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot add a period with a date component to a time");
-    return period.AddTimeTo(this, 1);
+    Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot add a period with a date component to a time");
+    return period.addTimeTo(this, 1);
   }
 
 
@@ -335,8 +335,8 @@ class LocalTime implements Comparable<LocalTime> {
 
   LocalTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
-    return period.AddTimeTo(this, -1);
+    Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
+    return period.addTimeTo(this, -1);
   }
 
 // todo: this is a mess here ~ I feel like I didn't get the operators and collaries correct here
@@ -357,7 +357,7 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [time]: The time to subtract from this
   /// Returns: The difference between the specified time and this one
-  Period between(LocalTime time) => Period.BetweenTimes(time, this);
+  Period between(LocalTime time) => Period.betweenTimes(time, this);
 
 
   /// Compares two local times for equality, by checking whether they represent

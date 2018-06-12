@@ -65,7 +65,7 @@ class Interval {
     return _end;
   }
 
-  /// Returns the raw end value of the interval: a normal instant or [Instant.AfterMaxValue].
+  /// Returns the raw end value of the interval: a normal instant or [Instant.afterMaxValue].
   /// This value should never be exposed.
   @internal Instant get rawEnd => _end;
 

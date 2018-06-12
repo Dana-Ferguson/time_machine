@@ -122,13 +122,13 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   ];
 
   @internal final List<Data> ParseOnlyData = [
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT005H",
-    new Data.builder(new PeriodBuilder()..Milliseconds = 500)
+    new Data.builder(new PeriodBuilder()..milliseconds = 500)
       ..Text = "PT0,5S",
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT00000000000000000000005H",
-    new Data.builder(new PeriodBuilder()..Weeks = 5)
+    new Data.builder(new PeriodBuilder()..weeks = 5)
       ..Text = "P5W",
   ];
 
@@ -136,20 +136,20 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   // unit tested more thoroughly elsewhere.
   @internal final List<Data> FormatOnlyData = [
     new Data.builder(new PeriodBuilder()
-      ..Hours = 25
-      ..Minutes = 90)
+      ..hours = 25
+      ..minutes = 90)
       ..Text = "P1D2H30M",
-    new Data.builder(new PeriodBuilder()..Ticks = 12345678)
+    new Data.builder(new PeriodBuilder()..ticks = 12345678)
       ..Text = "P1.2345678S",
     new Data.builder(new PeriodBuilder()
-      ..Hours = 1
-      ..Minutes = -1)
+      ..hours = 1
+      ..minutes = -1)
       ..Text = "PT59M",
     new Data.builder(new PeriodBuilder()
-      ..Hours = -1
-      ..Minutes = 1)
+      ..hours = -1
+      ..minutes = 1)
       ..Text = "PT-59M",
-    new Data.builder(new PeriodBuilder()..Weeks = 5)
+    new Data.builder(new PeriodBuilder()..weeks = 5)
       ..Text = "P35D",
   ];
 
@@ -158,49 +158,49 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..Text = "P0D",
 
     // All single values
-    new Data.builder(new PeriodBuilder()..Years = 5)
+    new Data.builder(new PeriodBuilder()..years = 5)
       ..Text = "P5Y",
-    new Data.builder(new PeriodBuilder()..Months = 5)
+    new Data.builder(new PeriodBuilder()..months = 5)
       ..Text = "P5M",
-    new Data.builder(new PeriodBuilder()..Days = 5)
+    new Data.builder(new PeriodBuilder()..days = 5)
       ..Text = "P5D",
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT5H",
-    new Data.builder(new PeriodBuilder()..Minutes = 5)
+    new Data.builder(new PeriodBuilder()..minutes = 5)
       ..Text = "PT5M",
-    new Data.builder(new PeriodBuilder()..Seconds = 5)
+    new Data.builder(new PeriodBuilder()..seconds = 5)
       ..Text = "PT5S",
-    new Data.builder(new PeriodBuilder()..Milliseconds = 5)
+    new Data.builder(new PeriodBuilder()..milliseconds = 5)
       ..Text = "PT0.005S",
-    new Data.builder(new PeriodBuilder()..Ticks = 5)
+    new Data.builder(new PeriodBuilder()..ticks = 5)
       ..Text = "PT0.0000005S",
-    new Data.builder(new PeriodBuilder()..Nanoseconds = 5)
+    new Data.builder(new PeriodBuilder()..nanoseconds = 5)
       ..Text = "PT0.000000005S",
 
     // Compound, negative and zero tests
     new Data.builder(new PeriodBuilder()
-      ..Years = 5
-      ..Months = 2)
+      ..years = 5
+      ..months = 2)
       ..Text = "P5Y2M",
     new Data.builder(new PeriodBuilder()
-      ..Months = 1
-      ..Hours = 0)
+      ..months = 1
+      ..hours = 0)
       ..Text = "P1M",
     new Data.builder(new PeriodBuilder()
-      ..Months = 1
-      ..Minutes = -1)
+      ..months = 1
+      ..minutes = -1)
       ..Text = "P1MT-1M",
     new Data.builder(new PeriodBuilder()
-      ..Seconds = 1
-      ..Milliseconds = 320)
+      ..seconds = 1
+      ..milliseconds = 320)
       ..Text = "PT1.32S",
-    new Data.builder(new PeriodBuilder()..Seconds = -1)
+    new Data.builder(new PeriodBuilder()..seconds = -1)
       ..Text = "PT-1S",
     new Data.builder(new PeriodBuilder()
-      ..Seconds = -1
-      ..Milliseconds = -320)
+      ..seconds = -1
+      ..milliseconds = -320)
       ..Text = "PT-1.32S",
-    new Data.builder(new PeriodBuilder()..Milliseconds = -320)
+    new Data.builder(new PeriodBuilder()..milliseconds = -320)
       ..Text = "PT-0.32S",
   ];
 

@@ -136,7 +136,7 @@ void Next_ExcludesGivenInstant()
   var recurrence = new ZoneRecurrence("x", Offset.zero, january10thMidnight, 2000, 3000);
   var transition = new Instant.fromUtc(2500, 1, 10, 0, 0);
   var next = recurrence.Next(transition, Offset.zero, Offset.zero);
-  expect(2501, next.instant.inUtc().Year);
+  expect(2501, next.instant.inUtc().year);
 }
 
 @Test()

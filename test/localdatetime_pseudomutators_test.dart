@@ -245,18 +245,18 @@ void PlusTicks_CrossingDay()
 void Plus_FullPeriod() {
   LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
   var builder = new PeriodBuilder()
-    ..Years = 1
-    ..Months = 2
-    ..Weeks = 3
-    ..Days = 4
-    ..Hours = 5
-    ..Minutes = 6
-    ..Seconds = 7
-    ..Milliseconds = 8
-    ..Ticks = 9
-    ..Nanoseconds = 11;
+    ..years = 1
+    ..months = 2
+    ..weeks = 3
+    ..days = 4
+    ..hours = 5
+    ..minutes = 6
+    ..seconds = 7
+    ..milliseconds = 8
+    ..ticks = 9
+    ..nanoseconds = 11;
 
-  var period = builder.Build();
+  var period = builder.build();
   var actual = start.plus(period);
   var expected = new LocalDateTime.at(2012, 6, 27, 17, 21, seconds: 15).plusNanoseconds(8000911);
 
@@ -347,7 +347,7 @@ void With_TimeAdjuster()
 {
   LocalDateTime start = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).plusNanoseconds(123456789);
   LocalDateTime expected = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8);
-  expect(expected, start.adjustTime(TimeAdjusters.TruncateToSecond));
+  expect(expected, start.adjustTime(TimeAdjusters.truncateToSecond));
 }
 
 @Test()

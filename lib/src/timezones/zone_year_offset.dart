@@ -175,7 +175,7 @@ class _ZoneYearOffset {
       if (addDay) {
         // Adding a day to the last representable day will fail, but we can return an infinite value instead.
         if (year == 9999 && date.month == 12 && date.day == 31) {
-          return LocalInstant.AfterMaxValue;
+          return LocalInstant.afterMaxValue;
         }
         date = date.plusDays(1);
       }

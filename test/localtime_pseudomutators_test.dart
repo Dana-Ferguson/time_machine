@@ -106,7 +106,7 @@ void With()
 {
   LocalTime start = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
   LocalTime expected = new LocalTime(12, 15, 8);
-  expect(expected, start.adjust(TimeAdjusters.TruncateToSecond));
+  expect(expected, start.adjust(TimeAdjusters.truncateToSecond));
 }
 
 @Test()

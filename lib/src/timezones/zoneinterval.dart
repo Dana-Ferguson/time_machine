@@ -20,12 +20,12 @@ import 'package:time_machine/time_machine_timezones.dart';
     {
 
   /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
-  /// beginning of time, the return value will be [Instant.BeforeMinValue]; this value
+  /// beginning of time, the return value will be [Instant.beforeMinValue]; this value
   /// should *not* be exposed publicly.
   @internal final Instant RawStart;
 
   /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
-  /// end of time, the return value will be [Instant.AfterMaxValue]; this value
+  /// end of time, the return value will be [Instant.afterMaxValue]; this value
   /// should *not* be exposed publicly.
   @internal final Instant RawEnd;
 
@@ -133,9 +133,9 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [name]: The name of this offset period (e.g. PST or PDT).
   /// [start]: The first [Instant] that the <paramref name = "wallOffset" /> applies,
-  /// or [Instant.BeforeMinValue] to make the zone interval extend to the start of time.
+  /// or [Instant.beforeMinValue] to make the zone interval extend to the start of time.
   /// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
-  /// or [Instant.AfterMaxValue] to make the zone interval extend to the end of time.
+  /// or [Instant.afterMaxValue] to make the zone interval extend to the end of time.
   /// [wallOffset]: The [WallOffset] from UTC for this period including any daylight savings.
   /// [savings]: The [WallOffset] daylight savings contribution to the offset.
   /// [ArgumentException]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.

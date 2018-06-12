@@ -57,7 +57,7 @@ import 'package:time_machine/time_machine_calendars.dart';
       if (days < calendar.minDays || days > calendar.maxDays) {
         throw new ArgumentError.value(weekYear, 'weekYear', "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
       }
-      LocalDate ret = new LocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).WithCalendar(calendar));
+      LocalDate ret = new LocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).withCalendar(calendar));
 
       // For rules with irregular weeks, the calculation so far may end up computing a date which isn't
       // in the right week-year. This will happen if the caller has specified a "short" week (i.e. one

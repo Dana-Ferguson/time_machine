@@ -148,7 +148,7 @@ void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
   ZonedDateTime later = zone.mapLocal(localTime).Last();
   expect(localTime, earlier.localDateTime);
   expect(localTime, later.localDateTime);
-  expect(earlier.ToInstant(), lessThan(later.ToInstant()));
+  expect(earlier.toInstant(), lessThan(later.toInstant()));
 
   var mapping = zone.mapLocal(localTime);
   expect(2, mapping.Count);
@@ -305,13 +305,13 @@ void AtStrictly_InWinter()
 {
   var when = Pacific.atStrictly(new LocalDateTime.at(2009, 12, 22, 21, 39, seconds: 30));
 
-  expect(2009, when.Year);
-  expect(12, when.Month);
-  expect(22, when.Day);
-  expect(IsoDayOfWeek.tuesday, when.DayOfWeek);
-  expect(21, when.Hour);
-  expect(39, when.Minute);
-  expect(30, when.Second);
+  expect(2009, when.year);
+  expect(12, when.month);
+  expect(22, when.day);
+  expect(IsoDayOfWeek.tuesday, when.dayOfWeek);
+  expect(21, when.hour);
+  expect(39, when.minute);
+  expect(30, when.second);
   expect(new Offset.fromHours(-8), when.offset);
 }
 
@@ -320,12 +320,12 @@ void AtStrictly_InSummer()
 {
   var when = Pacific.atStrictly(new LocalDateTime.at(2009, 6, 22, 21, 39, seconds: 30));
 
-  expect(2009, when.Year);
-  expect(6, when.Month);
-  expect(22, when.Day);
-  expect(21, when.Hour);
-  expect(39, when.Minute);
-  expect(30, when.Second);
+  expect(2009, when.year);
+  expect(6, when.month);
+  expect(22, when.day);
+  expect(21, when.hour);
+  expect(39, when.minute);
+  expect(30, when.second);
   expect(new Offset.fromHours(-7), when.offset);
 }
 

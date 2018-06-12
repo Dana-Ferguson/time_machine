@@ -122,7 +122,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
   @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
     LocalInstant localInstant = localDateTime.toLocalInstant();
-    Instant firstGuess = localInstant.MinusZeroOffset();
+    Instant firstGuess = localInstant.minusZeroOffset();
     ZoneInterval interval = getZoneInterval(firstGuess);
 
     // Most of the time we'll go into here... the local instant and the instant
@@ -173,7 +173,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       case 0:
         var interval = mapping.LateInterval;
         // Safe to use Start, as it can't extend to the start of time.
-        var offsetDateTime = new OffsetDateTime.instantCalendar(interval.start, interval.wallOffset, date.calendar);
+        var offsetDateTime = new OffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
         if (offsetDateTime.yearMonthDay != date.yearMonthDay) {
@@ -253,7 +253,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     Instant intervalStart = interval.RawStart;
     // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
-    if (localInstant.DaysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
+    if (localInstant.daysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalStart - Span.epsilon);
@@ -275,7 +275,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // Crude but cheap first check to see whether there *might* be a later interval.
     // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
-    if (localInstant.DaysSinceEpoch >= intervalEnd.daysSinceEpoch - 1) {
+    if (localInstant.daysSinceEpoch >= intervalEnd.daysSinceEpoch - 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalEnd);
@@ -287,12 +287,12 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   }
 
   ZoneInterval _getIntervalBeforeGap(LocalInstant localInstant) {
-    Instant guess = localInstant.MinusZeroOffset();
+    Instant guess = localInstant.minusZeroOffset();
     ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // we need to find the earlier one; otherwise this interval must come after the gap, and
     // it's therefore the one we want.
-    if (localInstant.Minus(guessInterval.wallOffset) < guessInterval.RawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart) {
       return getZoneInterval(guessInterval.start - Span.epsilon);
     }
     else {
@@ -301,11 +301,11 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   }
 
   ZoneInterval _getIntervalAfterGap(LocalInstant localInstant) {
-    Instant guess = localInstant.MinusZeroOffset();
+    Instant guess = localInstant.minusZeroOffset();
     ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // it's the one we're looking for. Otherwise, we need to find the next interval.
-    if (localInstant.Minus(guessInterval.wallOffset) < guessInterval.RawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart) {
       return guessInterval;
     }
     else {
@@ -341,7 +341,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [end]: Exclusive end point of the interval for which to retrieve zone intervals.
   /// [ArgumentOutOfRangeException]: [end] is earlier than [start].
   /// Returns: A sequence of zone intervals covering the given interval.
-  /// see also: [DateTimeZone.GetZoneInterval]
+  /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervalsFromTo(Instant start, Instant end) =>
   //    // The static constructor performs all the validation we need.
   getZoneIntervals(new Interval(start, end));
@@ -358,7 +358,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
   /// infinite in both directions).
   /// Returns: A sequence of zone intervals covering the given interval.
-  /// see also: [DateTimeZone.GetZoneInterval]
+  /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync* {
     var current = interval.hasStart ? interval.start : Instant.minValue;
     var end = interval.rawEnd;

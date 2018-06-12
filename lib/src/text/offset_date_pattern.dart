@@ -183,5 +183,5 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [calendar]: The calendar system to convert the template value into.
   /// Returns: A new pattern with a template value in the specified calendar system.
   OffsetDatePattern WithCalendar(CalendarSystem calendar) =>
-      WithTemplateValue(TemplateValue.WithCalendar(calendar));
+      WithTemplateValue(TemplateValue.withCalendar(calendar));
 }

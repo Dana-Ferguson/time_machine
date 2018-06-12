@@ -24,7 +24,7 @@ void TruncateToSecond()
 {
   var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 4, 30);
-  expect(end, TimeAdjusters.TruncateToSecond(start));
+  expect(end, TimeAdjusters.truncateToSecond(start));
 }
 
 @Test()
@@ -32,7 +32,7 @@ void TruncateToMinute()
 {
   var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 4, 0);
-  expect(end, TimeAdjusters.TruncateToMinute(start));
+  expect(end, TimeAdjusters.truncateToMinute(start));
 }
 
 @Test()
@@ -40,6 +40,6 @@ void TruncateToHour()
 {
   var start = new LocalTime.fromHourMinuteSecondMillisecondTick(7, 4, 30, 123, 4567);
   var end = new LocalTime(7, 0, 0);
-  expect(end, TimeAdjusters.TruncateToHour(start));
+  expect(end, TimeAdjusters.truncateToHour(start));
 }
 

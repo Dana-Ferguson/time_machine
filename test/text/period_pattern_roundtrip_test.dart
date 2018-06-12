@@ -96,9 +96,9 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   ];
 
   @internal List<Data> ParseOnlyData = [
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT005H",
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT00000000000000000000005H",
   ];
 
@@ -110,49 +110,49 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..Text = "P",
 
     // All single values                                                                
-    new Data.builder(new PeriodBuilder()..Years = 5)
+    new Data.builder(new PeriodBuilder()..years = 5)
       ..Text = "P5Y",
-    new Data.builder(new PeriodBuilder()..Months = 5)
+    new Data.builder(new PeriodBuilder()..months = 5)
       ..Text = "P5M",
-    new Data.builder(new PeriodBuilder()..Weeks = 5)
+    new Data.builder(new PeriodBuilder()..weeks = 5)
       ..Text = "P5W",
-    new Data.builder(new PeriodBuilder()..Days = 5)
+    new Data.builder(new PeriodBuilder()..days = 5)
       ..Text = "P5D",
-    new Data.builder(new PeriodBuilder()..Hours = 5)
+    new Data.builder(new PeriodBuilder()..hours = 5)
       ..Text = "PT5H",
-    new Data.builder(new PeriodBuilder()..Minutes = 5)
+    new Data.builder(new PeriodBuilder()..minutes = 5)
       ..Text = "PT5M",
-    new Data.builder(new PeriodBuilder()..Seconds = 5)
+    new Data.builder(new PeriodBuilder()..seconds = 5)
       ..Text = "PT5S",
-    new Data.builder(new PeriodBuilder()..Milliseconds = 5)
+    new Data.builder(new PeriodBuilder()..milliseconds = 5)
       ..Text = "PT5s",
-    new Data.builder(new PeriodBuilder()..Ticks = 5)
+    new Data.builder(new PeriodBuilder()..ticks = 5)
       ..Text = "PT5t",
-    new Data.builder(new PeriodBuilder()..Nanoseconds = 5)
+    new Data.builder(new PeriodBuilder()..nanoseconds = 5)
       ..Text = "PT5n",
 
     // No normalization
     new Data.builder(new PeriodBuilder()
-      ..Hours = 25
-      ..Minutes = 90)
+      ..hours = 25
+      ..minutes = 90)
       ..Text = "PT25H90M",
 
     // Compound, negative and zero tests
     new Data.builder(new PeriodBuilder()
-      ..Years = 5
-      ..Months = 2)
+      ..years = 5
+      ..months = 2)
       ..Text = "P5Y2M",
     new Data.builder(new PeriodBuilder()
-      ..Months = 1
-      ..Hours = 0)
+      ..months = 1
+      ..hours = 0)
       ..Text = "P1M",
     new Data.builder(new PeriodBuilder()
-      ..Months = 1
-      ..Minutes = -1)
+      ..months = 1
+      ..minutes = -1)
       ..Text = "P1MT-1M",
     new Data.builder(new PeriodBuilder()
-      ..Hours = 1
-      ..Minutes = -1)
+      ..hours = 1
+      ..minutes = -1)
       ..Text = "PT1H-1M",
 
     // Max/min

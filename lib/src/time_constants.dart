@@ -72,8 +72,8 @@ class TimeConstants {
   // These are checked in NodaConstantsTest. todo: test these when we make the tests
   /// The number of ticks in a BCL DateTime at the Unix epoch.
   /// This number is out of precision for JS
-  @visibleForTesting static final int BclTicksAtUnixEpoch = 621355968000000000;
+  @visibleForTesting static final int bclTicksAtUnixEpoch = 621355968000000000;
 
   /// The number of days in a BCL DateTime at the Unix epoch.
-  @visibleForTesting static final int BclDaysAtUnixEpoch = 719162;
+  @visibleForTesting static final int bclDaysAtUnixEpoch = 719162;
 }

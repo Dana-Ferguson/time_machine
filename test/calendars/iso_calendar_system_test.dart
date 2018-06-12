@@ -90,8 +90,8 @@ void ConstructLocalInstant_WithAllFields()
   int bclTicks = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds * TimeConstants.ticksPerMicrosecond;
   int bclDays = (bclTicks ~/ TimeConstants.ticksPerDay);
   int bclTickOfDay = bclTicks % TimeConstants.ticksPerDay;
-  expect(bclDays, localAchievement.DaysSinceEpoch);
-  expect(bclTickOfDay, localAchievement.NanosecondOfDay / TimeConstants.nanosecondsPerTick);
+  expect(bclDays, localAchievement.daysSinceEpoch);
+  expect(bclTickOfDay, localAchievement.nanosecondOfDay / TimeConstants.nanosecondsPerTick);
 }
 
 @Test()

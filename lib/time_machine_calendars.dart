@@ -29,5 +29,5 @@ YearMonthDayCalendar GetYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoc
 
   Preconditions.checkArgumentRange('daysSinceEpoch', daysSinceEpoch, minDays, maxDays);
 
-  return gregorianCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendarOrdinal(CalendarOrdinal.gregorian);
+  return gregorianCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).withCalendarOrdinal(CalendarOrdinal.gregorian);
 }

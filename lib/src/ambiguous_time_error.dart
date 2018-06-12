@@ -12,7 +12,7 @@ class AmbiguousTimeError extends Error {
   @internal LocalDateTime get localDateTime => earlierMapping.localDateTime;
 
   /// The time zone in which the local date and time is ambiguous.
-  DateTimeZone get Zone => earlierMapping.Zone;
+  DateTimeZone get Zone => earlierMapping.zone;
 
   /// Gets the earlier of the two occurrences of the local date and time within the time zone.
   final ZonedDateTime earlierMapping;
@@ -32,8 +32,8 @@ class AmbiguousTimeError extends Error {
   /// [earlierMapping]: The earlier possible mapping
   /// [laterMapping]: The later possible mapping
   AmbiguousTimeError(this.earlierMapping, this.laterMapping)
-      : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.Zone.id}" {
-    Preconditions.checkArgument(earlierMapping.Zone == laterMapping.Zone, 'laterMapping',
+      : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.zone.id}" {
+    Preconditions.checkArgument(earlierMapping.zone == laterMapping.zone, 'laterMapping',
         "Ambiguous possible values must use the same time zone");
     Preconditions.checkArgument(earlierMapping.localDateTime == laterMapping.localDateTime, 'laterMapping',
         "Ambiguous possible values must have the same local date/time");

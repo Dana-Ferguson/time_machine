@@ -22,15 +22,15 @@ Future main() async {
 @Test()
 void Indexer_Getter_ValidUnits() {
   var builder = new PeriodBuilder()
-    ..Months = 1
-    ..Weeks = 2
-    ..Days = 3
-    ..Hours = 4
-    ..Minutes = 5
-    ..Seconds = 6
-    ..Milliseconds = 7
-    ..Ticks = 8
-    ..Nanoseconds = 9;
+    ..months = 1
+    ..weeks = 2
+    ..days = 3
+    ..hours = 4
+    ..minutes = 5
+    ..seconds = 6
+    ..milliseconds = 7
+    ..ticks = 8
+    ..nanoseconds = 9;
 
   expect(0, builder[PeriodUnits.years]);
   expect(1, builder[PeriodUnits.months]);
@@ -67,18 +67,18 @@ void Indexer_Setter_ValidUnits() {
   builder[PeriodUnits.milliseconds] = 7;
   builder[PeriodUnits.ticks] = 8;
   var expectedBuilder = new PeriodBuilder()
-    ..Years = 0
-    ..Months = 1
-    ..Weeks = 2
-    ..Days = 3
-    ..Hours = 4
-    ..Minutes = 5
-    ..Seconds = 6
-    ..Milliseconds = 7
-    ..Ticks = 8;
+    ..years = 0
+    ..months = 1
+    ..weeks = 2
+    ..days = 3
+    ..hours = 4
+    ..minutes = 5
+    ..seconds = 6
+    ..milliseconds = 7
+    ..ticks = 8;
 
-  var expected = expectedBuilder.Build();
-  expect(expected, builder.Build());
+  var expected = expectedBuilder.build();
+  expect(expected, builder.build());
 }
 
 @Test()
@@ -93,7 +93,7 @@ void Index_Setter_InvalidUnits()
 @Test()
 void Build_SingleUnit() {
   Period period = (new PeriodBuilder()
-    ..Hours = 10).Build();
+    ..hours = 10).build();
   Period expected = new Period.fromHours(10);
   expect(expected, period);
 }
@@ -101,8 +101,8 @@ void Build_SingleUnit() {
 @Test()
 void Build_MultipleUnits() {
   Period period = (new PeriodBuilder()
-    ..Days = 5
-    ..Minutes = -10).Build();
+    ..days = 5
+    ..minutes = -10).build();
   Period expected = new Period.fromDays(5) + new Period.fromMinutes(-10);
   expect(expected, period);
 }
@@ -110,6 +110,6 @@ void Build_MultipleUnits() {
 @Test()
 void Build_Zero()
 {
-  expect(Period.Zero, new PeriodBuilder().Build());
+  expect(Period.Zero, new PeriodBuilder().build());
 }
 

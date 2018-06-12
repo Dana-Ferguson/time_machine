@@ -52,7 +52,7 @@ void ComponentProperties()
 
   var offsetDate = new OffsetTime(time, offset);
   expect(offset, offsetDate.offset);
-  expect(time, offsetDate.TimeOfDay);
+  expect(time, offsetDate.timeOfDay);
 }
 
 @Test()
@@ -82,7 +82,7 @@ void On()
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var offset = new Offset.fromHours(5);
 
-  expect(new OffsetTime(time, offset).On(date), time.atDate(date).withOffset(offset));
+  expect(new OffsetTime(time, offset).atDate(date), time.atDate(date).withOffset(offset));
 }
 
 @Test()
@@ -90,7 +90,7 @@ void WithOffset()
 {
   var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
   var initial = new OffsetTime(time, new Offset.fromHours(2));
-  var actual = initial.WithOffset(new Offset.fromHours(5));
+  var actual = initial.withOffset(new Offset.fromHours(5));
   var expected = new OffsetTime(time, new Offset.fromHours(5));
   expect(expected, actual);
 }
@@ -99,7 +99,7 @@ void WithOffset()
 void WithAdjuster()
 {
   var initial = new OffsetTime(new LocalTime(14, 15, 12), new Offset.fromHours(-5));
-  var actual = initial.With(TimeAdjusters.TruncateToHour);
+  var actual = initial.adjust(TimeAdjusters.truncateToHour);
   var expected = new OffsetTime(new LocalTime(14, 0), new Offset.fromHours(-5));
   expect(expected, actual);
 }

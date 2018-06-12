@@ -241,7 +241,7 @@ void GetOccurrenceForYear_WithAddDay_December31st9999()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 12, 31, 0, false, LocalTime.midnight, true);
   var actual = offset.GetOccurrenceForYear(9999);
-  var expected = LocalInstant.AfterMaxValue;
+  var expected = LocalInstant.afterMaxValue;
   expect(expected, actual);
 }
 

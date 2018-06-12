@@ -17,25 +17,25 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\"': SteppedPatternBuilder.HandleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetTime, OffsetTimeParseBucket>*/,
     '.': TimePatternHelper.CreatePeriodHandler<OffsetTime, OffsetTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ';': TimePatternHelper.CreateCommaDotHandler<OffsetTime, OffsetTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ':': (pattern, builder) => builder.AddLiteral1(builder.FormatInfo.TimeSeparator, ParseResult.TimeSeparatorMismatch /**<OffsetTime>*/),
     'h': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
-        2, PatternFields.hours12, 1, 12, (value) => value.ClockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
     'H': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
-        2, PatternFields.hours24, 0, 24, (value) => value.Hour, (bucket, value) => bucket.Time.Hours24 = value),
+        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.Time.Hours24 = value),
     'm': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
-        2, PatternFields.minutes, 0, 59, (value) => value.Minute, (bucket, value) => bucket.Time.Minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Time.Minutes = value),
     's': SteppedPatternBuilder.HandlePaddedField<OffsetTime, OffsetTimeParseBucket>(
-        2, PatternFields.seconds, 0, 59, (value) => value.Second, (bucket, value) => bucket.Time.Seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Time.Seconds = value),
     'f': TimePatternHelper.CreateFractionHandler<OffsetTime, OffsetTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     'F': TimePatternHelper.CreateFractionHandler<OffsetTime, OffsetTimeParseBucket>(
-        9, (value) => value.NanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    't': TimePatternHelper.CreateAmPmHandler<OffsetTime, OffsetTimeParseBucket>((time) => time.Hour, (bucket, value) => bucket.Time.AmPm = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+    't': TimePatternHelper.CreateAmPmHandler<OffsetTime, OffsetTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
     'o': HandleOffset,
-    'l': (cursor, builder) => builder.AddEmbeddedTimePattern(cursor.Current, cursor.GetEmbeddedPattern(), (bucket) => bucket.Time, (value) => value.TimeOfDay),
+    'l': (cursor, builder) => builder.AddEmbeddedTimePattern(cursor.Current, cursor.GetEmbeddedPattern(), (bucket) => bucket.Time, (value) => value.timeOfDay),
   };
 
   @internal OffsetTimePatternParser(this.templateValue);
@@ -83,7 +83,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal Offset offset;
 
   @internal OffsetTimeParseBucket(OffsetTime templateValue)
-      :Time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.TimeOfDay),
+      :Time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
         offset = templateValue.offset;
 
 

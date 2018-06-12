@@ -30,7 +30,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);
-  var expected = new LocalDateTime.at(year, month, day, hour, minute, seconds: second, calendar: CalendarSystem.julian).inUtc().ToInstant();
+  var expected = new LocalDateTime.at(year, month, day, hour, minute, seconds: second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
@@ -48,14 +48,14 @@ void BasicSpanTests() {
 @Test()
 void FromUtcNoSeconds()
 {
-  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35)).ToInstant();
+  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35)).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
-  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23)).ToInstant();
+  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23)).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35, 23));
 }
 
@@ -440,14 +440,14 @@ void FromTicksSinceUnixEpoch_Range()
 void PlusOffset()
 {
   var localInstant = TimeConstants.unixEpoch.plusOffset(new Offset.fromHours(1));
-  expect(new Span(hours: 1), localInstant.TimeSinceLocalEpoch);
+  expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
 void SafePlus_NormalTime()
 {
   var localInstant = TimeConstants.unixEpoch.SafePlus(new Offset.fromHours(1));
-  expect(new Span(hours: 1), localInstant.TimeSinceLocalEpoch);
+  expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
@@ -462,7 +462,7 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
       ? Instant.beforeMinValue
       : Instant.minValue + new Span(hours: initialOffset);
   var expected = finalOffset == null
-      ? LocalInstant.BeforeMinValue
+      ? LocalInstant.beforeMinValue
       : Instant.minValue.plusOffset(new Offset.fromHours(finalOffset));
   var actual = start.SafePlus(new Offset.fromHours(offsetToAdd));
   expect(actual, expected);
@@ -481,7 +481,7 @@ void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset)
       ? Instant.afterMaxValue
       : Instant.maxValue + new Span(hours: initialOffset);
   var expected = finalOffset == null
-      ? LocalInstant.AfterMaxValue
+      ? LocalInstant.afterMaxValue
       : Instant.maxValue.plusOffset(new Offset.fromHours(finalOffset));
   var actual = start.SafePlus(new Offset.fromHours(offsetToAdd));
 

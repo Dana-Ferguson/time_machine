@@ -39,8 +39,8 @@ void MinusOffset_Zero_IsNeutralElement()
 {
   Instant sampleInstant = new Instant.trusted(new Span(days: 1, nanoseconds: 23456));
   LocalInstant sampleLocalInstant = new LocalInstant.daysNanos(1, 23456);
-  expect(sampleInstant, sampleLocalInstant.Minus(Offset.zero));
-  expect(sampleInstant, sampleLocalInstant.MinusZeroOffset());
+  expect(sampleInstant, sampleLocalInstant.minus(Offset.zero));
+  expect(sampleInstant, sampleLocalInstant.minusZeroOffset());
 }
 
 @Test()
@@ -52,22 +52,22 @@ void MinusOffset_Zero_IsNeutralElement()
 void ToString_Valid(int day, int nanoOfDay, String expectedText)
 {
   var localInstant = new LocalInstant.daysNanos(day, nanoOfDay);
-  expect(localInstant.DaysSinceEpoch, day);
+  expect(localInstant.daysSinceEpoch, day);
   expect(localInstant.toString(), expectedText);
 }
 
 @Test()
 void ToString_Extremes()
 {
-  expect(InstantPatternParser.BeforeMinValueText, LocalInstant.BeforeMinValue.toString());
-  expect(InstantPatternParser.AfterMaxValueText, LocalInstant.AfterMaxValue.toString());
+  expect(InstantPatternParser.BeforeMinValueText, LocalInstant.beforeMinValue.toString());
+  expect(InstantPatternParser.AfterMaxValueText, LocalInstant.afterMaxValue.toString());
 }
 
 @Test()
 void SafeMinus_NormalTime()
 {
   var start = new LocalInstant.daysNanos(0, 0);
-  var end = start.SafeMinus(new Offset.fromHours(1));
+  var end = start.safeMinus(new Offset.fromHours(1));
   expect(new Span(hours: -1), end.timeSinceEpoch);
 }
 
@@ -81,12 +81,12 @@ void SafeMinus_NormalTime()
 @TestCase(const [2, 1, 1])
 void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
   var start = initialOffset == null
-      ? LocalInstant.BeforeMinValue
+      ? LocalInstant.beforeMinValue
       : Instant.minValue.plusOffset(new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
       ? Instant.beforeMinValue
       : Instant.minValue + new Span(hours: finalOffset);
-  var actual = start.SafeMinus(new Offset.fromHours(offsetToSubtract));
+  var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(actual, expected);
 }
 
@@ -100,12 +100,12 @@ void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int fina
 @TestCase(const [-2, -1, -1])
 void SafeMinus_NearEndOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
   var start = initialOffset == null
-      ? LocalInstant.AfterMaxValue
+      ? LocalInstant.afterMaxValue
       : Instant.maxValue.plusOffset(new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
       ? Instant.afterMaxValue
       : Instant.maxValue + new Span(hours: finalOffset);
-  var actual = start.SafeMinus(new Offset.fromHours(offsetToSubtract));
+  var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(expected, actual);
 }
 

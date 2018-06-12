@@ -70,7 +70,7 @@ void ToInstant()
   Offset offset = new Offset.fromHoursAndMinutes(5, 30);
 
   OffsetDateTime odt = new OffsetDateTime(local, offset);
-  expect(instant, odt.ToInstant());
+  expect(instant, odt.toInstant());
 }
 
 @Test()
@@ -196,7 +196,7 @@ void InFixedZone()
   LocalDateTime local = new LocalDateTime.at(2012, 1, 2, 3, 4);
   OffsetDateTime odt = new OffsetDateTime(local, offset);
 
-  ZonedDateTime zoned = odt.InFixedZone;
+  ZonedDateTime zoned = odt.inFixedZone;
   expect(new DateTimeZone.forOffset(offset).atStrictly(local), zoned);
 }
 
@@ -247,13 +247,13 @@ void LocalComparer()
   // Later instant, earlier local
   var earlierLocal = control.localDateTime.plusHours(-2).withOffset(new Offset.fromHours(-10));
   // Same offset, previous day
-  var muchEarlierLocal = control.PlusHours(-24);
+  var muchEarlierLocal = control.plusHours(-24);
   // Earlier instant, later local
   var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.fromHours(10));
   // Same offset, next day
-  var muchLaterLocal = control.PlusHours(24);
+  var muchLaterLocal = control.plusHours(24);
 
-  var comparer = OffsetDateTime_LocalComparer.Instance; // OffsetDateTime.comparer.Local;
+  var comparer = OffsetDateTime_LocalComparer.instance; // OffsetDateTime.comparer.Local;
 
   expect(0, comparer.compare(control, negativeOffset));
   expect(0, comparer.compare(control, positiveOffset));
@@ -301,7 +301,7 @@ void InstantComparer()
   // Earlier instant, later local
   var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.fromHours(10));
 
-  var comparer = OffsetDateTime_InstantComparer.Instance; // OffsetDateTime.comparer.Instant;
+  var comparer = OffsetDateTime_InstantComparer.instance; // OffsetDateTime.comparer.Instant;
 
   expect(0, comparer.compare(control, differentCalendar));
   expect(0, comparer.compare(control, equalAndOppositeChanges));
@@ -344,8 +344,8 @@ void Subtraction_Duration()
   Span duration = new Span(hours: 8) + new Span(minutes: 9);
   OffsetDateTime expected = new LocalDateTime.at(2014, 08, 14, 6, 51).withOffset(new Offset.fromHours(1));
   expect(expected, end - duration);
-  expect(expected, end.MinusSpan(duration));
-  expect(expected, OffsetDateTime.Subtract(end, duration));
+  expect(expected, end.minusSpan(duration));
+  expect(expected, OffsetDateTime.subtract(end, duration));
 }
 
 @Test()
@@ -364,26 +364,26 @@ void Addition_Duration()
   Span duration = new Span(hours: 8) + new Span(minutes: 9);
   OffsetDateTime expected = new LocalDateTime.at(2014, 08, 14, 15, 0).withOffset(new Offset.fromHours(1));
   expect(expected, start + duration);
-  expect(expected, start.Plus(duration));
-  expect(expected, OffsetDateTime.Add(start, duration));
+  expect(expected, start.plus(duration));
+  expect(expected, OffsetDateTime.add(start, duration));
 
-  expect(start + new Span(hours: hours), start.PlusHours(hours));
-  expect(start + new Span(hours: -hours), start.PlusHours(-hours));
+  expect(start + new Span(hours: hours), start.plusHours(hours));
+  expect(start + new Span(hours: -hours), start.plusHours(-hours));
 
-  expect(start + new Span(minutes: minutes), start.PlusMinutes(minutes));
-  expect(start + new Span(minutes: -minutes), start.PlusMinutes(-minutes));
+  expect(start + new Span(minutes: minutes), start.plusMinutes(minutes));
+  expect(start + new Span(minutes: -minutes), start.plusMinutes(-minutes));
 
-  expect(start + new Span(seconds: seconds), start.PlusSeconds(seconds));
-  expect(start + new Span(seconds: -seconds), start.PlusSeconds(-seconds));
+  expect(start + new Span(seconds: seconds), start.plusSeconds(seconds));
+  expect(start + new Span(seconds: -seconds), start.plusSeconds(-seconds));
 
-  expect(start + new Span(milliseconds: milliseconds), start.PlusMilliseconds(milliseconds));
-  expect(start + new Span(milliseconds: -milliseconds), start.PlusMilliseconds(-milliseconds));
+  expect(start + new Span(milliseconds: milliseconds), start.plusMilliseconds(milliseconds));
+  expect(start + new Span(milliseconds: -milliseconds), start.plusMilliseconds(-milliseconds));
 
-  expect(start + new Span(ticks: ticks), start.PlusTicks(ticks));
-  expect(start + new Span(ticks: -ticks), start.PlusTicks(-ticks));
+  expect(start + new Span(ticks: ticks), start.plusTicks(ticks));
+  expect(start + new Span(ticks: -ticks), start.plusTicks(-ticks));
 
-  expect(start + new Span(nanoseconds: nanoseconds), start.PlusNanoseconds(nanoseconds));
-  expect(start + new Span(nanoseconds: -nanoseconds), start.PlusNanoseconds(-nanoseconds));
+  expect(start + new Span(nanoseconds: nanoseconds), start.plusNanoseconds(nanoseconds));
+  expect(start + new Span(nanoseconds: -nanoseconds), start.plusNanoseconds(-nanoseconds));
 }
 
 @Test()
@@ -395,8 +395,8 @@ void Subtraction_OffsetDateTime()
   OffsetDateTime end = new LocalDateTime.at(2014, 08, 14, 18, 0).withOffset(new Offset.fromHours(4));
   Span expected = new Span(hours: 8) + new Span(minutes: 9);
   expect(expected, end - start);
-  expect(expected, end.MinusOffsetDateTime(start));
-  expect(expected, OffsetDateTime.SubtractOffsetDateTimes(end, start));
+  expect(expected, end.minusOffsetDateTime(start));
+  expect(expected, OffsetDateTime.subtractOffsetDateTimes(end, start));
 }
 
 @Test()
@@ -407,15 +407,15 @@ void WithOffset()
   LocalDateTime evening = new LocalDateTime.at(2014, 1, 31, 19, 30);
   Offset newOffset = new Offset.fromHours(2);
   OffsetDateTime expected = new OffsetDateTime(evening, newOffset);
-  expect(expected, original.WithOffset(newOffset));
+  expect(expected, original.withOffset(newOffset));
 }
 
 @Test()
 void WithOffset_CrossDates()
 {
   OffsetDateTime noon = new OffsetDateTime(new LocalDateTime.at(2017, 8, 22, 12, 0), new Offset.fromHours(0));
-  OffsetDateTime previousNight = noon.WithOffset(new Offset.fromHours(-14));
-  OffsetDateTime nextMorning = noon.WithOffset(new Offset.fromHours(14));
+  OffsetDateTime previousNight = noon.withOffset(new Offset.fromHours(-14));
+  OffsetDateTime nextMorning = noon.withOffset(new Offset.fromHours(14));
   expect(new LocalDateTime.at(2017, 8, 21, 22, 0), previousNight.localDateTime);
   expect(new LocalDateTime.at(2017, 8, 23, 2, 0), nextMorning.localDateTime);
 }
@@ -425,9 +425,9 @@ void WithOffset_TwoDaysForwardAndBack()
 {
   // Go from UTC-18 to UTC+18
   OffsetDateTime night = new OffsetDateTime(new LocalDateTime.at(2017, 8, 21, 18, 0), new Offset.fromHours(-18));
-  OffsetDateTime morning = night.WithOffset(new Offset.fromHours(18));
+  OffsetDateTime morning = night.withOffset(new Offset.fromHours(18));
   expect(new LocalDateTime.at(2017, 8, 23, 6, 0), morning.localDateTime);
-  OffsetDateTime backAgain = morning.WithOffset(new Offset.fromHours(-18));
+  OffsetDateTime backAgain = morning.withOffset(new Offset.fromHours(-18));
   expect(night, backAgain);
 }
 
@@ -438,7 +438,7 @@ void WithCalendar()
   OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.WithOffset(Offset.zero);
 
   OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().withOffset(new Offset.fromHours(0));
-  OffsetDateTime actual = gregorianEpoch.WithCalendar(CalendarSystem.julian);
+  OffsetDateTime actual = gregorianEpoch.withCalendar(CalendarSystem.julian);
   expect(expected, actual);
 }
 
@@ -448,7 +448,7 @@ void With_TimeAdjuster()
   Offset offset = new Offset.fromHoursAndMinutes(2, 30);
   OffsetDateTime start = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).plusNanoseconds(123456789).withOffset(offset);
   OffsetDateTime expected = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).withOffset(offset);
-  expect(expected, start.WithTime(TimeAdjusters.TruncateToSecond));
+  expect(expected, start.withTime(TimeAdjusters.truncateToSecond));
 }
 
 @Test()
@@ -457,7 +457,7 @@ void With_DateAdjuster()
   Offset offset = new Offset.fromHoursAndMinutes(2, 30);
   OffsetDateTime start = new LocalDateTime.at(2014, 6, 27, 12, 5, seconds: 8).plusNanoseconds(123456789).withOffset(offset);
   OffsetDateTime expected = new LocalDateTime.at(2014, 6, 30, 12, 5, seconds: 8).plusNanoseconds(123456789).withOffset(offset);
-  expect(expected, start.WithDate(DateAdjusters.endOfMonth));
+  expect(expected, start.withDate(DateAdjusters.endOfMonth));
 }
 
 @Test()
@@ -466,7 +466,7 @@ Future InZone() async
   Offset offset = new Offset.fromHours(-7);
   OffsetDateTime start = new LocalDateTime.at(2017, 10, 31, 18, 12).withOffset(offset);
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  var zoned = start.InZone(zone);
+  var zoned = start.inZone(zone);
 
   // On October 31st, the UK had already gone back, so the offset is 0.
   // Importantly, it's not the offset of the original OffsetDateTime: we're testing
@@ -481,7 +481,7 @@ void ToOffsetDate()
   var offset = new Offset.fromHoursAndMinutes(2, 30);
   var odt = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).plusNanoseconds(123456789).withOffset(offset);
   var expected = new OffsetDate(new LocalDate(2014, 6, 27), offset);
-  expect(expected, odt.ToOffsetDate());
+  expect(expected, odt.toOffsetDate());
 }
 
 @Test()
@@ -490,6 +490,6 @@ void ToOffsetTime()
   var offset = new Offset.fromHoursAndMinutes(2, 30);
   var odt = new LocalDateTime.at(2014, 6, 27, 12, 15, seconds: 8).plusNanoseconds(123456789).withOffset(offset);
   var expected = new OffsetTime(new LocalTime(12, 15, 8).plusNanoseconds(123456789), offset);
-  expect(expected, odt.ToOffsetTime());
+  expect(expected, odt.toOffsetTime());
 }
 

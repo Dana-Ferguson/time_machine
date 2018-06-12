@@ -206,8 +206,8 @@ class LocalDate implements Comparable<LocalDate> {
   LocalDate operator +(Period period)
   {
     Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot add a period with a time component to a date");
-    return period.AddDateTo(this, 1);
+    Preconditions.checkArgument(!period.hasTimeComponent, 'period', "Cannot add a period with a time component to a date");
+    return period.addDateTo(this, 1);
   }
 
   /// Subtracts the specified period from the date. Friendly alternative to `operator-()`.
@@ -233,8 +233,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The result of subtracting the given period from this date.
   LocalDate minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.HasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
-    return period.AddDateTo(this, -1);
+    Preconditions.checkArgument(!period.hasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
+    return period.addDateTo(this, -1);
   }
 
   /// Subtracts the specified date from this date, returning the result as a [Period] with units of years, months and days.
@@ -243,7 +243,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// The specified date must be in the same calendar system as this.
   /// [date]: The date to subtract from this
   /// Returns: The difference between the specified date and this one
-  Period minusDate(LocalDate date) => Period.BetweenDates(date, this); // this - date;
+  Period minusDate(LocalDate date) => Period.betweenDates(date, this); // this - date;
 
   /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
   ///

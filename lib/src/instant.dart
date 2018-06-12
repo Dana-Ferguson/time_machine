@@ -99,21 +99,21 @@ class Instant implements Comparable<Instant> {
     // Handle BeforeMinValue and BeforeMaxValue simply.
     if (days < minDays)
     {
-      return LocalInstant.BeforeMinValue;
+      return LocalInstant.beforeMinValue;
     }
     if (days > maxDays)
     {
-      return LocalInstant.AfterMaxValue;
+      return LocalInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
     var asDuration = _span.plusSmallNanoseconds(offset.nanoseconds);
     if (asDuration.floorDays < Instant.minDays)
     {
-      return LocalInstant.BeforeMinValue;
+      return LocalInstant.beforeMinValue;
     }
     if (asDuration.floorDays > Instant.maxDays)
     {
-      return LocalInstant.AfterMaxValue;
+      return LocalInstant.afterMaxValue;
     }
     return new LocalInstant(asDuration);
   }
@@ -200,15 +200,15 @@ class Instant implements Comparable<Instant> {
   {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(calendar, 'calendar');
-  return new ZonedDateTime.withCalendar(this, zone, calendar);
+  return new ZonedDateTime(this, zone, calendar);
   }
 
-  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.instant(this, offset);
+  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.fromInstant(this, offset);
 
   OffsetDateTime WithOffset_Calendar(Offset offset, CalendarSystem calendar)
   {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new OffsetDateTime.instantCalendar(this, offset, calendar);
+    return new OffsetDateTime.fromInstant(this, offset, calendar);
   }
 
 // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255

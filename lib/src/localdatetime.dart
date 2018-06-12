@@ -39,8 +39,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [localInstant]: The local instant.
   /// Returns: The resulting date/time.
   @internal LocalDateTime.fromInstant(LocalInstant localInstant)
-      : date = new LocalDate.fromDaysSinceEpoch(localInstant.DaysSinceEpoch),
-        time = new LocalTime.fromNanoseconds(localInstant.NanosecondOfDay);
+      : date = new LocalDate.fromDaysSinceEpoch(localInstant.daysSinceEpoch),
+        time = new LocalTime.fromNanoseconds(localInstant.nanosecondOfDay);
 
   /// Initializes a new instance of [LocalDateTime].
   ///
@@ -298,7 +298,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime plus(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return period.AddDateTimeTo(date, time, 1);
+    return period.addDateTimeTo(date, time, 1);
   }
 
 
@@ -335,7 +335,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return period.AddDateTimeTo(date, time, -1);
+    return period.addDateTimeTo(date, time, -1);
   }
 
 
@@ -356,7 +356,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// The specified date/time must be in the same calendar system as this.
   /// * [localDateTime]: The date/time to subtract from this
   /// Returns: The difference between the specified date/time and this one
-  Period MinusLocalDateTime(LocalDateTime localDateTime) => Period.Between(localDateTime, this);
+  Period MinusLocalDateTime(LocalDateTime localDateTime) => Period.between(localDateTime, this);
   
   /// Returns a hash code for this instance.
   ///

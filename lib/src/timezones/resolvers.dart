@@ -43,7 +43,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
     // Given that there's a zone after before, it can't extend to the end of time.
-    return new ZonedDateTime.withCalendar(before.end - Span.epsilon, zone, local.calendar);
+    return new ZonedDateTime(before.end - Span.epsilon, zone, local.calendar);
   };
 
   /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
@@ -57,7 +57,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return new ZonedDateTime.withCalendar(after.start, zone, local.calendar);
+    return new ZonedDateTime(after.start, zone, local.calendar);
   };
 
   /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
@@ -72,7 +72,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return new ZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).WithOffset(after.wallOffset), zone);
+    return new ZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).withOffset(after.wallOffset), zone);
   };
 
   /// A [SkippedTimeResolver] which simply throws a [SkippedTimeException].

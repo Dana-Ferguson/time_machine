@@ -43,14 +43,14 @@ class TimeComponentsBetweenResult {
 /// Represents a period of time expressed in human chronological terms: hours, days,
 /// weeks, months and so on.
 ///
-/// A [Period] contains a set of properties such as [Years], [Months], and so on
+/// A [Period] contains a set of properties such as [years], [months], and so on
 /// that return the number of each unit contained within this period. Note that these properties are not normalized in
 /// any way by default, and so a [Period] may contain values such as "2 hours and 90 minutes". The
-/// [Normalize] method will convert equivalent periods into a standard representation.
+/// [normalize] method will convert equivalent periods into a standard representation.
 ///
 /// Periods can contain negative units as well as positive units ("+2 hours, -43 minutes, +10 seconds"), but do not
 /// differentiate between properties that are zero and those that are absent (i.e. a period created as "10 years"
-/// and one created as "10 years, zero months" are equal periods; the [Months] property returns zero in
+/// and one created as "10 years, zero months" are equal periods; the [months] property returns zero in
 /// both cases).
 ///
 /// [Period] equality is implemented by comparing each property's values individually.
@@ -62,8 +62,7 @@ class TimeComponentsBetweenResult {
 ///
 /// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-class Period // : IEquatable<Period>
-    {
+class Period {
 // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
 // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
 // but it's unlikely to be an issue. Ideally, we'd switch to use BigInteger after detecting that it could be a problem,
@@ -75,7 +74,7 @@ class Period // : IEquatable<Period>
 
 
 /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
-/// Note that as per the [Normalize] method, years and months are unchanged by normalization - so 12 months does not
+/// Note that as per the [normalize] method, years and months are unchanged by normalization - so 12 months does not
 /// equal 1 year.
 // todo: what to do about this?
 // static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
@@ -87,217 +86,167 @@ class Period // : IEquatable<Period>
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Nanoseconds;
+  final int nanoseconds;
 
 
   /// Gets the number of ticks within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Ticks;
+  final int ticks;
 
 
   /// Gets the number of milliseconds within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Milliseconds;
+  final int milliseconds;
 
 
   /// Gets the number of seconds within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Seconds;
+  final int seconds;
 
 
   /// Gets the number of minutes within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Minutes;
+  final int minutes;
 
 
   /// Gets the number of hours within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Hours;
+  final int hours;
 
 
   /// Gets the number of days within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Days;
+  final int days;
 
 
   /// Gets the number of weeks within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Weeks;
+  final int weeks;
 
 
   /// Gets the number of months within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Months;
+  final int months;
 
 
   /// Gets the number of years within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int Years;
-
-
-///// Creates a period with the given date values.
-///// 
-//@private Period(int years, int months, int weeks, int days)
-//{
-//  this.Years = years;
-//  this.Months = months;
-//  this.Weeks = weeks;
-//  this.Days = days;
-//}
-//
-//
-///// Creates a period with the given time values.
-///// 
-//@private Period(int hours, int minutes, int seconds, int milliseconds, int ticks, int nanoseconds)
-//{
-//  this.Hours = hours;
-//  this.Minutes = minutes;
-//  this.Seconds = seconds;
-//  this.Milliseconds = milliseconds;
-//  this.Ticks = ticks;
-//  this.Nanoseconds = nanoseconds;
-//}
+  final int years;
 
   /// Creates a period with the given time values.
-  @internal const Period({this.Years: 0, this.Months: 0, this.Weeks: 0, this.Days: 0,
-    this.Hours: 0, this.Minutes: 0, this.Seconds: 0,
-    this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});
+  @internal const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
+    this.hours: 0, this.minutes: 0, this.seconds: 0,
+    this.milliseconds: 0, this.ticks: 0, this.nanoseconds: 0});
 
 
-///// Creates a new period from the given values.
-///// 
-//@internal Period(int years, int months, int weeks, int days, int hours, int minutes, int seconds,
-//    int milliseconds, int ticks, int nanoseconds)
-//{
-//  this.Years = years;
-//  this.Months = months;
-//  this.Weeks = weeks;
-//  this.Days = days;
-//  this.Hours = hours;
-//  this.Minutes = minutes;
-//  this.Seconds = seconds;
-//  this.Milliseconds = milliseconds;
-//  this.Ticks = ticks;
-//  this.Nanoseconds = nanoseconds;
-//}
-
-// todo: these are all terrible ... remove them ??? ... do they add extra or does tree shaking shank these?
+  // todo: these are all terrible ... remove them ??? ... do they add extra or does tree shaking shank these?
 
   /// Creates a period representing the specified number of years.
   ///
   /// [years]: The number of years in the new period
   /// Returns: A period consisting of the given number of years.
-  factory Period.fromYears(int years) => new Period(Years: years);
+  factory Period.fromYears(int years) => new Period(years: years);
 
 
   /// Creates a period representing the specified number of months.
   ///
   /// [months]: The number of months in the new period
   /// Returns: A period consisting of the given number of months.
-  factory Period.fromMonths(int months) => new Period(Months: months);
+  factory Period.fromMonths(int months) => new Period(months: months);
 
 
-/// Creates a period representing the specified number of weeks.
-///
-/// [weeks]: The number of weeks in the new period
-/// Returns: A period consisting of the given number of weeks.
-
-  factory Period.fromWeeks(int weeks) => new Period(Weeks: weeks);
-
-
-/// Creates a period representing the specified number of days.
-///
-/// [days]: The number of days in the new period
-/// Returns: A period consisting of the given number of days.
-
-  factory Period.fromDays(int days) => new Period(Days: days);
+  /// Creates a period representing the specified number of weeks.
+  ///
+  /// [weeks]: The number of weeks in the new period
+  /// Returns: A period consisting of the given number of weeks.
+  factory Period.fromWeeks(int weeks) => new Period(weeks: weeks);
 
 
-/// Creates a period representing the specified number of hours.
-///
-/// [hours]: The number of hours in the new period
-/// Returns: A period consisting of the given number of hours.
-
-  factory Period.fromHours(int hours) => new Period(Hours: hours);
-
-
-/// Creates a period representing the specified number of minutes.
-///
-/// [minutes]: The number of minutes in the new period
-/// Returns: A period consisting of the given number of minutes.
-
-  factory Period.fromMinutes(int minutes) => new Period(Minutes: minutes);
+  /// Creates a period representing the specified number of days.
+  ///
+  /// [days]: The number of days in the new period
+  /// Returns: A period consisting of the given number of days.
+  factory Period.fromDays(int days) => new Period(days: days);
 
 
-/// Creates a period representing the specified number of seconds.
-///
-/// [seconds]: The number of seconds in the new period
-/// Returns: A period consisting of the given number of seconds.
-
-  factory Period.fromSeconds(int seconds) => new Period(Seconds: seconds);
-
-
-/// Creates a period representing the specified number of milliseconds.
-///
-/// [milliseconds]: The number of milliseconds in the new period
-/// Returns: A period consisting of the given number of milliseconds.
-
-  factory Period.fromMilliseconds(int milliseconds) => new Period(Milliseconds: milliseconds);
+  /// Creates a period representing the specified number of hours.
+  ///
+  /// [hours]: The number of hours in the new period
+  /// Returns: A period consisting of the given number of hours.
+  factory Period.fromHours(int hours) => new Period(hours: hours);
 
 
-/// Creates a period representing the specified number of ticks.
-///
-/// [ticks]: The number of ticks in the new period
-/// Returns: A period consisting of the given number of ticks.
-
-  factory Period.fromTicks(int ticks) => new Period(Ticks: ticks);
-
-
-/// Creates a period representing the specified number of nanooseconds.
-///
-/// [nanoseconds]: The number of nanoseconds in the new period
-/// Returns: A period consisting of the given number of nanoseconds.
-
-  factory Period.fromNanoseconds(int nanoseconds) => new Period(Nanoseconds: nanoseconds);
+  /// Creates a period representing the specified number of minutes.
+  ///
+  /// [minutes]: The number of minutes in the new period
+  /// Returns: A period consisting of the given number of minutes.
+  factory Period.fromMinutes(int minutes) => new Period(minutes: minutes);
 
 
-/// Adds two periods together, by simply adding the values for each property.
-///
-/// [left]: The first period to add
-/// [right]: The second period to add
-/// The sum of the two periods. The units of the result will be the union of those in both
-/// periods.
+  /// Creates a period representing the specified number of seconds.
+  ///
+  /// [seconds]: The number of seconds in the new period
+  /// Returns: A period consisting of the given number of seconds.
+  factory Period.fromSeconds(int seconds) => new Period(seconds: seconds);
 
+
+  /// Creates a period representing the specified number of milliseconds.
+  ///
+  /// [milliseconds]: The number of milliseconds in the new period
+  /// Returns: A period consisting of the given number of milliseconds.
+  factory Period.fromMilliseconds(int milliseconds) => new Period(milliseconds: milliseconds);
+
+
+  /// Creates a period representing the specified number of ticks.
+  ///
+  /// [ticks]: The number of ticks in the new period
+  /// Returns: A period consisting of the given number of ticks.
+  factory Period.fromTicks(int ticks) => new Period(ticks: ticks);
+
+
+  /// Creates a period representing the specified number of nanooseconds.
+  ///
+  /// [nanoseconds]: The number of nanoseconds in the new period
+  /// Returns: A period consisting of the given number of nanoseconds.
+  factory Period.fromNanoseconds(int nanoseconds) => new Period(nanoseconds: nanoseconds);
+
+
+  /// Adds two periods together, by simply adding the values for each property.
+  ///
+  /// [left]: The first period to add
+  /// [right]: The second period to add
+  /// The sum of the two periods. The units of the result will be the union of those in both
+  /// periods.
   Period operator +(Period right) {
     Preconditions.checkNotNull(right, 'right');
-    return new Period(Years: Years + right.Years,
-        Months: Months + right.Months,
-        Weeks: Weeks + right.Weeks,
-        Days: Days + right.Days,
-        Hours: Hours + right.Hours,
-        Minutes: Minutes + right.Minutes,
-        Seconds: Seconds + right.Seconds,
-        Milliseconds: Milliseconds + right.Milliseconds,
-        Ticks: Ticks + right.Ticks,
-        Nanoseconds: Nanoseconds + right.Nanoseconds);
+    return new Period(years: years + right.years,
+        months: months + right.months,
+        weeks: weeks + right.weeks,
+        days: days + right.days,
+        hours: hours + right.hours,
+        minutes: minutes + right.minutes,
+        seconds: seconds + right.seconds,
+        milliseconds: milliseconds + right.milliseconds,
+        ticks: ticks + right.ticks,
+        nanoseconds: nanoseconds + right.nanoseconds);
   }
 
 
@@ -313,49 +262,47 @@ class Period // : IEquatable<Period>
   /// Returns: The new comparer.
   // todo: what to do abuot IComparer?
   // static IComparer<Period> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
-  static PeriodComparer CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
+  static PeriodComparer createComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
 
 
-/// Subtracts one period from another, by simply subtracting each property value.
-///
-/// [minuend]: The period to subtract the second operand from
-/// [subtrahend]: The period to subtract the first operand from
-/// The result of subtracting all the values in the second operand from the values in the first. The
-/// units of the result will be the union of both periods, even if the subtraction caused some properties to
-/// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").
-
+  /// Subtracts one period from another, by simply subtracting each property value.
+  ///
+  /// [minuend]: The period to subtract the second operand from
+  /// [subtrahend]: The period to subtract the first operand from
+  /// The result of subtracting all the values in the second operand from the values in the first. The
+  /// units of the result will be the union of both periods, even if the subtraction caused some properties to
+  /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").
   Period operator -(Period subtrahend) {
     Preconditions.checkNotNull(subtrahend, 'subtrahend');
     return new Period(
-        Years: Years - subtrahend.Years,
-        Months: Months - subtrahend.Months,
-        Weeks: Weeks - subtrahend.Weeks,
-        Days: Days - subtrahend.Days,
-        Hours: Hours - subtrahend.Hours,
-        Minutes: Minutes - subtrahend.Minutes,
-        Seconds: Seconds - subtrahend.Seconds,
-        Milliseconds: Milliseconds - subtrahend.Milliseconds,
-        Ticks: Ticks - subtrahend.Ticks,
-        Nanoseconds: Nanoseconds - subtrahend.Nanoseconds);
+        years: years - subtrahend.years,
+        months: months - subtrahend.months,
+        weeks: weeks - subtrahend.weeks,
+        days: days - subtrahend.days,
+        hours: hours - subtrahend.hours,
+        minutes: minutes - subtrahend.minutes,
+        seconds: seconds - subtrahend.seconds,
+        milliseconds: milliseconds - subtrahend.milliseconds,
+        ticks: ticks - subtrahend.ticks,
+        nanoseconds: nanoseconds - subtrahend.nanoseconds);
   }
   
-/// Returns the exact difference between two date/times or
-/// returns the period between a start and an end date/time, using only the given units.
-///
-/// If [end] is before <paramref name="start" />, each property in the returned period
-/// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
-/// the difference between 1am and 3:15am in hours) the result will be such that adding it to [start]
-/// will give a value between [start] and [end]. In other words,
-/// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
-///
-/// [start]: Start date/time
-/// [end]: End date/time
-/// [units]: Units to use for calculations
-/// [ArgumentException]: [units] is empty or contained unknown values.
-/// [ArgumentException]: [start] and [end] use different calendars.
-/// Returns: The period between the given date/times, using the given units.
-
-  static Period Between(LocalDateTime start, LocalDateTime end, [PeriodUnits units = PeriodUnits.dateAndTime]) {
+  /// Returns the exact difference between two date/times or
+  /// returns the period between a start and an end date/time, using only the given units.
+  ///
+  /// If [end] is before <paramref name="start" />, each property in the returned period
+  /// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
+  /// the difference between 1am and 3:15am in hours) the result will be such that adding it to [start]
+  /// will give a value between [start] and [end]. In other words,
+  /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+  ///
+  /// [start]: Start date/time
+  /// [end]: End date/time
+  /// [units]: Units to use for calculations
+  /// [ArgumentException]: [units] is empty or contained unknown values.
+  /// [ArgumentException]: [start] and [end] use different calendars.
+  /// Returns: The period between the given date/times, using the given units.
+  static Period between(LocalDateTime start, LocalDateTime end, [PeriodUnits units = PeriodUnits.dateAndTime]) {
     Preconditions.checkArgument(units != PeriodUnits.none, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
     CalendarSystem calendar = start.calendar;
@@ -382,7 +329,7 @@ class Period // : IEquatable<Period>
 
     // Optimization for single field
     // todo: optimize me?
-    Map betweenFunctionMap = {
+    Map _betweenFunctionMap = {
       PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.date, endDate)),
       PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.MonthsField.UnitsBetween(start.date, endDate)),
       PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.WeeksField.UnitsBetween(start.date, endDate)),
@@ -395,7 +342,7 @@ class Period // : IEquatable<Period>
       PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.nanoseconds.unitsBetween(start, end))
     };
     
-    if (betweenFunctionMap.containsKey(units)) return betweenFunctionMap[units]();
+    if (_betweenFunctionMap.containsKey(units)) return _betweenFunctionMap[units]();
     
 //    switch (units) {
 //      case PeriodUnits.years:
@@ -429,7 +376,7 @@ class Period // : IEquatable<Period>
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
       // LocalDate remainingDate = DateComponentsBetween(
       //  start.Date, endDate, units, out years, out months, out weeks, out days);
-      var result = DateComponentsBetween(start.date, endDate, units);
+      var result = dateComponentsBetween(start.date, endDate, units);
       years = result.years;
       months = result.months;
       weeks = result.weeks;
@@ -439,7 +386,7 @@ class Period // : IEquatable<Period>
       remaining = new LocalDateTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
-      return new Period(Years: years, Months: months, Weeks: weeks, Days: days);
+      return new Period(years: years, months: months, weeks: weeks, days: days);
     }
 
     // The remainder of the computation is with fixed-length units, so we can do it all with
@@ -450,11 +397,11 @@ class Period // : IEquatable<Period>
     int hours, minutes, seconds, milliseconds, ticks, nanoseconds;
     var duration = end
         .toLocalInstant()
-        .TimeSinceLocalEpoch - remaining
+        .timeSinceLocalEpoch - remaining
         .toLocalInstant()
-        .TimeSinceLocalEpoch;
+        .timeSinceLocalEpoch;
     if (duration.IsInt64Representable) {
-      var result = TimeComponentsBetween(duration.totalNanoseconds, units);
+      var result = timeComponentsBetween(duration.totalNanoseconds, units);
       hours = result.hours;
       minutes = result.minutes;
       seconds = result.seconds;
@@ -481,16 +428,16 @@ class Period // : IEquatable<Period>
       ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.ticks);
       nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.nanoseconds);
     }
-    return new Period(Years: years,
-        Months: months,
-        Weeks: weeks,
-        Days: days,
-        Hours: hours,
-        Minutes: minutes,
-        Seconds: seconds,
-        Milliseconds: milliseconds,
-        Ticks: ticks,
-        Nanoseconds: nanoseconds);
+    return new Period(years: years,
+        months: months,
+        weeks: weeks,
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        ticks: ticks,
+        nanoseconds: nanoseconds);
   }
 
 
@@ -505,7 +452,7 @@ class Period // : IEquatable<Period>
   /// [days]: (Out) Days component of result
   /// The resulting date after adding the result components to [start] (to
   /// allow further computations to be made)
-  @private static DateComponentsBetweenResult DateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
+  @private static DateComponentsBetweenResult dateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
     var result = new OutBox(start);
 
     /*
@@ -522,7 +469,7 @@ class Period // : IEquatable<Period>
   * */
 
     // this is PeriodUnits maskedUnits in nodatime... but, it's nicer for dart this way
-    int UnitsBetween(int maskedUnits, OutBox<LocalDate> startDate, IDatePeriodField dateField) {
+    int unitsBetween(int maskedUnits, OutBox<LocalDate> startDate, IDatePeriodField dateField) {
       if (maskedUnits == 0) {
         return 0;
       }
@@ -532,10 +479,10 @@ class Period // : IEquatable<Period>
       return value;
     }
 
-    var years = UnitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.YearsField);
-    var months = UnitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.MonthsField);
-    var weeks = UnitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.WeeksField);
-    var days = UnitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.DaysField);
+    var years = unitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.YearsField);
+    var months = unitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.MonthsField);
+    var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.WeeksField);
+    var days = unitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.DaysField);
 
     return new DateComponentsBetweenResult(result.value, years, months, weeks, days);
   }
@@ -551,7 +498,7 @@ class Period // : IEquatable<Period>
   /// [milliseconds]: (Out) Milliseconds component of result
   /// [ticks]: (Out) Ticks component of result
   /// [nanoseconds]: (Out) Nanoseconds component of result
-  @private static TimeComponentsBetweenResult TimeComponentsBetween(int totalNanoseconds, PeriodUnits units) {
+  @private static TimeComponentsBetweenResult timeComponentsBetween(int totalNanoseconds, PeriodUnits units) {
     int UnitsBetween(PeriodUnits mask, int nanosecondsPerUnit) {
       if ((mask.value & units.value) == 0) {
         return 0;
@@ -581,40 +528,40 @@ class Period // : IEquatable<Period>
 
 /// Adds the time components of this period to the given time, scaled accordingly.
 
-  @internal LocalTime AddTimeTo(LocalTime time, int scalar) =>
-      time.plusHours(Hours * scalar)
-          .plusMinutes(Minutes * scalar)
-          .plusSeconds(Seconds * scalar)
-          .plusMilliseconds(Milliseconds * scalar)
-          .plusTicks(Ticks * scalar)
-          .plusNanoseconds(Nanoseconds * scalar);
+  @internal LocalTime addTimeTo(LocalTime time, int scalar) =>
+      time.plusHours(hours * scalar)
+          .plusMinutes(minutes * scalar)
+          .plusSeconds(seconds * scalar)
+          .plusMilliseconds(milliseconds * scalar)
+          .plusTicks(ticks * scalar)
+          .plusNanoseconds(nanoseconds * scalar);
 
 
 /// Adds the date components of this period to the given time, scaled accordingly.
 
-  @internal LocalDate AddDateTo(LocalDate date, int scalar) =>
-      date.plusYears(Years * scalar)
-          .plusMonths(Months * scalar)
-          .plusWeeks(Weeks * scalar)
-          .plusDays(Days * scalar);
+  @internal LocalDate addDateTo(LocalDate date, int scalar) =>
+      date.plusYears(years * scalar)
+          .plusMonths(months * scalar)
+          .plusWeeks(weeks * scalar)
+          .plusDays(days * scalar);
 
 
   /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
-  @internal LocalDateTime AddDateTimeTo(LocalDate date, LocalTime time, int scalar) {
-    date = AddDateTo(date, scalar);
+  @internal LocalDateTime addDateTimeTo(LocalDate date, LocalTime time, int scalar) {
+    date = addDateTo(date, scalar);
     // todo: probably a better way here
     int extraDays = 0;
-    var result = TimePeriodField.hours.addTime(time, Hours * scalar, /*ref*/ extraDays);
+    var result = TimePeriodField.hours.addTime(time, hours * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.minutes.addTime(time, Minutes * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.minutes.addTime(time, minutes * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.seconds.addTime(time, Seconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.seconds.addTime(time, seconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.milliseconds.addTime(time, Milliseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.milliseconds.addTime(time, milliseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.ticks.addTime(time, Ticks * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.ticks.addTime(time, ticks * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.nanoseconds.addTime(time, Nanoseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.nanoseconds.addTime(time, nanoseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
@@ -642,7 +589,7 @@ class Period // : IEquatable<Period>
   /// [ArgumentException]: [units] contains time units, is empty or contains unknown values.
   /// [ArgumentException]: [start] and [end] use different calendars.
   /// Returns: The period between the given dates, using the given units.
-  static Period BetweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
+  static Period betweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allTimeUnits.value) == 0, 'units', "Units contains time units: $units");
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
@@ -658,8 +605,8 @@ class Period // : IEquatable<Period>
     if (singleFieldFunction != null) return singleFieldFunction(start, end);
 
     // Multiple fields todo: if these result_type functions are just used to make periods, we can simply them
-    var result = DateComponentsBetween(start, end, units);
-    return new Period(Years: result.years, Months: result.months, Weeks: result.weeks, Days: result.days);
+    var result = dateComponentsBetween(start, end, units);
+    return new Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
   static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
@@ -685,7 +632,7 @@ class Period // : IEquatable<Period>
   /// [ArgumentException]: [units] contains date units, is empty or contains unknown values.
   /// [ArgumentException]: [start] and [end] use different calendars.
   /// Returns: The period between the given times, using the given units.
-  static Period BetweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
+  static Period betweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allDateUnits.value) == 0, 'units', "Units contains date units: $units");
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
@@ -700,13 +647,13 @@ class Period // : IEquatable<Period>
     var singleFieldFunction = _functionMapBetweenTimes[units];
     if (singleFieldFunction != null) return singleFieldFunction(remaining);
 
-    var result = TimeComponentsBetween(remaining, units);
-    return new Period(Hours: result.hours,
-        Minutes: result.minutes,
-        Seconds: result.seconds,
-        Milliseconds: result.milliseconds,
-        Ticks: result.ticks,
-        Nanoseconds: result.nanoseconds);
+    var result = timeComponentsBetween(remaining, units);
+    return new Period(hours: result.hours,
+        minutes: result.minutes,
+        seconds: result.seconds,
+        milliseconds: result.milliseconds,
+        ticks: result.ticks,
+        nanoseconds: result.nanoseconds);
   }
 
   /// Returns the number of days between two dates. This allows optimizations in DateInterval,
@@ -727,51 +674,47 @@ class Period // : IEquatable<Period>
 
 
   /// Returns whether or not this period contains any non-zero-valued time-based properties (hours or lower).
-  bool get HasTimeComponent => Hours != 0 || Minutes != 0 || Seconds != 0 || Milliseconds != 0 || Ticks != 0 || Nanoseconds != 0;
+  bool get hasTimeComponent => hours != 0 || minutes != 0 || seconds != 0 || milliseconds != 0 || ticks != 0 || nanoseconds != 0;
 
 
   /// Returns whether or not this period contains any non-zero date-based properties (days or higher).
-  bool get HasDateComponent => Years != 0 || Months != 0 || Weeks != 0 || Days != 0;
+  bool get hasDateComponent => years != 0 || months != 0 || weeks != 0 || days != 0;
 
 
-/// For periods that do not contain a non-zero number of years or months, returns a duration for this period
-/// assuming a standard 7-day week, 24-hour day, 60-minute hour etc.
-///
-/// [InvalidOperationException]: The month or year property in the period is non-zero.
-/// [OverflowException]: The period doesn't have years or months, but the calculation
-/// overflows the bounds of [Duration]. In some cases this may occur even though the theoretical
-/// result would be valid due to balancing positive and negative values, but for simplicity there is
-/// no attempt to work around this - in realistic periods, it shouldn't be a problem.
-/// Returns: The duration of the period.
-
-  Span ToSpan() {
-    if (Months != 0 || Years != 0) {
+  /// For periods that do not contain a non-zero number of years or months, returns a duration for this period
+  /// assuming a standard 7-day week, 24-hour day, 60-minute hour etc.
+  ///
+  /// [InvalidOperationException]: The month or year property in the period is non-zero.
+  /// [OverflowException]: The period doesn't have years or months, but the calculation
+  /// overflows the bounds of [Span]. In some cases this may occur even though the theoretical
+  /// result would be valid due to balancing positive and negative values, but for simplicity there is
+  /// no attempt to work around this - in realistic periods, it shouldn't be a problem.
+  /// Returns: The duration of the period.
+  Span toSpan() {
+    if (months != 0 || years != 0) {
       // todo: does this apply to us?
       throw new StateError("Cannot construct span of period with non-zero months or years.");
     }
-    return new Span(nanoseconds: TotalNanoseconds);
+    return new Span(nanoseconds: totalNanoseconds);
   }
-
-
+  
   /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
-  @private int get TotalNanoseconds =>
-      Nanoseconds +
-          Ticks * TimeConstants.nanosecondsPerTick +
-          Milliseconds * TimeConstants.nanosecondsPerMillisecond +
-          Seconds * TimeConstants.nanosecondsPerSecond +
-          Minutes * TimeConstants.nanosecondsPerMinute +
-          Hours * TimeConstants.nanosecondsPerHour +
-          Days * TimeConstants.nanosecondsPerDay +
-          Weeks * TimeConstants.nanosecondsPerWeek;
-
-
+  @private int get totalNanoseconds =>
+      nanoseconds +
+          ticks * TimeConstants.nanosecondsPerTick +
+          milliseconds * TimeConstants.nanosecondsPerMillisecond +
+          seconds * TimeConstants.nanosecondsPerSecond +
+          minutes * TimeConstants.nanosecondsPerMinute +
+          hours * TimeConstants.nanosecondsPerHour +
+          days * TimeConstants.nanosecondsPerDay +
+          weeks * TimeConstants.nanosecondsPerWeek;
+  
   /// Creates a [PeriodBuilder] from this instance. The new builder
   /// is populated with the values from this period, but is then detached from it:
   /// changes made to the builder are not reflected in this period.
   ///
   /// Returns: A builder with the same values and units as this period.
-  PeriodBuilder ToBuilder() => new PeriodBuilder(this);
-
+  PeriodBuilder toBuilder() => new PeriodBuilder(this);
 
   /// Returns a normalized version of this period, such that equivalent (but potentially non-equal) periods are
   /// changed to the same representation.
@@ -792,10 +735,10 @@ class Period // : IEquatable<Period>
   /// negative values, but for simplicity there is no attempt to work around this.
   /// Returns: The normalized period.
   /// <seealso cref="NormalizingEqualityComparer"/>
-  Period Normalize() {
+  Period normalize() {
     // Simplest way to normalize: grab all the fields up to "week" and
     // sum them.
-    int totalNanoseconds = TotalNanoseconds;
+    int totalNanoseconds = this.totalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
 
     int hours, minutes, seconds, milliseconds, nanoseconds;
@@ -815,16 +758,16 @@ class Period // : IEquatable<Period>
       nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
-    return new Period(Years: this.Years,
-        Months: this.Months,
-        Weeks: 0 /* weeks */,
-        Days: days,
-        Hours: hours,
-        Minutes: minutes,
-        Seconds: seconds,
-        Milliseconds: milliseconds,
-        Ticks: 0 /* ticks */,
-        Nanoseconds: nanoseconds);
+    return new Period(years: this.years,
+        months: this.months,
+        weeks: 0 /* weeks */,
+        days: days,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds,
+        milliseconds: milliseconds,
+        ticks: 0 /* ticks */,
+        nanoseconds: nanoseconds);
   }
 
   /// Returns this string formatted according to the [PeriodPattern.Roundtrip].
@@ -835,7 +778,7 @@ class Period // : IEquatable<Period>
   /// Returns the hash code for this period, consistent with [Equals(Period)].
   ///
   /// Returns: The hash code for this period.
-  @override int get hashCode => hashObjects([Years, Months, Weeks, Days, Hours, Minutes, Seconds, Milliseconds, Ticks, Nanoseconds]);
+  @override int get hashCode => hashObjects([years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds]);
 
   /// Compares the given period for equality with this one.
   ///
@@ -844,31 +787,30 @@ class Period // : IEquatable<Period>
   ///
   /// [other]: The period to compare this one with.
   /// Returns: True if this period has the same values for the same properties as the one specified.
-  bool Equals(Period other) =>
+  bool equals(Period other) =>
       other != null &&
-          Years == other.Years &&
-          Months == other.Months &&
-          Weeks == other.Weeks &&
-          Days == other.Days &&
-          Hours == other.Hours &&
-          Minutes == other.Minutes &&
-          Seconds == other.Seconds &&
-          Milliseconds == other.Milliseconds &&
-          Ticks == other.Ticks &&
-          Nanoseconds == other.Nanoseconds;
+          years == other.years &&
+          months == other.months &&
+          weeks == other.weeks &&
+          days == other.days &&
+          hours == other.hours &&
+          minutes == other.minutes &&
+          seconds == other.seconds &&
+          milliseconds == other.milliseconds &&
+          ticks == other.ticks &&
+          nanoseconds == other.nanoseconds;
 
-  bool operator==(dynamic other) => other is Period && Equals(other);
+  bool operator==(dynamic other) => other is Period && equals(other);
 }
 
 /// Equality comparer which simply normalizes periods before comparing them.
-@private class NormalizingPeriodEqualityComparer // : EqualityComparer<Period>
-    {
-  @internal static final NormalizingPeriodEqualityComparer Instance = new NormalizingPeriodEqualityComparer();
+@private class NormalizingPeriodEqualityComparer {
+  @internal static final NormalizingPeriodEqualityComparer instance = new NormalizingPeriodEqualityComparer();
 
   @private NormalizingPeriodEqualityComparer() {
   }
 
-  @override bool Equals(Period x, Period y) {
+  bool equals(Period x, Period y) {
     // todo: ReferenceEquals?
     if (identical(x, y)) {
       return true;
@@ -876,13 +818,13 @@ class Period // : IEquatable<Period>
     if (x == null || y == null) {
       return false;
     }
-    return x.Normalize().Equals(y.Normalize());
+    return x.normalize().equals(y.normalize());
   }
 
-  @override int getHashCode(Period obj) =>
+  int getHashCode(Period obj) =>
       Preconditions
           .checkNotNull(obj, 'obj')
-          .Normalize()
+          .normalize()
           .hashCode;
 }
 
@@ -893,7 +835,7 @@ class Period // : IEquatable<Period>
 
   @internal PeriodComparer(this.baseDateTime);
 
-  @override int Compare(Period x, Period y) {
+  int compare(Period x, Period y) {
     if (identical(x, y)) {
       return 0;
     }
@@ -903,11 +845,11 @@ class Period // : IEquatable<Period>
     if (y == null) {
       return 1;
     }
-    if (x.Months == 0 && y.Months == 0 &&
-        x.Years == 0 && y.Years == 0) {
+    if (x.months == 0 && y.months == 0 &&
+        x.years == 0 && y.years == 0) {
       // Note: this *could* throw an OverflowException when the normal approach
       // wouldn't, but it's highly unlikely
-      return x.ToSpan().compareTo(y.ToSpan());
+      return x.toSpan().compareTo(y.toSpan());
     }
     return (baseDateTime.plus(x)).compareTo(baseDateTime.plus(y));
   }

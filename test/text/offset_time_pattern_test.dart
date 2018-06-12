@@ -193,7 +193,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
         .Parse("+02")
         .Value;
     // Local time is taken from the template value; offset is from the text
-    expect(new LocalTime(13, 30), parsed.TimeOfDay);
+    expect(new LocalTime(13, 30), parsed.timeOfDay);
     expect(new Offset.fromHours(2), parsed.offset);
   }
 

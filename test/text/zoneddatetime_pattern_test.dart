@@ -701,7 +701,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     var parsed = pattern
         .Parse("2017-08-23")
         .Value;
-    expect(identical(TestZone3, parsed.Zone), isTrue);
+    expect(identical(TestZone3, parsed.zone), isTrue);
     // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
     // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
     expect(new LocalDateTime.at(2017, 8, 23, 12, 30), parsed.localDateTime);
@@ -765,7 +765,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       var value = pattern
           .Parse("$id x")
           .Value;
-      expect(id, value.Zone.id);
+      expect(id, value.zone.id);
     }
   }
 

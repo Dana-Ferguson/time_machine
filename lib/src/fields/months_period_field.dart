@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_fields.dart';
     var calendar = localDate.calendar;
     var calculator = calendar.yearMonthDayCalculator;
     var yearMonthDay = calculator.addMonths(localDate.yearMonthDay, value);
-    return new LocalDate.trusted(yearMonthDay.WithCalendar(calendar));
+    return new LocalDate.trusted(yearMonthDay.withCalendar(calendar));
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) =>

@@ -137,7 +137,7 @@ class _AddTimeResult {
   {
     LocalInstant startLocalInstant = start.toLocalInstant();
     LocalInstant endLocalInstant = end.toLocalInstant();
-    Span span = endLocalInstant.TimeSinceLocalEpoch - startLocalInstant.TimeSinceLocalEpoch;
+    Span span = endLocalInstant.timeSinceLocalEpoch - startLocalInstant.timeSinceLocalEpoch;
     return getUnitsInDuration(span);
   }
 

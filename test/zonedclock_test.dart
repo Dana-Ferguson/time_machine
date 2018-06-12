@@ -28,7 +28,7 @@ void GetCurrent()
   FakeClock underlyingClock = new FakeClock(TimeConstants.unixEpoch);
   ZonedClock zonedClock = underlyingClock.inZone(SampleZone, julian);
   expect(TimeConstants.unixEpoch, zonedClock.getCurrentInstant());
-  expect(new ZonedDateTime.withCalendar(underlyingClock.getCurrentInstant(), SampleZone, julian),
+  expect(new ZonedDateTime(underlyingClock.getCurrentInstant(), SampleZone, julian),
       zonedClock.getCurrentZonedDateTime());
   expect(new LocalDateTime.at(1969, 12, 19, 2, 0, calendar: julian), zonedClock.getCurrentLocalDateTime());
   expect(new LocalDateTime.at(1969, 12, 19, 2, 0, calendar: julian).withOffset(new Offset.fromHours(2)),

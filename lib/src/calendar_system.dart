@@ -452,7 +452,7 @@ class CalendarSystem {
 
   @internal YearMonthDayCalendar getYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
     Preconditions.checkArgumentRange('daysSinceEpoch', daysSinceEpoch, minDays, maxDays);
-    return yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).WithCalendarOrdinal(ordinal);
+    return yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).withCalendarOrdinal(ordinal);
   }
   
   /// Converts this calendar system to text by simply returning its unique ID.

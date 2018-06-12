@@ -319,7 +319,7 @@ void InUtc()
   expect(local, zoned.localDateTime);
   expect(Offset.zero, zoned.offset);
   // Assert.AreSame(DateTimeZone.Utc, zoned.Zone);
-  expect(identical(DateTimeZone.utc, zoned.Zone), isTrue);
+  expect(identical(DateTimeZone.utc, zoned.zone), isTrue);
 }
 
 @Test()

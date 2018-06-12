@@ -35,7 +35,7 @@ Future main() async {
     this.StandardPattern = PeriodPattern.Roundtrip;
   }
 
-  Data.builder(PeriodBuilder builder) : this(builder.Build());
+  Data.builder(PeriodBuilder builder) : this(builder.build());
 
   @internal
   @override

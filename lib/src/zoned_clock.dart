@@ -49,19 +49,19 @@ class ZonedClock extends Clock {
   ///
   /// The offset date/time of the current instant provided by the underlying clock, adjusted to the
   /// time zone of this object.
-  OffsetDateTime getCurrentOffsetDateTime() => getCurrentZonedDateTime().ToOffsetDateTime();
+  OffsetDateTime getCurrentOffsetDateTime() => getCurrentZonedDateTime().toOffsetDateTime();
 
   /// Returns the local date of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
   ///
   /// The local date of the current instant provided by the underlying clock, adjusted to the
   /// time zone of this object.
-  LocalDate getCurrentDate() => getCurrentZonedDateTime().Date;
+  LocalDate getCurrentDate() => getCurrentZonedDateTime().date;
 
   /// Returns the local time of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.
   ///
   /// The local time of the current instant provided by the underlying clock, adjusted to the
   /// time zone of this object.
-  LocalTime getCurrentTimeOfDay() => getCurrentZonedDateTime().TimeOfDay;
+  LocalTime getCurrentTimeOfDay() => getCurrentZonedDateTime().timeOfDay;
 }

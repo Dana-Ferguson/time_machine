@@ -78,7 +78,7 @@ void At()
   var offset = new Offset.fromHours(5);
   var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
 
-  expect(new OffsetDate(date, offset).At(time), date.at(time).withOffset(offset));
+  expect(new OffsetDate(date, offset).at(time), date.at(time).withOffset(offset));
 }
 
 @Test()
@@ -97,7 +97,7 @@ void WithCalendar()
   var julianDate = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var isoDate = julianDate.withCalendar(CalendarSystem.iso);
   var offset = new Offset.fromHours(5);
-  var actual = new OffsetDate(julianDate, offset).WithCalendar(CalendarSystem.iso);
+  var actual = new OffsetDate(julianDate, offset).withCalendar(CalendarSystem.iso);
   var expected = new OffsetDate(isoDate, offset);
   expect(expected, actual);
 }
@@ -106,7 +106,7 @@ void WithCalendar()
 void WithAdjuster()
 {
   var initial = new OffsetDate(new LocalDate(2016, 6, 19), new Offset.fromHours(-5));
-  var actual = initial.With(DateAdjusters.startOfMonth);
+  var actual = initial.adjust(DateAdjusters.startOfMonth);
   var expected = new OffsetDate(new LocalDate(2016, 6, 1), new Offset.fromHours(-5));
   expect(expected, actual);
 }

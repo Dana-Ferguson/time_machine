@@ -56,11 +56,11 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   @internal
-  YearMonthDayCalendar WithCalendar(CalendarSystem calendar) =>
+  YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
       new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : calendar.ordinal);
 
   @internal
-  YearMonthDayCalendar WithCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
+  YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       new YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
   int compareTo(YearMonthDay other) => (other == null) ? 1 : _value.compareTo(other._value);

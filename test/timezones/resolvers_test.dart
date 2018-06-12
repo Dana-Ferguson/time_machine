@@ -61,8 +61,8 @@ void ReturnEndOfIntervalBefore()
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
   var resolved = Resolvers.returnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
-  expect(GapZone.EarlyInterval.end - Span.epsilon, resolved.ToInstant());
-  expect(GapZone, resolved.Zone);
+  expect(GapZone.EarlyInterval.end - Span.epsilon, resolved.toInstant());
+  expect(GapZone, resolved.zone);
 }
 
 @Test()
@@ -71,8 +71,8 @@ void ReturnStartOfIntervalAfter()
   var mapping = GapZone.mapLocal(TimeInTransition);
   expect(0, mapping.Count);
   var resolved = Resolvers.returnStartOfIntervalAfter(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
-  expect(GapZone.LateInterval.start, resolved.ToInstant());
-  expect(GapZone, resolved.Zone);
+  expect(GapZone.LateInterval.start, resolved.toInstant());
+  expect(GapZone, resolved.zone);
 }
 
 @Test()
@@ -83,10 +83,10 @@ void ReturnForwardShifted()
   var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
 
   var gap = mapping.LateInterval.wallOffset.ticks - mapping.EarlyInterval.wallOffset.ticks;
-  var expected = TimeInTransition.toLocalInstant().Minus(mapping.LateInterval.wallOffset).plus(new Span(ticks: gap));
-  expect(expected, resolved.ToInstant());
+  var expected = TimeInTransition.toLocalInstant().minus(mapping.LateInterval.wallOffset).plus(new Span(ticks: gap));
+  expect(expected, resolved.toInstant());
   expect(mapping.LateInterval.wallOffset, resolved.offset);
-  expect(GapZone, resolved.Zone);
+  expect(GapZone, resolved.zone);
 }
 
 @Test()

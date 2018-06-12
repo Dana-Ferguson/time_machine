@@ -26,12 +26,10 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// but only in very rare historical cases (or fictional ones).
 ///
 /// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<Offset>, IFormattable, IComparable, IXmlSerializable
-    {
+class Offset implements Comparable<Offset> {
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.
   static final Offset zero = new Offset.fromSeconds(0);
-
 
   /// The minimum permitted offset; 18 hours before UTC.
   static final Offset minValue = new Offset.fromHours(-18);
@@ -51,8 +49,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   static const int _maxNanoseconds = 18 * TimeConstants.nanosecondsPerHour;
 
   final int _seconds;
-
-// todo: I have a lot of static constructors to convert to factory methods in here
 
   /// Initializes a new instance of the [Offset] struct.
   ///
@@ -142,12 +138,11 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   static Offset add(Offset left, Offset right) => left + right;
 
 
-/// Returns the result of adding another Offset to this one, for a fluent alternative to `operator+()`.
-///
-/// [other]: The offset to add
-/// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-/// Returns: The result of adding the other offset to this one.
-
+  /// Returns the result of adding another Offset to this one, for a fluent alternative to `operator+()`.
+  ///
+  /// [other]: The offset to add
+  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// Returns: The result of adding the other offset to this one.
   Offset plus(Offset other) => this + other;
 
 
@@ -172,12 +167,11 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   static Offset subtract(Offset minuend, Offset subtrahend) => minuend - subtrahend;
 
 
-/// Returns the result of subtracting another Offset from this one, for a fluent alternative to `operator-()`.
-///
-/// [other]: The offset to subtract
-/// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-/// Returns: The result of subtracting the other offset from this one.
-
+  /// Returns the result of subtracting another Offset from this one, for a fluent alternative to `operator-()`.
+  ///
+  /// [other]: The offset to subtract
+  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// Returns: The result of subtracting the other offset from this one.
   Offset minus(Offset other) => this - other;
 
 
@@ -186,7 +180,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is Offset && Equals(right);
+  bool operator ==(dynamic right) => right is Offset && equals(right);
 
 
   /// Implements the operator &lt; (less than).
@@ -228,24 +222,11 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   ///
   ///   A 32-bit signed integer that indicates the relative order of the objects being compared.
   ///   The return value has the following meanings:
-  ///   <list type = "table">
-  ///     <listheader>
-  ///       <term>Value</term>
-  ///       <description>Meaning</description>
-  ///     </listheader>
-  ///     <item>
-  ///       <term>&lt; 0</term>
-  ///       <description>This object is less than the <paramref name = "other" /> parameter.</description>
-  ///     </item>
-  ///     <item>
-  ///       <term>0</term>
-  ///       <description>This object is equal to <paramref name = "other" />.</description>
-  ///     </item>
-  ///     <item>
-  ///       <term>&gt; 0</term>
-  ///       <description>This object is greater than <paramref name = "other" />.</description>
-  ///     </item>
-  ///   </list>
+  ///   | Value        | Meaning|
+  ///   | ------------- |:-------------|
+  ///   | < 0      | This object is less than the [other] parameter. |
+  ///   | 0      | This object is equal to [other].      |
+  ///   | > 0 | This object is greater than [other].      |
   int compareTo(Offset other) => other == null ? 1 : seconds.compareTo(other.seconds);
 
   ///   Indicates whether the current object is equal to another object of the same type.
@@ -254,7 +235,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   ///
   ///   true if the current object is equal to the <paramref name = "other" /> parameter;
   ///   otherwise, false.
-  bool Equals(Offset other) => seconds == other.seconds;
+  bool equals(Offset other) => seconds == other.seconds;
 
   ///   Returns a hash code for this instance.
   ///
@@ -270,20 +251,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       OffsetPattern.BclSupport.Format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
-/// Formats the value of the current instance using the specified pattern.
-///
-/// A [String] containing the value of the current instance in the specified format.
-///
-/// [patternText]: The [String] specifying the pattern to use,
-/// or null to use the default format pattern ("g").
-///
-/// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-/// or null to use the current thread's culture to obtain a format provider.
-///
-/// <filterpriority>2</filterpriority>
-//  String toString_Formatted(String patternText, IFormatProvider formatProvider) =>
-//      OffsetPattern.BclSupport.Format(this, patternText, formatProvider);
-
   /// Returns an offset for the given seconds value, which may be negative.
   ///
   /// [seconds]: The int seconds value.
@@ -294,7 +261,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     Preconditions.checkArgumentRange('seconds', seconds, minSeconds, maxSeconds);
     return new Offset(seconds);
   }
-
 
   /// Returns an offset for the given milliseconds value, which may be negative.
   ///
@@ -310,7 +276,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     return new Offset(milliseconds ~/ TimeConstants.millisecondsPerSecond);
   }
 
-
   /// Returns an offset for the given number of ticks, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the given number of ticks is simply divided
@@ -324,8 +289,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     Preconditions.checkArgumentRange('ticks', ticks, _minTicks, _maxTicks);
     return new Offset((ticks ~/ TimeConstants.ticksPerSecond));
   }
-
-
+  
   /// Returns an offset for the given number of nanoseconds, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the given number of nanoseconds is simply divided
@@ -339,8 +303,7 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     Preconditions.checkArgumentRange('nanoseconds', nanoseconds, _minNanoseconds, _maxNanoseconds);
     return new Offset((nanoseconds ~/ TimeConstants.nanosecondsPerSecond));
   }
-
-
+  
   /// Returns an offset for the specified number of hours, which may be negative.
   ///
   /// [hours]: The number of hours to represent in the new offset.
@@ -351,7 +314,6 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
     Preconditions.checkArgumentRange('hours', hours, _minHours, _maxHours);
     return new Offset(hours * TimeConstants.secondsPerHour);
   }
-
 
   /// Returns an offset for the specified number of hours and minutes.
   ///
@@ -367,29 +329,28 @@ class Offset implements Comparable<Offset> // : IEquatable<Offset>, IComparable<
   factory Offset.fromHoursAndMinutes(int hours, int minutes) =>
       new Offset.fromSeconds(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
-
-/// Converts this offset to a .NET standard [TimeSpan] value.
-///
-/// Returns: An equivalent [TimeSpan] to this value.
-
+  /// Converts this offset to a [Duration] value.
   Duration toDuration() => new Duration(seconds: _seconds);
-
-
-  /// Converts the given [TimeSpan] to an offset, with fractional seconds truncated.
+  
+  /// Converts the given [Duration] to an offset, with fractional seconds truncated.
   ///
-  /// [timeSpan]: The timespan to convert
+  /// [timeSpan]: The [Duration] to convert
   /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
   /// Returns: An offset for the same time as the given time span.
   factory Offset.fromDuration(Duration timeSpan) {
-    int seconds = timeSpan.inMilliseconds;
+    int seconds = timeSpan.inSeconds;
     Preconditions.checkArgumentRange('timeSpan', seconds, _minMilliseconds, _maxMilliseconds);
     return new Offset.fromSeconds(seconds);
   }
 
+  /// Converts the given [Span] to an offset, with fractional seconds truncated.
+  ///
+  /// [timeSpan]: The [Span] to convert
+  /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
+  /// Returns: An offset for the same time as the given time span.
   factory Offset.fromSpan(Span timeSpan) {
-    int ticks = timeSpan.floorTicks;
-    Preconditions.checkArgumentRange('timeSpan', ticks, _minTicks, _maxTicks);
-    return new Offset.fromSeconds(ticks);
+    int seconds = timeSpan.totalSeconds.floor();
+    Preconditions.checkArgumentRange('timeSpan', seconds, _minTicks, _maxTicks);
+    return new Offset.fromSeconds(seconds);
   }
-
 }

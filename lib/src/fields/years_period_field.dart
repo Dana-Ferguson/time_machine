@@ -20,7 +20,7 @@ import 'package:time_machine/time_machine_fields.dart';
     int currentYear = yearMonthDay.year;
     // Adjust argument range based on current year
     Preconditions.checkArgumentRange('value', value, calculator.minYear - currentYear, calculator.maxYear - currentYear);
-    return new LocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).WithCalendarOrdinal(calendar.ordinal));
+    return new LocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).withCalendarOrdinal(calendar.ordinal));
   }
 
   int UnitsBetween(LocalDate start, LocalDate end) {

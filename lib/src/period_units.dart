@@ -49,9 +49,9 @@ class PeriodUnits {
   static const PeriodUnits weeks = const PeriodUnits(4);
   /// Days element within a [Period]
   static const PeriodUnits days = const PeriodUnits(8);
-  /// Compound value representing the combination of [Years], [Months], [Weeks] and [Days]
+  /// Compound value representing the combination of [years], [months], [weeks] and [days]
   static const PeriodUnits allDateUnits = const PeriodUnits(15); // union(const [years, months, weeks, days]);
-  /// Compound value representing the combination of [Years], [Months] and [Days]
+  /// Compound value representing the combination of [years], [months] and [days]
   static const PeriodUnits yearMonthDay = const PeriodUnits(11); // union(const [years, months, days]);
   /// Hours element within a [Period]
   static const PeriodUnits hours = const PeriodUnits(16);

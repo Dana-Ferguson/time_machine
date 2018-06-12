@@ -27,31 +27,31 @@ final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone
 void SimpleProperties()
 {
   var value = SampleZone.atStrictly(new LocalDateTime.at(2012, 2, 10, 8, 9, seconds: 10).plusNanoseconds(123456789));
-  expect(new LocalDate(2012, 2, 10), value.Date);
-  expect(new LocalTime.fromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.TimeOfDay);
+  expect(new LocalDate(2012, 2, 10), value.date);
+  expect(new LocalTime.fromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.timeOfDay);
   expect(Era.Common, value.era);
-  expect(2012, value.Year);
-  expect(2012, value.YearOfEra);
-  expect(2, value.Month);
-  expect(10, value.Day);
-  expect(IsoDayOfWeek.friday, value.DayOfWeek);
-  expect(41, value.DayOfYear);
-  expect(8, value.ClockHourOfHalfDay);
-  expect(8, value.Hour);
-  expect(9, value.Minute);
-  expect(10, value.Second);
-  expect(123, value.Millisecond);
-  expect(1234567, value.TickOfSecond);
+  expect(2012, value.year);
+  expect(2012, value.yearOfEra);
+  expect(2, value.month);
+  expect(10, value.day);
+  expect(IsoDayOfWeek.friday, value.dayOfWeek);
+  expect(41, value.dayOfYear);
+  expect(8, value.clockHourOfHalfDay);
+  expect(8, value.hour);
+  expect(9, value.minute);
+  expect(10, value.second);
+  expect(123, value.millisecond);
+  expect(1234567, value.tickOfSecond);
   expect(8 * TimeConstants.ticksPerHour +
       9 * TimeConstants.ticksPerMinute +
       10 * TimeConstants.ticksPerSecond +
       1234567,
-      value.TickOfDay);
+      value.tickOfDay);
   expect(8 * TimeConstants.nanosecondsPerHour +
       9 * TimeConstants.nanosecondsPerMinute +
       10 * TimeConstants.nanosecondsPerSecond +
       123456789,
-      value.NanosecondOfDay);
+      value.nanosecondOfDay);
 }
 
 @Test()
@@ -61,7 +61,7 @@ void Add_AroundTimeZoneTransition()
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
   // 24 hours elapsed, and it's 4pm
   ZonedDateTime afterExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  ZonedDateTime afterAdd = ZonedDateTime.AddSpan(before, Span.oneDay);
+  ZonedDateTime afterAdd = ZonedDateTime.addSpan(before, Span.oneDay);
   ZonedDateTime afterOperator = before + Span.oneDay;
 
   expect(afterExpected, afterAdd);
@@ -79,26 +79,26 @@ void Add_MethodEquivalents()
   const int ticks = 5432112345;
 
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  expect(before + Span.oneDay, ZonedDateTime.AddSpan(before, Span.oneDay));
-  expect(before + Span.oneDay, before.PlusSpan(Span.oneDay));
+  expect(before + Span.oneDay, ZonedDateTime.addSpan(before, Span.oneDay));
+  expect(before + Span.oneDay, before.plusSpan(Span.oneDay));
 
-  expect(before + new Span(hours: hours), before.PlusHours(hours));
-  expect(before + new Span(hours: -hours), before.PlusHours(-hours));
+  expect(before + new Span(hours: hours), before.plusHours(hours));
+  expect(before + new Span(hours: -hours), before.plusHours(-hours));
 
-  expect(before + new Span(minutes: minutes), before.PlusMinutes(minutes));
-  expect(before + new Span(minutes: -minutes), before.PlusMinutes(-minutes));
+  expect(before + new Span(minutes: minutes), before.plusMinutes(minutes));
+  expect(before + new Span(minutes: -minutes), before.plusMinutes(-minutes));
 
-  expect(before + new Span(seconds: seconds), before.PlusSeconds(seconds));
-  expect(before + new Span(seconds: -seconds), before.PlusSeconds(-seconds));
+  expect(before + new Span(seconds: seconds), before.plusSeconds(seconds));
+  expect(before + new Span(seconds: -seconds), before.plusSeconds(-seconds));
 
-  expect(before + new Span(milliseconds: milliseconds), before.PlusMilliseconds(milliseconds));
-  expect(before + new Span(milliseconds: -milliseconds), before.PlusMilliseconds(-milliseconds));
+  expect(before + new Span(milliseconds: milliseconds), before.plusMilliseconds(milliseconds));
+  expect(before + new Span(milliseconds: -milliseconds), before.plusMilliseconds(-milliseconds));
 
-  expect(before + new Span(ticks: ticks), before.PlusTicks(ticks));
-  expect(before + new Span(ticks: -ticks), before.PlusTicks(-ticks));
+  expect(before + new Span(ticks: ticks), before.plusTicks(ticks));
+  expect(before + new Span(ticks: -ticks), before.plusTicks(-ticks));
 
-  expect(before + new Span(nanoseconds: nanoseconds), before.PlusNanoseconds(nanoseconds));
-  expect(before + new Span(nanoseconds: -nanoseconds), before.PlusNanoseconds(-nanoseconds));
+  expect(before + new Span(nanoseconds: nanoseconds), before.plusNanoseconds(nanoseconds));
+  expect(before + new Span(nanoseconds: -nanoseconds), before.plusNanoseconds(-nanoseconds));
 }
 
 @Test()
@@ -108,7 +108,7 @@ void Subtract_AroundTimeZoneTransition()
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
   // 24 hours earlier, and it's 3pm
   ZonedDateTime beforeExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  ZonedDateTime beforeSubtract = ZonedDateTime.SubtractSpan(after, Span.oneDay);
+  ZonedDateTime beforeSubtract = ZonedDateTime.subtractSpan(after, Span.oneDay);
   ZonedDateTime beforeOperator = after - Span.oneDay;
 
   expect(beforeExpected, beforeSubtract);
@@ -119,8 +119,8 @@ void Subtract_AroundTimeZoneTransition()
 void SubtractDuration_MethodEquivalents()
 {
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  expect(after - Span.oneDay, ZonedDateTime.SubtractSpan(after, Span.oneDay));
-  expect(after - Span.oneDay, after.MinusSpan(Span.oneDay));
+  expect(after - Span.oneDay, ZonedDateTime.subtractSpan(after, Span.oneDay));
+  expect(after - Span.oneDay, after.minusSpan(Span.oneDay));
 }
 
 @Test()
@@ -133,8 +133,8 @@ void Subtraction_ZonedDateTime()
   ZonedDateTime end = SampleZone.atStrictly(new LocalDateTime.at(2014, 08, 14, 18, 0));
   Span expected = new Span(hours: 8) + new Span(minutes: 9);
   expect(expected, end - start);
-  expect(expected, end.Minus(start));
-  expect(expected, ZonedDateTime.Subtract(end, start));
+  expect(expected, end.minus(start));
+  expect(expected, ZonedDateTime.subtract(end, start));
 }
 
 @Test()
@@ -146,9 +146,9 @@ void WithZone()
 
   // Will be UTC-8 for our instant.
   DateTimeZone newZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2000, 1, 1, 0, 0), -7, -8);
-  ZonedDateTime converted = zoned.WithZone(newZone);
+  ZonedDateTime converted = zoned.withZone(newZone);
   expect(new LocalDateTime.at(2012, 2, 4, 4, 35), converted.localDateTime);
-  expect(converted.ToInstant(), instant);
+  expect(converted.toInstant(), instant);
 }
 
 @Test()
@@ -160,8 +160,8 @@ Future IsDaylightSavings() async
   var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
   var winter = (winterSummerTransition - Span.epsilon).inZone(zone);
   var summer = winterSummerTransition.InZone(zone);
-  expect(winter.IsDaylightSavingTime(), isFalse);
-  expect(summer.IsDaylightSavingTime(), isTrue);
+  expect(winter.isDaylightSavingTime(), isFalse);
+  expect(summer.isDaylightSavingTime(), isTrue);
 }
 /* -- BCL Types we don't have
 @Test()
@@ -262,7 +262,7 @@ void ToDateTimeUtc()
   ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0));
   // Note that this is 10pm the previous day, UTC - so 1am local time
   DateTime expected = new DateTime.utc(2011, 3, 4, 22, 0, 0);
-  DateTime actual = zoned.ToDateTimeUtc();
+  DateTime actual = zoned.toDateTimeUtc();
   expect(expected, actual);
   // Kind isn't checked by Equals...
   expect(actual.isUtc, isTrue);
@@ -278,7 +278,7 @@ void ToDateTimeUtc_InRangeAfterUtcAdjustment()
   // expect(() => zdt.ToDateTimeUnspecified(), throwsStateError);
   // expect(() => zdt.ToDateTimeOffset(), throwsStateError);
   var expected = new DateTime.utc(1, 1, 1, 0, 30, 0);
-  var actual = zdt.ToDateTimeUtc();
+  var actual = zdt.toDateTimeUtc();
   expect(expected, actual);
 }
 
@@ -287,7 +287,7 @@ void ToDateTimeUnspecified()
 {
   ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0));
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0);
-  DateTime actual = zoned.ToDateTimeUnspecified();
+  DateTime actual = zoned.toDateTimeUnspecified();
   expect(actual, expected);
   // Kind isn't checked by Equals...
   expect(actual.isUtc, isFalse); // DateTimeKind.Unspecified, actual.Kind);
@@ -298,7 +298,7 @@ void ToOffsetDateTime()
 {
   var local = new LocalDateTime.at(1911, 3, 5, 1, 0); // Early interval
   var zoned = SampleZone.atStrictly(local);
-  var offsetDateTime = zoned.ToOffsetDateTime();
+  var offsetDateTime = zoned.toOffsetDateTime();
   expect(local, offsetDateTime.localDateTime);
   expect(SampleZone.EarlyInterval.wallOffset, offsetDateTime.offset);
 }
@@ -336,8 +336,8 @@ void Constructor_ArgumentValidation()
 {
   // This first one passes b/c of how we implemented the default constructor, now defaults to CalendarSystem.Iso
   // expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), null), throwsArgumentError);
-  expect(() => new ZonedDateTime.withCalendar(new Instant.fromUnixTimeTicks(1000), null, CalendarSystem.iso), throwsArgumentError);
-  expect(() => new ZonedDateTime.withCalendar(new Instant.fromUnixTimeTicks(1000), SampleZone, null), throwsArgumentError);
+  expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), null, CalendarSystem.iso), throwsArgumentError);
+  expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), SampleZone, null), throwsArgumentError);
 }
 
 @Test()
@@ -396,7 +396,7 @@ void DefaultConstructor()
   var actual = new ZonedDateTime();
   expect(new LocalDateTime.at(1970, 1, 1, 0, 0), actual.localDateTime);
   expect(Offset.zero, actual.offset);
-  expect(DateTimeZone.utc, actual.Zone);
+  expect(DateTimeZone.utc, actual.zone);
 }
 
 /*
