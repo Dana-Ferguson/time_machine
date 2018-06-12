@@ -213,12 +213,12 @@ class _findLongestMatchCursor {
     addFormatAction((TResult value, StringBuffer builder) => builder.write(expectedText));
   }
 
-  @internal static void HandleQuote<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
+  @internal static void handleQuote<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     String quoted = pattern.getQuotedString(pattern.Current);
     builder.addLiteral1(quoted, ParseResult.QuotedStringMismatch);
   }
 
-  @internal static void HandleBackslash<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
+  @internal static void handleBackslash<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     if (!pattern.MoveNext()) {
       throw new InvalidPatternError(TextErrorMessages.EscapeAtEndOfString);
     }

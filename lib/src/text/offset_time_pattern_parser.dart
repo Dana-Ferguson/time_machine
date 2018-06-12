@@ -13,9 +13,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static final Map<String/*char*/, CharacterHandler<OffsetTime, OffsetTimeParseBucket>> PatternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<OffsetTime, OffsetTimeParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetTime, OffsetTimeParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<OffsetTime, OffsetTimeParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<OffsetTime, OffsetTimeParseBucket>*/,
     '.': TimePatternHelper.createPeriodHandler<OffsetTime, OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<OffsetTime, OffsetTimeParseBucket>(

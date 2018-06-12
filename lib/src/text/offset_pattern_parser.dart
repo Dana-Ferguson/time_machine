@@ -12,9 +12,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static final Map<String /*char*/, CharacterHandler<Offset, OffsetParseBucket>> PatternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<Offset, OffsetParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<Offset, OffsetParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<Offset, OffsetParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<Offset, OffsetParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<Offset, OffsetParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<Offset, OffsetParseBucket>*/,
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Offset>*/),
     'h': (pattern, builder) => throw new InvalidPatternError.format(TextErrorMessages.Hour12PatternNotSupported, ['Offset']),
     'H': SteppedPatternBuilder.handlePaddedField<Offset, OffsetParseBucket>(

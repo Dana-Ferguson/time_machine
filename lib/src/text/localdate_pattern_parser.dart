@@ -22,9 +22,9 @@ import 'package:time_machine/time_machine_patterns.dart';
 /*new Map<String, CharacterHandler<LocalDate, LocalDateParseBucket>>*/
   {
     '%': SteppedPatternBuilder.handlePercent/**<LocalDate, LocalDateParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote/**<LocalDate, LocalDateParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash/**<LocalDate, LocalDateParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote/**<LocalDate, LocalDateParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote/**<LocalDate, LocalDateParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash/**<LocalDate, LocalDateParseBucket>*/,
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch/**<LocalDate>*/),
     'y': DatePatternHelper.createYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.yearOfEra, (bucket, value) => bucket.YearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Year = value),

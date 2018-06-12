@@ -11,9 +11,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static final Map</*char*/String, CharacterHandler<Span, SpanParseBucket>> PatternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<Span, SpanParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<Span, SpanParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<Span, SpanParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<Span, SpanParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<Span, SpanParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<Span, SpanParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<Span, SpanParseBucket>*/,
     '.': TimePatternHelper.createPeriodHandler<Span, SpanParseBucket>(9, GetPositiveNanosecondOfSecond, (bucket, value) => bucket.AddNanoseconds(value)),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<Span>*/),
     'D': CreateDayHandler(),

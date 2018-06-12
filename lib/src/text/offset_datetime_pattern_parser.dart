@@ -14,9 +14,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   // new Dictionary<char, CharacterHandler<OffsetDateTime, OffsetDateTimeParseBucket>>
   {
     '%': SteppedPatternBuilder.handlePercent /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<OffsetDateTime>*/),
     'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.MismatchedCharacter /**<OffsetDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<OffsetDateTime, OffsetDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>

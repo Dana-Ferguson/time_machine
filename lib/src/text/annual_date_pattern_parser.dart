@@ -12,9 +12,9 @@ import 'package:time_machine/time_machine_patterns.dart';
 
   @private static final Map<String /*char*/, CharacterHandler<AnnualDate, AnnualDateParseBucket>> PatternCharacterHandlers = {
     '%': SteppedPatternBuilder.handlePercent /**<AnnualDate, AnnualDateParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<AnnualDate, AnnualDateParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<AnnualDate, AnnualDateParseBucket>*/,
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<AnnualDate>*/),
     'M': DatePatternHelper.createMonthOfYearHandler<AnnualDate, AnnualDateParseBucket>
       ((value) => value.month, (bucket, value) => bucket.MonthOfYearText = value, (bucket, value) => bucket.MonthOfYearNumeric = value),

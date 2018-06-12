@@ -19,9 +19,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   @private static final Map<String /*char*/, CharacterHandler<ZonedDateTime, ZonedDateTimeParseBucket>> PatternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
-    '\'': SteppedPatternBuilder.HandleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
-    '\"': SteppedPatternBuilder.HandleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
-    '\\': SteppedPatternBuilder.HandleBackslash /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
+    '\'': SteppedPatternBuilder.handleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
+    '\"': SteppedPatternBuilder.handleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
+    '\\': SteppedPatternBuilder.handleBackslash /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<ZonedDateTime>*/),
     'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.MismatchedCharacter /**<ZonedDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<ZonedDateTime, ZonedDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
