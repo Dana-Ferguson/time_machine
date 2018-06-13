@@ -14,14 +14,14 @@ import 'package:time_machine/time_machine_patterns.dart';
 {
   // It would be unusual to have more than 50 different patterns for a specific culture
   // within a real app.
-  @private static const int CacheSize = 50;
-  @private final Cache<String, IPattern<T>> cache;
+  static const int _cacheSize = 50;
+  final Cache<String, IPattern<T>> _cache;
 
   @internal FixedFormatInfoPatternParser(IPatternParser<T> patternParser, TimeMachineFormatInfo formatInfo)
-  : cache = new Cache<String, IPattern<T>>(CacheSize, (patternText) => patternParser.parsePattern(patternText, formatInfo)
+  : _cache = new Cache<String, IPattern<T>>(_cacheSize, (patternText) => patternParser.parsePattern(patternText, formatInfo)
     // https://msdn.microsoft.com/en-us/library/system.stringcomparer.ordinal(v=vs.110).aspx
     // StringComparer object that performs a case-sensitive ordinal string comparison.
     /*StringComparer.Ordinal*/);
 
-  @internal IPattern<T> ParsePattern(String pattern) => cache.GetOrAdd(pattern);
+  @internal IPattern<T> parsePattern(String pattern) => _cache.GetOrAdd(pattern);
 }

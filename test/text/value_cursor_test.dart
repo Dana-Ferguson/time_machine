@@ -41,34 +41,34 @@ class ValueCursorTest extends TextCursorTestBase {
   @Test()
   void Match_Char() {
     var value = new ValueCursor("abc");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchSingle('a'), isTrue, reason: "First character");
-    expect(value.MatchSingle('b'), isTrue, reason: "Second character");
-    expect(value.MatchSingle('c'), isTrue, reason: "Third character");
-    expect(value.MoveNext(), isFalse, reason: "GetNext() end");
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchSingle('a'), isTrue, reason: "First character");
+    expect(value.matchSingle('b'), isTrue, reason: "Second character");
+    expect(value.matchSingle('c'), isTrue, reason: "Third character");
+    expect(value.moveNext(), isFalse, reason: "GetNext() end");
   }
 
   @Test()
   void Match_String() {
     var value = new ValueCursor("abc");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchText("abc"), isTrue);
-    expect(value.MoveNext(), isFalse, reason: "GetNext() end");
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchText("abc"), isTrue);
+    expect(value.moveNext(), isFalse, reason: "GetNext() end");
   }
 
   @Test()
   void Match_StringNotMatched() {
     var value = new ValueCursor("xabcdef");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchText("abc"), isFalse);
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchText("abc"), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 
   @Test()
   void Match_StringOverLongStringToMatch() {
     var value = new ValueCursor("x");
-    expect(value.MoveNext(), isTrue);
-    expect(value.MatchText("long String"), isFalse);
+    expect(value.moveNext(), isTrue);
+    expect(value.matchText("long String"), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 
@@ -76,8 +76,8 @@ class ValueCursorTest extends TextCursorTestBase {
   @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_MatchAndMove() {
     var value = new ValueCursor("abcd");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, true), isTrue);
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, true), isTrue);
     ValidateCurrentCharacter(value, 3, 'd');
   }
 
@@ -85,8 +85,8 @@ class ValueCursorTest extends TextCursorTestBase {
   @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_MatchWithoutMoving() {
     var value = new ValueCursor("abcd");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, false), isTrue);
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, false), isTrue);
     // We're still looking at the start
     ValidateCurrentCharacter(value, 0, 'a');
   }
@@ -95,8 +95,8 @@ class ValueCursorTest extends TextCursorTestBase {
   @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_StringNotMatched() {
     var value = new ValueCursor("xabcdef");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchCaseInsensitive("abc", CultureInfo.invariantCulture.compareInfo, true), isFalse);
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchCaseInsensitive("abc", CultureInfo.invariantCulture.compareInfo, true), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 
@@ -104,56 +104,56 @@ class ValueCursorTest extends TextCursorTestBase {
   @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_StringOverLongStringToMatch() {
     var value = new ValueCursor("x");
-    expect(value.MoveNext(), isTrue);
-    expect(value.MatchCaseInsensitive("long String", CultureInfo.invariantCulture.compareInfo, true), isFalse);
+    expect(value.moveNext(), isTrue);
+    expect(value.matchCaseInsensitive("long String", CultureInfo.invariantCulture.compareInfo, true), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 
   @Test()
   void Match_StringPartial() {
     var value = new ValueCursor("abcdef");
-    expect(value.MoveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.MatchText("abc"), isTrue);
+    expect(value.moveNext(), isTrue, reason: "GetNext() 1");
+    expect(value.matchText("abc"), isTrue);
     ValidateCurrentCharacter(value, 3, 'd');
   }
 
   @Test()
   void ParseDigits_TooFewDigits() {
     var value = new ValueCursor("a12b");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     ValidateCurrentCharacter(value, 0, 'a');
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(3, 3, out int actual), isFalse);
-    expect(value.ParseDigits(3, 3), isNull);
+    expect(value.parseDigits(3, 3), isNull);
     ValidateCurrentCharacter(value, 1, '1');
   }
 
   @Test()
   void ParseDigits_NoNumber() {
     var value = new ValueCursor("abc");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isFalse);
-    expect(value.ParseDigits(1, 2), isNull);
+    expect(value.parseDigits(1, 2), isNull);
     ValidateCurrentCharacter(value, 0, 'a');
   }
 
   @Test()
   void ParseDigits_Maximum() {
     var value = new ValueCursor("12");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
-    expect(actual = value.ParseDigits(1, 2), isNotNull);
+    expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 12);
   }
 
   @Test()
   void ParseDigits_MaximumMoreDigits() {
     var value = new ValueCursor("1234");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
-    expect(actual = value.ParseDigits(1, 2), isNotNull);
+    expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 12);
     ValidateCurrentCharacter(value, 2, '3');
   }
@@ -161,10 +161,10 @@ class ValueCursorTest extends TextCursorTestBase {
   @Test()
   void ParseDigits_Minimum() {
     var value = new ValueCursor("1");
-    value.MoveNext();
+    value.moveNext();
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
-    expect(actual = value.ParseDigits(1, 2), isNotNull);
+    expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 1);
     TextCursorTestBase.ValidateEndOfString(value);
   }
@@ -172,10 +172,10 @@ class ValueCursorTest extends TextCursorTestBase {
   @Test()
   void ParseDigits_MinimumNonDigits() {
     var value = new ValueCursor("1abc");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
     int actual;
-    expect(actual = value.ParseDigits(1, 2), isNotNull);
+    expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(1, actual);
     ValidateCurrentCharacter(value, 1, 'a');
   }
@@ -185,43 +185,43 @@ class ValueCursorTest extends TextCursorTestBase {
     // Arabic-Indic digits 0 and 1. See
     // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
-    expect(value.MoveNext(), isTrue);
-    expect(value.ParseDigits(1, 2), isNull);
+    expect(value.moveNext(), isTrue);
+    expect(value.parseDigits(1, 2), isNull);
   }
 
   @Test()
   void ParseInt64Digits_TooFewDigits() {
     var value = new ValueCursor("a12b");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     ValidateCurrentCharacter(value, 0, 'a');
-    expect(value.MoveNext(), isTrue);
-    expect(value.ParseInt64Digits(3, 3), isNull);
+    expect(value.moveNext(), isTrue);
+    expect(value.parseInt64Digits(3, 3), isNull);
     ValidateCurrentCharacter(value, 1, '1');
   }
 
   @Test()
   void ParseInt64Digits_NoNumber() {
     var value = new ValueCursor("abc");
-    expect(value.MoveNext(), isTrue);
-    expect(value.ParseInt64Digits(1, 2), isNull);
+    expect(value.moveNext(), isTrue);
+    expect(value.parseInt64Digits(1, 2), isNull);
     ValidateCurrentCharacter(value, 0, 'a');
   }
 
   @Test()
   void ParseInt64Digits_Maximum() {
     var value = new ValueCursor("12");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     int actual;
-    expect(actual = value.ParseInt64Digits(1, 2), isNotNull);
+    expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(12, actual);
   }
 
   @Test()
   void ParseInt64Digits_MaximumMoreDigits() {
     var value = new ValueCursor("1234");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     int actual;
-    expect(actual = value.ParseInt64Digits(1, 2), isNotNull);
+    expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(12, actual);
     ValidateCurrentCharacter(value, 2, '3');
   }
@@ -229,9 +229,9 @@ class ValueCursorTest extends TextCursorTestBase {
   @Test()
   void ParseInt64Digits_Minimum() {
     var value = new ValueCursor("1");
-    value.MoveNext();
+    value.moveNext();
     int actual;
-    expect(actual = value.ParseInt64Digits(1, 2), isNotNull);
+    expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(1, actual);
     TextCursorTestBase.ValidateEndOfString(value);
   }
@@ -239,9 +239,9 @@ class ValueCursorTest extends TextCursorTestBase {
   @Test()
   void ParseInt64Digits_MinimumNonDigits() {
     var value = new ValueCursor("1abc");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     int actual;
-    expect(actual = value.ParseInt64Digits(1, 2), isNotNull);
+    expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(1, actual);
     ValidateCurrentCharacter(value, 1, 'a');
   }
@@ -251,16 +251,16 @@ class ValueCursorTest extends TextCursorTestBase {
     // Arabic-Indic digits 0 and 1. See
     // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
-    expect(value.MoveNext(), isTrue);
-    expect(value.ParseInt64Digits(1, 2), isNull);
+    expect(value.moveNext(), isTrue);
+    expect(value.parseInt64Digits(1, 2), isNull);
   }
 
   @Test()
   void ParseInt64Digits_LargeNumber() {
     var value = new ValueCursor("9999999999999");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     int actual;
-    expect(actual = value.ParseInt64Digits(1, 13), isNotNull);
+    expect(actual = value.parseInt64Digits(1, 13), isNotNull);
     expect(actual, 9999999999999 /*L*/);
     // Assert.Greater(9999999999999/*L*/, Utility.int32MaxValue);
     expect(9999999999999 /*L*/, greaterThan(Utility.int32MaxValue));
@@ -271,190 +271,190 @@ class ValueCursorTest extends TextCursorTestBase {
     // Arabic-Indic digits 0 and 1. See
     // http://www.unicode.org/charts/PDF/U0600.pdf
     var value = new ValueCursor("\u0660\u0661");
-    expect(value.MoveNext(), isTrue);
-    expect(value.ParseFraction(2, 2, 2), isNull);
+    expect(value.moveNext(), isTrue);
+    expect(value.parseFraction(2, 2, 2), isNull);
   }
 
   @Test()
   void ParseInt64_Simple() {
     var value = new ValueCursor("56x");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNull);
+    expect(value.parseInt64<String>(result, 'String'), isNull);
     expect(56 /*L*/, result.value);
     // Cursor ends up post-number
-    expect(2, value.Index);
+    expect(2, value.index);
   }
 
   @Test()
   void ParseInt64_Negative() {
     var value = new ValueCursor("-56x");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNull);
+    expect(value.parseInt64<String>(result, 'String'), isNull);
     expect(-56 /*L*/, result.value);
   }
 
   @Test()
   void ParseInt64_NonNumber() {
     var value = new ValueCursor("xyz");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_DoubleNegativeSign() {
     var value = new ValueCursor("--10xyz");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_NegativeThenNonDigit() {
     var value = new ValueCursor("-x");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_NumberOutOfRange_LowLeadingDigits() {
     var value = new ValueCursor("1000000000000000000000000");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_NumberOutOfRange_HighLeadingDigits() {
     var value = new ValueCursor("999999999999999999999999");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_NumberOutOfRange_MaxValueLeadingDigits() {
     var value = new ValueCursor("9223372036854775808");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_NumberOutOfRange_MinValueLeadingDigits() {
     var value = new ValueCursor("-9223372036854775809");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNotNull);
+    expect(value.parseInt64<String>(result, 'String'), isNotNull);
     // Cursor has not moved
-    expect(0, value.Index);
+    expect(0, value.index);
   }
 
   @Test()
   void ParseInt64_MaxValue() {
     var value = new ValueCursor("9223372036854775807");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNull);
+    expect(value.parseInt64<String>(result, 'String'), isNull);
     expect(Utility.int64MaxValue, result.value);
   }
 
   @Test()
   void ParseInt64_MinValue() {
     var value = new ValueCursor("-9223372036854775808");
-    expect(value.MoveNext(), isTrue);
+    expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.ParseInt64<String>(result, 'String'), isNull);
+    expect(value.parseInt64<String>(result, 'String'), isNull);
     expect(Utility.int64MinValue, result.value);
   }
 
   @Test()
   void CompareOrdinal_ExactMatchToEndOfValue() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
-    expect(0, value.CompareOrdinal("abc"));
-    expect(1, value.Index); // Cursor hasn't moved
+    value.move(1);
+    expect(0, value.compareOrdinal("abc"));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_ExactMatchValueContinues() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
-    expect(0, value.CompareOrdinal("ab"));
-    expect(1, value.Index); // Cursor hasn't moved
+    value.move(1);
+    expect(0, value.compareOrdinal("ab"));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_ValueIsEarlier() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
+    value.move(1);
     // Assert.Less(value.CompareOrdinal("mm"), 0);
-    expect(value.CompareOrdinal("mm"), lessThan(0));
-    expect(1, value.Index); // Cursor hasn't moved
+    expect(value.compareOrdinal("mm"), lessThan(0));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_ValueIsLater() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
+    value.move(1);
     // Assert.Greater(value.CompareOrdinal("aa"), 0);
-    expect(value.CompareOrdinal("aa"), greaterThan(0));
-    expect(1, value.Index); // Cursor hasn't moved
+    expect(value.compareOrdinal("aa"), greaterThan(0));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_LongMatch_EqualToEnd() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
+    value.move(1);
     // Assert.Less(value.CompareOrdinal("abcd"), 0);
-    expect(value.CompareOrdinal("abcd"), lessThan(0));
-    expect(1, value.Index); // Cursor hasn't moved
+    expect(value.compareOrdinal("abcd"), lessThan(0));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_LongMatch_ValueIsEarlier() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
+    value.move(1);
     // Assert.Less(value.CompareOrdinal("cccc"), 0);
-    expect(value.CompareOrdinal("cccc"), lessThan(0));
-    expect(1, value.Index); // Cursor hasn't moved
+    expect(value.compareOrdinal("cccc"), lessThan(0));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void CompareOrdinal_LongMatch_ValueIsLater() {
     var value = new ValueCursor("xabc");
-    value.Move(1);
+    value.move(1);
     // Assert.Greater(value.CompareOrdinal("aaaa"), 0);
-    expect(value.CompareOrdinal("aaaa"), greaterThan(0));
-    expect(1, value.Index); // Cursor hasn't moved
+    expect(value.compareOrdinal("aaaa"), greaterThan(0));
+    expect(1, value.index); // Cursor hasn't moved
   }
 
   @Test()
   void ParseInt64_TooManyDigits() {
     // We can cope as far as 9223372036854775807, but the trailing 1 causes a failure.
     var value = new ValueCursor("92233720368547758071");
-    value.Move(0);
+    value.move(0);
     OutBox<int> result = new OutBox<int>(0);
-    var parseResult = value.ParseInt64<String>(result, 'String');
-    expect(parseResult.Success, isFalse);
+    var parseResult = value.parseInt64<String>(result, 'String');
+    expect(parseResult.success, isFalse);
     // Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
-    expect(parseResult.Exception, new isInstanceOf<UnparsableValueError>());
-    expect(0, value.Index); // Cursor hasn't moved
+    expect(parseResult.error, new isInstanceOf<UnparsableValueError>());
+    expect(0, value.index); // Cursor hasn't moved
   }
 }
 

@@ -50,13 +50,13 @@ abstract class PatternTestData<T> {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
     var result = pattern.parse(Text);
-    var actualValue = result.Value;
+    var actualValue = result.value;
     expect(actualValue, Value);
 
     if (StandardPattern != null) {
       assert(Value == StandardPattern
           .parse(Text)
-          .Value);
+          .value);
     }
   }
 
@@ -75,13 +75,13 @@ abstract class PatternTestData<T> {
     assert(Message == null);
     var cursor = new ValueCursor("^" + Text + "#");
     // Move to the ^
-    cursor.MoveNext();
+    cursor.moveNext();
     // Move to the start of the text
-    cursor.MoveNext();
+    cursor.moveNext();
     var result = pattern.parsePartial(cursor);
-    var actualValue = result.Value;
+    var actualValue = result.value;
     assert(Value == actualValue);
-    assert('#' == cursor.Current);
+    assert('#' == cursor.current);
   }
 
   @internal /*virtual*/ IPartialPattern<T> CreatePartialPattern() {
@@ -115,9 +115,9 @@ abstract class PatternTestData<T> {
     IPattern<T> pattern = CreatePattern();
 
     var result = pattern.parse(Text);
-    assert(result.Success == false);
+    assert(result.success == false);
     try {
-      result.GetValueOrThrow();
+      result.getValueOrThrow();
       // "Expected UnparsableValueException"
       assert(false);
     }

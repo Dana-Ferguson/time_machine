@@ -11,58 +11,56 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// Pattern parsing support for [Instant].
 ///
 /// Supported standard patterns:
-/// <list type="bullet">
-///   <item><description>g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ</description></item>
-/// </list>
+///  * g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ
 @internal /*sealed*/ class InstantPatternParser implements IPatternParser<Instant> {
-  @private static const String GeneralPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
-  @internal static const String BeforeMinValueText = "StartOfTime";
-  @internal static const String AfterMaxValueText = "EndOfTime";
+  @private static const String _generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+  static const String beforeMinValueText = "StartOfTime";
+  static const String afterMaxValueText = "EndOfTime";
 
   IPattern<Instant> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
+      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
     if (patternText.length == 1) {
       switch (patternText) {
         case "g": // Simplest way of handling the general pattern...
-          patternText = GeneralPatternText;
+          patternText = _generalPatternText;
           break;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.UnknownStandardFormat, [patternText, 'Instant']);
+          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Instant']);
       }
     }
 
-    IPattern<LocalDateTime> localResult = formatInfo.localDateTimePatternParser.ParsePattern(patternText);
-    return new LocalDateTimePatternAdapter(localResult);
+    IPattern<LocalDateTime> localResult = formatInfo.localDateTimePatternParser.parsePattern(patternText);
+    return new _LocalDateTimePatternAdapter(localResult);
   }
 }
 
 // This not only converts between LocalDateTime and Instant; it also handles infinity.
-@private /*sealed*/ class LocalDateTimePatternAdapter implements IPattern<Instant> {
-  @private final IPattern<LocalDateTime> pattern;
+/*sealed*/ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
+  final IPattern<LocalDateTime> _pattern;
 
-  @internal LocalDateTimePatternAdapter(this.pattern);
+  _LocalDateTimePatternAdapter(this._pattern);
 
   String format(Instant value) =>
   // We don't need to be able to parse before-min/after-max values, but it's convenient to be
   // able to format them - mostly for the sake of testing (but also for ZoneInterval).
-  value.IsValid ? pattern.format(value
+  value.IsValid ? _pattern.format(value
       .inUtc()
       .localDateTime)
-      : value == Instant.beforeMinValue ? InstantPatternParser.BeforeMinValueText
-      : InstantPatternParser.AfterMaxValueText;
+      : value == Instant.beforeMinValue ? InstantPatternParser.beforeMinValueText
+      : InstantPatternParser.afterMaxValueText;
 
   StringBuffer appendFormat(Instant value, StringBuffer builder) =>
-      pattern.appendFormat(value
+      _pattern.appendFormat(value
           .inUtc()
           .localDateTime, builder);
 
   ParseResult<Instant> parse(String text) =>
-      pattern.parse(text).Convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay))
-
-      );
+      _pattern
+          .parse(text)
+          .convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay)));
 }
 
 

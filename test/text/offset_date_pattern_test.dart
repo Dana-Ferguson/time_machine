@@ -41,50 +41,50 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu gg"
-      ..Message = TextErrorMessages.EraWithoutYearOfEra,
+      ..Message = TextErrorMessages.eraWithoutYearOfEra,
     // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy gg c"
-      ..Message = TextErrorMessages.CalendarAndEra,
+      ..Message = TextErrorMessages.calendarAndEra,
     new Data()
       ..Pattern = "g"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['g', 'OffsetDate']),
     // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "l<d> yyyy"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "l<yyyy-MM-dd> dd"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "l<d> l<f>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = r"l<\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
   ];
 
   @internal List<Data> ParseFailureData = [
     new Data()
       ..Pattern = "dd MM yyyy"
       ..Text = "Complete mismatch"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "dd MM yyyy"
       ..Text = "29 02 2001"
-      ..Message = TextErrorMessages.DayOfMonthOutOfRange
+      ..Message = TextErrorMessages.dayOfMonthOutOfRange
       ..Parameters.addAll([29, 2, 2001]),
     new Data()
       ..Pattern = "(c)"
       ..Text = "(xxx)"
-      ..Message = TextErrorMessages.NoMatchingCalendarSystem,
+      ..Message = TextErrorMessages.noMatchingCalendarSystem,
   ];
 
   @internal List<Data> ParseOnlyData = [];
@@ -117,12 +117,12 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = OffsetDatePattern.GeneralIso
+      ..StandardPattern = OffsetDatePattern.generalIso
       ..Pattern = "G"
       ..Text = "2009-06-15+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetDatePattern.FullRoundtrip
+      ..StandardPattern = OffsetDatePattern.fullRoundtrip
       ..Pattern = "r"
       ..Text = "2009-06-15+01 (ISO)"
       ..Culture = TestCultures.FrFr,
@@ -155,9 +155,9 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 
   @Test()
   void CreateWithInvariantCulture() {
-    var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-ddo<g>");
+    var pattern = OffsetDatePattern.createWithInvariantCulture("yyyy-MM-ddo<g>");
     // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
-    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.formatInfo), isTrue);
     var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     expect("2017-08-23+02", pattern.format(od));
   }
@@ -167,26 +167,26 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
-      var pattern = OffsetDatePattern.CreateWithCurrentCulture("l<d> o<g>");
+      var pattern = OffsetDatePattern.createWithCurrentCulture("l<d> o<g>");
       expect("23/08/2017 +02", pattern.format(od));
     }
     CultureInfo.currentCulture = TestCultures.FrCa;
     {
-      var pattern = OffsetDatePattern.CreateWithCurrentCulture("l<d> o<g>");
+      var pattern = OffsetDatePattern.createWithCurrentCulture("l<d> o<g>");
       expect("2017-08-23 +02", pattern.format(od));
     }
   }
 
   @Test()
   void WithCulture() {
-    var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy/MM/dd o<G>").WithCulture(TestCultures.FrCa);
+    var pattern = OffsetDatePattern.createWithInvariantCulture("yyyy/MM/dd o<G>").withCulture(TestCultures.FrCa);
     var text = pattern.format(new LocalDate(2000, 1, 1).withOffset(new Offset.fromHours(1)));
     expect("2000-01-01 +01", text);
   }
 
   @Test()
   void WithPatternText() {
-    var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("dd MM yyyy o<g>");
+    var pattern = OffsetDatePattern.createWithInvariantCulture("yyyy-MM-dd").withPatternText("dd MM yyyy o<g>");
     var value = new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2));
     var text = pattern.format(value);
     expect("01 01 1970 +02", text);
@@ -194,11 +194,11 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 
   @Test()
   void WithTemplateValue() {
-    var pattern = OffsetDatePattern.CreateWithInvariantCulture("MM-dd")
-        .WithTemplateValue(new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2)));
+    var pattern = OffsetDatePattern.createWithInvariantCulture("MM-dd")
+        .withTemplateValue(new LocalDate(1970, 1, 1).withOffset(new Offset.fromHours(2)));
     var parsed = pattern
         .parse("08-23")
-        .Value;
+        .value;
     expect(new LocalDate(1970, 8, 23), parsed.date);
     expect(new Offset.fromHours(2), parsed.offset);
   }
@@ -206,27 +206,27 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @Test()
   @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = OffsetDatePattern.CreateWithInvariantCulture("yyyy-MM-dd")
-        .WithCalendar(CalendarSystem.coptic);
+    var pattern = OffsetDatePattern.createWithInvariantCulture("yyyy-MM-dd")
+        .withCalendar(CalendarSystem.coptic);
     var parsed = pattern
         .parse("0284-08-29")
-        .Value;
+        .value;
     expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), parsed.date);
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(OffsetDatePattern.GeneralIso);
+  void ParseNull() => AssertParseNull(OffsetDatePattern.generalIso);
 }
 
 @internal /*sealed*/ class Data extends PatternTestData<OffsetDate>
 {
 // Default to the start of the year 2000 UTC
-/*protected*/ @override OffsetDate get DefaultTemplate => OffsetDatePattern.DefaultTemplateValue;
+/*protected*/ @override OffsetDate get DefaultTemplate => OffsetDatePattern.defaultTemplateValue;
 
 /// Initializes a new instance of the [Data] class.
 ///
 /// [value]: The value.
-@internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePattern.DefaultTemplateValue)
+@internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePattern.defaultTemplateValue)
 {
 }
 
@@ -234,7 +234,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     : super(new LocalDate(year, month, day).withOffset(offset ?? Offset.zero));
 
 @internal @override IPattern<OffsetDate> CreatePattern() =>
-    OffsetDatePattern.Create2(super.Pattern, super.Culture, Template);
+    OffsetDatePattern.create(super.Pattern, super.Culture, Template);
 }
 
 

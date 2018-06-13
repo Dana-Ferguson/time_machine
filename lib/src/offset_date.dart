@@ -114,5 +114,5 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetDatePatterns.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      OffsetDatePatterns.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 }

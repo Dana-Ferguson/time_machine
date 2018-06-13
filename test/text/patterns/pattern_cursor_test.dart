@@ -51,7 +51,7 @@ class PatternCursorTest extends TextCursorTestBase {
     expect('\'', GetNextCharacter(cursor));
     String actual = cursor.getQuotedString('\'');
     expect(expected, actual);
-    expect(cursor.MoveNext(), isFalse);
+    expect(cursor.moveNext(), isFalse);
   }
 
   @Test()
@@ -60,7 +60,7 @@ class PatternCursorTest extends TextCursorTestBase {
     GetNextCharacter(cursor);
     String actual = cursor.getQuotedString(']');
     expect("abc", actual);
-    expect(cursor.MoveNext(), isFalse);
+    expect(cursor.moveNext(), isFalse);
   }
 
   @Test()
@@ -80,7 +80,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const ["aaadaa", 3])
   void GetRepeatCount_Valid(String text, int expectedCount) {
     var cursor = new PatternCursor(text);
-    expect(cursor.MoveNext(), isTrue);
+    expect(cursor.moveNext(), isTrue);
     int actual = cursor.getRepeatCount(10);
     expect(expectedCount, actual);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedCount - 1, 'a');
@@ -89,7 +89,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @Test()
   void GetRepeatCount_ExceedsMax() {
     var cursor = new PatternCursor("aaa");
-    expect(cursor.MoveNext(), isTrue);
+    expect(cursor.moveNext(), isTrue);
     expect(() => cursor.getRepeatCount(2), willThrow<InvalidPatternError>());
   }
 
@@ -104,7 +104,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const [r"x<a\>bc>y", r"a\>bc"], "Escaped end embedded")
   void GetEmbeddedPattern_Valid(String pattern, String expectedEmbedded) {
     var cursor = new PatternCursor(pattern);
-    cursor.MoveNext();
+    cursor.moveNext();
     String embedded = cursor.getEmbeddedPattern();
     expect(expectedEmbedded, embedded);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedEmbedded.length + 2, '>');
@@ -118,7 +118,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const ["x<oops<nested>"], "Incomplete after nesting")
   void GetEmbeddedPattern_Invalid(String text) {
     var cursor = new PatternCursor(text);
-    cursor.MoveNext();
+    cursor.moveNext();
     expect(() => cursor.getEmbeddedPattern(), willThrow<InvalidPatternError>());
   }
 }

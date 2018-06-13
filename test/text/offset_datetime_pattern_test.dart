@@ -42,63 +42,63 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "dd MM yyyy HH:MM:SS"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['M']),
     // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
-      ..Message = TextErrorMessages.EraWithoutYearOfEra,
+      ..Message = TextErrorMessages.eraWithoutYearOfEra,
     // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
-      ..Message = TextErrorMessages.CalendarAndEra,
+      ..Message = TextErrorMessages.calendarAndEra,
     new Data()
       ..Pattern = "g"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['g', 'OffsetDateTime']),
     // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "ld<d> yyyy"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "l<yyyy-MM-dd HH:mm:ss> dd"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "ld<d> ld<f>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "lt<T> HH"
-      ..Message = TextErrorMessages.TimeFieldAndEmbeddedTime,
+      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
       ..Pattern = "l<yyyy-MM-dd HH:mm:ss> HH"
-      ..Message = TextErrorMessages.TimeFieldAndEmbeddedTime,
+      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
       ..Pattern = "lt<T> lt<t>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "ld<d> l<F>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "l<F> ld<d>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "lt<T> l<F>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "l<F> lt<T>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = r"l<\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
   ];
 
   @internal List<Data> ParseFailureData = [
@@ -106,40 +106,40 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
       ..Text = "Complete mismatch"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "(c)"
       ..Text = "(xxx)"
-      ..Message = TextErrorMessages.NoMatchingCalendarSystem,
+      ..Message = TextErrorMessages.noMatchingCalendarSystem,
     // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:05"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:01:00"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:01"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5).withOffset(Offset.zero)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5).withOffset(Offset.zero)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
 
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>"
       ..Text = "2011-10-19 16:02 +15:00"
-      ..Message = TextErrorMessages.TimeSeparatorMismatch,
+      ..Message = TextErrorMessages.timeSeparatorMismatch,
   ];
 
   @internal List<Data> ParseOnlyData = [
@@ -220,24 +220,24 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = OffsetDateTimePattern.GeneralIso
+      ..StandardPattern = OffsetDateTimePattern.generalIso
       ..Pattern = "G"
       ..Text = "2009-06-15T13:45:30+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetDateTimePattern.ExtendedIso
+      ..StandardPattern = OffsetDateTimePattern.extendedIso
       ..Pattern = "o"
       ..Text = "2009-06-15T13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetDateTimePattern.FullRoundtrip
+      ..StandardPattern = OffsetDateTimePattern.fullRoundtrip
       ..Pattern = "r"
       ..Text = "2009-06-15T13:45:30.09+01 (ISO)"
       ..Culture = TestCultures.FrFr,
 
     // Property-only patterns            
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetDateTimePattern.Rfc3339
+      ..StandardPattern = OffsetDateTimePattern.rfc3339
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..Text = "2009-06-15T13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,
@@ -385,8 +385,8 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
   @Test()
   void CreateWithInvariantCulture() {
-    var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
-    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.FormatInfo), isTrue);
+    var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
+    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.formatInfo), isTrue);
     var odt = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56).withOffset(new Offset.fromHours(2));
     expect("2017-08-23T12:34:56+02", pattern.format(odt));
   }
@@ -396,7 +396,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     var odt = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56).withOffset(new Offset.fromHours(2));
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
-      var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
+      var pattern = OffsetDateTimePattern.createWithCurrentCulture("l<g> o<g>");
       expect("23/08/2017 12:34 +02", pattern.format(odt));
     }
 
@@ -410,14 +410,14 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
   @Test()
   void WithCulture() {
-    var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("HH:mm").WithCulture(TestCultures.DotTimeSeparator);
+    var pattern = OffsetDateTimePattern.createWithInvariantCulture("HH:mm").withCulture(TestCultures.DotTimeSeparator);
     var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).WithOffset(Offset.zero));
     expect("19.30", text);
   }
 
   @Test()
   void WithPatternText() {
-    var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd").WithPatternText("HH:mm");
+    var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd").withPatternText("HH:mm");
     var value = new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2));
     var text = pattern.format(value);
     expect("13:30", text);
@@ -425,11 +425,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
   @Test()
   void WithTemplateValue() {
-    var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
-        .WithTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2)));
+    var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd")
+        .withTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2)));
     var parsed = pattern
         .parse("2017-08-23")
-        .Value;
+        .value;
     // Local time of template value was 13:30
     expect(new LocalDateTime.at(2017, 8, 23, 13, 30), parsed.localDateTime);
     expect(new Offset.fromHours(2), parsed.offset);
@@ -438,26 +438,26 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = OffsetDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd")
-        .WithCalendar(CalendarSystem.coptic);
+    var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd")
+        .withCalendar(CalendarSystem.coptic);
     var parsed = pattern
         .parse("0284-08-29")
-        .Value;
+        .value;
     expect(new LocalDateTime.at(284, 8, 29, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(OffsetDateTimePattern.ExtendedIso);
+  void ParseNull() => AssertParseNull(OffsetDateTimePattern.extendedIso);
 }
 
 @internal /*sealed*/ class Data extends PatternTestData<OffsetDateTime> {
   // Default to the start of the year 2000 UTC
-  /*protected*/ @override OffsetDateTime get DefaultTemplate => OffsetDateTimePattern.DefaultTemplateValue;
+  /*protected*/ @override OffsetDateTime get DefaultTemplate => OffsetDateTimePattern.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePattern.DefaultTemplateValue);
+  @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePattern.defaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
       : super(new LocalDateTime.at(year, month, day, 0, 0).withOffset(Offset.zero));
@@ -485,6 +485,6 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @internal
   @override
   IPattern<OffsetDateTime> CreatePattern() =>
-      OffsetDateTimePattern.Create2(super.Pattern, super.Culture, Template);
+      OffsetDateTimePattern.create(super.Pattern, super.Culture, Template);
 }
 

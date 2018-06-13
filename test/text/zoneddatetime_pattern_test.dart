@@ -74,59 +74,59 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "dd MM yyyy HH:MM:SS"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['M']),
     // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
-      ..Message = TextErrorMessages.EraWithoutYearOfEra,
+      ..Message = TextErrorMessages.eraWithoutYearOfEra,
     // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
-      ..Message = TextErrorMessages.CalendarAndEra,
+      ..Message = TextErrorMessages.calendarAndEra,
     new Data()
       ..Pattern = "g"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['g', 'ZonedDateTime']),
     // Invalid patterns involving embedded values
     new Data()
       ..Pattern = "ld<d> yyyy"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "l<yyyy-MM-dd HH:mm:ss> dd"
-      ..Message = TextErrorMessages.DateFieldAndEmbeddedDate,
+      ..Message = TextErrorMessages.dateFieldAndEmbeddedDate,
     new Data()
       ..Pattern = "ld<d> ld<f>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "lt<T> HH"
-      ..Message = TextErrorMessages.TimeFieldAndEmbeddedTime,
+      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
       ..Pattern = "l<yyyy-MM-dd HH:mm:ss> HH"
-      ..Message = TextErrorMessages.TimeFieldAndEmbeddedTime,
+      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
       ..Pattern = "lt<T> lt<t>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "ld<d> l<F>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "l<F> ld<d>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "lt<T> l<F>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
     new Data()
       ..Pattern = "l<F> lt<T>"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['l']),
   ];
 
@@ -135,88 +135,88 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 ab"
-      ..Message = TextErrorMessages.SkippedLocalTime,
+      ..Message = TextErrorMessages.skippedLocalTime,
     // Ambiguous value
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2010-01-01 01:30 abc"
-      ..Message = TextErrorMessages.AmbiguousLocalTime,
+      ..Message = TextErrorMessages.ambiguousLocalTime,
 
     // Invalid offset within a skipped time
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 ab +01"
-      ..Message = TextErrorMessages.InvalidOffset,
+      ..Message = TextErrorMessages.invalidOffset,
     // Invalid offset within an ambiguous time (doesn't match either option)
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2010-01-01 01:30 abc +05"
-      ..Message = TextErrorMessages.InvalidOffset,
+      ..Message = TextErrorMessages.invalidOffset,
     // Invalid offset for an unambiguous time
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..Text = "2005-01-01 01:30 ab +02"
-      ..Message = TextErrorMessages.InvalidOffset,
+      ..Message = TextErrorMessages.invalidOffset,
 
     // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
       ..Text = "Complete mismatch"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "(c)"
       ..Text = "(xxx)"
-      ..Message = TextErrorMessages.NoMatchingCalendarSystem,
+      ..Message = TextErrorMessages.noMatchingCalendarSystem,
     // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:05"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:01:00"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:01"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5).inZoneStrictly(TestZone1)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5).inZoneStrictly(TestZone1)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
 
     // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm z"
       ..Text = "2013-01-13 15:44 UTC+01:00:00.00"
-      ..Message = TextErrorMessages.ExtraValueCharacters
+      ..Message = TextErrorMessages.extraValueCharacters
       ..Parameters.addAll([".00"]),
 
     // Can't parse a pattern with a time zone abbreviation.
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm x"
       ..Text = "ignored"
-      ..Message = TextErrorMessages.FormatOnlyPattern,
+      ..Message = TextErrorMessages.formatOnlyPattern,
 
     // Can't parse using a pattern that has no provider
     new Data()
       ..ZoneProvider = null
       ..Pattern = "yyyy-MM-dd z"
       ..Text = "ignored"
-      ..Message = TextErrorMessages.FormatOnlyPattern,
+      ..Message = TextErrorMessages.formatOnlyPattern,
 
     // Invalid ID
     new Data()
       ..Pattern = "yyyy-MM-dd z"
       ..Text = "2017-08-21 LemonCurdIceCream"
-      ..Message = TextErrorMessages.NoMatchingZoneId
+      ..Message = TextErrorMessages.noMatchingZoneId
   ];
 
   @internal List<Data> ParseOnlyData = [
@@ -325,26 +325,26 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
     // Standard patterns without a DateTimeZoneProvider
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso
+      ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso
       ..Pattern = "G"
       ..Text = "2009-06-15T13:45:30 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..ZoneProvider = null,
     new Data(MsdnStandardExample)
-      ..StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso
+      ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso
       ..Pattern = "F"
       ..Text = "2009-06-15T13:45:30.09 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..ZoneProvider = null,
     // Standard patterns without a resolver
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso
+      ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso
       ..Pattern = "G"
       ..Text = "2009-06-15T13:45:30 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..Resolver = null,
     new Data(MsdnStandardExample)
-      ..StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso
+      ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso
       ..Pattern = "F"
       ..Text = "2009-06-15T13:45:30.09 UTC (+00)"
       ..Culture = TestCultures.FrFr
@@ -497,7 +497,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         30,
         0,
         TestZone1)
-      ..StandardPattern = ZonedDateTimePattern.GeneralFormatOnlyIso.WithZoneProvider(TestProvider)
+      ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso.withZoneProvider(TestProvider)
       ..Pattern = "G"
       ..Text = "2013-01-13T15:44:30 ab (+02)"
       ..Culture = TestCultures.FrFr,
@@ -510,7 +510,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         30,
         90,
         TestZone1)
-      ..StandardPattern = ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider)
+      ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider)
       ..Pattern = "F"
       ..Text = "2013-01-13T15:44:30.09 ab (+02)"
       ..Culture = TestCultures.FrFr,
@@ -696,11 +696,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
   @Test()
   void WithTemplateValue() {
-    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider)
-        .WithTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
+    var pattern = ZonedDateTimePattern.createWithInvariantCulture("yyyy-MM-dd", TestProvider)
+        .withTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).InZone(TestZone3));
     var parsed = pattern
         .parse("2017-08-23")
-        .Value;
+        .value;
     expect(identical(TestZone3, parsed.zone), isTrue);
     // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
     // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
@@ -711,16 +711,16 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy-MM-dd", TestProvider).WithCalendar(CalendarSystem.coptic);
+    var pattern = ZonedDateTimePattern.createWithInvariantCulture("yyyy-MM-dd", TestProvider).withCalendar(CalendarSystem.coptic);
     var parsed = pattern
         .parse("0284-08-29")
-        .Value;
+        .value;
     expect(new LocalDateTime.at(284, 8, 29, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }
 
   @Test()
   void WithPatternText() {
-    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("yyyy", TestProvider).WithPatternText("yyyy-MM-dd");
+    var pattern = ZonedDateTimePattern.createWithInvariantCulture("yyyy", TestProvider).withPatternText("yyyy-MM-dd");
     var text = pattern.format(TimeConstants.unixEpoch.inUtc());
     expect("1970-01-01", text);
   }
@@ -729,7 +729,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   void CreateWithCurrentCulture() {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
-      var pattern = ZonedDateTimePattern.CreateWithCurrentCulture("HH:mm", null);
+      var pattern = ZonedDateTimePattern.createWithCurrentCulture("HH:mm", null);
       var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
       expect("19.30", text);
     }
@@ -737,7 +737,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
   @Test()
   void WithCulture() {
-    var pattern = ZonedDateTimePattern.CreateWithInvariantCulture("HH:mm", null).WithCulture(TestCultures.DotTimeSeparator);
+    var pattern = ZonedDateTimePattern.createWithInvariantCulture("HH:mm", null).withCulture(TestCultures.DotTimeSeparator);
     var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
     expect("19.30", text);
   }
@@ -758,24 +758,24 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     )).Build();
 
     var provider = await DateTimeZoneCache.getCache(source);
-    var pattern = ZonedDateTimePattern.Create2("z 'x'", CultureInfo.invariantCulture, Resolvers.strictResolver,
+    var pattern = ZonedDateTimePattern.create("z 'x'", CultureInfo.invariantCulture, Resolvers.strictResolver,
         provider, TimeConstants.unixEpoch.inUtc());
 
     for (var id in provider.ids) {
       var value = pattern
           .parse("$id x")
-          .Value;
+          .value;
       expect(id, value.zone.id);
     }
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(ZonedDateTimePattern.ExtendedFormatOnlyIso.WithZoneProvider(TestProvider));
+  void ParseNull() => AssertParseNull(ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider));
 }
 
 /*sealed*/class Data extends PatternTestData<ZonedDateTime> {
 // Default to the start of the year 2000 UTC
-/*protected*/ @override ZonedDateTime get DefaultTemplate => ZonedDateTimePattern.DefaultTemplateValue;
+/*protected*/ @override ZonedDateTime get DefaultTemplate => ZonedDateTimePattern.defaultTemplateValue;
 
   @internal ZoneLocalMappingResolver Resolver;
   @internal IDateTimeZoneProvider ZoneProvider;
@@ -783,7 +783,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePattern.DefaultTemplateValue) {
+  Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePattern.defaultTemplateValue) {
     Resolver = Resolvers.strictResolver;
     ZoneProvider = TestProvider;
   }
@@ -822,6 +822,6 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @internal
   @override
   IPattern<ZonedDateTime> CreatePattern() =>
-      ZonedDateTimePattern.Create2(super.Pattern, super.Culture, Resolver, ZoneProvider, Template);
+      ZonedDateTimePattern.create(super.Pattern, super.Culture, Resolver, ZoneProvider, Template);
 }
 

@@ -26,51 +26,51 @@ Future main() async {
   await runTests();
 }
 
-@private final ParseResult<int> FailureResult = ParseResult.ForInvalidValue<int>(new ValueCursor("text"), "text");
+@private final ParseResult<int> FailureResult = ParseResult.forInvalidValue<int>(new ValueCursor("text"), "text");
 
 @Test()
 void Value_Success()
 {
-  ParseResult<int> result = ParseResult.ForValue<int>(5);
-  expect(5, result.Value);
+  ParseResult<int> result = ParseResult.forValue<int>(5);
+  expect(5, result.value);
 }
 
 @Test()
 void Value_Failure()
 {
-  expect(() => FailureResult.Value.hashCode, willThrow<UnparsableValueError>());
+  expect(() => FailureResult.value.hashCode, willThrow<UnparsableValueError>());
 }
 
 @Test()
 void Exception_Success()
 {
-  ParseResult<int> result = ParseResult.ForValue<int>(5);
-  expect(() => result.Exception.hashCode, throwsStateError);
+  ParseResult<int> result = ParseResult.forValue<int>(5);
+  expect(() => result.error.hashCode, throwsStateError);
 }
 
 @Test()
 void Exception_Failure()
 {
   // Assert.IsInstanceOf<UnparsableValueError>(FailureResult.Exception);
-  expect(FailureResult.Exception, new isInstanceOf<UnparsableValueError>());
+  expect(FailureResult.error, new isInstanceOf<UnparsableValueError>());
 }
 
 @Test()
 void GetValueOrThrow_Success()
 {
-  ParseResult<int> result = ParseResult.ForValue<int>(5);
-  expect(5, result.GetValueOrThrow());
+  ParseResult<int> result = ParseResult.forValue<int>(5);
+  expect(5, result.getValueOrThrow());
 }
 
 @Test()
 void GetValueOrThrow_Failure()
 {
-  expect(() => FailureResult.GetValueOrThrow(), willThrow<UnparsableValueError>());
+  expect(() => FailureResult.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
 @Test()
 void TryGetValue_Success() {
-  ParseResult<int> result = ParseResult.ForValue<int>(5);
+  ParseResult<int> result = ParseResult.forValue<int>(5);
   //expect(result.TryGetValue(-1, out int actual), isTrue);
   int actual;
   expect(actual = result.TryGetValue(-1), isNot(-1));
@@ -90,38 +90,38 @@ void TryGetValue_Failure()
 @Test()
 void Convert_ForFailureResult()
 {
-  ParseResult<String> converted = FailureResult.Convert((x) => "xx${x}xx");
-  expect(() => converted.GetValueOrThrow(), willThrow<UnparsableValueError>());
+  ParseResult<String> converted = FailureResult.convert((x) => "xx${x}xx");
+  expect(() => converted.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
 @Test()
 void Convert_ForSuccessResult()
 {
-  ParseResult<int> original = ParseResult.ForValue<int>(10);
-  ParseResult<String> converted = original.Convert((x) => "xx${x}xx");
-  expect("xx10xx", converted.Value);
+  ParseResult<int> original = ParseResult.forValue<int>(10);
+  ParseResult<String> converted = original.convert((x) => "xx${x}xx");
+  expect("xx10xx", converted.value);
 }
 
 @Test()
 void ConvertError_ForFailureResult()
 {
-  ParseResult<String> converted = FailureResult.ConvertError<String>();
-  expect(() => converted.GetValueOrThrow(), willThrow<UnparsableValueError>());
+  ParseResult<String> converted = FailureResult.convertError<String>();
+  expect(() => converted.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
 @Test()
 void ConvertError_ForSuccessResult()
 {
-  ParseResult<int> original = ParseResult.ForValue<int>(10);
-expect(() => original.ConvertError<String>(), throwsStateError);
+  ParseResult<int> original = ParseResult.forValue<int>(10);
+expect(() => original.convertError<String>(), throwsStateError);
 }
 
 @Test()
 void ForException() {
   Error e = new Error();
-  ParseResult<int> result = ParseResult.ForException<int>(() => e);
-  expect(result.Success, isFalse);
-  expect(identical(e, result.Exception), isTrue);
+  ParseResult<int> result = ParseResult.forError<int>(() => e);
+  expect(result.success, isFalse);
+  expect(identical(e, result.error), isTrue);
 }
 
 

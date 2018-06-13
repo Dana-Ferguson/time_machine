@@ -66,20 +66,20 @@ class _findLongestMatchCursor {
     var patternCursor = new PatternCursor(patternText);
 
     // Now iterate over the pattern.
-    while (patternCursor.MoveNext()) {
-      CharacterHandler<TResult, TBucket> handler = characterHandlers[patternCursor.Current];
+    while (patternCursor.moveNext()) {
+      CharacterHandler<TResult, TBucket> handler = characterHandlers[patternCursor.current];
       if (handler != null) {
         handler(patternCursor, this);
       }
       else {
-        String current = patternCursor.Current;
+        String current = patternCursor.current;
         var currentCodeUnit = current.codeUnitAt(0);
         if ((currentCodeUnit >= _ACodeUnit && currentCodeUnit <= _ZCodeUnit)
             || (currentCodeUnit >= _aCodeUnit && currentCodeUnit <= _zCodeUnit)
             || current == PatternCursor.embeddedPatternStart || current == PatternCursor.embeddedPatternEnd) {
-          throw new InvalidPatternError.format(TextErrorMessages.UnquotedLiteral, [current]);
+          throw new InvalidPatternError.format(TextErrorMessages.unquotedLiteral, [current]);
         }
-        addLiteral2(patternCursor.Current, ParseResult.MismatchedCharacter);
+        addLiteral2(patternCursor.current, ParseResult.mismatchedCharacter);
       }
     }
   }
@@ -90,11 +90,11 @@ class _findLongestMatchCursor {
   // the patterns are parsed ensures we never end up with any invalid individual fields
   // (e.g. time fields within a date pattern).
     if ((_usedFields & (PatternFields.era | PatternFields.yearOfEra)) == PatternFields.era) {
-      throw new InvalidPatternError(TextErrorMessages.EraWithoutYearOfEra);
+      throw new InvalidPatternError(TextErrorMessages.eraWithoutYearOfEra);
     }
     /*const*/ PatternFields calendarAndEra = PatternFields.era | PatternFields.calendar;
     if ((_usedFields & calendarAndEra) == calendarAndEra) {
-      throw new InvalidPatternError(TextErrorMessages.CalendarAndEra);
+      throw new InvalidPatternError(TextErrorMessages.calendarAndEra);
     }
   }
 
@@ -105,12 +105,12 @@ class _findLongestMatchCursor {
     // If we've got an embedded date and any *other* date fields, throw.
     if (_usedFields.hasAny(PatternFields.embeddedDate) &&
         _usedFields.hasAny(PatternFields.allDateFields & ~PatternFields.embeddedDate)) {
-      throw new InvalidPatternError(TextErrorMessages.DateFieldAndEmbeddedDate);
+      throw new InvalidPatternError(TextErrorMessages.dateFieldAndEmbeddedDate);
     }
     // Ditto for time
     if (_usedFields.hasAny(PatternFields.embeddedTime) &&
         _usedFields.hasAny(PatternFields.allTimeFields & ~PatternFields.embeddedTime)) {
-      throw new InvalidPatternError(TextErrorMessages.TimeFieldAndEmbeddedTime);
+      throw new InvalidPatternError(TextErrorMessages.timeFieldAndEmbeddedTime);
     }
 
     List<Function/*(TResult, StringBuffer)*/> formatDelegate = [];
@@ -132,7 +132,7 @@ class _findLongestMatchCursor {
   @internal void addField(PatternFields field, String characterInPattern) {
     PatternFields newUsedFields = _usedFields | field;
     if (newUsedFields == _usedFields) {
-      throw new InvalidPatternError.format(TextErrorMessages.RepeatedFieldInPattern, [characterInPattern]);
+      throw new InvalidPatternError.format(TextErrorMessages.repeatedFieldInPattern, [characterInPattern]);
     }
     _usedFields = newUsedFields;
   }
@@ -150,15 +150,15 @@ class _findLongestMatchCursor {
     Preconditions.debugCheckArgumentRange('minimumValue', minimumValue, 0, Utility.int64MaxValue);
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
-      int startingIndex = cursor.Index;
-      int value = cursor.ParseInt64Digits(minimumDigits, maximumDigits);
+      int startingIndex = cursor.index;
+      int value = cursor.parseInt64Digits(minimumDigits, maximumDigits);
       if (value == null) {
-        cursor.Move(startingIndex);
-        return ParseResult.MismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+        cursor.move(startingIndex);
+        return ParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (value < minimumValue || value > maximumValue) {
-        cursor.Move(startingIndex);
-        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
+        cursor.move(startingIndex);
+        return ParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);
@@ -170,25 +170,25 @@ class _findLongestMatchCursor {
       int minimumValue, int maximumValue, Function(TBucket, int) valueSetter) {
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
-      int startingIndex = cursor.Index;
+      int startingIndex = cursor.index;
       int value;
-      bool negative = cursor.MatchSingle('-');
+      bool negative = cursor.matchSingle('-');
       if (negative && minimumValue >= 0) {
-        cursor.Move(startingIndex);
-        return ParseResult.UnexpectedNegative<TResult>(cursor);
+        cursor.move(startingIndex);
+        return ParseResult.unexpectedNegative<TResult>(cursor);
       }
 
-      value = cursor.ParseDigits(minimumDigits, maximumDigits);
+      value = cursor.parseDigits(minimumDigits, maximumDigits);
       if (value == null) {
-        cursor.Move(startingIndex);
-        return ParseResult.MismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+        cursor.move(startingIndex);
+        return ParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (negative) {
         value = -value;
       }
       if (value < minimumValue || value > maximumValue) {
-        cursor.Move(startingIndex);
-        return ParseResult.FieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
+        cursor.move(startingIndex);
+        return ParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);
@@ -205,37 +205,37 @@ class _findLongestMatchCursor {
     // Common case - single character literal, often a date or time separator.
     if (expectedText.length == 1) {
       String expectedChar = expectedText[0];
-      addParseAction((ValueCursor str, TBucket bucket) => str.MatchSingle(expectedChar) ? null : failure(str));
+      addParseAction((ValueCursor str, TBucket bucket) => str.matchSingle(expectedChar) ? null : failure(str));
       addFormatAction((TResult value, StringBuffer builder) => builder.write(expectedChar));
       return;
     }
-    addParseAction((ValueCursor str, TBucket bucket) => str.MatchText(expectedText) ? null : failure(str));
+    addParseAction((ValueCursor str, TBucket bucket) => str.matchText(expectedText) ? null : failure(str));
     addFormatAction((TResult value, StringBuffer builder) => builder.write(expectedText));
   }
 
   @internal static void handleQuote<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-    String quoted = pattern.getQuotedString(pattern.Current);
-    builder.addLiteral1(quoted, ParseResult.QuotedStringMismatch);
+    String quoted = pattern.getQuotedString(pattern.current);
+    builder.addLiteral1(quoted, ParseResult.quotedStringMismatch);
   }
 
   @internal static void handleBackslash<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-    if (!pattern.MoveNext()) {
-      throw new InvalidPatternError(TextErrorMessages.EscapeAtEndOfString);
+    if (!pattern.moveNext()) {
+      throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
     }
-    builder.addLiteral2(pattern.Current, ParseResult.EscapedCharacterMismatch);
+    builder.addLiteral2(pattern.current, ParseResult.escapedCharacterMismatch);
   }
 
   /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
   /// "use a custom format string consisting of H instead of a standard pattern H".
   @internal static void handlePercent<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-    if (pattern.HasMoreCharacters) {
-      if (pattern.PeekNext() != '%') {
+    if (pattern.hasMoreCharacters) {
+      if (pattern.peekNext() != '%') {
         // Handle the next character as normal
         return;
       }
-      throw new InvalidPatternError(TextErrorMessages.PercentDoubled);
+      throw new InvalidPatternError(TextErrorMessages.percentDoubled);
     }
-    throw new InvalidPatternError(TextErrorMessages.PercentAtEndOfString);
+    throw new InvalidPatternError(TextErrorMessages.percentAtEndOfString);
   }
 
   /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
@@ -251,15 +251,15 @@ class _findLongestMatchCursor {
       int Function(TResult) getter, int Function(TBucket, int) setter) {
     return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(maxCount);
-      builder.addField(field, pattern.Current);
-      builder.addParseValueAction(count, maxCount, pattern.Current, minValue, maxValue, setter);
+      builder.addField(field, pattern.current);
+      builder.addParseValueAction(count, maxCount, pattern.current, minValue, maxValue, setter);
       builder.addFormatLeftPad(count, getter, assumeNonNegative: minValue >= 0, assumeFitsInCount: count == maxCount);
     };
   }
 
   /// Adds a character which must be matched exactly when parsing, and appended directly when formatting.
   @internal void addLiteral2(String expectedChar, ParseResult<TResult> Function(ValueCursor, String) failureSelector) {
-    addParseAction((ValueCursor str, TBucket bucket) => str.MatchSingle(expectedChar) ? null : failureSelector(str, expectedChar));
+    addParseAction((ValueCursor str, TBucket bucket) => str.matchSingle(expectedChar) ? null : failureSelector(str, expectedChar));
     addFormatAction((TResult value, StringBuffer builder) => builder.write(expectedChar));
   }
 
@@ -279,10 +279,10 @@ class _findLongestMatchCursor {
       if (textValues2 != null) _findLongestMatch(compareInfo, str, textValues2, matchCursor);
       if (matchCursor.bestIndex != -1) {
         setter(bucket, matchCursor.bestIndex);
-        str.Move(str.Index + matchCursor.longestMatch);
+        str.move(str.index + matchCursor.longestMatch);
         return null;
       }
-      return ParseResult.MismatchedText<TResult>(str, field);
+      return ParseResult.mismatchedText<TResult>(str, field);
     });
   }
 /*
@@ -313,7 +313,7 @@ class _findLongestMatchCursor {
       if (candidate == null || candidate.length <= matchCursor.longestMatch) {
         continue;
       }
-      if (cursor.MatchCaseInsensitive(candidate, compareInfo, false)) {
+      if (cursor.matchCaseInsensitive(candidate, compareInfo, false)) {
         matchCursor.bestIndex = i;
         matchCursor.longestMatch = candidate.length;
       }
@@ -326,15 +326,15 @@ class _findLongestMatchCursor {
   /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void addRequiredSign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      if (str.MatchSingle("-")) {
+      if (str.matchSingle("-")) {
         signSetter(bucket, false);
         return null;
       }
-      if (str.MatchSingle("+")) {
+      if (str.matchSingle("+")) {
         signSetter(bucket, true);
         return null;
       }
-      return ParseResult.MissingSign<TResult>(str);
+      return ParseResult.missingSign<TResult>(str);
     }
     );
     addFormatAction((TResult value, StringBuffer sb) => sb.write(nonNegativePredicate(value) ? "+" : "-"));
@@ -346,12 +346,12 @@ class _findLongestMatchCursor {
   /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void addNegativeOnlySign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      if (str.MatchSingle("-")) {
+      if (str.matchSingle("-")) {
         signSetter(bucket, false);
         return null;
       }
-      if (str.MatchSingle("+")) {
-        return ParseResult.PositiveSignInvalid<TResult>(str);
+      if (str.matchSingle("+")) {
+        return ParseResult.positiveSignInvalid<TResult>(str);
       }
       signSetter(bucket, true);
       return null;
@@ -371,24 +371,24 @@ class _findLongestMatchCursor {
   /// [assumeFitsInCount]: Whether it is safe to assume the value will not exceed the specified length
   @internal void addFormatLeftPad(int count, int Function(TResult) selector, {bool assumeNonNegative, bool assumeFitsInCount}) {
     if (count == 2 && assumeNonNegative && assumeFitsInCount) {
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.Format2DigitsNonNegative(selector(value), sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.format2DigitsNonNegative(selector(value), sb));
     }
     else if (count == 4 && assumeFitsInCount) {
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.Format4DigitsValueFits(selector(value), sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.format4DigitsValueFits(selector(value), sb));
     }
     else if (assumeNonNegative) {
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.LeftPadNonNegative(selector(value), count, sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.leftPadNonNegative(selector(value), count, sb));
     }
     else {
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.LeftPad(selector(value), count, sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.leftPad(selector(value), count, sb));
     }
   }
 
   @internal void addFormatFraction(int width, int scale, int Function(TResult) selector) =>
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.AppendFraction(selector(value), width, scale, sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.appendFraction(selector(value), width, scale, sb));
 
   @internal void addFormatFractionTruncate(int width, int scale, int Function(TResult) selector) =>
-      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.AppendFractionTruncate(selector(value), width, scale, sb));
+      addFormatAction((TResult value, StringBuffer sb) => FormatHelper.appendFractionTruncate(selector(value), width, scale, sb));
 
   /// Handles date, time and date/time embedded patterns.
   @internal void addEmbeddedLocalPartial(PatternCursor pattern,
@@ -401,19 +401,19 @@ class _findLongestMatchCursor {
 
     // This will be d (date-only), t (time-only), or < (date and time)
     // If it's anything else, we'll see the problem when we try to get the pattern.
-    var patternType = pattern.PeekNext();
+    var patternType = pattern.peekNext();
     if (patternType == 'd' || patternType == 't') {
-      pattern.MoveNext();
+      pattern.moveNext();
     }
     String embeddedPatternText = pattern.getEmbeddedPattern();
     switch (patternType) {
       case '<':
         {
           var sampleBucket = createSampleBucket();
-          var templateTime = timeBucketExtractor(sampleBucket).TemplateValue;
-          var templateDate = dateBucketExtractor(sampleBucket).TemplateValue;
+          var templateTime = timeBucketExtractor(sampleBucket).templateValue;
+          var templateDate = dateBucketExtractor(sampleBucket).templateValue;
           if (dateTimeExtractor == null) {
-            throw new InvalidPatternError(TextErrorMessages.InvalidEmbeddedPatternType);
+            throw new InvalidPatternError(TextErrorMessages.invalidEmbeddedPatternType);
           }
           addField(PatternFields.embeddedDate, 'l');
           addField(PatternFields.embeddedTime, 'l');
@@ -424,14 +424,14 @@ class _findLongestMatchCursor {
                   (TBucket bucket, LocalDateTime value) {
                 var dateBucket = dateBucketExtractor(bucket);
                 var timeBucket = timeBucketExtractor(bucket);
-                dateBucket.Calendar = value.calendar;
-                dateBucket.Year = value.year;
-                dateBucket.MonthOfYearNumeric = value.month;
-                dateBucket.DayOfMonth = value.day;
-                timeBucket.Hours24 = value.hour;
-                timeBucket.Minutes = value.minute;
-                timeBucket.Seconds = value.second;
-                timeBucket.FractionalSeconds = value.nanosecondOfSecond;
+                dateBucket.calendar = value.calendar;
+                dateBucket.year = value.year;
+                dateBucket.monthOfYearNumeric = value.month;
+                dateBucket.dayOfMonth = value.day;
+                timeBucket.hours24 = value.hour;
+                timeBucket.minutes = value.minute;
+                timeBucket.seconds = value.second;
+                timeBucket.fractionalSeconds = value.nanosecondOfSecond;
               },
               dateTimeExtractor);
           break;
@@ -451,18 +451,18 @@ class _findLongestMatchCursor {
       String embeddedPatternText,
       /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketExtractor,
       LocalDate Function(TResult) dateExtractor) {
-    var templateDate = dateBucketExtractor(createSampleBucket()).TemplateValue;
+    var templateDate = dateBucketExtractor(createSampleBucket()).templateValue;
     addField(PatternFields.embeddedDate, characterInPattern);
     addEmbeddedPattern(
         LocalDatePattern
-            .Create(embeddedPatternText, formatInfo, templateDate)
-            .UnderlyingPattern,
+            .create(embeddedPatternText, formatInfo, templateDate)
+            .underlyingPattern,
             (TBucket bucket, LocalDate value) {
           var dateBucket = dateBucketExtractor(bucket);
-          dateBucket.Calendar = value.calendar;
-          dateBucket.Year = value.year;
-          dateBucket.MonthOfYearNumeric = value.month;
-          dateBucket.DayOfMonth = value.day;
+          dateBucket.calendar = value.calendar;
+          dateBucket.year = value.year;
+          dateBucket.monthOfYearNumeric = value.month;
+          dateBucket.dayOfMonth = value.day;
         },
         dateExtractor);
   }
@@ -471,7 +471,7 @@ class _findLongestMatchCursor {
       String embeddedPatternText,
       /*LocalTimePatternParser.*/LocalTimeParseBucket Function(TBucket) timeBucketExtractor,
       LocalTime Function(TResult) timeExtractor) {
-    var templateTime = timeBucketExtractor(createSampleBucket()).TemplateValue;
+    var templateTime = timeBucketExtractor(createSampleBucket()).templateValue;
     addField(PatternFields.embeddedTime, characterInPattern);
     addEmbeddedPattern(
         LocalTimePattern
@@ -479,10 +479,10 @@ class _findLongestMatchCursor {
             .UnderlyingPattern,
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
-          timeBucket.Hours24 = value.hour;
-          timeBucket.Minutes = value.minute;
-          timeBucket.Seconds = value.second;
-          timeBucket.FractionalSeconds = value.nanosecondOfSecond;
+          timeBucket.hours24 = value.hour;
+          timeBucket.minutes = value.minute;
+          timeBucket.seconds = value.second;
+          timeBucket.fractionalSeconds = value.nanosecondOfSecond;
         },
         timeExtractor);
   }
@@ -495,10 +495,10 @@ class _findLongestMatchCursor {
 
     addParseAction((ValueCursor value, TBucket bucket) {
       var result = embeddedPattern.parsePartial(value);
-      if (!result.Success) {
-        return result.ConvertError<TResult>();
+      if (!result.success) {
+        return result.convertError<TResult>();
       }
-      parseAction(bucket, result.Value);
+      parseAction(bucket, result.value);
       return null;
     });
     addFormatAction((value, StringBuffer sb) => embeddedPattern.appendFormat(valueExtractor(value), sb));
@@ -541,30 +541,30 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   {
     if (_parseActions == null)
     {
-      return ParseResult.FormatOnlyPattern;
+      return ParseResult.formatOnlyPattern;
     }
     if (text == null)
     {
-      return ParseResult.ArgumentNull<TResult>("text");
+      return ParseResult.argumentNull<TResult>("text");
     }
     if (text.length == 0)
     {
-      return ParseResult.ValueStringEmpty;
+      return ParseResult.valueStringEmpty;
     }
 
     var valueCursor = new ValueCursor(text);
     // Prime the pump... the value cursor ends up *before* the first character, but
     // our steps always assume it's *on* the right character.
-    valueCursor.MoveNext();
+    valueCursor.moveNext();
     var result = parsePartial(valueCursor);
-    if (!result.Success)
+    if (!result.success)
     {
       return result;
     }
     // Check that we've used up all the text
-    if (valueCursor.Current != TextCursor.Nul)
+    if (valueCursor.current != TextCursor.nul)
     {
-      return ParseResult.ExtraValueCharacters<TResult>(valueCursor, valueCursor.Remainder);
+      return ParseResult.extraValueCharacters<TResult>(valueCursor, valueCursor.remainder);
     }
     return result;
   }
@@ -596,7 +596,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
         return failure;
       }
     }
-    return bucket.CalculateValue(_usedFields, cursor.Value);
+    return bucket.calculateValue(_usedFields, cursor.value);
   }
 
   StringBuffer appendFormat(TResult value, StringBuffer builder)

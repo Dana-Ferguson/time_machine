@@ -20,13 +20,13 @@ import 'package:time_machine/time_machine_patterns.dart';
 //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
 //    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
 
-  @internal static final OffsetTimePattern GeneralIsoPatternImpl = OffsetTimePattern.Create(
-      "HH':'mm':'sso<G>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.DefaultTemplateValue);
-  @internal static final OffsetTimePattern ExtendedIsoPatternImpl = OffsetTimePattern.Create(
-      "HH':'mm':'ss;FFFFFFFFFo<G>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.DefaultTemplateValue);
-  @internal static final OffsetTimePattern Rfc3339PatternImpl = OffsetTimePattern.Create(
-      "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.DefaultTemplateValue);
-  @internal static final PatternBclSupport<OffsetTime> BclSupport = new PatternBclSupport<OffsetTime>("G", (fi) => fi.offsetTimePatternParser);
+  @internal static final OffsetTimePattern generalIsoPatternImpl = OffsetTimePattern.create(
+      "HH':'mm':'sso<G>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.defaultTemplateValue);
+  @internal static final OffsetTimePattern extendedIsoPatternImpl = OffsetTimePattern.create(
+      "HH':'mm':'ss;FFFFFFFFFo<G>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.defaultTemplateValue);
+  @internal static final OffsetTimePattern rfc3339PatternImpl = OffsetTimePattern.create(
+      "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", TimeMachineFormatInfo.invariantInfo, OffsetTimePattern.defaultTemplateValue);
+  @internal static final PatternBclSupport<OffsetTime> bclSupport = new PatternBclSupport<OffsetTime>("G", (fi) => fi.offsetTimePatternParser);
 }
 
 /// Represents a pattern for parsing and formatting [OffsetTime] values.
@@ -38,19 +38,19 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class OffsetTimePattern implements IPattern<OffsetTime> {
-  @internal static final OffsetTime DefaultTemplateValue = LocalTime.midnight.withOffset(Offset.zero);
+  @internal static final OffsetTime defaultTemplateValue = LocalTime.midnight.withOffset(Offset.zero);
 
   /// Gets an invariant offset time pattern based on ISO-8601 (down to the second), including offset from UTC.
   ///
   /// This corresponds to a custom pattern of "HH':'mm':'sso&lt;G&gt;". It is available as the "G"
   /// standard pattern (even though it is invariant).
-  static OffsetTimePattern get GeneralIso => OffsetTimePatterns.GeneralIsoPatternImpl;
+  static OffsetTimePattern get generalIso => OffsetTimePatterns.generalIsoPatternImpl;
 
   /// Gets an invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
   ///
   /// This corresponds to a custom pattern of "HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;".
   /// This will round-trip all values, and is available as the "o" standard pattern.
-  static OffsetTimePattern get ExtendedIso => OffsetTimePatterns.ExtendedIsoPatternImpl;
+  static OffsetTimePattern get extendedIso => OffsetTimePatterns.extendedIsoPatternImpl;
 
   /// Gets an invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
   /// as hours and minutes only.
@@ -64,21 +64,21 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// <value>An invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
   /// as hours and minutes only.</value>
-  static OffsetTimePattern get Rfc3339 => OffsetTimePatterns.Rfc3339PatternImpl;
+  static OffsetTimePattern get rfc3339 => OffsetTimePatterns.rfc3339PatternImpl;
 
-  @private final IPattern<OffsetTime> pattern;
+  final IPattern<OffsetTime> _pattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
-  final String PatternText;
+  final String patternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo formatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
-  final OffsetTime TemplateValue;
+  final OffsetTime templateValue;
 
-  @private OffsetTimePattern(this.PatternText, this.FormatInfo, this.TemplateValue, this.pattern);
+  OffsetTimePattern._(this.patternText, this.formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -87,13 +87,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<OffsetTime> parse(String text) => pattern.parse(text);
+  ParseResult<OffsetTime> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned time as text according to the rules of this pattern.
   ///
   /// [value]: The zoned time to format.
   /// Returns: The zoned time formatted according to this pattern.
-  String format(OffsetTime value) => pattern.format(value);
+  String format(OffsetTime value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -101,7 +101,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(OffsetTime value, StringBuffer builder) => pattern.appendFormat(value, builder);
+  StringBuffer appendFormat(OffsetTime value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
@@ -110,12 +110,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting zoned times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @private static OffsetTimePattern Create(String patternText, TimeMachineFormatInfo formatInfo,
+  @private static OffsetTimePattern create(String patternText, TimeMachineFormatInfo formatInfo,
       OffsetTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = new OffsetTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
-    return new OffsetTimePattern(patternText, formatInfo, templateValue, pattern);
+    return new OffsetTimePattern._(patternText, formatInfo, templateValue, pattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.
@@ -127,8 +127,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetTimePattern Create2(String patternText, CultureInfo cultureInfo, OffsetTime templateValue) =>
-      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
+  static OffsetTimePattern create2(String patternText, CultureInfo cultureInfo, OffsetTime templateValue) =>
+      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
@@ -138,8 +138,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetTimePattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, TimeMachineFormatInfo.invariantInfo, DefaultTemplateValue);
+  static OffsetTimePattern createWithInvariantCulture(String patternText) =>
+      create(patternText, TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
@@ -151,38 +151,38 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetTimePattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, TimeMachineFormatInfo.currentInfo, DefaultTemplateValue);
+  static OffsetTimePattern createWithCurrentCulture(String patternText) =>
+      create(patternText, TimeMachineFormatInfo.currentInfo, defaultTemplateValue);
 
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
   ///
   /// [patternText]: The pattern text to use in the new pattern.
   /// Returns: A new pattern with the given pattern text.
-  OffsetTimePattern WithPatternText(String patternText) =>
-      Create(patternText, FormatInfo, TemplateValue);
+  OffsetTimePattern withPatternText(String patternText) =>
+      create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private OffsetTimePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) =>
-      Create(PatternText, formatInfo, TemplateValue);
+  OffsetTimePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
+      create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  OffsetTimePattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  OffsetTimePattern withCulture(CultureInfo cultureInfo) =>
+      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the same original pattern text and culture as this pattern, but with
   /// the specified template value.
   ///
   /// [newTemplateValue]: The template value to use in the new pattern.
   /// Returns: A new pattern with the given template value.
-  OffsetTimePattern WithTemplateValue(OffsetTime newTemplateValue) =>
-      Create(PatternText, FormatInfo, newTemplateValue);
+  OffsetTimePattern withTemplateValue(OffsetTime newTemplateValue) =>
+      create(patternText, formatInfo, newTemplateValue);
 }

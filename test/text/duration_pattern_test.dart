@@ -52,20 +52,20 @@ class SpanPatternTest extends PatternTestBase<Span> {
   @internal  final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "HH:MM"
-      ..Message = TextErrorMessages.MultipleCapitalSpanFields,
+      ..Message = TextErrorMessages.multipleCapitalSpanFields,
     new Data()
       ..Pattern = "HH D"
-      ..Message = TextErrorMessages.MultipleCapitalSpanFields,
+      ..Message = TextErrorMessages.multipleCapitalSpanFields,
     new Data()
       ..Pattern = "MM mm"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['m']),
     new Data()
       ..Pattern = "G"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['G', 'Span'])
   ];
 
@@ -74,32 +74,32 @@ class SpanPatternTest extends PatternTestBase<Span> {
     new Data(Span.zero)
       ..Pattern = "H:mm"
       ..Text = "1:60"
-      ..Message = TextErrorMessages.FieldValueOutOfRange
+      ..Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll([60, 'm', 'Span']),
     // Total field values out of range
     new Data(Span.minValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "16777217:00:00:00.000000000"
       ..
-      Message = TextErrorMessages.FieldValueOutOfRange
+      Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll(["16777217", 'D', 'Span']),
     new Data(Span.minValue)
       ..Pattern = "-H:mm:ss.fffffffff"
       ..Text = "402653185:00:00.000000000"
       ..
-      Message = TextErrorMessages.FieldValueOutOfRange
+      Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll(["402653185", 'H', 'Span']),
     new Data(Span.minValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "24159191041:00.000000000"
       ..
-      Message = TextErrorMessages.FieldValueOutOfRange
+      Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll(["24159191041", 'M', 'Span']),
     new Data(Span.minValue)
       ..Pattern = "-S.fffffffff"
       ..Text = "1449551462401.000000000"
       ..
-      Message = TextErrorMessages.FieldValueOutOfRange
+      Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll(["1449551462401", 'S', 'Span']),
 
   /* note: In Dart we don't go out of range -- todo: evaluate -- should we?
@@ -147,7 +147,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
     new Data(Span.minValue)
       ..Pattern = "'x'S"
       ..Text = "x"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["S"])
   ];
 
@@ -224,12 +224,12 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
     // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..StandardPattern = SpanPattern.Roundtrip
+      ..StandardPattern = SpanPattern.roundtrip
       ..Pattern = "o"
       ..Text = "1:02:03:04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,
     new Data.dhmsn(-1, -2, -3, -4, -123456789)
-      ..StandardPattern = SpanPattern.Roundtrip
+      ..StandardPattern = SpanPattern.roundtrip
       ..Pattern = "o"
       ..Text = "-1:02:03:04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,
@@ -267,11 +267,11 @@ class SpanPatternTest extends PatternTestBase<Span> {
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
-  void ParseNull() => AssertParseNull(SpanPattern.Roundtrip);
+  void ParseNull() => AssertParseNull(SpanPattern.roundtrip);
 
   @Test()
   void WithCulture() {
-    var pattern = SpanPattern.CreateWithInvariantCulture("H:mm").WithCulture(TestCultures.DotTimeSeparator);
+    var pattern = SpanPattern.createWithInvariantCulture("H:mm").WithCulture(TestCultures.DotTimeSeparator);
     var text = pattern.format(new Span(minutes: 90));
     expect("1.30", text);
   }
@@ -306,6 +306,6 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
   @internal
   @override
-  IPattern<Span> CreatePattern() => SpanPattern.Create2(super.Pattern, Culture);
+  IPattern<Span> CreatePattern() => SpanPattern.create(super.Pattern, Culture);
 }
 

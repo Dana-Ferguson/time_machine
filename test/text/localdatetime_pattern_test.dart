@@ -69,36 +69,36 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "a"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['a', 'LocalDateTime']),
     new Data()
       ..Pattern = "dd MM yyyy HH:MM:SS"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['M']),
     // Note incorrect use of "u" (year) instead of "y" (year of era)
     new Data()
       ..Pattern = "dd MM uuuu HH:mm:ss gg"
-      ..Message = TextErrorMessages.EraWithoutYearOfEra,
+      ..Message = TextErrorMessages.eraWithoutYearOfEra,
     // Era specifier and calendar specifier in the same pattern.
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss gg c"
-      ..Message = TextErrorMessages.CalendarAndEra,
+      ..Message = TextErrorMessages.calendarAndEra,
     // Embedded pattern start without ld or lt
     new Data()
       ..Pattern = "yyyy MM dd <"
-      ..Message = TextErrorMessages.UnquotedLiteral
+      ..Message = TextErrorMessages.unquotedLiteral
       ..Parameters.addAll(['<']),
     // Attempt to use a full embedded date/time pattern (not valid for LocalDateTime)
     new Data()
       ..Pattern = "l<yyyy MM dd HH:mm>"
-      ..Message = TextErrorMessages.InvalidEmbeddedPatternType,
+      ..Message = TextErrorMessages.invalidEmbeddedPatternType,
     // Invalid nested pattern (local date pattern doesn't know about embedded patterns)
     new Data()
       ..Pattern = "ld<<D>>"
-      ..Message = TextErrorMessages.UnquotedLiteral
+      ..Message = TextErrorMessages.unquotedLiteral
       ..Parameters.addAll(['<']),
   ];
 
@@ -106,40 +106,40 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
       ..Text = "Complete mismatch"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "(c)"
       ..Text = "(xxx)"
-      ..Message = TextErrorMessages.NoMatchingCalendarSystem,
+      ..Message = TextErrorMessages.noMatchingCalendarSystem,
     // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd"
       ..Text = "2017-02-30"
-      ..Message = TextErrorMessages.DayOfMonthOutOfRange
+      ..Message = TextErrorMessages.dayOfMonthOutOfRange
       ..Parameters.addAll([30, 2, 2017]),
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:00:05"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
       ..Text = "2011-10-19 24:01:00"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:01"
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
       ..Text = "2011-10-19 24:00"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
       ..Text = "2011-10-19 24"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5)
-      ..Message = TextErrorMessages.InvalidHour24,
+      ..Message = TextErrorMessages.invalidHour24,
   ];
 
   @internal List<Data> ParseOnlyData = [
@@ -461,7 +461,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.coptic);
     var value = pattern
         .parse("0284-08-29T12:34:56")
-        .Value;
+        .value;
     expect(new LocalDateTime.at(
         284,
         8,
@@ -521,8 +521,8 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
     String formatted = pattern.format(SampleLocalDateTime);
     var parseResult = pattern.parse(formatted);
-    expect(parseResult.Success, isTrue);
-    var parsed = parseResult.Value;
+    expect(parseResult.success, isTrue);
+    var parsed = parseResult.value;
     expect(parsed, anyOf(SampleLocalDateTime, SampleLocalDateTimeToTicks, SampleLocalDateTimeToMillis, SampleLocalDateTimeToSeconds, SampleLocalDateTimeToMinutes));
 
     /*Assert.That(parsed, Is.EqualTo(SampleLocalDateTime) |

@@ -1,16 +1,13 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
+
 /// Exception thrown to indicate that the specified value could not be parsed.
-///
-/// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
-/// See the thread safety section of the user guide for more information.
-/// </threadsafety>
 // todo: should match FormatException's format better..er (Do I want FormatException.. is it compatible? I wish Exception\Error had a common ancestor)
 class UnparsableValueError extends Error { // extends FormatException {
   final String message;
 
-  /// Creates a new UnparsableValueException with the given message.
+  /// Creates a new [UnparsableValueError] with the given message.
   ///
   /// [message]: The failure message
   UnparsableValueError(this.message);

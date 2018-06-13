@@ -13,5 +13,5 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [usedFields]: Indicates which fields were part of the original text pattern.
   /// [value]: Complete value being parsed
-  @internal ParseResult<T> CalculateValue(PatternFields usedFields, String value);
+  @internal ParseResult<T> calculateValue(PatternFields usedFields, String value);
 }

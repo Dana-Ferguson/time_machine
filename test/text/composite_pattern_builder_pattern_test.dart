@@ -26,11 +26,11 @@ void IsoPattern(String text) {
   // reasonable to assume it parsed correctly...
   var shortPattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
   var pattern = (new CompositePatternBuilder<LocalDateTime>()
-    ..Add(LocalDateTimePattern.ExtendedIso, (_) => true)
-    ..Add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).Build();
+    ..add(LocalDateTimePattern.ExtendedIso, (_) => true)
+    ..add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).build();
   var value = pattern
       .parse(text)
-      .Value;
+      .value;
   String formatted = pattern.format(value);
   expect(text, formatted);
 }
@@ -39,8 +39,8 @@ void IsoPattern(String text) {
 void Format_NoValidPattern()
 {
   var pattern = (new CompositePatternBuilder<LocalDate>()
-    ..Add(LocalDatePattern.Iso, (_) => false)
-    ..Add(LocalDatePattern.CreateWithInvariantCulture("yyyy"), (_) => false)).Build();
+    ..add(LocalDatePattern.iso, (_) => false)
+    ..add(LocalDatePattern.createWithInvariantCulture("yyyy"), (_) => false)).build();
 
   expect(() => pattern.format(new LocalDate(2017, 1, 1)), willThrow<FormatException>());
 }
@@ -48,36 +48,36 @@ void Format_NoValidPattern()
 @Test()
 void Parse() {
   var pattern = (new CompositePatternBuilder<LocalDate>()
-    ..Add(LocalDatePattern.Iso, (_) => true)
-    ..Add(LocalDatePattern.CreateWithInvariantCulture("yyyy"), (_) => false)).Build();
-  expect(pattern.parse("2017-03-20").Success, isTrue);
-  expect(pattern.parse("2017-03").Success, isFalse);
-  expect(pattern.parse("2017").Success, isTrue);
+    ..add(LocalDatePattern.iso, (_) => true)
+    ..add(LocalDatePattern.createWithInvariantCulture("yyyy"), (_) => false)).build();
+  expect(pattern.parse("2017-03-20").success, isTrue);
+  expect(pattern.parse("2017-03").success, isFalse);
+  expect(pattern.parse("2017").success, isTrue);
 }
 
 @Test()
 void Build_Empty()
 {
   var pattern = new CompositePatternBuilder<LocalDate>();
-  expect(() => pattern.Build(), throwsStateError);
+  expect(() => pattern.build(), throwsStateError);
 }
 
 @Test() @SkipMe.unimplemented()
 void Enumerators()
 {
-  var pattern1 = LocalDatePattern.Iso;
-  var pattern2 = LocalDatePattern.CreateWithInvariantCulture("yyyy");
+  var pattern1 = LocalDatePattern.iso;
+  var pattern2 = LocalDatePattern.createWithInvariantCulture("yyyy");
 
   var builder = (new CompositePatternBuilder<LocalDate>()
-    ..Add(pattern1, (_) => true)
-    ..Add(pattern2, (_) => false)).Build();
+    ..add(pattern1, (_) => true)
+    ..add(pattern2, (_) => false)).build();
 
   /*
       CollectionAssert.AreEqual(new[] { pattern1, pattern2 }, builder.ToList());
       CollectionAssert.AreEqual(new[] { pattern1, pattern2 }, builder.OfType<LocalDatePattern>().ToList());
   */
 
-  expect([ pattern1, pattern2 ], (builder as dynamic).patterns); //.ToList());
-  expect([ pattern1, pattern2 ], (builder as dynamic).patterns as List<LocalDatePattern>); // builder.OfType<LocalDatePattern>().ToList());
+  expect([ pattern1, pattern2 ], (builder as dynamic)._patterns); //.ToList());
+  expect([ pattern1, pattern2 ], (builder as dynamic)._patterns as List<LocalDatePattern>); // builder.OfType<LocalDatePattern>().ToList());
 }
 

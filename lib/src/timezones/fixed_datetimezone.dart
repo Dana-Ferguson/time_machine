@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     return '${DateTimeZone.utcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
   }
 
-  return DateTimeZone.utcId + OffsetPattern.GeneralInvariant.format(offset);
+  return DateTimeZone.utcId + OffsetPattern.generalInvariant.format(offset);
 }
 
 /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
@@ -79,8 +79,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 //print('WARN: WE CAN NOT PARSE DATETIMEZONE IDs AT THIS TIME. SAD FACE.'); // ${StackTrace.current}'); // todo: get real parsing
 //return null;
 
-  var parseResult = OffsetPattern.GeneralInvariant.parse(id.substring(DateTimeZone.utcId.length));
-  return parseResult.Success ? new DateTimeZone.forOffset(parseResult.Value) : null;
+  var parseResult = OffsetPattern.generalInvariant.parse(id.substring(DateTimeZone.utcId.length));
+  return parseResult.success ? new DateTimeZone.forOffset(parseResult.value) : null;
 }
 
 /// Returns the fixed offset for this time zone.

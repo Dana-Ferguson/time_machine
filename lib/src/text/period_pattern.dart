@@ -13,21 +13,17 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
 /// Represents a pattern for parsing and formatting [Period] values.
-///
-/// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-/*sealed*/ class PeriodPattern implements IPattern<Period> {
+class PeriodPattern implements IPattern<Period> {
   /// Pattern which uses the normal ISO format for all the supported ISO
   /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
   /// No normalization is carried out, and a period may contain weeks as well as years, months and days.
   /// Each element may also be negative, independently of other elements. This pattern round-trips its
   /// values: a parse/format cycle will produce an identical period, including units.
   ///
-  /// <value>
   /// Pattern which uses the normal ISO format for all the supported ISO
   /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
-  /// </value>
-  static final PeriodPattern Roundtrip = new PeriodPattern(new _RoundtripPatternImpl());
+  static final PeriodPattern roundtrip = new PeriodPattern._(new _RoundtripPatternImpl());
 
   /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
   /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized
@@ -38,11 +34,11 @@ import 'package:time_machine/time_machine_text.dart';
   /// if the period contains more than [System.Int64.MaxValue] ticks when the
   /// combined weeks/days/time portions are considered. Such a period could never
   /// be useful anyway, however.
-  static final PeriodPattern NormalizingIso = new PeriodPattern(new _NormalizingIsoPatternImpl());
+  static final PeriodPattern NormalizingIso = new PeriodPattern._(new _NormalizingIsoPatternImpl());
 
-  @private final IPattern<Period> pattern;
+  final IPattern<Period> _pattern;
 
-  @private PeriodPattern(IPattern<Period> pattern) : this.pattern = Preconditions.checkNotNull(pattern, 'pattern');
+  PeriodPattern._(IPattern<Period> pattern) : this._pattern = Preconditions.checkNotNull(pattern, 'pattern');
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -51,13 +47,13 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Period> parse(String text) => pattern.parse(text);
+  ParseResult<Period> parse(String text) => _pattern.parse(text);
 
   /// Formats the given period as text according to the rules of this pattern.
   ///
   /// [value]: The period to format.
   /// Returns: The period formatted according to this pattern.
-  String format(Period value) => pattern.format(value);
+  String format(Period value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuffer].
@@ -65,57 +61,57 @@ import 'package:time_machine/time_machine_text.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuffer` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(Period value, StringBuffer builder) => pattern.appendFormat(value, builder);
+  StringBuffer appendFormat(Period value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
-  @private static void AppendValue(StringBuffer builder, int value, String suffix) {
+  static void _appendValue(StringBuffer builder, int value, String suffix) {
     // Avoid having a load of conditions in the calling code by checking here
     if (value == 0) {
       return;
     }
-    FormatHelper.FormatInvariant(value, builder);
+    FormatHelper.formatInvariant(value, builder);
     builder.write(suffix);
   }
 
-  @private static ParseResult<Period> InvalidUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.ForInvalidValue<Period>(cursor, TextErrorMessages.InvalidUnitSpecifier, [unitCharacter]);
+  static ParseResult<Period> _invalidUnit(ValueCursor cursor, String unitCharacter) =>
+      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.invalidUnitSpecifier, [unitCharacter]);
 
-  @private static ParseResult<Period> RepeatedUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.ForInvalidValue<Period>(cursor, TextErrorMessages.RepeatedUnitSpecifier, [unitCharacter]);
+  static ParseResult<Period> _repeatedUnit(ValueCursor cursor, String unitCharacter) =>
+      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.repeatedUnitSpecifier, [unitCharacter]);
 
-  @private static ParseResult<Period> MisplacedUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.ForInvalidValue<Period>(cursor, TextErrorMessages.MisplacedUnitSpecifier, [unitCharacter]);
+  static ParseResult<Period> _misplacedUnit(ValueCursor cursor, String unitCharacter) =>
+      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.misplacedUnitSpecifier, [unitCharacter]);
 }
 
-@private /*sealed*/ class _RoundtripPatternImpl implements IPattern<Period> {
+class _RoundtripPatternImpl implements IPattern<Period> {
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return ParseResult.ArgumentNull<Period>("text");
+      return ParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return ParseResult.ValueStringEmpty;
+      return ParseResult.valueStringEmpty;
     }
 
     ValueCursor valueCursor = new ValueCursor(text);
 
-    valueCursor.MoveNext();
-    if (valueCursor.Current != 'P') {
-      return ParseResult.MismatchedCharacter<Period>(valueCursor, 'P');
+    valueCursor.moveNext();
+    if (valueCursor.current != 'P') {
+      return ParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
     PeriodBuilder builder = new PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
-    while (valueCursor.MoveNext()) {
+    while (valueCursor.moveNext()) {
       var unitValue = new OutBox(0);
-      if (inDate && valueCursor.Current == 'T') {
+      if (inDate && valueCursor.current == 'T') {
         inDate = false;
         continue;
       }
-      var failure = valueCursor.ParseInt64<Period>(unitValue, 'Period');
+      var failure = valueCursor.parseInt64<Period>(unitValue, 'Period');
       if (failure != null) {
         return failure;
       }
-      if (valueCursor.Length == valueCursor.Index) {
-        return ParseResult.EndOfString<Period>(valueCursor);
+      if (valueCursor.length == valueCursor.index) {
+        return ParseResult.endOfString<Period>(valueCursor);
       }
       // Various failure cases:
       // - Repeated unit (e.g. P1M2M)
@@ -125,7 +121,7 @@ import 'package:time_machine/time_machine_text.dart';
       // - Unit is invalid (e.g. P5J)
       // - Unit is missing (e.g. P5)
       PeriodUnits unit;
-      switch (valueCursor.Current) {
+      switch (valueCursor.current) {
         case 'Y':
           unit = PeriodUnits.years;
           break;
@@ -154,26 +150,26 @@ import 'package:time_machine/time_machine_text.dart';
           unit = PeriodUnits.nanoseconds;
           break;
         default:
-          return PeriodPattern.InvalidUnit(valueCursor, valueCursor.Current);
+          return PeriodPattern._invalidUnit(valueCursor, valueCursor.current);
       }
       if ((unit & unitsSoFar).value != 0) {
-        return PeriodPattern.RepeatedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._repeatedUnit(valueCursor, valueCursor.current);
       }
 
       // This handles putting months before years, for example. Less significant units
       // have higher integer representations.
       if (unit < unitsSoFar) {
-        return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
       }
       // The result of checking "there aren't any time units in this unit" should be
       // equal to "we're still in the date part".
       if (((unit & PeriodUnits.allTimeUnits).value == 0) != inDate) {
-        return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
       }
       builder[unit] = unitValue.value;
       unitsSoFar |= unit;
     }
-    return ParseResult.ForValue<Period>(builder.build());
+    return ParseResult.forValue<Period>(builder.build());
   }
 
   String format(Period value) => appendFormat(value, new StringBuffer()).toString();
@@ -182,55 +178,55 @@ import 'package:time_machine/time_machine_text.dart';
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
     builder.write("P");
-    PeriodPattern.AppendValue(builder, value.years, "Y");
-    PeriodPattern.AppendValue(builder, value.months, "M");
-    PeriodPattern.AppendValue(builder, value.weeks, "W");
-    PeriodPattern.AppendValue(builder, value.days, "D");
+    PeriodPattern._appendValue(builder, value.years, "Y");
+    PeriodPattern._appendValue(builder, value.months, "M");
+    PeriodPattern._appendValue(builder, value.weeks, "W");
+    PeriodPattern._appendValue(builder, value.days, "D");
     if (value.hasTimeComponent) {
       builder.write("T");
-      PeriodPattern.AppendValue(builder, value.hours, "H");
-      PeriodPattern.AppendValue(builder, value.minutes, "M");
-      PeriodPattern.AppendValue(builder, value.seconds, "S");
-      PeriodPattern.AppendValue(builder, value.milliseconds, "s");
-      PeriodPattern.AppendValue(builder, value.ticks, "t");
-      PeriodPattern.AppendValue(builder, value.nanoseconds, "n");
+      PeriodPattern._appendValue(builder, value.hours, "H");
+      PeriodPattern._appendValue(builder, value.minutes, "M");
+      PeriodPattern._appendValue(builder, value.seconds, "S");
+      PeriodPattern._appendValue(builder, value.milliseconds, "s");
+      PeriodPattern._appendValue(builder, value.ticks, "t");
+      PeriodPattern._appendValue(builder, value.nanoseconds, "n");
     }
     return builder;
   }
 }
 
-@private /*sealed*/ class _NormalizingIsoPatternImpl implements IPattern<Period> {
+class _NormalizingIsoPatternImpl implements IPattern<Period> {
   // TODO(misc): Tidy this up a *lot*.
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return ParseResult.ArgumentNull<Period>("text");
+      return ParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return ParseResult.ValueStringEmpty;
+      return ParseResult.valueStringEmpty;
     }
 
     ValueCursor valueCursor = new ValueCursor(text);
 
-    valueCursor.MoveNext();
-    if (valueCursor.Current != 'P') {
-      return ParseResult.MismatchedCharacter<Period>(valueCursor, 'P');
+    valueCursor.moveNext();
+    if (valueCursor.current != 'P') {
+      return ParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
     PeriodBuilder builder = new PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
-    while (valueCursor.MoveNext()) {
+    while (valueCursor.moveNext()) {
       OutBox unitValue = new OutBox(0);
-      if (inDate && valueCursor.Current == 'T') {
+      if (inDate && valueCursor.current == 'T') {
         inDate = false;
         continue;
       }
-      bool negative = valueCursor.Current == '-';
-      var failure = valueCursor.ParseInt64<Period>(unitValue, 'Period');
+      bool negative = valueCursor.current == '-';
+      var failure = valueCursor.parseInt64<Period>(unitValue, 'Period');
       if (failure != null) {
         return failure;
       }
-      if (valueCursor.Length == valueCursor.Index) {
-        return ParseResult.EndOfString<Period>(valueCursor);
+      if (valueCursor.length == valueCursor.index) {
+        return ParseResult.endOfString<Period>(valueCursor);
       }
       // Various failure cases:
       // - Repeated unit (e.g. P1M2M)
@@ -240,7 +236,7 @@ import 'package:time_machine/time_machine_text.dart';
       // - Unit is invalid (e.g. P5J)
       // - Unit is missing (e.g. P5)
       PeriodUnits unit;
-      switch (valueCursor.Current) {
+      switch (valueCursor.current) {
         case 'Y':
           unit = PeriodUnits.years;
           break;
@@ -264,39 +260,39 @@ import 'package:time_machine/time_machine_text.dart';
           unit = PeriodUnits.nanoseconds;
           break; // Special handling below
         default:
-          return PeriodPattern.InvalidUnit(valueCursor, valueCursor.Current);
+          return PeriodPattern._invalidUnit(valueCursor, valueCursor.current);
       }
       if ((unit.value & unitsSoFar.value) != 0) {
-        return PeriodPattern.RepeatedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._repeatedUnit(valueCursor, valueCursor.current);
       }
 
       // This handles putting months before years, for example. Less significant units
       // have higher integer representations.
       if (unit < unitsSoFar) {
-        return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
       }
 
       // The result of checking "there aren't any time units in this unit" should be
       // equal to "we're still in the date part".
       if (((unit.value & PeriodUnits.allTimeUnits.value) == 0) != inDate) {
-        return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
+        return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
       }
 
       // Seen a . or , which need special handling.
       if (unit == PeriodUnits.nanoseconds) {
         // Check for already having seen seconds, e.g. PT5S0.5
         if ((unitsSoFar & PeriodUnits.seconds).value != 0) {
-          return PeriodPattern.MisplacedUnit(valueCursor, valueCursor.Current);
+          return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
         }
         builder.seconds = unitValue.value;
 
-        if (!valueCursor.MoveNext()) {
-          return ParseResult.MissingNumber<Period>(valueCursor);
+        if (!valueCursor.moveNext()) {
+          return ParseResult.missingNumber<Period>(valueCursor);
         }
-        int totalNanoseconds = valueCursor.ParseFraction(9, 9, 1);
+        int totalNanoseconds = valueCursor.parseFraction(9, 9, 1);
         // Can cope with at most 999999999 nanoseconds
         if (totalNanoseconds == null) {
-          return ParseResult.MissingNumber<Period>(valueCursor);
+          return ParseResult.missingNumber<Period>(valueCursor);
         }
         // Use whether or not the seconds value was negative (even if 0)
         // as the indication of whether this value is negative.
@@ -307,22 +303,22 @@ import 'package:time_machine/time_machine_text.dart';
         builder.ticks = (totalNanoseconds ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerMillisecond;
         builder.nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerTick;
 
-        if (valueCursor.Current != 'S') {
-          return ParseResult.MismatchedCharacter<Period>(valueCursor, 'S');
+        if (valueCursor.current != 'S') {
+          return ParseResult.mismatchedCharacter<Period>(valueCursor, 'S');
         }
-        if (valueCursor.MoveNext()) {
-          return ParseResult.ExpectedEndOfString<Period>(valueCursor);
+        if (valueCursor.moveNext()) {
+          return ParseResult.expectedEndOfString<Period>(valueCursor);
         }
-        return ParseResult.ForValue<Period>(builder.build());
+        return ParseResult.forValue<Period>(builder.build());
       }
 
       builder[unit] = unitValue.value;
       unitsSoFar |= unit;
     }
     if (unitsSoFar.value == 0) {
-      return ParseResult.ForInvalidValue<Period>(valueCursor, TextErrorMessages.EmptyPeriod);
+      return ParseResult.forInvalidValue<Period>(valueCursor, TextErrorMessages.emptyPeriod);
     }
-    return ParseResult.ForValue<Period>(builder.build());
+    return ParseResult.forValue<Period>(builder.build());
   }
 
   String format(Period value) => appendFormat(value, new StringBuffer()).toString();
@@ -337,14 +333,14 @@ import 'package:time_machine/time_machine_text.dart';
       return builder;
     }
     builder.write("P");
-    PeriodPattern.AppendValue(builder, value.years, "Y");
-    PeriodPattern.AppendValue(builder, value.months, "M");
-    PeriodPattern.AppendValue(builder, value.weeks, "W");
-    PeriodPattern.AppendValue(builder, value.days, "D");
+    PeriodPattern._appendValue(builder, value.years, "Y");
+    PeriodPattern._appendValue(builder, value.months, "M");
+    PeriodPattern._appendValue(builder, value.weeks, "W");
+    PeriodPattern._appendValue(builder, value.days, "D");
     if (value.hasTimeComponent) {
       builder.write("T");
-      PeriodPattern.AppendValue(builder, value.hours, "H");
-      PeriodPattern.AppendValue(builder, value.minutes, "M");
+      PeriodPattern._appendValue(builder, value.hours, "H");
+      PeriodPattern._appendValue(builder, value.minutes, "M");
       int nanoseconds = value.milliseconds * TimeConstants.nanosecondsPerMillisecond + value.ticks * TimeConstants.nanosecondsPerTick + value.nanoseconds;
       int seconds = value.seconds;
       if (nanoseconds != 0 || seconds != 0) {
@@ -353,10 +349,10 @@ import 'package:time_machine/time_machine_text.dart';
           nanoseconds = -nanoseconds;
           seconds = -seconds;
         }
-        FormatHelper.FormatInvariant(seconds, builder);
+        FormatHelper.formatInvariant(seconds, builder);
         if (nanoseconds != 0) {
           builder.write(".");
-          FormatHelper.AppendFractionTruncate(nanoseconds, 9, 9, builder);
+          FormatHelper.appendFractionTruncate(nanoseconds, 9, 9, builder);
         }
         builder.write("S");
       }

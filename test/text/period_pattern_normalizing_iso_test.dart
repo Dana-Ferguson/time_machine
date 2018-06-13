@@ -37,88 +37,88 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   @internal final List<Data> ParseFailureData = [
     new Data()
       ..Text = "X5H"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['P']),
     new Data()
       ..Text = ""
-      ..Message = TextErrorMessages.ValueStringEmpty,
+      ..Message = TextErrorMessages.valueStringEmpty,
     new Data()
       ..Text = "P5J"
-      ..Message = TextErrorMessages.InvalidUnitSpecifier
+      ..Message = TextErrorMessages.invalidUnitSpecifier
       ..Parameters.addAll(['J']),
     new Data()
       ..Text = "P5D10M"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['M']),
     new Data()
       ..Text = "P6M5D6D"
-      ..Message = TextErrorMessages.RepeatedUnitSpecifier
+      ..Message = TextErrorMessages.repeatedUnitSpecifier
       ..Parameters.addAll(['D']),
     new Data()
       ..Text = "PT5M10H"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
       ..Text = "P5H"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
       ..Text = "PT5Y"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['Y']),
     // Invalid in ISO.
     new Data()
       ..Text = "P"
-      ..Message = TextErrorMessages.EmptyPeriod,
+      ..Message = TextErrorMessages.emptyPeriod,
     new Data()
       ..Text = "PX"
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "P10M-"
-      ..Message = TextErrorMessages.EndOfString,
+      ..Message = TextErrorMessages.endOfString,
     new Data()
       ..Text = "P5"
-      ..Message = TextErrorMessages.EndOfString,
+      ..Message = TextErrorMessages.endOfString,
     new Data()
       ..Text = "PT9223372036854775808H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
       ..Text = "PT-9223372036854775809H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
       ..Text = "PT10000000000000000000H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
       ..Text = "PT-10000000000000000000H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-10000000000000000000", 'Period']),
     new Data()
       ..Text = "P5.5S"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['.']),
     new Data()
       ..Text = "PT.5S"
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "PT0.5X"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['S']),
     new Data()
       ..Text = "PT0.X"
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "PT5S0.5S"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['.']),
     new Data()
       ..Text = "PT5."
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "PT5.5SX"
-      ..Message = TextErrorMessages.ExpectedEndOfString
+      ..Message = TextErrorMessages.expectedEndOfString
   ];
 
   @internal final List<Data> ParseOnlyData = [

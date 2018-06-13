@@ -19,48 +19,48 @@ import 'package:time_machine/time_machine_text.dart';
 /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.
 @internal abstract class TextCursor {
   /// Gets the length of the string being parsed.
-  @internal final int Length;
+  @internal final int length;
 
   /// Gets the string being parsed.
-  @internal final String Value;
+  @internal final String value;
 
   /// A nul character. This character is not allowed in any parsable string and is used to
   /// indicate that the current character is not set.
-  @internal static final String Nul = new String.fromCharCode(0);
+  @internal static final String nul = new String.fromCharCode(0);
 
   /// Initializes a new instance to parse the given value.
   // Validated by caller.
-  @protected TextCursor(this.Value) : Length = Value.length {
-    Move(-1);
+  @protected TextCursor(this.value) : length = value.length {
+    move(-1);
   }
 
   /// Gets the current character.
   String _current;
-  @internal String get Current => _current;
+  @internal String get current => _current;
 
   /// Gets a value indicating whether this instance has more characters.
   ///
   /// <value>
   /// `true` if this instance has more characters; otherwise, `false`.
   /// </value>
-  @internal bool get HasMoreCharacters => (Index + 1) < Length;
+  @internal bool get hasMoreCharacters => (index + 1) < length;
 
   /// Gets the current index into the string being parsed.
   // todo: { get; private set; }
-  @internal int Index;
+  @internal int index;
 
   /// Gets the remainder the string that has not been parsed yet.
-  @internal String get Remainder => Value.substring(Index);
+  @internal String get remainder => value.substring(index);
 
   ///   Returns a [String] that represents this instance.
   ///
   ///   A [String] that represents this instance.
-  @override String toString() => stringInsert(Value, Index, '^');
+  @override String toString() => stringInsert(value, index, '^');
 
-  /// Returns the next character if there is one or [Nul] if there isn't.
+  /// Returns the next character if there is one or [nul] if there isn't.
   ///
   /// Returns: 
-  @internal String PeekNext() => (HasMoreCharacters ? Value[Index + 1] : Nul);
+  @internal String peekNext() => (hasMoreCharacters ? value[index + 1] : nul);
 
   /// Moves the specified target index. If the new index is out of range of the valid indicies
   /// for this string then the index is set to the beginning or the end of the string whichever
@@ -68,54 +68,54 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [targetIndex]: Index of the target.
   /// Returns: `true` if the requested index is in range.
-  @internal bool Move(int targetIndex) {
+  @internal bool move(int targetIndex) {
     if (targetIndex >= 0) {
-      if (targetIndex < Length) {
-        Index = targetIndex;
-        _current = Value[Index];
+      if (targetIndex < length) {
+        index = targetIndex;
+        _current = value[index];
         return true;
       }
       else {
-        _current = Nul;
-        Index = Length;
+        _current = nul;
+        index = length;
         return false;
       }
     }
-    _current = Nul;
-    Index = -1;
+    _current = nul;
+    index = -1;
     return false;
   }
 
   /// Moves to the next character.
   ///
   /// Returns: `true` if the requested index is in range.
-  @internal bool MoveNext() {
+  @internal bool moveNext() {
     // Logically this is Move(Index + 1), but it's micro-optimized as we
     // know we'll never hit the lower limit this way.
-    int targetIndex = Index + 1;
-    if (targetIndex < Length) {
-      Index = targetIndex;
-      _current = Value[Index];
+    int targetIndex = index + 1;
+    if (targetIndex < length) {
+      index = targetIndex;
+      _current = value[index];
       return true;
     }
-    _current = Nul;
-    Index = Length;
+    _current = nul;
+    index = length;
     return false;
   }
 
   /// Moves to the previous character.
   ///
   /// Returns: `true` if the requested index is in range.
-  @internal bool MovePrevious() {
+  @internal bool movePrevious() {
     // Logically this is Move(Index - 1), but it's micro-optimized as we
     // know we'll never hit the upper limit this way.
-    if (Index > 0) {
-      Index--;
-      _current = Value[Index];
+    if (index > 0) {
+      index--;
+      _current = value[index];
       return true;
     }
-    _current = Nul;
-    Index = -1;
+    _current = nul;
+    index = -1;
     return false;
   }
 }

@@ -28,36 +28,36 @@ new OffsetPatternParser().parsePattern("HH:mm", TimeMachineFormatInfo.invariantI
 void ParsePartial_ValidInMiddle()
 {
   var value = new ValueCursor("x17:30y");
-  value.MoveNext();
-  value.MoveNext();
+  value.moveNext();
+  value.moveNext();
   // Start already looking at the value to parse
-  expect('1', value.Current);
+  expect('1', value.current);
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.fromHoursAndMinutes(17, 30), result.Value);
+  expect(new Offset.fromHoursAndMinutes(17, 30), result.value);
   // Finish just after the value
-  expect('y', value.Current);
+  expect('y', value.current);
 }
 
 @Test()
 void ParsePartial_ValidAtEnd()
 {
   var value = new ValueCursor("x17:30");
-  value.MoveNext();
-  value.MoveNext();
+  value.moveNext();
+  value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.fromHoursAndMinutes(17, 30), result.Value);
+  expect(new Offset.fromHoursAndMinutes(17, 30), result.value);
   // Finish just after the value, which in this case is at the end.
-  expect(TextCursor.Nul, value.Current);
+  expect(TextCursor.nul, value.current);
 }
 
 @Test()
 void Parse_Partial_Invalid()
 {
   var value = new ValueCursor("x17:y");
-  value.MoveNext();
-  value.MoveNext();
+  value.moveNext();
+  value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(() => result.GetValueOrThrow(), willThrow<UnparsableValueError>());
+  expect(() => result.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
 @Test()
@@ -93,7 +93,7 @@ void UnhandledLiteral(String text, bool valid) {
 @private class SampleBucket extends ParseBucket<LocalDate> {
   @internal
   @override
-  ParseResult<LocalDate> CalculateValue(PatternFields usedFields, String value) {
+  ParseResult<LocalDate> calculateValue(PatternFields usedFields, String value) {
     throw new UnimplementedError();
   }
 }

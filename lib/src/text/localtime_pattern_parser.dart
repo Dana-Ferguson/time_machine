@@ -11,60 +11,60 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Pattern parser for [LocalTime] values.
 @internal /*sealed*/ class LocalTimePatternParser implements IPatternParser<LocalTime> {
-  @private final LocalTime templateValue;
+  final LocalTime _templateValue;
 
-  @private static final Map<String /*char*/, CharacterHandler<LocalTime, LocalTimeParseBucket>> PatternCharacterHandlers =
+  static final Map<String /*char*/, CharacterHandler<LocalTime, LocalTimeParseBucket>> _patternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<LocalTime, LocalTimeParseBucket>*/,
     '\'': SteppedPatternBuilder.handleQuote /**<LocalTime, LocalTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<LocalTime, LocalTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<LocalTime, LocalTimeParseBucket>*/,
     '.': TimePatternHelper.createPeriodHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalTime>*/),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<LocalTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours24, 0, 23, (value) => value.hour, (bucket, value) => bucket.Hours24 = value),
+        2, PatternFields.hours24, 0, 23, (value) => value.hour, (bucket, value) => bucket.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.seconds = value),
     'f': TimePatternHelper.createFractionHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<LocalTime, LocalTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.FractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.AmPm = value)
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
+    't': TimePatternHelper.createAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.amPm = value)
   };
 
-  LocalTimePatternParser(this.templateValue);
+  LocalTimePatternParser(this._templateValue);
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
   IPattern<LocalTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
+      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
       String /*char*/ patternCharacter = patternText[0];
-      patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
+      patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
       if (patternText == null) {
-        throw new InvalidPatternError.format(TextErrorMessages.UnknownStandardFormat, [patternCharacter, 'LocalTime']);
+        throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalTime']);
       }
     }
 
     var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
-            () => new LocalTimeParseBucket(templateValue));
-    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+            () => new LocalTimeParseBucket(_templateValue));
+    patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
-    return patternBuilder.build(templateValue);
+    return patternBuilder.build(_templateValue);
   }
 
-  @private String ExpandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String _expandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 't':
         return formatInfo.dateTimeFormat.shortTimePattern;
@@ -82,84 +82,84 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
 @internal /*sealed*/ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
-  @internal final LocalTime TemplateValue;
+  @internal final LocalTime templateValue;
 
   /// The fractions of a second in nanoseconds, in the range [0, 999999999]
-  @internal int FractionalSeconds = 0;
+  @internal int fractionalSeconds = 0;
 
   /// The hours in the range [0, 23].
-  @internal int Hours24 = 0;
+  @internal int hours24 = 0;
 
   /// The hours in the range [1, 12].
-  @internal int Hours12 = 0;
+  @internal int hours12 = 0;
 
   /// The minutes in the range [0, 59].
-  @internal int Minutes = 0;
+  @internal int minutes = 0;
 
   /// The seconds in the range [0, 59].
-  @internal int Seconds = 0;
+  @internal int seconds = 0;
 
   /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
   /// where we're parsing but there is no AM or PM designator.
-  @internal int AmPm = 0;
+  @internal int amPm = 0;
 
-  @internal LocalTimeParseBucket(this.TemplateValue);
+  @internal LocalTimeParseBucket(this.templateValue);
 
   /// Calculates the value from the parsed pieces.
   @internal
   @override
-  ParseResult<LocalTime> CalculateValue(PatternFields usedFields, String text) {
+  ParseResult<LocalTime> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedTime)) {
-      return ParseResult.ForValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(Hours24, Minutes, Seconds, FractionalSeconds));
+      return ParseResult.forValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(hours24, minutes, seconds, fractionalSeconds));
     }
-    if (AmPm == 2) {
-      AmPm = TemplateValue.hour ~/ 12;
+    if (amPm == 2) {
+      amPm = templateValue.hour ~/ 12;
     }
     var hour = new OutBox<int>(0);
-    ParseResult<LocalTime> failure = DetermineHour(usedFields, text, /*todo:out int*/ hour);
+    ParseResult<LocalTime> failure = _determineHour(usedFields, text, /*todo:out int*/ hour);
     if (failure != null) {
       return failure;
     }
-    int minutes = usedFields.hasAny(PatternFields.minutes) ? Minutes : TemplateValue.minute;
-    int seconds = usedFields.hasAny(PatternFields.seconds) ? Seconds : TemplateValue.second;
-    int fraction = usedFields.hasAny(PatternFields.fractionalSeconds) ? FractionalSeconds : TemplateValue.nanosecondOfSecond;
-    return ParseResult.ForValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(hour.value, minutes, seconds, fraction));
+    int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minute;
+    int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.second;
+    int _fraction = usedFields.hasAny(PatternFields.fractionalSeconds) ? fractionalSeconds : templateValue.nanosecondOfSecond;
+    return ParseResult.forValue<LocalTime>(new LocalTime.fromHourMinuteSecondNanosecond(hour.value, _minutes, _seconds, _fraction));
   }
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);
   //static const PatternFields amPm = const PatternFields(1 << 6);
-  static const PatternFields hours12_booleanOR_amPm = const PatternFields(1 << 1 | 1 << 6);
+  static const PatternFields _hours12_booleanOR_amPm = const PatternFields(1 << 1 | 1 << 6);
 
-  @private ParseResult<LocalTime> DetermineHour(PatternFields usedFields, String text, /*todo:out*/ OutBox<int> hour) {
+  ParseResult<LocalTime> _determineHour(PatternFields usedFields, String text, /*todo:out*/ OutBox<int> hour) {
     hour.value = 0;
     if (usedFields.hasAny(PatternFields.hours24)) {
       if (usedFields.hasAll(PatternFields.hours12 | PatternFields.hours24)) {
-        if (Hours12 % 12 != Hours24 % 12) {
-          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
+        if (hours12 % 12 != hours24 % 12) {
+          return ParseResult.inconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
         }
       }
       if (usedFields.hasAny(PatternFields.amPm)) {
-        if (Hours24 ~/ 12 != AmPm) {
-          return ParseResult.InconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
+        if (hours24 ~/ 12 != amPm) {
+          return ParseResult.inconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
         }
       }
-      hour.value = Hours24;
+      hour.value = hours24;
       return null;
     }
 
     // Okay, it's definitely valid - but we've still got 8 possibilities for what's been specified.
     var x = usedFields & (PatternFields.hours12 | PatternFields.amPm);
-    if (x == hours12_booleanOR_amPm) {
-      hour.value = (Hours12 % 12) + AmPm * 12;
+    if (x == _hours12_booleanOR_amPm) {
+      hour.value = (hours12 % 12) + amPm * 12;
     }
     else if (x == PatternFields.hours12) {
-      hour.value = (Hours12 % 12) + (TemplateValue.hour ~/ 12) * 12;
+      hour.value = (hours12 % 12) + (templateValue.hour ~/ 12) * 12;
     }
     else if (x == PatternFields.amPm) {
-      hour.value = (TemplateValue.hour % 12) + AmPm * 12;
+      hour.value = (templateValue.hour % 12) + amPm * 12;
     }
     else {
-      hour.value = TemplateValue.hour;
+      hour.value = templateValue.hour;
     }
 
     /*

@@ -69,15 +69,15 @@ abstract class PatternTestBase<T>
   {
     String text = pattern.format(value);
     var parseResult = pattern.parse(text);
-    expect(value, parseResult.Value);
+    expect(value, parseResult.value);
   }
 
   void AssertParseNull(IPattern<T> pattern)
   {
     var result = pattern.parse(null);
-    expect(result.Success, isFalse);
+    expect(result.success, isFalse);
     // Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
-    expect(result.Exception, new isInstanceOf<ArgumentError>());
+    expect(result.error, new isInstanceOf<ArgumentError>());
   }
 }
 

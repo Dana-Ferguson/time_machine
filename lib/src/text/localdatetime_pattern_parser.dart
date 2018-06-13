@@ -11,61 +11,61 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// Parser for patterns of [LocalDateTime] values.
 @internal /*sealed*/ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   // Split the template value into date and time once, to avoid doing it every time we parse.
-  @private final LocalDate templateValueDate;
-  @private final LocalTime templateValueTime;
+  final LocalDate _templateValueDate;
+  final LocalTime _templateValueTime;
 
-  @private static final Map<String /*char*/, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> PatternCharacterHandlers =
+  static final Map<String /*char*/, CharacterHandler<LocalDateTime, LocalDateTimeParseBucket>> _patternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\'': SteppedPatternBuilder.handleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<LocalDateTime, LocalDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.DateSeparatorMismatch /**<LocalDateTime>*/),
-    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.MismatchedCharacter /**<LocalDateTime>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<LocalDateTime>*/),
+    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.mismatchedCharacter /**<LocalDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
-    bucket.Date.YearOfEra = value),
+    bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField /**<LocalDateTime, LocalDateTimeParseBucket>*/
-      (4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Date.Year = value),
+      (4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
     'M': DatePatternHelper.createMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
-      ((value) => value.month, (bucket, value) => bucket.Date.MonthOfYearText = value, (bucket, value) => bucket.Date.MonthOfYearNumeric = value),
+      ((value) => value.month, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
     'd': DatePatternHelper.createDayHandler<LocalDateTime, LocalDateTimeParseBucket>
-      ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.Date.DayOfMonth = value, (bucket, value) =>
-    bucket.Date.DayOfWeek = value),
+      ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
+    bucket.date.dayOfWeek = value),
     '.': TimePatternHelper.createPeriodHandler<LocalDateTime, LocalDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<LocalDateTime, LocalDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.TimeSeparatorMismatch /**<LocalDateTime>*/),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<LocalDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.Hours12 = value),
+      (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.Time.Hours24 = value),
+      (2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Time.Minutes = value),
+      (2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Time.Seconds = value),
+      (2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.FractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.AmPm = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
+    't': TimePatternHelper.createAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
     'c': DatePatternHelper.createCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.calendar, (bucket, value) =>
-    bucket.Date.Calendar = value),
-    'g': DatePatternHelper.createEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.Date),
+    bucket.date.calendar = value),
+    'g': DatePatternHelper.createEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
     'l': (cursor, builder) =>
-        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.Date, (bucket) => bucket.Time, (value) => value.date, (value) => value.time, null),
+        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.time, null),
   };
 
   @internal LocalDateTimePatternParser(LocalDateTime templateValue)
-      : templateValueDate = templateValue.date,
-        templateValueTime = templateValue.time;
+      : _templateValueDate = templateValue.date,
+        _templateValueTime = templateValue.time;
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
   IPattern<LocalDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.FormatStringEmpty);
+      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
@@ -82,20 +82,20 @@ import 'package:time_machine/time_machine_patterns.dart';
       if (patternCharacter == 's') {
         return LocalDateTimePatterns.GeneralIsoPatternImpl;
       }
-      patternText = ExpandStandardFormatPattern(patternCharacter, formatInfo);
+      patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
       if (patternText == null) {
-        throw new InvalidPatternError.format(TextErrorMessages.UnknownStandardFormat, [patternCharacter, 'LocalDateTime']);
+        throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDateTime']);
       }
     }
 
     var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
-            () => new LocalDateTimeParseBucket(templateValueDate, templateValueTime));
-    patternBuilder.parseCustomPattern(patternText, PatternCharacterHandlers);
+            () => new LocalDateTimeParseBucket(_templateValueDate, _templateValueTime));
+    patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
-    return patternBuilder.build(templateValueDate.at(templateValueTime));
+    return patternBuilder.build(_templateValueDate.at(_templateValueTime));
   }
 
-  @private String ExpandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String _expandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'f':
         return formatInfo.dateTimeFormat.longDatePattern + " " + formatInfo.dateTimeFormat.shortTimePattern;
@@ -113,53 +113,53 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 @internal /*sealed*/ class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket Date;
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket Time;
+  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
 
   @internal LocalDateTimeParseBucket(LocalDate templateValueDate, LocalTime templateValueTime)
-      : Date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
-        Time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
+      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
+        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
 
   /// Combines the values in a date bucket with the values in a time bucket.
   ///
-  /// This would normally be the [CalculateValue] method, but we want
+  /// This would normally be the [calculateValue] method, but we want
   /// to be able to use the same logic when parsing an [OffsetDateTime]
   /// and [ZonedDateTime].
-  @internal static ParseResult<LocalDateTime> CombineBuckets(PatternFields usedFields,
+  @internal static ParseResult<LocalDateTime> combineBuckets(PatternFields usedFields,
 /*LocalDatePatternParser.*/LocalDateParseBucket dateBucket,
 /*LocalTimePatternParser.*/LocalTimeParseBucket timeBucket,
       String text) {
     // Handle special case of hour = 24
     bool hour24 = false;
-    if (timeBucket.Hours24 == 24) {
-      timeBucket.Hours24 = 0;
+    if (timeBucket.hours24 == 24) {
+      timeBucket.hours24 = 0;
       hour24 = true;
     }
 
-    ParseResult<LocalDate> dateResult = dateBucket.CalculateValue(usedFields & PatternFields.allDateFields, text);
-    if (!dateResult.Success) {
-      return dateResult.ConvertError<LocalDateTime>();
+    ParseResult<LocalDate> dateResult = dateBucket.calculateValue(usedFields & PatternFields.allDateFields, text);
+    if (!dateResult.success) {
+      return dateResult.convertError<LocalDateTime>();
     }
-    ParseResult<LocalTime> timeResult = timeBucket.CalculateValue(usedFields & PatternFields.allTimeFields, text);
-    if (!timeResult.Success) {
-      return timeResult.ConvertError<LocalDateTime>();
+    ParseResult<LocalTime> timeResult = timeBucket.calculateValue(usedFields & PatternFields.allTimeFields, text);
+    if (!timeResult.success) {
+      return timeResult.convertError<LocalDateTime>();
     }
 
-    LocalDate date = dateResult.Value;
-    LocalTime time = timeResult.Value;
+    LocalDate date = dateResult.value;
+    LocalTime time = timeResult.value;
 
     if (hour24) {
       if (time != LocalTime.midnight) {
-        return ParseResult.InvalidHour24<LocalDateTime>(text);
+        return ParseResult.invalidHour24<LocalDateTime>(text);
       }
       date = date.plusDays(1);
     }
-    return ParseResult.ForValue<LocalDateTime>(date.at(time));
+    return ParseResult.forValue<LocalDateTime>(date.at(time));
   }
 
   @internal
   @override
-  ParseResult<LocalDateTime> CalculateValue(PatternFields usedFields, String text) =>
-      CombineBuckets(usedFields, Date, Time, text);
+  ParseResult<LocalDateTime> calculateValue(PatternFields usedFields, String text) =>
+      combineBuckets(usedFields, date, time, text);
 }
 

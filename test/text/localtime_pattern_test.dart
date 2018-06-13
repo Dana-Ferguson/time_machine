@@ -60,67 +60,67 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "!"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['!', 'LocalTime']),
     new Data()
       ..Pattern = "%"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['%', 'LocalTime']),
     new Data()
       ..Pattern = "\\"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['\\', 'LocalTime']),
     new Data()
       ..Pattern = "%%"
-      ..Message = TextErrorMessages.PercentDoubled,
+      ..Message = TextErrorMessages.percentDoubled,
     new Data()
       ..Pattern = "%\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data()
       ..Pattern = "ffffffffff"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['f', 9]),
     new Data()
       ..Pattern = "FFFFFFFFFF"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['F', 9]),
     new Data()
       ..Pattern = "H%"
-      ..Message = TextErrorMessages.PercentAtEndOfString,
+      ..Message = TextErrorMessages.percentAtEndOfString,
     new Data()
       ..Pattern = "HHH"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['H', 2]),
     new Data()
       ..Pattern = "mmm"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['m', 2]),
     new Data()
       ..Pattern = "mmmmmmmmmmmmmmmmmmm"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['m', 2]),
     new Data()
       ..Pattern = "'qwe"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll(['\'']),
     new Data()
       ..Pattern = "'qwe\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data()
       ..Pattern = "'qwe\\'"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll(['\'']),
     new Data()
       ..Pattern = "sss"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['s', 2]),
     // T isn't valid in a time pattern
     new Data()
       ..Pattern = "1970-01-01THH:mm:ss"
-      ..Message = TextErrorMessages.UnquotedLiteral
+      ..Message = TextErrorMessages.unquotedLiteral
       ..Parameters.addAll(['T'])
   ];
 
@@ -128,31 +128,31 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
     new Data()
       ..Text = "17 6"
       ..Pattern = "HH h"
-      ..Message = TextErrorMessages.InconsistentValues2
+      ..Message = TextErrorMessages.inconsistentValues2
       ..Parameters.addAll(['H', 'h', 'LocalTime']),
     new Data()
       ..Text = "17 AM"
       ..Pattern = "HH tt"
-      ..Message = TextErrorMessages.InconsistentValues2
+      ..Message = TextErrorMessages.inconsistentValues2
       ..Parameters.addAll(['H', 't', 'LocalTime']),
     new Data()
       ..Text = "5 foo"
       ..Pattern = "h t"
-      ..Message = TextErrorMessages.MissingAmPmDesignator,
+      ..Message = TextErrorMessages.missingAmPmDesignator,
     new Data()
       ..Text = "04."
       ..Pattern = "ss.FF"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["FF"]),
     new Data()
       ..Text = "04."
       ..Pattern = "ss.ff"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["ff"]),
     new Data()
       ..Text = "05 Foo"
       ..Pattern = "HH tt"
-      ..Message = TextErrorMessages.MissingAmPmDesignator
+      ..Message = TextErrorMessages.missingAmPmDesignator
   ];
 
   @internal List<Data> ParseOnlyData = [

@@ -48,7 +48,7 @@ Future main() async {
 void TestLeftPad(int value, int length, String expected)
 {
   var builder = new StringBuffer();
-  FormatHelper.LeftPad(value, length, builder);
+  FormatHelper.leftPad(value, length, builder);
   expect(expected, builder.toString());
 }
 
@@ -63,7 +63,7 @@ void TestLeftPad(int value, int length, String expected)
 void TestLeftPadNonNegativeInt64(int value, int length, String expected)
 {
   var builder = new StringBuffer();
-  FormatHelper.LeftPadNonNegativeInt64(value, length, builder);
+  FormatHelper.leftPadNonNegativeInt64(value, length, builder);
   expect(expected, builder.toString());
 }
 
@@ -74,7 +74,7 @@ void TestLeftPadNonNegativeInt64(int value, int length, String expected)
 void TestAppendFraction(int value, int length, int scale, String expected)
 {
   var builder = new StringBuffer();
-  FormatHelper.AppendFraction(value, length, scale, builder);
+  FormatHelper.appendFraction(value, length, scale, builder);
   expect(expected, builder.toString());
 }
 
@@ -86,7 +86,7 @@ void TestAppendFraction(int value, int length, int scale, String expected)
 void TestAppendFractionTruncate(String initial, int value, int length, int scale, String expected)
 {
   var builder = new StringBuffer(initial);
-  FormatHelper.AppendFractionTruncate(value, length, scale, builder);
+  FormatHelper.appendFractionTruncate(value, length, scale, builder);
   expect(expected, builder.toString());
 }
 
@@ -98,7 +98,7 @@ void TestAppendFractionTruncate(String initial, int value, int length, int scale
 void FormatInvariant(int value, String expected)
 {
   var builder = new StringBuffer("x");
-  FormatHelper.FormatInvariant(value, builder);
+  FormatHelper.formatInvariant(value, builder);
   expect(expected, builder.toString());
 }        
 

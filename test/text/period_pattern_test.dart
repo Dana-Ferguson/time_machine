@@ -32,7 +32,7 @@ Future main() async {
 /*protected*/ @override Period get DefaultTemplate => new Period.fromDays(0);
 
   Data([Period value = null]) : super(value ?? new Period.fromDays(0)) {
-    this.StandardPattern = PeriodPattern.Roundtrip;
+    this.StandardPattern = PeriodPattern.roundtrip;
   }
 
   Data.builder(PeriodBuilder builder) : this(builder.build());

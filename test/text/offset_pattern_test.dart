@@ -182,87 +182,87 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal final List<Data> InvalidPatternData = [
     new Data(Offset.zero)
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data(Offset.zero)
       ..Pattern = "%Z"
-      ..Message = TextErrorMessages.EmptyZPrefixedOffsetPattern,
+      ..Message = TextErrorMessages.emptyZPrefixedOffsetPattern,
     new Data(Offset.zero)
       ..Pattern = "HH:mmZ"
-      ..Message = TextErrorMessages.ZPrefixNotAtStartOfPattern,
+      ..Message = TextErrorMessages.zPrefixNotAtStartOfPattern,
     new Data(Offset.zero)
       ..Pattern = "%%H"
-      ..Message = TextErrorMessages.PercentDoubled,
+      ..Message = TextErrorMessages.percentDoubled,
     new Data(Offset.zero)
       ..Pattern = "HH:HH"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['H']),
     new Data(Offset.zero)
       ..Pattern = "mm:mm"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['m']),
     new Data(Offset.zero)
       ..Pattern = "ss:ss"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['s']),
     new Data(Offset.zero)
       ..Pattern = "+HH:-mm"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['-']),
     new Data(Offset.zero)
       ..Pattern = "-HH:+mm"
-      ..Message = TextErrorMessages.RepeatedFieldInPattern
+      ..Message = TextErrorMessages.repeatedFieldInPattern
       ..Parameters.addAll(['+']),
     new Data(Offset.zero)
       ..Pattern = "!"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['!', 'Offset']),
     new Data(Offset.zero)
       ..Pattern = "%"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['%', 'Offset']),
     new Data(Offset.zero)
       ..Pattern = "%%"
-      ..Message = TextErrorMessages.PercentDoubled,
+      ..Message = TextErrorMessages.percentDoubled,
     new Data(Offset.zero)
       ..Pattern = "%\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data(Offset.zero)
       ..Pattern = "\\"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['\\', 'Offset']),
     new Data(Offset.zero)
       ..Pattern = "H%"
-      ..Message = TextErrorMessages.PercentAtEndOfString,
+      ..Message = TextErrorMessages.percentAtEndOfString,
     new Data(Offset.zero)
       ..Pattern = "hh"
-      ..Message = TextErrorMessages.Hour12PatternNotSupported
+      ..Message = TextErrorMessages.hour12PatternNotSupported
       ..Parameters.addAll(['Offset']),
     new Data(Offset.zero)
       ..Pattern = "HHH"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['H', 2]),
     new Data(Offset.zero)
       ..Pattern = "mmm"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['m', 2]),
     new Data(Offset.zero)
       ..Pattern = "mmmmmmmmmmmmmmmmmmm"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['m', 2]),
     new Data(Offset.zero)
       ..Pattern = "'qwe"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll(['\'']),
     new Data(Offset.zero)
       ..Pattern = "'qwe\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data(Offset.zero)
       ..Pattern = "'qwe\\'"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll(['\'']),
     new Data(Offset.zero)
       ..Pattern = "sss"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll(['s', 2]),
   ];
 
@@ -272,117 +272,117 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..Culture = TestCultures.EnUs
       ..Text = ""
       ..Pattern = "g"
-      ..Message = TextErrorMessages.ValueStringEmpty,
+      ..Message = TextErrorMessages.valueStringEmpty,
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "1"
       ..Pattern = "HH"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["HH"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "1"
       ..Pattern = "mm"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["mm"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "1"
       ..Pattern = "ss"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["ss"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "12:34 "
       ..Pattern = "HH:mm"
-      ..Message = TextErrorMessages.ExtraValueCharacters
+      ..Message = TextErrorMessages.extraValueCharacters
       ..Parameters.addAll([" "]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "1a"
       ..Pattern = "H "
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll([' ']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "2:"
       ..Pattern = "%H"
-      ..Message = TextErrorMessages.ExtraValueCharacters
+      ..Message = TextErrorMessages.extraValueCharacters
       ..Parameters.addAll([":"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "%."
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['.']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "%:"
-      ..Message = TextErrorMessages.TimeSeparatorMismatch,
+      ..Message = TextErrorMessages.timeSeparatorMismatch,
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "%H"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["H"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "%m"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["m"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "%s"
-      ..Message = TextErrorMessages.MismatchedNumber
+      ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["s"]),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = ".H"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['.']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "a"
       ..Pattern = "\\'"
-      ..Message = TextErrorMessages.EscapedCharacterMismatch
+      ..Message = TextErrorMessages.escapedCharacterMismatch
       ..Parameters.addAll(['\'']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "axc"
       ..Pattern = "'abc'"
-      ..Message = TextErrorMessages.QuotedStringMismatch,
+      ..Message = TextErrorMessages.quotedStringMismatch,
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "z"
       ..Pattern = "%*"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['*']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "24"
       ..Pattern = "HH"
-      ..Message = TextErrorMessages.FieldValueOutOfRange
+      ..Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll([24, 'H', 'Offset']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "60"
       ..Pattern = "mm"
-      ..Message = TextErrorMessages.FieldValueOutOfRange
+      ..Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll([60, 'm', 'Offset']),
     new Data(Offset.zero)
       ..Culture = TestCultures.EnUs
       ..Text = "60"
       ..Pattern = "ss"
-      ..Message = TextErrorMessages.FieldValueOutOfRange
+      ..Message = TextErrorMessages.fieldValueOutOfRange
       ..Parameters.addAll([60, 's', 'Offset']),
     new Data(Offset.zero)
       ..Text = "+12"
       ..Pattern = "-HH"
-      ..Message = TextErrorMessages.PositiveSignInvalid,
+      ..Message = TextErrorMessages.positiveSignInvalid,
   ];
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
@@ -671,7 +671,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(OffsetPattern.GeneralInvariant);
+  void ParseNull() => AssertParseNull(OffsetPattern.generalInvariant);
 
   /* -- It is very ignored here -- not even ported.
   @Test()
@@ -693,7 +693,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
-      var pattern = OffsetPattern.CreateWithCurrentCulture("H:mm");
+      var pattern = OffsetPattern.createWithCurrentCulture("H:mm");
       var text = pattern.format(new Offset.fromHoursAndMinutes(1, 30));
       expect("1.30", text);
     }
@@ -726,16 +726,16 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal
   @override
   IPattern<Offset> CreatePattern() =>
-      OffsetPattern.CreateWithInvariantCulture(super.Pattern)
-          .WithCulture(Culture);
+      OffsetPattern.createWithInvariantCulture(super.Pattern)
+          .withCulture(Culture);
 
   @internal
   @override
   IPartialPattern<Offset> CreatePartialPattern() =>
       OffsetPattern
-          .CreateWithInvariantCulture(super.Pattern)
-          .WithCulture(Culture)
-          .UnderlyingPattern;
+          .createWithInvariantCulture(super.Pattern)
+          .withCulture(Culture)
+          .underlyingPattern;
 }
 
 

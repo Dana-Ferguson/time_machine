@@ -40,7 +40,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
       (int Function(TResult) yearGetter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder builder) {
       int count = pattern.getRepeatCount(4);
-      builder.addField(PatternFields.yearOfEra, pattern.Current);
+      builder.addField(PatternFields.yearOfEra, pattern.current);
       switch (count) {
         case 2:
           builder.addParseValueAction(2, 2, 'y', 0, 99, setter);
@@ -49,7 +49,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
               assumeNonNegative: true,
               assumeFitsInCount: true);
           // Just remember that we've set this particular field. We can't set it twice as we've already got the YearOfEra flag set.
-          builder.addField(PatternFields.yearTwoDigits, pattern.Current);
+          builder.addField(PatternFields.yearTwoDigits, pattern.current);
           break;
         case 4:
           // Left-pad to 4 digits when formatting; parse exactly 4 digits.
@@ -59,7 +59,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
               assumeFitsInCount: true);
           break;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.InvalidRepeatCount, [pattern.Current, count]);
+          throw new InvalidPatternError.format(TextErrorMessages.invalidRepeatCount, [pattern.current, count]);
       }
     };
 
@@ -77,7 +77,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
         case 2:
           field = PatternFields.monthOfYearNumeric;
           // Handle real maximum value in the bucket
-          builder.addParseValueAction(count, 2, pattern.Current, 1, 99, numberSetter);
+          builder.addParseValueAction(count, 2, pattern.current, 1, 99, numberSetter);
           builder.addFormatLeftPad(count, numberGetter, assumeNonNegative: true, assumeFitsInCount: count == 2);
           break;
         case 3:
@@ -87,10 +87,10 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
           List<String> nonGenitiveTextValues = count == 3 ? format.shortMonthNames : format.longMonthNames;
           List<String> genitiveTextValues = count == 3 ? format.shortMonthGenitiveNames : format.longMonthGenitiveNames;
           if (nonGenitiveTextValues == genitiveTextValues) {
-            builder.addParseLongestTextAction(pattern.Current, textSetter, format.compareInfo, nonGenitiveTextValues);
+            builder.addParseLongestTextAction(pattern.current, textSetter, format.compareInfo, nonGenitiveTextValues);
           }
           else {
-            builder.addParseLongestTextAction(pattern.Current, textSetter, format.compareInfo,
+            builder.addParseLongestTextAction(pattern.current, textSetter, format.compareInfo,
                 genitiveTextValues, nonGenitiveTextValues);
           }
 
@@ -102,7 +102,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
         default:
           throw new StateError("Invalid count!");
       }
-      builder.addField(field, pattern.Current);
+      builder.addField(field, pattern.current);
     };
   }
 
@@ -119,7 +119,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
         case 2:
           field = PatternFields.dayOfMonth;
           // Handle real maximum value in the bucket
-          builder.addParseValueAction(count, 2, pattern.Current, 1, 99, dayOfMonthSetter);
+          builder.addParseValueAction(count, 2, pattern.current, 1, 99, dayOfMonthSetter);
           builder.addFormatLeftPad(count, dayOfMonthGetter, assumeNonNegative: true, assumeFitsInCount: count == 2);
           break;
         case 3:
@@ -127,13 +127,13 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
           field = PatternFields.dayOfWeek;
           var format = builder.formatInfo;
           List<String> textValues = count == 3 ? format.shortDayNames : format.longDayNames;
-          builder.addParseLongestTextAction(pattern.Current, dayOfWeekSetter, format.compareInfo, textValues);
+          builder.addParseLongestTextAction(pattern.current, dayOfWeekSetter, format.compareInfo, textValues);
           builder.addFormatAction((value, sb) => sb.write(textValues[dayOfWeekGetter(value)]));
           break;
         default:
           throw new StateError("Invalid count!");
       }
-      builder.addField(field, pattern.Current);
+      builder.addField(field, pattern.current);
     };
   }
 
@@ -142,12 +142,12 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
       (Era Function(TResult) eraFromValue, /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketFromBucket) {
     return (pattern, builder) {
       pattern.getRepeatCount(2);
-      builder.addField(PatternFields.era, pattern.Current);
+      builder.addField(PatternFields.era, pattern.current);
       var formatInfo = builder.formatInfo;
 
       _parseAction(cursor, bucket) {
         var dateBucket = dateBucketFromBucket(bucket);
-        return dateBucket.ParseEra<TResult>(formatInfo, cursor);
+        return dateBucket.parseEra<TResult>(formatInfo, cursor);
       }
 
       // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
@@ -161,16 +161,16 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   @internal static CharacterHandler<TResult, TBucket> createCalendarHandler<TResult, TBucket extends ParseBucket<TResult>>
       (CalendarSystem Function(TResult) getter, Function(TBucket, CalendarSystem) setter) {
     return (pattern, builder) {
-      builder.addField(PatternFields.calendar, pattern.Current);
+      builder.addField(PatternFields.calendar, pattern.current);
 
       builder.addParseAction((cursor, bucket) {
         for (var id in CalendarSystem.Ids) {
-          if (cursor.MatchText(id)) {
+          if (cursor.matchText(id)) {
             setter(bucket, CalendarSystem.forId(id));
             return null;
           }
         }
-        return ParseResult.NoMatchingCalendarSystem<TResult>(cursor);
+        return ParseResult.noMatchingCalendarSystem<TResult>(cursor);
       });
       builder.addFormatAction((value, sb) => sb.write(getter(value).id));
     };

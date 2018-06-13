@@ -33,57 +33,57 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
       ..Pattern = ""
-      ..Message = TextErrorMessages.FormatStringEmpty,
+      ..Message = TextErrorMessages.formatStringEmpty,
     new Data()
       ..Pattern = "!"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll(['!', 'AnnualDate']),
     new Data()
       ..Pattern = "%"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll([ '%', 'AnnualDate']),
     new Data()
       ..Pattern = "\\"
-      ..Message = TextErrorMessages.UnknownStandardFormat
+      ..Message = TextErrorMessages.unknownStandardFormat
       ..Parameters.addAll([ '\\', 'AnnualDate']),
     new Data()
       ..Pattern = "%%"
-      ..Message = TextErrorMessages.PercentDoubled,
+      ..Message = TextErrorMessages.percentDoubled,
     new Data()
       ..Pattern = "%\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data()
       ..Pattern = "MMMMM"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll([ 'M', 4]),
     new Data()
       ..Pattern = "ddd"
-      ..Message = TextErrorMessages.RepeatCountExceeded
+      ..Message = TextErrorMessages.repeatCountExceeded
       ..Parameters.addAll([ 'd', 2]),
     new Data()
       ..Pattern = "M%"
-      ..Message = TextErrorMessages.PercentAtEndOfString,
+      ..Message = TextErrorMessages.percentAtEndOfString,
     new Data()
       ..Pattern = "'qwe"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll([ '\'']),
     new Data()
       ..Pattern = "'qwe\\"
-      ..Message = TextErrorMessages.EscapeAtEndOfString,
+      ..Message = TextErrorMessages.escapeAtEndOfString,
     new Data()
       ..Pattern = "'qwe\\'"
-      ..Message = TextErrorMessages.MissingEndQuote
+      ..Message = TextErrorMessages.missingEndQuote
       ..Parameters.addAll([ '\'']),
 
     // Common typo (m doesn't mean months)
     new Data()
       ..Pattern = "mm-dd"
-      ..Message = TextErrorMessages.UnquotedLiteral
+      ..Message = TextErrorMessages.unquotedLiteral
       ..Parameters.addAll([ 'm']),
     // T isn't valid in a date pattern
     new Data()
       ..Pattern = "MM-ddT00:00:00"
-      ..Message = TextErrorMessages.UnquotedLiteral
+      ..Message = TextErrorMessages.unquotedLiteral
       ..Parameters.addAll([ 'T'])
   ];
 
@@ -91,39 +91,39 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     new Data()
       ..Pattern = "MM dd MMMM"
       ..Text = "10 09 January"
-      ..Message = TextErrorMessages.InconsistentMonthTextValue,
+      ..Message = TextErrorMessages.inconsistentMonthTextValue,
     new Data()
       ..Pattern = "MM dd MMMM"
       ..Text = "10 09 FooBar"
-      ..Message = TextErrorMessages.MismatchedText
+      ..Message = TextErrorMessages.mismatchedText
       ..Parameters.addAll(['M']),
     new Data()
       ..Pattern = "MM/dd"
       ..Text = "02-29"
-      ..Message = TextErrorMessages.DateSeparatorMismatch,
+      ..Message = TextErrorMessages.dateSeparatorMismatch,
     // Don't match a short name against a long pattern
     new Data()
       ..Pattern = "MMMM dd"
       ..Text = "Oct 09"
-      ..Message = TextErrorMessages.MismatchedText
+      ..Message = TextErrorMessages.mismatchedText
       ..Parameters.addAll(['M']),
     // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
     new Data()
       ..Pattern = "MMM dd"
       ..Text = "October 09"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll([' ']),
 
     // Invalid month, day
     new Data()
       ..Pattern = "MM dd"
       ..Text = "15 29"
-      ..Message = TextErrorMessages.IsoMonthOutOfRange
+      ..Message = TextErrorMessages.isoMonthOutOfRange
       ..Parameters.addAll([ 15]),
     new Data()
       ..Pattern = "MM dd"
       ..Text = "02 35"
-      ..Message = TextErrorMessages.DayOfMonthOutOfRangeNoYear
+      ..Message = TextErrorMessages.dayOfMonthOutOfRangeNoYear
       ..Parameters.addAll([ 35, 2])
   ];
 
@@ -233,12 +233,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     var date = new AnnualDate(8, 23);
     // using (CultureSaver.SetTestCultures(TestCultures.FrFr))
     CultureInfo.currentCulture = TestCultures.getCulture('fr-FR');
-    var pattern = AnnualDatePattern.CreateWithCurrentCulture("MM/dd");
+    var pattern = AnnualDatePattern.createWithCurrentCulture("MM/dd");
     expect("08/23", pattern.format(date));
 
     // using (CultureSaver.SetTestCultures(TestCultures.FrCa))
     CultureInfo.currentCulture = TestCultures.getCulture('fr-CA');
-    pattern = AnnualDatePattern.CreateWithCurrentCulture("MM/dd");
+    pattern = AnnualDatePattern.createWithCurrentCulture("MM/dd");
     expect("08-23", pattern.format(date));
   }
 
@@ -248,7 +248,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   {
     var date = new AnnualDate(8, 23);
     var culture = TestCultures.getCulture(cultureId);
-    var pattern = AnnualDatePattern.Create3("MM/dd", culture);
+    var pattern = AnnualDatePattern.create("MM/dd", culture);
     expect(expected, pattern.format(date));
   }
 
@@ -260,28 +260,28 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     var template = new AnnualDate(5, 3);
     var culture = TestCultures.getCulture(cultureId);
     // Check the culture is still used
-    var pattern1 = AnnualDatePattern.Create2("MM/dd", culture, template);
+    var pattern1 = AnnualDatePattern.create("MM/dd", culture, template);
     expect(expected, pattern1.format(date));
     // And the template value
-    var pattern2 = AnnualDatePattern.Create2("MM", culture, template);
+    var pattern2 = AnnualDatePattern.create("MM", culture, template);
     var parsed = pattern2
         .parse("08")
-        .Value;
+        .value;
     expect(new AnnualDate(8, 3), parsed);
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(AnnualDatePattern.Iso);
+  void ParseNull() => AssertParseNull(AnnualDatePattern.iso);
 }
 
 /*sealed*/ class Data extends PatternTestData<AnnualDate> {
   // Default to January 1st
-  @override AnnualDate get DefaultTemplate => AnnualDatePattern.DefaultTemplateValue;
+  @override AnnualDate get DefaultTemplate => AnnualDatePattern.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([AnnualDate value = null]) : super(value ?? AnnualDatePattern.DefaultTemplateValue)
+  Data([AnnualDate value = null]) : super(value ?? AnnualDatePattern.defaultTemplateValue)
   {
   }
 
@@ -290,8 +290,8 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   @internal
   @override
   IPattern<AnnualDate> CreatePattern() =>
-      AnnualDatePattern.CreateWithInvariantCulture(super.Pattern)
-          .WithTemplateValue(Template)
-          .WithCulture(Culture);
+      AnnualDatePattern.createWithInvariantCulture(super.Pattern)
+          .withTemplateValue(Template)
+          .withCulture(Culture);
 }
 

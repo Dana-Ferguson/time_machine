@@ -15,6 +15,7 @@ abstract class Cultures {
   static Future<CultureInfo> getCulture(String id) async => (await _cultures).getCulture(id);
 }
 
+// todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!
 class CultureInfo {
   static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
 // todo: change this!

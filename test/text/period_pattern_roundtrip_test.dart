@@ -36,62 +36,62 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   @internal List<Data> ParseFailureData = [
     new Data()
       ..Text = "X5H"
-      ..Message = TextErrorMessages.MismatchedCharacter
+      ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['P']),
     new Data()
       ..Text = ""
-      ..Message = TextErrorMessages.ValueStringEmpty,
+      ..Message = TextErrorMessages.valueStringEmpty,
     new Data()
       ..Text = "PJ"
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "P5J"
-      ..Message = TextErrorMessages.InvalidUnitSpecifier
+      ..Message = TextErrorMessages.invalidUnitSpecifier
       ..Parameters.addAll(['J']),
     new Data()
       ..Text = "P5D10M"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['M']),
     new Data()
       ..Text = "P6M5D6D"
-      ..Message = TextErrorMessages.RepeatedUnitSpecifier
+      ..Message = TextErrorMessages.repeatedUnitSpecifier
       ..Parameters.addAll(['D']),
     new Data()
       ..Text = "PT5M10H"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
       ..Text = "P5H"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
       ..Text = "PT5Y"
-      ..Message = TextErrorMessages.MisplacedUnitSpecifier
+      ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['Y']),
     new Data()
       ..Text = "PX"
-      ..Message = TextErrorMessages.MissingNumber,
+      ..Message = TextErrorMessages.missingNumber,
     new Data()
       ..Text = "P10M-"
-      ..Message = TextErrorMessages.EndOfString,
+      ..Message = TextErrorMessages.endOfString,
     new Data()
       ..Text = "P5"
-      ..Message = TextErrorMessages.EndOfString,
+      ..Message = TextErrorMessages.endOfString,
     new Data()
       ..Text = "P9223372036854775808H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
       ..Text = "P-9223372036854775809H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
       ..Text = "P10000000000000000000H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
       ..Text = "P-10000000000000000000H"
-      ..Message = TextErrorMessages.ValueOutOfRange
+      ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-10000000000000000000", 'Period']),
   ];
 
@@ -167,6 +167,6 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
-  void ParseNull() => AssertParseNull(PeriodPattern.Roundtrip);
+  void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);
 }
 

@@ -31,23 +31,23 @@ import 'package:time_machine/time_machine_patterns.dart';
   @internal String getQuotedString(String closeQuote) {
     var builder = new StringBuffer(); //Length - Index);
     bool endQuoteFound = false;
-    while (MoveNext()) {
-      if (Current == closeQuote) {
-        MoveNext();
+    while (moveNext()) {
+      if (current == closeQuote) {
+        moveNext();
         endQuoteFound = true;
         break;
       }
-      if (Current == '\\') {
-        if (!MoveNext()) {
-          throw new InvalidPatternError(TextErrorMessages.EscapeAtEndOfString);
+      if (current == '\\') {
+        if (!moveNext()) {
+          throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
         }
       }
-      builder.write(Current);
+      builder.write(current);
     }
     if (!endQuoteFound) {
-      throw new InvalidPatternError.format(TextErrorMessages.MissingEndQuote, [closeQuote]);
+      throw new InvalidPatternError.format(TextErrorMessages.missingEndQuote, [closeQuote]);
     }
-    MovePrevious();
+    movePrevious();
     return builder.toString();
   }
 
@@ -57,14 +57,14 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [maximumCount]: The maximum number of repetitions allowed.
   /// Returns: The repetition count which is alway at least `1`.
   @internal int getRepeatCount(int maximumCount) {
-    String patternCharacter = Current;
-    int startPos = Index;
-    while (MoveNext() && Current == patternCharacter) {}
-    int repeatLength = Index - startPos;
+    String patternCharacter = current;
+    int startPos = index;
+    while (moveNext() && current == patternCharacter) {}
+    int repeatLength = index - startPos;
     // Move the cursor back to the last character of the repeated pattern
-    MovePrevious();
+    movePrevious();
     if (repeatLength > maximumCount) {
-      throw new InvalidPatternError.format(TextErrorMessages.RepeatCountExceeded, [patternCharacter, maximumCount]);
+      throw new InvalidPatternError.format(TextErrorMessages.repeatCountExceeded, [patternCharacter, maximumCount]);
     }
     return repeatLength;
   }
@@ -83,25 +83,25 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// Returns: The embedded pattern, not including the start/end pattern characters.
   @internal String getEmbeddedPattern() {
-    if (!MoveNext() || Current != embeddedPatternStart) {
-      throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternStart, [embeddedPatternStart]));
+    if (!moveNext() || current != embeddedPatternStart) {
+      throw new InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternStart, [embeddedPatternStart]));
     }
-    int startIndex = Index + 1;
+    int startIndex = index + 1;
     int depth = 1; // For nesting
-    while (MoveNext()) {
-      var current = Current;
+    while (moveNext()) {
+      var current = super.current;
       if (current == embeddedPatternEnd) {
         depth--;
         if (depth == 0) {
-          return Value.substring(startIndex, Index /*- startIndex*/);
+          return value.substring(startIndex, index /*- startIndex*/);
         }
       }
       else if (current == embeddedPatternStart) {
         depth++;
       }
       else if (current == '\\') {
-        if (!MoveNext()) {
-          throw new InvalidPatternError(TextErrorMessages.EscapeAtEndOfString);
+        if (!moveNext()) {
+          throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
         }
       }
       else if (current == '\'' || current == '\"') {
@@ -111,6 +111,6 @@ import 'package:time_machine/time_machine_patterns.dart';
       }
     }
     // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
-    throw new InvalidPatternError(stringFormat(TextErrorMessages.MissingEmbeddedPatternEnd, [embeddedPatternEnd]));
+    throw new InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternEnd, [embeddedPatternEnd]));
   }
 }

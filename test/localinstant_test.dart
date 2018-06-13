@@ -59,8 +59,8 @@ void ToString_Valid(int day, int nanoOfDay, String expectedText)
 @Test()
 void ToString_Extremes()
 {
-  expect(InstantPatternParser.BeforeMinValueText, LocalInstant.beforeMinValue.toString());
-  expect(InstantPatternParser.AfterMaxValueText, LocalInstant.afterMaxValue.toString());
+  expect(InstantPatternParser.beforeMinValueText, LocalInstant.beforeMinValue.toString());
+  expect(InstantPatternParser.afterMaxValueText, LocalInstant.afterMaxValue.toString());
 }
 
 @Test()

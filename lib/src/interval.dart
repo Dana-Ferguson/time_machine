@@ -112,7 +112,7 @@ class Interval {
   /// Returns: A string representation of this interval.
   @override String toString() // => TextShim.toStringInterval(this);
   {
-    var pattern = InstantPattern.ExtendedIso;
+    var pattern = InstantPattern.extendedIso;
     return pattern.format(_start) + "/" + pattern.format(_end);
   }
 

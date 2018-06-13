@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_text.dart';
 /// A builder for composite patterns.
 ///
 /// A composite pattern is a combination of multiple patterns. When parsing, these are checked
-/// in the order in which they are added to the builder with the [Add]
+/// in the order in which they are added to the builder with the [add]
 /// method, by trying to parse and seeing if the result is a successful one. When formatting,
 /// the patterns are checked in the reverse order, using the predicate provided along with the pattern
 /// when calling `Add`. The intention is that patterns are added in "most precise first" order,
@@ -26,15 +26,14 @@ import 'package:time_machine/time_machine_text.dart';
 /// [T]: The type of value to be parsed or formatted by the resulting pattern.
 ///
 /// This type is mutable, and should not be used between multiple threads. The patterns created
-/// by the [Build] method are immutable and can be used between multiple threads, assuming
+/// by the [build] method are immutable and can be used between multiple threads, assuming
 /// that each component (both pattern and predicate) is also immutable.
-class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
-    {
-  @private final List<IPattern<T>> patterns = new List<IPattern<T>>();
+class CompositePatternBuilder<T> {
+  final List<IPattern<T>> _patterns = new List<IPattern<T>>();
   final List<bool Function(T arg)> _formatPredicates = new List<bool Function(T arg)>();
 
   /// Constructs a new instance which initially has no component patterns. At least one component
-  /// pattern must be added before [Build] is called.
+  /// pattern must be added before [build] is called.
   CompositePatternBuilder();
 
   /// Adds a component pattern to this builder.
@@ -42,8 +41,8 @@ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
   /// [pattern]: The component pattern to use as part of the eventual composite pattern.
   /// [formatPredicate]: A predicate to determine whether or not this pattern is suitable for
   /// formatting the given value.
-  void Add(IPattern<T> pattern, bool Function(T arg) formatPredicate) {
-    patterns.add(Preconditions.checkNotNull(pattern, 'pattern'));
+  void add(IPattern<T> pattern, bool Function(T arg) formatPredicate) {
+    _patterns.add(Preconditions.checkNotNull(pattern, 'pattern'));
     _formatPredicates.add(Preconditions.checkNotNull(formatPredicate, 'formatPredicate'));
   }
 
@@ -52,58 +51,55 @@ class CompositePatternBuilder<T> // : IEnumerable<IPattern<T>>
   ///
   /// [InvalidOperationException]: No component patterns have been added.
   /// Returns: A pattern using the patterns added to this builder.
-  IPattern<T> Build() {
-    Preconditions.checkState(patterns.length != 0, "A composite pattern must have at least one component pattern.");
-    return new _CompositePattern(patterns, _formatPredicates);
+  IPattern<T> build() {
+    Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
+    return new _CompositePattern(_patterns, _formatPredicates);
   }
 
-  @internal IPartialPattern<T> BuildAsPartial() {
-    Preconditions.debugCheckState(patterns.every((p) => p is IPartialPattern<T>), "All patterns should be partial");
-    return Build(); // as IPartialPattern<T>;
+  @internal IPartialPattern<T> buildAsPartial() {
+    Preconditions.debugCheckState(_patterns.every((p) => p is IPartialPattern<T>), "All patterns should be partial");
+    return build(); // as IPartialPattern<T>;
   }
-
-  /// GetEnumerator
-  Iterable<IPattern<T>> GetEnumerator() => patterns; // GetEnumerator();
 }
 
-/*sealed*/ class _CompositePattern<T> implements IPartialPattern<T> {
-  @private final List<IPattern<T>> patterns;
-  @private final List<bool Function(T)> formatPredicates;
+class _CompositePattern<T> implements IPartialPattern<T> {
+  final List<IPattern<T>> _patterns;
+  final List<bool Function(T)> _formatPredicates;
 
-  @internal _CompositePattern(this.patterns, this.formatPredicates);
+  @internal _CompositePattern(this._patterns, this._formatPredicates);
 
   ParseResult<T> parse(String text) {
-    for (IPattern<T> pattern in patterns) {
+    for (IPattern<T> pattern in _patterns) {
       ParseResult<T> result = pattern.parse(text);
-      if (result.Success || !result.ContinueAfterErrorWithMultipleFormats) {
+      if (result.success || !result.continueAfterErrorWithMultipleFormats) {
         return result;
       }
     }
-    return ParseResult.NoMatchingFormat<T>(new ValueCursor(text));
+    return ParseResult.noMatchingFormat<T>(new ValueCursor(text));
   }
 
   ParseResult<T> parsePartial(ValueCursor cursor) {
-    int index = cursor.Index;
-    for (IPartialPattern<T> pattern in patterns) {
-      cursor.Move(index);
+    int index = cursor.index;
+    for (IPartialPattern<T> pattern in _patterns) {
+      cursor.move(index);
       ParseResult<T> result = pattern.parsePartial(cursor);
-      if (result.Success || !result.ContinueAfterErrorWithMultipleFormats) {
+      if (result.success || !result.continueAfterErrorWithMultipleFormats) {
         return result;
       }
     }
-    cursor.Move(index);
-    return ParseResult.NoMatchingFormat<T>(cursor);
+    cursor.move(index);
+    return ParseResult.noMatchingFormat<T>(cursor);
   }
 
-  String format(T value) => FindFormatPattern(value).format(value);
+  String format(T value) => findFormatPattern(value).format(value);
 
   StringBuffer appendFormat(T value, StringBuffer builder) =>
-      FindFormatPattern(value).appendFormat(value, builder);
+      findFormatPattern(value).appendFormat(value, builder);
 
-  @private IPattern<T> FindFormatPattern(T value) {
-    for (int i = formatPredicates.length - 1; i >= 0; i--) {
-      if (formatPredicates[i](value)) {
-        return patterns[i];
+  @private IPattern<T> findFormatPattern(T value) {
+    for (int i = _formatPredicates.length - 1; i >= 0; i--) {
+      if (_formatPredicates[i](value)) {
+        return _patterns[i];
       }
     }
     throw new FormatException("Composite pattern was unable to format value using any of the provided patterns.");

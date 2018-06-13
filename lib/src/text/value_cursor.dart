@@ -12,26 +12,26 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-@internal /*sealed*/ class ValueCursor extends TextCursor {
+@internal class ValueCursor extends TextCursor {
   // '0': 48; '9': 57
-  static const int ZeroCodeUnit = 48;
-  static const int NineCodeUnit = 57;
+  static const int _zeroCodeUnit = 48;
+  static const int _nineCodeUnit = 57;
 
-  ///   Initializes a new instance of the [ValueCursor] class.
+  /// Initializes a new instance of the [ValueCursor] class.
   ///
   /// [value]: The string to parse.
   @internal ValueCursor(String value)
       : super(value);
 
-  ///   Attempts to match the specified character with the current character of the string. If the
-  ///   character matches then the index is moved passed the character.
+  /// Attempts to match the specified character with the current character of the string. If the
+  /// character matches then the index is moved passed the character.
   ///
   /// [character]: The character to match.
   /// Returns: `true` if the character matches.
-  @internal bool MatchSingle(String character) {
+  @internal bool matchSingle(String character) {
     assert(character.length == 1);
-    if (Current == character) {
-      MoveNext();
+    if (current == character) {
+      moveNext();
       return true;
     }
     return false;
@@ -42,29 +42,28 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [match]: The string to match.
   /// Returns: `true` if the string matches.
-  @internal bool MatchText(String match) {
+  @internal bool matchText(String match) {
     // string.CompareOrdinal(Value, Index, match, 0, match.length) == 0) {
     // Value, Index, match, 0, match.length
-    if (stringOrdinalCompare(Value, Index, match, 0, match.length) == 0) {
-      Move(Index + match.length);
+    if (stringOrdinalCompare(value, index, match, 0, match.length) == 0) {
+      move(index + match.length);
       return true;
     }
     return false;
   }
 
-  // todo: I don't think this is ever used (CompareInfo is a BCL class)
   /// Attempts to match the specified string with the current point in the string in a case-insensitive
   /// manner, according to the given comparison info. The cursor is optionally updated to the end of the match.
-  @internal bool MatchCaseInsensitive(String match, CompareInfo compareInfo, bool moveOnSuccess) {
-    if (match.length > Value.length - Index) {
+  @internal bool matchCaseInsensitive(String match, CompareInfo compareInfo, bool moveOnSuccess) {
+    if (match.length > value.length - index) {
       return false;
     }
     // Note: This will fail if the length in the input string is different to the length in the
     // match string for culture-specific reasons. It's not clear how to handle that...
     // See issue 210 for details - we're not intending to fix this, but it's annoying.
-    if (stringOrdinalIgnoreCaseCompare(Value, Index, match, 0, match.length) == 0) {
+    if (stringOrdinalIgnoreCaseCompare(value, index, match, 0, match.length) == 0) {
       if (moveOnSuccess) {
-        Move(Index + match.length);
+        move(index + match.length);
       }
       return true;
     }
@@ -97,15 +96,15 @@ import 'package:time_machine/time_machine_text.dart';
   /// A negative number if the value (from the current cursor position) is lexicographically
   /// earlier than the given match string; 0 if they are equal (as far as the end of the match) and
   /// a positive number if the value is lexicographically later than the given match string.
-  @internal int CompareOrdinal(String match) {
-    int remaining = Value.length - Index;
+  @internal int compareOrdinal(String match) {
+    int remaining = value.length - index;
     if (match.length > remaining) {
       // string.CompareOrdinal(Value, Index, match, 0, remaining);
-      int ret = stringOrdinalCompare(Value, Index, match, 0, remaining); // Value.startsWith(match, Index);
+      int ret = stringOrdinalCompare(value, index, match, 0, remaining); // Value.startsWith(match, Index);
       return ret == 0 ? -1 : ret;
     }
     // string.CompareOrdinal(Value, Index, match, 0, match.length);
-    return stringOrdinalCompare(Value, Index, match, 0, match.length);
+    return stringOrdinalCompare(value, index, match, 0, match.length);
   }
 
   /// Parses digits at the current point in the string as a signed 64-bit integer value.
@@ -116,49 +115,49 @@ import 'package:time_machine/time_machine_text.dart';
   /// to be anything specific if the return value is non-null.
   /// Returns: null if the digits were parsed, or the appropriate parse failure
   // hack: we need to know what T is at runtime for error messages
-  @internal ParseResult<T> ParseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
+  @internal ParseResult<T> parseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
     result.value = 0;
-    int startIndex = Index;
-    bool negative = Current == '-';
+    int startIndex = index;
+    bool negative = current == '-';
     if (negative) {
-      if (!MoveNext()) {
-        Move(startIndex);
-        return ParseResult.EndOfString<T>(this);
+      if (!moveNext()) {
+        move(startIndex);
+        return ParseResult.endOfString<T>(this);
       }
     }
     int count = 0;
     int digit;
-    while (result.value < 922337203685477580 && (digit = GetDigit()) != -1) {
+    while (result.value < 922337203685477580 && (digit = _getDigit()) != -1) {
       result.value = result.value * 10 + digit;
       count++;
-      if (!MoveNext()) {
+      if (!moveNext()) {
         break;
       }
     }
 
     if (count == 0) {
-      Move(startIndex);
-      return ParseResult.MissingNumber<T>(this);
+      move(startIndex);
+      return ParseResult.missingNumber<T>(this);
     }
 
-    if (result.value >= 922337203685477580 && (digit = GetDigit()) != -1) {
+    if (result.value >= 922337203685477580 && (digit = _getDigit()) != -1) {
       if (result.value > 922337203685477580) {
-        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
+        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
       }
       if (negative && digit == 8) {
-        MoveNext();
+        moveNext();
         result.value = Utility.int64MinValue;
         return null;
       }
       if (digit > 7) {
-        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
+        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
       }
       // We know we can cope with this digit...
       result.value = result.value * 10 + digit;
-      MoveNext();
-      if (GetDigit() != -1) {
+      moveNext();
+      if (_getDigit() != -1) {
         // Too many digits. Die.
-        return BuildNumberOutOfRangeResult<T>(startIndex, tType);
+        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
       }
     }
     if (negative) {
@@ -168,18 +167,18 @@ import 'package:time_machine/time_machine_text.dart';
     return null;
   }
 
-  @private ParseResult<T> BuildNumberOutOfRangeResult<T>(int startIndex, String tType) {
-    Move(startIndex);
-    if (Current == '-') {
-      MoveNext();
+  ParseResult<T> _buildNumberOutOfRangeResult<T>(int startIndex, String tType) {
+    move(startIndex);
+    if (current == '-') {
+      moveNext();
     }
     // End of string works like not finding a digit.
-    while (GetDigit() != -1) {
-      MoveNext();
+    while (_getDigit() != -1) {
+      moveNext();
     }
-    String badValue = Value.substring(startIndex, Index /*- startIndex*/);
-    Move(startIndex);
-    return ParseResult.ValueOutOfRange<T>(this, badValue, tType);
+    String badValue = value.substring(startIndex, index /*- startIndex*/);
+    move(startIndex);
+    return ParseResult.valueOutOfRange<T>(this, badValue, tType);
   }
 
   /// Parses digits at the current point in the string, as an [Int64] value.
@@ -192,27 +191,27 @@ import 'package:time_machine/time_machine_text.dart';
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  @internal int ParseInt64Digits(int minimumDigits, int maximumDigits) {
+  @internal int parseInt64Digits(int minimumDigits, int maximumDigits) {
     int result = 0;
-    int localIndex = Index;
+    int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
-    if (maxIndex >= Length) {
-      maxIndex = Length;
+    if (maxIndex >= length) {
+      maxIndex = length;
     }
     for (; localIndex < maxIndex; localIndex++) {
       // Optimized digit handling: rather than checking for the range, returning -1
       // and then checking whether the result is -1, we can do both checks at once.
-      int digit = Value[localIndex].codeUnitAt(0) - ZeroCodeUnit;
+      int digit = value[localIndex].codeUnitAt(0) - _zeroCodeUnit;
       if (digit < 0 || digit > 9) {
         break;
       }
       result = result * 10 + digit;
     }
-    int count = localIndex - Index;
+    int count = localIndex - index;
     if (count < minimumDigits) {
       return null;
     }
-    Move(localIndex);
+    move(localIndex);
     return result;
   }
 
@@ -225,27 +224,27 @@ import 'package:time_machine/time_machine_text.dart';
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  @internal int ParseDigits(int minimumDigits, int maximumDigits) {
+  @internal int parseDigits(int minimumDigits, int maximumDigits) {
     int result = 0;
-    int localIndex = Index;
+    int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
-    if (maxIndex >= Length) {
-      maxIndex = Length;
+    if (maxIndex >= length) {
+      maxIndex = length;
     }
     for (; localIndex < maxIndex; localIndex++) {
       // Optimized digit handling: rather than checking for the range, returning -1
       // and then checking whether the result is -1, we can do both checks at once.
-      int digit = Value[localIndex].codeUnitAt(0) - ZeroCodeUnit;
+      int digit = value[localIndex].codeUnitAt(0) - _zeroCodeUnit;
       if (digit < 0 || digit > 9) {
         break;
       }
       result = result * 10 + digit;
     }
-    int count = localIndex - Index;
+    int count = localIndex - index;
     if (count < minimumDigits) {
       return null;
     }
-    Move(localIndex);
+    move(localIndex);
     return result;
   }
 
@@ -257,42 +256,42 @@ import 'package:time_machine/time_machine_text.dart';
   /// to be anything specific if the return value is false.
   /// [minimumDigits]: The minimum number of digits that must be specified in the value.
   /// Returns: `true` if the digits were parsed.
-  @internal int ParseFraction(int maximumDigits, int scale, int minimumDigits) {
+  @internal int parseFraction(int maximumDigits, int scale, int minimumDigits) {
     Preconditions.debugCheckArgument(maximumDigits <= scale, 'maximumDigits',
         "Must not allow more maximum digits than scale");
 
     int result = 0;
-    int localIndex = Index;
+    int localIndex = index;
     int minIndex = localIndex + minimumDigits;
-    if (minIndex > Length) {
+    if (minIndex > length) {
       // If we don't have all the digits we're meant to have, we can't possibly succeed.
       return null;
     }
-    int maxIndex = math.min(localIndex + maximumDigits, Length);
+    int maxIndex = math.min(localIndex + maximumDigits, length);
     for (; localIndex < maxIndex; localIndex++) {
       // Optimized digit handling: rather than checking for the range, returning -1
       // and then checking whether the result is -1, we can do both checks at once.
-      int digit = Value[localIndex].codeUnitAt(0) - ZeroCodeUnit;
+      int digit = value[localIndex].codeUnitAt(0) - _zeroCodeUnit;
       if (digit < 0 || digit > 9) {
         break;
       }
       result = result * 10 + digit;
     }
-    int count = localIndex - Index;
+    int count = localIndex - index;
     // Couldn't parse the minimum number of digits required?
     if (count < minimumDigits) {
       return null;
     }
     result = (result * math.pow(10.0, scale - count).toInt());
-    Move(localIndex);
+    move(localIndex);
     return result;
   }
 
   /// Gets the integer value of the current digit character, or -1 for "not a digit".
   ///
   /// This currently only handles ASCII digits, which is all we have to parse to stay in line with the BCL.
-  @private int GetDigit() {
-    int c = Current.codeUnitAt(0);
-    return c < ZeroCodeUnit || c > NineCodeUnit ? -1 : c - ZeroCodeUnit;
+  int _getDigit() {
+    int c = current.codeUnitAt(0);
+    return c < _zeroCodeUnit || c > _nineCodeUnit ? -1 : c - _zeroCodeUnit;
   }
 }

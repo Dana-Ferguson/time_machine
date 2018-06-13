@@ -770,10 +770,10 @@ class Period {
         nanoseconds: nanoseconds);
   }
 
-  /// Returns this string formatted according to the [PeriodPattern.Roundtrip].
+  /// Returns this string formatted according to the [PeriodPattern.roundtrip].
   ///
   /// Returns: A formatted representation of this period.
-  @override String toString() => PeriodPattern.Roundtrip.format(this);
+  @override String toString() => PeriodPattern.roundtrip.format(this);
 
   /// Returns the hash code for this period, consistent with [Equals(Period)].
   ///

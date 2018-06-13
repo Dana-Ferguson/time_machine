@@ -23,7 +23,7 @@ import 'package:time_machine/time_machine_text.dart';
       patternText = _defaultFormatPattern;
     }
     TimeMachineFormatInfo formatInfo = TimeMachineFormatInfo.getInstance(formatProvider);
-    IPattern<T> pattern = _patternParser(formatInfo).ParsePattern(patternText);
+    IPattern<T> pattern = _patternParser(formatInfo).parsePattern(patternText);
     return pattern.format(value);
   }
 }
