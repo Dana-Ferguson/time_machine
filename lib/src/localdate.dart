@@ -51,7 +51,7 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate(int year, int month, int day, [CalendarSystem calendar])
   {
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(year, month, day);
-    return new LocalDate.trusted(new YearMonthDayCalendar(year, month, day, calendar ?? CalendarOrdinal.iso));
+    return new LocalDate.trusted(new YearMonthDayCalendar(year, month, day, calendar?.ordinal ?? CalendarOrdinal.iso));
   }
 
   /// Constructs an instance for the given era, year of era, month and day in the specified or ISO calendar.
