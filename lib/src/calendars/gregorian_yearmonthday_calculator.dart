@@ -22,19 +22,21 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int _lastOptimizedDay = 47846;
 
   // The 0-based days-since-unix-epoch for the start of each month
-  static final List<int> _monthStartDays = new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
+  static final List<int> _monthStartDays = _gregorianYearMonthDayCalculator_Init()[0]; //new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
 
   // The 1-based days-since-unix-epoch for the start of each year
-  static final List<int> _yearStartDays = new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
+  static final List<int> _yearStartDays = _gregorianYearMonthDayCalculator_Init()[1]; // new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
 
   static const int _daysFrom0000To1970 = 719527;
   static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...
 
-  // this was a static constructor
-  static bool _gregorianYearMonthDayCalculator_Initialized = false;
-  static void _gregorianYearMonthDayCalculator_Init() {
-    if (_gregorianYearMonthDayCalculator_Initialized) return;
-    _gregorianYearMonthDayCalculator_Initialized = true;
+  // this was a static constructor, todo: this is a little hacky, needs cleanup
+  static List<List<int>> _gregorianYearMonthDayCalculator_Initialized = null;
+  static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
+    if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized;
+
+    var _monthStartDays = new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
+    var _yearStartDays = new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
 
     // It's generally a really bad idea to create an instance before the static initializer
     // has completed, but we know its safe because we're only using a very restricted set of methods.
@@ -54,6 +56,9 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
         monthStartDay += monthLength;
       }
     }
+
+    _gregorianYearMonthDayCalculator_Initialized = [_monthStartDays, _yearStartDays];
+    return _gregorianYearMonthDayCalculator_Initialized;
   }
 
   /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
@@ -79,8 +84,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
         isLeap = _isGregorianLeapYear(year);
       }
 
-// The remaining code is copied from GJYearMonthDayCalculator (and tweaked)
-
+      // The remaining code is copied from GJYearMonthDayCalculator (and tweaked)
       int startOfMonth;
       // Perform a hard-coded binary search to get the month.
       if (isLeap) {
@@ -105,7 +109,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
 
   @internal
   GregorianYearMonthDayCalculator() : super(minGregorianYear, maxGregorianYear, _averageDaysPer10Years, -719162) {
-    _gregorianYearMonthDayCalculator_Init();
+    // _gregorianYearMonthDayCalculator_Init();
   }
 
   @internal @override
