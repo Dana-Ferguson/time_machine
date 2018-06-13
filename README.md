@@ -15,6 +15,9 @@ Todo:
  - [x] Port over major classes
  - [x] Port over corresponding unit tests
  - [ ] Dartification of the API
+   - [X] First pass style updates
+   - [ ] Second pass ergonomics updates
+   - [ ] Synchronous TSDB timezone provider
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
@@ -33,6 +36,5 @@ or later; we'll cross this bridge later.
 Future Todo:
  - [ ] Produce our own TSDB files
  - [ ] Produce our own Culture files
- - [ ] Synchronous TSDB timezone provider (priority being raised - it really helps with ZonedDateTime parsing)
  - [ ] Benchmarking & Optimizing Library for Dart
 
