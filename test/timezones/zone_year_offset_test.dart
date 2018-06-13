@@ -94,7 +94,7 @@ void Construct_ValidDaysOfWeek()
 void GetOccurrenceForYear_Defaults_Epoch()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 1, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -103,7 +103,7 @@ void GetOccurrenceForYear_Defaults_Epoch()
 void GetOccurrenceForYear_Year_1971()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1971);
+  var actual = offset.getOccurrenceForYear(1971);
   var expected = new LocalDateTime.at(1971, 1, 1, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -112,7 +112,7 @@ void GetOccurrenceForYear_Year_1971()
 void GetOccurrenceForYear_Milliseconds()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, new LocalTime(0, 0, 0, 1));
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 0, milliseconds: 1).toLocalInstant();
   expect(expected, actual);
 }
@@ -121,7 +121,7 @@ void GetOccurrenceForYear_Milliseconds()
 void GetOccurrenceForYear_WednesdayForward()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, DayOfWeek.Wednesday, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 7, 0, 0).toLocalInstant(); // 1970-01-01 was a Thursday
   expect(expected, actual);
 }
@@ -130,7 +130,7 @@ void GetOccurrenceForYear_WednesdayForward()
 void GetOccurrenceForYear_WednesdayBackward()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 15, DayOfWeek.Wednesday, false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 14, 0, 0).toLocalInstant(); // 1970-01-15 was a Thursday
   expect(expected, actual);
 }
@@ -139,7 +139,7 @@ void GetOccurrenceForYear_WednesdayBackward()
 void GetOccurrenceForYear_JanMinusTwo()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, -2, 0, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 30, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -148,7 +148,7 @@ void GetOccurrenceForYear_JanMinusTwo()
 void GetOccurrenceForYear_JanFive()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 1, 5, 0, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 1, 5, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -157,7 +157,7 @@ void GetOccurrenceForYear_JanFive()
 void GetOccurrenceForYear_Feb()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 2, 1, 0, true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1970);
+  var actual = offset.getOccurrenceForYear(1970);
   var expected = new LocalDateTime.at(1970, 2, 1, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -166,7 +166,7 @@ void GetOccurrenceForYear_Feb()
 void GetOccurrenceForYear_LastSundayInOctober()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 10, -1, IsoDayOfWeek.sunday.value,  false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(1996);
+  var actual = offset.getOccurrenceForYear(1996);
   var expected = new LocalDateTime.at(1996, 10, 27, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -175,7 +175,7 @@ void GetOccurrenceForYear_LastSundayInOctober()
 void GetOccurrenceForYear_ExactlyFeb29th_LeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, 0, false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2012);
+  var actual = offset.getOccurrenceForYear(2012);
   var expected = new LocalDateTime.at(2012, 2, 29, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -184,7 +184,7 @@ void GetOccurrenceForYear_ExactlyFeb29th_LeapYear()
 void GetOccurrenceForYear_ExactlyFeb29th_NotLeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, 0, false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2013);
+  var actual = offset.getOccurrenceForYear(2013);
   var expected = new LocalDateTime.at(2013, 2, 28, 0, 0).toLocalInstant(); // For "exact", go to Feb 28th
   expect(expected, actual);
 }
@@ -193,7 +193,7 @@ void GetOccurrenceForYear_ExactlyFeb29th_NotLeapYear()
 void GetOccurrenceForYear_AtLeastFeb29th_LeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, IsoDayOfWeek.sunday.value,  true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2012);
+  var actual = offset.getOccurrenceForYear(2012);
   var expected = new LocalDateTime.at(2012, 3, 4, 0, 0).toLocalInstant(); // March 4th is the first Sunday after 2012-02-29
   expect(expected, actual);
 }
@@ -202,7 +202,7 @@ void GetOccurrenceForYear_AtLeastFeb29th_LeapYear()
 void GetOccurrenceForYear_AtLeastFeb29th_NotLeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, IsoDayOfWeek.sunday.value,  true, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2013);
+  var actual = offset.getOccurrenceForYear(2013);
   var expected = new LocalDateTime.at(2013, 3, 3, 0, 0).toLocalInstant(); // March 3rd is the first Sunday after the non-existent 2013-02-29
   expect(expected, actual);
 }
@@ -211,7 +211,7 @@ void GetOccurrenceForYear_AtLeastFeb29th_NotLeapYear()
 void GetOccurrenceForYear_AtMostFeb29th_LeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, IsoDayOfWeek.sunday.value,  false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2012);
+  var actual = offset.getOccurrenceForYear(2012);
   var expected = new LocalDateTime.at(2012, 2, 26, 0, 0).toLocalInstant(); // Feb 26th is the last Sunday before 2012-02-29
   expect(expected, actual);
 }
@@ -220,7 +220,7 @@ void GetOccurrenceForYear_AtMostFeb29th_LeapYear()
 void GetOccurrenceForYear_AtMostFeb29th_NotLeapYear()
 {
   ZoneYearOffset offset = new ZoneYearOffset(TransitionMode.utc, 2, 29, IsoDayOfWeek.sunday.value,  false, LocalTime.midnight);
-  var actual = offset.GetOccurrenceForYear(2013);
+  var actual = offset.getOccurrenceForYear(2013);
   var expected = new LocalDateTime.at(2013, 2, 24, 0, 0).toLocalInstant(); // Feb 24th is the last Sunday is February 2013
   expect(expected, actual);
 }
@@ -231,7 +231,7 @@ void GetOccurrenceForYear_WithAddDay()
   // Last Thursday in October, then add 24 hours. The last Thursday in October 2013 is the 31st, so
   // we should get the start of November 1st.
   var offset = new ZoneYearOffset(TransitionMode.utc, 10, -1, IsoDayOfWeek.thursday.value, false, LocalTime.midnight, true);
-  var actual = offset.GetOccurrenceForYear(2013);
+  var actual = offset.getOccurrenceForYear(2013);
   var expected = new LocalDateTime.at(2013, 11, 1, 0, 0).toLocalInstant();
   expect(expected, actual);
 }
@@ -240,7 +240,7 @@ void GetOccurrenceForYear_WithAddDay()
 void GetOccurrenceForYear_WithAddDay_December31st9999()
 {
   var offset = new ZoneYearOffset(TransitionMode.utc, 12, 31, 0, false, LocalTime.midnight, true);
-  var actual = offset.GetOccurrenceForYear(9999);
+  var actual = offset.getOccurrenceForYear(9999);
   var expected = LocalInstant.afterMaxValue;
   expect(expected, actual);
 }

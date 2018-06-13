@@ -168,10 +168,10 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   ZonedDateTime atStartOfDay(LocalDate date) {
     LocalDateTime midnight = date.atMidnight();
     var mapping = mapLocal(midnight);
-    switch (mapping.Count) {
+    switch (mapping.count) {
       // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
       case 0:
-        var interval = mapping.LateInterval;
+        var interval = mapping.lateInterval;
         // Safe to use Start, as it can't extend to the start of time.
         var offsetDateTime = new OffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
@@ -183,7 +183,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
       case 1:
       case 2:
-        return new ZonedDateTime.trusted(midnight.withOffset(mapping.EarlyInterval.wallOffset), this);
+        return new ZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), this);
       default:
         throw new StateError("This won't happen.");
     }
@@ -250,7 +250,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // Micro-optimization to avoid fetching interval.Start multiple times. Seems
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the start of time, the next check will definitely evaluate to false.
-    Instant intervalStart = interval.RawStart;
+    Instant intervalStart = interval.rawStart;
     // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
     if (localInstant.daysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
@@ -271,7 +271,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the end of time, the next check will
     // definitely evaluate to false.
-    Instant intervalEnd = interval.RawEnd;
+    Instant intervalEnd = interval.rawEnd;
     // Crude but cheap first check to see whether there *might* be a later interval.
     // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
@@ -292,7 +292,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // If the local interval occurs before the zone interval we're looking at starts,
     // we need to find the earlier one; otherwise this interval must come after the gap, and
     // it's therefore the one we want.
-    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.rawStart) {
       return getZoneInterval(guessInterval.start - Span.epsilon);
     }
     else {
@@ -305,7 +305,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // it's the one we're looking for. Otherwise, we need to find the next interval.
-    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.RawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.rawStart) {
       return guessInterval;
     }
     else {
@@ -366,7 +366,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       var zoneInterval = getZoneInterval(current);
       yield zoneInterval;
       // If this is the end of time, this will just fail on the next comparison.
-      current = zoneInterval.RawEnd;
+      current = zoneInterval.rawEnd;
     }
   }
 
@@ -395,7 +395,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     }
     var zoneIntervalEqualityComparer = new ZoneIntervalEqualityComparer(options, interval);
     var originalIntervals = getZoneIntervals(interval);
-    return zoneIntervalEqualityComparer.CoalesceIntervals(originalIntervals);
+    return zoneIntervalEqualityComparer.coalesceIntervals(originalIntervals);
   }
 }
 

@@ -80,7 +80,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   bool operator ==(dynamic right) => right is LocalInstant && _span == right._span;
 
-  /// Equivalent to [Instant.SafePlus], but in the opposite direction.
+  /// Equivalent to [Instant.safePlus], but in the opposite direction.
   @internal Instant safeMinus(Offset offset) {
     int days = _span.days;
     // If we can do the arithmetic safely, do so.

@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 
   // todo: do we care about bclToZoneIds?
   @private FakeDateTimeZoneSource(String versionId, this.zones, this.bclToZoneIds)
-  : VersionId = new Future<String>.value(versionId);
+  : versionId = new Future<String>.value(versionId);
 
   /// Creates a time zone provider ([DateTimeZoneCache]) from this source.
   ///
@@ -23,13 +23,13 @@ import 'package:time_machine/time_machine_utilities.dart';
   Future<IDateTimeZoneProvider> ToProvider() => DateTimeZoneCache.getCache(this);
 
   /// <inheritdoc />
-  Future<Iterable<String>> GetIds() => new Future.value(zones.keys);
+  Future<Iterable<String>> getIds() => new Future.value(zones.keys);
 
   /// <inheritdoc />
-  final Future<String> VersionId;
+  final Future<String> versionId;
 
   /// <inheritdoc />
-  Future<DateTimeZone> ForId(String id) {
+  Future<DateTimeZone> forId(String id) {
     Preconditions.checkNotNull(id, 'id');
     var zone = zones[id];
     if (zone != null) {
@@ -45,7 +45,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String GetSystemDefaultId() {
+  String getSystemDefaultId() {
     return null;
   //String id = TimeZoneInfo.Local.Id;
   // We don't care about the return value of TryGetValue - if it's false,
@@ -55,7 +55,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   }
 
   @override
-  DateTimeZone ForIdSync(String id) {
+  DateTimeZone forIdSync(String id) {
     Preconditions.checkNotNull(id, 'id');
     var zone = zones[id];
     if (zone != null) {

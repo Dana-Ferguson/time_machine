@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
-/// The units within a [Period]. When a period is created to find the difference between two local values,
+/// The units within a [period]. When a period is created to find the difference between two local values,
 /// the caller may specify which units are required - for example, you can ask for the difference between two dates
 /// in "years and weeks". Units are always applied largest-first in arithmetic.
 @immutable
@@ -41,29 +41,29 @@ class PeriodUnits {
 
   /// Value indicating no units - an empty period
   static const PeriodUnits none = const PeriodUnits(0);
-  /// Years element within a [Period]
+  /// Years element within a [period]
   static const PeriodUnits years = const PeriodUnits(1);
-  /// Months element within a [Period]
+  /// Months element within a [period]
   static const PeriodUnits months = const PeriodUnits(2);
-  /// Weeks element within a [Period]
+  /// Weeks element within a [period]
   static const PeriodUnits weeks = const PeriodUnits(4);
-  /// Days element within a [Period]
+  /// Days element within a [period]
   static const PeriodUnits days = const PeriodUnits(8);
   /// Compound value representing the combination of [years], [months], [weeks] and [days]
   static const PeriodUnits allDateUnits = const PeriodUnits(15); // union(const [years, months, weeks, days]);
   /// Compound value representing the combination of [years], [months] and [days]
   static const PeriodUnits yearMonthDay = const PeriodUnits(11); // union(const [years, months, days]);
-  /// Hours element within a [Period]
+  /// Hours element within a [period]
   static const PeriodUnits hours = const PeriodUnits(16);
-  /// Minutes element within a [Period]
+  /// Minutes element within a [period]
   static const PeriodUnits minutes = const PeriodUnits(32);
-  /// Seconds element within a [Period]
+  /// Seconds element within a [period]
   static const PeriodUnits seconds = const PeriodUnits(64);
-  /// Milliseconds element within a [Period]
+  /// Milliseconds element within a [period]
   static const PeriodUnits milliseconds = const PeriodUnits(128);
-  /// Tick element within a [Period]
+  /// Tick element within a [period]
   static const PeriodUnits ticks = const PeriodUnits(256);
-  /// Nanoseconds element within a [Period]
+  /// Nanoseconds element within a [period]
   static const PeriodUnits nanoseconds = const PeriodUnits(512);
   /// Compound value representing the combination of [hours], [minutes] and [seconds]
   static const PeriodUnits hourMinuteSecond = const PeriodUnits(112); // union(const [hours, minutes, seconds]);

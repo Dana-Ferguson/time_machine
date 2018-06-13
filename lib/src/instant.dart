@@ -74,7 +74,7 @@ class Instant implements Comparable<Instant> {
   const Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
-  @internal bool get IsValid => this >= minValue && this <= maxValue;
+  @internal bool get isValid => this >= minValue && this <= maxValue;
 
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
@@ -88,7 +88,7 @@ class Instant implements Comparable<Instant> {
     return new LocalInstant(_span + offset.toSpan());
   }
 
-  @internal LocalInstant SafePlus(Offset offset) {
+  @internal LocalInstant safePlus(Offset offset) {
     var days = _span.floorDays;
     // plusOffset(offset);
     // If we can do the arithmetic safely, do so.
@@ -191,38 +191,24 @@ class Instant implements Comparable<Instant> {
   }
 
   // todo: Combine the regular and x_Calendar constructors
-  ZonedDateTime InZone(DateTimeZone zone) =>
-    // zone is checked for nullity by the constructor.
-    new ZonedDateTime(this, zone);
+  ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem calendar]) =>
+      // zone is checked for nullity by the constructor.
+      // constructor also checks and corrects for calendar being null
+    new ZonedDateTime(this, zone, calendar);
+  
+  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => new OffsetDateTime.fromInstant(this, offset, calendar);
 
-  // todo: name is bad (This is InZone in nodatime)
-  ZonedDateTime InZone_Calendar(DateTimeZone zone, CalendarSystem calendar)
-  {
-    Preconditions.checkNotNull(zone, 'zone');
-    Preconditions.checkNotNull(calendar, 'calendar');
-  return new ZonedDateTime(this, zone, calendar);
-  }
-
-  OffsetDateTime WithOffset(Offset offset) => new OffsetDateTime.fromInstant(this, offset);
-
-  OffsetDateTime WithOffset_Calendar(Offset offset, CalendarSystem calendar)
-  {
-    Preconditions.checkNotNull(calendar, 'calendar');
-    return new OffsetDateTime.fromInstant(this, offset, calendar);
-  }
-
-// todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255
-// Add LocalInstant code
-
-//  int _epochMilliseconds;
-//  /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
-//  int _nanosecondsInterval;
-//
-//  /// This will being to lose precision in JS after 104 epoch days. The precision will be about 200 ns today (is there an exact equation for this?).
-//  int get getEpochNanoseconds => _epochMilliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
-//  int get getEpochMicroseconds => _epochMilliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval ~/  TimeConstants.nanosecondsPerMicrosecond;
-//  int get getEpochMilliseconds => _epochMilliseconds;
-//  int get getEpochSeconds => _epochMilliseconds ~/ TimeConstants.millisecondsPerSecond;
-
+  // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255
+  // Add LocalInstant code
+  
+  //  int _epochMilliseconds;
+  //  /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
+  //  int _nanosecondsInterval;
+  //
+  //  /// This will being to lose precision in JS after 104 epoch days. The precision will be about 200 ns today (is there an exact equation for this?).
+  //  int get getEpochNanoseconds => _epochMilliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  //  int get getEpochMicroseconds => _epochMilliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval ~/  TimeConstants.nanosecondsPerMicrosecond;
+  //  int get getEpochMilliseconds => _epochMilliseconds;
+  //  int get getEpochSeconds => _epochMilliseconds ~/ TimeConstants.millisecondsPerSecond;
 }
 

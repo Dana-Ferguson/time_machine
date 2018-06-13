@@ -12,8 +12,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Provides the interface for objects that can retrieve time zone definitions given an ID.
 ///
 /// The interface presumes that the available time zones are static; there is no mechanism for
-/// updating the list of available time zones. Any time zone ID that is returned in [GetIds]
-/// must be resolved by [ForId] for the life of the source.
+/// updating the list of available time zones. Any time zone ID that is returned in [getIds]
+/// must be resolved by [forId] for the life of the source.
 ///
 /// Implementations need not cache time zones or the available time zone IDs.
 /// Caching is typically provided by [DateTimeZoneCache], which most consumers should use instead of
@@ -30,7 +30,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 abstract class IDateTimeZoneSource {
   /// Returns an unordered enumeration of the IDs available from this source.
   ///
-  /// Every value in this enumeration must return a valid time zone from [ForId] for the life of the source.
+  /// Every value in this enumeration must return a valid time zone from [forId] for the life of the source.
   /// The enumeration may be empty, but must not be null, and must not contain any elements which are null.  It
   /// should not contain duplicates: this is not enforced, and while it may not have a significant impact on
   /// clients in some cases, it is generally unfriendly.  The built-in implementations never return duplicates.
@@ -41,14 +41,14 @@ abstract class IDateTimeZoneSource {
   /// "UTC+/-Offset"), but there is no requirement they be included.
   ///
   /// Returns: The IDs available from this source.
-  Future<Iterable<String>> GetIds();
+  Future<Iterable<String>> getIds();
 
   /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
   ///
   /// This doesn't have any specific format; it's solely for diagnostic purposes.
   /// The included sources return strings of the format "source identifier: source version" indicating where the
   /// information comes from and which version of the source information has been loaded.
-  final Future<String> VersionId = null;
+  final Future<String> versionId = null;
 
   /// Returns the time zone definition associated with the given ID.
   ///
@@ -59,7 +59,7 @@ abstract class IDateTimeZoneSource {
   /// successive requests for the same ID; however, all instances returned for a given ID must compare as equal.
   ///
   /// It is advised that sources should document their behaviour regarding any fixed-offset timezones
-  /// (i.e. "UTC" and "UTC+/-Offset") that are included in the list returned by [GetIds].
+  /// (i.e. "UTC" and "UTC+/-Offset") that are included in the list returned by [getIds].
   /// (These IDs will not be requested by [DateTimeZoneCache], but any users calling
   /// into the source directly may care.)
   ///
@@ -67,16 +67,16 @@ abstract class IDateTimeZoneSource {
   /// [DateTimeZoneCache].
   ///
   /// [id]: The ID of the time zone to return. This must be one of the IDs
-  /// returned by [GetIds].
+  /// returned by [getIds].
   /// Returns: The [DateTimeZone] for the given ID.
   /// [ArgumentException]: [id] is not supported by this source.
-  Future<DateTimeZone> ForId(String id);
+  Future<DateTimeZone> forId(String id);
 
-  DateTimeZone ForIdSync(String id);
+  DateTimeZone forIdSync(String id);
 
   /// Returns this source's ID for the system default time zone.
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String GetSystemDefaultId();
+  String getSystemDefaultId();
 }

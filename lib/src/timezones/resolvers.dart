@@ -106,7 +106,7 @@ abstract class Resolvers
   /// <seealso cref="DateTimeZone.AtLeniently"/>
   static final ZoneLocalMappingResolver lenientResolver = createMappingResolver(returnEarlier, returnForwardShifted);
 
-  /// Combines an [AmbiguousTimeResolver] and a [SkippedTimeResolver] to create a
+  /// Combines an [ambiguousTimeResolver] and a [SkippedTimeResolver] to create a
   /// [ZoneLocalMappingResolver].
   ///
   /// The `ZoneLocalMappingResolver` created by this method operates in the obvious way: unambiguous mappings
@@ -123,13 +123,13 @@ abstract class Resolvers
 
     ZonedDateTime mappingResolve(ZoneLocalMapping mapping) {
       Preconditions.checkNotNull(mapping, 'mapping');
-      switch (mapping.Count) {
+      switch (mapping.count) {
         case 0:
-          return skippedTimeResolver(mapping.localDateTime, mapping.Zone, mapping.EarlyInterval, mapping.LateInterval);
+          return skippedTimeResolver(mapping.localDateTime, mapping.zone, mapping.earlyInterval, mapping.lateInterval);
         case 1:
-          return mapping.First();
+          return mapping.first();
         case 2:
-          return ambiguousTimeResolver(mapping.First(), mapping.Last());
+          return ambiguousTimeResolver(mapping.first(), mapping.last());
         default:
           throw new StateError("Mapping has count outside range 0-2; should not happen.");
       }

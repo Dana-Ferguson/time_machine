@@ -21,6 +21,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// This class is used as the return type of [DateTimeZone.mapLocal]. It allows for
 /// finely-grained handling of the three possible results:
 ///
+/// //todo: Markdown me!
 /// <list type="bullet">
 ///   <item>
 ///     <term>Unambiguous mapping</term>
@@ -45,61 +46,59 @@ import 'package:time_machine/time_machine_timezones.dart';
 ///     </description>
 ///   </item>
 /// </list>
-///
-/// <threadsafety>This type is an immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-/*sealed*/ class ZoneLocalMapping {
+class ZoneLocalMapping {
   /// Gets the [DateTimeZone] in which this mapping was performed.
-  final DateTimeZone Zone;
+  final DateTimeZone zone;
 
   /// Gets the [LocalDateTime] which was mapped within the time zone.
   final LocalDateTime localDateTime;
 
   /// Gets the earlier [ZoneInterval] within this mapping.
   ///
-  /// For unambiguous mappings, this is the same as [LateInterval]; for ambiguous mappings,
+  /// For unambiguous mappings, this is the same as [lateInterval]; for ambiguous mappings,
   /// this is the interval during which the mapped local time first occurs; for impossible
   /// mappings, this is the interval before which the mapped local time occurs.
-  final ZoneInterval EarlyInterval;
+  final ZoneInterval earlyInterval;
 
   /// Gets the later [ZoneInterval] within this mapping.
   ///
   /// For unambiguous
-  /// mappings, this is the same as [EarlyInterval]; for ambiguous mappings,
+  /// mappings, this is the same as [earlyInterval]; for ambiguous mappings,
   /// this is the interval during which the mapped local time last occurs; for impossible
   /// mappings, this is the interval after which the mapped local time occurs.
-  final ZoneInterval LateInterval;
+  final ZoneInterval lateInterval;
 
   /// Gets the number of results within this mapping: the number of distinct
   /// [ZonedDateTime] values which map to the original [LocalDateTime].
   ///
   /// <value>The number of results within this mapping: the number of distinct values which map to the
   /// original local date and time.</value>
-  final int Count;
+  final int count;
 
-  @internal ZoneLocalMapping(this.Zone, this.localDateTime, this.EarlyInterval, this.LateInterval, this.Count) {
-    Preconditions.debugCheckNotNull(Zone, 'zone');
-    Preconditions.debugCheckNotNull(EarlyInterval, 'earlyInterval');
-    Preconditions.debugCheckNotNull(LateInterval, 'lateInterval');
-    Preconditions.debugCheckArgumentRange('count', Count, 0, 2);
+  @internal ZoneLocalMapping(this.zone, this.localDateTime, this.earlyInterval, this.lateInterval, this.count) {
+    Preconditions.debugCheckNotNull(zone, 'zone');
+    Preconditions.debugCheckNotNull(earlyInterval, 'earlyInterval');
+    Preconditions.debugCheckNotNull(lateInterval, 'lateInterval');
+    Preconditions.debugCheckArgumentRange('count', count, 0, 2);
   }
 
   /// Returns the single [ZonedDateTime] which maps to the original
   /// [LocalDateTime] in the mapped [DateTimeZone].
   ///
-  /// [SkippedTimeException]: The local date/time was skipped in the time zone.
-  /// [AmbiguousTimeException]: The local date/time was ambiguous in the time zone.
+  /// [SkippedTimeError]: The local date/time was skipped in the time zone.
+  /// [AmbiguousTimeError]: The local date/time was ambiguous in the time zone.
   /// Returns: The unambiguous result of mapping the local date/time in the time zone.
-  ZonedDateTime Single() {
-    switch (Count) {
+  ZonedDateTime single() {
+    switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, Zone);
+        throw new SkippedTimeError(localDateTime, zone);
       case 1:
-        return BuildZonedDateTime(EarlyInterval);
+        return _buildZonedDateTime(earlyInterval);
       case 2:
         throw new AmbiguousTimeError(
-            BuildZonedDateTime(EarlyInterval),
-            BuildZonedDateTime(LateInterval));
+            _buildZonedDateTime(earlyInterval),
+            _buildZonedDateTime(lateInterval));
       default:
         throw new StateError("Can't happen");
     }
@@ -112,13 +111,13 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [SkippedTimeException]: The local date/time was skipped in the time zone.
   /// Returns: The unambiguous result of mapping a local date/time in a time zone.
-  ZonedDateTime First() {
-    switch (Count) {
+  ZonedDateTime first() {
+    switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, Zone);
+        throw new SkippedTimeError(localDateTime, zone);
       case 1:
       case 2:
-        return BuildZonedDateTime(EarlyInterval);
+        return _buildZonedDateTime(earlyInterval);
       default:
         throw new StateError("Can't happen");
     }
@@ -129,21 +128,21 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// or the later result if the local date/time occurs twice in the time zone due to a time zone
   /// offset change such as an autumnal daylight saving transition.
   ///
-  /// [SkippedTimeException]: The local date/time was skipped in the time zone.
+  /// [SkippedTimeError]: The local date/time was skipped in the time zone.
   /// Returns: The unambiguous result of mapping a local date/time in a time zone.
-  ZonedDateTime Last() {
-    switch (Count) {
+  ZonedDateTime last() {
+    switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, Zone);
+        throw new SkippedTimeError(localDateTime, zone);
       case 1:
-        return BuildZonedDateTime(EarlyInterval);
+        return _buildZonedDateTime(earlyInterval);
       case 2:
-        return BuildZonedDateTime(LateInterval);
+        return _buildZonedDateTime(lateInterval);
       default:
         throw new StateError("Can't happen");
     }
   }
 
-  @private ZonedDateTime BuildZonedDateTime(ZoneInterval interval) =>
-      new ZonedDateTime.trusted(localDateTime.withOffset(interval.wallOffset), Zone);
+  ZonedDateTime _buildZonedDateTime(ZoneInterval interval) =>
+      new ZonedDateTime.trusted(localDateTime.withOffset(interval.wallOffset), zone);
 }

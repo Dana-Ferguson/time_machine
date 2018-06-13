@@ -211,7 +211,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The instant represented by this value, in the specified time zone.
   ZonedDateTime inZone(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
-    return toInstant().InZone(zone);
+    return toInstant().inZone(zone);
   }
 
   /// Creates a new [OffsetDateTime] representing the same physical date, time and offset, but in a different calendar.

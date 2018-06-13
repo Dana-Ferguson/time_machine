@@ -73,7 +73,7 @@ Future InZone () async
 {
   // todo: this is absurd
   DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).InZone(london);
+  ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
   LocalDateTime local = new LocalDateTime.at(2008, 6, 10, 14, 16, seconds: 17);
@@ -89,7 +89,7 @@ void WithOffset()
   // Jon talks about Noda Time at Leetspeak in Sweden on October 12th 2013, at 13:15 UTC+2
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
-  OffsetDateTime actual = instant.WithOffset(offset);
+  OffsetDateTime actual = instant.withOffset(offset);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(2013, 10, 12, 13, 15), offset);
   expect(expected, actual);
 }
@@ -105,7 +105,7 @@ void WithOffset_NonIsoCalendar()
   CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
-  OffsetDateTime actual = instant.WithOffset_Calendar(offset, calendar);
+  OffsetDateTime actual = instant.withOffset(offset, calendar);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(1434, 12, 7, 13, 15, calendar: calendar), offset);
   expect(expected, actual);
 }
@@ -224,7 +224,7 @@ Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
   DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).InZone_Calendar(london, copticCalendar);
+  ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
   LocalDateTime local = new LocalDateTime.at(1720, 10, 2, 12, 10, calendar: copticCalendar);
@@ -354,10 +354,10 @@ void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 @Test()
 void IsValid()
 {
-  expect(Instant.beforeMinValue.IsValid, isFalse);
-  expect(Instant.minValue.IsValid, isTrue);
-  expect(Instant.maxValue.IsValid, isTrue);
-  expect(Instant.afterMaxValue.IsValid, isFalse);
+  expect(Instant.beforeMinValue.isValid, isFalse);
+  expect(Instant.minValue.isValid, isTrue);
+  expect(Instant.maxValue.isValid, isTrue);
+  expect(Instant.afterMaxValue.isValid, isFalse);
 }
 
 @Test()
@@ -446,7 +446,7 @@ void PlusOffset()
 @Test()
 void SafePlus_NormalTime()
 {
-  var localInstant = TimeConstants.unixEpoch.SafePlus(new Offset.fromHours(1));
+  var localInstant = TimeConstants.unixEpoch.safePlus(new Offset.fromHours(1));
   expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
@@ -464,7 +464,7 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
   var expected = finalOffset == null
       ? LocalInstant.beforeMinValue
       : Instant.minValue.plusOffset(new Offset.fromHours(finalOffset));
-  var actual = start.SafePlus(new Offset.fromHours(offsetToAdd));
+  var actual = start.safePlus(new Offset.fromHours(offsetToAdd));
   expect(actual, expected);
 }
 
@@ -483,7 +483,7 @@ void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset)
   var expected = finalOffset == null
       ? LocalInstant.afterMaxValue
       : Instant.maxValue.plusOffset(new Offset.fromHours(finalOffset));
-  var actual = start.SafePlus(new Offset.fromHours(offsetToAdd));
+  var actual = start.safePlus(new Offset.fromHours(offsetToAdd));
 
   expect(actual, expected);
 }

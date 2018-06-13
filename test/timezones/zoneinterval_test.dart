@@ -29,7 +29,7 @@ new Offset.fromHours(9), new Offset.fromHours(1));
 void PassthroughProperties()
 {
   expect("TestTime", SampleInterval.name);
-  expect(new Offset.fromHours(8), SampleInterval.StandardOffset);
+  expect(new Offset.fromHours(8), SampleInterval.standardOffset);
   expect(new Offset.fromHours(1), SampleInterval.savings);
   expect(new Offset.fromHours(9), SampleInterval.wallOffset);
   expect(SampleStart, SampleInterval.start);
@@ -44,18 +44,18 @@ void ComputedProperties()
 {
   LocalDateTime start = new LocalDateTime.at(2011, 6, 3, 19, 15);
   LocalDateTime end = new LocalDateTime.at(2011, 8, 2, 22, 45);
-  expect(start, SampleInterval.IsoLocalStart);
-  expect(end, SampleInterval.IsoLocalEnd);
+  expect(start, SampleInterval.isoLocalStart);
+  expect(end, SampleInterval.isoLocalEnd);
   expect(SampleEnd - SampleStart, SampleInterval.span);
 }
 
 @Test()
 void Contains_Instant_Normal()
 {
-  expect(SampleInterval.Contains(SampleStart), isTrue);
-  expect(SampleInterval.Contains(SampleEnd), isFalse);
-  expect(SampleInterval.Contains(Instant.minValue), isFalse);
-  expect(SampleInterval.Contains(Instant.maxValue), isFalse);
+  expect(SampleInterval.contains(SampleStart), isTrue);
+  expect(SampleInterval.contains(SampleEnd), isFalse);
+  expect(SampleInterval.contains(Instant.minValue), isFalse);
+  expect(SampleInterval.contains(Instant.maxValue), isFalse);
 }
 
 @Test()
@@ -63,9 +63,9 @@ void Contains_Instant_WholeOfTime_ViaNullity()
 {
   ZoneInterval interval = new ZoneInterval("All Time", null, null,
       new Offset.fromHours(9), new Offset.fromHours(1));
-  expect(interval.Contains(SampleStart), isTrue);
-  expect(interval.Contains(Instant.minValue), isTrue);
-  expect(interval.Contains(Instant.maxValue), isTrue);
+  expect(interval.contains(SampleStart), isTrue);
+  expect(interval.contains(Instant.minValue), isTrue);
+  expect(interval.contains(Instant.maxValue), isTrue);
 }
 
 @Test()
@@ -73,9 +73,9 @@ void Contains_Instant_WholeOfTime_ViaSpecialInstants()
 {
   ZoneInterval interval = new ZoneInterval("All Time", Instant.beforeMinValue, Instant.afterMaxValue,
       new Offset.fromHours(9), new Offset.fromHours(1));
-  expect(interval.Contains(SampleStart), isTrue);
-  expect(interval.Contains(Instant.minValue), isTrue);
-  expect(interval.Contains(Instant.maxValue), isTrue);
+  expect(interval.contains(SampleStart), isTrue);
+  expect(interval.contains(Instant.minValue), isTrue);
+  expect(interval.contains(Instant.maxValue), isTrue);
 }
 
 @Test()
@@ -94,8 +94,8 @@ void Contains_OutsideLocalInstantange()
   ZoneInterval veryEarly = new ZoneInterval("Very early", Instant.beforeMinValue, Instant.minValue + new Span(hours: 8), new Offset.fromHours(-9), Offset.zero);
   ZoneInterval veryLate = new ZoneInterval("Very late", Instant.maxValue - new Span(hours: 8), Instant.afterMaxValue, new Offset.fromHours(9), Offset.zero);
   // The instants are contained...
-  expect(veryEarly.Contains(Instant.minValue + new Span(hours: 4)), isTrue);
-  expect(veryLate.Contains(Instant.maxValue - new Span(hours: 4)), isTrue);
+  expect(veryEarly.contains(Instant.minValue + new Span(hours: 4)), isTrue);
+  expect(veryLate.contains(Instant.maxValue - new Span(hours: 4)), isTrue);
   // But there are no valid local instants
   expect(veryEarly.containsLocal(Instant.minValue.plusOffset(Offset.zero)), isFalse);
   expect(veryLate.containsLocal(Instant.maxValue.plusOffset(Offset.zero)), isFalse);
@@ -106,8 +106,8 @@ void IsoLocalStartAndEnd_Infinite()
 {
   var interval = new ZoneInterval("All time", null, null, Offset.zero, Offset.zero);
   // Assert.Throws<InvalidOperationException>
-  expect(() => interval.IsoLocalStart.toString(), throwsStateError);
-  expect(() => interval.IsoLocalEnd.toString(), throwsStateError);
+  expect(() => interval.isoLocalStart.toString(), throwsStateError);
+  expect(() => interval.isoLocalEnd.toString(), throwsStateError);
 }
 
 @Test()
@@ -115,9 +115,9 @@ void IsoLocalStartAndEnd_OutOfRange()
 {
   var interval = new ZoneInterval("All time", Instant.minValue, null, new Offset.fromHours(-1), Offset.zero);
   // Assert.Throws<OverflowException>
-  expect(() => interval.IsoLocalStart.toString(), throwsRangeError);
+  expect(() => interval.isoLocalStart.toString(), throwsRangeError);
   interval = new ZoneInterval("All time", null, Instant.maxValue, new Offset.fromHours(11), Offset.zero);
-  expect(() => interval.IsoLocalEnd.toString(), throwsRangeError);
+  expect(() => interval.isoLocalEnd.toString(), throwsRangeError);
 }
 
 @Test()

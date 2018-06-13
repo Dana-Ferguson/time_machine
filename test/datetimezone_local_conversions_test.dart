@@ -124,52 +124,52 @@ T capture<T extends Error>(action()) {
 void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
 {
   var mapping = zone.mapLocal(localTime);
-  expect(0, mapping.Count);
+  expect(0, mapping.count);
 
   SkippedTimeError e; // = Assert.Throws<SkippedTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.Single()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.single()), new isInstanceOf<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.First());
-  expect(e = capture(() => mapping.First()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.first()), new isInstanceOf<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.Last());
-  expect(e = capture(() => mapping.Last()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.last()), new isInstanceOf<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 }
 
 void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
 {
-  ZonedDateTime earlier = zone.mapLocal(localTime).First();
-  ZonedDateTime later = zone.mapLocal(localTime).Last();
+  ZonedDateTime earlier = zone.mapLocal(localTime).first();
+  ZonedDateTime later = zone.mapLocal(localTime).last();
   expect(localTime, earlier.localDateTime);
   expect(localTime, later.localDateTime);
   expect(earlier.toInstant(), lessThan(later.toInstant()));
 
   var mapping = zone.mapLocal(localTime);
-  expect(2, mapping.Count);
+  expect(2, mapping.count);
   AmbiguousTimeError e; // = Assert.Throws<AmbiguousTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.Single()), new isInstanceOf<AmbiguousTimeError>());
+  expect(e = capture(() => mapping.single()), new isInstanceOf<AmbiguousTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.Zone);
   expect(earlier, e.earlierMapping);
   expect(later, e.laterMapping);
 
-  expect(earlier, mapping.First());
-  expect(later, mapping.Last());
+  expect(earlier, mapping.first());
+  expect(later, mapping.last());
 }
 
 void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
 {
   var mapping = zone.mapLocal(localTime);
-  expect(1, mapping.Count);
-  var zoned = mapping.Single();
-  expect(zoned, mapping.First());
-  expect(zoned, mapping.Last());
+  expect(1, mapping.count);
+  var zoned = mapping.single();
+  expect(zoned, mapping.first());
+  expect(zoned, mapping.last());
   int actualHours = zoned.offset.milliseconds ~/ TimeConstants.millisecondsPerHour;
   expect(expectedHours, actualHours);
 }
@@ -262,7 +262,7 @@ void MapLocalDateTime_UnambiguousDateReturnsUnambiguousMapping()
   //2011-11-09 01:30:00 - not ambiguous in America/New York timezone
   var unambigiousTime = new LocalDateTime.at(2011, 11, 9, 1, 30);
   var mapping = NewYork.mapLocal(unambigiousTime);
-  expect(1, mapping.Count);
+  expect(1, mapping.count);
 }
 
 @Test()
@@ -271,7 +271,7 @@ void MapLocalDateTime_AmbiguousDateReturnsAmbigousMapping()
   //2011-11-06 01:30:00 - falls during DST - EST conversion in America/New York timezone
   var ambiguousTime = new LocalDateTime.at(2011, 11, 6, 1, 30);
   var mapping = NewYork.mapLocal(ambiguousTime);
-  expect(2, mapping.Count);
+  expect(2, mapping.count);
 }
 
 @Test()
@@ -280,7 +280,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
   //2011-03-13 02:30:00 - falls during EST - DST conversion in America/New York timezone
   var skippedTime = new LocalDateTime.at(2011, 3, 13, 2, 30);
   var mapping = NewYork.mapLocal(skippedTime);
-  expect(0, mapping.Count);
+  expect(0, mapping.count);
 }
 
 // Some zones skipped dates by changing from UTC-lots to UTC+lots. For example, Samoa (Pacific/Apia)

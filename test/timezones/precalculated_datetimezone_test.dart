@@ -39,7 +39,7 @@ new StandardDaylightAlternatingMap(new Offset.fromHours(-6), Winter, Summer);
 
 // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
 // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
-final ZoneInterval ClampedTailZoneInterval = TailZone.getZoneInterval(ThirdInterval.end).WithStart(ThirdInterval.end);
+final ZoneInterval ClampedTailZoneInterval = TailZone.getZoneInterval(ThirdInterval.end).withStart(ThirdInterval.end);
 
 final PrecalculatedDateTimeZone TestZone =
 new PrecalculatedDateTimeZone("Test", [ FirstInterval, SecondInterval, ThirdInterval ], TailZone);
@@ -117,7 +117,7 @@ void MapLocal_UnambiguousInTailZone()
 void MapLocal_AmbiguousWithinPrecalculated()
 {
   // Transition from +4 to -5 has a 9 hour ambiguity
-  CheckMapping(ThirdInterval.IsoLocalStart, SecondInterval, ThirdInterval, 2);
+  CheckMapping(ThirdInterval.isoLocalStart, SecondInterval, ThirdInterval, 2);
 }
 
 @Test()
@@ -125,7 +125,7 @@ void MapLocal_AmbiguousAroundTailZoneTransition()
 {
   // Transition from -5 to -6 has a 1 hour ambiguity
   // CheckMapping(ThirdInterval.IsoLocalEnd.PlusNanoseconds(-1L), ThirdInterval, ClampedTailZoneInterval, 2);
-  CheckMapping(ThirdInterval.IsoLocalEnd.plusNanoseconds(-1), ThirdInterval, ClampedTailZoneInterval, 2);
+  CheckMapping(ThirdInterval.isoLocalEnd.plusNanoseconds(-1), ThirdInterval, ClampedTailZoneInterval, 2);
 }
 
 @Test()
@@ -139,18 +139,18 @@ void MapLocal_AmbiguousButTooEarlyInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Span(hours: 1), 10, 8);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.plusHours(-1));
-  expect(ThirdInterval, mapping.EarlyInterval);
-  expect(ThirdInterval, mapping.LateInterval);
-  expect(1, mapping.Count);
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(-1));
+  expect(ThirdInterval, mapping.earlyInterval);
+  expect(ThirdInterval, mapping.lateInterval);
+  expect(1, mapping.count);
 }
 
 @Test()
 void MapLocal_GapWithinPrecalculated()
 {
   // Transition from +3 to +4 has a 1 hour gap
-  expect(FirstInterval.IsoLocalEnd < SecondInterval.IsoLocalStart, isTrue);
-  CheckMapping(FirstInterval.IsoLocalEnd, FirstInterval, SecondInterval, 0);
+  expect(FirstInterval.isoLocalEnd < SecondInterval.isoLocalStart, isTrue);
+  CheckMapping(FirstInterval.isoLocalEnd, FirstInterval, SecondInterval, 0);
 }
 
 @Test()
@@ -163,10 +163,10 @@ void MapLocal_SingleIntervalAroundTailZoneTransition()
   var tailZone = new FixedDateTimeZone.forOffset(new Offset.fromHours(5));
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.plusHours(-1));
-  expect(ThirdInterval, mapping.EarlyInterval);
-  expect(ThirdInterval, mapping.LateInterval);
-  expect(1, mapping.Count);
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(-1));
+  expect(ThirdInterval, mapping.earlyInterval);
+  expect(ThirdInterval, mapping.lateInterval);
+  expect(1, mapping.count);
 }
 
 @Test()
@@ -179,11 +179,11 @@ void MapLocal_GapAroundTailZoneTransition()
   var tailZone = new FixedDateTimeZone.forOffset(new Offset.fromHours(5));
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd);
-  expect(ThirdInterval, mapping.EarlyInterval);
-  expect(mapping.LateInterval,
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd);
+  expect(ThirdInterval, mapping.earlyInterval);
+  expect(mapping.lateInterval,
       new ZoneInterval("UTC+05", ThirdInterval.end, Instant.afterMaxValue, new Offset.fromHours(5), Offset.zero));
-  expect(0, mapping.Count);
+  expect(0, mapping.count);
 }
 
 @Test()
@@ -196,11 +196,11 @@ void MapLocal_GapAroundAndInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Span(hours: 1), -10, 5);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.IsoLocalEnd.plusHours(1));
-  expect(ThirdInterval, mapping.EarlyInterval);
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(1));
+  expect(ThirdInterval, mapping.earlyInterval);
   expect(new ZoneInterval("Single-Early", ThirdInterval.end, tailZone.Transition, new Offset.fromHours(-10), Offset.zero),
-      mapping.LateInterval);
-  expect(0, mapping.Count);
+      mapping.lateInterval);
+  expect(0, mapping.count);
 }
 
 @Test()
@@ -218,16 +218,16 @@ expect(intervals[1], zone.getZoneInterval(Instant.maxValue));
 void CheckMapping(LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
 {
   var mapping = TestZone.mapLocal(localDateTime);
-  expect(earlyInterval, mapping.EarlyInterval);
-  expect(lateInterval, mapping.LateInterval);
-  expect(count, mapping.Count);
+  expect(earlyInterval, mapping.earlyInterval);
+  expect(lateInterval, mapping.lateInterval);
+  expect(count, mapping.count);
 }
 
 @Test()
 void Validation_EmptyPeriodArray() {
   // Assert.Throws<ArgumentException>
   expect(() =>
-      PrecalculatedDateTimeZone.ValidatePeriods([] /*new ZoneInterval[0]*/,
+      PrecalculatedDateTimeZone.validatePeriods([] /*new ZoneInterval[0]*/,
           DateTimeZone.utc), throwsArgumentError);
 }
 
@@ -239,7 +239,7 @@ void Validation_BadFirstStartingPoint() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
-  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
+  expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
 }
 
 @Test()
@@ -250,7 +250,7 @@ void Validation_NonAdjoiningIntervals() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(25), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
-  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
+  expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
 }
 
 @Test()
@@ -263,7 +263,7 @@ void Validation_Success()
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(30), new Instant.fromUnixTimeTicks(100), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(200), Offset.zero, Offset.zero)
   ];
-  PrecalculatedDateTimeZone.ValidatePeriods(intervals, DateTimeZone.utc);
+  PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc);
 }
 
 @Test()
@@ -274,7 +274,7 @@ void Validation_NullTailZoneWithMiddleOfTimeFinalPeriod() {
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
-  expect(() => PrecalculatedDateTimeZone.ValidatePeriods(intervals, null), throwsArgumentError);
+  expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, null), throwsArgumentError);
 }
 
 @Test()
@@ -285,7 +285,7 @@ void Validation_NullTailZoneWithEotPeriodEnd()
     new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), Instant.afterMaxValue, Offset.zero, Offset.zero)
 ];
-PrecalculatedDateTimeZone.ValidatePeriods(intervals, null);
+PrecalculatedDateTimeZone.validatePeriods(intervals, null);
 }
 
 //@Test()

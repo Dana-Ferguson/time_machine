@@ -246,17 +246,17 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     // We were given an offset, so we can resolve and validate using that
     var mapping = _zone.mapLocal(localDateTime);
     ZonedDateTime result;
-    switch (mapping.Count) {
+    switch (mapping.count) {
       // If the local time was skipped, the offset has to be invalid.
       case 0:
         return ParseResult.invalidOffset<ZonedDateTime>(text);
       case 1:
-        result = mapping.First(); // We'll validate in a minute
+        result = mapping.first(); // We'll validate in a minute
         break;
       case 2:
         result = mapping
-            .First()
-            .offset == offset ? mapping.First() : mapping.Last();
+            .first()
+            .offset == offset ? mapping.first() : mapping.last();
         break;
       default:
         throw new /*InvalidOperationException*/ StateError("Mapping has count outside range 0-2; should not happen.");

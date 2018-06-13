@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 import '../time_machine_testing.dart';
 
 Future main() async {
-  timeZone = CachedDateTimeZone.ForZone(await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"]);
+  timeZone = CachedDateTimeZone.forZone(await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"]);
 
   await runTests();
 }
@@ -57,21 +57,21 @@ void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed(
 @Test()
 void MinMaxOffsets()
 {
-  expect(timeZone.TimeZone.minOffset, timeZone.minOffset);
-  expect(timeZone.TimeZone.maxOffset, timeZone.maxOffset);
+  expect(timeZone.timeZone.minOffset, timeZone.minOffset);
+  expect(timeZone.timeZone.maxOffset, timeZone.maxOffset);
 }
 
 @Test()
 void ForZone_Fixed()
 {
   var zone = new DateTimeZone.forOffset(new Offset.fromHours(1));
-  expect(identical(zone, CachedDateTimeZone.ForZone(zone)), isTrue);
+  expect(identical(zone, CachedDateTimeZone.forZone(zone)), isTrue);
 }
 
 @Test()
 void ForZone_AlreadyCached()
 {
-  expect(identical(timeZone, CachedDateTimeZone.ForZone(timeZone)), isTrue);
+  expect(identical(timeZone, CachedDateTimeZone.forZone(timeZone)), isTrue);
 }
 
 

@@ -159,7 +159,7 @@ Future IsDaylightSavings() async
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
   var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
   var winter = (winterSummerTransition - Span.epsilon).inZone(zone);
-  var summer = winterSummerTransition.InZone(zone);
+  var summer = winterSummerTransition.inZone(zone);
   expect(winter.isDaylightSavingTime(), isFalse);
   expect(summer.isDaylightSavingTime(), isTrue);
 }
@@ -308,8 +308,8 @@ void Equality()
 {
   // Goes back from 2am to 1am on June 13th
   SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
-  var sample = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30)).First();
-  var fromUtc = new Instant.fromUtc(2011, 6, 12, 21, 30).InZone(zone);
+  var sample = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30)).first();
+  var fromUtc = new Instant.fromUtc(2011, 6, 12, 21, 30).inZone(zone);
 
   // Checks all the overloads etc: first check is that the zone matters
   TestHelper.TestEqualsStruct(sample, fromUtc, [new Instant.fromUtc(2011, 6, 12, 21, 30).inUtc()]);
@@ -318,16 +318,16 @@ void Equality()
 // Now just use a simple inequality check for other aspects...
 
   // Different offset
-  var later = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30)).Last();
+  var later = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30)).last();
   expect(sample.localDateTime, later.localDateTime);
   expect(sample.offset, isNot(later.offset));
   expect(sample, isNot(later));
 
   // Different local time
-  expect(sample, isNot(zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 19)).First()));
+  expect(sample, isNot(zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 19)).first()));
 
   // Different calendar
-  var withOtherCalendar = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30, calendar: CalendarSystem.gregorian)).First();
+  var withOtherCalendar = zone.mapLocal(new LocalDateTime.at(2011, 6, 13, 1, 30, calendar: CalendarSystem.gregorian)).first();
   expect(sample, isNot(withOtherCalendar));
 }
 

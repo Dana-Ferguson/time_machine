@@ -2,35 +2,29 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
-
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 /// A location entry generated from the "zone1970.tab" file in a TZDB release. This can be used to provide
 /// users with a choice of time zone, although it is not internationalized. This is equivalent to
 /// [TzdbZoneLocation], except that multiple countries may be represented.
-///
-/// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-/* sealed */ class TzdbZone1970Location
-{
-  @private final int latitudeSeconds, longitudeSeconds;
+class TzdbZone1970Location {
+  final int _latitudeSeconds, _longitudeSeconds;
 
   /// Gets the latitude in degrees; positive for North, negative for South.
   ///
   /// The value will be in the range [-90, 90].
-  double get Latitude => latitudeSeconds / 3600.0;
+  double get latitude => _latitudeSeconds / 3600.0;
 
   /// Gets the longitude in degrees; positive for East, negative for West.
   ///
   /// The value will be in the range [-180, 180].
-  double get Longitude => longitudeSeconds / 3600.0;
+  double get longitude => _longitudeSeconds / 3600.0;
 
   /// Gets the list of countries associated with this location.
   ///
@@ -38,21 +32,21 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// in the order specified in "zone1970.tab", so the first entry is always the
   /// country containing the position indicated by the latitude and longitude, and
   /// is the most populous country in the list. No entry in this list is ever null.
-  // IList
-  final List<Country> Countries;
+  // todo: make immutable list?
+  final List<Country> countries;
 
   /// The ID of the time zone for this location.
   ///
   /// If this mapping was fetched from a [TzdbDateTimeZoneSource], it will always be a valid ID within that source.
-  final String ZoneId;
+  final String zoneId;
 
   /// Gets the comment (in English) for the mapping, if any.
   ///
   /// This is usually used to differentiate between locations in the same country.
   /// This will return an empty string if no comment was provided in the original data.
-  final String Comment;
+  final String comment;
 
-  TzdbZone1970Location._(this.Comment, this.Countries, this.latitudeSeconds, this.longitudeSeconds, this.ZoneId);
+  TzdbZone1970Location._(this.comment, this.countries, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///
@@ -81,29 +75,29 @@ import 'package:time_machine/time_machine_timezones.dart';
     return new TzdbZone1970Location._(Comment, Countries, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void Write(IDateTimeZoneWriter writer)
+  @internal void write(IDateTimeZoneWriter writer)
   {
     throw new UnimplementedError('This feature is not supported.');
-  //    writer.WriteSignedCount(latitudeSeconds);
-  //    writer.WriteSignedCount(longitudeSeconds);
-  //    writer.WriteCount(Countries.length);
-  //    // We considered writing out the ISO-3166 file as a separate field,
-  //    // so we can reuse objects, but we don't actually waste very much space this way,
-  //    // due to the string pool... and the increased code complexity isn't worth it.
-  //    for (var country in Countries)
-  //    {
-  //      writer.WriteString(country.Name);
-  //      writer.WriteString(country.Code);
-  //    }
-  //    writer.WriteString(ZoneId);
-  //    writer.WriteString(Comment);
-  }
+    //    writer.WriteSignedCount(latitudeSeconds);
+    //    writer.WriteSignedCount(longitudeSeconds);
+    //    writer.WriteCount(Countries.length);
+    //    // We considered writing out the ISO-3166 file as a separate field,
+    //    // so we can reuse objects, but we don't actually waste very much space this way,
+    //    // due to the string pool... and the increased code complexity isn't worth it.
+    //    for (var country in Countries)
+    //    {
+    //      writer.WriteString(country.Name);
+    //      writer.WriteString(country.Code);
+    //    }
+    //    writer.WriteString(ZoneId);
+    //    writer.WriteString(Comment);
+    }
 
-  @internal static TzdbZone1970Location Read(DateTimeZoneReader reader)
+  @internal static TzdbZone1970Location read(DateTimeZoneReader reader)
   {
-    int latitudeSeconds = reader.readInt32(); //.ReadSignedCount();
-    int longitudeSeconds = reader.readInt32(); //.ReadSignedCount();
-    int countryCount = reader.read7BitEncodedInt(); //.ReadCount();
+    int latitudeSeconds = reader.readInt32();
+    int longitudeSeconds = reader.readInt32();
+    int countryCount = reader.read7BitEncodedInt();
     var countries = new List<Country>();
     for (int i = 0; i < countryCount; i++)
     {
@@ -120,7 +114,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       return new TzdbZone1970Location(latitudeSeconds, longitudeSeconds, countries, zoneId, comment);
     }
     on ArgumentError catch (e) {
-    throw new InvalidTimeDataError("Invalid zone location data in stream", e);
+      throw new InvalidTimeDataError("Invalid zone location data in stream", e);
     }
   }
 }
@@ -129,8 +123,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// A country represented within an entry in the "zone1970.tab" file, with the English name
 /// mapped from the "iso3166.tab" file.
 @immutable
-/* sealed */ class Country // : IEquatable<Country>
-    {
+class Country {
   /// Gets the English name of the country.
   final String Name;
 
@@ -152,15 +145,11 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [other]: The country to compare with this one.
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
-  bool Equals(Country other) => other != null && other.Code == Code && other.Name == Name;
+  bool equals(Country other) => other != null && other.Code == Code && other.Name == Name;
 
   /// Returns a hash code for this country.
-  ///
-  /// Returns: A hash code for this country.
   @override int get hashCode => hash2(Name, Code);
 
   /// Returns a string representation of this country, including the code and name.
-  ///
-  /// Returns: A string representation of this country.
   @override String toString() => "$Code ($Name)";
 }

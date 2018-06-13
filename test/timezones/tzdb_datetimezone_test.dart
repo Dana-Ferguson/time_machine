@@ -29,8 +29,8 @@ Future main() async {
 void AllZonesStartAndEndOfTime(DateTimeZone zone)
 {
   var firstInterval = zone.getZoneInterval(Instant.minValue);
-  expect(firstInterval.HasStart, isFalse);
+  expect(firstInterval.hasStart, isFalse);
   var lastInterval = zone.getZoneInterval(Instant.maxValue);
-  expect(lastInterval.HasEnd, isFalse);
+  expect(lastInterval.hasEnd, isFalse);
 }
 

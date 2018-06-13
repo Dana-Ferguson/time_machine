@@ -32,7 +32,7 @@ void Construction_NullProvider()
 @Test()
 void InvalidSource_NullVersionId()
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..VersionId = null;
+  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
@@ -174,7 +174,7 @@ Future FixedOffsetZeroReturnsUtc() async
 @Test()
 void Tzdb_Indexer_InvalidFixedOffset()
 {
-  expect(Tzdb["UTC+5Months"], willThrow<DateTimeZoneNotFoundException>());
+  expect(Tzdb["UTC+5Months"], willThrow<DateTimeZoneNotFoundError>());
 }
 
 @Test()
@@ -188,13 +188,13 @@ Future NullIdRejected() async
 Future EmptyIdAccepted() async
 {
   var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"]));
-  expect(provider[""], willThrow<DateTimeZoneNotFoundException>());
+  expect(provider[""], willThrow<DateTimeZoneNotFoundError>());
 }
 
 @Test()
 Future VersionIdPassThrough() async
 {
-  var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"])..VersionId = new Future(() => "foo"));
+  var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = new Future(() => "foo"));
   expect("foo", provider.versionId);
 }
 
@@ -253,7 +253,7 @@ Future GetSystemDefault_SourceReturnsNullId() async
 {
   var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(cache.getSystemDefault(), willThrow<DateTimeZoneNotFoundException>());
+  expect(cache.getSystemDefault(), willThrow<DateTimeZoneNotFoundError>());
 }
 
 
@@ -262,23 +262,23 @@ class TestDateTimeZoneSource extends IDateTimeZoneSource {
   final List<String> ids;
 
   TestDateTimeZoneSource(this.ids) {
-    VersionId = new Future(() => "test version");
+    versionId = new Future(() => "test version");
   }
 
-  Future<Iterable<String>> GetIds() => new Future(() => ids);
+  Future<Iterable<String>> getIds() => new Future(() => ids);
 
-  Future<DateTimeZone> ForId(String id) {
-    return new Future(() => ForIdSync(id));
+  Future<DateTimeZone> forId(String id) {
+    return new Future(() => forIdSync(id));
   }
 
-  DateTimeZone ForIdSync(String id) {
+  DateTimeZone forIdSync(String id) {
     LastRequestedId = id;
     return new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.fromHours(id.hashCode % 18), id);
   }
 
-  Future<String> VersionId;
+  Future<String> versionId;
 
-  String GetSystemDefaultId() => "map";
+  String getSystemDefaultId() => "map";
 }
 
 // A test source that returns null from ForId and GetSystemDefaultId()
@@ -286,16 +286,16 @@ class NullReturningTestDateTimeZoneSource extends TestDateTimeZoneSource {
   NullReturningTestDateTimeZoneSource(List<String> ids) : super(ids) {
   }
 
-  @override Future<DateTimeZone> ForId(String id) {
+  @override Future<DateTimeZone> forId(String id) {
     // Still remember what was requested.
-    var _id = super.ForId(id);
+    var _id = super.forId(id);
     return new Future(() => null);
   }
 
-  @override String GetSystemDefaultId() => null;
+  @override String getSystemDefaultId() => null;
 
-  @override DateTimeZone ForIdSync(String id) {
-    var _id = super.ForIdSync(id);
+  @override DateTimeZone forIdSync(String id) {
+    var _id = super.forIdSync(id);
     return null;
   }
 }

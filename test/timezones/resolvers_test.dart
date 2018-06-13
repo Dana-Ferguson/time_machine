@@ -33,34 +33,34 @@ LocalDateTime TimeInTransition = new LocalDateTime.at(2000, 1, 1, 0, 20);
 void ReturnEarlier()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
-  expect(2, mapping.Count);
-  var resolved = Resolvers.returnEarlier(mapping.First(), mapping.Last());
-  expect(mapping.First(), resolved);
+  expect(2, mapping.count);
+  var resolved = Resolvers.returnEarlier(mapping.first(), mapping.last());
+  expect(mapping.first(), resolved);
 }
 
 @Test()
 void ReturnLater()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
-  expect(2, mapping.Count);
-  var resolved = Resolvers.returnLater(mapping.First(), mapping.Last());
-  expect(mapping.Last(), resolved);
+  expect(2, mapping.count);
+  var resolved = Resolvers.returnLater(mapping.first(), mapping.last());
+  expect(mapping.last(), resolved);
 }
 
 @Test()
 void ThrowWhenAmbiguous()
 {
   var mapping = AmbiguousZone.mapLocal(TimeInTransition);
-  expect(2, mapping.Count);
-  expect(() => Resolvers.throwWhenAmbiguous(mapping.First(), mapping.Last()), willThrow<AmbiguousTimeError>());
+  expect(2, mapping.count);
+  expect(() => Resolvers.throwWhenAmbiguous(mapping.first(), mapping.last()), willThrow<AmbiguousTimeError>());
 }
 
 @Test()
 void ReturnEndOfIntervalBefore()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
-  expect(0, mapping.Count);
-  var resolved = Resolvers.returnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  expect(0, mapping.count);
+  var resolved = Resolvers.returnEndOfIntervalBefore(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval);
   expect(GapZone.EarlyInterval.end - Span.epsilon, resolved.toInstant());
   expect(GapZone, resolved.zone);
 }
@@ -69,8 +69,8 @@ void ReturnEndOfIntervalBefore()
 void ReturnStartOfIntervalAfter()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
-  expect(0, mapping.Count);
-  var resolved = Resolvers.returnStartOfIntervalAfter(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  expect(0, mapping.count);
+  var resolved = Resolvers.returnStartOfIntervalAfter(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval);
   expect(GapZone.LateInterval.start, resolved.toInstant());
   expect(GapZone, resolved.zone);
 }
@@ -79,13 +79,13 @@ void ReturnStartOfIntervalAfter()
 void ReturnForwardShifted()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
-  expect(0, mapping.Count);
-  var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval);
+  expect(0, mapping.count);
+  var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval);
 
-  var gap = mapping.LateInterval.wallOffset.ticks - mapping.EarlyInterval.wallOffset.ticks;
-  var expected = TimeInTransition.toLocalInstant().minus(mapping.LateInterval.wallOffset).plus(new Span(ticks: gap));
+  var gap = mapping.lateInterval.wallOffset.ticks - mapping.earlyInterval.wallOffset.ticks;
+  var expected = TimeInTransition.toLocalInstant().minus(mapping.lateInterval.wallOffset).plus(new Span(ticks: gap));
   expect(expected, resolved.toInstant());
-  expect(mapping.LateInterval.wallOffset, resolved.offset);
+  expect(mapping.lateInterval.wallOffset, resolved.offset);
   expect(GapZone, resolved.zone);
 }
 
@@ -93,8 +93,8 @@ void ReturnForwardShifted()
 void ThrowWhenSkipped()
 {
   var mapping = GapZone.mapLocal(TimeInTransition);
-  expect(0, mapping.Count);
-  expect(() => Resolvers.throwWhenSkipped(TimeInTransition, GapZone, mapping.EarlyInterval, mapping.LateInterval), willThrow<SkippedTimeError>());
+  expect(0, mapping.count);
+  expect(() => Resolvers.throwWhenSkipped(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval), willThrow<SkippedTimeError>());
 }
 
 @Test()

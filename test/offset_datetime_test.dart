@@ -435,7 +435,7 @@ void WithOffset_TwoDaysForwardAndBack()
 void WithCalendar()
 {
   CalendarSystem julianCalendar = CalendarSystem.julian;
-  OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.WithOffset(Offset.zero);
+  OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.withOffset(Offset.zero);
 
   OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().withOffset(new Offset.fromHours(0));
   OffsetDateTime actual = gregorianEpoch.withCalendar(CalendarSystem.julian);

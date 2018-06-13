@@ -8,40 +8,33 @@ import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 
 /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
 /// the new offset, and the transition point.
-///
-/// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
-@internal class Transition // : IEquatable<Transition>
-    {
+@immutable
+@internal class Transition {
   @internal final Instant instant;
 
   /// The offset from the time when this transition occurs until the next transition.
-  @internal final Offset NewOffset;
+  @internal final Offset newOffset;
 
-  @internal Transition(this.instant, this.NewOffset);
+  @internal Transition(this.instant, this.newOffset);
 
-  bool Equals(Transition other) => instant == other.instant && NewOffset == other.NewOffset;
+  bool equals(Transition other) => instant == other.instant && newOffset == other.newOffset;
 
   /// Implements the operator == (equality).
   ///
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is Transition && Equals(right);
+  bool operator ==(dynamic right) => right is Transition && equals(right);
 
   /// Returns a hash code for this instance.
   ///
   /// A hash code for this instance, suitable for use in hashing algorithms and data
   /// structures like a hash table.
-  @override int get hashCode => hash2(Instant, NewOffset);
+  @override int get hashCode => hash2(Instant, newOffset);
 
   /// Returns a [String] that represents this instance.
-  ///
-  /// A [String] that represents this instance.
-  @override String toString() => "Transition to $NewOffset at $instant";
+  @override String toString() => "Transition to $newOffset at $instant";
 }

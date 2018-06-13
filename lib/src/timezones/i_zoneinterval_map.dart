@@ -25,7 +25,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 // zone for PrecalculatedDateTimeZone, which is handy for testing.
 @internal abstract class IZoneIntervalMapWithMinMax extends IZoneIntervalMap
 {
-  // todo: getters or finals?
-  Offset get minOffset; // { get; }
-  Offset get maxOffset; // { get; }
+  Offset get minOffset;
+  Offset get maxOffset;
 }

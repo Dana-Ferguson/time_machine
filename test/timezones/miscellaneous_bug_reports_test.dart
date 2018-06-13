@@ -75,7 +75,7 @@ Future Tbilisi() async
   var zone = await Tzdb["Asia/Tbilisi"];
   Instant summer1996 = new Instant.fromUtc(1996, 6, 1, 0, 0);
   var interval = zone.getZoneInterval(summer1996);
-  expect(new LocalDateTime.at(1996, 3, 31, 1, 0), interval.IsoLocalStart);
-  expect(new LocalDateTime.at(1997, 10, 26, 0, 0), interval.IsoLocalEnd);
+  expect(new LocalDateTime.at(1996, 3, 31, 1, 0), interval.isoLocalStart);
+  expect(new LocalDateTime.at(1997, 10, 26, 0, 0), interval.isoLocalEnd);
 }
 

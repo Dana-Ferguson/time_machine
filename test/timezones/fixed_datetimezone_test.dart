@@ -56,16 +56,16 @@ void SimpleProperties_ReturnValuesFromConstructor()
 void GetZoneIntervals_ReturnsSingleInterval()
 {
   var mapping = TestZone.mapLocal(new LocalDateTime.at(2001, 7, 1, 1, 0));
-  expect(FixedPeriod, mapping.EarlyInterval);
-  expect(FixedPeriod, mapping.LateInterval);
-  expect(1, mapping.Count);
+  expect(FixedPeriod, mapping.earlyInterval);
+  expect(FixedPeriod, mapping.lateInterval);
+  expect(1, mapping.count);
 }
 
 @Test()
 void For_Id_FixedOffset()
 {
   String id = "UTC+05:30";
-  DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
+  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
   expect(new DateTimeZone.forOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
 }
@@ -74,7 +74,7 @@ void For_Id_FixedOffset()
 void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = "UTC+05:00:00";
-  DateTimeZone zone = FixedDateTimeZone.GetFixedZoneOrNull(id);
+  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
   expect(zone, new DateTimeZone.forOffset(new Offset.fromHours(5)));
   expect("UTC+05", zone.id);
 }
@@ -82,7 +82,7 @@ void For_Id_FixedOffset_NonCanonicalId()
 @Test()
 void For_Id_InvalidFixedOffset()
 {
-  expect(FixedDateTimeZone.GetFixedZoneOrNull("UTC+5Months"), isNull);
+  expect(FixedDateTimeZone.getFixedZoneOrNull("UTC+5Months"), isNull);
 }
 
 @Test()
@@ -92,7 +92,7 @@ void ExplicitNameAppearsInZoneInterval()
   var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", zone.id); // Check we don't get this wrong...
   expect("name", interval.name);
-  expect("name", zone.Name);
+  expect("name", zone.name);
 }
 
 @Test()
@@ -101,7 +101,7 @@ void ZoneIntervalNameDefaultsToZoneId()
   var zone = new FixedDateTimeZone.forIdOffset("id", new Offset.fromHours(5));
   var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", interval.name);
-  expect("id", zone.Name);
+  expect("id", zone.name);
 }
 
 @Test() @SkipMe.unimplemented()
@@ -111,11 +111,11 @@ void Read_NoNameInStream()
   dynamic ioHelper = null;
   var offset = new Offset.fromHours(5);
   ioHelper.Writer.WriteOffset(offset);
-  var zone = FixedDateTimeZone.Read(ioHelper.Reader, "id") as FixedDateTimeZone;
+  var zone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
 
   expect("id", zone.id);
   expect(offset, zone.offset);
-  expect("id", zone.Name);
+  expect("id", zone.name);
 }
 
 @Test() @SkipMe.unimplemented()
@@ -126,11 +126,11 @@ void Read_WithNameInStream()
   var offset = new Offset.fromHours(5);
   ioHelper.Writer.WriteOffset(offset);
   ioHelper.Writer.WriteString("name");
-  var zone = FixedDateTimeZone.Read(ioHelper.Reader, "id") as FixedDateTimeZone;
+  var zone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
 
   expect("id", zone.id);
   expect(offset, zone.offset);
-  expect("name", zone.Name);
+  expect("name", zone.name);
 }
 
 @Test() @SkipMe.unimplemented()
@@ -139,12 +139,12 @@ void Roundtrip()
   // var ioHelper = DtzIoHelper.CreateNoStringPool();
   dynamic ioHelper = null;
   var oldZone = new FixedDateTimeZone("id", new Offset.fromHours(4), "name");
-  oldZone.Write(ioHelper.Writer);
-  var newZone = FixedDateTimeZone.Read(ioHelper.Reader, "id") as FixedDateTimeZone;
+  oldZone.write(ioHelper.Writer);
+  var newZone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
 
   expect(oldZone.id, newZone.id);
   expect(oldZone.offset, newZone.offset);
-  expect(oldZone.Name, newZone.Name);
+  expect(oldZone.name, newZone.name);
 }
 
 @Test()

@@ -37,17 +37,16 @@ class _TransitionRecurrenceResult {
 /// they were infinite. This makes various calculations easier, but this map should
 /// only be used as part of a zone which will only ask it for values within the right
 /// portion of the timeline.
-@internal /*sealed*/ class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax // IEquatable<StandardDaylightAlternatingMap>
-    {
-  @private final Offset standardOffset;
-  @private final ZoneRecurrence standardRecurrence;
-  @private final ZoneRecurrence dstRecurrence;
+@internal class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax  {
+  final Offset _standardOffset;
+  final ZoneRecurrence _standardRecurrence;
+  final ZoneRecurrence _dstRecurrence;
 
-  Offset get minOffset => Offset.min(standardOffset, standardOffset + dstRecurrence.savings);
+  Offset get minOffset => Offset.min(_standardOffset, _standardOffset + _dstRecurrence.savings);
 
-  Offset get maxOffset => Offset.max(standardOffset, standardOffset + dstRecurrence.savings);
+  Offset get maxOffset => Offset.max(_standardOffset, _standardOffset + _dstRecurrence.savings);
 
-  StandardDaylightAlternatingMap._(this.standardOffset, this.standardRecurrence, this.dstRecurrence);
+  StandardDaylightAlternatingMap._(this._standardOffset, this._standardRecurrence, this._dstRecurrence);
 
   /// Initializes a new instance of the [StandardDaylightAlternatingMap] class.
   ///
@@ -61,8 +60,8 @@ class _TransitionRecurrenceResult {
   @internal factory StandardDaylightAlternatingMap(Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
   {
     // Treat the recurrences as if they extended to the start of time.
-    startRecurrence = startRecurrence.ToStartOfTime();
-    endRecurrence = endRecurrence.ToStartOfTime();
+    startRecurrence = startRecurrence.toStartOfTime();
+    endRecurrence = endRecurrence.toStartOfTime();
     Preconditions.checkArgument(startRecurrence.isInfinite, 'startRecurrence', "Start recurrence must extend to the end of time");
     Preconditions.checkArgument(endRecurrence.isInfinite, 'endRecurrence', "End recurrence must extend to the end of time");
     var dst = startRecurrence;
@@ -75,17 +74,15 @@ class _TransitionRecurrenceResult {
     return new StandardDaylightAlternatingMap._(standardOffset, standard, dst);
   }
 
-// @override bool Equals(dynamic other) => Equals(other as StandardDaylightAlternatingMap);
-
-  bool Equals(StandardDaylightAlternatingMap other) =>
+  bool equals(StandardDaylightAlternatingMap other) =>
       other != null &&
-          standardOffset == other.standardOffset &&
-          dstRecurrence.Equals(other.dstRecurrence) &&
-          standardRecurrence.Equals(other.standardRecurrence);
+          _standardOffset == other._standardOffset &&
+          _dstRecurrence.equals(other._dstRecurrence) &&
+          _standardRecurrence.equals(other._standardRecurrence);
 
-  bool operator==(dynamic other) => other is StandardDaylightAlternatingMap && Equals(other);
+  bool operator==(dynamic other) => other is StandardDaylightAlternatingMap && equals(other);
 
-  @override int get hashCode => hash3(standardOffset, dstRecurrence, standardRecurrence);
+  @override int get hashCode => hash3(_standardOffset, _dstRecurrence, _standardRecurrence);
 
   /// Gets the zone interval for the given instant.
   ///
@@ -94,15 +91,15 @@ class _TransitionRecurrenceResult {
   /// [ArgumentOutOfRangeException]: The instant falls outside the bounds
   /// of the recurrence rules of the zone.
   ZoneInterval getZoneInterval(Instant instant) {
-    var result = NextTransition(instant);
+    var result = _nextTransition(instant);
     ZoneRecurrence recurrence = result.zoneRecurrence;
     var next = result.transition;
 
     // Now we know the recurrence we're in, we can work out when we went into it. (We'll never have
     // two transitions into the same recurrence in a row.)
-    Offset previousSavings = identical(recurrence, standardRecurrence) ? dstRecurrence.savings : Offset.zero;
-    var previous = recurrence.PreviousOrSameOrFail(instant, standardOffset, previousSavings);
-    return new ZoneInterval(recurrence.name, previous.instant, next.instant, standardOffset + recurrence.savings, recurrence.savings);
+    Offset previousSavings = identical(recurrence, _standardRecurrence) ? _dstRecurrence.savings : Offset.zero;
+    var previous = recurrence.previousOrSameOrFail(instant, _standardOffset, previousSavings);
+    return new ZoneInterval(recurrence.name, previous.instant, next.instant, _standardOffset + recurrence.savings, recurrence.savings);
   }
 
   /// Returns the transition occurring strictly after the specified instant. The [recurrence]
@@ -110,36 +107,36 @@ class _TransitionRecurrenceResult {
   ///
   /// [instant]: The instant after which to consider transitions.
   /// [recurrence]: Receives the savings offset for the transition.
-  @private _TransitionRecurrenceResult NextTransition(Instant instant) {
+  _TransitionRecurrenceResult _nextTransition(Instant instant) {
     // Both recurrences are infinite, so they'll both have next transitions (possibly at infinity).
-    Transition dstTransition = dstRecurrence.NextOrFail(instant, standardOffset, Offset.zero);
-    Transition standardTransition = standardRecurrence.NextOrFail(instant, standardOffset, dstRecurrence.savings);
+    Transition dstTransition = _dstRecurrence.nextOrFail(instant, _standardOffset, Offset.zero);
+    Transition standardTransition = _standardRecurrence.nextOrFail(instant, _standardOffset, _dstRecurrence.savings);
     var standardTransitionInstant = standardTransition.instant;
     var dstTransitionInstant = dstTransition.instant;
     if (standardTransitionInstant < dstTransitionInstant) {
       // Next transition is from DST to standard.
-      return new _TransitionRecurrenceResult(standardTransition, dstRecurrence);
+      return new _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
     }
     else if (standardTransitionInstant > dstTransitionInstant) {
       // Next transition is from standard to DST.
-      return new _TransitionRecurrenceResult(dstTransition, standardRecurrence);
+      return new _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
     }
     else {
       // Okay, the transitions happen at the same time. If they're not at infinity, we're stumped.
-      if (standardTransitionInstant.IsValid) {
+      if (standardTransitionInstant.isValid) {
         throw new StateError("Zone recurrence rules have identical transitions. This time zone is broken.");
       }
       // Okay, the two transitions must be to the end of time. Find which recurrence has the later *previous* transition...
-      var previousDstTransition = dstRecurrence.PreviousOrSameOrFail(instant, standardOffset, Offset.zero);
-      var previousStandardTransition = standardRecurrence.PreviousOrSameOrFail(instant, standardOffset, dstRecurrence.savings);
+      var previousDstTransition = _dstRecurrence.previousOrSameOrFail(instant, _standardOffset, Offset.zero);
+      var previousStandardTransition = _standardRecurrence.previousOrSameOrFail(instant, _standardOffset, _dstRecurrence.savings);
       // No point in checking for equality here... they can't go back from the end of time to the start...
       if (previousDstTransition.instant > previousStandardTransition.instant) {
         // The previous transition is from standard to DST. Therefore the next one is from DST to standard.
-        return new _TransitionRecurrenceResult(standardTransition, dstRecurrence);
+        return new _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
       }
       else {
         // The previous transition is from DST to standard. Therefore the next one is from standard to DST.
-        return new _TransitionRecurrenceResult(dstTransition, standardRecurrence);
+        return new _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
       }
     }
   }
@@ -147,35 +144,35 @@ class _TransitionRecurrenceResult {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  @internal void Write(IDateTimeZoneWriter writer) {
+  @internal void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not available.');
-  // We don't need everything a recurrence can supply: we know that both recurrences should be
-  // infinite, and that only the DST recurrence should have savings.
-  //    Preconditions.checkNotNull(writer, 'writer');
-  //    writer.WriteOffset(standardOffset);
-  //    writer.WriteString(standardRecurrence.name);
-  //    standardRecurrence.yearOffset.Write(writer);
-  //    writer.WriteString(dstRecurrence.name);
-  //    dstRecurrence.yearOffset.Write(writer);
-  //    writer.WriteOffset(dstRecurrence.savings);
+    // We don't need everything a recurrence can supply: we know that both recurrences should be
+    // infinite, and that only the DST recurrence should have savings.
+    //    Preconditions.checkNotNull(writer, 'writer');
+    //    writer.WriteOffset(standardOffset);
+    //    writer.WriteString(standardRecurrence.name);
+    //    standardRecurrence.yearOffset.Write(writer);
+    //    writer.WriteString(dstRecurrence.name);
+    //    dstRecurrence.yearOffset.Write(writer);
+    //    writer.WriteOffset(dstRecurrence.savings);
   }
 
   @internal static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var standardOffset = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
-    var standardRecurrence = ZoneRecurrence.Read(reader);
-    var dstRecurrence = ZoneRecurrence.Read(reader);
+    var standardRecurrence = ZoneRecurrence.read(reader);
+    var dstRecurrence = ZoneRecurrence.read(reader);
 
     return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
 
-  // Offset standardOffset = reader.ReadOffset();
-  //    String standardName = reader.ReadString();
-  //    ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
-  //    String daylightName = reader.ReadString();
-  //    ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
-  //    Offset savings = reader.ReadOffset();
-  //    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
-  //    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
-  //    return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
+    // Offset standardOffset = reader.ReadOffset();
+    //    String standardName = reader.ReadString();
+    //    ZoneYearOffset standardYearOffset = ZoneYearOffset.Read(reader);
+    //    String daylightName = reader.ReadString();
+    //    ZoneYearOffset daylightYearOffset = ZoneYearOffset.Read(reader);
+    //    Offset savings = reader.ReadOffset();
+    //    ZoneRecurrence standardRecurrence = new ZoneRecurrence(standardName, Offset.zero, standardYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
+    //    ZoneRecurrence dstRecurrence = new ZoneRecurrence(daylightName, savings, daylightYearOffset, Utility.int32MinValue, Utility.int32MaxValue);
+    //    return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
   }
 }

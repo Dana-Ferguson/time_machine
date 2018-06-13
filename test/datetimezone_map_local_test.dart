@@ -39,9 +39,9 @@ final Offset Plus10 = new Offset.fromHours(10);
 
 final LocalDateTime NearStartOfTime = new LocalDateTime.at(-9998, 1, 5, 0, 0);
 final LocalDateTime NearEndOfTime = new LocalDateTime.at(9999, 12, 25, 0, 0);
-final LocalDateTime TransitionMinus5 = Transition.WithOffset(Minus5).localDateTime;
-final LocalDateTime TransitionPlus10 = Transition.WithOffset(Plus10).localDateTime;
-final LocalDateTime MidTransition = Transition.WithOffset(Offset.zero).localDateTime;
+final LocalDateTime TransitionMinus5 = Transition.withOffset(Minus5).localDateTime;
+final LocalDateTime TransitionPlus10 = Transition.withOffset(Plus10).localDateTime;
+final LocalDateTime MidTransition = Transition.withOffset(Offset.zero).localDateTime;
 
 final LocalDateTime YearBeforeTransition = new LocalDateTime.at(1999, 1, 1, 0, 0);
 final LocalDateTime YearAfterTransition = new LocalDateTime.at(2001, 1, 1, 0, 0);
@@ -211,9 +211,9 @@ void TrickyCase()
 
 void CheckMapping(ZoneLocalMapping mapping, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count)
 {
-  expect(earlyInterval, mapping.EarlyInterval);
-  expect(lateInterval, mapping.LateInterval);
-  expect(count, mapping.Count);
+  expect(earlyInterval, mapping.earlyInterval);
+  expect(lateInterval, mapping.lateInterval);
+  expect(count, mapping.count);
 }
 
 

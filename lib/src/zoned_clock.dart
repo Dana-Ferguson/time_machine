@@ -35,7 +35,7 @@ class ZonedClock extends Clock {
   ///
   /// The current instant provided by the underlying clock, adjusted to the
   /// time zone of this object.
-  ZonedDateTime getCurrentZonedDateTime() => getCurrentInstant().InZone_Calendar(_zone, _calendar);
+  ZonedDateTime getCurrentZonedDateTime() => getCurrentInstant().inZone(_zone, _calendar);
 
   /// Returns the local date/time of the current instant provided by the underlying clock, adjusted
   /// to the time zone of this object.

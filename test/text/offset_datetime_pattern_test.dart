@@ -411,14 +411,14 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void WithCulture() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("HH:mm").withCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).WithOffset(Offset.zero));
+    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).withOffset(Offset.zero));
     expect("19.30", text);
   }
 
   @Test()
   void WithPatternText() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd").withPatternText("HH:mm");
-    var value = new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2));
+    var value = new Instant.fromUtc(1970, 1, 1, 11, 30).withOffset(new Offset.fromHours(2));
     var text = pattern.format(value);
     expect("13:30", text);
   }
@@ -426,7 +426,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void WithTemplateValue() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd")
-        .withTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).WithOffset(new Offset.fromHours(2)));
+        .withTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).withOffset(new Offset.fromHours(2)));
     var parsed = pattern
         .parse("2017-08-23")
         .value;

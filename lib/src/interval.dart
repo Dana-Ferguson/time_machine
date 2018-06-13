@@ -45,7 +45,7 @@ class Interval {
   /// <seealso cref="HasStart"/>
   Instant get start {
     // todo: IsValid .. replace with a null check???
-    Preconditions.checkState(_start.IsValid, "Interval extends to start of time");
+    Preconditions.checkState(_start.isValid, "Interval extends to start of time");
     return _start;
   }
 
@@ -54,14 +54,14 @@ class Interval {
   ///
   /// <value>`true` if this interval has a fixed start point, or `false` if it
   /// extends to the start of time.</value>
-  bool get hasStart => _start.IsValid;
+  bool get hasStart => _start.isValid;
 
   /// Gets the end instant - the exclusive upper bound of the interval.
   ///
   /// [InvalidOperationException]: The interval extends to the end of time.
   /// <seealso cref="HasEnd"/>
   Instant get end {
-    Preconditions.checkState(_end.IsValid, "Interval extends to end of time");
+    Preconditions.checkState(_end.isValid, "Interval extends to end of time");
     return _end;
   }
 
@@ -74,7 +74,7 @@ class Interval {
   ///
   /// <value>`true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.</value>
-  bool get hasEnd => _end.IsValid;
+  bool get hasEnd => _end.isValid;
 
   /// Returns the duration of the interval.
   ///

@@ -14,42 +14,40 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 /// A location entry generated from the "zone.tab" file in a TZDB release. This can be used to provide
 /// users with a choice of time zone, although it is not internationalized.
-///
-/// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
-/*sealed*/ class TzdbZoneLocation
+class TzdbZoneLocation
 {
-  @private final int latitudeSeconds, longitudeSeconds;
+  @private final int _latitudeSeconds, _longitudeSeconds;
 
   /// Gets the latitude in degrees; positive for North, negative for South.
   ///
   /// The value will be in the range [-90, 90].
-  double get Latitude => latitudeSeconds / 3600.0;
+  double get latitude => _latitudeSeconds / 3600.0;
 
   /// Gets the longitude in degrees; positive for East, negative for West.
   ///
   /// The value will be in the range [-180, 180].
-  double get Longitude => longitudeSeconds / 3600.0;
+  double get longitude => _longitudeSeconds / 3600.0;
 
   /// Gets the English name of the country containing the location, which is never empty.
-  final String CountryName;
+  final String countryName;
 
   /// Gets the ISO-3166 2-letter country code for the country containing the location.
-  final String CountryCode;
+  final String countryCode;
 
   /// The ID of the time zone for this location.
   ///
   /// If this mapping was fetched from a [TzdbDateTimeZoneSource], it will always be a valid ID within that source.
-  final String ZoneId;
+  final String zoneId;
 
   /// Gets the comment (in English) for the mapping, if any.
   ///
   /// This is usually used to differentiate between locations in the same country.
   /// This will return an empty string if no comment was provided in the original data.
-  final String Comment;
+  final String comment;
 
   // TzdbZone1970Location._(this.Comment, this.Countries, this.latitudeSeconds, this.longitudeSeconds, this.ZoneId);
-  TzdbZoneLocation._(this.Comment, this.CountryCode, this.CountryName, this.latitudeSeconds, this.longitudeSeconds, this.ZoneId);
+  TzdbZoneLocation._(this.comment, this.countryCode, this.countryName, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///
@@ -77,18 +75,18 @@ import 'package:time_machine/time_machine_timezones.dart';
     return new TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void Write(IDateTimeZoneWriter writer)
+  @internal void write(IDateTimeZoneWriter writer)
   {
     throw new UnimplementedError('This feature is not supported.');
-  //    writer.WriteSignedCount(latitudeSeconds);
-  //    writer.WriteSignedCount(longitudeSeconds);
-  //    writer.WriteString(CountryName);
-  //    writer.WriteString(CountryCode);
-  //    writer.WriteString(ZoneId);
-  //    writer.WriteString(Comment);
+    //    writer.WriteSignedCount(latitudeSeconds);
+    //    writer.WriteSignedCount(longitudeSeconds);
+    //    writer.WriteString(CountryName);
+    //    writer.WriteString(CountryCode);
+    //    writer.WriteString(ZoneId);
+    //    writer.WriteString(Comment);
   }
 
-  @internal static TzdbZoneLocation Read(DateTimeZoneReader reader) {
+  @internal static TzdbZoneLocation read(DateTimeZoneReader reader) {
     int latitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
     int longitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
     String countryName = reader.readString();

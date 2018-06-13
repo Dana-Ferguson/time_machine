@@ -33,10 +33,10 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
     while (lower < upper) {
       int current = (lower + upper) ~/ 2;
       var candidate = Intervals[current];
-      if (candidate.HasStart && candidate.start > instant) {
+      if (candidate.hasStart && candidate.start > instant) {
         upper = current;
       }
-      else if (candidate.HasEnd && candidate.end <= instant) {
+      else if (candidate.hasEnd && candidate.end <= instant) {
         lower = current + 1;
       }
       else {

@@ -51,10 +51,10 @@ void GetZoneInterval_Instant_Summer()
   var interval = TestMap.getZoneInterval(new Instant.fromUtc(2010, 6, 1, 0, 0));
   expect("Summer", interval.name);
   expect(new Offset.fromHours(6), interval.wallOffset);
-  expect(new Offset.fromHours(5), interval.StandardOffset);
+  expect(new Offset.fromHours(5), interval.standardOffset);
   expect(new Offset.fromHours(1), interval.savings);
-  expect(new LocalDateTime.at(2010, 3, 10, 2, 0), interval.IsoLocalStart);
-  expect(new LocalDateTime.at(2010, 10, 5, 2, 0), interval.IsoLocalEnd);
+  expect(new LocalDateTime.at(2010, 3, 10, 2, 0), interval.isoLocalStart);
+  expect(new LocalDateTime.at(2010, 10, 5, 2, 0), interval.isoLocalEnd);
 }
 
 @Test()
@@ -63,10 +63,10 @@ void GetZoneInterval_Instant_Winter()
   var interval = TestMap.getZoneInterval(new Instant.fromUtc(2010, 11, 1, 0, 0));
   expect("Winter", interval.name);
   expect(new Offset.fromHours(5), interval.wallOffset);
-  expect(new Offset.fromHours(5), interval.StandardOffset);
+  expect(new Offset.fromHours(5), interval.standardOffset);
   expect(new Offset.fromHours(0), interval.savings);
-  expect(new LocalDateTime.at(2010, 10, 5, 1, 0), interval.IsoLocalStart);
-  expect(new LocalDateTime.at(2011, 3, 10, 1, 0), interval.IsoLocalEnd);
+  expect(new LocalDateTime.at(2010, 10, 5, 1, 0), interval.isoLocalStart);
+  expect(new LocalDateTime.at(2011, 3, 10, 1, 0), interval.isoLocalEnd);
 }
 
 @Test()
@@ -297,8 +297,8 @@ void InvalidMap_SimultaneousTransition()
 
 void CheckMapping(ZoneLocalMapping mapping, String earlyIntervalName, String lateIntervalName, int count)
 {
-  expect(earlyIntervalName, mapping.EarlyInterval.name);
-  expect(lateIntervalName, mapping.LateInterval.name);
-  expect(count, mapping.Count);
+  expect(earlyIntervalName, mapping.earlyInterval.name);
+  expect(lateIntervalName, mapping.lateInterval.name);
+  expect(count, mapping.count);
 }
 

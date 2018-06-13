@@ -4,19 +4,13 @@
 
 /// Exception thrown when time zone is requested from an [IDateTimeZoneProvider],
 /// but the specified ID is invalid for that provider.
-///
-/// This type only exists as `TimeZoneNotFoundException` doesn't exist in netstandard1.x.
-/// By creating an exception which derives from `TimeZoneNotFoundException` on the desktop version
-/// and `Exception` on the .NET Standard 1.3 version, we achieve reasonable consistency while remaining
-/// backwardly compatible with Time Machine v1 (which was desktop-only, and threw `TimeZoneNotFoundException`).
-// sealed
-class DateTimeZoneNotFoundException extends Error {
+class DateTimeZoneNotFoundError extends Error {
   final String message;
 
   /// Creates an instance with the given message.
   ///
   /// [message]: The message for the exception.
-  DateTimeZoneNotFoundException(this.message);
+  DateTimeZoneNotFoundError(this.message);
 
   @override toString() => message;
 }

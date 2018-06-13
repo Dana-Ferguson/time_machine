@@ -57,7 +57,7 @@ class TzdbIndex {
     var reader = new DateTimeZoneReader(binary);
     // this should be the same as the index id
     var id = reader.readString();
-    var zone = PrecalculatedDateTimeZone.Read(reader, id);
+    var zone = PrecalculatedDateTimeZone.read(reader, id);
     return zone;
   }
 

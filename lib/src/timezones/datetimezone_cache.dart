@@ -26,11 +26,10 @@ import 'package:time_machine/time_machine_timezones.dart';
 @immutable // only; caches are naturally mutable internally.
 // sealed
 class DateTimeZoneCache extends IDateTimeZoneProvider {
-  @private final Object accessLock = new Object();
-  @private final IDateTimeZoneSource source;
-  @private final Map<String, DateTimeZone> timeZoneMap = new Map<String, DateTimeZone>();
+  final IDateTimeZoneSource _source;
+  final Map<String, DateTimeZone> _timeZoneMap = new Map<String, DateTimeZone>();
 
-  /// Gets the version ID of this provider. This is simply the [IDateTimeZoneSource.VersionId] returned by
+  /// Gets the version ID of this provider. This is simply the [IDateTimeZoneSource.versionId] returned by
   /// the underlying source.
   final String versionId;
 
@@ -38,7 +37,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   // todo:  ReadOnlyCollection<String>
   final List<String> ids;
 
-  DateTimeZoneCache._(this.source, this.ids, this.versionId);
+  DateTimeZoneCache._(this._source, this.ids, this.versionId);
 
   // todo: anyway I can make this a regular constructor???
   // note: this is a Static Constructor (against the requirements of the Style guide), because it's a future
@@ -52,13 +51,13 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   /// [InvalidDateTimeZoneSourceException]: [source] violates its contract.
   static Future<DateTimeZoneCache> getCache(IDateTimeZoneSource source) async {
     Preconditions.checkNotNull(source, 'source');
-    var VersionId = await source.VersionId;
+    var VersionId = await source.versionId;
 
     if (VersionId == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned version ID was null");
     }
 
-    var providerIds = await source.GetIds();
+    var providerIds = await source.getIds();
     if (providerIds == null) {
       throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence was null");
     }
@@ -73,16 +72,16 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
       if (id == null) {
         throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence contained a null reference");
       }
-      cache.timeZoneMap[id] = null;
+      cache._timeZoneMap[id] = null;
     }
     return cache;
   }
 
   /// <inheritdoc />
   Future<DateTimeZone> getSystemDefault() async {
-    String id = source.GetSystemDefaultId();
+    String id = _source.getSystemDefaultId();
     if (id == null) {
-      throw new DateTimeZoneNotFoundException("System default time zone is unknown to source $versionId");
+      throw new DateTimeZoneNotFoundError("System default time zone is unknown to source $versionId");
     }
     return await this[id];
   }
@@ -90,48 +89,48 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   /// <inheritdoc />
   Future<DateTimeZone> getZoneOrNull(String id) async {
     Preconditions.checkNotNull(id, 'id');
-    return (await GetZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
+    return (await _getZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
-  DateTimeZone GetZoneOrNullSync(String id) {
+  DateTimeZone getZoneOrNullSync(String id) {
     Preconditions.checkNotNull(id, 'id');
-    return GetZoneFromSourceOrNullSync(id) ?? FixedDateTimeZone.GetFixedZoneOrNull(id);
+    return _getZoneFromSourceOrNullSync(id) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
-  @private Future<DateTimeZone> GetZoneFromSourceOrNull(String id) async {
+  Future<DateTimeZone> _getZoneFromSourceOrNull(String id) async {
     // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
     // if ((zone = timeZoneMap[id]) == null) {
-    if (!timeZoneMap.containsKey(id)) {
+    if (!_timeZoneMap.containsKey(id)) {
       return null;
     }
 
-    DateTimeZone zone = timeZoneMap[id];
+    DateTimeZone zone = _timeZoneMap[id];
     if (zone == null) {
-      zone = await source.ForId(id);
+      zone = await _source.forId(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
             "Time zone $id is supported by source $versionId but not returned");
       }
-      timeZoneMap[id] = zone;
+      _timeZoneMap[id] = zone;
     }
 
     return zone;
   }
 
   // todo: compress this call-chain?
-  @private DateTimeZone GetZoneFromSourceOrNullSync(String id) {
-    if (!timeZoneMap.containsKey(id)) {
+  DateTimeZone _getZoneFromSourceOrNullSync(String id) {
+    if (!_timeZoneMap.containsKey(id)) {
       return null;
     }
 
-    DateTimeZone zone = timeZoneMap[id];
+    DateTimeZone zone = _timeZoneMap[id];
     if (zone == null) {
-      zone = source.ForIdSync(id);
+      zone = _source.forIdSync(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
             "Time zone $id is supported by source $versionId but not returned");
       }
-      timeZoneMap[id] = zone;
+      _timeZoneMap[id] = zone;
     }
 
     return zone;
@@ -140,15 +139,15 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   Future<DateTimeZone> operator [](String id) async {
     var zone = await getZoneOrNull(id);
     if (zone == null) {
-      throw new DateTimeZoneNotFoundException("Time zone $id is unknown to source $versionId");
+      throw new DateTimeZoneNotFoundError("Time zone $id is unknown to source $versionId");
     }
     return zone;
   }
 
   DateTimeZone getDateTimeZoneSync(String id) {
-    var zone = GetZoneOrNullSync(id);
+    var zone = getZoneOrNullSync(id);
     if (zone == null) {
-      throw new DateTimeZoneNotFoundException("Time zone $id is unknown or unavailable synchronously to source $versionId");
+      throw new DateTimeZoneNotFoundError("Time zone $id is unknown or unavailable synchronously to source $versionId");
     }
     return zone;
   }

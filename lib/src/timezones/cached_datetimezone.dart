@@ -24,16 +24,16 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// expansion though.
 // sealed
 @internal class CachedDateTimeZone extends DateTimeZone {
-  @private final IZoneIntervalMap map;
+  final IZoneIntervalMap _map;
 
   /// Gets the cached time zone.
-  @internal final DateTimeZone TimeZone;
+  @internal final DateTimeZone timeZone;
 
   /// Initializes a new instance of the [CachedDateTimeZone] class.
   ///
   /// [timeZone]: The time zone to cache.
   /// [map]: The caching map
-  @private CachedDateTimeZone(this.TimeZone, this.map) : super(TimeZone.id, false, TimeZone.minOffset, TimeZone.maxOffset);
+  CachedDateTimeZone._(this.timeZone, this._map) : super(timeZone.id, false, timeZone.minOffset, timeZone.maxOffset);
 
   /// Returns a cached time zone for the given time zone.
   ///
@@ -41,16 +41,17 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [timeZone]: The time zone to cache.
   /// Returns: The cached time zone.
-  @internal static DateTimeZone ForZone(DateTimeZone timeZone) {
+  @internal static DateTimeZone forZone(DateTimeZone timeZone) {
+    // todo: move this as a factory method on DateTimeZone?
     Preconditions.checkNotNull(timeZone, 'timeZone');
     if (timeZone is CachedDateTimeZone || timeZone.isFixed) {
       return timeZone;
     }
-    return new CachedDateTimeZone(timeZone, CachingZoneIntervalMap.CacheMap(timeZone));
+    return new CachedDateTimeZone._(timeZone, CachingZoneIntervalMap.cacheMap(timeZone));
   }
 
   /// Delegates fetching a zone interval to the caching map.
   @override ZoneInterval getZoneInterval(Instant instant) {
-    return map.getZoneInterval(instant);
+    return _map.getZoneInterval(instant);
   }
 }

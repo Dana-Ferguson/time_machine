@@ -46,7 +46,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   String format(Instant value) =>
   // We don't need to be able to parse before-min/after-max values, but it's convenient to be
   // able to format them - mostly for the sake of testing (but also for ZoneInterval).
-  value.IsValid ? _pattern.format(value
+  value.isValid ? _pattern.format(value
       .inUtc()
       .localDateTime)
       : value == Instant.beforeMinValue ? InstantPatternParser.beforeMinValueText

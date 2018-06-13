@@ -19,13 +19,10 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// daylight offset. This is also used to support some of the tricky transitions that occurred
 /// before the time zones were normalized (i.e. when they were still tightly longitude-based,
 /// with multiple towns in the same country observing different times).
-///
-/// Immutable, thread safe.
 @immutable
-@internal /*sealed*/ class ZoneRecurrence // : IEquatable<ZoneRecurrence>
-    {
-  @private final LocalInstant maxLocalInstant;
-  @private final LocalInstant minLocalInstant;
+@internal class ZoneRecurrence {
+  final LocalInstant _maxLocalInstant;
+  final LocalInstant _minLocalInstant;
 
   final String name;
   final Offset savings;
@@ -44,9 +41,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [fromYear]: The first year in which this recurrence is valid
   /// [toYear]: The last year in which this recurrence is valid
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
-      :
-        this.minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.beforeMinValue : yearOffset?.GetOccurrenceForYear(fromYear),
-        this.maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset?.GetOccurrenceForYear(toYear) {
+      : this._minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.beforeMinValue : yearOffset?.getOccurrenceForYear(fromYear),
+        this._maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset?.getOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
@@ -58,11 +54,11 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Returns a new recurrence which has the same values as this, but a different name.
-  @internal ZoneRecurrence WithName(String name) =>
+  @internal ZoneRecurrence withName(String name) =>
       new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
 
   /// Returns a new recurrence with the same values as this, but just for a single year.
-  @internal ZoneRecurrence ForSingleYear(int year) {
+  @internal ZoneRecurrence forSingleYear(int year) {
     return new ZoneRecurrence(name, savings, yearOffset, year, year);
   }
 
@@ -73,17 +69,17 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// true if the current object is equal to the [other] parameter;
   /// otherwise, false.
-  bool Equals(ZoneRecurrence other) {
+  bool equals(ZoneRecurrence other) {
     if (null == other) {
       return false;
     }
     if (identical(this, other)) {
       return true;
     }
-    return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.Equals(other.yearOffset);
+    return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.equals(other.yearOffset);
   }
 
-  bool operator==(dynamic other) => other is ZoneRecurrence && Equals(other);
+  bool operator==(dynamic other) => other is ZoneRecurrence && equals(other);
 
   /// Returns the first transition which occurs strictly after the given instant.
   ///
@@ -97,21 +93,21 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The next transition, or null if there is no next transition. The transition may be
   /// infinite, i.e. after the end of representable time.
-  @internal Transition Next(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+  @internal Transition next(Instant instant, Offset standardOffset, Offset previousSavings) {
+    Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
-    LocalInstant safeLocal = instant.SafePlus(ruleOffset);
+    LocalInstant safeLocal = instant.safePlus(ruleOffset);
     int targetYear;
-    if (safeLocal < minLocalInstant) {
+    if (safeLocal < _minLocalInstant) {
       // Asked for a transition after some point before the first transition: crop to first year (so we get the first transition)
       targetYear = fromYear;
     }
-    else if (safeLocal >= maxLocalInstant) {
+    else if (safeLocal >= _maxLocalInstant) {
       // Asked for a transition after our final transition... or both are beyond the end of time (in which case
       // we can return an infinite transition). This branch will always be taken for transitions beyond the end
       // of time.
-      return maxLocalInstant == LocalInstant.afterMaxValue ? new Transition(Instant.afterMaxValue, newOffset) : null;
+      return _maxLocalInstant == LocalInstant.afterMaxValue ? new Transition(Instant.afterMaxValue, newOffset) : null;
     }
     else if (safeLocal == LocalInstant.beforeMinValue) {
       // We've been asked to find the next transition after some point which is a valid instant, but is before the
@@ -128,7 +124,7 @@ import 'package:time_machine/time_machine_timezones.dart';
           .first; //.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
     }
 
-    LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear);
+    LocalInstant transition = yearOffset.getOccurrenceForYear(targetYear);
 
     Instant safeTransition = transition.safeMinus(ruleOffset);
     if (safeTransition > instant) {
@@ -144,7 +140,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       return new Transition(Instant.afterMaxValue, newOffset);
     }
     // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
-    safeTransition = yearOffset.GetOccurrenceForYear(targetYear).safeMinus(ruleOffset);
+    safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);
     return new Transition(safeTransition, newOffset);
   }
 
@@ -155,18 +151,18 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The previous transition, or null if there is no previous transition. The transition may be
   /// infinite, i.e. before the start of representable time.
-  @internal Transition PreviousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Offset ruleOffset = yearOffset.GetRuleOffset(standardOffset, previousSavings);
+  @internal Transition previousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
+    Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
-    LocalInstant safeLocal = instant.SafePlus(ruleOffset);
+    LocalInstant safeLocal = instant.safePlus(ruleOffset);
     int targetYear;
-    if (safeLocal > maxLocalInstant) {
+    if (safeLocal > _maxLocalInstant) {
       // Asked for a transition before some point after our last year: crop to last year.
       targetYear = toYear;
     }
     // Deliberately < here; "previous or same" means if safeLocal==minLocalInstant, we should compute it for this year.
-    else if (safeLocal < minLocalInstant) {
+    else if (safeLocal < _minLocalInstant) {
       // Asked for a transition before our first one
       return null;
     }
@@ -194,7 +190,7 @@ import 'package:time_machine/time_machine_timezones.dart';
           .first; //, out ignoredDayOfYear);
     }
 
-    LocalInstant transition = yearOffset.GetOccurrenceForYear(targetYear);
+    LocalInstant transition = yearOffset.getOccurrenceForYear(targetYear);
 
     Instant safeTransition = transition.safeMinus(ruleOffset);
     if (safeTransition <= instant) {
@@ -210,13 +206,13 @@ import 'package:time_machine/time_machine_timezones.dart';
       return new Transition(Instant.beforeMinValue, newOffset);
     }
     // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
-    safeTransition = yearOffset.GetOccurrenceForYear(targetYear).safeMinus(ruleOffset);
+    safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);
     return new Transition(safeTransition, newOffset);
   }
 
   /// Piggy-backs onto Next, but fails with an InvalidOperationException if there's no such transition.
-  @internal Transition NextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Transition next = Next(instant, standardOffset, previousSavings);
+  @internal Transition nextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
+    Transition next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
       throw new StateError(
           "Noda Time bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
@@ -225,8 +221,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Piggy-backs onto PreviousOrSame, but fails with a descriptive InvalidOperationException if there's no such transition.
-  @internal Transition PreviousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Transition previous = PreviousOrSame(instant, standardOffset, previousSavings);
+  @internal Transition previousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
+    Transition previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
       throw new StateError(
           "Noda Time bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
@@ -237,15 +233,15 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Writes this object to the given [DateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  @internal void Write(IDateTimeZoneWriter writer) {
+  @internal void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not supported');
-  //    writer.WriteString(name);
-  //    writer.WriteOffset(savings);
-  //    yearOffset.Write(writer);
-  //// We'll never have time zones with recurrences between the beginning of time and 0AD,
-  //// so we can treat anything negative as 0, and go to the beginning of time when reading.
-  //    writer.WriteCount(math.max(fromYear, 0));
-  //    writer.WriteCount(toYear);
+    //    writer.WriteString(name);
+    //    writer.WriteOffset(savings);
+    //    yearOffset.Write(writer);
+    //// We'll never have time zones with recurrences between the beginning of time and 0AD,
+    //// so we can treat anything negative as 0, and go to the beginning of time when reading.
+    //    writer.WriteCount(math.max(fromYear, 0));
+    //    writer.WriteCount(toYear);
   }
 
 
@@ -253,31 +249,29 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [reader]: The reader.
   /// Returns: The recurrence read from the reader.
-  static ZoneRecurrence Read(DateTimeZoneReader reader) {
+  static ZoneRecurrence read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var name = reader.readString();
     var savings = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
-    var yearOffset = ZoneYearOffset.Read(reader);
+    var yearOffset = ZoneYearOffset.read(reader);
     var fromYear = reader.readInt32();
     var toYear = reader.readInt32();
 
-//// todo: remove me in the future... but for now, it's a good sanity check
-//var isInfinite = reader.readBool();
+    //// todo: remove me in the future... but for now, it's a good sanity check
+    //var isInfinite = reader.readBool();
 
     return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-// if (zoneRecurrence.isInfinite != isInfinite) throw new Exception('zoneRecurrence.isInfinite error.');
+    // if (zoneRecurrence.isInfinite != isInfinite) throw new Exception('zoneRecurrence.isInfinite error.');
 
-
-
-  // String name = reader.ReadString();
-  // Offset savings = reader.ReadOffset();
-  // ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
-  // int fromYear = reader.ReadCount();
-  // if (fromYear == 0) {
-  //   fromYear = Utility.int32MinValue; // int.minValue;
-  // }
-  // int toYear = reader.ReadCount();
-  // return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+    // String name = reader.ReadString();
+    // Offset savings = reader.ReadOffset();
+    // ZoneYearOffset yearOffset = ZoneYearOffset.Read(reader);
+    // int fromYear = reader.ReadCount();
+    // if (fromYear == 0) {
+    //   fromYear = Utility.int32MinValue; // int.minValue;
+    // }
+    // int toYear = reader.ReadCount();
+    // return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
   }
 
   /// Returns a hash code for this instance.
@@ -293,7 +287,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
-  @internal ZoneRecurrence ToStartOfTime() =>
+  @internal ZoneRecurrence toStartOfTime() =>
       fromYear == Utility.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.int32MinValue, toYear);
 }
 

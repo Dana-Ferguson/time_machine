@@ -28,19 +28,19 @@ class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
   static Future<TzdbIndex> _tzdbIndexAsync = _init().then((_) => _tzdbIndexSync);
 
   @override
-  Future<DateTimeZone> ForId(String id) async => (await _tzdbIndexAsync).getTimeZone(id);
+  Future<DateTimeZone> forId(String id) async => (await _tzdbIndexAsync).getTimeZone(id);
 
   @override
-  DateTimeZone ForIdSync(String id) => _tzdbIndexSync.getTimeZoneSync(id);
+  DateTimeZone forIdSync(String id) => _tzdbIndexSync.getTimeZoneSync(id);
 
   @override
-  Future<Iterable<String>> GetIds () async => (await _tzdbIndexAsync).zoneIds;
+  Future<Iterable<String>> getIds () async => (await _tzdbIndexAsync).zoneIds;
 
   @override
-  String GetSystemDefaultId() => TzdbIndex.locale;
+  String getSystemDefaultId() => TzdbIndex.locale;
 
   // TODO: forward version to tzdb_index and then get it in here! (I think nodatime is on 2018e atm?)
   @override
-  Future<String> get VersionId => new Future.sync(() => 'TZDB: 2018');
+  Future<String> get versionId => new Future.sync(() => 'TZDB: 2018');
 }
 

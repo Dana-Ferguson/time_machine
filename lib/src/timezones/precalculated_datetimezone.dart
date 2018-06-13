@@ -23,15 +23,15 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// the rest until the end of time.
 // sealed
 @internal class PrecalculatedDateTimeZone extends DateTimeZone {
-  @private final List<ZoneInterval> periods;
-  @private final IZoneIntervalMapWithMinMax tailZone;
+  final List<ZoneInterval> _periods;
+  final IZoneIntervalMapWithMinMax _tailZone;
 
   /// The first instant covered by the tail zone, or Instant.AfterMaxValue if there's no tail zone.
-  @private final Instant tailZoneStart;
-  @private final ZoneInterval firstTailZoneInterval;
+  final Instant _tailZoneStart;
+  final ZoneInterval _firstTailZoneInterval;
 
-  PrecalculatedDateTimeZone._(String id, this.periods, this.tailZone, this.firstTailZoneInterval, this.tailZoneStart)
-      : super(id, false, ComputeOffset(periods, tailZone, Offset.min), ComputeOffset(periods, tailZone, Offset.max));
+  PrecalculatedDateTimeZone._(String id, this._periods, this._tailZone, this._firstTailZoneInterval, this._tailZoneStart)
+      : super(id, false, _computeOffset(_periods, _tailZone, Offset.min), _computeOffset(_periods, _tailZone, Offset.max));
 
   /// Initializes a new instance of the [PrecalculatedDateTimeZone] class.
   ///
@@ -43,10 +43,10 @@ import 'package:time_machine/time_machine_timezones.dart';
   @internal
   factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone) {
     // We want this to be AfterMaxValue for tail-less zones.
-    var tailZoneStart = intervals[intervals.length - 1].RawEnd;
+    var tailZoneStart = intervals[intervals.length - 1].rawEnd;
     // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
-    var firstTailZoneInterval = tailZone?.getZoneInterval(tailZoneStart)?.WithStart(tailZoneStart);
-    ValidatePeriods(intervals, tailZone);
+    var firstTailZoneInterval = tailZone?.getZoneInterval(tailZoneStart)?.withStart(tailZoneStart);
+    validatePeriods(intervals, tailZone);
 
     return new PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
   }
@@ -63,16 +63,16 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// This is only called from the constructors, but is @internal to make it easier to test.
   /// [ArgumentException]: The periods specified are invalid.
-  @internal static void ValidatePeriods(List<ZoneInterval> periods, IZoneIntervalMap tailZone) {
+  @internal static void validatePeriods(List<ZoneInterval> periods, IZoneIntervalMap tailZone) {
     Preconditions.checkArgument(periods.length > 0, 'periods', "No periods specified in precalculated time zone");
-    Preconditions.checkArgument(!periods[0].HasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
+    Preconditions.checkArgument(!periods[0].hasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
     for (int i = 0; i < periods.length - 1; i++) {
       // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next 
       // period, as there can't be a period *before* one which goes back to the start of time.
       Preconditions.checkArgument(periods[i].end == periods[i + 1].start, 'periods', "Non-adjoining ZoneIntervals for precalculated time zone");
     }
     Preconditions.checkArgument(
-        tailZone != null || periods[periods.length - 1].RawEnd == Instant.afterMaxValue, 'tailZone',
+        tailZone != null || periods[periods.length - 1].rawEnd == Instant.afterMaxValue, 'tailZone',
         "Null tail zone given but periods don't cover all of time");
   }
 
@@ -81,24 +81,24 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [instant]: The Instant to find.
   /// Returns: The ZoneInterval including the given instant.
   @override ZoneInterval getZoneInterval(Instant instant) {
-    if (tailZone != null && instant >= tailZoneStart) {
+    if (_tailZone != null && instant >= _tailZoneStart) {
       // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
       // join is seamless.
-      ZoneInterval intervalFromTailZone = tailZone.getZoneInterval(instant);
-      return intervalFromTailZone.RawStart < tailZoneStart ? firstTailZoneInterval : intervalFromTailZone;
+      ZoneInterval intervalFromTailZone = _tailZone.getZoneInterval(instant);
+      return intervalFromTailZone.rawStart < _tailZoneStart ? _firstTailZoneInterval : intervalFromTailZone;
     }
 
     int lower = 0; // Inclusive
-    int upper = periods.length; // Exclusive
+    int upper = _periods.length; // Exclusive
 
     while (lower < upper) {
       int current = (lower + upper) ~/ 2;
-      var candidate = periods[current];
-      if (candidate.RawStart > instant) {
+      var candidate = _periods[current];
+      if (candidate.rawStart > instant) {
         upper = current;
       }
       // Safe to use RawEnd, as it's just for the comparison.
-      else if (candidate.RawEnd <= instant) {
+      else if (candidate.rawEnd <= instant) {
         lower = current + 1;
       }
       else {
@@ -113,33 +113,33 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  @internal void Write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('This code will be different for Dart');
-  //Preconditions.checkNotNull(writer, 'writer');
-  //
-  //// We used to create a pool of strings just for this zone. This was more efficient
-  //// for some zones, as it meant that each String would be written out with just a single
-  //// byte after the pooling. Optimizing the String pool globally instead allows for
-  //// roughly the same efficiency, and simpler code here.
-  //writer.WriteCount(periods.Length);
-  //Instant previous = null;
-  //for (var period in periods)
-  //{
-  //writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));
-  //writer.WriteString(period.Name);
-  //writer.WriteOffset(period.WallOffset);
-  //writer.WriteOffset(period.Savings);
-  //}
-  //writer.WriteZoneIntervalTransition(previous, tailZoneStart);
-  //// We could just check whether we've got to the end of the stream, but this
-  //// feels slightly safer.
-  //writer.WriteByte((byte) (tailZone == null ? 0 : 1));
-  //if (tailZone != null)
-  //{
-  //// This is the only kind of zone we support in the new format. Enforce that...
-  //var tailDstZone = tailZone as StandardDaylightAlternatingMap;
-  //tailDstZone.Write(writer);
-  //}
+  @internal void write(IDateTimeZoneWriter writer) {
+    throw new UnimplementedError('FixedDateTimeZone.write unimplemented');
+    //Preconditions.checkNotNull(writer, 'writer');
+    //
+    //// We used to create a pool of strings just for this zone. This was more efficient
+    //// for some zones, as it meant that each String would be written out with just a single
+    //// byte after the pooling. Optimizing the String pool globally instead allows for
+    //// roughly the same efficiency, and simpler code here.
+    //writer.WriteCount(periods.Length);
+    //Instant previous = null;
+    //for (var period in periods)
+    //{
+    //writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));
+    //writer.WriteString(period.Name);
+    //writer.WriteOffset(period.WallOffset);
+    //writer.WriteOffset(period.Savings);
+    //}
+    //writer.WriteZoneIntervalTransition(previous, tailZoneStart);
+    //// We could just check whether we've got to the end of the stream, but this
+    //// feels slightly safer.
+    //writer.WriteByte((byte) (tailZone == null ? 0 : 1));
+    //if (tailZone != null)
+    //{
+    //// This is the only kind of zone we support in the new format. Enforce that...
+    //var tailDstZone = tailZone as StandardDaylightAlternatingMap;
+    //tailDstZone.Write(writer);
+    //}
   }
 
   /// Reads a time zone from the specified reader.
@@ -147,7 +147,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [reader]: The reader.
   /// [id]: The id.
   /// Returns: The time zone.
-  @internal static DateTimeZone Read(DateTimeZoneReader reader, String id) {
+  @internal static DateTimeZone read(DateTimeZoneReader reader, String id) {
     var periodsCount = reader.read7BitEncodedInt();
     if (periodsCount > 10000) throw new Exception('Parse error for id = $id. Too many periods. Count = $periodsCount.');
     var periods = new Iterable
@@ -163,13 +163,9 @@ import 'package:time_machine/time_machine_timezones.dart';
     return new PrecalculatedDateTimeZone(id, periods, null);
   }
 
-// #endregion // I/O
-
-// #region Offset computation for constructors
-
-  // Reasonably simple way of computing the maximum/minimum offset
-  // from either periods or transitions, with or without a tail zone.
-  @private static Offset ComputeOffset(List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
+  /// Reasonably simple way of computing the maximum/minimum offset
+  /// from either periods or transitions, with or without a tail zone.
+  static Offset _computeOffset(List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
     Preconditions.checkNotNull(intervals, 'intervals');
     Preconditions.checkArgument(intervals.length > 0, 'intervals', "No intervals specified");
     Offset ret = intervals[0].wallOffset;
@@ -184,5 +180,4 @@ import 'package:time_machine/time_machine_timezones.dart';
     }
     return ret;
   }
-// #endregion
 }

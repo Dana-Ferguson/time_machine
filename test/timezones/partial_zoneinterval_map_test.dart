@@ -75,7 +75,7 @@ void ConvertToFullMap(String intervalBreaks) {
   }
   maps.add(new PartialZoneIntervalMap(current, Instant.afterMaxValue, ExpectedZone));
 
-  var converted = PartialZoneIntervalMap.ConvertToFullMap(maps);
+  var converted = PartialZoneIntervalMap.convertToFullMap(maps);
   // CollectionAssert.AreEqual(
   expect(GetZoneIntervals(ExpectedZone), GetZoneIntervals(converted));
 }
@@ -92,7 +92,7 @@ Iterable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map) sync*
     var zoneInterval = map.getZoneInterval(current);
     yield zoneInterval;
     // If this is the end of time, this will just fail on the next comparison.
-    current = zoneInterval.RawEnd;
+    current = zoneInterval.rawEnd;
   }
 }
 

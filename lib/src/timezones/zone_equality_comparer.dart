@@ -139,34 +139,33 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
 /// The default behaviour of this comparator is to consider two time zones to be equal if they share the same wall
 /// offsets at all points within a given time interval, regardless of other aspects of each
 /// [ZoneInterval] within the two time zones. This behaviour can be changed using the
-/// [WithOptions] method.
+/// [withOptions] method.
 @immutable
-/*sealed*/ class ZoneEqualityComparer // : IEqualityComparer<DateTimeZone>
-    {
+class ZoneEqualityComparer {
 
-  @private final Interval interval;
-  @private final ZoneEqualityComparerOptions options;
+  final Interval _interval;
+  final ZoneEqualityComparerOptions _options;
 
   /// Returns the interval over which this comparer operates.
   @visibleForTesting
   @internal
-  Interval get IntervalForTest => interval;
+  Interval get intervalForTest => _interval;
 
   /// Returns the options used by this comparer.
   @visibleForTesting
   @internal
-  ZoneEqualityComparerOptions get OptionsForTest => options;
+  ZoneEqualityComparerOptions get optionsForTest => _options;
 
-  @private final ZoneIntervalEqualityComparer zoneIntervalComparer;
+  final ZoneIntervalEqualityComparer _zoneIntervalComparer;
 
   /// Creates a new comparer for the given interval, with the given comparison options.
   ///
   /// [interval]: The interval within the time line to use for comparisons.
   /// [options]: The options to use when comparing time zones.
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
-  @private ZoneEqualityComparer(this.interval, this.options) : zoneIntervalComparer = new ZoneIntervalEqualityComparer(options, interval) {
-    if ((options & ~ZoneEqualityComparerOptions.StrictestMatch).value != 0) {
-      throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
+  ZoneEqualityComparer._(this._interval, this._options) : _zoneIntervalComparer = new ZoneIntervalEqualityComparer(_options, _interval) {
+    if ((_options & ~ZoneEqualityComparerOptions.StrictestMatch).value != 0) {
+      throw new ArgumentError("The value $_options is not defined within ZoneEqualityComparer.Options");
     }
   }
 
@@ -174,14 +173,14 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   ///
   /// The default behaviour of this comparator is to consider two time zones to be equal if they share the same wall
   /// offsets at all points within a given interval.
-  /// To specify non-default options, call the [WithOptions] method on the result
+  /// To specify non-default options, call the [withOptions] method on the result
   /// of this method.
   /// [interval]: The interval over which to compare time zones. This must have both a start and an end.
   /// Returns: A ZoneEqualityComparer for the given interval with the default options.
-  static ZoneEqualityComparer ForInterval(Interval interval) {
+  factory ZoneEqualityComparer.forInterval(Interval interval) {
     Preconditions.checkArgument(interval.hasStart && interval.hasEnd, 'interval',
         "The interval must have both a start and an end.");
-    return new ZoneEqualityComparer(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
+    return new ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
   }
 
   /// Returns a comparer operating over the same interval as this one, but with the given
@@ -192,8 +191,8 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   /// [options]: New set of options, which must consist of flags defined within the [Options] enum.
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
   /// Returns: A comparer operating over the same interval as this one, but with the given set of options.
-  ZoneEqualityComparer WithOptions(ZoneEqualityComparerOptions options) {
-    return this.options == options ? this : new ZoneEqualityComparer(this.interval, options);
+  ZoneEqualityComparer withOptions(ZoneEqualityComparerOptions options) {
+    return this._options == options ? this : new ZoneEqualityComparer._(this._interval, options);
   }
 
   /// Compares two time zones for equality according to the options and interval provided to this comparer.
@@ -201,7 +200,7 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   /// [x]: The first [DateTimeZone] to compare.
   /// [y]: The second [DateTimeZone] to compare.
   /// Returns: `true` if the specified time zones are equal under the options and interval of this comparer; otherwise, `false`.
-  bool Equals(DateTimeZone x, DateTimeZone y) {
+  bool equals(DateTimeZone x, DateTimeZone y) {
     if (identical(x, y)) {
       return true;
     }
@@ -217,28 +216,28 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
     // If we ever need to port this to a platform which doesn't support LINQ,
     // we'll need to reimplement this. Until then, it would seem pointless...
     // Dart: that day is TODAY! todo: is this inefficient?
-    var ax = GetIntervals(x); //.toList(growable: false);
-    var by = GetIntervals(y); //.toList(growable: false);
-// Need a way to know if length can be efficiently computed or not
-// if (ax.length != by.length) return false;
+    var ax = _getIntervals(x); //.toList(growable: false);
+    var by = _getIntervals(y); //.toList(growable: false);
+    // Need a way to know if length can be efficiently computed or not
+    // if (ax.length != by.length) return false;
 
     var a = ax.iterator;
     var b = by.iterator;
-// if (a.length != b.length) return false;
-//    while(a.moveNext() || b.moveNext()) {
-//      if (a.current == null || b.current == null) return false;
-//      if (!zoneIntervalComparer.Equals(a.current, b.current)) return false;
-//    }
+    // if (a.length != b.length) return false;
+    //    while(a.moveNext() || b.moveNext()) {
+    //      if (a.current == null || b.current == null) return false;
+    //      if (!zoneIntervalComparer.Equals(a.current, b.current)) return false;
+    //    }
 
     while (a.moveNext())
     {
-      if (!b.moveNext() || !zoneIntervalComparer.Equals(a.current, b.current))
+      if (!b.moveNext() || !_zoneIntervalComparer.equals(a.current, b.current))
         return false;
     }
     return !b.moveNext();
 
-  // return true;
-  // return GetIntervals(x).SequenceEqual(GetIntervals(y), zoneIntervalComparer);
+    // return true;
+    // return GetIntervals(x).SequenceEqual(GetIntervals(y), zoneIntervalComparer);
   }
 
   /// Returns a hash code for the specified time zone.
@@ -250,28 +249,27 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   ///
   /// [obj]: The time zone to compute a hash code for.
   /// Returns: A hash code for the specified object.
-  int GetHashCode(DateTimeZone obj) {
+  int getHashCode(DateTimeZone obj) {
     Preconditions.checkNotNull(obj, 'obj');
     return hashObjects(
-        GetIntervals(obj)
-            .map((zoneInterval) => zoneIntervalComparer.GetHashCode(zoneInterval))
+        _getIntervals(obj)
+            .map((zoneInterval) => _zoneIntervalComparer.getHashCode(zoneInterval))
     );
   }
 
-  @private Iterable<ZoneInterval> GetIntervals(DateTimeZone zone) {
-    var allIntervals = zone.getZoneIntervals(new Interval(interval.start, interval.end));
-    return _checkOption(options, ZoneEqualityComparerOptions.MatchAllTransitions) ? allIntervals : zoneIntervalComparer.CoalesceIntervals(allIntervals);
+  Iterable<ZoneInterval> _getIntervals(DateTimeZone zone) {
+    var allIntervals = zone.getZoneIntervals(new Interval(_interval.start, _interval.end));
+    return _checkOption(_options, ZoneEqualityComparerOptions.MatchAllTransitions) ? allIntervals : _zoneIntervalComparer.coalesceIntervals(allIntervals);
   }
 }
 
-@internal /*sealed*/ class ZoneIntervalEqualityComparer // : IEqualityComparer<ZoneInterval>
-    {
-  @private final ZoneEqualityComparerOptions options;
-  @private final Interval interval;
+@internal class ZoneIntervalEqualityComparer {
+  final ZoneEqualityComparerOptions _options;
+  final Interval _interval;
 
-  @internal ZoneIntervalEqualityComparer(this.options, this.interval);
+  @internal ZoneIntervalEqualityComparer(this._options, this._interval);
 
-  @internal Iterable<ZoneInterval> CoalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
+  @internal Iterable<ZoneInterval> coalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
   {
     ZoneInterval current = null;
     for (var zoneInterval in zoneIntervals) {
@@ -279,8 +277,8 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
         current = zoneInterval;
         continue;
       }
-      if (EqualExceptStartAndEnd(current, zoneInterval)) {
-        current = current.WithEnd(zoneInterval.RawEnd);
+      if (_equalExceptStartAndEnd(current, zoneInterval)) {
+        current = current.withEnd(zoneInterval.rawEnd);
       }
       else {
         yield current;
@@ -293,50 +291,50 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
     }
   }
 
-  bool Equals(ZoneInterval x, ZoneInterval y) {
-    if (!EqualExceptStartAndEnd(x, y)) {
+  bool equals(ZoneInterval x, ZoneInterval y) {
+    if (!_equalExceptStartAndEnd(x, y)) {
       return false;
     }
-    return GetEffectiveStart(x) == GetEffectiveStart(y) &&
-        GetEffectiveEnd(x) == GetEffectiveEnd(y);
+    return _getEffectiveStart(x) == _getEffectiveStart(y) &&
+        _getEffectiveEnd(x) == _getEffectiveEnd(y);
   }
 
-  int GetHashCode(ZoneInterval obj) {
-    List hashables = [GetEffectiveStart(obj), GetEffectiveEnd(obj)];
-    if (_checkOption(options, ZoneEqualityComparerOptions.MatchOffsetComponents)) {
-      hashables.addAll([obj.StandardOffset, obj.savings]);
+  int getHashCode(ZoneInterval obj) {
+    List hashables = [_getEffectiveStart(obj), _getEffectiveEnd(obj)];
+    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchOffsetComponents)) {
+      hashables.addAll([obj.standardOffset, obj.savings]);
     }
     else {
       hashables.add(obj.wallOffset);
     }
-    if (_checkOption(options, ZoneEqualityComparerOptions.MatchNames)) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchNames)) {
       hashables.add(obj.name);
     }
 
     return hashObjects(hashables);
   }
 
-  @private Instant GetEffectiveStart(ZoneInterval zoneInterval) =>
-      _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
-          ? zoneInterval.RawStart : Instant.max(zoneInterval.RawStart, interval.start);
+  Instant _getEffectiveStart(ZoneInterval zoneInterval) =>
+      _checkOption(_options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
+          ? zoneInterval.rawStart : Instant.max(zoneInterval.rawStart, _interval.start);
 
-  @private Instant GetEffectiveEnd(ZoneInterval zoneInterval) =>
-      _checkOption(options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
-          ? zoneInterval.RawEnd : Instant.min(zoneInterval.RawEnd, interval.end);
+  Instant _getEffectiveEnd(ZoneInterval zoneInterval) =>
+      _checkOption(_options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
+          ? zoneInterval.rawEnd : Instant.min(zoneInterval.rawEnd, _interval.end);
 
   /// Compares the parts of two zone intervals which are deemed "interesting" by the options.
   /// The wall offset is always compared, regardless of options, but the start/end points are
   /// never compared.
-  @private bool EqualExceptStartAndEnd(ZoneInterval x, ZoneInterval y) {
+  bool _equalExceptStartAndEnd(ZoneInterval x, ZoneInterval y) {
     if (x.wallOffset != y.wallOffset) {
       return false;
     }
     // As we've already compared wall offsets, we only need to compare savings...
     // If the savings are equal, the standard offset will be too.
-    if (_checkOption(options, ZoneEqualityComparerOptions.MatchOffsetComponents) && x.savings != y.savings) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchOffsetComponents) && x.savings != y.savings) {
       return false;
     }
-    if (_checkOption(options, ZoneEqualityComparerOptions.MatchNames) && x.name != y.name) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchNames) && x.name != y.name) {
       return false;
     }
     return true;

@@ -100,24 +100,24 @@ void ElidedTransitions() {
 void ForInterval()
 {
   var interval = new Interval(Instants[3], Instants[5]);
-  var comparer = ZoneEqualityComparer.ForInterval(interval);
-  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, comparer.OptionsForTest);
-  expect(interval, comparer.IntervalForTest);
+  var comparer = new ZoneEqualityComparer.forInterval(interval);
+  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, comparer.optionsForTest);
+  expect(interval, comparer.intervalForTest);
 }
 
 @Test()
 void WithOptions()
 {
   var interval = new Interval(Instants[3], Instants[5]);
-  var firstComparer = ZoneEqualityComparer.ForInterval(interval);
-  var secondComparer = firstComparer.WithOptions(ZoneEqualityComparerOptions.MatchNames);
+  var firstComparer = new ZoneEqualityComparer.forInterval(interval);
+  var secondComparer = firstComparer.withOptions(ZoneEqualityComparerOptions.MatchNames);
 
-  expect(ZoneEqualityComparerOptions.MatchNames, secondComparer.OptionsForTest);
-  expect(interval, secondComparer.IntervalForTest);
+  expect(ZoneEqualityComparerOptions.MatchNames, secondComparer.optionsForTest);
+  expect(interval, secondComparer.intervalForTest);
 
   // Validate that the first comparer hasn't changed
-  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, firstComparer.OptionsForTest);
-  expect(interval, firstComparer.IntervalForTest);
+  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, firstComparer.optionsForTest);
+  expect(interval, firstComparer.intervalForTest);
 }
 
 @Test()
@@ -148,42 +148,42 @@ void ElidedTransitions_Degenerate() {
 @Test()
 Future ReferenceComparison() async
 {
-  var comparer = ZoneEqualityComparer.ForInterval(new Interval(Instants[0], Instants[2]));
+  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  expect(comparer.Equals(zone, zone), isTrue);
+  expect(comparer.equals(zone, zone), isTrue);
 }
 
 @Test()
 Future NullComparison() async
 {
-  var comparer = ZoneEqualityComparer.ForInterval(new Interval(Instants[0], Instants[2]));
+  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
   var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  expect(comparer.Equals(zone, null), isFalse);
-  expect(comparer.Equals(null, zone), isFalse);
+  expect(comparer.equals(zone, null), isFalse);
+  expect(comparer.equals(null, zone), isFalse);
 }
 
 @Test()
 void InvalidOptions()
 {
-  var comparer = ZoneEqualityComparer.ForInterval(new Interval(Instants[0], Instants[2]));
-  expect(() => comparer.WithOptions(new ZoneEqualityComparerOptions(9999)), throwsArgumentError);
+  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
+  expect(() => comparer.withOptions(new ZoneEqualityComparerOptions(9999)), throwsArgumentError);
 }
 
 void AssertEqual(DateTimeZone first, DateTimeZone second,
     Instant start, Instant end, ZoneEqualityComparerOptions options)
 {
-  var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
-  expect(comparer.Equals(first, second), isTrue);
-  expect(comparer.GetHashCode(first), comparer.GetHashCode(second));
+  var comparer = new ZoneEqualityComparer.forInterval(new Interval(start, end)).withOptions(options);
+  expect(comparer.equals(first, second), isTrue);
+  expect(comparer.getHashCode(first), comparer.getHashCode(second));
 }
 
 void AssertNotEqual(DateTimeZone first, DateTimeZone second,
     Instant start, Instant end, ZoneEqualityComparerOptions options)
 {
-  var comparer = ZoneEqualityComparer.ForInterval(new Interval(start, end)).WithOptions(options);
-  expect(comparer.Equals(first, second), isFalse);
+  var comparer = new ZoneEqualityComparer.forInterval(new Interval(start, end)).withOptions(options);
+  expect(comparer.equals(first, second), isFalse);
   // If this fails, the code *could* still be correct - but it's unlikely...
-  expect(comparer.GetHashCode(first), isNot(comparer.GetHashCode(second)));
+  expect(comparer.getHashCode(first), isNot(comparer.getHashCode(second)));
 }
 
 

@@ -17,7 +17,7 @@ DateTimeZone Uncached(DateTimeZone zone)
   if (zone is! CachedDateTimeZone) return zone;
 
   var cached = zone as CachedDateTimeZone;
-  return cached == null ? zone : cached.TimeZone;
+  return cached == null ? zone : cached.timeZone;
 }
 
 // Matcher throwsAsync<T>() => new Throws(wrapMatcher(new isInstanceOf<T>()));
