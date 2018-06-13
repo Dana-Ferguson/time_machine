@@ -22,11 +22,6 @@ import '../time_machine_testing.dart';
 /// This class is somewhere between a fake and a stub, depending on how it's used - if it's set to
 /// [AutoAdvance] then time will pass, but in a pretty odd way (i.e. dependent on how
 /// often it's consulted).
-///
-/// <threadsafety>
-/// This type is thread-safe, primarily in order to allow [IClock] to be documented as
-/// "thread safe in all built-in implementations".
-/// </threadsafety>
 class FakeClock extends Clock {
   // private readonly object mutex = new object();
   Instant _now;
