@@ -12,5 +12,5 @@ class CompareInfo {
 abstract class IFormatProvider
 {
   // Interface does not need to be marked with the serializable attribute
-  Object GetFormat(Type formatType);
+  Object getFormat(Type formatType);
 }

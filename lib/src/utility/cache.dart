@@ -10,9 +10,9 @@ import 'dart:collection';
 /// For simplicity's sake, eviction is currently on a least-recently-added basis (not LRU). This
 /// may change in the future.
 ///
-/// <typeparam name="TKey">Type of key</typeparam>
-/// <typeparam name="TValue">Type of value</typeparam>
-@internal /*sealed*/ class Cache<TKey, TValue> {
+/// [TKey]: Type of key
+/// [TValue]: Type of value
+@internal class Cache<TKey, TValue> {
   final int _size;
   // @private final object mutex = new object();
   final TValue Function(TKey) _valueFactory;
@@ -33,7 +33,7 @@ import 'dart:collection';
   ///
   /// [key]: Key to fetch
   /// Returns: The value associated with the key.
-  @internal TValue GetOrAdd(TKey key)
+  @internal TValue getOrAdd(TKey key)
   {
     // lock (mutex)
     // First check the cache...
@@ -57,14 +57,13 @@ import 'dart:collection';
   }
 
   /// Returns the number of entries currently in the cache, primarily for diagnostic purposes.
-  @internal int get Count => _dictionary.length;
-
+  @internal int get count => _dictionary.length;
 
   /// Returns a copy of the keys in the cache as a list, for diagnostic purposes.
-  @internal List<TKey> get Keys => new List<TKey>.unmodifiable(_keyList);
+  @internal List<TKey> get keys => new List<TKey>.unmodifiable(_keyList);
 
   /// Clears the cache.
-  @internal void Clear()
+  @internal void clear()
   {
     _keyList.clear();
     _dictionary.clear();

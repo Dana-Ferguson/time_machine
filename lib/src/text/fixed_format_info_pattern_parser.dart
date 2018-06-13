@@ -23,5 +23,5 @@ import 'package:time_machine/time_machine_patterns.dart';
     // StringComparer object that performs a case-sensitive ordinal string comparison.
     /*StringComparer.Ordinal*/);
 
-  @internal IPattern<T> parsePattern(String pattern) => _cache.GetOrAdd(pattern);
+  @internal IPattern<T> parsePattern(String pattern) => _cache.getOrAdd(pattern);
 }

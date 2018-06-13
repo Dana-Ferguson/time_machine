@@ -337,7 +337,7 @@ import 'package:time_machine/time_machine_globalization.dart';
       PatternResources.getString("OffsetPatternShortNoPunctuation", cultureInfo);
 
   /// Clears the cache. Only used for test purposes.
-  @internal static void clearCache() => _cache.Clear();
+  @internal static void clearCache() => _cache.clear();
 
   /// Gets the [TimeMachineFormatInfo] for the given [CultureInfo].
   ///
@@ -354,7 +354,7 @@ import 'package:time_machine/time_machine_globalization.dart';
     if (!cultureInfo.isReadOnly) {
       return new TimeMachineFormatInfo(cultureInfo);
     }
-    return _cache.GetOrAdd(cultureInfo);
+    return _cache.getOrAdd(cultureInfo);
   }
 
   /// Gets the [TimeMachineFormatInfo] for the given [IIFormatProvider]. If the

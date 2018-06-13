@@ -93,11 +93,6 @@ abstract class IDateTimeZoneReader {
 //
 }
 
-@deprecated
-bool ReferenceEquals(Object x, Object y) {
-  return identical(x, y);
-}
-
 // todo: only use this for porting... remove all of these later
 @deprecated
 class OutBox<T> {
