@@ -67,6 +67,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
     }
     var yearMonthDayCalendar = calendar != null 
         ? calendar.getYearMonthDayCalendarFromDaysSinceEpoch(days)
+        // todo: can we grab the correct calculator based on the default culture?
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
     return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);

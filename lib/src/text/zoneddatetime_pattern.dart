@@ -67,7 +67,7 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// only be used for formatting (not parsing).
   final IDateTimeZoneProvider zoneProvider;
 
-  @private ZonedDateTimePattern(this.patternText, this.formatInfo, this.templateValue, this.resolver, this.zoneProvider, this._pattern);
+  ZonedDateTimePattern._(this.patternText, this.formatInfo, this.templateValue, this.resolver, this.zoneProvider, this._pattern);
 
   // todo: transform to ParseAsync and ParseSync?
   /// Parses the given text value according to the rules of this pattern.
@@ -107,9 +107,10 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).parsePattern(patternText, formatInfo);
-    return new ZonedDateTimePattern(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
+    return new ZonedDateTimePattern._(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
   }
 
+  // todo: This needs to be a factory
   /// Creates a pattern for the given pattern text, culture, resolver, time zone provider, and template value.
   ///
   /// See the user guide for the available pattern text options.
