@@ -80,7 +80,7 @@ class CalendarSystem {
   static CalendarSystem _generateIsoCalendarSystem() {
     var gregorianCalculator = new GregorianYearMonthDayCalculator();
     var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-    return new CalendarSystem(CalendarOrdinal.iso, _isoId, _isoName, gregorianCalculator, gregorianEraCalculator);
+    return new CalendarSystem._(CalendarOrdinal.iso, _isoId, _isoName, gregorianCalculator, gregorianEraCalculator);
   }
 
   /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
@@ -325,12 +325,12 @@ class CalendarSystem {
 // #endregion
 
   // Other fields back read-only automatic properties.
-  @private final EraCalculator eraCalculator;
+  final EraCalculator _eraCalculator;
 
-  @private CalendarSystem.singleEra(CalendarOrdinal ordinal, String id, String name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
-      : this(ordinal, id, name, yearMonthDayCalculator, new SingleEraCalculator(singleEra, yearMonthDayCalculator));
+  CalendarSystem._singleEra(CalendarOrdinal ordinal, String id, String name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
+      : this._(ordinal, id, name, yearMonthDayCalculator, new SingleEraCalculator(singleEra, yearMonthDayCalculator));
 
-  @private CalendarSystem(this.ordinal, this.id, this.name, this.yearMonthDayCalculator, this.eraCalculator)
+  CalendarSystem._(this.ordinal, this.id, this.name, this.yearMonthDayCalculator, this._eraCalculator)
       :
         minYear = yearMonthDayCalculator.minYear,
         maxYear = yearMonthDayCalculator.maxYear,
@@ -406,7 +406,7 @@ class CalendarSystem {
 
 
   /// Gets a read-only list of eras used in this calendar system.
-  Iterable<Era> get eras => eraCalculator.eras;
+  Iterable<Era> get eras => _eraCalculator.eras;
 
 
   /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
@@ -422,7 +422,7 @@ class CalendarSystem {
   /// Returns: The absolute year represented by the specified year of era.
   /// [ArgumentOutOfRangeException]: [yearOfEra] is out of the range of years for the given era.
   /// [ArgumentException]: [era] is not an era used in this calendar.
-  int getAbsoluteYear(int yearOfEra, Era era) => eraCalculator.getAbsoluteYear(yearOfEra, era);
+  int getAbsoluteYear(int yearOfEra, Era era) => _eraCalculator.getAbsoluteYear(yearOfEra, era);
 
 
   /// Returns the maximum valid year-of-era in the given era.
@@ -434,7 +434,7 @@ class CalendarSystem {
   /// [era]: The era in which to find the greatest year
   /// Returns: The maximum valid year in the given era.
   /// [ArgumentException]: [era] is not an era used in this calendar.
-  int getMaxYearOfEra(Era era) => eraCalculator.getMaxYearOfEra(era);
+  int getMaxYearOfEra(Era era) => _eraCalculator.getMaxYearOfEra(era);
 
 
   /// Returns the minimum valid year-of-era in the given era.
@@ -446,7 +446,7 @@ class CalendarSystem {
   /// [era]: The era in which to find the greatest year
   /// Returns: The minimum valid year in the given eraera.
   /// [ArgumentException]: [era] is not an era used in this calendar.
-  int getMinYearOfEra(Era era) => eraCalculator.getMinYearOfEra(era);
+  int getMinYearOfEra(Era era) => _eraCalculator.getMinYearOfEra(era);
 
   @internal final YearMonthDayCalculator yearMonthDayCalculator;
 
@@ -560,12 +560,12 @@ class CalendarSystem {
 
   @internal int getYearOfEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
-    return eraCalculator.getYearOfEra(absoluteYear);
+    return _eraCalculator.getYearOfEra(absoluteYear);
   }
 
   @internal Era getEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
-    return eraCalculator.getEra(absoluteYear);
+    return _eraCalculator.getEra(absoluteYear);
   }
 
 
@@ -578,7 +578,7 @@ class CalendarSystem {
   /// Although the Gregorian calendar did not exist before 1582 CE, this
   /// calendar system assumes it did, thus it is proleptic. This implementation also
   /// fixes the start of the year at January 1.
-  static final CalendarSystem gregorian = GregorianJulianCalendars.gregorian;
+  static final CalendarSystem gregorian = _GregorianJulianCalendars.gregorian;
 
 
   /// Returns a pure proleptic Julian calendar system, which defines every
@@ -592,7 +592,7 @@ class CalendarSystem {
   ///
   /// A suitable Julian calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.<
-  static final CalendarSystem julian = GregorianJulianCalendars.julian;
+  static final CalendarSystem julian = _GregorianJulianCalendars.julian;
 
 
   /// Returns a Coptic calendar system, which defines every fourth year as
@@ -677,7 +677,7 @@ class CalendarSystem {
 // todo: Dart lazy loads static variables, can I use this to lazy load these calendars?
 // (https://stackoverflow.com/questions/23511100/final-and-top-level-lazy-initialization) ~ I'm unable to find official information on this - check language spec?
 
-@private class PersianCalendars
+class _PersianCalendars
 {
 //  @internal static final CalendarSystem Simple =
 //  new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleId, PersianName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
@@ -690,7 +690,7 @@ class CalendarSystem {
 
 /// Specifically the calendars implemented by IslamicYearMonthDayCalculator, as opposed to all
 /// Islam-based calendars (which would include UmAlQura and Persian, for example).
-@private class IslamicCalendars
+class _IslamicCalendars
 {
 //  @internal static final CalendarSystem[,] ByLeapYearPatterAndEpoch;
 //
@@ -715,7 +715,7 @@ class CalendarSystem {
 
 /// Odds and ends, with an assumption that it's not *that* painful to initialize UmAlQura if you only
 /// need Coptic, for example.
-@private class MiscellaneousCalendars {
+class _MiscellaneousCalendars {
 //  @internal static final CalendarSystem Coptic =
 //  new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
 //  @internal static final CalendarSystem UmAlQura =
@@ -724,7 +724,7 @@ class CalendarSystem {
 //  new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.Bahai);
 }
 
-@private class GregorianJulianCalendars {
+class _GregorianJulianCalendars {
   static CalendarSystem _gregorian;
   static CalendarSystem _julian;
 
@@ -734,16 +734,16 @@ class CalendarSystem {
   // todo: was a static constructor .. is this an okay pattern?
   static List<CalendarSystem> _init() {
     var julianCalculator = new JulianYearMonthDayCalculator();
-    _julian = new CalendarSystem(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
+    _julian = new CalendarSystem._(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
         julianCalculator, new GJEraCalculator(julianCalculator));
-    _gregorian = new CalendarSystem(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
-        CalendarSystem._isoCalendarSystem.yearMonthDayCalculator, CalendarSystem._isoCalendarSystem.eraCalculator);
+    _gregorian = new CalendarSystem._(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
+        CalendarSystem._isoCalendarSystem.yearMonthDayCalculator, CalendarSystem._isoCalendarSystem._eraCalculator);
 
     return [_gregorian, _julian];
   }
 }
 
-@private class HebrewCalendars {
+class _HebrewCalendars {
 //  @internal static final List<CalendarSystem> ByMonthNumbering =
 //  [
 //    new CalendarSystem(CalendarOrdinal.HebrewCivil, HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),

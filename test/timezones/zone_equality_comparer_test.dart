@@ -149,7 +149,7 @@ void ElidedTransitions_Degenerate() {
 Future ReferenceComparison() async
 {
   var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
-  var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   expect(comparer.equals(zone, zone), isTrue);
 }
 
@@ -157,7 +157,7 @@ Future ReferenceComparison() async
 Future NullComparison() async
 {
   var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
-  var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   expect(comparer.equals(zone, null), isFalse);
   expect(comparer.equals(null, zone), isFalse);
 }

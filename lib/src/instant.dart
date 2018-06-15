@@ -150,8 +150,6 @@ class Instant implements Comparable<Instant> {
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       InstantPattern.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
-// todo: you are here: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L507
-
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
   DateTime toDateTimeUtc() {
@@ -198,7 +196,6 @@ class Instant implements Comparable<Instant> {
   
   OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => new OffsetDateTime.fromInstant(this, offset, calendar);
 
-  // todo: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/Instant.cs#L255
   // Add LocalInstant code
   
   //  int _epochMilliseconds;

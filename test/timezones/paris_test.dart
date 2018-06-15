@@ -29,7 +29,7 @@ Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21);
 /// 2010 fall transition: October 31st
 /// 2011 spring transition: March 27th
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
   // Make sure we deal with the uncached time zone
   Paris = Uncached(await Tzdb["Europe/Paris"]);
 

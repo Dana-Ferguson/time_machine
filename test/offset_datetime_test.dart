@@ -465,7 +465,7 @@ Future InZone() async
 {
   Offset offset = new Offset.fromHours(-7);
   OffsetDateTime start = new LocalDateTime.at(2017, 10, 31, 18, 12).withOffset(offset);
-  var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   var zoned = start.inZone(zone);
 
   // On October 31st, the UK had already gone back, so the offset is 0.

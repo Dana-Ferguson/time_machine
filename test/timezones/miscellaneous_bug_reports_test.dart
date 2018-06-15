@@ -22,7 +22,7 @@ IDateTimeZoneProvider Tzdb;
 /// to have the original test which showed up the problem, as a small contribution
 /// to regression testing.
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();
 }

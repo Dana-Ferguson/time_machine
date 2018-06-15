@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-@private abstract class _Patterns
+abstract class _Patterns
 {
   @internal static final LocalDatePattern isoPatternImpl = LocalDatePattern.createWithInvariantCulture("uuuu'-'MM'-'dd");
 }

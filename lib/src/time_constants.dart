@@ -69,7 +69,7 @@ class TimeConstants {
   /// Julian calendar, or November 24th 4714 BCE in the proleptic Gregorian calendar.
   static final Instant julianEpoch = new Instant.fromUtc(-4713, 11, 24, 12, 0);
 
-  // These are checked in NodaConstantsTest. todo: test these when we make the tests
+  // These are checked in TimeConstantsTest. todo: test these when we make the tests
   /// The number of ticks in a BCL DateTime at the Unix epoch.
   /// This number is out of precision for JS
   @visibleForTesting static final int bclTicksAtUnixEpoch = 621355968000000000;

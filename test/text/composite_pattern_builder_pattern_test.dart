@@ -24,9 +24,9 @@ Future main() async {
 void IsoPattern(String text) {
   // We assert that the text round-trips. If it does, it's
   // reasonable to assume it parsed correctly...
-  var shortPattern = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
+  var shortPattern = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
   var pattern = (new CompositePatternBuilder<LocalDateTime>()
-    ..add(LocalDateTimePattern.ExtendedIso, (_) => true)
+    ..add(LocalDateTimePattern.extendedIso, (_) => true)
     ..add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).build();
   var value = pattern
       .parse(text)

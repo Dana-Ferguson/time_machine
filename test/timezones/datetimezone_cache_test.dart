@@ -19,7 +19,7 @@ IDateTimeZoneProvider Tzdb;
 
 /// Tests for DateTimeZoneCache.
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();
 }

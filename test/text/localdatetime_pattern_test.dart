@@ -267,37 +267,37 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..Culture = TestCultures.FrFr,
     // Culture has no impact on round-trip or sortable formats
     new Data(MsdnStandardExample)
-      ..StandardPattern = LocalDateTimePattern.BclRoundtrip
+      ..StandardPattern = LocalDateTimePattern.bclRoundtrip
       ..Pattern = "o"
       ..Text = "2009-06-15T13:45:30.0900000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = LocalDateTimePattern.BclRoundtrip
+      ..StandardPattern = LocalDateTimePattern.bclRoundtrip
       ..Pattern = "O"
       ..Text = "2009-06-15T13:45:30.0900000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar
+      ..StandardPattern = LocalDateTimePattern.fullRoundtripWithoutCalendar
       ..Pattern = "R"
       ..Text = "2009-06-15T13:45:30.090000000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = LocalDateTimePattern.FullRoundtrip
+      ..StandardPattern = LocalDateTimePattern.fullRoundtrip
       ..Pattern = "r"
       ..Text = "2009-06-15T13:45:30.090000000 (ISO)"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = LocalDateTimePattern.GeneralIso
+      ..StandardPattern = LocalDateTimePattern.generalIso
       ..Pattern = "s"
       ..Text = "2009-06-15T13:45:30"
       ..Culture = TestCultures.FrFr,
     new Data(SampleLocalDateTime)
-      ..StandardPattern = LocalDateTimePattern.FullRoundtripWithoutCalendar
+      ..StandardPattern = LocalDateTimePattern.fullRoundtripWithoutCalendar
       ..Pattern = "R"
       ..Text = "1976-06-19T21:13:34.123456789"
       ..Culture = TestCultures.FrFr,
     new Data(SampleLocalDateTime)
-      ..StandardPattern = LocalDateTimePattern.FullRoundtrip
+      ..StandardPattern = LocalDateTimePattern.fullRoundtrip
       ..Pattern = "r"
       ..Text = "1976-06-19T21:13:34.123456789 (ISO)"
       ..Culture = TestCultures.FrFr,
@@ -322,7 +322,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
     // Standard invariant patterns with a property but no pattern character
     new Data(MsdnStandardExample)
-      ..StandardPattern = LocalDateTimePattern.ExtendedIso
+      ..StandardPattern = LocalDateTimePattern.extendedIso
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF"
       ..Text = "2009-06-15T13:45:30.09"
       ..Culture = TestCultures.FrFr,
@@ -458,7 +458,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   @Test() @SkipMe.unimplemented()
   void WithCalendar() {
-    var pattern = LocalDateTimePattern.GeneralIso.WithCalendar(CalendarSystem.coptic);
+    var pattern = LocalDateTimePattern.generalIso.withCalendar(CalendarSystem.coptic);
     var value = pattern
         .parse("0284-08-29T12:34:56")
         .value;
@@ -477,7 +477,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     var dateTime = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56);
     CultureInfo.currentCulture = TestCultures.FrFr;
     {
-      var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
+      var pattern = LocalDateTimePattern.createWithCurrentCulture("g");
       expect("23/08/2017 12:34", pattern.format(dateTime));
     }
     /* todo: This test fails under .Net Core
@@ -489,7 +489,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(LocalDateTimePattern.ExtendedIso);
+  void ParseNull() => AssertParseNull(LocalDateTimePattern.extendedIso);
 
   /*
   @Test()
@@ -516,7 +516,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
     if (culture.dateTimeFormat.amDesignator == "" &&
         culture.dateTimeFormat.pmDesignator == "") {
-      pattern = pattern.WithTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0));
+      pattern = pattern.withTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0));
     }
 
     String formatted = pattern.format(SampleLocalDateTime);
@@ -580,7 +580,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   // Helper method to make it slightly easier for tests to skip "bad" cultures.
   @private LocalDateTimePattern CreatePatternOrNull(String patternText, CultureInfo culture, LocalDateTime templateValue) {
     try {
-      return LocalDateTimePattern.Create3(patternText, culture);
+      return LocalDateTimePattern.create2(patternText, culture);
     }
     catch (InvalidPatternException) {
       // The Malta long date/time pattern in Mono 3.0 is invalid (not just wrong; invalid due to the wrong number of quotes).
@@ -593,13 +593,13 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   /*sealed*/ class Data extends PatternTestData<LocalDateTime> {
   // Default to the start of the year 2000.
-  /*protected*/ @override LocalDateTime get DefaultTemplate => LocalDateTimePattern.DefaultTemplateValue;
+  /*protected*/ @override LocalDateTime get DefaultTemplate => LocalDateTimePattern.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
   Data([LocalDateTime value = null])
-      : super(value ?? LocalDateTimePattern.DefaultTemplateValue);
+      : super(value ?? LocalDateTimePattern.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0, int millis = 0])
       : super(new LocalDateTime.at(
@@ -617,9 +617,9 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   @internal
   @override
   IPattern<LocalDateTime> CreatePattern() =>
-      LocalDateTimePattern.CreateWithInvariantCulture(super.Pattern)
-          .WithTemplateValue(Template)
-          .WithCulture(Culture);
+      LocalDateTimePattern.createWithInvariantCulture(super.Pattern)
+          .withTemplateValue(Template)
+          .withCulture(Culture);
 }
 
 

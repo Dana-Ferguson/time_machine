@@ -156,7 +156,7 @@ Future IsDaylightSavings() async
 {
   // Use a real time zone rather than a single-transition zone, so that we can get
   // a savings offset.
-  var zone = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
   var winter = (winterSummerTransition - Span.epsilon).inZone(zone);
   var summer = winterSummerTransition.inZone(zone);
@@ -527,8 +527,8 @@ void ZonedDateTime_ToString_WithFormat()
 @Test() @SkipMe.unimplemented()
 Future LocalComparer() async
 {
-  var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  var losAngeles = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
+  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var losAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
   var londonEvening = new LocalDateTime.at(2014, 7, 9, 20, 32).inZoneStrictly(london);
@@ -555,8 +555,8 @@ Future LocalComparer() async
 @Test() @SkipMe.unimplemented()
 Future InstantComparer() async
 {
-  var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
-  var losAngeles = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
+  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var losAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
   var londonEvening = new LocalDateTime.at(2014, 7, 9, 20, 32).inZoneStrictly(london);

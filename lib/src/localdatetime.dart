@@ -129,7 +129,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The date/time is outside the range of `DateTime`.
   /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime toDateTimeUnspecified() {
-    //int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + NodaConstants.BclTicksAtUnixEpoch;
+    //int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + TimeConstants.BclTicksAtUnixEpoch;
     //if (ticks < 0)
     //{
     //throw new StateError("LocalDateTime out of range of DateTime");

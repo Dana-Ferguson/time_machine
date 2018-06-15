@@ -22,7 +22,7 @@ DateTimeZone Jordan;
 /// This is denoted in the zoneinfo database using lastThu 24:00, which was invalid
 /// in our parser.
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
   Jordan = await Tzdb["Asia/Amman"];
 
   await runTests();

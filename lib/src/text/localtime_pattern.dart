@@ -14,27 +14,22 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 
+// todo: we may not need _Patterns classes for our Dart port
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
-/// from needing NodaFormatInfo.InvariantInfo...
-@private abstract class _Patterns
+/// from needing TimeFormatInfo.InvariantInfo...
+abstract class _Patterns
 {
-  @internal static final LocalTimePattern ExtendedIsoPatternImpl = LocalTimePattern.CreateWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
+  @internal static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
 }
 
 
 /// Represents a pattern for parsing and formatting [LocalTime] values.
-///
-/// <threadsafety>
-/// When used with a read-only [CultureInfo], this type is immutable and instances
-/// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
-/// not currently enforced.
-/// </threadsafety>
-@immutable // Well, assuming an immutable culture...
-/*sealed*/ class LocalTimePattern implements IPattern<LocalTime> {
+@immutable
+class LocalTimePattern implements IPattern<LocalTime> {
   /// Gets an invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.
   /// (These digits are omitted when unnecessary.)
   /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
-  static final LocalTimePattern ExtendedIso = _Patterns.ExtendedIsoPatternImpl;
+  static final LocalTimePattern ExtendedIso = _Patterns.extendedIsoPatternImpl;
 
   @private static const String DefaultFormatPattern = "T"; // Long
 
@@ -148,7 +143,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalTimePattern CreateWithInvariantCulture(String patternText) =>
+  static LocalTimePattern createWithInvariantCulture(String patternText) =>
       Create(patternText, TimeMachineFormatInfo.invariantInfo, LocalTime.midnight);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified

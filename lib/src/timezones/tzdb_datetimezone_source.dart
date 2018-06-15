@@ -2,20 +2,23 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
 import 'dart:async';
 
-import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+// todo: I think we need an easy way for library users to inject their own IDateTimeZoneSource
 abstract class DateTimeZoneProviders {
   // todo: await ... await ... patterns are so ick.
-  static Future<IDateTimeZoneProvider> Tzdb = DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
+
+  static Future<IDateTimeZoneProvider> _tzdb;
+
+  static Future<IDateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
+
+  static IDateTimeZoneProvider _defaultProvider;
+  /// This is the default [IDateTimeZoneProvider] for the currently loaded TimeMachine.
+  /// It will be used internally where-ever timezone support is needed when no provider is provided,
+  static IDateTimeZoneProvider get defaultProvider => _defaultProvider;
 }
 
 class TzdbDateTimeZoneSource extends IDateTimeZoneSource {

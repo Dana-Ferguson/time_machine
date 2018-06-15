@@ -91,12 +91,12 @@ class _CompositePattern<T> implements IPartialPattern<T> {
     return ParseResult.noMatchingFormat<T>(cursor);
   }
 
-  String format(T value) => findFormatPattern(value).format(value);
+  String format(T value) => _findFormatPattern(value).format(value);
 
   StringBuffer appendFormat(T value, StringBuffer builder) =>
-      findFormatPattern(value).appendFormat(value, builder);
+      _findFormatPattern(value).appendFormat(value, builder);
 
-  @private IPattern<T> findFormatPattern(T value) {
+  IPattern<T> _findFormatPattern(T value) {
     for (int i = _formatPredicates.length - 1; i >= 0; i--) {
       if (_formatPredicates[i](value)) {
         return _patterns[i];

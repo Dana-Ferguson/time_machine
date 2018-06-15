@@ -344,7 +344,7 @@ class LocalTime implements Comparable<LocalTime> {
 //  /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
 //  ///
 //  /// <remarks>
-//  /// This is simply a convenience method for calling <see cref="Period.Between(NodaTime.LocalTime,NodaTime.LocalTime)"/>.
+//  /// This is simply a convenience method for calling <see cref="Period.Between(LocalTime,LocalTime)"/>.
 //  /// </remarks>
 //  /// <param name="lhs">The time to subtract from</param>
 //  /// <param name="rhs">The time to subtract</param>

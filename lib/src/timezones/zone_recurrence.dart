@@ -215,7 +215,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     Transition next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
       throw new StateError(
-          "Noda Time bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
+          "Time Machine bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
     return next;
   }
@@ -225,7 +225,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     Transition previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
       throw new StateError(
-          "Noda Time bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
+          "Time Machine bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
     return previous;
   }

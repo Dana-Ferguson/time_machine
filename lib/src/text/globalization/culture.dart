@@ -13,12 +13,18 @@ abstract class Cultures {
 
   static Future<Iterable<String>> get ids async => (await _cultures).cultureIds;
   static Future<CultureInfo> getCulture(String id) async => (await _cultures).getCulture(id);
+
+  static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
+
+  // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
+  static CultureInfo _currentCulture = null;
+  static CultureInfo get currentCulture => _currentCulture??=invariantCulture;
+  static void set currentCulture(CultureInfo value) => _currentCulture = value;
 }
 
 // todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!
 class CultureInfo {
   static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
-// todo: change this!
 
   static CultureInfo _currentCulture = null;
   static CultureInfo get currentCulture => _currentCulture??=invariantCulture;

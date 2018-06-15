@@ -42,7 +42,7 @@ DateTimeZone Athens;
 DateTimeZone etcGMT_12;
 
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
   France = await Tzdb["Europe/Paris"];
   Athens = await Tzdb["Europe/Athens"];
   // etcGMT_12 = await Tzdb["Etc/GMT-12"];

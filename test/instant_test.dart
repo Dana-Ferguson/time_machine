@@ -72,7 +72,7 @@ void InUtc()
 Future InZone () async
 {
   // todo: this is absurd
-  DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
@@ -223,7 +223,7 @@ void UnixConversions_ExtremeValues()
 Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
-  DateTimeZone london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)

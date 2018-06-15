@@ -419,8 +419,8 @@ class _findLongestMatchCursor {
           addField(PatternFields.embeddedTime, 'l');
           addEmbeddedPattern(
               LocalDateTimePattern
-                  .Create(embeddedPatternText, formatInfo, templateDate.at(templateTime))
-                  .UnderlyingPattern,
+                  .create(embeddedPatternText, formatInfo, templateDate.at(templateTime))
+                  .underlyingPattern,
                   (TBucket bucket, LocalDateTime value) {
                 var dateBucket = dateBucketExtractor(bucket);
                 var timeBucket = timeBucketExtractor(bucket);
@@ -443,7 +443,7 @@ class _findLongestMatchCursor {
         addEmbeddedTimePattern('l', embeddedPatternText, timeBucketExtractor, timeExtractor);
         break;
       default:
-        throw new StateError("Bug in Noda Time: embedded pattern type wasn't date, time, or date+time");
+        throw new StateError("Bug in Time Machine: embedded pattern type wasn't date, time, or date+time");
     }
   }
 

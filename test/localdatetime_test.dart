@@ -17,7 +17,7 @@ import 'time_machine_testing.dart';
 DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
 
 Future main() async {
-  Pacific = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
+  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
   await runTests();
 }
 

@@ -997,7 +997,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 
   @Test()
   void CreateWithInvariantCulture_NullPatternText() {
-    expect(() => LocalTimePattern.CreateWithInvariantCulture(null), throwsArgumentError);
+    expect(() => LocalTimePattern.createWithInvariantCulture(null), throwsArgumentError);
   }
 
   @Test()
@@ -1007,7 +1007,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 
   @Test()
   void TemplateValue_DefaultsToMidnight() {
-    var pattern = LocalTimePattern.CreateWithInvariantCulture("HH");
+    var pattern = LocalTimePattern.createWithInvariantCulture("HH");
     expect(LocalTime.midnight, pattern.TemplateValue);
   }
 
@@ -1025,7 +1025,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
   @Test()
   void WithTemplateValue_PropertyFetch() {
     LocalTime newValue = new LocalTime(1, 23, 45);
-    var pattern = LocalTimePattern.CreateWithInvariantCulture("HH").WithTemplateValue(newValue);
+    var pattern = LocalTimePattern.createWithInvariantCulture("HH").WithTemplateValue(newValue);
     expect(newValue, pattern.TemplateValue);
   }
 
@@ -1084,7 +1084,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 
 
   @internal @override IPattern<LocalTime> CreatePattern() =>
-  LocalTimePattern.CreateWithInvariantCulture(super.Pattern)
+  LocalTimePattern.createWithInvariantCulture(super.Pattern)
       .WithTemplateValue(Template)
       .WithCulture(Culture);
 }

@@ -15,13 +15,14 @@ import 'package:time_machine/time_machine_globalization.dart';
 
 // todo: look at the name for this, with-respect-to, Culture && DateTimeFormatInfo
 /// A [IIFormatProvider] for Time Machine types, usually initialised from a [System.Globalization.CultureInfo].
-/// This provides a single place defining how NodaTime values are formatted and displayed, depending on the culture.
+/// This provides a single place defining how Time Machine values are formatted and displayed, depending on the culture.
 ///
 /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
 /// CultureInfo itself may be mutable. If the CultureInfo is mutated after initialization, results are not
 /// guaranteed: some aspects of the CultureInfo may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
 @internal  class TimeMachineFormatInfo {
+  // todo: remove for Dart
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
   // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
@@ -41,7 +42,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
   FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
 
-  /// A NodaFormatInfo wrapping the invariant culture.
+  /// A TimeMachineFormatInfo wrapping the invariant culture.
   // Note: this must occur below the pattern parsers, to make type initialization work...
   static final TimeMachineFormatInfo invariantInfo = new TimeMachineFormatInfo(CultureInfo.invariantCulture);
 
@@ -172,7 +173,7 @@ import 'package:time_machine/time_machine_globalization.dart';
 
   @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =
-          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.DefaultTemplateValue));
+          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.defaultTemplateValue));
 
   @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
       _offsetDateTimePatternParser =
@@ -204,7 +205,7 @@ import 'package:time_machine/time_machine_globalization.dart';
     return field;
   }
 
-  // todo: this need to be immutable
+  // todo: this needs to be immutable
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
@@ -377,26 +378,11 @@ import 'package:time_machine/time_machine_globalization.dart';
 
     throw new ArgumentError("Cannot use provider of type ${formatProvider
         .GetType()
-        .FullName} in Noda Time");
-
-    /*
-    switch (provider)
-    {
-      case null:
-        return GetFormatInfo(CurrentInfo.cultureInfo);
-      case CultureInfo cultureInfo:
-      return GetFormatInfo(cultureInfo);
-      // Note: no caching for this case. It's a corner case anyway... we could add a cache later
-      // if users notice a problem.
-      case DateTimeFormatInfo dateTimeFormatInfo:
-      return new NodaFormatInfo.withDateTimeFormat(CultureInfo.InvariantCulture, dateTimeFormatInfo);
-      default:
-        throw new ArgumentError("Cannot use provider of type ${provider.GetType().FullName} in Noda Time");
-    }*/
+        .FullName} in Time Machine");
   }
 
   /// Returns a [String] that represents this instance.
-  @override String toString() => "NodaFormatInfo[" + cultureInfo.name + "]";
+  @override String toString() => "TimeMachineInfo[" + cultureInfo.name + "]";
 }
 
 /// The description for an era: the primary name and all possible names.

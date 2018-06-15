@@ -11,8 +11,8 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-@immutable @private
-class DateComponentsBetweenResult {
+@immutable
+class _DateComponentsBetweenResult {
 // @private static LocalDate DateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units,
 //     out int years, out int months, out int weeks, out int days)
 
@@ -22,13 +22,13 @@ class DateComponentsBetweenResult {
   final int weeks;
   final int days;
 
-  DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
+  _DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
 }
 
 // @private static void TimeComponentsBetween(int totalNanoseconds, PeriodUnits units,
 // out int hours, out int minutes, out int seconds, out int milliseconds, out int ticks, out int nanoseconds)
-@immutable @private
-class TimeComponentsBetweenResult {
+@immutable
+class _TimeComponentsBetweenResult {
   int hours;
   int minutes;
   int seconds;
@@ -36,7 +36,7 @@ class TimeComponentsBetweenResult {
   int ticks;
   int nanoseconds;
 
-  TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.ticks, this.nanoseconds);
+  _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.ticks, this.nanoseconds);
 }
 
 
@@ -262,7 +262,7 @@ class Period {
   /// Returns: The new comparer.
   // todo: what to do abuot IComparer?
   // static IComparer<Period> CreateComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
-  static PeriodComparer createComparer(LocalDateTime baseDateTime) => new PeriodComparer(baseDateTime);
+  static _PeriodComparer createComparer(LocalDateTime baseDateTime) => new _PeriodComparer(baseDateTime);
 
 
   /// Subtracts one period from another, by simply subtracting each property value.
@@ -376,7 +376,7 @@ class Period {
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
       // LocalDate remainingDate = DateComponentsBetween(
       //  start.Date, endDate, units, out years, out months, out weeks, out days);
-      var result = dateComponentsBetween(start.date, endDate, units);
+      var result = _dateComponentsBetween(start.date, endDate, units);
       years = result.years;
       months = result.months;
       weeks = result.weeks;
@@ -401,7 +401,7 @@ class Period {
         .toLocalInstant()
         .timeSinceLocalEpoch;
     if (duration.IsInt64Representable) {
-      var result = timeComponentsBetween(duration.totalNanoseconds, units);
+      var result = _timeComponentsBetween(duration.totalNanoseconds, units);
       hours = result.hours;
       minutes = result.minutes;
       seconds = result.seconds;
@@ -452,7 +452,7 @@ class Period {
   /// [days]: (Out) Days component of result
   /// The resulting date after adding the result components to [start] (to
   /// allow further computations to be made)
-  @private static DateComponentsBetweenResult dateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
+  static _DateComponentsBetweenResult _dateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
     var result = new OutBox(start);
 
     /*
@@ -484,7 +484,7 @@ class Period {
     var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.weeksField);
     var days = unitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.daysField);
 
-    return new DateComponentsBetweenResult(result.value, years, months, weeks, days);
+    return new _DateComponentsBetweenResult(result.value, years, months, weeks, days);
   }
 
 
@@ -498,7 +498,7 @@ class Period {
   /// [milliseconds]: (Out) Milliseconds component of result
   /// [ticks]: (Out) Ticks component of result
   /// [nanoseconds]: (Out) Nanoseconds component of result
-  @private static TimeComponentsBetweenResult timeComponentsBetween(int totalNanoseconds, PeriodUnits units) {
+  static _TimeComponentsBetweenResult _timeComponentsBetween(int totalNanoseconds, PeriodUnits units) {
     int UnitsBetween(PeriodUnits mask, int nanosecondsPerUnit) {
       if ((mask.value & units.value) == 0) {
         return 0;
@@ -518,7 +518,7 @@ class Period {
     var ticks = UnitsBetween(PeriodUnits.ticks, TimeConstants.nanosecondsPerTick);
     var nanoseconds = UnitsBetween(PeriodUnits.nanoseconds, 1);
 
-    return new TimeComponentsBetweenResult(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
+    return new _TimeComponentsBetweenResult(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
   }
 
 // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
@@ -605,7 +605,7 @@ class Period {
     if (singleFieldFunction != null) return singleFieldFunction(start, end);
 
     // Multiple fields todo: if these result_type functions are just used to make periods, we can simply them
-    var result = dateComponentsBetween(start, end, units);
+    var result = _dateComponentsBetween(start, end, units);
     return new Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
@@ -647,7 +647,7 @@ class Period {
     var singleFieldFunction = _functionMapBetweenTimes[units];
     if (singleFieldFunction != null) return singleFieldFunction(remaining);
 
-    var result = timeComponentsBetween(remaining, units);
+    var result = _timeComponentsBetween(remaining, units);
     return new Period(hours: result.hours,
         minutes: result.minutes,
         seconds: result.seconds,
@@ -695,11 +695,11 @@ class Period {
       // todo: does this apply to us?
       throw new StateError("Cannot construct span of period with non-zero months or years.");
     }
-    return new Span(nanoseconds: totalNanoseconds);
+    return new Span(nanoseconds: _totalNanoseconds);
   }
   
   /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
-  @private int get totalNanoseconds =>
+  int get _totalNanoseconds =>
       nanoseconds +
           ticks * TimeConstants.nanosecondsPerTick +
           milliseconds * TimeConstants.nanosecondsPerMillisecond +
@@ -738,7 +738,7 @@ class Period {
   Period normalize() {
     // Simplest way to normalize: grab all the fields up to "week" and
     // sum them.
-    int totalNanoseconds = this.totalNanoseconds;
+    int totalNanoseconds = this._totalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
 
     int hours, minutes, seconds, milliseconds, nanoseconds;
@@ -805,9 +805,9 @@ class Period {
 
 /// Equality comparer which simply normalizes periods before comparing them.
 @private class NormalizingPeriodEqualityComparer {
-  @internal static final NormalizingPeriodEqualityComparer instance = new NormalizingPeriodEqualityComparer();
+  @internal static final NormalizingPeriodEqualityComparer instance = new NormalizingPeriodEqualityComparer._();
 
-  @private NormalizingPeriodEqualityComparer() {
+  NormalizingPeriodEqualityComparer._() {
   }
 
   bool equals(Period x, Period y) {
@@ -829,11 +829,11 @@ class Period {
 }
 
 // todo: implements Comparer
-@private class PeriodComparer // implements Comparer<Period>
+class _PeriodComparer // implements Comparer<Period>
     {
-  @private final LocalDateTime baseDateTime;
+  final LocalDateTime _baseDateTime;
 
-  @internal PeriodComparer(this.baseDateTime);
+  @internal _PeriodComparer(this._baseDateTime);
 
   int compare(Period x, Period y) {
     if (identical(x, y)) {
@@ -851,6 +851,6 @@ class Period {
       // wouldn't, but it's highly unlikely
       return x.toSpan().compareTo(y.toSpan());
     }
-    return (baseDateTime.plus(x)).compareTo(baseDateTime.plus(y));
+    return (_baseDateTime.plus(x)).compareTo(_baseDateTime.plus(y));
   }
 }

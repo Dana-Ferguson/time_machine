@@ -20,7 +20,7 @@ import '../time_machine_testing.dart';
 /// decided to stop using DST, it changed its standard offset to be what had previously
 /// been its DST offset, i.e. +1.)
 Future main() async {
-  Algiers = await (await DateTimeZoneProviders.Tzdb)["Africa/Algiers"];
+  Algiers = await (await DateTimeZoneProviders.tzdb)["Africa/Algiers"];
 
   await runTests();
 }

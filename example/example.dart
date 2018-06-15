@@ -99,7 +99,7 @@ class VirtualTimeMachine extends iTimeMachine {
   static Future<iTimeMachine> construct() async {
     // todo: for VM, always load everything
     // Default provider
-    var tzdb = await DateTimeZoneProviders.Tzdb;
+    var tzdb = await DateTimeZoneProviders.tzdb;
     
     // Default TimeZone
     var localTimezone = await _getTimeZoneId();
@@ -168,7 +168,23 @@ class VirtualTimeMachine extends iTimeMachine {
 
 /// Do we consolidate everything into a Global Static???
 /// Do we have TimeMachine, Cultures, Tzdb???
-
+/// TimeMachine sets up Cultures, TimeZones, and Clock? and then you use them all separately?
+/// ^^^ I'm leaning towards this last one.
+/// DateTimeZones.
+/// Cultures.
+/// Clocks.
+///
+/// Or .. from the Class it's related to
+/// Clock.system
+/// Culture(Info).current
+/// DateTimeZone.local
+///
+/// Then what about DateTimeZoneProviders.Tzdb???
+/// DateTimeZone['id'] --> DateTimeZoneProviders.default --> which then pushes back to DateTimeZoneProviders.Tzdb 
+/// and getting Cultures???
+///
+/// Culture(Info).load(id) --> Future<Culture> :: Culture.get(id) --> Culture (sync route?) 
+/// DateTimeZone['id']
 Future main() async {
   // todo: demonstrate a test clock
   // var clockForTesting = new FakeClock();
@@ -177,13 +193,15 @@ Future main() async {
   
   // You can capture your timeMachine directly
   /*var time = */ await VirtualTimeMachine.construct();
-  var tzdb = await DateTimeZoneProviders.Tzdb;
+  // todo: pull this from TimeMachine
+  var tzdb = await DateTimeZoneProviders.tzdb;
   var paris = await tzdb["Europe/Paris"];
   
   var now = TimeMachine.clock.getCurrentInstant();
 
   print('\nBasic');
   print('UTC Time: $now');
+  // todo: supply no timezone and have it default to our local timezone
   print('Local Time: ${now.inZone(TimeMachine.localTimeZone)}');
   print('Paris Time: ${now.inZone(paris)}');
 

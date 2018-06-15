@@ -29,11 +29,11 @@ DateTimeZone NewYork;
 DateTimeZone Pacific;
 
 Future main() async {
-  LosAngeles = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
-  NewZealand = await (await DateTimeZoneProviders.Tzdb)["Pacific/Auckland"];
-  Paris = await (await DateTimeZoneProviders.Tzdb)["Europe/Paris"];
-  NewYork = await (await DateTimeZoneProviders.Tzdb)["America/New_York"];
-  Pacific = await (await DateTimeZoneProviders.Tzdb)["America/Los_Angeles"];
+  LosAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  NewZealand = await (await DateTimeZoneProviders.tzdb)["Pacific/Auckland"];
+  Paris = await (await DateTimeZoneProviders.tzdb)["Europe/Paris"];
+  NewYork = await (await DateTimeZoneProviders.tzdb)["America/New_York"];
+  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
 
   await runTests();
 }
@@ -294,7 +294,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
 {
   LocalDate badDate = LocalDatePattern.iso.parse(localDate).value;
-  DateTimeZone zone = await (await DateTimeZoneProviders.Tzdb)[zoneId];
+  DateTimeZone zone = await (await DateTimeZoneProviders.tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
   expect(exception = capture(() => zone.atStartOfDay(badDate)), new isInstanceOf<SkippedTimeError>());
   expect(badDate.at(LocalTime.midnight), exception.localDateTime);

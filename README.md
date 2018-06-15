@@ -9,7 +9,8 @@ but some things changed for Dart and the documentation will have minor inaccurac
 
 Don't use any functions annotated with `@internal`. I don't intend to keep this annotation, but with
 `part` \ `part of` [usage discouraged](https://www.dartlang.org/guides/libraries/create-library-packages#organizing-a-library-package)
-and no [friend](https://github.com/dart-lang/sdk/issues/22841) semantics, I'm unsure of the direction to go with this. 
+and no [friend](https://github.com/dart-lang/sdk/issues/22841) semantics, I'm unsure of the direction to go with this.
+ - [ ] Prototype an automated tool to produce public interface files?
 
 Todo:
  - [x] Port over major classes
@@ -17,7 +18,7 @@ Todo:
  - [ ] Dartification of the API
    - [X] First pass style updates
    - [ ] Second pass ergonomics updates
-   - [ ] Synchronous TSDB timezone provider
+   - [ ] Synchronous TZDB timezone provider
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)

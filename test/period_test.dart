@@ -911,8 +911,8 @@ void Between_ExtremeValues_Overflow()
 @TestCase(const ["2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
 void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, String endText, PeriodUnits units, int expectedForward, int expectedBackward)
 {
-  LocalDateTime start = LocalDateTimePattern.ExtendedIso.parse(startText).value;
-  LocalDateTime end = LocalDateTimePattern.ExtendedIso.parse(endText).value;
+  LocalDateTime start = LocalDateTimePattern.extendedIso.parse(startText).value;
+  LocalDateTime end = LocalDateTimePattern.extendedIso.parse(endText).value;
   Period forward = Period.between(start, end, units);
   expect(expectedForward, forward.toBuilder()[units]);
   Period backward = Period.between(end, start, units);

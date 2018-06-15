@@ -20,7 +20,7 @@ IDateTimeZoneProvider Tzdb;
 /// Tests for fixed "Etc/GMT+x" zones. These just test that the time zones are built
 /// appropriately; FixedDateTimeZoneTest takes care of the rest.
 Future main() async {
-  Tzdb = await DateTimeZoneProviders.Tzdb;
+  Tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();
 }

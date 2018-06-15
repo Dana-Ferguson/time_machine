@@ -15,11 +15,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Although it's not strictly incorrect to call `SystemClock.Instance.GetCurrentInstant()` directly,
 /// in the same way as you might call [DateTime.UtcNow], it's strongly discouraged
 /// as a matter of style for production code. We recommend providing an instance of [IClock]
-/// to anything that needs it, which allows you to write tests using the fake clock in the NodaTime.Testing
+/// to anything that needs it, which allows you to write tests using the fake clock in the TimeMachine.Testing
 /// assembly (or your own implementation).
 ///
-/// <seealso cref="SystemClock"/>
-/// <seealso cref="T:NodaTime.Testing.FakeClock"/>
+/// see also:
+/// * [SystemClock]
+/// * [FakeClock]
 abstract class Clock
 {
   /// Gets the current [Instant] on the time line according to this clock.
@@ -56,7 +57,7 @@ abstract class Clock
   /// <seealso cref="DateTimeZoneProviders.Tzdb"/>
   Future<ZonedClock> inTzdbSystemDefaultZone() async
   {
-    var zone = await (await DateTimeZoneProviders.Tzdb).getSystemDefault();
+    var zone = await (await DateTimeZoneProviders.tzdb).getSystemDefault();
     return new ZonedClock(this, zone, CalendarSystem.iso);
   }
 }

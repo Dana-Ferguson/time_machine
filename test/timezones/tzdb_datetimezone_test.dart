@@ -19,7 +19,7 @@ import '../time_machine_testing.dart';
 Iterable<DateTimeZone> AllTzdbZones;
 
 Future main() async {
-  AllTzdbZones = await (await DateTimeZoneProviders.Tzdb).getAllZones();
+  AllTzdbZones = await (await DateTimeZoneProviders.tzdb).getAllZones();
 
   await runTests();
 }

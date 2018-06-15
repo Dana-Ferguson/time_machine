@@ -30,7 +30,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// [ZonedDateTime.Comparer] nested class (or implement your own comparison).
 @immutable
 class ZonedDateTime {
-  @private final OffsetDateTime _offsetDateTime;
+  final OffsetDateTime _offsetDateTime;
   /// Gets the time zone associated with this value.
   final DateTimeZone zone;
 

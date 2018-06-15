@@ -105,7 +105,7 @@ void GetZoneIntervals_ExcludesEnd()
 @Test()
 Future GetZoneIntervals_Complex() async
 {
-  var london = await (await DateTimeZoneProviders.Tzdb)["Europe/London"];
+  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   // Transitions are always Spring/Autumn, so June and January should be clear.
   var expected = [
     london.getZoneInterval(new Instant.fromUtc(1999, 6, 1, 0, 0)),

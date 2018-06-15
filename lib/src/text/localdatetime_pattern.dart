@@ -17,11 +17,11 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// from needing NodaFormatInfo.InvariantInfo...
 @internal abstract class LocalDateTimePatterns
 {
-  @internal static final LocalDateTimePattern GeneralIsoPatternImpl = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
-  @internal static final LocalDateTimePattern ExtendedIsoPatternImpl = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
-  @internal static final LocalDateTimePattern BclRoundtripPatternImpl = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
-  @internal static final LocalDateTimePattern FullRoundtripWithoutCalendarImpl = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
-  @internal static final LocalDateTimePattern FullRoundtripPatternImpl = LocalDateTimePattern.CreateWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
+  @internal static final LocalDateTimePattern generalIsoPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
+  @internal static final LocalDateTimePattern extendedIsoPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
+  @internal static final LocalDateTimePattern bclRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
+  @internal static final LocalDateTimePattern fullRoundtripWithoutCalendarImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
+  @internal static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 }
 
 /// Represents a pattern for parsing and formatting [LocalDateTime] values.
@@ -33,17 +33,17 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// </threadsafety>
 @immutable // Well, assuming an immutable culture...
 /*sealed*/ class LocalDateTimePattern implements IPattern<LocalDateTime> {
-  @internal static final LocalDateTime DefaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0);
+  @internal static final LocalDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0);
 
-  @private static const String DefaultFormatPattern = "G"; // General (long time)
+  static const String _defaultFormatPattern = "G"; // General (long time)
 
   @internal static final PatternBclSupport<LocalDateTime> BclSupport = new PatternBclSupport<LocalDateTime>(
-      DefaultFormatPattern, (fi) => fi.localDateTimePatternParser);
+      _defaultFormatPattern, (fi) => fi.localDateTimePatternParser);
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
   /// standard pattern.
-  static LocalDateTimePattern get GeneralIso => LocalDateTimePatterns.GeneralIsoPatternImpl;
+  static LocalDateTimePattern get generalIso => LocalDateTimePatterns.generalIsoPatternImpl;
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy. (These digits are omitted when unnecessary.)
@@ -51,18 +51,18 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy.</value>
-  static LocalDateTimePattern get ExtendedIso => LocalDateTimePatterns.ExtendedIsoPatternImpl;
+  static LocalDateTimePattern get extendedIso => LocalDateTimePatterns.extendedIsoPatternImpl;
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
   /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
   /// BCL round-trip formatting of [DateTime] values with a kind of "unspecified".
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff". It does not necessarily
   /// round-trip all `LocalDateTime` values as it will lose sub-tick information. Use
-  /// [FullRoundtripWithoutCalendar]
+  /// [fullRoundtripWithoutCalendar]
   ///
   /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
   /// of sub-second accuracy which are always present (including trailing zeroes).</value>
-  static LocalDateTimePattern get BclRoundtrip => LocalDateTimePatterns.BclRoundtripPatternImpl;
+  static LocalDateTimePattern get bclRoundtrip => LocalDateTimePatterns.bclRoundtripPatternImpl;
 
   /// Gets an invariant local date/time pattern which round trips values, but doesn't include the calendar system.
   /// It provides up to 9 decimal places of sub-second accuracy which are always present (including trailing zeroes).
@@ -72,27 +72,27 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
   /// of sub-second accuracy which are always present (including trailing zeroes).</value>
-  static LocalDateTimePattern get FullRoundtripWithoutCalendar => LocalDateTimePatterns.FullRoundtripWithoutCalendarImpl;
+  static LocalDateTimePattern get fullRoundtripWithoutCalendar => LocalDateTimePatterns.fullRoundtripWithoutCalendarImpl;
 
   /// Gets an invariant local date/time pattern which round trips values including the calendar system.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'".
-  static LocalDateTimePattern get FullRoundtrip => LocalDateTimePatterns.FullRoundtripPatternImpl;
+  static LocalDateTimePattern get fullRoundtrip => LocalDateTimePatterns.fullRoundtripPatternImpl;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
-  final String PatternText;
+  final String patternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo FormatInfo;
+  @internal final TimeMachineFormatInfo formatInfo;
 
   /// Get the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
-  final LocalDateTime TemplateValue;
+  final LocalDateTime templateValue;
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this public class
   /// implementing an @internal interface.
-  @internal final IPartialPattern<LocalDateTime> UnderlyingPattern;
+  @internal final IPartialPattern<LocalDateTime> underlyingPattern;
 
-  @private LocalDateTimePattern(this.PatternText, this.FormatInfo, this.TemplateValue, this.UnderlyingPattern);
+  LocalDateTimePattern._(this.patternText, this.formatInfo, this.templateValue, this.underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -101,13 +101,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<LocalDateTime> parse(String text) => UnderlyingPattern.parse(text);
+  ParseResult<LocalDateTime> parse(String text) => underlyingPattern.parse(text);
 
   /// Formats the given local date/time as text according to the rules of this pattern.
   ///
   /// [value]: The local date/time to format.
   /// Returns: The local date/time formatted according to this pattern.
-  String format(LocalDateTime value) => UnderlyingPattern.format(value);
+  String format(LocalDateTime value) => underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -115,7 +115,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(LocalDateTime value, StringBuffer builder) => UnderlyingPattern.appendFormat(value, builder);
+  StringBuffer appendFormat(LocalDateTime value, StringBuffer builder) => underlyingPattern.appendFormat(value, builder);
 
 // todo: create, create2, create3
 
@@ -126,18 +126,18 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static LocalDateTimePattern Create(String patternText, TimeMachineFormatInfo formatInfo,
+  @internal static LocalDateTimePattern create(String patternText, TimeMachineFormatInfo formatInfo,
       LocalDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
-    var pattern = templateValue == DefaultTemplateValue
+    var pattern = templateValue == defaultTemplateValue
         ? formatInfo.localDateTimePatternParser.parsePattern(patternText)
         : new LocalDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
-    pattern = pattern is LocalDateTimePattern ? pattern.UnderlyingPattern : pattern;
+    pattern = pattern is LocalDateTimePattern ? pattern.underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDateTime>;
-    return new LocalDateTimePattern(patternText, formatInfo, templateValue, partialPattern);
+    return new LocalDateTimePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.
@@ -146,23 +146,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [patternText]: Pattern text to create the pattern for
   /// [cultureInfo]: The culture to use in the pattern
-  /// [templateValue]: Template value to use for unspecified fields
+  /// [templateValue]: Template value to use for unspecified fields. Defaults to a template value of midnight on 2000-01-01.
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDateTimePattern Create2(String patternText, CultureInfo cultureInfo,
+  static LocalDateTimePattern create2(String patternText, CultureInfo cultureInfo,
       LocalDateTime templateValue) =>
-      Create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
-
-  /// Creates a pattern for the given pattern text and culture, with a template value of midnight on 2000-01-01.
-  ///
-  /// See the user guide for the available pattern text options.
-  ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [cultureInfo]: The culture to use in the pattern
-  /// Returns: A pattern for parsing and formatting local date/times.
-  /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDateTimePattern Create3(String patternText, CultureInfo cultureInfo) =>
-      Create2(patternText, cultureInfo, DefaultTemplateValue);
+      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -173,8 +162,8 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDateTimePattern CreateWithCurrentCulture(String patternText) =>
-      Create(patternText, TimeMachineFormatInfo.currentInfo, DefaultTemplateValue);
+  static LocalDateTimePattern createWithCurrentCulture(String patternText) =>
+      create(patternText, TimeMachineFormatInfo.currentInfo, defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -183,31 +172,31 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDateTimePattern CreateWithInvariantCulture(String patternText) =>
-      Create(patternText, TimeMachineFormatInfo.invariantInfo, DefaultTemplateValue);
+  static LocalDateTimePattern createWithInvariantCulture(String patternText) =>
+      create(patternText, TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  @private LocalDateTimePattern WithFormatInfo(TimeMachineFormatInfo formatInfo) =>
-      Create(PatternText, formatInfo, TemplateValue);
+  LocalDateTimePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
+      create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  LocalDateTimePattern WithCulture(CultureInfo cultureInfo) =>
-      WithFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  LocalDateTimePattern withCulture(CultureInfo cultureInfo) =>
+      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.
   ///
   /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
   /// Returns: A new pattern with the given template value.
-  LocalDateTimePattern WithTemplateValue(LocalDateTime newTemplateValue) =>
-      Create(PatternText, FormatInfo, newTemplateValue);
+  LocalDateTimePattern withTemplateValue(LocalDateTime newTemplateValue) =>
+      create(patternText, formatInfo, newTemplateValue);
 
   /// Creates a pattern like this one, but with the template value modified to use
   /// the specified calendar system.
@@ -220,6 +209,6 @@ import 'package:time_machine/time_machine_patterns.dart';
   ///
   /// [calendar]: The calendar system to convert the template value into.
   /// Returns: A new pattern with a template value in the specified calendar system.
-  LocalDateTimePattern WithCalendar(CalendarSystem calendar) =>
-      WithTemplateValue(TemplateValue.withCalendar(calendar));
+  LocalDateTimePattern withCalendar(CalendarSystem calendar) =>
+      withTemplateValue(templateValue.withCalendar(calendar));
 }
