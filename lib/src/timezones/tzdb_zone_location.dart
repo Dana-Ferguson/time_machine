@@ -17,7 +17,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 @immutable
 class TzdbZoneLocation
 {
-  @private final int _latitudeSeconds, _longitudeSeconds;
+  final int _latitudeSeconds, _longitudeSeconds;
 
   /// Gets the latitude in degrees; positive for North, negative for South.
   ///

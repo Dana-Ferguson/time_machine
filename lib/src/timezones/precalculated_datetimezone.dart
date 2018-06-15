@@ -13,8 +13,8 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 // Essentially Func<Offset, Offset, Offset>
-@private typedef _offsetAggregator = Offset Function(Offset x, Offset y);
-@private typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
+typedef _offsetAggregator = Offset Function(Offset x, Offset y);
+typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 
 
 /// Most time zones have a relatively small set of transitions at their start until they finally 

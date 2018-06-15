@@ -758,7 +758,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     )).Build();
 
     var provider = await DateTimeZoneCache.getCache(source);
-    var pattern = ZonedDateTimePattern.create("z 'x'", CultureInfo.invariantCulture, Resolvers.strictResolver,
+    var pattern = ZonedDateTimePattern.createWithCulture("z 'x'", CultureInfo.invariantCulture, Resolvers.strictResolver,
         provider, TimeConstants.unixEpoch.inUtc());
 
     for (var id in provider.ids) {
@@ -822,6 +822,6 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @internal
   @override
   IPattern<ZonedDateTime> CreatePattern() =>
-      ZonedDateTimePattern.create(super.Pattern, super.Culture, Resolver, ZoneProvider, Template);
+      ZonedDateTimePattern.createWithCulture(super.Pattern, super.Culture, Resolver, ZoneProvider, Template);
 }
 

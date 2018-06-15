@@ -281,7 +281,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
         // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
         {
-      var pattern = SpanPattern.CreateWithCurrentCulture("H:mm");
+      var pattern = SpanPattern.createWithCurrentCulture("H:mm");
       var text = pattern.format(new Span(minutes: 90));
       expect("1.30", text);
     }
@@ -306,6 +306,6 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
   @internal
   @override
-  IPattern<Span> CreatePattern() => SpanPattern.create(super.Pattern, Culture);
+  IPattern<Span> CreatePattern() => SpanPattern.createWithCulture(super.Pattern, Culture);
 }
 

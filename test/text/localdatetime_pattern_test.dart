@@ -580,7 +580,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   // Helper method to make it slightly easier for tests to skip "bad" cultures.
   @private LocalDateTimePattern CreatePatternOrNull(String patternText, CultureInfo culture, LocalDateTime templateValue) {
     try {
-      return LocalDateTimePattern.create2(patternText, culture);
+      return LocalDateTimePattern.createWithCulture(patternText, culture);
     }
     catch (InvalidPatternException) {
       // The Malta long date/time pattern in Mono 3.0 is invalid (not just wrong; invalid due to the wrong number of quotes).

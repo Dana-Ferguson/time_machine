@@ -64,6 +64,7 @@ class SpanPattern implements IPattern<Span> {
   /// Returns: The builder passed in as [builder].
   StringBuffer appendFormat(Span value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
+  // todo: should this be internal, or should all the other *_pattern classes creates' be private
   /// Creates a pattern for the given pattern text and format info.
   ///
   /// [patternText]: Pattern text to create the pattern for
@@ -85,7 +86,7 @@ class SpanPattern implements IPattern<Span> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern create(String patternText, CultureInfo cultureInfo) =>
+  static SpanPattern createWithCulture(String patternText, CultureInfo cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -97,7 +98,7 @@ class SpanPattern implements IPattern<Span> {
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern CreateWithCurrentCulture(String patternText) =>
+  static SpanPattern createWithCurrentCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.

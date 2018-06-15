@@ -92,7 +92,7 @@ class InstantPattern implements IPattern<Instant> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting instants.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static InstantPattern create(String patternText, CultureInfo cultureInfo) =>
+  static InstantPattern createWithCulture(String patternText, CultureInfo cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

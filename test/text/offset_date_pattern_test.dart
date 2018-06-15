@@ -234,7 +234,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     : super(new LocalDate(year, month, day).withOffset(offset ?? Offset.zero));
 
 @internal @override IPattern<OffsetDate> CreatePattern() =>
-    OffsetDatePattern.create(super.Pattern, super.Culture, Template);
+    OffsetDatePattern.createWithCulture(super.Pattern, super.Culture, Template);
 }
 
 

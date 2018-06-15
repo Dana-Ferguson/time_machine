@@ -295,10 +295,10 @@ void BetweenLocalTimes_InvalidUnits()
 @TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.ticks, 11234000])
 @TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.nanoseconds, 1123400000])
 void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue) {
-  var start = LocalTimePattern.ExtendedIso
+  var start = LocalTimePattern.extendedIso
       .parse(startText)
       .value;
-  var end = LocalTimePattern.ExtendedIso
+  var end = LocalTimePattern.extendedIso
       .parse(endText)
       .value;
   var actual = Period.betweenTimes(start, end, units);

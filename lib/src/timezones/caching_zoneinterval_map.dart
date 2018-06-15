@@ -17,7 +17,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Returns a caching map for the given input map.
   @internal static IZoneIntervalMap cacheMap(IZoneIntervalMap map)
   {
-    return new HashArrayCache(map);
+    return new _HashArrayCache(map);
   }
 }
 
@@ -34,7 +34,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// If another call is made which maps to the same cache entry number but is for a different
 /// period, the existing hash entry is simply overridden.
 // sealed
-@private class HashArrayCache implements IZoneIntervalMap {
+class _HashArrayCache implements IZoneIntervalMap {
   // Currently we have no need or way to create hash cache zones with
   // different cache sizes. But the cache size should always be a power of 2 to get the
   // "period to cache entry" conversion simply as a bitmask operation.
@@ -51,7 +51,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   final List<_HashCacheNode> _instantCache = new List<_HashCacheNode>(_cacheSize);
   final IZoneIntervalMap _map;
 
-  @internal HashArrayCache(this._map) {
+  @internal _HashArrayCache(this._map) {
     Preconditions.checkNotNull(_map, 'map');
   // instantCache = new HashCacheNode[CacheSize];
   }
@@ -97,9 +97,9 @@ class _HashCacheNode {
   /// period - at which point we're done. If not, find the next interval, create
   /// a new node referring to that interval and the previous interval, and keep going.
   @internal static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
-    var days = period << HashArrayCache._periodShift;
+    var days = period << _HashArrayCache._periodShift;
     var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
-    var nextPeriodStartDays = days + (1 << HashArrayCache._periodShift);
+    var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);
 
     var interval = map.getZoneInterval(periodStart);
     var node = new _HashCacheNode(interval, period, null);
@@ -122,6 +122,6 @@ class _HashCacheNode {
   /// [interval]: The zone interval.
   /// [period]: 
   /// [previous]: The previous [_HashCacheNode] node.
-  @private _HashCacheNode(this.interval, this.period, this.previous);
+  _HashCacheNode(this.interval, this.period, this.previous);
 }
 

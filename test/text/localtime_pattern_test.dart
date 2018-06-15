@@ -944,7 +944,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
     // Patterns obtainable by properties but not single character standard patterns
     new Data.nano(1, 2, 3, 123456700 /*L*/)
-      ..StandardPattern = LocalTimePattern.ExtendedIso
+      ..StandardPattern = LocalTimePattern.extendedIso
       ..Culture = TestCultures.EnUs
       ..Text = "01:02:03.1234567"
       ..Pattern = "HH':'mm':'ss;FFFFFFF",
@@ -962,7 +962,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(LocalTimePattern.ExtendedIso);
+  void ParseNull() => AssertParseNull(LocalTimePattern.extendedIso);
 
   /*
   @Test()
@@ -1002,13 +1002,13 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 
   @Test()
   void Create_NullFormatInfo() {
-    expect(() => LocalTimePattern.Create3("HH", null), throwsArgumentError);
+    expect(() => LocalTimePattern.createWithCulture("HH", null), throwsArgumentError);
   }
 
   @Test()
   void TemplateValue_DefaultsToMidnight() {
     var pattern = LocalTimePattern.createWithInvariantCulture("HH");
-    expect(LocalTime.midnight, pattern.TemplateValue);
+    expect(LocalTime.midnight, pattern.templateValue);
   }
 
   @Test()
@@ -1016,7 +1016,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
     {
-      var pattern = LocalTimePattern.CreateWithCurrentCulture("HH:mm");
+      var pattern = LocalTimePattern.createWithCurrentCulture("HH:mm");
       var text = pattern.format(new LocalTime(13, 45));
       expect("13.45", text);
     }
@@ -1025,8 +1025,8 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
   @Test()
   void WithTemplateValue_PropertyFetch() {
     LocalTime newValue = new LocalTime(1, 23, 45);
-    var pattern = LocalTimePattern.createWithInvariantCulture("HH").WithTemplateValue(newValue);
-    expect(newValue, pattern.TemplateValue);
+    var pattern = LocalTimePattern.createWithInvariantCulture("HH").withTemplateValue(newValue);
+    expect(newValue, pattern.templateValue);
   }
 
 /*
@@ -1085,7 +1085,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 
   @internal @override IPattern<LocalTime> CreatePattern() =>
   LocalTimePattern.createWithInvariantCulture(super.Pattern)
-      .WithTemplateValue(Template)
-      .WithCulture(Culture);
+      .withTemplateValue(Template)
+      .withCulture(Culture);
 }
 

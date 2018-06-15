@@ -226,7 +226,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @internal
   @override
   IPattern<OffsetTime> CreatePattern() =>
-      OffsetTimePattern.create2(super.Pattern, super.Culture, Template);
+      OffsetTimePattern.createWithCulture(super.Pattern, super.Culture, Template);
 }
 
 

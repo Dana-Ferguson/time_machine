@@ -123,7 +123,7 @@ class ParseResult<T> {
       new ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
 
   @internal static ParseResult<T> forInvalidValue<T>(ValueCursor cursor, String formatString, [List<dynamic> parameters = const []]) =>
-      forInvalidValueError(() => _forInvalidValueErrorProvider(cursor, formatString, parameters));
+      _forInvalidValueError(() => _forInvalidValueErrorProvider(cursor, formatString, parameters));
 
   static Error _forInvalidValueErrorProvider(ValueCursor cursor, String formatString, List<dynamic> parameters) {
     // Format the message which is specific to the kind of parse error.
@@ -134,7 +134,7 @@ class ParseResult<T> {
   }
 
   @internal static ParseResult<T> forInvalidValuePostParse<T>(String text, String formatString, [List<dynamic> parameters = const[]]) =>
-      forInvalidValueError(() => _forInvalidValuePostParseErrorProvider(text, formatString, parameters));
+      _forInvalidValueError(() => _forInvalidValuePostParseErrorProvider(text, formatString, parameters));
 
   static Error _forInvalidValuePostParseErrorProvider(String text, String formatString, List<dynamic> parameters) {
     // Format the message which is specific to the kind of parse error.
@@ -145,7 +145,7 @@ class ParseResult<T> {
   }
 
   // note: was ForInvalidValue
-  @private static ParseResult<T> forInvalidValueError<T>(Error Function() errorProvider) => new ParseResult<T>._error(errorProvider, true);
+  static ParseResult<T> _forInvalidValueError<T>(Error Function() errorProvider) => new ParseResult<T>._error(errorProvider, true);
 
   @internal static ParseResult<T> argumentNull<T>(String parameter) => new ParseResult<T>._error(() => new ArgumentError.notNull(parameter), false);
 

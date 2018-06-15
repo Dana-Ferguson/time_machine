@@ -475,8 +475,8 @@ class _findLongestMatchCursor {
     addField(PatternFields.embeddedTime, characterInPattern);
     addEmbeddedPattern(
         LocalTimePattern
-            .Create(embeddedPatternText, formatInfo, templateTime)
-            .UnderlyingPattern,
+            .create(embeddedPatternText, formatInfo, templateTime)
+            .underlyingPattern,
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
           timeBucket.hours24 = value.hour;

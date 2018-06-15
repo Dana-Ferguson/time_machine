@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   List<String> _shortMonthGenitiveNames;
   List<String> _shortDayNames;
 
-  final Map<Era, EraDescription> _eraDescriptions;
+  final Map<Era, _EraDescription> _eraDescriptions;
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based solely
   /// on a [System.Globalization.CultureInfo].
@@ -80,7 +80,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   @visibleForTesting
   @internal
   TimeMachineFormatInfo.withDateTimeFormat(this.cultureInfo, this.dateTimeFormat)
-      : _eraDescriptions = new Map<Era, EraDescription>() {
+      : _eraDescriptions = new Map<Era, _EraDescription>() {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     Preconditions.checkNotNull(dateTimeFormat, 'dateTimeFormat');
   }
@@ -301,12 +301,12 @@ import 'package:time_machine/time_machine_globalization.dart';
     return _getEraDescription(era).primaryName;
   }
 
-  EraDescription _getEraDescription(Era era) {
+  _EraDescription _getEraDescription(Era era) {
     // lock (eraDescriptions)
     {
-      EraDescription ret = _eraDescriptions[era];
+      _EraDescription ret = _eraDescriptions[era];
       if (ret == null) {
-        ret = new EraDescription.forEra(era, cultureInfo);
+        ret = new _EraDescription.forEra(era, cultureInfo);
         _eraDescriptions[era] = ret;
       }
       return ret;
@@ -386,13 +386,13 @@ import 'package:time_machine/time_machine_globalization.dart';
 }
 
 /// The description for an era: the primary name and all possible names.
-@private class EraDescription {
+class _EraDescription {
   @internal final String primaryName;
   @internal final /*ReadOnlyCollection*/ List<String> allNames;
 
-  EraDescription._(this.primaryName, this.allNames);
+  _EraDescription._(this.primaryName, this.allNames);
 
-  @internal factory EraDescription.forEra(Era era, CultureInfo cultureInfo)
+  @internal factory _EraDescription.forEra(Era era, CultureInfo cultureInfo)
   {
     String pipeDelimited = PatternResources.getString(era.resourceIdentifier, cultureInfo);
     String primaryName;
@@ -414,7 +414,7 @@ import 'package:time_machine/time_machine_globalization.dart';
       // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
       allNames.sort((x, y) => y.length.compareTo(x.length));
     }
-    return new EraDescription._(primaryName, new List<String>.unmodifiable(allNames));
+    return new _EraDescription._(primaryName, new List<String>.unmodifiable(allNames));
   }
 
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that

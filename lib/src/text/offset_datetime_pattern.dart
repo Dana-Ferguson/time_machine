@@ -138,7 +138,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetDateTimePattern create(String patternText, CultureInfo cultureInfo, OffsetDateTime templateValue) =>
+  static OffsetDateTimePattern createWithCulture(String patternText, CultureInfo cultureInfo, OffsetDateTime templateValue) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture, using the default

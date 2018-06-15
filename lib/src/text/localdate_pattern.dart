@@ -109,7 +109,7 @@ abstract class _Patterns
   /// [templateValue]: Template value to use for unspecified fields. Defaults to a value of 2000-01-01.
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDatePattern create2(String patternText, CultureInfo cultureInfo, [LocalDate templateValue]) =>
+  static LocalDatePattern createWithCulture(String patternText, CultureInfo cultureInfo, [LocalDate templateValue]) =>
       create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

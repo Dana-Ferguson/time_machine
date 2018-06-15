@@ -149,8 +149,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [templateValue]: Template value to use for unspecified fields. Defaults to a template value of midnight on 2000-01-01.
   /// Returns: A pattern for parsing and formatting local date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDateTimePattern create2(String patternText, CultureInfo cultureInfo,
-      LocalDateTime templateValue) =>
+  static LocalDateTimePattern createWithCulture(String patternText, CultureInfo cultureInfo, [LocalDateTime templateValue]) =>
       create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

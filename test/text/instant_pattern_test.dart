@@ -105,7 +105,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   @Test()
   void Create() {
-    var pattern = InstantPattern.create("HH:mm:ss", TestCultures.DotTimeSeparator);
+    var pattern = InstantPattern.createWithCulture("HH:mm:ss", TestCultures.DotTimeSeparator);
     var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
     expect("12.34.56", text);
   }

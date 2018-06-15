@@ -248,7 +248,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   {
     var date = new AnnualDate(8, 23);
     var culture = TestCultures.getCulture(cultureId);
-    var pattern = AnnualDatePattern.create("MM/dd", culture);
+    var pattern = AnnualDatePattern.createWithCulture("MM/dd", culture);
     expect(expected, pattern.format(date));
   }
 
@@ -260,10 +260,10 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     var template = new AnnualDate(5, 3);
     var culture = TestCultures.getCulture(cultureId);
     // Check the culture is still used
-    var pattern1 = AnnualDatePattern.create("MM/dd", culture, template);
+    var pattern1 = AnnualDatePattern.createWithCulture("MM/dd", culture, template);
     expect(expected, pattern1.format(date));
     // And the template value
-    var pattern2 = AnnualDatePattern.create("MM", culture, template);
+    var pattern2 = AnnualDatePattern.createWithCulture("MM", culture, template);
     var parsed = pattern2
         .parse("08")
         .value;
