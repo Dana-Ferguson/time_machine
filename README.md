@@ -6,34 +6,36 @@ Time Machine is timezone and culture sensitive. Intended targets are DartVM and 
 Example Code:
 
 ```dart
-    await TimeMachine.initialize();
-    print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
+await TimeMachine.initialize();
+print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 
-    var tzdb = await DateTimeZoneProviders.tzdb;
-    var paris = await tzdb["Europe/Paris"];
+var tzdb = await DateTimeZoneProviders.tzdb;
+var paris = await tzdb["Europe/Paris"];
 
-    var now = SystemClock.instance.getCurrentInstant();
+var now = SystemClock.instance.getCurrentInstant();
 
-    print('\nBasic');
-    print('UTC Time: $now');
-    print('Local Time: ${now.inLocalZone()}');
-    print('Paris Time: ${now.inZone(paris)}');
+print('\nBasic');
+print('UTC Time: $now');
+print('Local Time: ${now.inLocalZone()}');
+print('Paris Time: ${now.inZone(paris)}');
 
-    print('\nFormatted');
-    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
-    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
+print('\nFormatted');
+print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
+print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
 
-    print('\nFormatted and French');
-    var culture = await Cultures.getCulture('fr-FR');
-    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
-    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
+print('\nFormatted and French');
+var culture = await Cultures.getCulture('fr-FR');
+print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
+print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
 
-    print('\nParse Formatted and Zoned French');
-    // without the 'z' parsing will be forced to interpret the timezone as UTC
-    var localText = now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm z', culture);
+print('\nParse Formatted and Zoned French');
+// without the 'z' parsing will be forced to interpret the timezone as UTC
+var localText = now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm z', culture);
 
-    var localClone = ZonedDateTimePattern.createWithCulture('dddd yyyy-MM-dd HH:mm z', culture).parse(localText);
-    print(localClone.value);
+var localClone = ZonedDateTimePattern
+    .createWithCulture('dddd yyyy-MM-dd HH:mm z', culture)
+    .parse(localText);
+print(localClone.value);
 ```
 
 A lot of functionality works at this time, but the public API is starting to stabilize. TZDB QoL 
