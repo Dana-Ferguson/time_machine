@@ -38,6 +38,27 @@ var localClone = ZonedDateTimePattern
 print(localClone.value);
 ```
 
+Which outputs (on my machine)
+```text
+Hello, America/New_York from the Dart Time Machine!
+
+Basic
+UTC Time: 2018-06-16T05:33:01Z
+Local Time: 2018-06-16T01:33:01 America/New_York (-04)
+Paris Time: 2018-06-16T07:33:01 Europe/Paris (+02)
+
+Formatted
+UTC Time: Saturday 2018-06-16 05:33
+Local Time: Saturday 2018-06-16 01:33
+
+Formatted and French
+UTC Time: samedi 2018-06-16 05:33
+Local Time: samedi 2018-06-16 01:33
+
+Parse Formatted and Zoned French
+2018-06-16T01:33:00 America/New_York (-04)
+```
+
 A lot of functionality works at this time, but the public API is starting to stabilize. TZDB QoL 
 changes are in progress. This is a preview release. Documentation was also ported,
 but some things changed for Dart and the documentation will have minor inaccuracies in some places.
