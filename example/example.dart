@@ -42,6 +42,7 @@ Future<String> getTimeZoneEasy() async {
   return null;
 }
 
+/*
 /// Functions for getting the current timeZone, culture, and functions to load data
 abstract class iTimeMachine {
   // Tzdb.GetSystemDefaultTimeZone();
@@ -165,6 +166,82 @@ class VirtualTimeMachine extends iTimeMachine {
     return _windowsZones[id];
   }
 }
+*/
+
+class VirtualTimeMachine2 /*extends iTimeMachine*/ {
+  // I'm looking to basically use @internal for protection
+  static Future construct() async {
+    // todo: for VM, always load everything
+    // Default provider
+    var tzdb = await DateTimeZoneProviders.tzdb;
+    DateTimeZoneProviders.defaultProvider = tzdb;
+    
+    // Default TimeZone
+    var localTimezoneId = await _getTimeZoneId();
+    var local = await tzdb[localTimezoneId];
+    // We don't actually cache local at all right here
+    TzdbIndex.localId = localTimezoneId;
+
+    // Default Culture
+    var cultureId = Platform.localeName.split('.').first.replaceAll('_', '-');
+    var culture = await Cultures.getCulture(cultureId);
+    Cultures.currentCulture = culture;
+    // todo: remove CultureInfo.currentCulture
+  }
+
+  /*
+    static final bool isFuchsia = (_operatingSystem == "fuchsia");
+    static final bool isLinux = (_operatingSystem == "linux");
+    static final bool isWindows = (_operatingSystem == "windows");
+    static final bool isAndroid = (_operatingSystem == "android");
+    static final bool isIOS = (_operatingSystem == "ios");
+    static final bool isMacOS = (_operatingSystem == "macos");
+  */
+  static Future<String> _getTimeZoneId() async {
+    try {
+      if (Platform.isFuchsia) {
+        //
+      }
+      else if (Platform.isLinux) {
+        // e.g. cat /etc/timezone /g --> 'America/New_York\n'
+        var id = await Process.run("cat", ["/etc/timezone"]);
+        return (id.stdout as String).trim();
+      }
+      else if (Platform.isWindows) {
+        // todo: Test
+        // This returns a CLDR windows timezone see: https://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml
+        // We can then convert this to a TZDB timezone.
+        // e.g. tzutl /g --> 'Eastern Standard Time'
+        var id = await Process.run("tzutil", ['/g']);
+        return windowsZoneToCldrZone((id.stdout as String).trim());
+      }
+      else if (Platform.isAndroid) {
+        //
+      }
+      else if (Platform.isIOS) {
+        //
+      }
+      else if (Platform.isMacOS) {
+        //
+      }
+    } catch (e) {
+      // todo: custom error type
+      throw new StateError('LocalTimeZone not found; OS is ${Platform.operatingSystem}; Error was $e');
+    }
+
+    throw new StateError('LocalTimeZone not found; OS is ${Platform.operatingSystem}; OS was unsupported.');
+  }
+
+  static Map<String, String> _windowsZones;
+  static Future windowsZoneToCldrZone(String id) async {
+    if (_windowsZones == null) {
+      var file = new File('${Directory.current.path}/lib/data/zones.json');
+      _windowsZones = JSON.decode(await file.readAsString());
+    }
+
+    return _windowsZones[id];
+  }
+}
 
 /// Do we consolidate everything into a Global Static???
 /// Do we have TimeMachine, Cultures, Tzdb???
@@ -189,37 +266,41 @@ Future main() async {
   // todo: demonstrate a test clock
   // var clockForTesting = new FakeClock();
 
-  print('Hello, Dart TimeMachine!');
-  
-  // You can capture your timeMachine directly
-  /*var time = */ await VirtualTimeMachine.construct();
-  // todo: pull this from TimeMachine
-  var tzdb = await DateTimeZoneProviders.tzdb;
-  var paris = await tzdb["Europe/Paris"];
-  
-  var now = TimeMachine.clock.getCurrentInstant();
+  try {
+    await VirtualTimeMachine2.construct();
+    print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 
-  print('\nBasic');
-  print('UTC Time: $now');
-  // todo: supply no timezone and have it default to our local timezone
-  print('Local Time: ${now.inZone(TimeMachine.localTimeZone)}');
-  print('Paris Time: ${now.inZone(paris)}');
+    var tzdb = await DateTimeZoneProviders.tzdb;
+    var paris = await tzdb["Europe/Paris"];
 
-  print('\nFormatted');
-  print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', TimeMachine.localCulture)}');
-  print('Local Time: ${now.inZone(TimeMachine.localTimeZone).toString('dddd yyyy-MM-dd HH:mm', TimeMachine.localCulture)}');
+    var now = SystemClock.instance.getCurrentInstant();
 
-  print('\nFormatted and French');
-  var culture = await Cultures.getCulture('fr-FR');
-  print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
-  print('Local Time: ${now.inZone(TimeMachine.localTimeZone).toString('dddd yyyy-MM-dd HH:mm', culture)}');
+    print('\nBasic');
+    print('UTC Time: $now');
+    // todo: supply no timezone and have it default to our local timezone
+    print('Local Time: ${now.inLocalZone()}');
+    print('Paris Time: ${now.inZone(paris)}');
 
-  print('\nParse Formatted and Zoned French');
-  // without the 'z' parsing will be forced to interpret the timezone as UTC
-  var localText = now.inZone(TimeMachine.localTimeZone).toString('dddd yyyy-MM-dd HH:mm z', culture);
-  // todo: this is an ergonomic disaster
-  CultureInfo.currentCulture = culture;
-  // todo: I want a default provider to be assumable here
-  var localClone = ZonedDateTimePattern.createWithCurrentCulture('dddd yyyy-MM-dd HH:mm z', tzdb).parse(localText);
-  print(localClone.value);
+    print('\nFormatted');
+    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
+    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
+
+    print('\nFormatted and French');
+    var culture = await Cultures.getCulture('fr-FR');
+    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
+    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
+
+    print('\nParse Formatted and Zoned French');
+    // without the 'z' parsing will be forced to interpret the timezone as UTC
+    var localText = now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm z', culture);
+
+    // todo: show you can create a reusable pattern
+    // var localClone = ZonedDateTimePattern.createWithCurrentCulture('dddd yyyy-MM-dd HH:mm z'/*, tzdb*/).parse(localText);
+    var localClone = ZonedDateTimePattern.createWithCulture('dddd yyyy-MM-dd HH:mm z', culture).parse(localText);
+    print(localClone.value);
+  }
+  catch (error, stack) {
+    print(error);
+    print(stack);
+  }
 }

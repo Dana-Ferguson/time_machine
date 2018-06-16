@@ -8,6 +8,43 @@ import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+/// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local times
+///  - or, equivalently, to the offset from UTC at any particular instant.
+///
+/// The mapping is unambiguous in the "UTC to local" direction, but
+/// the reverse is not true: when the offset changes, usually due to a Daylight Saving transition,
+/// the change either creates a gap (a period of local time which never occurs in the time zone)
+/// or an ambiguity (a period of local time which occurs twice in the time zone). Mapping back from
+/// local time to an instant requires consideration of how these problematic times will be handled.
+///
+/// Time Machine provides various options when mapping local time to a specific instant:
+/// * [atStrictly] will throw an exception if the mapping from local time is either ambiguous
+///     or impossible, i.e. if there is anything other than one instant which maps to the given local time.
+/// * [atLeniently] will never throw an exception due to ambiguous or skipped times,
+///     resolving to the earlier option of ambiguous matches, or to a value that's forward-shifted by the duration
+///     of the gap for skipped times.
+/// * [resolveLocal] will apply a [ZoneLocalMappingResolver] to the result of
+///     a mapping.
+/// * [mapLocal] will return a [ZoneLocalMapping]
+///     with complete information about whether the given local time occurs zero times, once or twice. This is the most
+///     fine-grained approach, which is the fiddliest to use but puts the caller in the most control.
+///
+/// Time Machine has one built-in source of time zone data available: a copy of the
+/// [tz database](http://www.iana.org/time-zones) (also known as the IANA Time Zone database, or zoneinfo
+/// or Olson database).
+///
+/// To obtain a [DateTimeZone] for a given timezone ID, use one of the methods on
+/// [IDateTimeZoneProvider] (and see [DateTimeZoneProviders] for access to the built-in
+/// providers). The UTC timezone is also available via the [utc] property on this class.
+///
+/// To obtain a [DateTimeZone] representing the system default time zone, you can either call
+/// [IDateTimeZoneProvider.getSystemDefault] on a provider to obtain the [DateTimeZone] that
+/// the provider considers matches the system default time zone
+///
+/// Note that Time Machine does not require that [DateTimeZone] instances be singletons.
+/// Comparing two time zones for equality is not straightforward: if you care about whether two
+/// zones act the same way within a particular portion of time, use [ZoneEqualityComparer].
+/// Additional guarantees are provided by [IDateTimeZoneProvider] and [DateTimeZone.forOffset].
 @immutable
 abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
@@ -21,10 +58,13 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// compare equal to an instance returned by calling [forOffset] with an offset of zero, but it may
   /// or may not compare equal to an instance returned by e.g. `DateTimeZoneProviders.Tzdb["UTC"]`.
   static final DateTimeZone utc = new FixedDateTimeZone.forOffset(Offset.zero);
-  static const int fixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
-  static const int fixedZoneCacheMinimumSeconds = -fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
-  static const int fixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
-  static final List<DateTimeZone> fixedZoneCache = _buildFixedZoneCache();
+  static const int _fixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
+  static const int _fixedZoneCacheMinimumSeconds = -_fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
+  static const int _fixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
+  static final List<DateTimeZone> _fixedZoneCache = _buildFixedZoneCache();
+  
+  /// Gets the local [DateTimeZone] of the local machine if the [DateTimeZoneProviders.defaultProvider] is defined, or [utc].
+  static DateTimeZone get local => DateTimeZoneProviders.defaultProvider?.getCachedSystemDefault() ?? utc;
 
   /// Returns a fixed time zone with the given offset.
   ///
@@ -39,14 +79,14 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Returns: A fixed time zone with the given offset.
   factory DateTimeZone.forOffset(Offset offset) {
     int seconds = offset.seconds;
-    if (csharpMod(seconds, fixedZoneCacheGranularitySeconds) != 0) {
+    if (csharpMod(seconds, _fixedZoneCacheGranularitySeconds) != 0) {
       return new FixedDateTimeZone.forOffset(offset);
     }
-    int index = (seconds - fixedZoneCacheMinimumSeconds) ~/ fixedZoneCacheGranularitySeconds;
-    if (index < 0 || index >= fixedZoneCacheSize) {
+    int index = (seconds - _fixedZoneCacheMinimumSeconds) ~/ _fixedZoneCacheGranularitySeconds;
+    if (index < 0 || index >= _fixedZoneCacheSize) {
       return new FixedDateTimeZone.forOffset(offset);
     }
-    return fixedZoneCache[index];
+    return _fixedZoneCache[index];
   }
 
 
@@ -322,12 +362,12 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
   /// fixing the 0 offset as DateTimeZone.Utc.
   static List<DateTimeZone> _buildFixedZoneCache() {
-    List<DateTimeZone> ret = new List<DateTimeZone>(fixedZoneCacheSize);
-    for (int i = 0; i < fixedZoneCacheSize; i++) {
-      int offsetSeconds = i * fixedZoneCacheGranularitySeconds + fixedZoneCacheMinimumSeconds;
+    List<DateTimeZone> ret = new List<DateTimeZone>(_fixedZoneCacheSize);
+    for (int i = 0; i < _fixedZoneCacheSize; i++) {
+      int offsetSeconds = i * _fixedZoneCacheGranularitySeconds + _fixedZoneCacheMinimumSeconds;
       ret[i] = new FixedDateTimeZone.forOffset(new Offset.fromSeconds(offsetSeconds));
     }
-    ret[-fixedZoneCacheMinimumSeconds ~/ fixedZoneCacheGranularitySeconds] = utc;
+    ret[-_fixedZoneCacheMinimumSeconds ~/ _fixedZoneCacheGranularitySeconds] = utc;
     return ret;
   }
 

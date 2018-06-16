@@ -148,7 +148,7 @@ class Instant implements Comparable<Instant> {
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      InstantPattern.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      InstantPattern.bclSupport.format(this, patternText, formatProvider ?? Cultures.currentCulture);
 
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
@@ -193,6 +193,10 @@ class Instant implements Comparable<Instant> {
       // zone is checked for nullity by the constructor.
       // constructor also checks and corrects for calendar being null
     new ZonedDateTime(this, zone, calendar);
+  
+  // todo: get the correct calendar for the local timezone / culture
+  /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
+  ZonedDateTime inLocalZone([CalendarSystem calendar]) => new ZonedDateTime(this, DateTimeZone.local, calendar);
   
   OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => new OffsetDateTime.fromInstant(this, offset, calendar);
 

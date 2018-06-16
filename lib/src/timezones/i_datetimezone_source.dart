@@ -72,11 +72,11 @@ abstract class IDateTimeZoneSource {
   /// [ArgumentException]: [id] is not supported by this source.
   Future<DateTimeZone> forId(String id);
 
-  DateTimeZone forIdSync(String id);
+  DateTimeZone forCachedId(String id);
 
   /// Returns this source's ID for the system default time zone.
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String getSystemDefaultId();
+  String get systemDefaultId;
 }

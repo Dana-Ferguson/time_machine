@@ -17,6 +17,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+@internal
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var map = await _loadIdMapping();
@@ -26,6 +27,7 @@ class TzdbIndex {
 
   TzdbIndex._(this._zoneFilenames);
 
+  @internal
   static Future _getJson(String path) async {
     // Keep as much as the repeated path arguments in here as possible
     var file = new File('${Directory.current.path}/lib/data/tzdb/$path');
@@ -72,10 +74,11 @@ class TzdbIndex {
   // (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
   }
 
-  static String get locale => Platform.localeName;
+  // Default to UTC if we fail to set a local [DateTimeZone]
+  static String localId = DateTimeZone.utcId; // => Platform.localeName;
 }
 
-
+@internal
 class DateTimeZoneReader extends BinaryReader {
   DateTimeZoneReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 

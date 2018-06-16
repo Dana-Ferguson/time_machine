@@ -79,11 +79,19 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
 
   /// <inheritdoc />
   Future<DateTimeZone> getSystemDefault() async {
-    String id = _source.getSystemDefaultId();
+    String id = _source.systemDefaultId;
     if (id == null) {
       throw new DateTimeZoneNotFoundError("System default time zone is unknown to source $versionId");
     }
     return await this[id];
+  }
+
+  DateTimeZone getCachedSystemDefault() {
+    String id = _source.systemDefaultId;
+    if (id == null) {
+      throw new DateTimeZoneNotFoundError("System default time zone is unknown to source $versionId");
+    }
+    return getDateTimeZoneSync(id);
   }
 
   /// <inheritdoc />
@@ -92,9 +100,9 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
     return (await _getZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
-  DateTimeZone getZoneOrNullSync(String id) {
+  DateTimeZone getCachedZoneOrNull(String id) {
     Preconditions.checkNotNull(id, 'id');
-    return _getZoneFromSourceOrNullSync(id) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
+    return _getCachedZoneFromSourceOrNull(id) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
   Future<DateTimeZone> _getZoneFromSourceOrNull(String id) async {
@@ -118,14 +126,14 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   }
 
   // todo: compress this call-chain?
-  DateTimeZone _getZoneFromSourceOrNullSync(String id) {
+  DateTimeZone _getCachedZoneFromSourceOrNull(String id) {
     if (!_timeZoneMap.containsKey(id)) {
       return null;
     }
 
     DateTimeZone zone = _timeZoneMap[id];
     if (zone == null) {
-      zone = _source.forIdSync(id);
+      zone = _source.forCachedId(id);
       if (zone == null) {
         throw new InvalidDateTimeZoneSourceError(
             "Time zone $id is supported by source $versionId but not returned");
@@ -145,7 +153,7 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
   }
 
   DateTimeZone getDateTimeZoneSync(String id) {
-    var zone = getZoneOrNullSync(id);
+    var zone = getCachedZoneOrNull(id);
     if (zone == null) {
       throw new DateTimeZoneNotFoundError("Time zone $id is unknown or unavailable synchronously to source $versionId");
     }

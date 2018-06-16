@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:meta/meta.dart';
+import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
@@ -19,10 +20,12 @@ abstract class Cultures {
   // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
   static CultureInfo _currentCulture = null;
   static CultureInfo get currentCulture => _currentCulture??=invariantCulture;
+  @internal
   static void set currentCulture(CultureInfo value) => _currentCulture = value;
 }
 
 // todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!
+@immutable
 class CultureInfo {
   static final CultureInfo invariantCulture = new CultureInfo._invariantCulture();
 

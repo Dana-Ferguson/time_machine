@@ -46,6 +46,8 @@ abstract class IDateTimeZoneProvider {
   /// The provider-specific representation of the system default time zone.
   Future<DateTimeZone> getSystemDefault();
 
+  DateTimeZone getCachedSystemDefault();
+
   /// Returns the time zone for the given ID, if it's available.
   ///
   /// Note that this may return a [DateTimeZone] that has a different ID to that requested, if the ID

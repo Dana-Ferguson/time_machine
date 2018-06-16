@@ -45,7 +45,7 @@ class FakeDateTimeZoneSource extends IDateTimeZoneSource {
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String getSystemDefaultId() {
+  String get systemDefaultId {
     return null;
     //String id = TimeZoneInfo.Local.Id;
     // We don't care about the return value of TryGetValue - if it's false,
@@ -55,7 +55,7 @@ class FakeDateTimeZoneSource extends IDateTimeZoneSource {
   }
 
   @override
-  DateTimeZone forIdSync(String id) {
+  DateTimeZone forCachedId(String id) {
     Preconditions.checkNotNull(id, 'id');
     var zone = _zones[id];
     if (zone != null) {
