@@ -3,15 +3,14 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_fields.dart';
 
 /// Date period field for fixed-length periods (weeks and days).
-@internal /*sealed*/ class FixedLengthDatePeriodField implements IDatePeriodField {
+@immutable
+@internal class FixedLengthDatePeriodField implements IDatePeriodField {
   final int _unitDays;
 
   @internal FixedLengthDatePeriodField(this._unitDays);

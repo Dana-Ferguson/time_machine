@@ -3,13 +3,10 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
@@ -22,14 +19,8 @@ abstract class _Patterns
 
 
 /// Represents a pattern for parsing and formatting [AnnualDate] values.
-///
-/// <threadsafety>
-/// When used with a read-only [CultureInfo], this type is immutable and instances
-/// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
-/// not currently enforced.
-/// </threadsafety>
-@immutable // Well, assuming an immutable culture...
-/*sealed*/ class AnnualDatePattern implements IPattern<AnnualDate> {
+@immutable 
+class AnnualDatePattern implements IPattern<AnnualDate> {
   @internal static final AnnualDate defaultTemplateValue = new AnnualDate(1, 1);
 
   static const String _defaultFormatPattern = "G"; // General, ISO-like

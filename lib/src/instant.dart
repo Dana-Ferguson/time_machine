@@ -2,17 +2,12 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:intl/intl.dart';
-
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
-
-// todo: remove me -- this prevents me from accidentally using core.Duration
-import 'dart:core' hide Duration;
 
 
 /*
@@ -24,9 +19,6 @@ import 'dart:core' hide Duration;
 
  */
 
-// LUXON & MOMENT.JS are both milliseconds (neither of them run in a VM)
-// HighResTimer is 5 microsecond accuracy
-// I wish I could have two different versions of this class for the VM and JS targets. (a specific VM and JS include with just an external declaration here)
 @immutable
 class Instant implements Comparable<Instant> {
   // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?

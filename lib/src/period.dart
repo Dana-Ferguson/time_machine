@@ -8,7 +8,6 @@ import 'package:quiver_hashcode/hashcode.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_text.dart';
 
 @immutable
@@ -29,12 +28,12 @@ class _DateComponentsBetweenResult {
 // out int hours, out int minutes, out int seconds, out int milliseconds, out int ticks, out int nanoseconds)
 @immutable
 class _TimeComponentsBetweenResult {
-  int hours;
-  int minutes;
-  int seconds;
-  int milliseconds;
-  int ticks;
-  int nanoseconds;
+  final int hours;
+  final int minutes;
+  final int seconds;
+  final int milliseconds;
+  final int ticks;
+  final int nanoseconds;
 
   _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.ticks, this.nanoseconds);
 }

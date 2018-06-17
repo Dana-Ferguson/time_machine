@@ -5,8 +5,6 @@
 import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 /// Provides the interface for objects that can retrieve time zone definitions given an ID.

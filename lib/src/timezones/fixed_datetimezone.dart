@@ -2,8 +2,6 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
-
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
@@ -17,6 +15,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 /// Basic [DateTimeZone] implementation that has a fixed name key and offset i.e.
 /// no daylight savings.
+@immutable
 @internal class FixedDateTimeZone extends DateTimeZone {
   final ZoneInterval _interval;
 

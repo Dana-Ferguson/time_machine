@@ -1,21 +1,16 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
-import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
-import 'package:time_machine/src/text/globalization/nodaformatinfo.dart';
-
+import 'package:time_machine/src/text/globalization/time_machine_format_info.dart';
 
 // Hacky way of building an action which depends on the final set of pattern fields to determine whether to format a month
 // using the genitive form or not.
-class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> extends IPostPatternParseFormatAction {
+class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> extends IPostPatternParseFormatAction<TResult> {
   final int _count;
   final TimeMachineFormatInfo _formatInfo;
   final int Function(TResult) _getter;

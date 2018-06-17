@@ -7,12 +7,11 @@ import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_text.dart';
 
+// todo: Comparable
 @immutable
-class OffsetTime // : IEquatable<OffsetTime>, IXmlSerializable
-    {
+class OffsetTime {
   final LocalTime _time;
   final Offset _offset;
 

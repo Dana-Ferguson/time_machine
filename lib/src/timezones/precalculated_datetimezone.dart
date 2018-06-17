@@ -2,26 +2,21 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
-
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 // Essentially Func<Offset, Offset, Offset>
 typedef _offsetAggregator = Offset Function(Offset x, Offset y);
 typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 
-
 /// Most time zones have a relatively small set of transitions at their start until they finally 
 /// settle down to either a fixed time zone or a daylight savings time zone. This provides the
 /// container for the initial zone intervals and a pointer to the time zone that handles all of
 /// the rest until the end of time.
-// sealed
+@immutable // todo: we need immutable lists?
 @internal class PrecalculatedDateTimeZone extends DateTimeZone {
   final List<ZoneInterval> _periods;
   final IZoneIntervalMapWithMinMax _tailZone;

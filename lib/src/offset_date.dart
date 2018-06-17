@@ -8,13 +8,13 @@ import 'package:quiver_hashcode/hashcode.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
+@immutable
 class OffsetDate // : IEquatable<OffsetDate>
 {
-  LocalDate _date;
-  Offset _offset;
+  final LocalDate _date;
+  final Offset _offset;
   
   /// Constructs an instance of the specified date and offset.
   ///

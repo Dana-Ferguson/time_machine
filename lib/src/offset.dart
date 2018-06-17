@@ -3,7 +3,6 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
@@ -24,8 +23,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// Offsets are represented with a granularity of one second. This allows all offsets within TZDB
 /// to be represented. It is possible that it could present issues to some other time zone data sources,
 /// but only in very rare historical cases (or fictional ones).
-///
-/// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
+@immutable 
 class Offset implements Comparable<Offset> {
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.

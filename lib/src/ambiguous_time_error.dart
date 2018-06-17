@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
+@immutable
 class AmbiguousTimeError extends Error {
   /// Get the local date and time which is ambiguous in the time zone.
   @internal LocalDateTime get localDateTime => earlierMapping.localDateTime;

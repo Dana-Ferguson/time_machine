@@ -5,44 +5,45 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 
 /// Represents a local date and time without reference to a calendar system. Essentially
 /// this is a duration since a Unix epoch shifted by an offset (but we don't store what that
 /// offset is). This class has been slimmed down considerably over time - it's used much less
 /// than it used to be... almost solely for time zones.
+@immutable
 @internal class LocalInstant {
   static final LocalInstant beforeMinValue = new LocalInstant._trusted(Instant.beforeMinValue.daysSinceEpoch, deliberatelyInvalid: true);
   static final LocalInstant afterMaxValue = new LocalInstant._trusted(Instant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
 
   /// Elapsed time since the local 1970-01-01T00:00:00.
-  Span _span;
+  final Span _span;
+
+  LocalInstant._ (this._span);
 
   /// Constructor which should *only* be used to construct the invalid instances.
-  LocalInstant._trusted(int days, {bool deliberatelyInvalid})
+  factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
   {
-    this._span = new Span(days: days);
+    return new LocalInstant._(new Span(days: days));
   }
 
   /// Initializes a new instance of [LocalInstant].
-  @internal LocalInstant(Span nanoseconds) {
+  @internal factory LocalInstant(Span nanoseconds) {
     // todo: would it? (from Dart perspective -- we have different bounds? or do we? -- investigate)
     //int days = nanoseconds.FloorDays;
     //if (days < Instant.MinDays || days > Instant.MaxDays)
     //{
     //throw new OverflowException("Operation would overflow bounds of local date/time");
     //}
-    this._span = nanoseconds;
+    return new LocalInstant._(nanoseconds);
   }
 
   /// Initializes a new instance of [LocalInstant].
   ///
   /// [days]: Number of days since 1970-01-01, in a time zone neutral fashion.
   /// [nanoOfDay]: Nanosecond of the local day.
-  // todo: replace -- we use milliseconds\nanoseconds
-  @internal LocalInstant.daysNanos(int days, int nanoOfDay)
+  @internal factory LocalInstant.daysNanos(int days, int nanoOfDay)
   {
-    this._span = new Span(days: days, nanoseconds: nanoOfDay);
+    return new LocalInstant._(new Span(days: days, nanoseconds: nanoOfDay));
   }
 
   /// Returns whether or not this is a valid instant. Returns true for all but

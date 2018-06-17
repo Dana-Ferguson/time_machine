@@ -2,16 +2,9 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
-
-import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
-
 
 /// Commonly-used implementations of the delegates used in resolving a [LocalDateTime] to a
 /// [ZonedDateTime], and a method to combine two "partial" resolvers into a full one.
@@ -20,8 +13,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// [AmbiguousTimeResolver], and [SkippedTimeResolver], along with
 /// [createMappingResolver], which produces a `ZoneLocalMappingResolver` from instances of the
 /// other two.
-///
-/// <threadsafety>All members of this class are thread-safe, as are the values returned by them.</threadsafety>
 abstract class Resolvers
 {
   /// An [AmbiguousTimeResolver] which returns the earlier of the two matching times.

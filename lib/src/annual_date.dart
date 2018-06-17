@@ -14,6 +14,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// In the future, this struct may be expanded to support other calendar systems,
 /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
 /// with its leap month.
+@immutable
 class AnnualDate implements Comparable<AnnualDate>
     {
   // The underlying value. We only care about the month and day, but for the sake of

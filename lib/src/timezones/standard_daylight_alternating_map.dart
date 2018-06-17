@@ -2,14 +2,11 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
-
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 class _TransitionRecurrenceResult {
@@ -37,6 +34,7 @@ class _TransitionRecurrenceResult {
 /// they were infinite. This makes various calculations easier, but this map should
 /// only be used as part of a zone which will only ask it for values within the right
 /// portion of the timeline.
+@immutable
 @internal class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax  {
   final Offset _standardOffset;
   final ZoneRecurrence _standardRecurrence;

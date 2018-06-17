@@ -3,12 +3,9 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_fields.dart';
 
 class _AddTimeResult {
   final LocalTime time;
@@ -23,7 +20,8 @@ class _AddTimeResult {
 /// the number of ticks. I'd expected that to be really significant, given that it would avoid
 /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
 /// of code elegance.
-@internal /*sealed*/ class TimePeriodField
+@immutable
+@internal class TimePeriodField
 {
   @internal static final TimePeriodField nanoseconds = new TimePeriodField._(1);
   @internal static final TimePeriodField ticks = new TimePeriodField._(TimeConstants.nanosecondsPerTick);

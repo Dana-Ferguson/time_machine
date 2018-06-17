@@ -1,18 +1,15 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
+
 //import 'dart:core' as core show Duration;
 //import 'dart:core' hide Duration;
-import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
 
+import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
-import 'utility/preconditions.dart';
-
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 
 // Todo: should I rename Duration? I kind of don't want to cause issues with dart.core collisions?
 // Can I do the core.Duration trick as a standard?
@@ -90,9 +87,8 @@ class Span implements Comparable<Span> {
 
     return new Span._trusted(milliseconds, nanoseconds);
 
-
     // todo: custom errors
-    throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
+    // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
   }
 
   factory Span({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,

@@ -2,15 +2,12 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'dart:math' as math;
 import 'dart:async';
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 /// Provides an implementation of [IDateTimeZoneProvider] that caches results from an
@@ -20,11 +17,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// unlimited-size non-expiring cache over a time zone source, and adapts an implementation of the
 /// `IDateTimeZoneSource` interface to an `IDateTimeZoneProvider`.
 ///
-/// <seealso cref="DateTimeZoneProviders"/>
-/// <threadsafety>All members of this type are thread-safe as long as the underlying `IDateTimeZoneSource`
-/// implementation is thread-safe.</threadsafety>
+/// see also: [DateTimeZoneProviders]
 @immutable // only; caches are naturally mutable internally.
-// sealed
 class DateTimeZoneCache extends IDateTimeZoneProvider {
   final IDateTimeZoneSource _source;
   final Map<String, DateTimeZone> _timeZoneMap = new Map<String, DateTimeZone>();

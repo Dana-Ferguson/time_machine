@@ -9,7 +9,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 /// Era calculator for Gregorian and Julian calendar systems, which use BC and AD.
-// sealed
+@immutable
 @internal class GJEraCalculator extends EraCalculator {
   final int _maxYearOfBc;
   final int _maxYearOfAd;
