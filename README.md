@@ -1,7 +1,7 @@
 # Dart Time Machine
 
 Time Machine is a date and time API for Dart (port of [Noda Time](https://www.nodatime.org)).
-Time Machine is timezone and culture sensitive. Intended targets are DartVM and Dart4Web.
+Time Machine is timezone and culture sensitive. Intended targets are DartVM, Dart4Web, and Flutter.
 
 Example Code:
 
