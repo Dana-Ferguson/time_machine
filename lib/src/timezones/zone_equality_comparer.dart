@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 ///
 /// By default, the comparer only compares the wall offset (total of standard offset and any daylight saving offset)
 /// at every instant within the interval over which the comparer operates. In practice, this is done by comparing each
-/// [ZoneInterval] which includes an instant within the interval (using [DateTimeZone.GetZoneIntervals(Interval)]).
+/// [ZoneInterval] which includes an instant within the interval (using [DateTimeZone.getZoneIntervals(Interval)]).
 /// For most purposes, this is all that's required: from the simple perspective of a time zone being just a function from instants to local time,
 /// the default option of [onlyMatchWallOffset] effectively checks that the function gives the same result across the two time
 /// zones being compared, for any given instant within the interval.

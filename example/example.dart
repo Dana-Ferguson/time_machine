@@ -5,10 +5,17 @@ import 'dart:async';
 
 // todo: consolidate import packages??? this seems a little much...
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
+
+// Only needed for `await TimeMachine.initialize();`
+// You only need to do this once per isolate.
+// Pick the import based on your platform.
+// Future Hope: This happens via conditional imports under `time_machine.dart`
+import 'package:time_machine/time_machine_for_vm.dart';
+// import 'package:time_machine/time_machine_for_web.dart';
+// import 'package:time_machine/time_machine_for_flutter.dart';
 
 Future main() async {
   // todo: demonstrate a test clock
@@ -38,12 +45,15 @@ Future main() async {
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
     print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
 
-    print('\nParse Formatted and Zoned French');
+    print('\nParse French Formatted DateTimeZone');
     // without the 'z' parsing will be forced to interpret the timezone as UTC
-    var localText = now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm z', culture);
+    var localText = now
+        .inLocalZone()
+        .toString('dddd yyyy-MM-dd HH:mm z', culture);
 
-    // todo: show you can create a reusable pattern
-    var localClone = ZonedDateTimePattern.createWithCulture('dddd yyyy-MM-dd HH:mm z', culture).parse(localText);
+    var localClone = ZonedDateTimePattern
+        .createWithCulture('dddd yyyy-MM-dd HH:mm z', culture)
+        .parse(localText);
     print(localClone.value);
   }
   catch (error, stack) {

@@ -3,10 +3,8 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:mirrors';
-import 'dart:io';
 
 import 'package:test/test.dart';
-import 'package:matcher/matcher.dart';
 
 // todo: should this be a separate test_package?
 // todo: it seems the test runner is synchronous, I guess that's okay

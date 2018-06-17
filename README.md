@@ -6,6 +6,7 @@ Time Machine is timezone and culture sensitive. Intended targets are DartVM, Dar
 Example Code:
 
 ```dart
+// Sets up timezone and culture information
 await TimeMachine.initialize();
 print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 
@@ -26,11 +27,14 @@ print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
 print('\nFormatted and French');
 var culture = await Cultures.getCulture('fr-FR');
 print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
-print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
+print('Local Time: ${
+  now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
 
-print('\nParse Formatted and Zoned French');
+print('\nParse French Formatted DateTimeZone');
 // without the 'z' parsing will be forced to interpret the timezone as UTC
-var localText = now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm z', culture);
+var localText = now
+    .inLocalZone()
+    .toString('dddd yyyy-MM-dd HH:mm z', culture);
 
 var localClone = ZonedDateTimePattern
     .createWithCulture('dddd yyyy-MM-dd HH:mm z', culture)
@@ -78,7 +82,7 @@ Todo:
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
- - [ ] Implement Dart4Web features (default is VM right now)
+ - [X] Implement Dart4Web features (default is VM right now)
  - [ ] *maybe*: Create simple website with samples (at minimal a samples directory in github)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not included in this repository.

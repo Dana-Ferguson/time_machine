@@ -2,15 +2,14 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
+
+import 'dart:typed_data';
+import 'dart:async';
+
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_timezones.dart';
-
-import 'dart:typed_data';
-import 'dart:convert';
-
-import 'dart:async';
-import 'dart:io';
+import 'package:time_machine/src/platforms/io.dart';
 
 @internal
 class TzdbIndex {
@@ -22,15 +21,8 @@ class TzdbIndex {
 
   TzdbIndex._(this._zoneFilenames);
 
-  @internal
-  static Future _getJson(String path) async {
-    // Keep as much as the repeated path arguments in here as possible
-    var file = new File('${Directory.current.path}/lib/data/tzdb/$path');
-    return JSON.decode(await file.readAsString());
-  }
-
   static Future<Map<String, String>> _loadIdMapping() async {
-    var json = _getJson('tzdb.json');
+    var json = await PlatformIO.local.getJson('tzdb', 'tzdb.json');
     return json;
   }
 
@@ -39,17 +31,7 @@ class TzdbIndex {
 
   Iterable<String> get zoneIds => _zoneFilenames.keys;
   bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);
-
-  Future<ByteData> _getBinary(String zoneId) async {
-    var filename = _zoneFilenames[zoneId];
-    if (filename == null) return new ByteData(0);
-
-    var file = new File('${Directory.current.path}/lib/data/tzdb/$filename.bin');
-    // todo: probably a better way to do this
-    var binary = new ByteData.view(new Int8List.fromList(await file.readAsBytes()).buffer);
-    return binary;
-  }
-
+  
   DateTimeZone _zoneFromBinary(ByteData binary) {
     var reader = new DateTimeZoneReader(binary);
     // this should be the same as the index id
@@ -59,8 +41,11 @@ class TzdbIndex {
   }
 
   Future<DateTimeZone> getTimeZone(String zoneId) async {
+    var filename = _zoneFilenames[zoneId];
+    if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had not associated filename.');
+    
     return _cache[zoneId] ??
-        (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
+        (_cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin')));
   }
 
   DateTimeZone getTimeZoneSync(String zoneId) {

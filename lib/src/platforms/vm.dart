@@ -7,16 +7,42 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 
+import 'dart:typed_data';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+import 'io.dart';
+
+class _VirtualMachineIO implements PlatformIO {
+  @override
+  Future<ByteData> getBinary(String path, String filename) async {
+    if (filename == null) return new ByteData(0);
+
+    var file = new File('${Directory.current.path}/lib/data/$path/$filename');
+
+    // todo: probably a better way to do this
+    var binary = new ByteData.view(new Int8List.fromList(await file.readAsBytes()).buffer);
+    return binary;
+  }
+
+  @override
+  Future getJson(String path, String filename) async {
+    var file = new File('${Directory.current.path}/lib/data/$path/$filename');
+    return JSON.decode(await file.readAsString());
+  }
+}
+
 // todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
+// IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {
   static bool _longIdNames = false;
   
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
+    // Map IO functions
+    PlatformIO.local = new _VirtualMachineIO();
+    
     // todo: for VM, always load everything (happens inside of _figureOutTimeZone)
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
@@ -31,7 +57,7 @@ class TimeMachine  {
     TzdbIndex.localId = local.id;
 
     // Default Culture
-    var cultureId = Platform.localeName.split('.').first.replaceAll('_', '-');
+    var cultureId = Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
     var culture = await Cultures.getCulture(cultureId);
     Cultures.currentCulture = culture;
     // todo: remove CultureInfo.currentCulture

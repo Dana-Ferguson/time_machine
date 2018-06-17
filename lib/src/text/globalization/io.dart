@@ -2,16 +2,15 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:convert';
 import 'dart:collection';
+
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-
-import 'dart:typed_data';
-import 'dart:convert';
-
-import 'dart:async';
-import 'dart:io';
+import 'package:time_machine/src/platforms/io.dart';
 
 @internal
 class CultureLoader {
@@ -21,15 +20,9 @@ class CultureLoader {
   }
 
   CultureLoader._(this._cultureIds);
-
-  static Future _getJson(String path) async {
-    // Keep as much as the repeated path arguments in here as possible
-    var file = new File('${Directory.current.path}/lib/data/cultures/$path');
-    return JSON.decode(await file.readAsString());
-  }
-
+  
   static Future<List<String>> _loadCultureMapping() async {
-    var json = _getJson('cultures.json');
+    var json = PlatformIO.local.getJson('cultures', 'cultures.json');
     return json;
   }
 
@@ -38,26 +31,16 @@ class CultureLoader {
 
   Iterable<String> get cultureIds => _cultureIds;
   bool zoneIdExists(String zoneId) => _cultureIds.contains(zoneId);
-
-  Future<ByteData> _getBinary(String zoneId) async {
-    var filename = zoneId;
-    if (filename == null) return new ByteData(0);
-
-    var file = new File('${Directory.current.path}/lib/data/cultures/$filename.bin');
-    // todo: probably a better way to do this
-    var binary = new ByteData.view(new Int8List.fromList(await file.readAsBytes()).buffer);
-    return binary;
-  }
-
+  
   CultureInfo _cultureFromBinary(ByteData binary) {
     return new CultureReader(binary).readCultureInfo();
   }
 
   Future<CultureInfo> getCulture(String cultureId) async {
-    return _cache[cultureId] ??= _cultureFromBinary(await _getBinary(cultureId));
+    return _cache[cultureId] ??= _cultureFromBinary(await PlatformIO.local.getBinary('cultures', '$cultureId.bin'));
   }
 
-  static String get locale => Platform.localeName;
+  // static String get locale => Platform.localeName;
 }
 
 @internal
