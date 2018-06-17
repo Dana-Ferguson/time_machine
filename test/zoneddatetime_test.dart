@@ -287,7 +287,7 @@ void ToDateTimeUnspecified()
 {
   ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0));
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0);
-  DateTime actual = zoned.toDateTimeUnspecified();
+  DateTime actual = zoned.toDateTimeLocal();
   expect(actual, expected);
   // Kind isn't checked by Equals...
   expect(actual.isUtc, isFalse); // DateTimeKind.Unspecified, actual.Kind);

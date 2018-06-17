@@ -26,7 +26,7 @@ void ToDateTimeUnspecified()
 {
   LocalDateTime zoned = new LocalDateTime.at(2011, 3, 5, 1, 0);
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0); //, DateTimeKind.Unspecified);
-  DateTime actual = zoned.toDateTimeUnspecified();
+  DateTime actual = zoned.toDateTimeLocal();
   expect(expected, actual);
   // Kind isn't checked by Equals...
   // expect(DateTimeKind.Unspecified, actual.Kind);
@@ -43,7 +43,7 @@ void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
   var ldt = new LocalDateTime.at(year, 1, 1, 13, 15, seconds: 55).plusMilliseconds(TimeConstants.millisecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
   var expected = new DateTime(year, 1, 1, 13, 15, 55/*, DateTimeKind.Unspecified*/)
       .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
-  var actual = ldt.toDateTimeUnspecified();
+  var actual = ldt.toDateTimeLocal();
   expect(actual, expected);
 }
 
@@ -136,7 +136,7 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
   // The DateTime only knows about the ISO version...
   expect(1376, isNot(1376));
   expect(CalendarSystem.iso, noda.calendar);
-  DateTime _final = noda.toDateTimeUnspecified();
+  DateTime _final = noda.toDateTimeLocal();
   expect(original, _final);
 }
 
@@ -197,7 +197,7 @@ void DayOfWeek_AroundEpoch()
     // Check once per hour of the day, just in case something's messed up based on the time of day.
     for (int hour = 0; hour < 24; hour++)
     {
-      expect(new IsoDayOfWeek(dateTime.toDateTimeUnspecified().weekday), dateTime.dayOfWeek);
+      expect(new IsoDayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
       dateTime = dateTime.plusHours(1);
     }
   }

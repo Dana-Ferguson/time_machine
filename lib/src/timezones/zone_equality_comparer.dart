@@ -18,7 +18,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// at every instant within the interval over which the comparer operates. In practice, this is done by comparing each
 /// [ZoneInterval] which includes an instant within the interval (using [DateTimeZone.GetZoneIntervals(Interval)]).
 /// For most purposes, this is all that's required: from the simple perspective of a time zone being just a function from instants to local time,
-/// the default option of [OnlyMatchWallOffset] effectively checks that the function gives the same result across the two time
+/// the default option of [onlyMatchWallOffset] effectively checks that the function gives the same result across the two time
 /// zones being compared, for any given instant within the interval.
 ///
 /// It's possible for a time zone to have a transition from one `ZoneInterval` to another which doesn't adjust the offset: it
@@ -28,11 +28,11 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// to the default options, so the two zone intervals involved are effectively coalesced.
 ///
 /// The options available change what sort of comparison is performed - which can also change which zone intervals can be coalesced. For
-/// example, by specifying just the [MatchAllTransitions] option, you would indicate that even though you don't care about the name within a zone
+/// example, by specifying just the [matchAllTransitions] option, you would indicate that even though you don't care about the name within a zone
 /// interval or how the wall offset is calculated, you do care about the fact that there was a transition at all, and when it occurred.
 /// With that option enabled, zone intervals are never coalesced and the transition points within the operating interval are checked.
 ///
-/// Similarly, the [MatchStartAndEndTransitions] option is the only one where instants outside the operating interval are
+/// Similarly, the [matchStartAndEndTransitions] option is the only one where instants outside the operating interval are
 /// relevant. For example, consider a comparer which operates over the interval [2000-01-01T00:00:00Z, 2011-01-01T00:00:00Z). Normally,
 /// anything that happens before the year 2000 (UTC) would be irrelevant - but with this option enabled, the transitions of the first and last zone
 /// intervals are part of the comparison... so if one time zone has a zone interval 1999-09-01T00:00:00Z to 2000-03-01T00:00:00Z and the other has
@@ -50,37 +50,37 @@ class ZoneEqualityComparerOptions {
   ];
 
   static const List<ZoneEqualityComparerOptions> _isoConstants = const [
-    OnlyMatchWallOffset, MatchOffsetComponents, MatchNames,
-    MatchAllTransitions, MatchStartAndEndTransitions, StrictestMatch
+    onlyMatchWallOffset, matchOffsetComponents, matchNames,
+    matchAllTransitions, matchStartAndEndTransitions, strictestMatch
   ];
 
   // todo: look at: Constants --> Strings; and then maybe Strings --> Constants ~ but the strings wrapped in a class that doesn't care about case
   //  they'd be really convenient for mask enumerations
   static final Map<ZoneEqualityComparerOptions, String> _nameMap = {
-    OnlyMatchWallOffset: 'OnlyMatchWallOffset', MatchOffsetComponents: 'MatchOffsetComponents', MatchNames: 'MatchNames',
-    MatchAllTransitions: 'MatchAllTransitions', MatchStartAndEndTransitions: 'MatchStartAndEndTransitions', StrictestMatch: 'StrictestMatch',
+    onlyMatchWallOffset: 'OnlyMatchWallOffset', matchOffsetComponents: 'MatchOffsetComponents', matchNames: 'MatchNames',
+    matchAllTransitions: 'MatchAllTransitions', matchStartAndEndTransitions: 'MatchStartAndEndTransitions', strictestMatch: 'StrictestMatch',
   };
 
   /// The default comparison, which only cares about the wall offset at any particular
   /// instant, within the interval of the comparer. In other words, if [DateTimeZone.getUtcOffset]
   /// returns the same value for all instants in the interval, the comparer will consider the zones to be equal.
-  static const ZoneEqualityComparerOptions OnlyMatchWallOffset = const ZoneEqualityComparerOptions(0);
+  static const ZoneEqualityComparerOptions onlyMatchWallOffset = const ZoneEqualityComparerOptions(0);
   /// Instead of only comparing wall offsets, the standard/savings split is also considered. So when this
   /// option is used, two zones which both have a wall offset of +2 at one instant would be considered
   /// unequal if one of those offsets was +1 standard, +1 savings and the other was +2 standard with no daylight
   /// saving.
-  static const ZoneEqualityComparerOptions MatchOffsetComponents = const ZoneEqualityComparerOptions(1 << 0);
+  static const ZoneEqualityComparerOptions matchOffsetComponents = const ZoneEqualityComparerOptions(1 << 0);
   /// Compare the names of zone intervals as well as offsets.
-  static const ZoneEqualityComparerOptions MatchNames = const ZoneEqualityComparerOptions(1 << 1);
+  static const ZoneEqualityComparerOptions matchNames = const ZoneEqualityComparerOptions(1 << 1);
   /// This option prevents adjacent zone intervals from being coalesced, even if they are otherwise considered
   /// equivalent according to other options.
-  static const ZoneEqualityComparerOptions MatchAllTransitions = const ZoneEqualityComparerOptions(1 << 2);
+  static const ZoneEqualityComparerOptions matchAllTransitions = const ZoneEqualityComparerOptions(1 << 2);
   /// Includes the transitions into the first zone interval and out of the
   /// last zone interval as part of the comparison, even if they do not affect
   /// the offset or name for any instant within the operating interval.
-  static const ZoneEqualityComparerOptions MatchStartAndEndTransitions = const ZoneEqualityComparerOptions(1 << 3);
+  static const ZoneEqualityComparerOptions matchStartAndEndTransitions = const ZoneEqualityComparerOptions(1 << 3);
   /// The combination of all available match options.
-  static const ZoneEqualityComparerOptions StrictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
+  static const ZoneEqualityComparerOptions strictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
 
   @override get hashCode => _value.hashCode;
   @override operator ==(dynamic other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
@@ -164,7 +164,7 @@ class ZoneEqualityComparer {
   /// [options]: The options to use when comparing time zones.
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
   ZoneEqualityComparer._(this._interval, this._options) : _zoneIntervalComparer = new ZoneIntervalEqualityComparer(_options, _interval) {
-    if ((_options & ~ZoneEqualityComparerOptions.StrictestMatch).value != 0) {
+    if ((_options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
       throw new ArgumentError("The value $_options is not defined within ZoneEqualityComparer.Options");
     }
   }
@@ -180,7 +180,7 @@ class ZoneEqualityComparer {
   factory ZoneEqualityComparer.forInterval(Interval interval) {
     Preconditions.checkArgument(interval.hasStart && interval.hasEnd, 'interval',
         "The interval must have both a start and an end.");
-    return new ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
+    return new ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.onlyMatchWallOffset);
   }
 
   /// Returns a comparer operating over the same interval as this one, but with the given
@@ -242,9 +242,9 @@ class ZoneEqualityComparer {
 
   /// Returns a hash code for the specified time zone.
   ///
-  /// The hash code generated by any instance of `ZoneEqualityComparer` will be equal to the hash code
+  /// The hash code generated by any instance of [ZoneEqualityComparer] will be equal to the hash code
   /// generated by any other instance constructed with the same options and interval, for the same time zone (or equal ones).
-  /// Two instances of `ZoneEqualityComparer` with different options or intervals may (but may not) produce
+  /// Two instances of [ZoneEqualityComparer] with different options or intervals may (but may not) produce
   /// different hash codes for the same zone.
   ///
   /// [obj]: The time zone to compute a hash code for.
@@ -259,7 +259,7 @@ class ZoneEqualityComparer {
 
   Iterable<ZoneInterval> _getIntervals(DateTimeZone zone) {
     var allIntervals = zone.getZoneIntervals(new Interval(_interval.start, _interval.end));
-    return _checkOption(_options, ZoneEqualityComparerOptions.MatchAllTransitions) ? allIntervals : _zoneIntervalComparer.coalesceIntervals(allIntervals);
+    return _checkOption(_options, ZoneEqualityComparerOptions.matchAllTransitions) ? allIntervals : _zoneIntervalComparer.coalesceIntervals(allIntervals);
   }
 }
 
@@ -301,13 +301,13 @@ class ZoneEqualityComparer {
 
   int getHashCode(ZoneInterval obj) {
     List hashables = [_getEffectiveStart(obj), _getEffectiveEnd(obj)];
-    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchOffsetComponents)) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.matchOffsetComponents)) {
       hashables.addAll([obj.standardOffset, obj.savings]);
     }
     else {
       hashables.add(obj.wallOffset);
     }
-    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchNames)) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.matchNames)) {
       hashables.add(obj.name);
     }
 
@@ -315,11 +315,11 @@ class ZoneEqualityComparer {
   }
 
   Instant _getEffectiveStart(ZoneInterval zoneInterval) =>
-      _checkOption(_options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
+      _checkOption(_options, ZoneEqualityComparerOptions.matchStartAndEndTransitions)
           ? zoneInterval.rawStart : Instant.max(zoneInterval.rawStart, _interval.start);
 
   Instant _getEffectiveEnd(ZoneInterval zoneInterval) =>
-      _checkOption(_options, ZoneEqualityComparerOptions.MatchStartAndEndTransitions)
+      _checkOption(_options, ZoneEqualityComparerOptions.matchStartAndEndTransitions)
           ? zoneInterval.rawEnd : Instant.min(zoneInterval.rawEnd, _interval.end);
 
   /// Compares the parts of two zone intervals which are deemed "interesting" by the options.
@@ -331,12 +331,13 @@ class ZoneEqualityComparer {
     }
     // As we've already compared wall offsets, we only need to compare savings...
     // If the savings are equal, the standard offset will be too.
-    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchOffsetComponents) && x.savings != y.savings) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.matchOffsetComponents) && x.savings != y.savings) {
       return false;
     }
-    if (_checkOption(_options, ZoneEqualityComparerOptions.MatchNames) && x.name != y.name) {
+    if (_checkOption(_options, ZoneEqualityComparerOptions.matchNames) && x.name != y.name) {
       return false;
     }
     return true;
   }
 }
+

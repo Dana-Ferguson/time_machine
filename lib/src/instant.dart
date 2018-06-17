@@ -157,11 +157,10 @@ class Instant implements Comparable<Instant> {
     return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);
   }
 
-  DateTime toDateTimeLocal() {
-    // todo: does this need to match the zone?
-    throw new UnimplementedError('Pipe in local date time zone.');
-  }
-
+  // DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
+  // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
+  DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
+  
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {

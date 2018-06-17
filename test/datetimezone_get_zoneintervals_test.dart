@@ -148,7 +148,7 @@ void GetZoneIntervals_WithOptions_NoCoalescing() {
       new Instant.fromUtc(1999, 1, 1, 0, 0),
       new Instant.fromUtc(2003, 1, 1, 0, 0));
   // No coalescing required, as the names are different.
-  var zoneIntervals = zone.getZoneIntervalsOptions(interval, ZoneEqualityComparerOptions.MatchNames).toList();
+  var zoneIntervals = zone.getZoneIntervalsOptions(interval, ZoneEqualityComparerOptions.matchNames).toList();
   expect(4, zoneIntervals.length);
   // CollectionAssert.AreEqual([ transition1, transition2, transition3, transition4 ], zoneIntervals.map((zi) => zi.end));
   expect([ transition1, transition2, transition3, transition4 ], zoneIntervals.map((zi) => zi.end));
@@ -171,7 +171,7 @@ void GetZoneIntervals_WithOptions_Coalescing() {
       new Instant.fromUtc(2003, 1, 1, 0, 0));
   // The zone intervals abutting at transition2 are coalesced,
   // because that only changes the name and standard/daylight split.
-  var zoneIntervals = zone.getZoneIntervalsOptions(interval, ZoneEqualityComparerOptions.OnlyMatchWallOffset).toList();
+  var zoneIntervals = zone.getZoneIntervalsOptions(interval, ZoneEqualityComparerOptions.onlyMatchWallOffset).toList();
   expect(3, zoneIntervals.length);
   // CollectionAssert.AreEqual
   expect([ transition1, transition3, transition4], zoneIntervals.map((zi) => zi.end));

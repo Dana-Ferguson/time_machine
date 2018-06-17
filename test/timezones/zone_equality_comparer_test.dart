@@ -46,21 +46,21 @@ void Various()
 
   // Even though the first transition point is different, by default that's fine if
   // the start point is "inside" both.
-  AssertEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.OnlyMatchWallOffset);
+  AssertEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // When we extend backwards a bit, we can see the difference between the two.
-  AssertNotEqual(zone1, zone2, Instants[1] - Span.epsilon, Instants[5], ZoneEqualityComparerOptions.OnlyMatchWallOffset);
+  AssertNotEqual(zone1, zone2, Instants[1] - Span.epsilon, Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // Or if we force the start and end transitions to be exact...
-  AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.MatchStartAndEndTransitions);
+  AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.matchStartAndEndTransitions);
 
   // The first two transitions have the same split between standard and saving...
-  AssertEqual(zone1, zone2, Instants[1], Instants[4], ZoneEqualityComparerOptions.MatchOffsetComponents);
+  AssertEqual(zone1, zone2, Instants[1], Instants[4], ZoneEqualityComparerOptions.matchOffsetComponents);
   // The third one (at Instants[4]) doesn't...
-  AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.MatchOffsetComponents);
+  AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.matchOffsetComponents);
 
   // The first transition has the same name for the zone interval...
-  AssertEqual(zone1, zone2, Instants[1], Instants[2], ZoneEqualityComparerOptions.MatchNames);
+  AssertEqual(zone1, zone2, Instants[1], Instants[2], ZoneEqualityComparerOptions.matchNames);
   // The second transition (at Instants[2]) doesn't...
-  AssertNotEqual(zone1, zone2, Instants[1], Instants[3], ZoneEqualityComparerOptions.MatchNames);
+  AssertNotEqual(zone1, zone2, Instants[1], Instants[3], ZoneEqualityComparerOptions.matchNames);
 }
 
 @Test()
@@ -83,17 +83,17 @@ void ElidedTransitions() {
     ..Add(Instants[8], 0, 0, "x")
   ).Build();
 
-  AssertEqual(zone1, zone2, Instant.minValue, Instant.maxValue, ZoneEqualityComparerOptions.OnlyMatchWallOffset);
+  AssertEqual(zone1, zone2, Instant.minValue, Instant.maxValue, ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // BOT-Instants[6] will elide transitions when ignoring components, even if we match names
-  AssertEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.MatchNames);
-  AssertNotEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.MatchOffsetComponents);
+  AssertEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.matchNames);
+  AssertNotEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.matchOffsetComponents);
   // Instants[6]-EOT will elide transitions when ignoring names, even if we match components
-  AssertEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.MatchOffsetComponents);
-  AssertNotEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.MatchNames);
+  AssertEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.matchOffsetComponents);
+  AssertNotEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.matchNames);
 
   // But if we require the exact transitions, both fail
-  AssertNotEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.MatchAllTransitions);
-  AssertNotEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.MatchAllTransitions);
+  AssertNotEqual(zone1, zone2, Instant.minValue, Instants[6], ZoneEqualityComparerOptions.matchAllTransitions);
+  AssertNotEqual(zone1, zone2, Instants[6], Instant.maxValue, ZoneEqualityComparerOptions.matchAllTransitions);
 }
 
 @Test()
@@ -101,7 +101,7 @@ void ForInterval()
 {
   var interval = new Interval(Instants[3], Instants[5]);
   var comparer = new ZoneEqualityComparer.forInterval(interval);
-  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, comparer.optionsForTest);
+  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, comparer.optionsForTest);
   expect(interval, comparer.intervalForTest);
 }
 
@@ -110,13 +110,13 @@ void WithOptions()
 {
   var interval = new Interval(Instants[3], Instants[5]);
   var firstComparer = new ZoneEqualityComparer.forInterval(interval);
-  var secondComparer = firstComparer.withOptions(ZoneEqualityComparerOptions.MatchNames);
+  var secondComparer = firstComparer.withOptions(ZoneEqualityComparerOptions.matchNames);
 
-  expect(ZoneEqualityComparerOptions.MatchNames, secondComparer.optionsForTest);
+  expect(ZoneEqualityComparerOptions.matchNames, secondComparer.optionsForTest);
   expect(interval, secondComparer.intervalForTest);
 
   // Validate that the first comparer hasn't changed
-  expect(ZoneEqualityComparerOptions.OnlyMatchWallOffset, firstComparer.optionsForTest);
+  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, firstComparer.optionsForTest);
   expect(interval, firstComparer.intervalForTest);
 }
 
@@ -137,12 +137,12 @@ void ElidedTransitions_Degenerate() {
   ).Build();
 
   // We can match *everything* except exact transitions...
-  var match = ZoneEqualityComparerOptions.MatchNames
-  | ZoneEqualityComparerOptions.MatchOffsetComponents
-  | ZoneEqualityComparerOptions.MatchStartAndEndTransitions;
+  var match = ZoneEqualityComparerOptions.matchNames
+  | ZoneEqualityComparerOptions.matchOffsetComponents
+  | ZoneEqualityComparerOptions.matchStartAndEndTransitions;
   AssertEqual(zone1, zone2, Instant.minValue, Instant.maxValue, match);
   // But not the exact transitions...
-  AssertNotEqual(zone1, zone2, Instant.minValue, Instant.maxValue, ZoneEqualityComparerOptions.MatchAllTransitions);
+  AssertNotEqual(zone1, zone2, Instant.minValue, Instant.maxValue, ZoneEqualityComparerOptions.matchAllTransitions);
 }
 
 @Test()

@@ -430,7 +430,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// Returns: 
   // todo: merge with regular getZoneIntervals as a custom parameter
   Iterable<ZoneInterval> getZoneIntervalsOptions(Interval interval, ZoneEqualityComparerOptions options) {
-    if ((options & ~ZoneEqualityComparerOptions.StrictestMatch).value != 0) {
+    if ((options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
       throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
     }
     var zoneIntervalEqualityComparer = new ZoneIntervalEqualityComparer(options, interval);

@@ -395,7 +395,7 @@ class ZonedDateTime {
   /// [InvalidOperationException]: The date/time is outside the range of `DateTime`.
   /// A [DateTime] representation of this value with an "unspecified" kind, with the same
   /// local date and time as this value.
-  DateTime toDateTimeUnspecified() => localDateTime.toDateTimeUnspecified();
+  DateTime toDateTimeLocal() => localDateTime.toDateTimeLocal();
 
   /// Constructs an [OffsetDateTime] with the same local date and time, and the same offset
   /// as this zoned date and time, effectively just "removing" the time zone itself.
