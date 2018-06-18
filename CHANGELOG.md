@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Now works on Flutter, Web, and VM!
+
 ## 0.0.2
 
 - Many things have been Dartified. Constructors consolidated, names are lowercased, @private usage heavily reduced.
