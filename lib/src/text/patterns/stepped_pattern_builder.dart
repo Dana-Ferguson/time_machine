@@ -23,8 +23,7 @@ class _findLongestMatchCursor {
 
 /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
 /// in turn.
-// where TBucket : ParseBucket<TResult>
-@internal /*sealed*/ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
+@internal class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _aCodeUnit = 97;
   static const int _zCodeUnit = 122;
   static const int _ACodeUnit = 65;
@@ -578,7 +577,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     // This will call all the actions in the multicast delegate.
     _formatActions.forEach((formatAction) => formatAction(value, builder));
     /* todo: remove me
-    for (var formatAction in formatActions) {
+    for (var formatAction in _formatActions) {
       var x = builder.toString();
       formatAction(value, builder);
       print('${x} --> ${builder.toString()}');

@@ -109,9 +109,10 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   int get dayOfYear => calendar.getDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
-  int get hour =>
+  int get hour => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
   // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
-  ((nanosecondOfDay >> 13) ~/ 439453125);
+  // Dart: doesn't work in JS
+  // ((nanosecondOfDay >> 13) ~/ 439453125);
 
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
   int get clockHourOfHalfDay {
@@ -126,7 +127,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
   int get minute {
     // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
-    int minuteOfDay = ((nanosecondOfDay >> 11) ~/ 29296875);
+    int minuteOfDay = nanosecondOfDay ~/ TimeConstants.nanosecondsPerMinute; //((nanosecondOfDay >> 11) ~/ 29296875);
     return minuteOfDay % TimeConstants.minutesPerHour;
   }
 
