@@ -33,7 +33,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   /// Creates a character handler for the year-of-era specifier (y).
   @internal static CharacterHandler<TResult, TBucket> createYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) yearGetter, Function(TBucket, int) setter) {
-    return (PatternCursor pattern, SteppedPatternBuilder builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(4);
       builder.addField(PatternFields.yearOfEra, pattern.current);
       switch (count) {
@@ -64,7 +64,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   /// Creates a character handler for the month-of-year specifier (M).
   @internal static CharacterHandler<TResult, TBucket> createMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) numberGetter, Function(TBucket, int) textSetter, Function(TBucket, int) numberSetter) {
-    return (PatternCursor pattern, SteppedPatternBuilder builder) {
+    return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(4);
       PatternFields field;
       switch (count) {

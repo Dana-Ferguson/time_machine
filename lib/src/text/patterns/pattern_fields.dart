@@ -51,7 +51,7 @@ class PatternFields {
   static const PatternFields fractionalSeconds = const PatternFields(1 << 5);
   static const PatternFields amPm = const PatternFields(1 << 6);
   static const PatternFields year = const PatternFields(1 << 7);
-  static const PatternFields yearTwoDigits = const PatternFields(1 << 8); // Actually year of *era* as two ditits...
+  static const PatternFields yearTwoDigits = const PatternFields(1 << 8); // Actually year of *era* as two digits...
   static const PatternFields yearOfEra = const PatternFields(1 << 9);
   static const PatternFields monthOfYearNumeric = const PatternFields(1 << 10);
   static const PatternFields monthOfYearText = const PatternFields(1 << 11);

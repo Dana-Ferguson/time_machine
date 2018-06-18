@@ -23,7 +23,15 @@ import 'package:time_machine/time_machine_text.dart';
 /// that each component (both pattern and predicate) is also immutable.
 class CompositePatternBuilder<T> {
   final List<IPattern<T>> _patterns = new List<IPattern<T>>();
-  final List<bool Function(T arg)> _formatPredicates = new List<bool Function(T arg)>();
+  // note: this was originally List<bool Function(T arg), but had to be dropped, because
+  // in C#, you can have nested classes, so CompositePatternBuilder<T>._CompositePattern
+  // would share their type parameter <T> ~ I'm a bit unsure how to do that here
+  // And adding the generic to Function (which would be great for Type safety), means that
+  // CompositePatternBuilder && _CompositePattern no longer work
+  // ~ they could be verified at runtime - but Dart can't do it at compile time (not yet anyway?)
+  // We also couldn't use [Object] iaw with the Style guide -- since that failed too???
+  // todo: add back in type safety with a new method
+  final List<bool Function(dynamic arg)> _formatPredicates = new List<bool Function(dynamic arg)>();
 
   /// Constructs a new instance which initially has no component patterns. At least one component
   /// pattern must be added before [build] is called.
@@ -34,7 +42,7 @@ class CompositePatternBuilder<T> {
   /// [pattern]: The component pattern to use as part of the eventual composite pattern.
   /// [formatPredicate]: A predicate to determine whether or not this pattern is suitable for
   /// formatting the given value.
-  void add(IPattern<T> pattern, bool Function(T arg) formatPredicate) {
+  void add(IPattern<T> pattern, bool Function(dynamic arg) formatPredicate) {
     _patterns.add(Preconditions.checkNotNull(pattern, 'pattern'));
     _formatPredicates.add(Preconditions.checkNotNull(formatPredicate, 'formatPredicate'));
   }
@@ -46,7 +54,7 @@ class CompositePatternBuilder<T> {
   /// Returns: A pattern using the patterns added to this builder.
   IPattern<T> build() {
     Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
-    return new _CompositePattern(_patterns, _formatPredicates);
+    return new _CompositePattern<T>(_patterns, _formatPredicates);
   }
 
   @internal IPartialPattern<T> buildAsPartial() {
@@ -57,7 +65,7 @@ class CompositePatternBuilder<T> {
 
 class _CompositePattern<T> implements IPartialPattern<T> {
   final List<IPattern<T>> _patterns;
-  final List<bool Function(T)> _formatPredicates;
+  final List<bool Function(dynamic arg)> _formatPredicates;
 
   @internal _CompositePattern(this._patterns, this._formatPredicates);
 

@@ -3,6 +3,9 @@
 
 import 'dart:async';
 
+import 'dart:convert';
+import 'package:resource/resource.dart';
+
 // todo: consolidate import packages??? this seems a little much...
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
@@ -16,6 +19,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_for_vm.dart';
 // import 'package:time_machine/time_machine_for_web.dart';
 // import 'package:time_machine/time_machine_for_flutter.dart';
+
+// import 'package:time_machine/data/zones.json' as zones;
 
 Future main() async {
   // todo: demonstrate a test clock
@@ -35,13 +40,15 @@ Future main() async {
     print('UTC Time: $now');
     print('Local Time: ${now.inLocalZone()}');
     print('Paris Time: ${now.inZone(paris)}');
+    
+    var x = now.inLocalZone().toString();
 
     print('\nFormatted');
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
     print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
 
-    print('\nFormatted and French');
     var culture = await Cultures.getCulture('fr-FR');
+    print('\nFormatted and French ($culture)');
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
     print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
 

@@ -23,39 +23,39 @@ import 'package:time_machine/time_machine_patterns.dart';
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<ZonedDateTime>*/),
     'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.mismatchedCharacter /**<ZonedDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
-    bucket.Date.yearOfEra = value),
+    bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.Date.year = value),
+        4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
     'M': DatePatternHelper.createMonthOfYearHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.month, (bucket, value) =>
-    bucket.Date.monthOfYearText = value, (bucket, value) => bucket.Date.monthOfYearNumeric = value),
+    bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
     'd': DatePatternHelper.createDayHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) =>
-    bucket.Date.dayOfMonth = value, (bucket, value) => bucket.Date.dayOfWeek = value),
+    bucket.date.dayOfMonth = value, (bucket, value) => bucket.date.dayOfWeek = value),
     '.': TimePatternHelper.createPeriodHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.fractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.fractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<ZonedDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.Time.hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.Time.hours24 = value),
+        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.Time.minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.Time.seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.fractionalSeconds = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.Time.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.Time.amPm = value),
+        9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
+    't': TimePatternHelper.createAmPmHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
     'c': DatePatternHelper.createCalendarHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.localDateTime.calendar, (bucket, value) =>
-    bucket.Date.calendar = value),
-    'g': DatePatternHelper.createEraHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.era, (bucket) => bucket.Date),
+    bucket.date.calendar = value),
+    'g': DatePatternHelper.createEraHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
     'z': _handleZone,
     'x': _handleZoneAbbreviation,
     'o': _handleOffset,
     'l': (cursor, builder) => builder.addEmbeddedLocalPartial(
-        cursor, (bucket) => bucket.Date, (bucket) => bucket.Time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime),
+        cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime),
   };
 
   @internal ZonedDateTimePatternParser(this._templateValue, this._resolver, this._zoneProvider);
@@ -121,24 +121,24 @@ import 'package:time_machine/time_machine_patterns.dart';
     builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 
-  static ParseResult<ZonedDateTime> _parseZone(ValueCursor value, _ZonedDateTimeParseBucket bucket) => bucket.ParseZone(value);
+  static ParseResult<ZonedDateTime> _parseZone(ValueCursor value, _ZonedDateTimeParseBucket bucket) => bucket.parseZone(value);
 }
 
 class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket Date;
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket Time;
+  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
   DateTimeZone _zone;
   @internal Offset offset;
   final ZoneLocalMappingResolver _resolver;
   final IDateTimeZoneProvider _zoneProvider;
 
   @internal _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
-      : Date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
-        Time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
+      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
+        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
         _zone = templateValue.zone;
 
 
-  @internal ParseResult<ZonedDateTime> ParseZone(ValueCursor value) {
+  @internal ParseResult<ZonedDateTime> parseZone(ValueCursor value) {
     DateTimeZone zone = _tryParseFixedZone(value) ?? _tryParseProviderZone(value);
 
     if (zone == null) {
@@ -221,7 +221,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   @internal
   @override
   ParseResult<ZonedDateTime> calculateValue(PatternFields usedFields, String text) {
-    var localResult = /*LocalDateTimePatternParser.*/LocalDateTimeParseBucket.combineBuckets(usedFields, Date, Time, text);
+    var localResult = /*LocalDateTimePatternParser.*/LocalDateTimeParseBucket.combineBuckets(usedFields, date, time, text);
     if (!localResult.success) {
       return localResult.convertError<ZonedDateTime>();
     }

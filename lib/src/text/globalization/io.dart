@@ -22,8 +22,16 @@ class CultureLoader {
   CultureLoader._(this._cultureIds);
   
   static Future<List<String>> _loadCultureMapping() async {
-    var json = PlatformIO.local.getJson('cultures', 'cultures.json');
-    return json;
+    var json = await PlatformIO.local.getJson('cultures', 'cultures.json');
+    // todo: replace with .cast<String> in Dart 2.0
+    // #hack: Flutter is very angry about making sure this is a 100% List<String>
+    // map((x) => x as String)
+    // return json.toList<String>();
+    var list = new List<String>();
+    for (var item in json) {
+      list.add(item as String);
+    }
+    return list;
   }
 
   final HashSet<String> _cultureIds;

@@ -14,14 +14,20 @@ import 'package:time_machine/src/platforms/io.dart';
 @internal
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
-    var map = await _loadIdMapping();
-    map[DateTimeZone.utcId] = '';
+    var _jsonMap = await _loadIdMapping();
+    
+    // todo: seek a more elegant mapping of <String, dynamic> to <String, String>
+    var map = <String, String>{DateTimeZone.utcId: ''};
+    _jsonMap.forEach((key, value){
+      map[key] = value;
+    });
+    
     return new TzdbIndex._(map);
   }
 
   TzdbIndex._(this._zoneFilenames);
 
-  static Future<Map<String, String>> _loadIdMapping() async {
+  static Future<Map<String, dynamic>> _loadIdMapping() async {
     var json = await PlatformIO.local.getJson('tzdb', 'tzdb.json');
     return json;
   }
@@ -42,7 +48,7 @@ class TzdbIndex {
 
   Future<DateTimeZone> getTimeZone(String zoneId) async {
     var filename = _zoneFilenames[zoneId];
-    if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had not associated filename.');
+    if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had no associated filename.');
     
     return _cache[zoneId] ??
         (_cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin')));

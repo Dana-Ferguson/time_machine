@@ -9,10 +9,12 @@ environment:
 
 dependencies:
   meta: "^1.1.2"
-  intl: "^0.15.2"
+#  intl: "^0.15.2"
   logging: "^0.11.3+1"
   quiver_hashcode: "^1.0.0"
   collection: "^1.14.5"
+# 2.1.4 is available but requires Dart 2.0 (not yet stable)
+  resource: "^2.1.2"
 
 dev_dependencies:
   test: ^0.12.0

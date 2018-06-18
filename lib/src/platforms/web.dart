@@ -9,28 +9,37 @@ import 'dart:convert';
 import 'dart:js';
 
 import 'package:logging/logging.dart';
+import 'package:resource/resource.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 import 'io.dart';
 
-class _VirtualMachineIO implements PlatformIO {
+class _WebMachineIO implements PlatformIO {
+  // todo: now, we are using [Resource] we can move this back out of the Platform directory
   @override
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return new ByteData(0);
 
-    HttpRequest file = await HttpRequest.request('../lib/data/$path/$filename', responseType: 'blob', mimeType: 'application/octet-stream');
+    // HttpRequest file = await HttpRequest.request('../lib/data/$path/$filename', responseType: 'blob', mimeType: 'application/octet-stream');
+    var resource = new Resource("package:time_machine/data/$path/$filename");
 
     // todo: probably a better way to do this
-    var binary = new ByteData.view(new Int8List.fromList(file.response.bodyBytes).buffer);
+    var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
     return binary;
   }
-
+  
   @override
-  Future getJson(String path, String filename) async {
-    var file = await HttpRequest.getString('../lib/data/$path/$filename');
-    return JSON.decode(file);
+  Future/**<Map<String, dynamic>>*/ getJson(String path, String filename) async {
+    // var file = await HttpRequest.getString('../lib/data/$path/$filename');
+    // return JSON.decode(file);
+    
+    // todo: this throws a cast error failure... looks like we're going to need seperate
+    // Map<String, dynamic> and a List / JSArray methods
+
+    var resource = new Resource("package:time_machine/data/$path/$filename");
+    return JSON.decode(await resource.readAsString());
   }
 }
 
@@ -40,6 +49,9 @@ class TimeMachine {
   
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
+    // Map IO functions
+    PlatformIO.local = new _WebMachineIO();
+
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
     DateTimeZoneProviders.defaultProvider = tzdb;

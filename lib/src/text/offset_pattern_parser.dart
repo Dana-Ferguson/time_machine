@@ -54,15 +54,19 @@ import 'package:time_machine/time_machine_patterns.dart';
         case "g":
           return (new CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)..add(
-                _parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), _hasZeroSeconds)..add(
-                _parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), _hasZeroSecondsAndMinutes)).buildAsPartial();
+              // _hasZeroSeconds, _hasZeroSecondsAndMinutes can be supplied directly in DartVM
+              // we get this failure in Flutter: '(#lib1::Offset) → dart.core::bool' that isn't of expected type '(dynamic) → dart.core::bool'
+              //  --> which saddens me
+              // todo: investigate (I feel when all the platforms are on the same version of Dart, life will get easier)
+                _parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), (arg) => _hasZeroSeconds(arg))..add(
+                _parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg))).buildAsPartial();
         case "G":
           return new _ZPrefixPattern(_parsePartialPattern("g", formatInfo));
         case "i":
           return (new CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)..add(
-                _parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), _hasZeroSeconds)..add(
-                _parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), _hasZeroSecondsAndMinutes)).buildAsPartial();
+                _parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), (arg) => _hasZeroSeconds(arg))..add(
+                _parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg))).buildAsPartial();
         case "I":
           return new _ZPrefixPattern(_parsePartialPattern("i", formatInfo));
         case "l":

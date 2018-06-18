@@ -69,3 +69,13 @@ class _Private {
 }
 
 const Object private = const _Private();
+
+
+class _DDCSupportHack {
+  const _DDCSupportHack();
+}
+
+// todo: make sure ddcSupportHack's have bad names -- so we can get a reverse Contagion effect
+/// DDC has some bugs -- and I want to reserve judgement until 2.0 stable
+/// 1) DDC can't @override methods without parameters with optional parameters, while Dart2JS and DartVM can.
+const Object ddcSupportHack = const _DDCSupportHack();

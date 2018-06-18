@@ -515,7 +515,8 @@ class _findLongestMatchCursor {
 class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements IPartialPattern<TResult>
 {
   // @private final Function(TResult, StringBuffer) formatActions;
-  final List<Function(TResult, StringBuffer)> _formatActions;
+  // todo: check back after Dart 2.0 stable to see if we can bring back type safety here (we can sort of use this in VM, fails in DDC)
+  final List<Function/*(TResult, StringBuffer)*/> _formatActions;
   // This will be null if the pattern is only capable of formatting.
   final Iterable<ParseAction<TResult, TBucket>> _parseActions;
   final TBucket Function() _bucketProvider;
@@ -527,6 +528,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   factory _SteppedPattern(List<Function/*(TResult, StringBuffer)*/> formatActions, Iterable<ParseAction<TResult, TBucket>> parseActions, TBucket Function() bucketProvider,
       PatternFields usedFields, TResult sample)
   {
+    // todo: evaluate and remove:: we don't get to pre-game StringBuffer -- or... can we? Investigate!
     // Format the sample value to work out the expected length, so we
     // can use that when creating a StringBuffer. This will definitely not always
     // be appropriate, but it's a start.
@@ -534,7 +536,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     formatActions.forEach((formatAction) => formatAction(sample, builder));
     var expectedLength = builder.length;
 
-    return new _SteppedPattern._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
+    return new _SteppedPattern<TResult, TBucket>._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
   }
 
   ParseResult<TResult> parse(String text)

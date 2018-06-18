@@ -8,33 +8,31 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'dart:typed_data';
-import 'package:resource/resource.dart';
+// import 'package:resource/resource.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 import 'io.dart';
 
-class _VirtualMachineIO implements PlatformIO {
+class _FlutterMachineIO implements PlatformIO {
+  final dynamic _rootBundle;
+
+  _FlutterMachineIO(this._rootBundle);
+  
   @override
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return new ByteData(0);
-    // var file = new File('${Directory.current.path}/lib/data/$path/$filename');
-    var resource = new Resource("package:time_machine/data/$path/$filename");
 
-    // todo: probably a better way to do this
-    var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
-    return binary;
+    var byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
+    return byteData;
   }
 
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    // var file = new File('${Directory.current.path}/lib/data/$path/$filename');
-    // return JSON.decode(await file.readAsString());
-    
-    var resource = new Resource("package:time_machine/data/$path/$filename");
-    return JSON.decode(await resource.readAsString());
+    var text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
+    return JSON.decode(text);
   }
 }
 
@@ -42,11 +40,11 @@ class _VirtualMachineIO implements PlatformIO {
 // IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {
   static bool _longIdNames = false;
-  
-  // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
-  static Future initialize() async {
+
+  /// Pass in the rootBundle from `import 'package:flutter/services.dart';`
+  static Future initialize(dynamic rootBundle) async {
     // Map IO functions
-    PlatformIO.local = new _VirtualMachineIO();
+    PlatformIO.local = new _FlutterMachineIO(rootBundle);
     
     // todo: for VM, always load everything (happens inside of _figureOutTimeZone)
     // Default provider
@@ -98,7 +96,7 @@ class TimeMachine  {
       }
     }
 
-    allSpecialInstants = allZoneIntervals.map((z) => z.rawStart);
+    allSpecialInstants = allZoneIntervals.map((z) => z.rawStart).toList();
     var badZones = new HashSet<String>();
 
     zones = lessZones;
