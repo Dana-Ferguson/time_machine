@@ -73,7 +73,7 @@ Todo:
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
- - [X] Implement Dart4Web features (default is VM right now)
+ - [X] Implement Dart4Web features
  - [ ] *maybe*: Create simple website with samples (at minimal a samples directory in github)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not included in this repository.

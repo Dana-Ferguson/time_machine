@@ -1,6 +1,6 @@
 name: time_machine
-description: Date and time library for DartVM and Dart4Web with support for timezones, calendars, culture-aware formatting and parsing.
-version: 0.0.4
+description: Date and time library for DartVM, Dart4Web and Flutter with support for timezones, calendars, culture-aware formatting and parsing.
+version: 0.1.0
 homepage: https://github.com/Joshua-Ferguson/time_machine
 author: Dana Ferguson <email@example.com>
 
@@ -9,7 +9,6 @@ environment:
 
 dependencies:
   meta: "^1.1.2"
-#  intl: "^0.15.2"
   logging: "^0.11.3+1"
   quiver_hashcode: "^1.0.0"
   collection: "^1.14.5"

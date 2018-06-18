@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0
+
+- Made some changes to try and less confuse Pana.
+
 ## 0.0.4
 
 - Now works on Flutter, Web, and VM!

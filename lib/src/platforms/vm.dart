@@ -13,7 +13,7 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-import 'io.dart';
+import 'platform_io.dart';
 
 class _VirtualMachineIO implements PlatformIO {
   @override

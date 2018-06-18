@@ -9,7 +9,7 @@ import 'dart:async';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_timezones.dart';
-import 'package:time_machine/src/platforms/io.dart';
+import 'package:time_machine/src/platforms/platform_io.dart';
 
 @internal
 class TzdbIndex {

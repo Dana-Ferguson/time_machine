@@ -36,14 +36,6 @@ Future main() async {
 
     var now = SystemClock.instance.getCurrentInstant();
 
-    print('**************');
-    print(now.inZone(paris));
-    print('**************');
-    print(now.inZone(paris).localDateTime);
-    print('**************');
-    print(now.inZone(paris).localDateTime.time);
-    print('**************');
-
     print('\nBasic');
     print('UTC Time: $now');
     print('Local Time: ${now.inLocalZone()}');

@@ -14,7 +14,7 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
-import 'io.dart';
+import 'platform_io.dart';
 
 class _WebMachineIO implements PlatformIO {
   // todo: now, we are using [Resource] we can move this back out of the Platform directory

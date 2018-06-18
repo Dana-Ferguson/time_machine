@@ -10,7 +10,7 @@ import 'dart:collection';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/src/platforms/io.dart';
+import 'package:time_machine/src/platforms/platform_io.dart';
 
 @internal
 class CultureLoader {
