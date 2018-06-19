@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Broke some things while making this work on many platforms. Fixed them (still need to do unit tests on js).
+
 ## 0.1.0
 
 - Made some changes to try and less confuse Pana.

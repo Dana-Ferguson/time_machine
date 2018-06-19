@@ -24,8 +24,7 @@ class LocalDate implements Comparable<LocalDate> {
   static LocalDate get minIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.iso));
 
   /// Constructs an instance from values which are assumed to already have been validated.
-  // todo: this one seems like it might be trouble (is this truly protected from being used as an external API?)
-  @visibleForTesting @internal LocalDate.trusted(this._yearMonthDayCalendar);
+  @internal LocalDate.trusted(this._yearMonthDayCalendar);
 
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
