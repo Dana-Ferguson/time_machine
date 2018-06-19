@@ -575,7 +575,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     // if StringBuffer gets an initial size: pass in expectedLength
     StringBuffer builder = new StringBuffer();
     // This will call all the actions in the multicast delegate.
-    _formatActions.forEach((formatAction) => formatAction(value, builder));
+     _formatActions.forEach((formatAction) => formatAction(value, builder));
     /* todo: remove me
     for (var formatAction in _formatActions) {
       var x = builder.toString();

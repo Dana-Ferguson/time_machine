@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -17,6 +18,7 @@ import 'time_machine_testing.dart';
 DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
 
 Future main() async {
+  await TimeMachine.initialize();
   Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
   await runTests();
 }

@@ -7,6 +7,7 @@ import 'dart:math' as math;
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -20,6 +21,7 @@ import '../time_machine_testing.dart';
 /// decided to stop using DST, it changed its standard offset to be what had previously
 /// been its DST offset, i.e. +1.)
 Future main() async {
+  await TimeMachine.initialize();
   Algiers = await (await DateTimeZoneProviders.tzdb)["Africa/Algiers"];
 
   await runTests();

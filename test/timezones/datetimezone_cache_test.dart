@@ -7,6 +7,7 @@ import 'dart:math' as math;
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -19,6 +20,7 @@ IDateTimeZoneProvider Tzdb;
 
 /// Tests for DateTimeZoneCache.
 Future main() async {
+  await TimeMachine.initialize();
   Tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();

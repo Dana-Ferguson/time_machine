@@ -31,17 +31,18 @@ class Span implements Comparable<Span> {
   // todo: We're not day-based here - we could be? (I don't think it's in the cards)
   // This is 104249991 days
   @internal static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
-  @internal static const int minDays = minMillis ~/ TimeConstants.millisecondsPerDay; // ~maxDays; <-- doesn't work in JS // todo: may hard encode if this makes unit tests not work
+  // ~maxDays would be 4190717304 on JS (-104249992 is the correct number)
+  @internal static const int minDays = -104249992; // ~maxDays; <-- doesn't work in JS // todo: may hard encode if this makes unit tests not work
 
   // todo: Convert to BigInt for Dart 2.0
   @internal static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
   @internal static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1
 
   /*BigInteger.One*/;
-
+  
   // 285420 years worth -- we are good for anything;
   @internal static const int maxMillis = Utility.intMaxValueJS;
-  @internal static const int minMillis = Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
+  @internal static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
   // 285420 years max (unlimited on VM)
   final int _milliseconds;

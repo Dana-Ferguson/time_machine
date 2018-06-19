@@ -105,40 +105,40 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "dd MM yyyy HH:mm:ss"
-      ..Text = "Complete mismatch"
+      ..text = "Complete mismatch"
       ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "(c)"
-      ..Text = "(xxx)"
+      ..text = "(xxx)"
       ..Message = TextErrorMessages.noMatchingCalendarSystem,
     // 24 as an hour is only valid when the time is midnight
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
-      ..Text = "2011-10-19 24:00:05"
+      ..text = "2011-10-19 24:00:05"
       ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
-      ..Text = "2011-10-19 24:01:00"
+      ..text = "2011-10-19 24:01:00"
       ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
-      ..Text = "2011-10-19 24:01"
+      ..text = "2011-10-19 24:01"
       ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm"
-      ..Text = "2011-10-19 24:00"
+      ..text = "2011-10-19 24:00"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5).withOffset(Offset.zero)
       ..Message = TextErrorMessages.invalidHour24,
     new Data()
       ..Pattern = "yyyy-MM-dd HH"
-      ..Text = "2011-10-19 24"
+      ..text = "2011-10-19 24"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5).withOffset(Offset.zero)
       ..Message = TextErrorMessages.invalidHour24,
 
     new Data()
       ..Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>"
-      ..Text = "2011-10-19 16:02 +15:00"
+      ..text = "2011-10-19 16:02 +15:00"
       ..Message = TextErrorMessages.timeSeparatorMismatch,
   ];
 
@@ -146,11 +146,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     // Parse-only tests from LocalDateTimeTest.
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "dd MM yyyy"
-      ..Text = "19 10 2011"
+      ..text = "19 10 2011"
       ..Template = new LocalDateTime.at(2000, 1, 1, 16, 05, seconds: 20).withOffset(Offset.zero),
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "HH:mm:ss"
-      ..Text = "16:05:20"
+      ..text = "16:05:20"
       ..Template = new LocalDateTime.at(2011, 10, 19, 0, 0).withOffset(Offset.zero),
 
     // Parsing using the semi-colon "comma dot" specifier
@@ -163,7 +163,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         20,
         352)
       ..Pattern = "yyyy-MM-dd HH:mm:ss;fff"
-      ..Text = "2011-10-19 16:05:20,352",
+      ..text = "2011-10-19 16:05:20,352",
     new Data.e(
         2011,
         10,
@@ -173,33 +173,33 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         20,
         352)
       ..Pattern = "yyyy-MM-dd HH:mm:ss;FFF"
-      ..Text = "2011-10-19 16:05:20,352",
+      ..text = "2011-10-19 16:05:20,352",
 
     // 24:00 meaning "start of next day"
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm:ss"
-      ..Text = "2011-10-19 24:00:00",
+      ..text = "2011-10-19 24:00:00",
     new Data.b(2011, 10, 20, 0, 0, new Offset.fromHours(1))
       ..Pattern = "yyyy-MM-dd HH:mm:ss o<+HH>"
-      ..Text = "2011-10-19 24:00:00 +01"
+      ..text = "2011-10-19 24:00:00 +01"
       ..Template = new LocalDateTime.at(1970, 1, 1, 0, 5).withOffset(new Offset.fromHours(-5)),
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH:mm"
-      ..Text = "2011-10-19 24:00",
+      ..text = "2011-10-19 24:00",
     new Data.a(2011, 10, 20)
       ..Pattern = "yyyy-MM-dd HH"
-      ..Text = "2011-10-19 24",
+      ..text = "2011-10-19 24",
   ];
 
   @internal List<Data> FormatOnlyData = [
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..Pattern = "ddd yyyy"
-      ..Text = "Wed 2011",
+      ..text = "Wed 2011",
 
     // Our template value has an offset of 0, but the value has an offset of 1... which is ignored by the pattern
     new Data(MsdnStandardExample)
       ..Pattern = "yyyy-MM-dd HH:mm:ss.FF"
-      ..Text = "2009-06-15 13:45:30.09"
+      ..text = "2009-06-15 13:45:30.09"
   ];
 
   @internal List<Data> FormatAndParseData = [
@@ -207,11 +207,11 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd'T'HH:mm:ss.FFFFFFF o<G>"
-      ..Text = "(ISO) 2009-06-15T13:45:30.09 +01"
+      ..text = "(ISO) 2009-06-15T13:45:30.09 +01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..Pattern = "uuuu-MM-dd(c';'o<g>)'T'HH:mm:ss.FFFFFFF"
-      ..Text = "2009-06-15(ISO;+01)T13:45:30.09"
+      ..text = "2009-06-15(ISO;+01)T13:45:30.09"
       ..Culture = TestCultures.EnUs,
 
 // todo: @SkipMe.unimplemented()
@@ -222,24 +222,24 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDateTimePattern.generalIso
       ..Pattern = "G"
-      ..Text = "2009-06-15T13:45:30+01"
+      ..text = "2009-06-15T13:45:30+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.extendedIso
       ..Pattern = "o"
-      ..Text = "2009-06-15T13:45:30.09+01"
+      ..text = "2009-06-15T13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.fullRoundtrip
       ..Pattern = "r"
-      ..Text = "2009-06-15T13:45:30.09+01 (ISO)"
+      ..text = "2009-06-15T13:45:30.09+01 (ISO)"
       ..Culture = TestCultures.FrFr,
 
     // Property-only patterns            
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.rfc3339
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
-      ..Text = "2009-06-15T13:45:30.09+01:00"
+      ..text = "2009-06-15T13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,
 
     // Custom embedded patterns (or mixture of custom and standard)
@@ -252,7 +252,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> o<g>"
-      ..Text = "2015*10*24X11_55_30 +03",
+      ..text = "2015*10*24X11_55_30 +03",
     new Data.d(
         2015,
         10,
@@ -262,7 +262,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd> o<g>"
-      ..Text = "11_55_30Y2015*10*24 +03",
+      ..text = "11_55_30Y2015*10*24 +03",
     new Data.d(
         2015,
         10,
@@ -272,7 +272,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "l<HH_mm_ss'Y'yyyy*MM*dd> o<g>"
-      ..Text = "11_55_30Y2015*10*24 +03",
+      ..text = "11_55_30Y2015*10*24 +03",
     new Data.d(
         2015,
         10,
@@ -282,7 +282,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "ld<d>'X'lt<HH_mm_ss> o<g>"
-      ..Text = "10/24/2015X11_55_30 +03",
+      ..text = "10/24/2015X11_55_30 +03",
     new Data.d(
         2015,
         10,
@@ -292,7 +292,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "ld<yyyy*MM*dd>'X'lt<T> o<g>"
-      ..Text = "2015*10*24X11:55:30 +03",
+      ..text = "2015*10*24X11:55:30 +03",
 
     // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
     new Data.d(
@@ -304,7 +304,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "ld<D> lt<r> o<g>"
-      ..Text = "Saturday, 24 October 2015 11:55:30 +03",
+      ..text = "Saturday, 24 October 2015 11:55:30 +03",
     new Data.d(
         2015,
         10,
@@ -314,7 +314,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         0,
         AthensOffset)
       ..Pattern = "l<f> o<g>"
-      ..Text = "Saturday, 24 October 2015 11:55 +03",
+      ..text = "Saturday, 24 October 2015 11:55 +03",
     new Data.d(
         2015,
         10,
@@ -324,7 +324,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "l<F> o<g>"
-      ..Text = "Saturday, 24 October 2015 11:55:30 +03",
+      ..text = "Saturday, 24 October 2015 11:55:30 +03",
     new Data.d(
         2015,
         10,
@@ -334,7 +334,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         0,
         AthensOffset)
       ..Pattern = "l<g> o<g>"
-      ..Text = "10/24/2015 11:55 +03",
+      ..text = "10/24/2015 11:55 +03",
     new Data.d(
         2015,
         10,
@@ -344,7 +344,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "l<G> o<g>"
-      ..Text = "10/24/2015 11:55:30 +03",
+      ..text = "10/24/2015 11:55:30 +03",
 
     // Nested embedded patterns
     new Data.d(
@@ -356,7 +356,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "l<ld<D> lt<r>> o<g>"
-      ..Text = "Saturday, 24 October 2015 11:55:30 +03",
+      ..text = "Saturday, 24 October 2015 11:55:30 +03",
     new Data.d(
         2015,
         10,
@@ -366,17 +366,17 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
         30,
         AthensOffset)
       ..Pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> o<g>"
-      ..Text = "X11_55_30Y2015*10*24X +03",
+      ..text = "X11_55_30Y2015*10*24X +03",
 
     // Check that unquoted T still works.
     new Data.c(2012, 1, 31, 17, 36, 45)
-      ..Text = "2012-01-31T17:36:45"
+      ..text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-ddTHH:mm:ss",
 
     // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "d MMMM yyyy (g) h:mm:ss.FF tt o<g>"
-      ..Text = "15 June 2009 (A.D.) 1:45:30.09 PM +01",
+      ..text = "15 June 2009 (A.D.) 1:45:30.09 PM +01",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);

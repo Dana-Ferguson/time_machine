@@ -26,7 +26,7 @@ abstract class PatternTestData<T> {
   @internal String Pattern;
 
   /// String value to be parsed, and expected result of formatting.
-  @internal String Text;
+  @internal String text;
 
   /// Template value to specify in the pattern
   @internal T Template;
@@ -49,13 +49,13 @@ abstract class PatternTestData<T> {
   @internal void TestParse() {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
-    var result = pattern.parse(Text);
+    var result = pattern.parse(text);
     var actualValue = result.value;
     expect(actualValue, Value);
 
     if (StandardPattern != null) {
       assert(Value == StandardPattern
-          .parse(Text)
+          .parse(text)
           .value);
     }
   }
@@ -63,17 +63,17 @@ abstract class PatternTestData<T> {
   @internal void TestFormat() {
     assert(Message == null);
     IPattern<T> pattern = CreatePattern();
-    expect(pattern.format(Value), Text);
+    expect(pattern.format(Value), text);
 
     if (StandardPattern != null) {
-      expect(StandardPattern.format(Value), Text);
+      expect(StandardPattern.format(Value), text);
     }
   }
 
   @internal void TestParsePartial() {
     var pattern = CreatePartialPattern();
     assert(Message == null);
-    var cursor = new ValueCursor("^" + Text + "#");
+    var cursor = new ValueCursor("^" + text + "#");
     // Move to the ^
     cursor.moveNext();
     // Move to the start of the text
@@ -94,7 +94,7 @@ abstract class PatternTestData<T> {
     var builder = new StringBuffer("x");
     pattern.appendFormat(Value, builder);
     // assert("x" + Text == builder.toString());
-    expect(builder.toString(), "x" + Text );
+    expect(builder.toString(), "x" + text );
   }
 
   @internal void TestInvalidPattern() {
@@ -114,7 +114,7 @@ abstract class PatternTestData<T> {
     String expectedMessage = FormatMessage(Message, Parameters);
     IPattern<T> pattern = CreatePattern();
 
-    var result = pattern.parse(Text);
+    var result = pattern.parse(text);
     assert(result.success == false);
     try {
       result.getValueOrThrow();
@@ -134,7 +134,7 @@ abstract class PatternTestData<T> {
       StringBuffer builder = new StringBuffer();
       builder.write("Value=$Value; ");
       builder.write("Pattern=$Pattern; ");
-      builder.write("Text=$Text; ");
+      builder.write("Text=$text; ");
       if (Culture != CultureInfo.invariantCulture) {
         builder.write("Culture=$Culture; ");
       }

@@ -30,7 +30,7 @@ class PeriodPattern implements IPattern<Period> {
   /// if the period contains more than [System.Int64.MaxValue] ticks when the
   /// combined weeks/days/time portions are considered. Such a period could never
   /// be useful anyway, however.
-  static final PeriodPattern NormalizingIso = new PeriodPattern._(new _NormalizingIsoPatternImpl());
+  static final PeriodPattern normalizingIso = new PeriodPattern._(new _NormalizingIsoPatternImpl());
 
   final IPattern<Period> _pattern;
 
@@ -295,9 +295,9 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         if (negative) {
           totalNanoseconds = -totalNanoseconds;
         }
-        builder.milliseconds = (totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond) % TimeConstants.millisecondsPerSecond;
-        builder.ticks = (totalNanoseconds ~/ TimeConstants.nanosecondsPerTick) % TimeConstants.ticksPerMillisecond;
-        builder.nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerTick;
+        builder.milliseconds = csharpMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
+        builder.ticks = csharpMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerTick, TimeConstants.ticksPerMillisecond);
+        builder.nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerTick);
 
         if (valueCursor.current != 'S') {
           return ParseResult.mismatchedCharacter<Period>(valueCursor, 'S');

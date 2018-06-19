@@ -7,6 +7,7 @@ import 'dart:math' as math;
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
@@ -29,6 +30,7 @@ Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21);
 /// 2010 fall transition: October 31st
 /// 2011 spring transition: March 27th
 Future main() async {
+  await TimeMachine.initialize();
   Tzdb = await DateTimeZoneProviders.tzdb;
   // Make sure we deal with the uncached time zone
   Paris = Uncached(await Tzdb["Europe/Paris"]);

@@ -73,10 +73,10 @@ class TestCaseData {
 int _skippedTotal = 0;
 
 Future runTests() async {
-// this doesn't work, but I believe it should
-// var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
-// this works! (but will require more boilerplate than I want)
-// var lib4 = currentMirrorSystem().findLibrary(new Symbol("testFx"));
+  // this doesn't work, but I believe it should
+  // var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
+  // this works! (but will require more boilerplate than I want)
+  // var lib4 = currentMirrorSystem().findLibrary(new Symbol("testFx"));
 
   var testLibs = currentMirrorSystem()
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))

@@ -73,17 +73,17 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @internal List<Data> ParseFailureData = [
     new Data()
       ..Pattern = "dd MM yyyy"
-      ..Text = "Complete mismatch"
+      ..text = "Complete mismatch"
       ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["dd"]),
     new Data()
       ..Pattern = "dd MM yyyy"
-      ..Text = "29 02 2001"
+      ..text = "29 02 2001"
       ..Message = TextErrorMessages.dayOfMonthOutOfRange
       ..Parameters.addAll([29, 2, 2001]),
     new Data()
       ..Pattern = "(c)"
-      ..Text = "(xxx)"
+      ..text = "(xxx)"
       ..Message = TextErrorMessages.noMatchingCalendarSystem,
   ];
 
@@ -92,13 +92,13 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   @internal List<Data> FormatOnlyData = [
     new Data.ymdo(2011, 10, 19)
       ..Pattern = "ddd yyyy"
-      ..Text = "Wed 2011",
+      ..text = "Wed 2011",
 
     // Our template value has an offset of 0, but the value has an offset of 1.
     // The pattern doesn't include the offset, so that information is lost - no round-trip.
     new Data(MsdnStandardExample)
       ..Pattern = "yyyy-MM-dd"
-      ..Text = "2009-06-15"
+      ..text = "2009-06-15"
   ];
 
   @internal List<Data> FormatAndParseData = [
@@ -106,11 +106,11 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     // Calendar patterns are invariant
     new Data(MsdnStandardExample)
       ..Pattern = "(c) uuuu-MM-dd o<G>"
-      ..Text = "(ISO) 2009-06-15 +01"
+      ..text = "(ISO) 2009-06-15 +01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..Pattern = "uuuu-MM-dd(c';'o<g>)"
-      ..Text = "2009-06-15(ISO;+01)"
+      ..text = "2009-06-15(ISO;+01)"
       ..Culture = TestCultures.EnUs,
 //new Data(SampleOffsetDateCoptic) ..Pattern = "(c) uuuu-MM-dd o<G>"..Text = "(Coptic) 1976-06-19 Z"..Culture = TestCultures.FrFr ,
 //new Data(SampleOffsetDateCoptic) ..Pattern = "uuuu-MM-dd'C'c o<g>"..Text = "1976-06-19CCoptic +00"..Culture = TestCultures.EnUs ,
@@ -119,34 +119,34 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDatePattern.generalIso
       ..Pattern = "G"
-      ..Text = "2009-06-15+01"
+      ..text = "2009-06-15+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDatePattern.fullRoundtrip
       ..Pattern = "r"
-      ..Text = "2009-06-15+01 (ISO)"
+      ..text = "2009-06-15+01 (ISO)"
       ..Culture = TestCultures.FrFr,
 
     // Custom embedded patterns (or mixture of custom and standard)
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<yyyy*MM*dd>'X'o<g>"
-      ..Text = "2015*10*24X+03",
+      ..text = "2015*10*24X+03",
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<d>'X'o<g>"
-      ..Text = "10/24/2015X+03",
+      ..text = "10/24/2015X+03",
 
     // Standard embedded patterns.
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<D> o<g>"
-      ..Text = "Saturday, 24 October 2015 +03",
+      ..text = "Saturday, 24 October 2015 +03",
     new Data.ymdo(2015, 10, 24, AthensOffset)
       ..Pattern = "l<d> o<g>"
-      ..Text = "10/24/2015 +03",
+      ..text = "10/24/2015 +03",
 
     // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "d MMMM yyyy (g) o<g>"
-      ..Text = "15 June 2009 (A.D.) +01",
+      ..text = "15 June 2009 (A.D.) +01",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);

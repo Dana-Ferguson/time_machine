@@ -63,17 +63,17 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   @internal List<Data> ParseFailureData = [
     new Data()
-      ..Text = "rubbish"
+      ..text = "rubbish"
       .. Pattern = "yyyyMMdd'T'HH:mm:ss"
       ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["yyyy"]),
     new Data()
-      ..Text = "17 6"
+      ..text = "17 6"
       .. Pattern = "HH h"
       ..Message = TextErrorMessages.inconsistentValues2
       ..Parameters.addAll(['H', 'h', 'LocalTime']),
     new Data()
-      ..Text = "17 AM"
+      ..text = "17 AM"
       .. Pattern = "HH tt"
       ..Message = TextErrorMessages.inconsistentValues2
       ..Parameters.addAll(['H', 't', 'LocalTime']),
@@ -117,30 +117,30 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
   @internal final List<Data> FormatAndParseData = [
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
-      ..Text = "2012-01-31T17:36:45"
+      ..text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-dd'T'HH:mm:ss",
     // Check that unquoted T still works.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
-      .. Text = "2012-01-31T17:36:45"
+      .. text = "2012-01-31T17:36:45"
       ..Pattern = "yyyy-MM-ddTHH:mm:ss",
     new Data.fromUtc(2012, 4, 28, 0, 0, 0)
-      .. Text = "2012 avr. 28"
+      .. text = "2012 avr. 28"
       ..Pattern = "yyyy MMM dd"
       ..Culture = TestCultures.FrFr,
     new Data()
-      ..Text = " 1970 "
+      ..text = " 1970 "
       ..Pattern = " yyyy ",
     new Data(Instant.minValue)
-      ..Text = "-9998-01-01T00:00:00Z"
+      ..text = "-9998-01-01T00:00:00Z"
       ..Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
     new Data(Instant.maxValue)
-      ..Text = "9999-12-31T23:59:59.999999999Z"
+      ..text = "9999-12-31T23:59:59.999999999Z"
       ..Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
 
     // General pattern has no standard single character.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..StandardPattern = InstantPattern.general
-      ..Text = "2012-01-31T17:36:45Z"
+      ..text = "2012-01-31T17:36:45Z"
       ..Pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
   ];
 

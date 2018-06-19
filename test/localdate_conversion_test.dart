@@ -23,7 +23,7 @@ void AtMidnight()
 {
   LocalDate date = new LocalDate(2011, 6, 29);
   LocalDateTime expected = new LocalDateTime.at(2011, 6, 29, 0, 0);
-  expect(expected, date.atMidnight);
+  expect(date.atMidnight(), expected);
 }
 
 @Test()

@@ -44,7 +44,7 @@ class ZonedDateTime {
   /// [zone]: The time zone.
   /// [calendar]: The calendar system, defaulting to ISO.
   factory ZonedDateTime([Instant instant = const Instant(), DateTimeZone zone, CalendarSystem calendar]) {
-    zone = Preconditions.checkNotNull(zone, 'zone');
+    // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = new OffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
     return new ZonedDateTime.trusted(_offsetDateTime, _zone);

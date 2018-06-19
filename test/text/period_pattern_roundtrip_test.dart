@@ -35,71 +35,71 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
 
   @internal List<Data> ParseFailureData = [
     new Data()
-      ..Text = "X5H"
+      ..text = "X5H"
       ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['P']),
     new Data()
-      ..Text = ""
+      ..text = ""
       ..Message = TextErrorMessages.valueStringEmpty,
     new Data()
-      ..Text = "PJ"
+      ..text = "PJ"
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "P5J"
+      ..text = "P5J"
       ..Message = TextErrorMessages.invalidUnitSpecifier
       ..Parameters.addAll(['J']),
     new Data()
-      ..Text = "P5D10M"
+      ..text = "P5D10M"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['M']),
     new Data()
-      ..Text = "P6M5D6D"
+      ..text = "P6M5D6D"
       ..Message = TextErrorMessages.repeatedUnitSpecifier
       ..Parameters.addAll(['D']),
     new Data()
-      ..Text = "PT5M10H"
+      ..text = "PT5M10H"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
-      ..Text = "P5H"
+      ..text = "P5H"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
-      ..Text = "PT5Y"
+      ..text = "PT5Y"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['Y']),
     new Data()
-      ..Text = "PX"
+      ..text = "PX"
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "P10M-"
+      ..text = "P10M-"
       ..Message = TextErrorMessages.endOfString,
     new Data()
-      ..Text = "P5"
+      ..text = "P5"
       ..Message = TextErrorMessages.endOfString,
     new Data()
-      ..Text = "P9223372036854775808H"
+      ..text = "P9223372036854775808H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
-      ..Text = "P-9223372036854775809H"
+      ..text = "P-9223372036854775809H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
-      ..Text = "P10000000000000000000H"
+      ..text = "P10000000000000000000H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
-      ..Text = "P-10000000000000000000H"
+      ..text = "P-10000000000000000000H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-10000000000000000000", 'Period']),
   ];
 
   @internal List<Data> ParseOnlyData = [
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT005H",
+      ..text = "PT005H",
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT00000000000000000000005H",
+      ..text = "PT00000000000000000000005H",
   ];
 
   // This pattern round-trips, so we can always parse what we format.
@@ -107,59 +107,59 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
 
   @internal static final List<Data> FormatAndParseData = [
     new Data(Period.Zero)
-      ..Text = "P",
+      ..text = "P",
 
     // All single values                                                                
     new Data.builder(new PeriodBuilder()..years = 5)
-      ..Text = "P5Y",
+      ..text = "P5Y",
     new Data.builder(new PeriodBuilder()..months = 5)
-      ..Text = "P5M",
+      ..text = "P5M",
     new Data.builder(new PeriodBuilder()..weeks = 5)
-      ..Text = "P5W",
+      ..text = "P5W",
     new Data.builder(new PeriodBuilder()..days = 5)
-      ..Text = "P5D",
+      ..text = "P5D",
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT5H",
+      ..text = "PT5H",
     new Data.builder(new PeriodBuilder()..minutes = 5)
-      ..Text = "PT5M",
+      ..text = "PT5M",
     new Data.builder(new PeriodBuilder()..seconds = 5)
-      ..Text = "PT5S",
+      ..text = "PT5S",
     new Data.builder(new PeriodBuilder()..milliseconds = 5)
-      ..Text = "PT5s",
+      ..text = "PT5s",
     new Data.builder(new PeriodBuilder()..ticks = 5)
-      ..Text = "PT5t",
+      ..text = "PT5t",
     new Data.builder(new PeriodBuilder()..nanoseconds = 5)
-      ..Text = "PT5n",
+      ..text = "PT5n",
 
     // No normalization
     new Data.builder(new PeriodBuilder()
       ..hours = 25
       ..minutes = 90)
-      ..Text = "PT25H90M",
+      ..text = "PT25H90M",
 
     // Compound, negative and zero tests
     new Data.builder(new PeriodBuilder()
       ..years = 5
       ..months = 2)
-      ..Text = "P5Y2M",
+      ..text = "P5Y2M",
     new Data.builder(new PeriodBuilder()
       ..months = 1
       ..hours = 0)
-      ..Text = "P1M",
+      ..text = "P1M",
     new Data.builder(new PeriodBuilder()
       ..months = 1
       ..minutes = -1)
-      ..Text = "P1MT-1M",
+      ..text = "P1MT-1M",
     new Data.builder(new PeriodBuilder()
       ..hours = 1
       ..minutes = -1)
-      ..Text = "PT1H-1M",
+      ..text = "PT1H-1M",
 
     // Max/min
     new Data(new Period.fromHours(Utility.int64MaxValue))
-      ..Text = "PT9223372036854775807H",
+      ..text = "PT9223372036854775807H",
     new Data(new Period.fromHours(Utility.int64MinValue))
-      ..Text = "PT-9223372036854775808H",
+      ..text = "PT-9223372036854775808H",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);

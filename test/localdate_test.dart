@@ -40,12 +40,13 @@ void CombinationWithTime()
   expect(expected, time.atDate(date));
 }
 
+/* null is the default calendar argument (so we can have less constructors) and defaults to an iso calendar
 @Test()
 void Construction_NullCalendar_Throws()
 {
   expect(() => new LocalDate(2017, 11, 7, null), throwsArgumentError, reason: "Basic construction.");
   expect(() => new LocalDate.forEra(Era.common, 2017, 11, 7, null), throwsArgumentError, reason: "Construction including era.");
-}
+}*/
 
 @Test()
 void MaxIsoValue()

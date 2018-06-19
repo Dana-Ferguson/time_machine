@@ -7,6 +7,7 @@ import 'dart:math' as math;
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
@@ -17,6 +18,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
   await runTests();
 }
 
@@ -331,6 +333,7 @@ void Equality()
   expect(sample, isNot(withOtherCalendar));
 }
 
+/* These no longer throw argument errors, since we combined constructors and nulls have default
 @Test()
 void Constructor_ArgumentValidation()
 {
@@ -338,7 +341,7 @@ void Constructor_ArgumentValidation()
   // expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), null), throwsArgumentError);
   expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), null, CalendarSystem.iso), throwsArgumentError);
   expect(() => new ZonedDateTime(new Instant.fromUnixTimeTicks(1000), SampleZone, null), throwsArgumentError);
-}
+}*/
 
 @Test()
 void Construct_FromLocal_ValidUnambiguousOffset()

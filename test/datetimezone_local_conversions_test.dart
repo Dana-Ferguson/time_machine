@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
@@ -29,6 +30,8 @@ DateTimeZone NewYork;
 DateTimeZone Pacific;
 
 Future main() async {
+  await TimeMachine.initialize();
+  
   LosAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
   NewZealand = await (await DateTimeZoneProviders.tzdb)["Pacific/Auckland"];
   Paris = await (await DateTimeZoneProviders.tzdb)["Europe/Paris"];

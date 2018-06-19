@@ -36,172 +36,182 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
 
   @internal final List<Data> ParseFailureData = [
     new Data()
-      ..Text = "X5H"
+      ..text = "X5H"
       ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['P']),
     new Data()
-      ..Text = ""
+      ..text = ""
       ..Message = TextErrorMessages.valueStringEmpty,
     new Data()
-      ..Text = "P5J"
+      ..text = "P5J"
       ..Message = TextErrorMessages.invalidUnitSpecifier
       ..Parameters.addAll(['J']),
     new Data()
-      ..Text = "P5D10M"
+      ..text = "P5D10M"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['M']),
     new Data()
-      ..Text = "P6M5D6D"
+      ..text = "P6M5D6D"
       ..Message = TextErrorMessages.repeatedUnitSpecifier
       ..Parameters.addAll(['D']),
     new Data()
-      ..Text = "PT5M10H"
+      ..text = "PT5M10H"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
-      ..Text = "P5H"
+      ..text = "P5H"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['H']),
     new Data()
-      ..Text = "PT5Y"
+      ..text = "PT5Y"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['Y']),
     // Invalid in ISO.
     new Data()
-      ..Text = "P"
+      ..text = "P"
       ..Message = TextErrorMessages.emptyPeriod,
     new Data()
-      ..Text = "PX"
+      ..text = "PX"
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "P10M-"
+      ..text = "P10M-"
       ..Message = TextErrorMessages.endOfString,
     new Data()
-      ..Text = "P5"
+      ..text = "P5"
       ..Message = TextErrorMessages.endOfString,
     new Data()
-      ..Text = "PT9223372036854775808H"
+      ..text = "PT9223372036854775808H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
-      ..Text = "PT-9223372036854775809H"
+      ..text = "PT-9223372036854775809H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
-      ..Text = "PT10000000000000000000H"
+      ..text = "PT10000000000000000000H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
-      ..Text = "PT-10000000000000000000H"
+      ..text = "PT-10000000000000000000H"
       ..Message = TextErrorMessages.valueOutOfRange
       ..Parameters.addAll(["-10000000000000000000", 'Period']),
     new Data()
-      ..Text = "P5.5S"
+      ..text = "P5.5S"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['.']),
     new Data()
-      ..Text = "PT.5S"
+      ..text = "PT.5S"
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "PT0.5X"
+      ..text = "PT0.5X"
       ..Message = TextErrorMessages.mismatchedCharacter
       ..Parameters.addAll(['S']),
     new Data()
-      ..Text = "PT0.X"
+      ..text = "PT0.X"
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "PT5S0.5S"
+      ..text = "PT5S0.5S"
       ..Message = TextErrorMessages.misplacedUnitSpecifier
       ..Parameters.addAll(['.']),
     new Data()
-      ..Text = "PT5."
+      ..text = "PT5."
       ..Message = TextErrorMessages.missingNumber,
     new Data()
-      ..Text = "PT5.5SX"
+      ..text = "PT5.5SX"
       ..Message = TextErrorMessages.expectedEndOfString
   ];
 
   @internal final List<Data> ParseOnlyData = [
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT005H",
+      ..text = "PT005H",
     new Data.builder(new PeriodBuilder()..milliseconds = 500)
-      ..Text = "PT0,5S",
+      ..text = "PT0,5S",
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT00000000000000000000005H",
+      ..text = "PT00000000000000000000005H",
     new Data.builder(new PeriodBuilder()..weeks = 5)
-      ..Text = "P5W",
+      ..text = "P5W",
   ];
 
   // Only a small amount of testing here - it's around normalization, which is
   // unit tested more thoroughly elsewhere.
+  /*
+    For NodaTime:
+      var b = new PeriodBuilder(); b.Hours = 25; b.Minutes = 90;
+      WriteLine(PeriodPattern.NormalizingIso.Format(b.Build()));
+      
+      Produces: P1DT2H30M
+      
+    The Text is "P1D2H30M" online... todo: what is happening here? do the tests fail on NodaTime.Test:master?
+  */
   @internal final List<Data> FormatOnlyData = [
     new Data.builder(new PeriodBuilder()
       ..hours = 25
       ..minutes = 90)
-      ..Text = "P1D2H30M",
+      ..text = "P1DT2H30M",
     new Data.builder(new PeriodBuilder()..ticks = 12345678)
-      ..Text = "P1.2345678S",
+    // 'T' was added, see above:
+      ..text = "PT1.2345678S",
     new Data.builder(new PeriodBuilder()
       ..hours = 1
       ..minutes = -1)
-      ..Text = "PT59M",
+      ..text = "PT59M",
     new Data.builder(new PeriodBuilder()
       ..hours = -1
       ..minutes = 1)
-      ..Text = "PT-59M",
+      ..text = "PT-59M",
     new Data.builder(new PeriodBuilder()..weeks = 5)
-      ..Text = "P35D",
+      ..text = "P35D",
   ];
 
   @internal final List<Data> FormatAndParseData = [
     new Data(Period.Zero)
-      ..Text = "P0D",
+      ..text = "P0D",
 
     // All single values
     new Data.builder(new PeriodBuilder()..years = 5)
-      ..Text = "P5Y",
+      ..text = "P5Y",
     new Data.builder(new PeriodBuilder()..months = 5)
-      ..Text = "P5M",
+      ..text = "P5M",
     new Data.builder(new PeriodBuilder()..days = 5)
-      ..Text = "P5D",
+      ..text = "P5D",
     new Data.builder(new PeriodBuilder()..hours = 5)
-      ..Text = "PT5H",
+      ..text = "PT5H",
     new Data.builder(new PeriodBuilder()..minutes = 5)
-      ..Text = "PT5M",
+      ..text = "PT5M",
     new Data.builder(new PeriodBuilder()..seconds = 5)
-      ..Text = "PT5S",
+      ..text = "PT5S",
     new Data.builder(new PeriodBuilder()..milliseconds = 5)
-      ..Text = "PT0.005S",
+      ..text = "PT0.005S",
     new Data.builder(new PeriodBuilder()..ticks = 5)
-      ..Text = "PT0.0000005S",
+      ..text = "PT0.0000005S",
     new Data.builder(new PeriodBuilder()..nanoseconds = 5)
-      ..Text = "PT0.000000005S",
+      ..text = "PT0.000000005S",
 
     // Compound, negative and zero tests
     new Data.builder(new PeriodBuilder()
       ..years = 5
       ..months = 2)
-      ..Text = "P5Y2M",
+      ..text = "P5Y2M",
     new Data.builder(new PeriodBuilder()
       ..months = 1
       ..hours = 0)
-      ..Text = "P1M",
+      ..text = "P1M",
     new Data.builder(new PeriodBuilder()
       ..months = 1
       ..minutes = -1)
-      ..Text = "P1MT-1M",
+      ..text = "P1MT-1M",
     new Data.builder(new PeriodBuilder()
       ..seconds = 1
       ..milliseconds = 320)
-      ..Text = "PT1.32S",
+      ..text = "PT1.32S",
     new Data.builder(new PeriodBuilder()..seconds = -1)
-      ..Text = "PT-1S",
+      ..text = "PT-1S",
     new Data.builder(new PeriodBuilder()
       ..seconds = -1
       ..milliseconds = -320)
-      ..Text = "PT-1.32S",
+      ..text = "PT-1.32S",
     new Data.builder(new PeriodBuilder()..milliseconds = -320)
-      ..Text = "PT-0.32S",
+      ..text = "PT-0.32S",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
@@ -215,13 +225,13 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
     print ('Constructor called.');
     for (var sequence in [ ParseFailureData, ParseData, FormatData]) {
       for (var item in sequence) {
-        item.StandardPattern = PeriodPattern.NormalizingIso;
+        item.StandardPattern = PeriodPattern.normalizingIso;
       }
     }
   }
 
   @Test()
-  void ParseNull() => AssertParseNull(PeriodPattern.NormalizingIso);
+  void ParseNull() => AssertParseNull(PeriodPattern.normalizingIso);
 }
 
 

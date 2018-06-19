@@ -56,7 +56,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 
   static int _getPositiveNanosecondOfSecond(Span Span) {
-    return ((Span.nanosecondOfFloorDay) % TimeConstants.nanosecondsPerSecond).abs();
+    return Span.nanosecondOfDay.abs() % TimeConstants.nanosecondsPerSecond;
   }
 
   static CharacterHandler<Span, _SpanParseBucket> _createTotalHandler
@@ -86,13 +86,13 @@ import 'package:time_machine/time_machine_patterns.dart';
       builder.addField(PatternFields.dayOfMonth, pattern.current);
       builder.addField(PatternFields.totalSpan, pattern.current);
       builder.addParseValueAction(count, 8, pattern.current, 0, 16777216, (bucket, value) => bucket.addDays(value));
-      builder.addFormatLeftPad(count, (Span) {
-        int days = Span.floorDays;
+      builder.addFormatLeftPad(count, (span) {
+        int days = span.floorDays;
         if (days >= 0) {
           return days;
         }
         // Round towards 0.
-        return Span.nanosecondOfFloorDay == 0 ? -days : -(days + 1);
+        return span.nanosecondOfFloorDay == 0 ? -days : -(days + 1);
       },
           assumeNonNegative: true,
           assumeFitsInCount: false);
@@ -108,7 +108,7 @@ import 'package:time_machine/time_machine_patterns.dart';
               (bucket, value) => bucket.addUnits(value, nanosecondsPerUnit));
       // This is never used for anything larger than a day, so the day part is irrelevant.
       builder.addFormatLeftPad(count,
-              (Span) => (((Span.nanosecondOfFloorDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
+              (span) => (((span.nanosecondOfDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
           assumeNonNegative: true,
           assumeFitsInCount: count == 2);
     };
@@ -131,7 +131,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       return floorDays * unitsPerDay + Span.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
     }
     else {
-      int nanosecondOfDay = Span.nanosecondOfFloorDay;
+      int nanosecondOfDay = Span.nanosecondOfDay;
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay

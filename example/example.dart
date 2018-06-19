@@ -40,8 +40,6 @@ Future main() async {
     print('UTC Time: $now');
     print('Local Time: ${now.inLocalZone()}');
     print('Paris Time: ${now.inZone(paris)}');
-    
-    var x = now.inLocalZone().toString();
 
     print('\nFormatted');
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');

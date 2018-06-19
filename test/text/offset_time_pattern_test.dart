@@ -65,18 +65,18 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // Failures copied from LocalDateTimePatternTest
     new Data()
       ..Pattern = "HH:mm:ss"
-      ..Text = "Complete mismatch"
+      ..text = "Complete mismatch"
       ..Message = TextErrorMessages.mismatchedNumber
       ..Parameters.addAll(["HH"]),
 
     new Data()
       ..Pattern = "HH:mm:ss o<+HH>"
-      ..Text = "16:02 +15:00"
+      ..text = "16:02 +15:00"
       ..Message = TextErrorMessages.timeSeparatorMismatch,
     // It's not ideal that the type reported is LocalTime rather than OffsetTime, but probably not worth fixing.
     new Data()
       ..Pattern = "HH:mm:ss tt o<+HH>"
-      ..Text = "16:02:00 AM +15:00"
+      ..text = "16:02:00 AM +15:00"
       ..Message = TextErrorMessages.inconsistentValues2
       ..Parameters.addAll(['H', 't', 'LocalTime']),
   ];
@@ -85,10 +85,10 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // Parsing using the semi-colon "comma dot" specifier
     new Data.d(16, 05, 20, 352)
       ..Pattern = "HH:mm:ss;fff"
-      ..Text = "16:05:20,352",
+      ..text = "16:05:20,352",
     new Data.d(16, 05, 20, 352)
       ..Pattern = "HH:mm:ss;FFF"
-      ..Text = "16:05:20,352",
+      ..text = "16:05:20,352",
   ];
 
   @internal List<Data> FormatOnlyData = [
@@ -96,12 +96,12 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // The pattern doesn't include the offset, so that information is lost - no round-trip.
     new Data(MsdnStandardExample)
       ..Pattern = "HH:mm:ss.FF"
-      ..Text = "13:45:30.09",
+      ..text = "13:45:30.09",
     // The value includes milliseconds, which aren't formatted.
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.generalIso
       ..Pattern = "G"
-      ..Text = "13:45:30+01"
+      ..text = "13:45:30+01"
       ..Culture = TestCultures.FrFr,
   ];
 
@@ -112,33 +112,33 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetTimePattern.generalIso
       ..Pattern = "G"
-      ..Text = "13:45:30+01"
+      ..text = "13:45:30+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.extendedIso
       ..Pattern = "o"
-      ..Text = "13:45:30.09+01"
+      ..text = "13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
 
     // Property-only patterns
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.rfc3339
       ..Pattern = "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
-      ..Text = "13:45:30.09+01:00"
+      ..text = "13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,
 
     // Embedded patterns
     new Data.c(11, 55, 30, AthensOffset)
       ..Pattern = "l<HH_mm_ss> o<g>"
-      ..Text = "11_55_30 +03",
+      ..text = "11_55_30 +03",
     new Data.c(11, 55, 30, AthensOffset)
       ..Pattern = "l<T> o<g>"
-      ..Text = "11:55:30 +03",
+      ..text = "11:55:30 +03",
 
     // Fields not otherwise covered
     new Data(MsdnStandardExample)
       ..Pattern = "h:mm:ss.FF tt o<g>"
-      ..Text = "1:45:30.09 PM +01",
+      ..text = "1:45:30.09 PM +01",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
