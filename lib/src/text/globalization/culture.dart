@@ -9,8 +9,18 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 abstract class Cultures {
+  // todo: this is a bandaid ~ we need to rework our infrastructure a bit -- maybe draw some diagrams?
+  // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
+  static bool _loadAllCulturesInformation = false;
+
+  @internal
+  static void loadAllCulturesInformation_SetFlag() {
+    if (_loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
+    _loadAllCulturesInformation = true;
+  }
+  
   static CultureLoader _loader = null;
-  static Future<CultureLoader> get _cultures async => _loader??= await CultureLoader.load();
+  static Future<CultureLoader> get _cultures async => _loader??= await (_loadAllCulturesInformation ? CultureLoader.loadAll() : CultureLoader.load());
 
   static Future<Iterable<String>> get ids async => (await _cultures).cultureIds;
   static Future<CultureInfo> getCulture(String id) async => (await _cultures).getCulture(id);

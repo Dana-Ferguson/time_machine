@@ -53,11 +53,11 @@ export 'src/period_builder.dart';
 // https://github.com/dart-lang/sdk/issues/24581
 import "src/platforms/platform_io.dart"
   if (dart.library.html) "src/platforms/web.dart"
-  if (dart.library.io) "src/platforms/vm.dart"
   // todo: #Hack: No mirrors on flutter
   // see: https://github.com/flutter/flutter/issues/14815
   // If flutter gets `Isolate.resolvePackageUri` then we can merge the vm & flutter functionality
   if (dart.library.mirrors) "src/platforms/flutter.dart"
+  if (dart.library.io) "src/platforms/vm.dart"
 as timeMachine;
 
 abstract class TimeMachine {

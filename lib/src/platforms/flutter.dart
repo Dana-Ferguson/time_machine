@@ -50,6 +50,7 @@ class TimeMachine  {
     // Map IO functions
     PlatformIO.local = new _FlutterMachineIO(rootBundle);
     TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
+    Cultures.loadAllCulturesInformation_SetFlag();
     
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;

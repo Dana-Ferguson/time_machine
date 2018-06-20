@@ -3,24 +3,11 @@
 
 import 'dart:async';
 
-import 'dart:convert';
-import 'package:resource/resource.dart';
-
 // todo: consolidate import packages??? this seems a little much...
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
-
-// Only needed for `await TimeMachine.initialize();`
-// You only need to do this once per isolate.
-// Pick the import based on your platform.
-// Future Hope: This happens via conditional imports under `time_machine.dart`
-// import 'package:time_machine/time_machine_for_vm.dart';
-// import 'package:time_machine/time_machine_for_web.dart';
-// import 'package:time_machine/time_machine_for_flutter.dart';
-
-// import 'package:time_machine/data/zones.json' as zones;
 
 Future main() async {
   // todo: demonstrate a test clock

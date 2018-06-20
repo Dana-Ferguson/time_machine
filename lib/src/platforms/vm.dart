@@ -50,6 +50,8 @@ class TimeMachine  {
     // Map IO functions
     PlatformIO.local = new _VirtualMachineIO();
     TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
+    // todo: we want this for flutter -- do we want this for the VM too?
+    Cultures.loadAllCulturesInformation_SetFlag();
     
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;

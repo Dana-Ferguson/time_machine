@@ -19,6 +19,29 @@ class CultureLoader {
     return new CultureLoader._(new HashSet.from(map));
   }
 
+  static Future<CultureLoader> loadAll() async {
+    // This won't have any filenames in it.
+    // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
+    var cultureIds = new HashSet<String>();
+    var cache = <String, CultureInfo>{};
+
+    var binary = await PlatformIO.local.getBinary('cultures', 'cultures.bin');
+    var reader = new CultureReader(binary);
+
+    while (reader.isMore) {
+      var zone = reader.readCultureInfo();
+      cache[zone.name] = zone;
+      cultureIds.add(zone.name);
+    }
+
+    // todo: this is a good thing to log? (todo: research whether it's ok for libraries in Dart to log)
+    // print('Total ${cache.length} zones loaded');
+
+    var index = new CultureLoader._(cultureIds);
+    cache.forEach((id, zone) => index._cache[id] = zone);
+    return index;
+  }
+
   CultureLoader._(this._cultureIds);
   
   static Future<List<String>> _loadCultureMapping() async {
