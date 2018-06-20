@@ -154,7 +154,7 @@ void PlusWeeks_Simple()
 void PlusDays_OutOfRange(int year, int month, int day, int days)
 {
   var start = new LocalDate(year, month, day);
-  TestHelper.AssertOverflow(start.plusDays, days);
+  TestHelper.AssertOverflow<int, LocalDate>(start.plusDays, days);
 }
 
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";

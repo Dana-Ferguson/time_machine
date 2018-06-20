@@ -24,7 +24,8 @@ final CalendarSystem Iso = CalendarSystem.iso;
 @TestCase(const [9999])
 void GetMonthsInYear_Valid(int year)
 {
-  TestHelper.AssertValid(Iso.getMonthsInYear, year);
+  // note: Dart should be able to infer the types here? But 2.0.0-dev.63.0 is not.
+  TestHelper.AssertValid<int, int>(Iso.getMonthsInYear, year);
 }
 
 @Test()
@@ -32,7 +33,7 @@ void GetMonthsInYear_Valid(int year)
 @TestCase(const [10000])
 void GetMonthsInYear_Invalid(int year)
 {
-  TestHelper.AssertOutOfRange(Iso.getMonthsInYear, year);
+  TestHelper.AssertOutOfRange<int, int>(Iso.getMonthsInYear, year);
 }
 
 @Test()
@@ -40,7 +41,7 @@ void GetMonthsInYear_Invalid(int year)
 @TestCase(const [9999, 12])
 void GetDaysInMonth_Valid(int year, int month)
 {
-  TestHelper.AssertValid2(Iso.getDaysInMonth, year, month);
+  TestHelper.AssertValid2<int, int, int>(Iso.getDaysInMonth, year, month);
 }
 
 @Test()
@@ -50,14 +51,14 @@ void GetDaysInMonth_Valid(int year, int month)
 @TestCase(const [10000, 1])
 void GetDaysInMonth_Invalid(int year, int month)
 {
-  TestHelper.AssertOutOfRange2(Iso.getDaysInMonth, year, month);
+  TestHelper.AssertOutOfRange2<int, int, int>(Iso.getDaysInMonth, year, month);
 }
 
 @Test() @SkipMe.unimplemented()
 void GetDaysInMonth_Hebrew()
 {
-  TestHelper.AssertValid2(CalendarSystem.hebrewCivil.getDaysInMonth, 5402, 13); // Leap year
-  TestHelper.AssertOutOfRange2(CalendarSystem.hebrewCivil.getDaysInMonth, 5401, 13); // Not a leap year
+  TestHelper.AssertValid2<int, int, int>(CalendarSystem.hebrewCivil.getDaysInMonth, 5402, 13); // Leap year
+  TestHelper.AssertOutOfRange2<int, int, int>(CalendarSystem.hebrewCivil.getDaysInMonth, 5401, 13); // Not a leap year
 }
 
 @Test()
@@ -65,7 +66,7 @@ void GetDaysInMonth_Hebrew()
 @TestCase(const [9999])
 void IsLeapYear_Valid(int year)
 {
-  TestHelper.AssertValid(Iso.isLeapYear, year);
+  TestHelper.AssertValid<int, bool>(Iso.isLeapYear, year);
 }
 
 @Test()
@@ -73,7 +74,7 @@ void IsLeapYear_Valid(int year)
 @TestCase(const [10000])
 void IsLeapYear_Invalid(int year)
 {
-  TestHelper.AssertOutOfRange(Iso.isLeapYear, year);
+  TestHelper.AssertOutOfRange<int, bool>(Iso.isLeapYear, year);
 }
 
 @Test()
@@ -81,7 +82,7 @@ void IsLeapYear_Invalid(int year)
 @TestCase(const [9999])
 void GetAbsoluteYear_ValidCe(int year)
 {
-  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.common);
+  TestHelper.AssertValid2<int, Era, int>(Iso.getAbsoluteYear, year, Era.common);
 }
 
 @Test() 
@@ -89,7 +90,7 @@ void GetAbsoluteYear_ValidCe(int year)
 @TestCase(const [9999])
 void GetAbsoluteYear_ValidBce(int year)
 {
-  TestHelper.AssertValid2(Iso.getAbsoluteYear, year, Era.beforeCommon);
+  TestHelper.AssertValid2<int, Era, int>(Iso.getAbsoluteYear, year, Era.beforeCommon);
 }
 
 @Test() 
@@ -97,7 +98,7 @@ void GetAbsoluteYear_ValidBce(int year)
 @TestCase(const [10000])
 void GetAbsoluteYear_InvalidCe(int year)
 {
-  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.common);
+  TestHelper.AssertOutOfRange2<int, Era, int>(Iso.getAbsoluteYear, year, Era.common);
 }
 
 @Test()
@@ -105,44 +106,44 @@ void GetAbsoluteYear_InvalidCe(int year)
 @TestCase(const [10000])
 void GetAbsoluteYear_InvalidBce(int year)
 {
-  TestHelper.AssertOutOfRange2(Iso.getAbsoluteYear, year, Era.beforeCommon);
+  TestHelper.AssertOutOfRange2<int, Era, int>(Iso.getAbsoluteYear, year, Era.beforeCommon);
 }
 
 @Test()
 void GetAbsoluteYear_InvalidEra()
 {
-  TestHelper.AssertInvalid2(Iso.getAbsoluteYear, 1, Era.annoPersico);
+  TestHelper.AssertInvalid2<int, Era, int>(Iso.getAbsoluteYear, 1, Era.annoPersico);
 }
 
 @Test()
 void GetAbsoluteYear_NullEra()
 {
   Era i = null;
-  TestHelper.AssertArgumentNull2(Iso.getAbsoluteYear, 1, i);
+  TestHelper.AssertArgumentNull2<int, Era, int>(Iso.getAbsoluteYear, 1, i);
 }
 
 @Test()
 void GetMinYearOfEra_NullEra()
 {
   Era i = null;
-  TestHelper.AssertArgumentNull(Iso.getMinYearOfEra, i);
+  TestHelper.AssertArgumentNull<Era, int>(Iso.getMinYearOfEra, i);
 }
 
 @Test()
 void GetMinYearOfEra_InvalidEra()
 {
-  TestHelper.AssertInvalid(Iso.getMinYearOfEra, Era.annoPersico);
+  TestHelper.AssertInvalid<Era, int>(Iso.getMinYearOfEra, Era.annoPersico);
 }
 
 @Test()
 void GetMaxYearOfEra_NullEra()
 {
   Era i = null;
-  TestHelper.AssertArgumentNull(Iso.getMaxYearOfEra, i);
+  TestHelper.AssertArgumentNull<Era, int>(Iso.getMaxYearOfEra, i);
 }
 
 @Test()
 void GetMaxYearOfEra_InvalidEra()
 {
-  TestHelper.AssertInvalid(Iso.getMaxYearOfEra, Era.annoPersico);
+  TestHelper.AssertInvalid<Era, int>(Iso.getMaxYearOfEra, Era.annoPersico);
 }

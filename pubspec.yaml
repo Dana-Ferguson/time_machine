@@ -6,14 +6,15 @@ author: Dana Ferguson <email@example.com>
 
 environment:
   sdk: '>=1.20.1 <2.0.0'
+#  sdk: '>=2.0.0-dev.17.0'
 
 dependencies:
   meta: "^1.1.2"
   logging: "^0.11.3+1"
   quiver_hashcode: "^1.0.0"
   collection: "^1.14.5"
-# 2.1.4 is available but requires Dart 2.0 (not yet stable)
   resource: "^2.1.2"
+#  resource: "^2.1.4"
 
 dev_dependencies:
   test: ^0.12.0

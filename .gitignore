@@ -11,3 +11,6 @@ doc/api/
 
 # Directory created by WebStorm
 .idea/
+
+# Something Dart 2.0 related?
+.dart_tool

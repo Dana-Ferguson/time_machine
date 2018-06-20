@@ -114,8 +114,8 @@ It would look just like the VM example.
 
 ```dart
 class Foo {
-  // Okay in Dart_VM 1.24 -- Okay in DartPad -- Okay in Dart2JS
-  // not Okay in DDC
+  // Okay in Dart_VM 1.24 -- Okay in DartPad\Dart2JS
+  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev63 (but no conditional imports? so TimeMachine doesn't work)
   @override String toString([int x = 0, int y = 0, int z = 0]) 
     => '${x + y+ x}';
 }
@@ -129,4 +129,4 @@ void main() {
 
 Overriding `toString()` with optional arguments doesn't work in DDC. We use this technique to provide 
 optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
-Still investigating potential solutions.
+Still investigating potential solutions, but looks like `waiting` might be an okay algorithm.

@@ -365,7 +365,7 @@ void With_DateAdjuster()
 @TestCase(const [1970, 1, 1, Utility.int64MinValue])
 void PlusHours_Overflow(int year, int month, int day, int hours)
 {
-  TestHelper.AssertOverflow(new LocalDateTime.at(year, month, day, 0, 0).plusHours, hours);
+  TestHelper.AssertOverflow<int, LocalDateTime>(new LocalDateTime.at(year, month, day, 0, 0).plusHours, hours);
 }
 
 
