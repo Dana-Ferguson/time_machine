@@ -43,6 +43,8 @@ class _WebMachineIO implements PlatformIO {
   }
 }
 
+Future initialize(dynamic arg) => TimeMachine.initialize();
+
 class TimeMachine {
   // todo: is it okay to have a Logger in a library... can this be 'tree-shaken out' for users who aren't logging?
   static final Logger _log = new Logger('TimeMachine');

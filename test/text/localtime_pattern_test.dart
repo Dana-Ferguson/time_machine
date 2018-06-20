@@ -7,22 +7,15 @@ import 'dart:math' as math;
 import 'dart:mirrors';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_for_vm.dart';
 import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_patterns.dart';
 import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
-import 'package:matcher/matcher.dart';
-import 'package:time_machine/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 import 'pattern_test_base.dart';
 import 'pattern_test_data.dart';
 import 'test_cultures.dart';
-import 'text_cursor_test_base_tests.dart';
 
 @private final List<CultureInfo> _allCultures = [];
 

@@ -36,6 +36,8 @@ class _FlutterMachineIO implements PlatformIO {
   }
 }
 
+Future initialize(dynamic arg) => TimeMachine.initialize(arg);
+
 // todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
 // IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {
@@ -43,6 +45,8 @@ class TimeMachine  {
 
   /// Pass in the rootBundle from `import 'package:flutter/services.dart';`
   static Future initialize(dynamic rootBundle) async {
+    if (rootBundle == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+    
     // Map IO functions
     PlatformIO.local = new _FlutterMachineIO(rootBundle);
     TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
@@ -66,6 +70,7 @@ class TimeMachine  {
     // todo: remove CultureInfo.currentCulture
   }
 
+  // todo: combine this with vm.dart's version
   /// [DateTimeZone] provides the zone interval id for a given instant. We can correlate the (zone interval id, instant) pairs
   /// with known timezones and narrow down which timezone the local computer is in.
   ///

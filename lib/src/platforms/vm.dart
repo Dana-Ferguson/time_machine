@@ -38,6 +38,8 @@ class _VirtualMachineIO implements PlatformIO {
   }
 }
 
+Future initialize(dynamic arg) => TimeMachine.initialize();
+
 // todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
 // IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {

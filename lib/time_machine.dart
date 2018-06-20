@@ -1,6 +1,8 @@
 /// This library provides functions for working with time inside machines running Dart.
 library time_machine;
 
+import 'dart:async';
+
 export 'src/yearmonthday.dart';
 export 'src/yearmonthday_and_calendar.dart';
 
@@ -47,6 +49,20 @@ export 'src/offset_datetime.dart';
 export 'src/period.dart';
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
+
+// https://github.com/dart-lang/sdk/issues/24581
+import "src/platforms/platform_io.dart"
+  if (dart.library.html) "src/platforms/web.dart"
+  if (dart.library.io) "src/platforms/vm.dart"
+  // todo: #Hack: No mirrors on flutter
+  // see: https://github.com/flutter/flutter/issues/14815
+  // If flutter gets `Isolate.resolvePackageUri` then we can merge the vm & flutter functionality
+  if (dart.library.mirrors) "src/platforms/flutter.dart"
+as timeMachine;
+
+abstract class TimeMachine {
+  static Future initialize([dynamic arg]) => timeMachine.initialize(arg);
+}
 
 class _Internal{
   const _Internal();

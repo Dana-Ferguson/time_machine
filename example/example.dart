@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 // You only need to do this once per isolate.
 // Pick the import based on your platform.
 // Future Hope: This happens via conditional imports under `time_machine.dart`
-import 'package:time_machine/time_machine_for_vm.dart';
+// import 'package:time_machine/time_machine_for_vm.dart';
 // import 'package:time_machine/time_machine_for_web.dart';
 // import 'package:time_machine/time_machine_for_flutter.dart';
 

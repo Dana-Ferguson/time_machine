@@ -13,6 +13,10 @@ abstract class PlatformIO {
   @internal Future<ByteData> getBinary(String path, String filename);
   // JSON.decode returns a dynamic -- will this change in Dart 2.0?
   @internal Future<dynamic> getJson(String path, String filename);
-  
+
   @internal static PlatformIO local;
-} 
+}
+
+Future initialize(dynamic arg) {
+  throw new Exception('Conditional Import Failure.');
+}
