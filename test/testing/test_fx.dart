@@ -15,6 +15,9 @@ import 'package:test/test.dart';
 // Note: this won't work for Dart4Web applications
 // I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion --> fixable via build.yaml???)
 // Transformers are dead in 2.0, long live build.yaml???
+// #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
+const bool testGenTest = true;
+String _classVarName;
 
 class SkipMe {
   final String reason;
@@ -123,6 +126,39 @@ Future runTests() async {
   await Future.wait(futures);
 }
 
+void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
+  var sb = new StringBuffer();
+  
+  var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
+  if (isFuture) sb.write('await ');
+
+  if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
+  
+  sb.write(_nameOf(method));
+  
+  sb.write ('(');
+  if (testCase != null) {
+    var first = true;
+    for (var arg in testCase.arguments) {
+      if (!first) {
+        sb.write(', ');
+      }
+      else {
+        first = false;
+      }
+      
+      if (arg is String) {
+        sb..write("'")..write(arg)..write("'");
+      }
+      sb.write(arg);
+    }
+  }
+  // ${testCase.arguments.join(', ')});
+  sb.write (');');
+  
+  print(sb.toString());
+}
+
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
   var futures = new List<Future>();
 
@@ -141,9 +177,10 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
   if (testCases.isEmpty) {
     var name = testName; // '${method.simpleName}';
 
+    if (testGenTest) _printTestCall(mirror, method, testName);
     if (method.returnType.hasReflectedType && method.returnType.reflectedType == Future) {
-// var returnMirror = mirror.invoke(method.simpleName, []);
-// futures.add(returnMirror.reflectee);
+      // var returnMirror = mirror.invoke(method.simpleName, []);
+      // futures.add(returnMirror.reflectee);
 
       test(name, () async {
         var returnMirror = mirror.invoke(method.simpleName, []);
@@ -158,9 +195,10 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
     for (var testCase in testCases) {
       var name = '$testName.${testCase.description ?? testCase.arguments}'; // '${method.simpleName}_${i++}';
 
+      if (testGenTest) _printTestCall(mirror, method, testName, testCase);
       if (method.returnType.hasReflectedType && method.returnType.reflectedType == Future) {
-//var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
-//futures.add(returnMirror.reflectee);
+        //var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
+        //futures.add(returnMirror.reflectee);
 
         test(name, () async {
           var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
@@ -180,6 +218,11 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   var futures = new List<Future>();
 
   var instance = classMirror.newInstance(new Symbol(''), []);
+  if (testGenTest) 
+  {
+    _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
+    print('var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();');
+  }
   var declarations = new List<DeclarationMirror>()..addAll(classMirror.declarations.values);
   while (classMirror.superclass != null) {
     classMirror = classMirror.superclass;
@@ -208,6 +251,10 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
       futures.addAll(_runTest(instance, declaration, testName));
     }
   }
+  
+  if (testGenTest) {
+    _classVarName = null;
+  }
 
   return futures;
 }
@@ -216,3 +263,5 @@ String _stripSymbol(Symbol symbol) {
   var text = symbol.toString();
   return text.substring(8, text.toString().length-2);
 }
+
+String _nameOf(MethodMirror method) => _stripSymbol(method.simpleName);

@@ -7,8 +7,11 @@ import 'dart:typed_data';
 import 'package:time_machine/time_machine.dart';
 
 class BinaryReader {
+  // todo: should this be private?
   final ByteData binary;
   int _offset;
+  
+  bool get isMore => _offset < binary.lengthInBytes;
 
   BinaryReader(this.binary, [this._offset = 0]);
 
@@ -40,9 +43,9 @@ class BinaryReader {
       i64 = -(i64+1);
     }
     
-    _offset +=8; 
+    _offset +=8;
     
-    return i64; 
+    return i64;
   }
   
   bool getBit(int uint8, int bit) => (uint8 & (1 << bit)) != 0;

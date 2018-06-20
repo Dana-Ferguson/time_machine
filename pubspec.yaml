@@ -18,3 +18,5 @@ dependencies:
 dev_dependencies:
   test: ^0.12.0
   matcher: "^0.12.1+4"
+  # experiment to see if I can use text_fx with unit tests for JS testing
+  reflectable: any

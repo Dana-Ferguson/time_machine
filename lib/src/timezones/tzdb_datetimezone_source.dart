@@ -25,9 +25,25 @@ abstract class DateTimeZoneProviders {
 }
 
 class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
+  // todo: this is a bandaid ~ we need to rework our infrastructure a bit -- maybe draw some diagrams?
+  // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
+  static bool _loadAllTimeZoneInformation = false;
+
+  @internal
+  static void loadAllTimeZoneInformation_SetFlag() {
+    if (_cachedTzdbIndex != null) throw new StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');
+    _loadAllTimeZoneInformation = true;
+  }
+
   static Future _init() async {
     if (_cachedTzdbIndex != null) return;
-    _cachedTzdbIndex = await TzdbIndex.load();
+    
+    if (_loadAllTimeZoneInformation) {
+      _cachedTzdbIndex = await TzdbIndex.loadAll();
+    }
+    else {
+      _cachedTzdbIndex = await TzdbIndex.load();
+    }
 
     /*
     try {

@@ -16,13 +16,39 @@ class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var _jsonMap = await _loadIdMapping();
     
-    // todo: seek a more elegant mapping of <String, dynamic> to <String, String>
+    // todo: Dart2.0: seek a more elegant mapping of <String, dynamic> to <String, String>
     var map = <String, String>{DateTimeZone.utcId: ''};
     _jsonMap.forEach((key, value){
       map[key] = value;
     });
     
     return new TzdbIndex._(map);
+  }
+
+  // todo: if we swap to something supporting offset skipping around 'tzdb.bin' file, just fill the _binaryCache instead.
+  static Future<TzdbIndex> loadAll() async {
+    // This won't have any filenames in it.
+    // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
+    var jsonMap = <String, String>{DateTimeZone.utcId: ''};
+    var cache = <String, DateTimeZone>{};
+
+    var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
+    var reader = new DateTimeZoneReader(binary);
+    
+    while (reader.isMore) {
+      var id = reader.readString();
+      var zone = PrecalculatedDateTimeZone.read(reader, id);
+      cache[id] = zone;
+      jsonMap[id] = '';
+    }
+    
+    // todo: this is a good thing to log? (todo: research whether it's ok for libraries in Dart to log)
+    // print('Total ${cache.length} zones loaded');
+
+    // todo: we might be able to just foward the _cache.keys instead?
+    var index = new TzdbIndex._(jsonMap);
+    cache.forEach((id, zone) => index._cache[id] = zone);
+    return index;
   }
 
   TzdbIndex._(this._zoneFilenames);
@@ -34,6 +60,8 @@ class TzdbIndex {
 
   final Map<String, String> _zoneFilenames;
   final Map<String, DateTimeZone> _cache = { DateTimeZone.utcId: DateTimeZone.utc };
+  /// Holding place for binary, if it's loaded but not yet transformed into a [DateTimeZone]
+  final Map<String, ByteData> _binaryCache = { };
 
   Iterable<String> get zoneIds => _zoneFilenames.keys;
   bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);
@@ -47,17 +75,23 @@ class TzdbIndex {
   }
 
   Future<DateTimeZone> getTimeZone(String zoneId) async {
+    var zone = getTimeZoneSync(zoneId);
+    if (zone != null) return zone;
+    
     var filename = _zoneFilenames[zoneId];
     if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had no associated filename.');
     
-    return _cache[zoneId] ??
-        (_cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin')));
+    return _cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin'));
   }
 
   DateTimeZone getTimeZoneSync(String zoneId) {
-    return _cache[zoneId]; // ?? null;
-  // todo: check to see if we have binary loaded data
-  // (_cache[zoneId] = _zoneFromBinary(await _getBinary(zoneId)));
+    var zone = _cache[zoneId];
+    if (zone != null) return zone;
+    
+    var binaryData = _binaryCache.remove(zoneId);
+    if (binaryData == null) return null;
+    
+    return _cache[zoneId] = _zoneFromBinary(binaryData);
   }
 
   // Default to UTC if we fail to set a local [DateTimeZone]

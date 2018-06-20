@@ -47,8 +47,8 @@ class TimeMachine  {
   static Future initialize() async {
     // Map IO functions
     PlatformIO.local = new _VirtualMachineIO();
+    TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     
-    // todo: for VM, always load everything (happens inside of _figureOutTimeZone)
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
     DateTimeZoneProviders.defaultProvider = tzdb;
@@ -134,6 +134,10 @@ class TimeMachine  {
         }
       }
     }
+
+    // todo: this is a good thing to log
+    // Return UTC if we couldn't even figure it out
+    if (zones.isEmpty) return DateTimeZone.utc;
 
     // Ambiguous -- just picking the first result
     return zones.first;

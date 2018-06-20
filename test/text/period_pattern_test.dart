@@ -27,9 +27,8 @@ Future main() async {
 }
 
 /// A container for test data for formatting and parsing [Period] objects.
-/*sealed*/ class Data extends PatternTestData<Period> {
-// Irrelevant
-/*protected*/ @override Period get DefaultTemplate => new Period.fromDays(0);
+class Data extends PatternTestData<Period> {
+  @override Period get DefaultTemplate => new Period.fromDays(0);
 
   Data([Period value = null]) : super(value ?? new Period.fromDays(0)) {
     this.StandardPattern = PeriodPattern.roundtrip;

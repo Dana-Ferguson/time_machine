@@ -45,8 +45,8 @@ class TimeMachine  {
   static Future initialize(dynamic rootBundle) async {
     // Map IO functions
     PlatformIO.local = new _FlutterMachineIO(rootBundle);
+    TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     
-    // todo: for VM, always load everything (happens inside of _figureOutTimeZone)
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
     DateTimeZoneProviders.defaultProvider = tzdb;
@@ -132,6 +132,9 @@ class TimeMachine  {
         }
       }
     }
+    
+    // todo: this is a good thing to log
+    if (zones.isEmpty) return DateTimeZone.utc;
 
     // Ambiguous -- just picking the first result
     return zones.first;
