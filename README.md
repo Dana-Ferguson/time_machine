@@ -78,12 +78,8 @@ Todo:
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not included in this repository.
 
-I'm hoping that JS/VM specific functions will work via conditional imports. For testing atm, VM is default, but full JS
-support is planned. 
-([*fingers crossed*](https://github.com/dart-lang/sdk/issues/24581) that this makes it into Dart 2)
-
 The unit testing framework uses reflection and won't work in Dart4Web 2.0 
-or later; we'll cross this bridge later.
+or later; we'll cross this bridge later. Version 1.0 will not occur until after we get full unit testing in DDC and D2JS.
 
 Future Todo:
  - [ ] Produce our own TSDB files
