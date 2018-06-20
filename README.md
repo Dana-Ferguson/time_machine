@@ -90,3 +90,47 @@ Future Todo:
  - [ ] Produce our own Culture files
  - [ ] Benchmarking & Optimizing Library for Dart
 
+### Flutter Specific Notes
+
+You'll need this entry in your pubspec.yaml.
+
+```yaml
+# The following section is specific to Flutter.
+flutter:
+  assets:
+    - packages/time_machine/data/cultures/cultures.bin
+    - packages/time_machine/data/tzdb/tzdb.bin
+```
+
+Your initialization function will look like this:
+```dart
+import 'package:flutter/services.dart';
+
+
+await TimeMachine.initialize(rootBundle);
+```
+
+Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
+we'll be able to merge VM and the Flutter code paths and no asset entry or special import will be required.
+It would look just like the VM example.
+
+### DDC Specific Notes
+
+```dart
+class Foo {
+  // Okay in Dart_VM 1.24 -- Okay in DartPad -- Okay in Dart2JS
+  // not Okay in DDC
+  @override String toString([int x = 0, int y = 0, int z = 0]) 
+    => '${x + y+ x}';
+}
+
+void main() {
+  var foo = new Foo();
+  print(foo.toString());
+  print(foo.toString(1, 2, 3));
+}
+```
+
+Overriding `toString()` with optional arguments doesn't work in DDC. We use this technique to provide 
+optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
+Still investigating potential solutions.

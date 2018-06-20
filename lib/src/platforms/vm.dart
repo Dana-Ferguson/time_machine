@@ -38,7 +38,40 @@ class _VirtualMachineIO implements PlatformIO {
   }
 }
 
-Future initialize(dynamic arg) => TimeMachine.initialize();
+class _FlutterMachineIO implements PlatformIO {
+  final dynamic _rootBundle;
+
+  _FlutterMachineIO(this._rootBundle);
+
+  @override
+  Future<ByteData> getBinary(String path, String filename) async {
+    if (filename == null) return new ByteData(0);
+
+    var byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
+    return byteData;
+  }
+
+  @override
+  // may return Map<String, dynamic> or List
+  Future getJson(String path, String filename) async {
+    var text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
+    return JSON.decode(text);
+  }
+}
+
+Future initialize(dynamic arg) {
+  if (Platform.isIOS || Platform.isAndroid || Platform.isFuchsia) {
+    if (arg == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+    // Map IO functions
+    PlatformIO.local = new _FlutterMachineIO(arg);
+  }
+  else {
+    // Map IO functions
+    PlatformIO.local = new _VirtualMachineIO();
+  }
+
+  TimeMachine.initialize();
+}
 
 // todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
 // IPlatformProvider ?? I can then expose it for future proofing?
@@ -47,8 +80,6 @@ class TimeMachine  {
   
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
-    // Map IO functions
-    PlatformIO.local = new _VirtualMachineIO();
     TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     // todo: we want this for flutter -- do we want this for the VM too?
     Cultures.loadAllCulturesInformation_SetFlag();
