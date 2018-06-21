@@ -62,8 +62,14 @@ import 'src/platforms/platform_io.dart'
   // if (dart.library.io) "src/platforms/flutter.dart"
 as timeMachine;
 
+bool _initialized = false;
+
 abstract class TimeMachine {
-  static Future initialize([dynamic arg]) => timeMachine.initialize(arg);
+  static Future initialize([dynamic arg]) {
+    if (_initialized) return null;
+    _initialized = true;
+    return timeMachine.initialize(arg);
+  }
 }
 
 class _Internal{
