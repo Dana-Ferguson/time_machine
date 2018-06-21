@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2
+
+- Fixed bug introduced in 0.2.1; (Conditional Imports are hard); `dart.library.js` seems to evaluate to false in DDC stable.
+  Put back as `dart.library.html`.
+
 ## 0.2.1
 
 - Fixed bug introduced in 0.2.0 causing TimeMachine.Initialize() to not fully await.
