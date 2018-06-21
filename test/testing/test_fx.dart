@@ -167,7 +167,7 @@ void _writeTestGenFile() {
 }
 
 void _printImport(Uri uri) {
-  var sb = _gen_sb_imports..write("import '../test/");
+  var sb = _gen_sb_imports..write("import '../"); // test/");
   var path = uri.pathSegments;
   
   for (var p in path.skipWhile((p) => p != 'test').skip(1)) {
@@ -175,7 +175,7 @@ void _printImport(Uri uri) {
   }
   sb..write("';")..writeln();
   
-  _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test_gen/' + path.last;
+  _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test/test_gen/' + path.last;
 }
 
 void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {

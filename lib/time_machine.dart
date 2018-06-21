@@ -53,7 +53,8 @@ export 'src/period_builder.dart';
 // https://github.com/dart-lang/sdk/issues/24581
 import 'src/platforms/platform_io.dart'
   // `dart.library.js` is compatible with node and browser via dart2js -- `dart.library.html` will only work for the browser
-  if (dart.library.js) 'src/platforms/web.dart'
+  // or at lest it seemed it should be, when I tried `dart.library.js` in chrome, it failed to evaluate to true
+  if (dart.library.html) 'src/platforms/web.dart'
   if (dart.library.io) 'src/platforms/vm.dart'
   //if (dart.library.js) "package:time_machine/src/platforms/web.dart"
   //if (dart.library.io) "package:time_machine/src/platforms/vm.dart"

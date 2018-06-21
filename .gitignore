@@ -16,4 +16,4 @@ doc/api/
 .dart_tool
 
 # Test_Gen directory (generating test files without reflection for testing on javascript)
-test_gen/
+test/test_gen/
