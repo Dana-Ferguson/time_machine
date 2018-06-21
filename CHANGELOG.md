@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Fixed bug introduced in 0.2.0 causing TimeMachine.Initialize() to not fully await.
+
 ## 0.2.0
 
 - No more specific imports for your platform. Flutter usage was streamlined significantly.
