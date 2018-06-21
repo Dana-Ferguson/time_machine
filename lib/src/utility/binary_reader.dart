@@ -22,32 +22,33 @@ class BinaryReader {
   Offset readOffsetSeconds() => new Offset.fromSeconds(read7BitEncodedInt());
   Offset readOffsetSeconds2() => new Offset.fromSeconds(readInt32());
   
-  // todo: #warning: weaker mortals! avert ye eyes! (quick_hack --> will totally fix later)
-  // --> the correct fix is to alter the binary format for the timezone files (I don't think culture files use this?)
   // JS Compatible version of readInt64
   int readInt64() {
-    var bytes = binary.buffer.asUint8List(_offset, 8);
     // var correctAnswer = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN);
+    var bytes = binary.buffer.asUint8List(_offset, 8);
     bool isNegative = getBit(bytes.last, 7);
-    
+
     int i64 = 0;
-    int bitValue = 1;
+    int value = 1;
     for(var byte in bytes) {
-      for(int bit = 0; bit < 8; bit++) {
-        if (getBit(byte, bit) != isNegative) i64 += bitValue;
-        bitValue *= 2;
+      if (isNegative) {
+        i64 += (byte ^ 255) * value;
       }
+      else {
+        i64 += byte * value;
+      }
+
+      value *= 256;
     }
-    
+
     if (isNegative) {
       i64 = -(i64+1);
     }
     
     _offset +=8;
-    
     return i64;
   }
-  
+
   bool getBit(int uint8, int bit) => (uint8 & (1 << bit)) != 0;
 
   bool get hasMoreData => binary.lengthInBytes < _offset;
