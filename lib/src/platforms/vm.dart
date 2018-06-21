@@ -70,7 +70,7 @@ Future initialize(dynamic arg) {
     PlatformIO.local = new _VirtualMachineIO();
   }
 
-  TimeMachine.initialize();
+  return TimeMachine.initialize();
 }
 
 // todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
