@@ -14,3 +14,6 @@ doc/api/
 
 # Something Dart 2.0 related?
 .dart_tool
+
+# Test_Gen directory (generating test files without reflection for testing on javascript)
+test_gen/

@@ -3,6 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:async';
 import 'dart:mirrors';
+import 'dart:io';
 
 import 'package:test/test.dart';
 
@@ -18,6 +19,9 @@ import 'package:test/test.dart';
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
 const bool testGenTest = true;
 String _classVarName;
+StringBuffer _gen_sb_imports = new StringBuffer();
+StringBuffer _gen_sb_methodCalls = new StringBuffer();
+String _testFilePath = 'unknown_test.dart';
 
 class SkipMe {
   final String reason;
@@ -88,6 +92,8 @@ Future runTests() async {
   var futures = new List<Future>();
 
   for (var lib in testLibs) {
+    if (testGenTest) _printImport(lib.uri);
+    
     for (DeclarationMirror declaration in lib.declarations.values) {
       if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
@@ -122,15 +128,61 @@ Future runTests() async {
   }
 
   if (_skippedTotal != 0) print('Total Tests Skipped = $_skippedTotal;');
+  if (testGenTest) _writeTestGenFile();
 
   await Future.wait(futures);
 }
 
-void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
+void _writeTestGenFile() {
   var sb = new StringBuffer();
+  sb.writeln("import 'dart:async';");
+  sb.writeln("import 'dart:math' as math;");
+  sb.writeln();
+  sb.writeln("import 'package:test/test.dart';");
+  sb.writeln();
+  sb.writeln("import 'package:time_machine/time_machine.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_calendars.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_fields.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_globalization.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_patterns.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_text.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_utilities.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_timezones.dart';");
+  sb.writeln();
+  
+  sb.write(_gen_sb_imports);
+  sb.writeln();
+  
+  sb.writeln('Future main() async {');
+  sb.writeln('  await TimeMachine.initialize();');
+  sb.writeln();
+  sb.write(_gen_sb_methodCalls);
+  sb.writeln('}');
+  
+  
+  var file = new File(_testFilePath);
+  file.writeAsString(sb.toString(), mode: FileMode.WRITE_ONLY);
+  
+  print("written '$_testFilePath' to drive.");
+}
+
+void _printImport(Uri uri) {
+  var sb = _gen_sb_imports..write("import '../test/");
+  var path = uri.pathSegments;
+  
+  for (var p in path.skipWhile((p) => p != 'test').skip(1)) {
+    sb..write('/')..write(p);
+  }
+  sb..write("';")..writeln();
+  
+  _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test_gen/' + path.last;
+}
+
+void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
+  var sb = _gen_sb_methodCalls..write("  test('$testName', () ");
   
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
-  if (isFuture) sb.write('await ');
+  if (isFuture) sb.write('async => await '); else sb.write('=> ');
 
   if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
   
@@ -154,9 +206,9 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
     }
   }
   // ${testCase.arguments.join(', ')});
-  sb.write (');');
+  sb.write ('));');
   
-  print(sb.toString());
+  sb.writeln();
 }
 
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
