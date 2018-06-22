@@ -165,7 +165,7 @@ class TimeMachine  {
           badZones.clear();
           
           // There are mistakes in Dart
-          // e.g. see: Pacific/Auckland which Dart (on Linux VM) gives `NZDT@46800` and `NZDT` didn't start till `1974-11-03`.... so... dat's not good.
+          // e.g. see: Pacific/Auckland which Dart (on Linux VM) gives `NZDT@46800` in 1868 and `NZDT` didn't start till `1974-11-03`.... so... dat's not good.
           // But the first pass returns, Antartica/McMurdo & Pacific/Auckland, and they are the same timezone and both technically correct.
           if (zones.isEmpty) return lastZone;
         }
