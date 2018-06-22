@@ -50,6 +50,8 @@ export 'src/period.dart';
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
 
+// todo: investigate: https://github.com/pinkfish/flutter_native_timezone
+
 // https://github.com/dart-lang/sdk/issues/24581
 import 'src/platforms/platform_io.dart'
   // `dart.library.js` is compatible with node and browser via dart2js -- `dart.library.html` will only work for the browser

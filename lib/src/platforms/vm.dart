@@ -132,11 +132,12 @@ class TimeMachine  {
         lessZones.add(zone);
       }
     }
-
+    
     allSpecialInstants = allZoneIntervals.map((z) => z.rawStart);
     var badZones = new HashSet<String>();
 
     zones = lessZones;
+    // print(zones.join("\n"));
     // print('allSpecialInstants: ${allSpecialInstants.length}; ${allZoneIntervals.length}; ${zones.length};');
 
     // int i = 0;
@@ -150,15 +151,23 @@ class TimeMachine  {
           var zoneInterval = zone.getZoneInterval(instant);
           if ((_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) != zoneInterval.name 
               || dateTime.timeZoneOffset.inSeconds != zoneInterval.wallOffset.seconds) {
+            // print('${instant}: ${dateTime}: ${zone.id}: dart: ${dateTime.timeZoneName}@${dateTime.timeZoneOffset.inSeconds} vs tzdb: ${zoneInterval.name}@${zoneInterval.wallOffset.seconds};');
             badZones.add(zone.id);
           }
         }
 
         // i++;
         if (badZones.length != 0) {
+          var lastZone = zones.last;
+          
           // print('$i :: $badZones');
           zones.removeWhere((z) => badZones.contains(z.id));
           badZones.clear();
+          
+          // There are mistakes in Dart
+          // e.g. see: Pacific/Auckland which Dart (on Linux VM) gives `NZDT@46800` and `NZDT` didn't start till `1974-11-03`.... so... dat's not good.
+          // But the first pass returns, Antartica/McMurdo & Pacific/Auckland, and they are the same timezone and both technically correct.
+          if (zones.isEmpty) return lastZone;
         }
 
         if (!strict && zones.length <= 1) {
