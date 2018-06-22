@@ -107,7 +107,7 @@ await TimeMachine.initialize(rootBundle);
 ```
 
 Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
-we'll be able to merge VM and the Flutter code paths and no asset entry or special import will be required.
+we'll be able to merge VM and the Flutter code paths and no asset entry and no special import will be required.
 It would look just like the VM example.
 
 ### DDC Specific Notes
@@ -129,4 +129,5 @@ void main() {
 
 Overriding `toString()` with optional arguments doesn't work in DDC. We use this technique to provide 
 optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
-Still investigating potential solutions, but looks like `waiting` might be an okay algorithm.
+Still investigating potential solutions, but looks like `waiting` might be an okay algorithm, since it works
+in the newer DDC. I'm hoping Dart 2 stable launches [soon](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable).
