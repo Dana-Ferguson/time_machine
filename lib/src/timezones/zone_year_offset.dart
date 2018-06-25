@@ -198,7 +198,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
     var dayOfMonth = reader.read7BitEncodedInt() * dayOfMonthSign; //.readInt32();
     var monthOfYear = reader.read7BitEncodedInt(); //.readInt32();
-    var timeOfDay = new LocalTime.fromNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
+    var timeOfDay = ILocalTime.fromNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
 
     return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);//Preconditions.checkNotNull(reader, 'reader');
     //int flags = reader.ReadByte();

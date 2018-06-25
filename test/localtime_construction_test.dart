@@ -111,15 +111,15 @@ void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, in
 @Test()
 void FromNanosecondsSinceMidnight_Valid()
 {
-  expect(LocalTime.midnight, new LocalTime.fromNanosecondsSinceMidnight(0));
-  expect(LocalTime.midnight.plusNanoseconds(-1), new LocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay - 1));
+  expect(LocalTime.midnight, ILocalTime.fromNanosecondsSinceMidnight(0));
+  expect(LocalTime.midnight.plusNanoseconds(-1), ILocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay - 1));
 }
 
 @Test()
 void FromNanosecondsSinceMidnight_RangeChecks()
 {
-  expect(() => new LocalTime.fromNanosecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => new LocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
+  expect(() => ILocalTime.fromNanosecondsSinceMidnight(-1), throwsRangeError);
+  expect(() => ILocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
 }
 
 @Test()

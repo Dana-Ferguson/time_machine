@@ -15,10 +15,17 @@ import 'package:time_machine/time_machine_utilities.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
-/// LocalTime is an immutable struct representing a time of day, with no reference
+@internal
+abstract class ILocalTime {
+  static LocalTime fromNanoseconds(int nanoseconds) => new LocalTime._fromNanoseconds(nanoseconds);
+
+  static LocalTime fromNanosecondsSinceMidnight(int nanoseconds) => new LocalTime._fromNanosecondsSinceMidnight(nanoseconds);
+
+  static int hourOfHalfDay(LocalTime localTime) => localTime._hourOfHalfDay;
+}
+
+/// LocalTime is an immutable class representing a time of day, with no reference
 /// to a particular calendar, time zone or date.
-///
-/// <threadsafety>This type is an immutable value type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
 class LocalTime implements Comparable<LocalTime> {
   /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
@@ -35,7 +42,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// This is useful if you have to use an inclusive upper bound for some reason.
   /// In general, it's better to use an exclusive upper bound, in which case use midnight of
   /// the following day.
-  static final LocalTime maxValue = new LocalTime.fromNanoseconds(TimeConstants.nanosecondsPerDay - 1);
+  static final LocalTime maxValue = new LocalTime._fromNanoseconds(TimeConstants.nanosecondsPerDay - 1);
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
@@ -100,7 +107,7 @@ class LocalTime implements Comparable<LocalTime> {
             second * TimeConstants.nanosecondsPerSecond +
             millisecond * TimeConstants.nanosecondsPerMillisecond +
             tickWithinMillisecond * TimeConstants.nanosecondsPerTick);
-    return new LocalTime.fromNanoseconds(nanoseconds);
+    return new LocalTime._fromNanoseconds(nanoseconds);
   }
 
 
@@ -125,7 +132,7 @@ class LocalTime implements Comparable<LocalTime> {
       Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
       Preconditions.checkArgumentRange('tickWithinSecond', tickWithinSecond, 0, TimeConstants.ticksPerSecond - 1);
     }
-    return new LocalTime.fromNanoseconds((
+    return new LocalTime._fromNanoseconds((
         hour * TimeConstants.nanosecondsPerHour +
             minute * TimeConstants.nanosecondsPerMinute +
             second * TimeConstants.nanosecondsPerSecond +
@@ -154,7 +161,7 @@ class LocalTime implements Comparable<LocalTime> {
       Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
       Preconditions.checkArgumentRange('nanosecondWithinSecond', nanosecondWithinSecond, 0, TimeConstants.nanosecondsPerSecond - 1);
     }
-    return new LocalTime.fromNanoseconds((
+    return new LocalTime._fromNanoseconds((
         hour * TimeConstants.nanosecondsPerHour +
             minute * TimeConstants.nanosecondsPerMinute +
             second * TimeConstants.nanosecondsPerSecond +
@@ -163,22 +170,24 @@ class LocalTime implements Comparable<LocalTime> {
 
 
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
-  @internal LocalTime.fromNanoseconds(this._nanoseconds);
-//  {
-// Preconditions.debugcheckArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
-//  }
+  LocalTime._fromNanoseconds(this._nanoseconds)
+  {
+    // todo: look at farming debug 
+    // Preconditions.debugCheckArgumentRange('nanoseconds', _nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
+    assert(_nanoseconds >= 0 && _nanoseconds < TimeConstants.nanosecondsPerDay, 'nanoseconds ($_nanoseconds) must be >= 0 and < ${TimeConstants.nanosecondsPerDay}.');
+  }
 
 
   /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
   ///
   /// [nanoseconds]: The number of ticks, in the range [0, 863,999,999,999]
   /// Returns: The resulting time.
-  @internal factory LocalTime.fromNanosecondsSinceMidnight(int nanoseconds) {
+  factory LocalTime._fromNanosecondsSinceMidnight(int nanoseconds) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (nanoseconds < 0 || nanoseconds > TimeConstants.nanosecondsPerDay - 1) {
       Preconditions.checkArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
     }
-    return new LocalTime.fromNanoseconds(nanoseconds);
+    return new LocalTime._fromNanoseconds(nanoseconds);
   }
 
 
@@ -191,7 +200,7 @@ class LocalTime implements Comparable<LocalTime> {
     if (ticks < 0 || ticks > TimeConstants.ticksPerDay - 1) {
       Preconditions.checkArgumentRange('ticks', ticks, 0, TimeConstants.ticksPerDay - 1);
     }
-    return new LocalTime.fromNanoseconds((ticks * TimeConstants.nanosecondsPerTick));
+    return new LocalTime._fromNanoseconds((ticks * TimeConstants.nanosecondsPerTick));
   }
 
 
@@ -204,7 +213,7 @@ class LocalTime implements Comparable<LocalTime> {
     if (milliseconds < 0 || milliseconds > TimeConstants.millisecondsPerDay - 1) {
       Preconditions.checkArgumentRange('milliseconds', milliseconds, 0, TimeConstants.millisecondsPerDay - 1);
     }
-    return new LocalTime.fromNanoseconds((milliseconds * TimeConstants.nanosecondsPerMillisecond));
+    return new LocalTime._fromNanoseconds((milliseconds * TimeConstants.nanosecondsPerMillisecond));
   }
   
   /// Factory method for creating a local time from the number of seconds which have elapsed since midnight.
@@ -216,7 +225,7 @@ class LocalTime implements Comparable<LocalTime> {
     if (seconds < 0 || seconds > TimeConstants.secondsPerDay - 1) {
       Preconditions.checkArgumentRange('seconds', seconds, 0, TimeConstants.secondsPerDay - 1);
     }
-    return new LocalTime.fromNanoseconds((seconds * TimeConstants.nanosecondsPerSecond));
+    return new LocalTime._fromNanoseconds((seconds * TimeConstants.nanosecondsPerSecond));
   }
   
   /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
@@ -224,13 +233,13 @@ class LocalTime implements Comparable<LocalTime> {
 
   /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
   int get clockHourOfHalfDay {
-    int _hourOfHalfDay = hourOfHalfDay;
+    int _hourOfHalfDay = this._hourOfHalfDay;
     return _hourOfHalfDay == 0 ? 12 : _hourOfHalfDay;
   }
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
-  @internal int get hourOfHalfDay => (hour % 12);
+  int get _hourOfHalfDay => (hour % 12);
 
 
   /// Gets the minute of this local time, in the range 0 to 59 inclusive.

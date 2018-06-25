@@ -67,7 +67,7 @@ class _AddTimeResult {
         {
           newNanos -= TimeConstants.nanosecondsPerDay;
         }
-        return new LocalTime.fromNanoseconds(newNanos);
+        return ILocalTime.fromNanoseconds(newNanos);
       }
       else
       {
@@ -81,7 +81,7 @@ class _AddTimeResult {
         {
           newNanos += TimeConstants.nanosecondsPerDay;
         }
-        return new LocalTime.fromNanoseconds(newNanos);
+        return ILocalTime.fromNanoseconds(newNanos);
       }
     }
   }
@@ -110,7 +110,7 @@ class _AddTimeResult {
           days = /*checked*/(days + 1);
         }
         extraDays = /*checked*/(extraDays + days);
-        return new _AddTimeResult(new LocalTime.fromNanoseconds(newNanos), extraDays);
+        return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
       }
       else {
         if (value <= -_unitsPerDay) {
@@ -126,7 +126,7 @@ class _AddTimeResult {
           days = /*checked*/(days - 1);
         }
         extraDays = /*checked*/(days + extraDays);
-        return new _AddTimeResult(new LocalTime.fromNanoseconds(newNanos), extraDays);
+        return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
       }
     }
   }
