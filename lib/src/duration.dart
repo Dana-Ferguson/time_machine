@@ -26,24 +26,32 @@ import 'package:time_machine/time_machine_text.dart';
 //
 // Span (working name atm) is cool... but its a pre-existing concept in many languages that isn't time related
 
-@immutable
-class Span implements Comparable<Span> {
-  // todo: We're not day-based here - we could be? (I don't think it's in the cards)
+@internal
+abstract class ISpan {
   // This is 104249991 days
-  @internal static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
+  static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
   // ~maxDays would be 4190717304 on JS (-104249992 is the correct number)
-  @internal static const int minDays = -104249992; // ~maxDays; <-- doesn't work in JS // todo: may hard encode if this makes unit tests not work
+  static const int minDays = -104249992; // ~maxDays; <-- doesn't work in JS // todo: may hard encode if this makes unit tests not work
 
   // todo: Convert to BigInt for Dart 2.0
-  @internal static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
-  @internal static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1
+  static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
+  static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1
 
   /*BigInteger.One*/;
-  
-  // 285420 years worth -- we are good for anything;
-  @internal static const int maxMillis = Utility.intMaxValueJS;
-  @internal static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
+  // 285420 years worth -- we are good for anything;
+  static const int maxMillis = Utility.intMaxValueJS;
+  static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
+
+  static bool isInt64Representable(Span span) => span._isInt64Representable;
+  static Span plusSmallNanoseconds(Span span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
+  
+  static int floorTicks(Span span) => span._floorTicks;
+  static int floorSeconds(Span span) => span._floorSeconds;
+}
+
+@immutable
+class Span implements Comparable<Span> {
   // 285420 years max (unlimited on VM)
   final int _milliseconds;
 
@@ -61,10 +69,10 @@ class Span implements Comparable<Span> {
   static const Span epsilon = const Span._trusted(0, 1);
 
   /// Gets the maximum value supported by [Span]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
-  static Span maxValue = new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+  static Span maxValue = new Span(days: ISpan.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
   /// Gets the minimum (largest negative) value supported by [Span].
-  static Span minValue = new Span(days: minDays);
+  static Span minValue = new Span(days: ISpan.minDays);
 
   static Span oneDay = new Span(days: 1);
   static Span oneWeek = new Span(days: 7);
@@ -154,7 +162,7 @@ class Span implements Comparable<Span> {
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
   // todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
-  // todo: yeah -- look at this shit, days are so f'n different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
+  // todo: yeah -- look at this stuff, days are so different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
   // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
   //  where I use floor() if it's negative) .. or does the VM basically already cover that.
   // int get days2 => floorDays;
@@ -195,11 +203,13 @@ class Span implements Comparable<Span> {
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // totalsFloor* ???
-  int get floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
+  int get _floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
 
+  @wasInternal
   // todo: make more like floorDays?
   int get floorMilliseconds => totalMilliseconds.floor();
 
+  @wasInternal
   int get floorDays {
     var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
     // todo: determine if there are other corner-cases here
@@ -208,7 +218,7 @@ class Span implements Comparable<Span> {
     return days;
   }
 
-  int get floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
+  int get _floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
 
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
@@ -264,7 +274,7 @@ class Span implements Comparable<Span> {
 
   Span divide(num factor) => this / factor;
 
-  Span plusSmallNanoseconds(int nanoseconds) => new Span._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
+  Span _plusSmallNanoseconds(int nanoseconds) => new Span._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
   bool operator ==(dynamic other) => other is Span && equals(other);
@@ -297,7 +307,7 @@ class Span implements Comparable<Span> {
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
   }
 
-  bool get IsInt64Representable {
+  bool get _isInt64Representable {
     if (Utility.intMaxValue / TimeConstants.nanosecondsPerMillisecond < _milliseconds) {
       return false;
     }

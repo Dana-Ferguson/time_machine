@@ -170,7 +170,7 @@ class _SpanParseBucket extends ParseBucket<Span> {
     if (isNegative) {
       _currentNanos = -_currentNanos;
     }
-    if (_currentNanos < Span.minNanoseconds || _currentNanos > Span.maxNanoseconds) {
+    if (_currentNanos < ISpan.minNanoseconds || _currentNanos > ISpan.maxNanoseconds) {
       return ParseResult.forInvalidValuePostParse<Span>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
     }
     return ParseResult.forValue<Span>(new Span(nanoseconds: _currentNanos));

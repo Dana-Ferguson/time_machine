@@ -46,6 +46,7 @@ abstract class Utility {
   }
 }
 
+@deprecated
 class KeyValuePair<K, V> {
   final K key;
   final V value;
@@ -86,10 +87,6 @@ abstract class TimeZoneInfo {
 }
 
 abstract class IDateTimeZoneWriter {
-//
-}
-
-abstract class IDateTimeZoneReader {
 //
 }
 

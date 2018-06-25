@@ -23,10 +23,10 @@ abstract class IInstant {
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
   /// This must never be exposed.
-  static final Instant beforeMinValue = new Instant._trusted(new Span(days: Span.minDays)); //, deliberatelyInvalid: true);
+  static final Instant beforeMinValue = new Instant._trusted(new Span(days: ISpan.minDays)); //, deliberatelyInvalid: true);
   /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
   /// This must never be exposed.
-  static final Instant afterMaxValue = new Instant._trusted(new Span(days: Span.maxDays)); //, deliberatelyInvalid: true);
+  static final Instant afterMaxValue = new Instant._trusted(new Span(days: ISpan.maxDays)); //, deliberatelyInvalid: true);
 
   // note: Extensions would be `better than sliced bread` here!!!!
   static LocalInstant plusOffset(Instant instant, Offset offset) => instant._plusOffset(offset);
@@ -100,7 +100,7 @@ class Instant implements Comparable<Instant> {
       return LocalInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = _span.plusSmallNanoseconds(offset.nanoseconds);
+    var asDuration = ISpan.plusSmallNanoseconds(_span, offset.nanoseconds);
     if (asDuration.floorDays < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
@@ -171,9 +171,9 @@ class Instant implements Comparable<Instant> {
   // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
   Span get timeSinceEpoch => _span;
 
-  int toUnixTimeSeconds() => _span.floorSeconds;
+  int toUnixTimeSeconds() => ISpan.floorSeconds(_span);
   int toUnixTimeMilliseconds() => _span.floorMilliseconds; //.totalMilliseconds.toInt();
-  int toUnixTimeTicks() => _span.floorTicks; //.totalTicks.toInt();
+  int toUnixTimeTicks() => ISpan.floorTicks(_span); //.totalTicks.toInt();
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime

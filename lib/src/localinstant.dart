@@ -72,7 +72,7 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [offset]: The offset between UTC and a time zone for this local instant
   /// Returns: A new [Instant] representing the difference of the given values.
-  Instant minus(Offset offset) => IInstant.untrusted(_span.plusSmallNanoseconds(-offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
+  Instant minus(Offset offset) => IInstant.untrusted(ISpan.plusSmallNanoseconds(_span, -offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
 
   /// Implements the operator == (equality).
   ///
@@ -96,7 +96,7 @@ import 'package:time_machine/time_machine_text.dart';
       return IInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = _span.plusSmallNanoseconds(-offset.nanoseconds);
+    var asDuration = ISpan.plusSmallNanoseconds(_span, -offset.nanoseconds);
     if (asDuration.days < IInstant.minDays) { // FloorDays
       return IInstant.beforeMinValue;
     }
