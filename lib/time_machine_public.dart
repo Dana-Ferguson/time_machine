@@ -36,7 +36,7 @@ export 'src/localdatetime.dart';
 
 export 'src/duration.dart' show Span;
 export 'src/instant.dart' show Instant;
-export 'src/interval.dart';
+export 'src/interval.dart' show Interval;
 
 export 'src/time_constants.dart';
 

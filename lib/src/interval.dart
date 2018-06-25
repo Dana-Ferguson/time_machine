@@ -9,6 +9,10 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
+abstract class IInterval {
+  static Instant rawEnd(Interval interval) => interval._rawEnd;
+}
+
 /// An interval between two instants in time (start and end).
 ///
 /// The interval includes the start instant and excludes the end instant. However, an interval
@@ -67,7 +71,7 @@ class Interval {
 
   /// Returns the raw end value of the interval: a normal instant or [IInstant.afterMaxValue].
   /// This value should never be exposed.
-  @internal Instant get rawEnd => _end;
+  Instant get _rawEnd => _end;
 
   /// Returns `true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.

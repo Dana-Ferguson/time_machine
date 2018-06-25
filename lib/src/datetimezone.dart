@@ -401,7 +401,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync* {
     var current = interval.hasStart ? interval.start : Instant.minValue;
-    var end = interval.rawEnd;
+    var end = IInterval.rawEnd(interval);
     while (current < end) {
       var zoneInterval = getZoneInterval(current);
       yield zoneInterval;
