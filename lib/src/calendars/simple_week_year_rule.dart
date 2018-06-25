@@ -54,7 +54,7 @@ import 'package:time_machine/time_machine_calendars.dart';
     if (days < calendar.minDays || days > calendar.maxDays) {
       throw new ArgumentError.value(weekYear, 'weekYear', "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
     }
-    LocalDate ret = new LocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).withCalendar(calendar));
+    LocalDate ret = ILocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).withCalendar(calendar));
 
     // For rules with irregular weeks, the calculation so far may end up computing a date which isn't
     // in the right week-year. This will happen if the caller has specified a "short" week (i.e. one
@@ -76,7 +76,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 
   /// <inheritdoc />
   int getWeekOfWeekYear(LocalDate date) {
-    YearMonthDay yearMonthDay = date.yearMonthDay;
+    YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(date);
     YearMonthDayCalculator yearMonthDayCalculator = date.calendar.yearMonthDayCalculator;
     // This is a bit inefficient, as we'll be converting forms several times. However, it's
     // understandable... we might want to optimize in the future if it's reported as a bottleneck.
@@ -121,7 +121,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 
   /// <inheritdoc />
   int getWeekYear(LocalDate date) {
-    YearMonthDay yearMonthDay = date.yearMonthDay;
+    YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(date);
     YearMonthDayCalculator yearMonthDayCalculator = date.calendar.yearMonthDayCalculator;
         // unchecked
         {

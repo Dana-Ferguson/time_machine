@@ -132,7 +132,7 @@ class Instant implements Comparable<Instant> {
   // Convenience methods from Nodatime -- evaluate if I want to keep these
   factory Instant.fromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
   {
-    var days = new LocalDate(year, monthOfYear, dayOfMonth).daysSinceEpoch;
+    var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
     return new Instant._trusted(new Span(days: days, nanoseconds:  nanoOfDay));
   }

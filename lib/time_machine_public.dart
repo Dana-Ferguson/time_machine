@@ -26,7 +26,7 @@ export 'src/datetimezone.dart' show DateTimeZone;
 export 'src/zoneddatetime.dart' show ZonedDateTime;
 
 export 'src/localtime.dart' show LocalTime;
-export 'src/localdate.dart';
+export 'src/localdate.dart' show LocalDate;
 export 'src/localdatetime.dart';
 
 export 'src/duration.dart' show Span;

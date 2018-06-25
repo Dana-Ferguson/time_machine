@@ -59,7 +59,7 @@ class AnnualDate implements Comparable<AnnualDate>
         GregorianYearMonthDayCalculator.minGregorianYear,
         GregorianYearMonthDayCalculator.maxGregorianYear);
     var ymd = CalendarSystem.iso.yearMonthDayCalculator.setYear(_value, year);
-    return new LocalDate.trusted(ymd.withCalendarOrdinal(new CalendarOrdinal(0))); // ISO calendar
+    return ILocalDate.trusted(ymd.withCalendarOrdinal(new CalendarOrdinal(0))); // ISO calendar
   }
 
   /// Checks whether the specified year forms a valid date with the month/day in this

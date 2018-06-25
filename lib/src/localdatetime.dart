@@ -39,7 +39,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [localInstant]: The local instant.
   /// Returns: The resulting date/time.
   @internal LocalDateTime.fromInstant(LocalInstant localInstant)
-      : date = new LocalDate.fromDaysSinceEpoch(localInstant.daysSinceEpoch),
+      : date = ILocalDate.fromDaysSinceEpoch(localInstant.daysSinceEpoch),
         time = ILocalTime.fromNanoseconds(localInstant.nanosecondOfDay);
 
   /// Initializes a new instance of [LocalDateTime].
@@ -146,7 +146,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
 
-  @internal LocalInstant toLocalInstant() => new LocalInstant.daysNanos(date.daysSinceEpoch, time.nanosecondOfDay);
+  @internal LocalInstant toLocalInstant() => new LocalInstant.daysNanos(ILocalDate.daysSinceEpoch(date), time.nanosecondOfDay);
 
   /// Converts a [DateTime] of any kind to a LocalDateTime in the specified or ISO calendar. This does not perform
   /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.utc]
@@ -161,8 +161,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     ms -= days * TimeConstants.millisecondsPerDay;
 
     if (calendar == null) return new LocalDateTime(
-        new LocalDate.fromDaysSinceEpoch(days), ILocalTime.fromNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
-    return new LocalDateTime(new LocalDate.fromDaysSinceEpoch(days, calendar),
+        ILocalDate.fromDaysSinceEpoch(days), ILocalTime.fromNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
+    return new LocalDateTime(ILocalDate.fromDaysSinceEpoch(days, calendar),
         ILocalTime.fromNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
   }
 
@@ -513,7 +513,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// This method is purely a convenient alternative to calling the [OffsetDateTime] constructor directly.
   /// * [offset]: The offset to apply.
   /// Returns: The result of this local date/time offset by the given amount.
-  OffsetDateTime withOffset(Offset offset) => new OffsetDateTime.lessTrust(date.yearMonthDayCalendar, time, offset);
+  OffsetDateTime withOffset(Offset offset) => new OffsetDateTime.lessTrust(ILocalDate.yearMonthDayCalendar(date), time, offset);
 
 
   /// Returns the mapping of this local date/time within [DateTimeZone.utc].
@@ -522,7 +522,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in UTC.
   ZonedDateTime inUtc() =>
   // Use the @internal constructors to avoid validation. We know it will be fine.
-  IZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
+  IZonedDateTime.trusted(new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
   /// Returns the mapping of this local date/time within the given [DateTimeZone],

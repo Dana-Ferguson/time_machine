@@ -24,13 +24,13 @@ import 'package:time_machine/time_machine_fields.dart';
     // If we know it will be in this year, next year, or the previous year...
     if (daysToAdd < 300 && daysToAdd > -300) {
       YearMonthDayCalculator calculator = calendar.yearMonthDayCalculator;
-      YearMonthDay yearMonthDay = localDate.yearMonthDay;
+      YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(localDate);
       int year = yearMonthDay.year;
       int month = yearMonthDay.month;
       int day = yearMonthDay.day;
       int newDayOfMonth = day + daysToAdd;
       if (1 <= newDayOfMonth && newDayOfMonth <= calculator.getDaysInMonth(year, month)) {
-        return new LocalDate.trusted(new YearMonthDayCalendar(year, month, newDayOfMonth, calendar.ordinal));
+        return ILocalDate.trusted(new YearMonthDayCalendar(year, month, newDayOfMonth, calendar.ordinal));
       }
       int dayOfYear = calculator.getDayOfYear(yearMonthDay);
       int newDayOfYear = dayOfYear + daysToAdd;
@@ -52,11 +52,11 @@ import 'package:time_machine/time_machine_fields.dart';
           }
         }
       }
-      return new LocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(calendar.ordinal));
+      return ILocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(calendar.ordinal));
     }
     // LocalDate constructor will validate.
-    int days = localDate.daysSinceEpoch + daysToAdd;
-    return new LocalDate.fromDaysSinceEpoch(days, calendar);
+    int days = ILocalDate.daysSinceEpoch(localDate) + daysToAdd;
+    return ILocalDate.fromDaysSinceEpoch(days, calendar);
   }
 
   int unitsBetween(LocalDate start, LocalDate end) =>

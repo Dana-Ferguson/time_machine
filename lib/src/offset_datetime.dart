@@ -78,7 +78,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// [localDateTime]: Local date and time to represent
   /// [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this.fullTrust(localDateTime.date.yearMonthDayCalendar, localDateTime.nanosecondOfDay, offset);
+      : this.fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
 
   /// Gets the calendar system associated with this offset date and time.
   CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
@@ -165,7 +165,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// The returned [LocalDate]
   /// will have the same calendar system and return the same values for each of the date-based calendar
   /// properties (Year, MonthOfYear and so on), but will not have any offset information.
-  LocalDate get date => new LocalDate.trusted(_yearMonthDayCalendar);
+  LocalDate get date => ILocalDate.trusted(_yearMonthDayCalendar);
 
   /// Gets the time portion of this offset date and time.
   ///
@@ -224,7 +224,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
     LocalDate newDate = date.withCalendar(calendar);
-    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
@@ -237,7 +237,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = date.adjust(adjuster);
-    return new OffsetDateTime.fullTrust(newDate.yearMonthDayCalendar, _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
@@ -279,9 +279,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
       }
     }
     return new OffsetDateTime.fullTrust(
-        days == 0 ? _yearMonthDayCalendar : date
-            .plusDays(days)
-            .yearMonthDayCalendar, nanos, offset);
+        days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(date
+            .plusDays(days)), nanos, offset);
   // _combineNanoOfDayAndOffset(nanos, offset));
   }
 

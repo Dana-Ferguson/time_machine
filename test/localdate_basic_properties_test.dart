@@ -37,7 +37,7 @@ void ArbitraryDateProperties()
   DateTime bclEpoch = new DateTime.utc(1970, 1, 1, 0, 0, 0);
   int bclMilliseconds = bclDate.millisecondsSinceEpoch - bclEpoch.millisecondsSinceEpoch;
   int bclDays = (bclMilliseconds ~/ TimeConstants.millisecondsPerDay);
-  LocalDate date = new LocalDate.fromDaysSinceEpoch(bclDays, CalendarSystem.iso);
+  LocalDate date = ILocalDate.fromDaysSinceEpoch(bclDays, CalendarSystem.iso);
   expect(2011, date.year);
   expect(2011, date.yearOfEra);
   expect(5, date.day);

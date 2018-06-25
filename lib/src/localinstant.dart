@@ -155,7 +155,7 @@ class LocalInstant {
     if (this == afterMaxValue) {
       return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
     }
-    var date = new LocalDate.fromDaysSinceEpoch(_span.floorDays);
+    var date = ILocalDate.fromDaysSinceEpoch(_span.floorDays);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
     var utc = new LocalDateTime(date, ILocalTime.fromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
     return pattern.format(utc);

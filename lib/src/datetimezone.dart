@@ -222,7 +222,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
         var offsetDateTime = new OffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-        if (offsetDateTime.yearMonthDay != date.yearMonthDay) {
+        if (offsetDateTime.yearMonthDay != ILocalDate.yearMonthDay(date)) {
           throw new SkippedTimeError(midnight, this);
         }
         return IZonedDateTime.trusted(offsetDateTime, this);

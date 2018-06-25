@@ -13,29 +13,38 @@ import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_fields.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
+@internal
+abstract class ILocalDate {
+  static LocalDate trusted(YearMonthDayCalendar yearMonthDayCalendar) => new LocalDate._trusted(yearMonthDayCalendar);
+  static LocalDate fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar]) => new LocalDate._fromDaysSinceEpoch(daysSinceEpoch, calendar);
+  static int daysSinceEpoch(LocalDate localDate) => localDate._daysSinceEpoch;
+  static YearMonthDay yearMonthDay(LocalDate localDate) => localDate._yearMonthDay;
+  static YearMonthDayCalendar yearMonthDayCalendar(LocalDate localDate) => localDate._yearMonthDayCalendar;
+}
+
 @immutable
 class LocalDate implements Comparable<LocalDate> {
   final YearMonthDayCalendar _yearMonthDayCalendar;
 
   /// The maximum (latest) date representable in the ISO calendar system.
-  static LocalDate get maxIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.iso));
+  static LocalDate get maxIsoValue => new LocalDate._trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.maxGregorianYear, 12, 31, CalendarOrdinal.iso));
 
   /// The minimum (earliest) date representable in the ISO calendar system.
-  static LocalDate get minIsoValue => new LocalDate.trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.iso));
+  static LocalDate get minIsoValue => new LocalDate._trusted(new YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.iso));
 
   /// Constructs an instance from values which are assumed to already have been validated.
-  @internal LocalDate.trusted(this._yearMonthDayCalendar);
+  LocalDate._trusted(this._yearMonthDayCalendar);
 
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
-  /*@internal*/ factory LocalDate.fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
+  factory LocalDate._fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
   {
     if (calendar == null) {
       Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.iso.minDays, CalendarSystem.iso.maxDays);
-      return new LocalDate.trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+      return new LocalDate._trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     } else {
       Preconditions.debugCheckNotNull(calendar, 'calendar');
-      return new LocalDate.trusted(calendar.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+      return new LocalDate._trusted(calendar.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     }
   }
   
@@ -50,7 +59,7 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate(int year, int month, int day, [CalendarSystem calendar])
   {
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(year, month, day);
-    return new LocalDate.trusted(new YearMonthDayCalendar(year, month, day, calendar?.ordinal ?? CalendarOrdinal.iso));
+    return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, calendar?.ordinal ?? CalendarOrdinal.iso));
   }
 
   /// Constructs an instance for the given era, year of era, month and day in the specified or ISO calendar.
@@ -82,7 +91,7 @@ class LocalDate implements Comparable<LocalDate> {
   int get day => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
-  @internal int get daysSinceEpoch => calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
+  int get _daysSinceEpoch => calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the week day of this local date expressed as an [IsoDayOfWeek] value.
   IsoDayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
@@ -96,9 +105,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// Gets the day of this local date within the year.
   int get dayOfYear => calendar.getDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
 
-  @internal YearMonthDay get yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
+  YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
-  @internal YearMonthDayCalendar get yearMonthDayCalendar => _yearMonthDayCalendar;
+  // @internal YearMonthDayCalendar get yearMonthDayCalendar => _yearMonthDayCalendar;
 
   /// Gets a [LocalDateTime] at midnight on the date represented by this local date.
   ///
@@ -135,7 +144,7 @@ class LocalDate implements Comparable<LocalDate> {
   {
     // todo: we might want to make this so it's microseconds on VM and milliseconds on JS
     int days = _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
-    return new LocalDate.fromDaysSinceEpoch(days, calendar);
+    return new LocalDate._fromDaysSinceEpoch(days, calendar);
   }
 
   /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
@@ -359,7 +368,7 @@ class LocalDate implements Comparable<LocalDate> {
   int compareTo(LocalDate other)
   {
     Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
-    return calendar.compare(yearMonthDay, other.yearMonthDay);
+    return calendar.compare(_yearMonthDay, other._yearMonthDay);
   }
 
   /// Returns the later date of the given two.
@@ -423,7 +432,7 @@ class LocalDate implements Comparable<LocalDate> {
   LocalDate withCalendar(CalendarSystem calendar)
   {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new LocalDate.fromDaysSinceEpoch(daysSinceEpoch, calendar);
+    return new LocalDate._fromDaysSinceEpoch(_daysSinceEpoch, calendar);
   }
 
   /// Returns a new LocalDate representing the current value with the given number of years added.

@@ -26,10 +26,10 @@ Future main() async {
 void Constructor_WithDays(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = start.daysSinceEpoch;
+  int startDays = ILocalDate.daysSinceEpoch(start);
   for (int i = 0; i < 366; i++)
   {
-    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i));
+    expect(start.plusDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i));
   }
 }
 
@@ -41,10 +41,10 @@ void Constructor_WithDays(int year)
 void Constructor_WithDaysAndCalendar(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = start.daysSinceEpoch;
+  int startDays = ILocalDate.daysSinceEpoch(start);
   for (int i = 0; i < 366; i++)
   {
-    expect(start.plusDays(i), new LocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
+    expect(start.plusDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
   }
 }
 
