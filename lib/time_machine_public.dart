@@ -17,12 +17,11 @@ as timeMachine;
 
 // export 'time_machine.dart' show Instant, AmbiguousTimeError;
 
-export 'src/calendar_ordinal.dart';
 export 'src/calendar_system.dart';
 
-export 'src/isodayofweek.dart';
+export 'src/isodayofweek.dart' show IsoDayOfWeek;
 
-export 'src/i_datetimezone_provider.dart';
+export 'src/i_datetimezone_provider.dart' show IDateTimeZoneProvider;
 export 'src/datetimezone.dart';
 export 'src/zoneddatetime.dart';
 

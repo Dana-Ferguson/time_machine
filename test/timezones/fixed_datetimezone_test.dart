@@ -30,7 +30,7 @@ ZoneInterval FixedPeriod = new ZoneInterval(TestZone.id, IInstant.beforeMinValue
 @Test()
 void IsFixed_ReturnsTrue()
 {
-  expect(TestZone.isFixed, isTrue);
+  expect(IDateTimeZone.isFixed(TestZone), isTrue);
 }
 
 @Test()

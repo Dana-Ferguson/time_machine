@@ -17,7 +17,7 @@ class TzdbIndex {
     var _jsonMap = await _loadIdMapping();
     
     // todo: Dart2.0: seek a more elegant mapping of <String, dynamic> to <String, String>
-    var map = <String, String>{DateTimeZone.utcId: ''};
+    var map = <String, String>{IDateTimeZone.utcId: ''};
     _jsonMap.forEach((key, value){
       map[key] = value;
     });
@@ -29,7 +29,7 @@ class TzdbIndex {
   static Future<TzdbIndex> loadAll() async {
     // This won't have any filenames in it.
     // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
-    var jsonMap = <String, String>{DateTimeZone.utcId: ''};
+    var jsonMap = <String, String>{IDateTimeZone.utcId: ''};
     var cache = <String, DateTimeZone>{};
 
     var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
@@ -59,7 +59,7 @@ class TzdbIndex {
   }
 
   final Map<String, String> _zoneFilenames;
-  final Map<String, DateTimeZone> _cache = { DateTimeZone.utcId: DateTimeZone.utc };
+  final Map<String, DateTimeZone> _cache = { IDateTimeZone.utcId: DateTimeZone.utc };
   /// Holding place for binary, if it's loaded but not yet transformed into a [DateTimeZone]
   final Map<String, ByteData> _binaryCache = { };
 
@@ -95,7 +95,7 @@ class TzdbIndex {
   }
 
   // Default to UTC if we fail to set a local [DateTimeZone]
-  static String localId = DateTimeZone.utcId; // => Platform.localeName;
+  static String localId = IDateTimeZone.utcId; // => Platform.localeName;
 }
 
 @internal

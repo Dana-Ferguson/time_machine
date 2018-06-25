@@ -49,14 +49,14 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Returns: The generated id string.
   static String _makeId(Offset offset) {
     if (offset == Offset.zero) {
-      return DateTimeZone.utcId;
+      return IDateTimeZone.utcId;
     }
 
     if (csharpMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
-      return '${DateTimeZone.utcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
+      return '${IDateTimeZone.utcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
     }
 
-    return DateTimeZone.utcId + OffsetPattern.generalInvariant.format(offset);
+    return IDateTimeZone.utcId + OffsetPattern.generalInvariant.format(offset);
   }
 
   /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
@@ -65,14 +65,14 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [id]: ID 
   /// Returns: The parsed time zone, or null if the ID doesn't match.
   @internal static DateTimeZone getFixedZoneOrNull(String id) {
-    if (!id.startsWith(DateTimeZone.utcId)) {
+    if (!id.startsWith(IDateTimeZone.utcId)) {
       return null;
     }
-    if (id == DateTimeZone.utcId) {
+    if (id == IDateTimeZone.utcId) {
       return DateTimeZone.utc;
     }
 
-    var parseResult = OffsetPattern.generalInvariant.parse(id.substring(DateTimeZone.utcId.length));
+    var parseResult = OffsetPattern.generalInvariant.parse(id.substring(IDateTimeZone.utcId.length));
     return parseResult.success ? new DateTimeZone.forOffset(parseResult.value) : null;
   }
 

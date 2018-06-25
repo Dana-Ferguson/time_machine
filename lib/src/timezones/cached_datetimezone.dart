@@ -40,7 +40,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   @internal static DateTimeZone forZone(DateTimeZone timeZone) {
     // todo: move this as a factory method on DateTimeZone?
     Preconditions.checkNotNull(timeZone, 'timeZone');
-    if (timeZone is CachedDateTimeZone || timeZone.isFixed) {
+    if (timeZone is CachedDateTimeZone || IDateTimeZone.isFixed(timeZone)) {
       return timeZone;
     }
     return new CachedDateTimeZone._(timeZone, CachingZoneIntervalMap.cacheMap(timeZone));

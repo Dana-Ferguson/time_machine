@@ -84,7 +84,7 @@ Future SourceIsNotAskedForUtcIfNotAdvertised() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  var zone = await provider[DateTimeZone.utcId];
+  var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
   expect(source.LastRequestedId, isNull);
 }
@@ -94,7 +94,7 @@ Future SourceIsAskedForUtcIfAdvertised() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  var zone = await provider[DateTimeZone.utcId];
+  var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
   expect("UTC", source.LastRequestedId);
 }
@@ -113,7 +113,7 @@ Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider.ids.contains(DateTimeZone.utcId), isTrue);
+  expect(provider.ids.contains(IDateTimeZone.utcId), isTrue);
 }
 
 @Test()
@@ -121,7 +121,7 @@ Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider.ids.contains(DateTimeZone.utcId), isFalse);
+  expect(provider.ids.contains(IDateTimeZone.utcId), isFalse);
 }
 
 @Test()
@@ -204,14 +204,14 @@ Future Tzdb_IterateOverIds() async
   int count = Tzdb.ids.length;
 
   expect(count > 1, isTrue);
-  int utcCount = Tzdb.ids.where((id) => id == DateTimeZone.utcId).length;
+  int utcCount = Tzdb.ids.where((id) => id == IDateTimeZone.utcId).length;
   expect(1, utcCount);
 }
 
 @Test()
 Future Tzdb_Indexer_UtcId() async
 {
-  expect(DateTimeZone.utc, await Tzdb[DateTimeZone.utcId]);
+  expect(DateTimeZone.utc, await Tzdb[IDateTimeZone.utcId]);
 }
 
 @Test()
@@ -231,8 +231,8 @@ Future Tzdb_Ids_All() async
   var actual = Tzdb.ids;
   var actualCount = actual.length;
   expect(actualCount > 1, isTrue);
-  var utc = actual.firstWhere((id) => id == DateTimeZone.utcId);
-  expect(DateTimeZone.utcId, utc);
+  var utc = actual.firstWhere((id) => id == IDateTimeZone.utcId);
+  expect(IDateTimeZone.utcId, utc);
 }
 
 /// Simply tests that every ID in the built-in database can be fetched. This is also

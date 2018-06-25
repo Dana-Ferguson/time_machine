@@ -8,6 +8,17 @@ import 'utility/preconditions.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+abstract class IDateTimeZone {
+  static bool isFixed(DateTimeZone dateTimeZone) => dateTimeZone._isFixed;
+  
+  // todo: should this just be a TimeConstant?
+  /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
+  /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.getZoneOrNull], but otherwise
+  /// the value of the [utc] property will be returned.
+  static const String utcId = "UTC";
+}
+
+
 /// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local times
 ///  - or, equivalently, to the offset from UTC at any particular instant.
 ///
@@ -47,11 +58,6 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Additional guarantees are provided by [IDateTimeZoneProvider] and [DateTimeZone.forOffset].
 @immutable
 abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
-  /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
-  /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.getZoneOrNull], but otherwise
-  /// the value of the [utc] property will be returned.
-  @internal static const String utcId = "UTC";
-
   /// Gets the UTC (Coordinated Universal Time) time zone.
   ///
   /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to
@@ -98,7 +104,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [maxOffset]: Maximum offset applied within this zone
   @protected DateTimeZone(String id, bool isFixed, Offset minOffset, Offset maxOffset)
       : this.id = Preconditions.checkNotNull(id, 'id'),
-        this.isFixed = isFixed,
+        this._isFixed = isFixed,
         this.minOffset = minOffset,
         this.maxOffset = maxOffset;
 
@@ -114,7 +120,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// for this then the behavior will be correct but the system will have to do extra work. However
   /// if the time zone has transitions and this returns `true` then the transitions will never
   /// be examined.
-  @internal final bool isFixed;
+  final bool _isFixed;
 
 
   /// Gets the least (most negative) offset within this time zone, over all time.

@@ -4,42 +4,9 @@
 
 import 'package:time_machine/time_machine_utilities.dart';
 
-///// Equates the days of the week with their numerical value according to
-///// ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
-///// is 7 in the ISO numbering and 0 in System.DayOfWeek.
-//enum IsoDayOfWeek {
-//  /// Value indicating no day of the week; this will never be returned
-//  /// by any IsoDayOfWeek property, and is not valid as an argument to
-//  /// any method.
-//  none,
-//
-//  /// Value representing Monday (1).
-//  monday,
-//
-//  /// Value representing Tuesday (2).
-//  tuesday,
-//
-//  /// Value representing Wednesday (3).
-//  wednesday,
-//
-//  /// Value representing Thursday (4).
-//  thursday,
-//
-//  /// Value representing Friday (5).
-//  friday,
-//
-//  /// Value representing Saturday (6).
-//  saturday,
-//
-//  /// Value representing Sunday (7).
-//  sunday
-//}
-
-// todo: I might want to write a code generator for enums?
-
 // todo: IsoDayOfWeek is called that because 'DayOfWeek' is a BCL enumeration -- I don't think it is here, so we can steal it back?
-
 // todo: Should this be caled IsoDayOfWeek .. or just DayOfWeek?
+
 /// Equates the days of the week with their numerical value according to
 /// ISO-8601. This corresponds with System.DayOfWeek except for Sunday, which
 /// is 7 in the ISO numbering and 0 in System.DayOfWeek.

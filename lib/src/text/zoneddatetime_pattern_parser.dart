@@ -154,7 +154,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   /// zone. Otherwise, it will return null and the cursor will remain where
   /// it was.
   DateTimeZone _tryParseFixedZone(ValueCursor value) {
-    if (value.compareOrdinal(DateTimeZone.utcId) != 0) {
+    if (value.compareOrdinal(IDateTimeZone.utcId) != 0) {
       return null;
     }
     value.move(value.index + 3);

@@ -24,12 +24,7 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// be reversed. In any case, there is no current intention for third-party developers to be able to implement
 /// their own calendar systems (for various reasons). If you require a calendar system which is not
 /// currently supported, please file a feature request and we'll see what we can do.
-///
-/// <threadsafety>
-/// All calendar implementations are immutable and thread-safe. See the thread safety
-/// section of the user guide for more information.
-/// </threadsafety>
-@immutable // sealed
+@immutable
 class CalendarSystem {
   // IDs and names are separated out (usually with the ID either being the same as the name,
   // or the base ID being the same as a name and then other IDs being formed from it.) The
