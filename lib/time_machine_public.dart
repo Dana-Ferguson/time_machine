@@ -25,7 +25,6 @@ export 'src/i_datetimezone_provider.dart' show IDateTimeZoneProvider;
 export 'src/datetimezone.dart' show DateTimeZone;
 export 'src/zoneddatetime.dart' show ZonedDateTime;
 
-export 'src/localinstant.dart';
 export 'src/localtime.dart';
 export 'src/localdate.dart';
 export 'src/localdatetime.dart';

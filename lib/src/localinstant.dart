@@ -6,12 +6,15 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text.dart';
 
+// todo: can this be refactored out to decrease code-size?
+
 /// Represents a local date and time without reference to a calendar system. Essentially
 /// this is a duration since a Unix epoch shifted by an offset (but we don't store what that
 /// offset is). This class has been slimmed down considerably over time - it's used much less
 /// than it used to be... almost solely for time zones.
 @immutable
-@internal class LocalInstant {
+@internal
+class LocalInstant {
   static final LocalInstant beforeMinValue = new LocalInstant._trusted(IInstant.beforeMinValue.daysSinceEpoch, deliberatelyInvalid: true);
   static final LocalInstant afterMaxValue = new LocalInstant._trusted(IInstant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
 
@@ -27,7 +30,7 @@ import 'package:time_machine/time_machine_text.dart';
   }
 
   /// Initializes a new instance of [LocalInstant].
-  @internal factory LocalInstant(Span nanoseconds) {
+  factory LocalInstant(Span nanoseconds) {
     // todo: would it? (from Dart perspective -- we have different bounds? or do we? -- investigate)
     //int days = nanoseconds.FloorDays;
     //if (days < Instant.MinDays || days > Instant.MaxDays)
@@ -41,33 +44,33 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [days]: Number of days since 1970-01-01, in a time zone neutral fashion.
   /// [nanoOfDay]: Nanosecond of the local day.
-  @internal factory LocalInstant.daysNanos(int days, int nanoOfDay)
+  factory LocalInstant.daysNanos(int days, int nanoOfDay)
   {
     return new LocalInstant._(new Span(days: days, nanoseconds: nanoOfDay));
   }
 
   /// Returns whether or not this is a valid instant. Returns true for all but
   /// [beforeMinValue] and [afterMaxValue].
-  @internal bool get isValid => daysSinceEpoch >= IInstant.minDays && daysSinceEpoch <= IInstant.maxDays;
+  bool get isValid => daysSinceEpoch >= IInstant.minDays && daysSinceEpoch <= IInstant.maxDays;
 
   /// Number of nanoseconds since the local unix epoch.
-  @internal Span get timeSinceLocalEpoch => _span;
+  Span get timeSinceLocalEpoch => _span;
 
   /// Number of days since the local unix epoch.
-  @internal int get daysSinceEpoch => _span.floorDays;
+  int get daysSinceEpoch => _span.floorDays;
 
   /// Nanosecond within the day.
-  @internal int get nanosecondOfDay => _span.nanosecondOfFloorDay;
+  int get nanosecondOfDay => _span.nanosecondOfFloorDay;
 
   /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
   /// This is just a slight optimization over calling `localInstant.Minus(Offset.Zero)`.
   // todo: this is an API pickle
-  @internal Instant minusZeroOffset() => IInstant.trusted(_span);
+  Instant minusZeroOffset() => IInstant.trusted(_span);
 
   /// Subtracts the given time zone offset from this local instant, to give an [Instant].
   ///
   /// This would normally be implemented as an operator, but as the corresponding "plus" operation
-  /// on Instant cannot be written (as Instant is a type and LocalInstant is an @internal type)
+  /// on Instant cannot be written (as Instant is a type and LocalInstant is an type)
   /// it makes sense to keep them both as methods for consistency.
   ///
   /// [offset]: The offset between UTC and a time zone for this local instant
@@ -82,7 +85,7 @@ import 'package:time_machine/time_machine_text.dart';
   bool operator ==(dynamic right) => right is LocalInstant && _span == right._span;
 
   /// Equivalent to [Instant.safePlus], but in the opposite direction.
-  @internal Instant safeMinus(Offset offset) {
+  Instant safeMinus(Offset offset) {
     int days = _span.days;
     // If we can do the arithmetic safely, do so.
     if (days > IInstant.minDays && days < IInstant.maxDays) {
