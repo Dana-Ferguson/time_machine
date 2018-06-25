@@ -16,16 +16,13 @@ class YearMonthDay implements Comparable<YearMonthDay> {
 
   final int _value;
 
-  @internal
   YearMonthDay.raw(int rawValue) : _value = rawValue;
 
-  @internal
   /// Constructs a new value for the given year, month and day. No validation is performed.
   YearMonthDay(int year, int month, int day) :
         _value = ((year - 1) << (YearMonthDayCalendar.dayBits + YearMonthDayCalendar.monthBits)) | ((month - 1) << YearMonthDayCalendar.dayBits) | (day - 1);
 
   // todo: + calendar
-  @internal
   int get year => (_value >> (YearMonthDayCalendar.dayBits + YearMonthDayCalendar.monthBits)) + 1;
 
   int get month => ((_value & _monthMask) >> YearMonthDayCalendar.dayBits) + 1;
@@ -35,7 +32,6 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   int get rawValue => _value;
 
   // Just for testing purposes...
-  @internal
   static YearMonthDay parse(String text) {
     // Handle a leading - to negate the year
     if (text.startsWith("-")) {
@@ -55,11 +51,9 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   @override
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
-  @internal
   YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
       new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : calendar.ordinal);
 
-  @internal
   YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       new YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
@@ -73,10 +67,8 @@ class YearMonthDay implements Comparable<YearMonthDay> {
 //@override
 //bool Equals(dynamic other) => other is YearMonthDay && Equals(other);
 
-  @override
   int get hashCode => _value.hashCode;
 
-  @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDay ? _value == rhs._value : false;
 
 //@override

@@ -15,10 +15,10 @@ import 'package:time_machine/time_machine.dart';
 @internal
 class YearMonthDayCalendar {
   // These constants are internal so they can be used in YearMonthDay
-  @internal static const int calendarBits = 6; // Up to 64 calendars.
-  @internal static const int dayBits = 6; // Up to 64 days in a month.
-  @internal static const int monthBits = 5; // Up to 32 months per year.
-  @internal static const int yearBits = 15; // 32K range; only need -10K to +10K.
+  static const int calendarBits = 6; // Up to 64 calendars.
+  static const int dayBits = 6; // Up to 64 days in a month.
+  static const int monthBits = 5; // Up to 32 months per year.
+  static const int yearBits = 15; // 32K range; only need -10K to +10K.
 
   // Just handy constants to use for shifting and masking.
   static const int _calendarDayBits = calendarBits + dayBits;
@@ -29,15 +29,15 @@ class YearMonthDayCalendar {
   static const int _monthMask = ((1 << monthBits) - 1) << _calendarDayBits;
   static const int _yearMask = ((1 << yearBits) - 1) << _calendarDayMonthBits;
 
-  @internal final CalendarOrdinal calendarOrdinal;
-  // @internal final int _value;
-  @internal final YearMonthDay yearMonthDay;
+  final CalendarOrdinal calendarOrdinal;
+  // final int _value;
+  final YearMonthDay yearMonthDay;
 
-  @internal
+  
   YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
 // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
-  @internal
+  
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
   YearMonthDayCalendar(int year, int month, int day, this.calendarOrdinal) :
       yearMonthDay = new YearMonthDay(year, month, day);
@@ -46,26 +46,17 @@ class YearMonthDayCalendar {
 //  ((day - 1) << calendarBits) |
 //  calendarOrdinal.value;
 
-
-// @internal
-// CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
-
-// @internal
-// int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
-
-// @internal
-// int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
-
-// @internal
-// int get day => ((_value & _dayMask) >> calendarBits) + 1;
-
-  @internal
+  // CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
+  // int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
+  // int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
+  // int get day => ((_value & _dayMask) >> calendarBits) + 1;
+  
   int get year => yearMonthDay.year;
 
-  @internal
+  
   int get month => yearMonthDay.month;
 
-  @internal
+  
   int get day => yearMonthDay.day;
 
 
@@ -88,8 +79,7 @@ class YearMonthDayCalendar {
         // bits[3]));
         CalendarOrdinal.parse(bits[3]));
   }
-
-  @internal
+  
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
   @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';

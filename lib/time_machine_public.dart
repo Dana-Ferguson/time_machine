@@ -17,9 +17,6 @@ as timeMachine;
 
 // export 'time_machine.dart' show Instant, AmbiguousTimeError;
 
-export 'src/yearmonthday.dart';
-export 'src/yearmonthday_and_calendar.dart';
-
 export 'src/calendar_ordinal.dart';
 export 'src/calendar_system.dart';
 
