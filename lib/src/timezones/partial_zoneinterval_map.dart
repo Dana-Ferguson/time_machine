@@ -84,7 +84,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       if (current == null)
       {
         current = next;
-        Preconditions.debugCheckArgument(current.start == Instant.beforeMinValue, "maps", "First partial map must start at the beginning of time");
+        Preconditions.debugCheckArgument(current.start == IInstant.beforeMinValue, "maps", "First partial map must start at the beginning of time");
         continue;
       }
       Preconditions.debugCheckArgument(current.end == next.start, "maps", "Maps must abut");
@@ -139,7 +139,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       }
     }
     Preconditions.debugCheckArgument(current != null, "maps", "Collection of maps must not be empty");
-    Preconditions.debugCheckArgument(current.end == Instant.afterMaxValue, "maps", "Collection of maps must end at the end of time");
+    Preconditions.debugCheckArgument(current.end == IInstant.afterMaxValue, "maps", "Collection of maps must end at the end of time");
 
     // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
     coalescedMaps.add(current);

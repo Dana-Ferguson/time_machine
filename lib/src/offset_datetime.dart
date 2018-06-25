@@ -183,7 +183,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
   ///
   /// Returns: The instant represented by this offset date and time
-  Instant toInstant() => new Instant.untrusted(_toElapsedTimeSinceEpoch());
+  Instant toInstant() => IInstant.untrusted(_toElapsedTimeSinceEpoch());
 
   Span _toElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)

@@ -9,56 +9,58 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
+import 'package:time_machine/time_machine_public.dart' as public;
 
-/*
- TODO: BeforeMinValue / AfterMaxValue were being used to deal with nullable Instants -- Dart is struct-less -- everything can be nulled
+@internal
+abstract class IInstant {
+  // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?
+  // These correspond to -9998-01-01 and 9999-12-31 respectively.
+  static const int minDays = -4371222;
+  static const int maxDays = 2932896; // 104249991
 
-//ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
-//    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
+  static Instant trusted(Span span) => new Instant._trusted(span);
+  static Instant untrusted(Span span) => new Instant._untrusted(span);
 
+  /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
+  /// This must never be exposed.
+  static final Instant beforeMinValue = new Instant._trusted(new Span(days: Span.minDays)); //, deliberatelyInvalid: true);
+  /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
+  /// This must never be exposed.
+  static final Instant afterMaxValue = new Instant._trusted(new Span(days: Span.maxDays)); //, deliberatelyInvalid: true);
 
- */
+  // note: Extensions would be `better than sliced bread` here!!!!
+  static LocalInstant plusOffset(Instant instant, Offset offset) => instant._plusOffset(offset);
+  static LocalInstant safePlus(Instant instant, Offset offset) => instant._safePlus(offset);
+}
 
 @immutable
 class Instant implements Comparable<Instant> {
-  // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?
-  // These correspond to -9998-01-01 and 9999-12-31 respectively.
-  @internal static const int minDays = -4371222;
-  @internal static const int maxDays = 2932896; // 104249991
-
   // todo: Min\MaxTicks tack 62 bits ~ these will not work for the JSVM - check if this is okay?
-  static const int _minTicks = minDays * TimeConstants.ticksPerDay;
-  static const int _maxTicks = (maxDays + 1) * TimeConstants.ticksPerDay - 1;
-  static const int _minMilliseconds = minDays * TimeConstants.millisecondsPerDay;
-  static const int _maxMilliseconds = (maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
-  static const int _minSeconds = minDays * TimeConstants.secondsPerDay;
-  static const int _maxSeconds = (maxDays + 1) * TimeConstants.secondsPerDay - 1;
+  static const int _minTicks = IInstant.minDays * TimeConstants.ticksPerDay;
+  static const int _maxTicks = (IInstant.maxDays + 1) * TimeConstants.ticksPerDay - 1;
+  static const int _minMilliseconds = IInstant.minDays * TimeConstants.millisecondsPerDay;
+  static const int _maxMilliseconds = (IInstant.maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
+  static const int _minSeconds = IInstant.minDays * TimeConstants.secondsPerDay;
+  static const int _maxSeconds = (IInstant.maxDays + 1) * TimeConstants.secondsPerDay - 1;
 
   // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
   /// Represents the smallest possible [Instant].
   /// This value is equivalent to -9998-01-01T00:00:00Z
-  static final Instant minValue = new Instant.trusted(new Span(days: minDays));
+  static final Instant minValue = new Instant._trusted(new Span(days: IInstant.minDays));
   /// Represents the largest possible [Instant].
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
-  static final Instant maxValue = new Instant.trusted(new Span(days: maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
-
-  /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
-  /// This must never be exposed.
-  @internal static final Instant beforeMinValue = new Instant.trusted(new Span(days: Span.minDays)); //, deliberatelyInvalid: true);
-  /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
-  /// This must never be exposed.
-  @internal static final Instant afterMaxValue = new Instant.trusted(new Span(days: Span.maxDays)); //, deliberatelyInvalid: true);
+  static final Instant maxValue = new Instant._trusted(new Span(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
   final Span _span;
 
   // todo: investigate if this is okay ... see Instant.cs#115
-  @internal factory Instant.untrusted(Span _span) {
-    if (_span < minValue._span) return beforeMinValue;
-    if (_span > maxValue._span) return afterMaxValue;
-    return new Instant.trusted(_span);
+  factory Instant._untrusted(Span _span) {
+    if (_span < minValue._span) return IInstant.beforeMinValue;
+    if (_span > maxValue._span) return IInstant.afterMaxValue;
+    return new Instant._trusted(_span);
   }
 
-  @internal const Instant.trusted(this._span);
+  const Instant._trusted(this._span);
   // todo: to untrusted factories
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
@@ -66,44 +68,44 @@ class Instant implements Comparable<Instant> {
   const Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
-  @internal bool get isValid => this >= minValue && this <= maxValue;
+  @wasInternal bool get isValid => this >= minValue && this <= maxValue;
 
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
 
   Instant operator+(Span span) => this.plus(span);
   // Instant operator-(Span span) => this.minus(span);
-  Instant plus(Span span) => new Instant.untrusted(_span + span);
-  Instant minus(Span span) => new Instant.untrusted(_span - span);
+  Instant plus(Span span) => new Instant._untrusted(_span + span);
+  Instant minus(Span span) => new Instant._untrusted(_span - span);
 
-  @internal LocalInstant plusOffset(Offset offset) {
+  LocalInstant _plusOffset(Offset offset) {
     return new LocalInstant(_span + offset.toSpan());
   }
 
-  @internal LocalInstant safePlus(Offset offset) {
+  LocalInstant _safePlus(Offset offset) {
     var days = _span.floorDays;
     // plusOffset(offset);
     // If we can do the arithmetic safely, do so.
-    if (days > minDays && days < maxDays)
+    if (days > IInstant.minDays && days < IInstant.maxDays)
     {
-      return plusOffset(offset);
+      return _plusOffset(offset);
     }
     // Handle BeforeMinValue and BeforeMaxValue simply.
-    if (days < minDays)
+    if (days < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
     }
-    if (days > maxDays)
+    if (days > IInstant.maxDays)
     {
       return LocalInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
     var asDuration = _span.plusSmallNanoseconds(offset.nanoseconds);
-    if (asDuration.floorDays < Instant.minDays)
+    if (asDuration.floorDays < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
     }
-    if (asDuration.floorDays > Instant.maxDays)
+    if (asDuration.floorDays > IInstant.maxDays)
     {
       return LocalInstant.afterMaxValue;
     }
@@ -132,7 +134,7 @@ class Instant implements Comparable<Instant> {
   {
     var days = new LocalDate(year, monthOfYear, dayOfMonth).daysSinceEpoch;
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
-    return new Instant.trusted(new Span(days: days, nanoseconds:  nanoOfDay));
+    return new Instant._trusted(new Span(days: days, nanoseconds:  nanoOfDay));
   }
 
   static Instant max(Instant x, Instant y) => x > y ? x : y;
@@ -159,8 +161,8 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
-    if (Utility.isDartVM) return new Instant.trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
-    return new Instant.trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
+    if (Utility.isDartVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
+    return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
   int get daysSinceEpoch => _span.floorDays; //days;

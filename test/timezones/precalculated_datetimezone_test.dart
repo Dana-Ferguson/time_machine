@@ -19,7 +19,7 @@ Future main() async {
 }
 
 final ZoneInterval FirstInterval =
-new ZoneInterval("First", Instant.beforeMinValue, new Instant.fromUtc(2000, 3, 10, 10, 0), new Offset.fromHours(3), Offset.zero);
+new ZoneInterval("First", IInstant.beforeMinValue, new Instant.fromUtc(2000, 3, 10, 10, 0), new Offset.fromHours(3), Offset.zero);
 
 // Note that this is effectively UTC +3 + 1 hour DST.
 final ZoneInterval SecondInterval =
@@ -66,7 +66,7 @@ void MinMaxOffsetsWithNullTailZone()
 {
   var testZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval,
-      new ZoneInterval("Last", ThirdInterval.end, Instant.afterMaxValue, Offset.zero, Offset.zero) ], null);
+      new ZoneInterval("Last", ThirdInterval.end, IInstant.afterMaxValue, Offset.zero, Offset.zero) ], null);
   expect(new Offset.fromHours(-5), testZone.minOffset);
   expect(new Offset.fromHours(4), testZone.maxOffset);
 }
@@ -182,7 +182,7 @@ void MapLocal_GapAroundTailZoneTransition()
   var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd);
   expect(ThirdInterval, mapping.earlyInterval);
   expect(mapping.lateInterval,
-      new ZoneInterval("UTC+05", ThirdInterval.end, Instant.afterMaxValue, new Offset.fromHours(5), Offset.zero));
+      new ZoneInterval("UTC+05", ThirdInterval.end, IInstant.afterMaxValue, new Offset.fromHours(5), Offset.zero));
   expect(0, mapping.count);
 }
 
@@ -208,8 +208,8 @@ void GetZoneIntervals_NullTailZone_Eot()
 {
   List<ZoneInterval> intervals =
   [
-    new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
-  new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), Instant.afterMaxValue, Offset.zero, Offset.zero)
+    new ZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
+  new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), IInstant.afterMaxValue, Offset.zero, Offset.zero)
 ];
 var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
 expect(intervals[1], zone.getZoneInterval(Instant.maxValue));
@@ -246,7 +246,7 @@ void Validation_BadFirstStartingPoint() {
 void Validation_NonAdjoiningIntervals() {
   List<ZoneInterval> intervals =
   [
-    new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
+    new ZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(25), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
@@ -258,7 +258,7 @@ void Validation_Success()
 {
   List<ZoneInterval> intervals =
   [
-    new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
+    new ZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(30), new Instant.fromUnixTimeTicks(100), Offset.zero, Offset.zero),
   new ZoneInterval("foo", new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(200), Offset.zero, Offset.zero)
@@ -270,7 +270,7 @@ void Validation_Success()
 void Validation_NullTailZoneWithMiddleOfTimeFinalPeriod() {
   List<ZoneInterval> intervals =
   [
-    new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
+    new ZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
     new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), new Instant.fromUnixTimeTicks(30), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
@@ -282,8 +282,8 @@ void Validation_NullTailZoneWithEotPeriodEnd()
 {
   List<ZoneInterval> intervals =
   [
-    new ZoneInterval("foo", Instant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
-  new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), Instant.afterMaxValue, Offset.zero, Offset.zero)
+    new ZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeTicks(20), Offset.zero, Offset.zero),
+  new ZoneInterval("foo", new Instant.fromUnixTimeTicks(20), IInstant.afterMaxValue, Offset.zero, Offset.zero)
 ];
 PrecalculatedDateTimeZone.validatePeriods(intervals, null);
 }

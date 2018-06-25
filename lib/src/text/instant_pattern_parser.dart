@@ -49,7 +49,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   value.isValid ? _pattern.format(value
       .inUtc()
       .localDateTime)
-      : value == Instant.beforeMinValue ? InstantPatternParser.beforeMinValueText
+      : value == IInstant.beforeMinValue ? InstantPatternParser.beforeMinValueText
       : InstantPatternParser.afterMaxValueText;
 
   StringBuffer appendFormat(Instant value, StringBuffer builder) =>
@@ -60,7 +60,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   ParseResult<Instant> parse(String text) =>
       _pattern
           .parse(text)
-          .convert((local) => new Instant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay)));
+          .convert((local) => IInstant.trusted(new Span(days: local.date.daysSinceEpoch, nanoseconds: local.nanosecondOfDay)));
 }
 
 

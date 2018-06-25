@@ -67,7 +67,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
       Preconditions.checkArgument(periods[i].end == periods[i + 1].start, 'periods', "Non-adjoining ZoneIntervals for precalculated time zone");
     }
     Preconditions.checkArgument(
-        tailZone != null || periods[periods.length - 1].rawEnd == Instant.afterMaxValue, 'tailZone',
+        tailZone != null || periods[periods.length - 1].rawEnd == IInstant.afterMaxValue, 'tailZone',
         "Null tail zone given but periods don't cover all of time");
   }
 

@@ -97,7 +97,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
-    LocalInstant safeLocal = instant.safePlus(ruleOffset);
+    LocalInstant safeLocal = IInstant.safePlus(instant, ruleOffset);
     int targetYear;
     if (safeLocal < _minLocalInstant) {
       // Asked for a transition after some point before the first transition: crop to first year (so we get the first transition)
@@ -107,7 +107,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       // Asked for a transition after our final transition... or both are beyond the end of time (in which case
       // we can return an infinite transition). This branch will always be taken for transitions beyond the end
       // of time.
-      return _maxLocalInstant == LocalInstant.afterMaxValue ? new Transition(Instant.afterMaxValue, newOffset) : null;
+      return _maxLocalInstant == LocalInstant.afterMaxValue ? new Transition(IInstant.afterMaxValue, newOffset) : null;
     }
     else if (safeLocal == LocalInstant.beforeMinValue) {
       // We've been asked to find the next transition after some point which is a valid instant, but is before the
@@ -137,7 +137,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     targetYear++;
     // Handle infinite transitions
     if (targetYear > GregorianYearMonthDayCalculator.maxGregorianYear) {
-      return new Transition(Instant.afterMaxValue, newOffset);
+      return new Transition(IInstant.afterMaxValue, newOffset);
     }
     // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
     safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);
@@ -155,7 +155,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
-    LocalInstant safeLocal = instant.safePlus(ruleOffset);
+    LocalInstant safeLocal = IInstant.safePlus(instant, ruleOffset);
     int targetYear;
     if (safeLocal > _maxLocalInstant) {
       // Asked for a transition before some point after our last year: crop to last year.
@@ -172,7 +172,7 @@ import 'package:time_machine/time_machine_timezones.dart';
         // start of valid local time after applying the rule offset.  It's possible that the next transition *would*
         // be representable as an instant (e.g. 1pm Dec 31st -9999 with an offset of -5) but it's reasonable to
         // just return an infinite transition.
-        return new Transition(Instant.beforeMinValue, newOffset);
+        return new Transition(IInstant.beforeMinValue, newOffset);
       }
       else {
         // We've been asked to find the next transition before some point which is a valid instant, but is after the
@@ -203,7 +203,7 @@ import 'package:time_machine/time_machine_timezones.dart';
     targetYear--;
     // Handle infinite transitions
     if (targetYear < GregorianYearMonthDayCalculator.minGregorianYear) {
-      return new Transition(Instant.beforeMinValue, newOffset);
+      return new Transition(IInstant.beforeMinValue, newOffset);
     }
     // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
     safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);

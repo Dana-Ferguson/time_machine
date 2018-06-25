@@ -98,7 +98,7 @@ class _HashCacheNode {
   /// a new node referring to that interval and the previous interval, and keep going.
   @internal static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
     var days = period << _HashArrayCache._periodShift;
-    var periodStart = new Instant.untrusted(new Span(days: math.max(days, Instant.minDays)));
+    var periodStart = IInstant.untrusted(new Span(days: math.max(days, IInstant.minDays)));
     var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);
 
     var interval = map.getZoneInterval(periodStart);

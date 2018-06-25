@@ -40,7 +40,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [offset]: The offset.
   /// [name]: The name to use in the sole [ZoneInterval] in this zone.
   @internal FixedDateTimeZone(String id, Offset offset, String name)
-      : _interval = new ZoneInterval(name, Instant.beforeMinValue, Instant.afterMaxValue, offset, Offset.zero),
+      : _interval = new ZoneInterval(name, IInstant.beforeMinValue, IInstant.afterMaxValue, offset, Offset.zero),
         super(id, true, offset, offset);
 
   /// Makes the id for this time zone. The format is "UTC+/-Offset".

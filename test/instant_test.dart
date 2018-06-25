@@ -16,9 +16,9 @@ Future main() async {
   await runTests();
 }
 
-final Instant one = new Instant.untrusted(new Span(nanoseconds: 1));
-final Instant threeMillion = new Instant.untrusted(new Span(nanoseconds: 3000000));
-final Instant negativeFiftyMillion = new Instant.untrusted(new Span(nanoseconds: -50000000));
+final Instant one = IInstant.untrusted(new Span(nanoseconds: 1));
+final Instant threeMillion = IInstant.untrusted(new Span(nanoseconds: 3000000));
+final Instant negativeFiftyMillion = IInstant.untrusted(new Span(nanoseconds: -50000000));
 
 @Test()
 // Gregorian calendar: 1957-10-04
@@ -348,24 +348,24 @@ void DefaultConstructor()
 void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 {
   Span nanos = new Span(nanoseconds: nanoseconds);
-  Instant instant = new Instant.untrusted(nanos); //.FromUntrustedDuration(nanos);
+  Instant instant = IInstant.untrusted(nanos); //.FromUntrustedDuration(nanos);
   expect(instant.toUnixTimeTicks(), expectedTicks);
 }
 
 @Test()
 void IsValid()
 {
-  expect(Instant.beforeMinValue.isValid, isFalse);
+  expect(IInstant.beforeMinValue.isValid, isFalse);
   expect(Instant.minValue.isValid, isTrue);
   expect(Instant.maxValue.isValid, isTrue);
-  expect(Instant.afterMaxValue.isValid, isFalse);
+  expect(IInstant.afterMaxValue.isValid, isFalse);
 }
 
 @Test()
 void InvalidValues()
 {
-  expect(Instant.afterMaxValue, greaterThan(Instant.maxValue));
-  expect(Instant.beforeMinValue, lessThan(Instant.minValue));
+  expect(IInstant.afterMaxValue, greaterThan(Instant.maxValue));
+  expect(IInstant.beforeMinValue, lessThan(Instant.minValue));
 }
 
 @Test()
@@ -440,14 +440,14 @@ void FromTicksSinceUnixEpoch_Range()
 @Test()
 void PlusOffset()
 {
-  var localInstant = TimeConstants.unixEpoch.plusOffset(new Offset.fromHours(1));
+  var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, new Offset.fromHours(1));
   expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
 void SafePlus_NormalTime()
 {
-  var localInstant = TimeConstants.unixEpoch.safePlus(new Offset.fromHours(1));
+  var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, new Offset.fromHours(1));
   expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
@@ -460,12 +460,12 @@ void SafePlus_NormalTime()
 @TestCase(const [2, 1, 3])
 void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
-      ? Instant.beforeMinValue
+      ? IInstant.beforeMinValue
       : Instant.minValue + new Span(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.beforeMinValue
-      : Instant.minValue.plusOffset(new Offset.fromHours(finalOffset));
-  var actual = start.safePlus(new Offset.fromHours(offsetToAdd));
+      : IInstant.plusOffset(Instant.minValue, new Offset.fromHours(finalOffset));
+  var actual = IInstant.safePlus(start, new Offset.fromHours(offsetToAdd));
   expect(actual, expected);
 }
 
@@ -479,12 +479,12 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
 @TestCase(const [-2, -1, -3])
 void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
-      ? Instant.afterMaxValue
+      ? IInstant.afterMaxValue
       : Instant.maxValue + new Span(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.afterMaxValue
-      : Instant.maxValue.plusOffset(new Offset.fromHours(finalOffset));
-  var actual = start.safePlus(new Offset.fromHours(offsetToAdd));
+      : IInstant.plusOffset( Instant.maxValue, new Offset.fromHours(finalOffset));
+  var actual = IInstant.safePlus(start,new Offset.fromHours(offsetToAdd));
 
   expect(actual, expected);
 }

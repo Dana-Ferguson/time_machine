@@ -90,6 +90,9 @@ class _Internal{
 /// src/public ~ src/internal ~ or I could just do one large public file with all the classes
 const Object internal = const _Internal();
 
+/// This was internal in Noda Time, but I'm considering keeping it public in Time Machine
+const Object wasInternal = const _Internal();
+
 /// This is a marker to ease in porting. When the port is finished, this should be removable without causing any errors.
 class _Private {
   const _Private();

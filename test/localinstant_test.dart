@@ -37,7 +37,7 @@ void Equality()
 @Test()
 void MinusOffset_Zero_IsNeutralElement()
 {
-  Instant sampleInstant = new Instant.trusted(new Span(days: 1, nanoseconds: 23456));
+  Instant sampleInstant = IInstant.trusted(new Span(days: 1, nanoseconds: 23456));
   LocalInstant sampleLocalInstant = new LocalInstant.daysNanos(1, 23456);
   expect(sampleInstant, sampleLocalInstant.minus(Offset.zero));
   expect(sampleInstant, sampleLocalInstant.minusZeroOffset());
@@ -82,9 +82,9 @@ void SafeMinus_NormalTime()
 void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.beforeMinValue
-      : Instant.minValue.plusOffset(new Offset.fromHours(initialOffset));
+      : IInstant.plusOffset(Instant.minValue, new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
-      ? Instant.beforeMinValue
+      ? IInstant.beforeMinValue
       : Instant.minValue + new Span(hours: finalOffset);
   var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(actual, expected);
@@ -101,9 +101,9 @@ void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int fina
 void SafeMinus_NearEndOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.afterMaxValue
-      : Instant.maxValue.plusOffset(new Offset.fromHours(initialOffset));
+      : IInstant.plusOffset(Instant.maxValue, new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
-      ? Instant.afterMaxValue
+      ? IInstant.afterMaxValue
       : Instant.maxValue + new Span(hours: finalOffset);
   var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(expected, actual);

@@ -207,7 +207,7 @@ void December31st2400_MaxYear_UtcTransition()
   var recurrence = new ZoneRecurrence("awkward", new Offset.fromHours(1), yearOffset, GregorianYearMonthDayCalculator.minGregorianYear, GregorianYearMonthDayCalculator.maxGregorianYear);
 
   var next = recurrence.next(new Instant.fromUtc(9999, 6, 1, 0, 0), Offset.zero, Offset.zero);
-  expect(Instant.afterMaxValue, next.instant);
+  expect(IInstant.afterMaxValue, next.instant);
 }
 
 @Test()

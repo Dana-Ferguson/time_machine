@@ -9,6 +9,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+import 'package:time_machine/time_machine_public.dart';
+
 Future main() async {
   // todo: demonstrate a test clock
   // var clockForTesting = new FakeClock();

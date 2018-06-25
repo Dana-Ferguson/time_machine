@@ -71,7 +71,7 @@ void Contains_Instant_WholeOfTime_ViaNullity()
 @Test()
 void Contains_Instant_WholeOfTime_ViaSpecialInstants()
 {
-  ZoneInterval interval = new ZoneInterval("All Time", Instant.beforeMinValue, Instant.afterMaxValue,
+  ZoneInterval interval = new ZoneInterval("All Time", IInstant.beforeMinValue, IInstant.afterMaxValue,
       new Offset.fromHours(9), new Offset.fromHours(1));
   expect(interval.contains(SampleStart), isTrue);
   expect(interval.contains(Instant.minValue), isTrue);
@@ -81,24 +81,24 @@ void Contains_Instant_WholeOfTime_ViaSpecialInstants()
 @Test()
 void Contains_LocalInstant_WholeOfTime()
 {
-  ZoneInterval interval = new ZoneInterval("All Time", Instant.beforeMinValue, Instant.afterMaxValue,
+  ZoneInterval interval = new ZoneInterval("All Time", IInstant.beforeMinValue, IInstant.afterMaxValue,
       new Offset.fromHours(9), new Offset.fromHours(1));
-  expect(interval.containsLocal(SampleStart.plusOffset(Offset.zero)), isTrue);
-  expect(interval.containsLocal(Instant.minValue.plusOffset(Offset.zero)), isTrue);
-  expect(interval.containsLocal(Instant.maxValue.plusOffset(Offset.zero)), isTrue);
+  expect(interval.containsLocal(IInstant.plusOffset(SampleStart, Offset.zero)), isTrue);
+  expect(interval.containsLocal(IInstant.plusOffset(Instant.minValue, Offset.zero)), isTrue);
+  expect(interval.containsLocal(IInstant.plusOffset(Instant.maxValue, Offset.zero)), isTrue);
 }
 
 @Test()
 void Contains_OutsideLocalInstantange()
 {
-  ZoneInterval veryEarly = new ZoneInterval("Very early", Instant.beforeMinValue, Instant.minValue + new Span(hours: 8), new Offset.fromHours(-9), Offset.zero);
-  ZoneInterval veryLate = new ZoneInterval("Very late", Instant.maxValue - new Span(hours: 8), Instant.afterMaxValue, new Offset.fromHours(9), Offset.zero);
+  ZoneInterval veryEarly = new ZoneInterval("Very early", IInstant.beforeMinValue, Instant.minValue + new Span(hours: 8), new Offset.fromHours(-9), Offset.zero);
+  ZoneInterval veryLate = new ZoneInterval("Very late", Instant.maxValue - new Span(hours: 8), IInstant.afterMaxValue, new Offset.fromHours(9), Offset.zero);
   // The instants are contained...
   expect(veryEarly.contains(Instant.minValue + new Span(hours: 4)), isTrue);
   expect(veryLate.contains(Instant.maxValue - new Span(hours: 4)), isTrue);
   // But there are no valid local instants
-  expect(veryEarly.containsLocal(Instant.minValue.plusOffset(Offset.zero)), isFalse);
-  expect(veryLate.containsLocal(Instant.maxValue.plusOffset(Offset.zero)), isFalse);
+  expect(veryEarly.containsLocal(IInstant.plusOffset(Instant.minValue, Offset.zero)), isFalse);
+  expect(veryLate.containsLocal(IInstant.plusOffset(Instant.maxValue, Offset.zero)), isFalse);
 }
 
 @Test()

@@ -25,7 +25,7 @@ Future main() async {
 
 Offset ZoneOffset = new Offset.fromHours(-8);
 FixedDateTimeZone TestZone = new FixedDateTimeZone.forOffset(ZoneOffset);
-ZoneInterval FixedPeriod = new ZoneInterval(TestZone.id, Instant.beforeMinValue, Instant.afterMaxValue, ZoneOffset, Offset.zero);
+ZoneInterval FixedPeriod = new ZoneInterval(TestZone.id, IInstant.beforeMinValue, IInstant.afterMaxValue, ZoneOffset, Offset.zero);
 
 @Test()
 void IsFixed_ReturnsTrue()

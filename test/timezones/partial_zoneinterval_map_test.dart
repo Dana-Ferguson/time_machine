@@ -68,12 +68,12 @@ DateTimeZone ExpectedZone;
 void ConvertToFullMap(String intervalBreaks) {
   var maps = new List<PartialZoneIntervalMap>();
   // We just reuse ExpectedZone as the IZoneIntervalMap; PartialZoneIntervalMap itself will clamp the ends.
-  var current = Instant.beforeMinValue;
+  var current = IInstant.beforeMinValue;
   for (var instant in intervalBreaks.codeUnits.map((c) => Instants[new String.fromCharCode(c)])) {
     maps.add(new PartialZoneIntervalMap(current, instant, ExpectedZone));
     current = instant;
   }
-  maps.add(new PartialZoneIntervalMap(current, Instant.afterMaxValue, ExpectedZone));
+  maps.add(new PartialZoneIntervalMap(current, IInstant.afterMaxValue, ExpectedZone));
 
   var converted = PartialZoneIntervalMap.convertToFullMap(maps);
   // CollectionAssert.AreEqual(
@@ -87,7 +87,7 @@ void ConvertToFullMap(String intervalBreaks) {
 Iterable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map) sync*
 {
   var current = Instant.minValue;
-  while (current < Instant.afterMaxValue)
+  while (current < IInstant.afterMaxValue)
   {
     var zoneInterval = map.getZoneInterval(current);
     yield zoneInterval;

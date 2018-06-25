@@ -17,12 +17,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 class ZoneInterval {
 
   /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
-  /// beginning of time, the return value will be [Instant.beforeMinValue]; this value
+  /// beginning of time, the return value will be [IInstant.beforeMinValue]; this value
   /// should *not* be exposed publicly.
   @internal final Instant rawStart;
 
   /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
-  /// end of time, the return value will be [Instant.afterMaxValue]; this value
+  /// end of time, the return value will be [IInstant.afterMaxValue]; this value
   /// should *not* be exposed publicly.
   @internal final Instant rawEnd;
 
@@ -75,7 +75,7 @@ class ZoneInterval {
   // Use the Start property to trigger the appropriate end-of-time exception.
   // Call Plus to trigger an appropriate out-of-range exception.
   // todo: check this -- I'm not sure how I got so confused on this
-  new LocalDateTime.fromInstant(start.safePlus(wallOffset)); // .WithOffset(wallOffset));
+  new LocalDateTime.fromInstant(IInstant.safePlus(start, wallOffset)); // .WithOffset(wallOffset));
 
 
   /// Gets the local end time of the interval, as a [LocalDateTime]
@@ -90,7 +90,7 @@ class ZoneInterval {
   LocalDateTime get isoLocalEnd =>
   // Use the End property to trigger the appropriate end-of-time exception.
   // Call Plus to trigger an appropriate out-of-range exception.
-  new LocalDateTime.fromInstant(end.plusOffset(wallOffset));
+  new LocalDateTime.fromInstant(IInstant.plusOffset(end, wallOffset));
 
 
   /// Gets the name of this offset period (e.g. PST or PDT).
@@ -127,15 +127,15 @@ class ZoneInterval {
   ///
   /// [name]: The name of this offset period (e.g. PST or PDT).
   /// [start]: The first [Instant] that the <paramref name = "wallOffset" /> applies,
-  /// or [Instant.beforeMinValue] to make the zone interval extend to the start of time.
+  /// or [IInstant.beforeMinValue] to make the zone interval extend to the start of time.
   /// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
-  /// or [Instant.afterMaxValue] to make the zone interval extend to the end of time.
+  /// or [IInstant.afterMaxValue] to make the zone interval extend to the end of time.
   /// [wallOffset]: The [WallOffset] from UTC for this period including any daylight savings.
   /// [savings]: The [WallOffset] daylight savings contribution to the offset.
   /// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
   @internal factory ZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
-    rawStart ??= Instant.beforeMinValue;
-    rawEnd ??= Instant.afterMaxValue;
+    rawStart ??= IInstant.beforeMinValue;
+    rawEnd ??= IInstant.afterMaxValue;
     // Work out the corresponding local instants, taking care to "go infinite" appropriately.
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkArgument(rawStart < rawEnd, 'start', "The start Instant must be less than the end Instant");
@@ -143,8 +143,8 @@ class ZoneInterval {
   }
 
   ZoneInterval._(this.name, this.rawStart, this.rawEnd, this.wallOffset, this.savings) :
-        _localStart = rawStart.safePlus(wallOffset),
-        _localEnd = rawEnd.safePlus(wallOffset);
+        _localStart = IInstant.safePlus(rawStart, wallOffset),
+        _localEnd = IInstant.safePlus(rawEnd, wallOffset);
 
   /// Returns a copy of this zone interval, but with the given start instant.
   @internal ZoneInterval withStart(Instant newStart) {
