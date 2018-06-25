@@ -78,7 +78,7 @@ void FromTimeSpan_Simple()
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Offset();
+  var actual = new Offset.fromSeconds();
   expect(Offset.zero, actual);
 }
 

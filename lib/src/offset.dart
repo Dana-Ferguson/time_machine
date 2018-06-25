@@ -37,8 +37,8 @@ class Offset implements Comparable<Offset> {
 
   static const int _minHours = -18;
   static const int _maxHours = 18;
-  @internal static const int minSeconds = -18 * TimeConstants.secondsPerHour;
-  @internal static const int maxSeconds = 18 * TimeConstants.secondsPerHour;
+  static const int _minSeconds = -18 * TimeConstants.secondsPerHour;
+  static const int _maxSeconds = 18 * TimeConstants.secondsPerHour;
   static const int _minMilliseconds = -18 * TimeConstants.millisecondsPerHour;
   static const int _maxMilliseconds = 18 * TimeConstants.millisecondsPerHour;
   static const int _minTicks = -18 * TimeConstants.ticksPerHour;
@@ -51,8 +51,9 @@ class Offset implements Comparable<Offset> {
   /// Initializes a new instance of the [Offset] struct.
   ///
   /// [seconds]: The number of seconds in the offset.
-  @internal Offset([this._seconds = 0]) {
-    Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
+  Offset._([this._seconds = 0]) {
+    // Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
+    assert(_seconds >= _minSeconds && _seconds <= _maxSeconds, 'seconds ($seconds) should be >= $_minSeconds && <= $_maxSeconds');
   }
 
 // Offset.fromHours(int hours) : this(hours * TimeConstants.secondsPerHour);
@@ -108,7 +109,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] instance with a negated value.
   Offset operator -() =>
   // Guaranteed to still be in range.
-  new Offset(-seconds);
+  new Offset._(-seconds);
 
   /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
   ///
@@ -249,15 +250,16 @@ class Offset implements Comparable<Offset> {
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
       OffsetPattern.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
+  // todo: I still feel like Offset has a ridiculous amount of from[x] constructors
   /// Returns an offset for the given seconds value, which may be negative.
   ///
   /// [seconds]: The int seconds value.
   /// Returns: An offset representing the given number of seconds.
   /// [ArgumentOutOfRangeException]: The specified number of seconds is outside the range of
   /// [-18, +18] hours.
-  factory Offset.fromSeconds(int seconds) {
-    Preconditions.checkArgumentRange('seconds', seconds, minSeconds, maxSeconds);
-    return new Offset(seconds);
+  factory Offset.fromSeconds([int seconds = 0]) {
+    Preconditions.checkArgumentRange('seconds', seconds, _minSeconds, _maxSeconds);
+    return new Offset._(seconds);
   }
 
   /// Returns an offset for the given milliseconds value, which may be negative.
@@ -271,7 +273,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18] hours.
   factory Offset.fromMilliseconds(int milliseconds) {
     Preconditions.checkArgumentRange('milliseconds', milliseconds, _minMilliseconds, _maxMilliseconds);
-    return new Offset(milliseconds ~/ TimeConstants.millisecondsPerSecond);
+    return new Offset._(milliseconds ~/ TimeConstants.millisecondsPerSecond);
   }
 
   /// Returns an offset for the given number of ticks, which may be negative.
@@ -285,7 +287,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18] hours.
   factory Offset.fromTicks(int ticks) {
     Preconditions.checkArgumentRange('ticks', ticks, _minTicks, _maxTicks);
-    return new Offset((ticks ~/ TimeConstants.ticksPerSecond));
+    return new Offset._((ticks ~/ TimeConstants.ticksPerSecond));
   }
   
   /// Returns an offset for the given number of nanoseconds, which may be negative.
@@ -299,7 +301,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18] hours.
   factory Offset.fromNanoseconds(int nanoseconds) {
     Preconditions.checkArgumentRange('nanoseconds', nanoseconds, _minNanoseconds, _maxNanoseconds);
-    return new Offset((nanoseconds ~/ TimeConstants.nanosecondsPerSecond));
+    return new Offset._((nanoseconds ~/ TimeConstants.nanosecondsPerSecond));
   }
   
   /// Returns an offset for the specified number of hours, which may be negative.
@@ -310,7 +312,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18].
   factory Offset.fromHours(int hours) {
     Preconditions.checkArgumentRange('hours', hours, _minHours, _maxHours);
-    return new Offset(hours * TimeConstants.secondsPerHour);
+    return new Offset._(hours * TimeConstants.secondsPerHour);
   }
 
   /// Returns an offset for the specified number of hours and minutes.

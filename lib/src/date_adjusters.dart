@@ -12,19 +12,11 @@ import 'package:time_machine/time_machine.dart';
 class DateAdjusters {
 
   /// A date adjuster to move to the first day of the current month.
-  ///
-  /// <value>
-  /// A date adjuster to move to the first day of the current month.
-  /// </value>
   static final LocalDate Function(LocalDate) startOfMonth =
       (date) => new LocalDate(date.year, date.month, 1, date.calendar);
 
 
   /// A date adjuster to move to the last day of the current month.
-  ///
-  /// <value>
-  /// A date adjuster to move to the last day of the current month.
-  /// </value>
   static final LocalDate Function(LocalDate) endOfMonth =
       (date) => new LocalDate(date.year, date.month, date.calendar.getDaysInMonth(date.year, date.month), date.calendar);
 

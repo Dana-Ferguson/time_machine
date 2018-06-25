@@ -11,12 +11,11 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// Represents an annual date (month and day) in the ISO calendar but without a specific year,
 /// typically for recurrent events such as birthdays, anniversaries, and deadlines.
 ///
-/// In the future, this struct may be expanded to support other calendar systems,
+/// In the future, this class may be expanded to support other calendar systems,
 /// but this does not generalize terribly cleanly, particularly to the Hebrew calendar system
 /// with its leap month.
 @immutable
-class AnnualDate implements Comparable<AnnualDate>
-    {
+class AnnualDate implements Comparable<AnnualDate> {
   // The underlying value. We only care about the month and day, but for the sake of
   // compatibility with the default value, this ends up being in year 1. This would
   // be an invalid date, but we only actually use it as an argument to SetYear,
@@ -31,9 +30,9 @@ class AnnualDate implements Comparable<AnnualDate>
   /// [day]: The day of month.
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
   /// (February 29th is considered valid.)
-  AnnualDate([int month = 1, int day = 1]) :
+  AnnualDate([int month = 1, int day = 1])
     // See comment below for why this is using year 1, and why that's okay even for February 29th.
-    _value = new YearMonthDay(1, month, day)
+    : _value = new YearMonthDay(1, month, day)
   {
     // The year 2000 is a leap year, so this is fine for all valid dates.
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(2000, month, day);

@@ -328,7 +328,7 @@ void InstantComparer()
 void DefaultConstructor()
 {
   // todo: I owe you a default constructor
-  var actual = new OffsetDateTime(new LocalDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0)), new Offset(0));
+  var actual = new OffsetDateTime(new LocalDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0)), new Offset.fromSeconds(0));
   expect(new LocalDateTime.at(1, 1, 1, 0, 0), actual.localDateTime);
   expect(Offset.zero, actual.offset);
 }
