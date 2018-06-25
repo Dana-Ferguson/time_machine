@@ -144,5 +144,5 @@ class ZoneLocalMapping {
   }
 
   ZonedDateTime _buildZonedDateTime(ZoneInterval interval) =>
-      new ZonedDateTime.trusted(localDateTime.withOffset(interval.wallOffset), zone);
+      IZonedDateTime.trusted(localDateTime.withOffset(interval.wallOffset), zone);
 }

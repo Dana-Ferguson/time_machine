@@ -469,7 +469,7 @@ Future InZone() async
   // On October 31st, the UK had already gone back, so the offset is 0.
   // Importantly, it's not the offset of the original OffsetDateTime: we're testing
   // that InZone *doesn't* require that.
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2017, 11, 1, 1, 12).withOffset(Offset.zero), zone);
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2017, 11, 1, 1, 12).withOffset(Offset.zero), zone);
   expect(expected, zoned);
 }
 

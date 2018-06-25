@@ -181,7 +181,7 @@ class Instant implements Comparable<Instant> {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
     var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.floorDays);
     var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.nanosecondOfFloorDay, Offset.zero);
-    return new ZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
+    return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 
   // todo: Combine the regular and x_Calendar constructors

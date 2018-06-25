@@ -112,12 +112,12 @@ void CreateResolver_Unambiguous() {
 
   LocalDateTime localTime = new LocalDateTime.at(1900, 1, 1, 0, 0);
   var resolved = resolver(GapZone.mapLocal(localTime));
-  expect(new ZonedDateTime.trusted(localTime.withOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
+  expect(IZonedDateTime.trusted(localTime.withOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
 }
 
 @Test()
 void CreateResolver_Ambiguous() {
-  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
+  ZonedDateTime zoned = IZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) => zoned;
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
@@ -131,7 +131,7 @@ void CreateResolver_Ambiguous() {
 
 @Test()
 void CreateResolver_Skipped() {
-  ZonedDateTime zoned = new ZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
+  ZonedDateTime zoned = IZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
     return null; /*default(ZonedDateTime);*/

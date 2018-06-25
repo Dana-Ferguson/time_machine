@@ -12,6 +12,12 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+@internal
+abstract class IZonedDateTime {
+  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._trusted(offsetDateTime, zone); 
+}
+
+
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
@@ -35,7 +41,7 @@ class ZonedDateTime {
   final DateTimeZone zone;
 
   /// Internal constructor from pre-validated values.
-  @internal ZonedDateTime.trusted(this._offsetDateTime, this.zone);
+  ZonedDateTime._trusted(this._offsetDateTime, this.zone);
   
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
@@ -47,7 +53,7 @@ class ZonedDateTime {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = new OffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
-    return new ZonedDateTime.trusted(_offsetDateTime, _zone);
+    return new ZonedDateTime._trusted(_offsetDateTime, _zone);
   }
 
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
@@ -70,7 +76,7 @@ class ZonedDateTime {
       throw new ArgumentError("Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset");
     }
     var offsetDateTime = new OffsetDateTime(localDateTime, offset);
-    return new ZonedDateTime.trusted(offsetDateTime, zone);
+    return new ZonedDateTime._trusted(offsetDateTime, zone);
   }
 
   /// Gets the offset of the local representation of this value from UTC.
@@ -182,7 +188,7 @@ class ZonedDateTime {
   /// Returns: The converted ZonedDateTime.
 
   ZonedDateTime withCalendar(CalendarSystem calendar) {
-    return new ZonedDateTime.trusted(_offsetDateTime.withCalendar(calendar), zone);
+    return new ZonedDateTime._trusted(_offsetDateTime.withCalendar(calendar), zone);
   }
 
   /// Indicates whether the current object is equal to another object of the same type.
@@ -413,9 +419,9 @@ class ZonedDateTime {
 /// Use the static properties of this class to obtain instances. This type is exposed so that the
 /// same value can be used for both equality and ordering comparisons.
 @immutable
-abstract class ZonedDateTimeComparer // : IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
+abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqualityComparer<ZonedDateTime>
     {
-// TODO(feature): A comparer which compares instants, but in a calendar-sensitive manner?
+  // TODO(feature): A comparer which compares instants, but in a calendar-sensitive manner?
 
   /// Gets a comparer which compares [ZonedDateTime] values by their local date/time, without reference to
   /// the time zone or offset. Comparisons between two values of different calendar systems will fail with [ArgumentException].
@@ -423,7 +429,7 @@ abstract class ZonedDateTimeComparer // : IComparer<ZonedDateTime>, IEqualityCom
   /// For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be later than
   /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value represents a later instant in time.
   /// This property will return a reference to the same instance every time it is called.
-  static ZonedDateTimeComparer get local => ZonedDateTime_LocalComparer.Instance;
+  static ZonedDateTimeComparer get local => _ZonedDateTime_LocalComparer.instance;
 
   /// Gets a comparer which compares [ZonedDateTime] values by the instants obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
@@ -435,12 +441,11 @@ abstract class ZonedDateTimeComparer // : IComparer<ZonedDateTime>, IEqualityCom
   ///
   /// <value>A comparer which compares values by the instants obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static ZonedDateTimeComparer get instant => ZonedDateTime_InstantComparer.Instance;
+  static ZonedDateTimeComparer get instant => _ZonedDateTime_InstantComparer.instance;
 
   /// Internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  @internal ZonedDateTimeComparer() {
-  }
+  ZonedDateTimeComparer._();
 
   /// Compares two [ZonedDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
@@ -482,11 +487,10 @@ abstract class ZonedDateTimeComparer // : IComparer<ZonedDateTime>, IEqualityCom
 }
 
 /// Implementation for [Comparer.Local].
-@private class ZonedDateTime_LocalComparer extends ZonedDateTimeComparer {
-  @internal static final ZonedDateTimeComparer Instance = new ZonedDateTime_LocalComparer();
+class _ZonedDateTime_LocalComparer extends ZonedDateTimeComparer {
+  static final ZonedDateTimeComparer instance = new _ZonedDateTime_LocalComparer._();
 
-  @private ZonedDateTime_LocalComparer() {
-  }
+  _ZonedDateTime_LocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>
@@ -503,11 +507,10 @@ abstract class ZonedDateTimeComparer // : IComparer<ZonedDateTime>, IEqualityCom
 
 
 /// Implementation for [Comparer.Instant].
-@private class ZonedDateTime_InstantComparer extends ZonedDateTimeComparer {
-  @internal static final ZonedDateTimeComparer Instance = new ZonedDateTime_InstantComparer();
+class _ZonedDateTime_InstantComparer extends ZonedDateTimeComparer {
+  static final ZonedDateTimeComparer instance = new _ZonedDateTime_InstantComparer._();
 
-  @private ZonedDateTime_InstantComparer() {
-  }
+  _ZonedDateTime_InstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>

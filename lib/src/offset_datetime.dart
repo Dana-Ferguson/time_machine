@@ -202,7 +202,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// use this result for arithmetic operations, as the zone will not adjust to account for daylight savings.
   ///
   /// Returns: A zoned date/time with the same local time and a fixed time zone using the offset from this value.
-  ZonedDateTime get inFixedZone => new ZonedDateTime.trusted(this, new DateTimeZone.forOffset(offset));
+  ZonedDateTime get inFixedZone => IZonedDateTime.trusted(this, new DateTimeZone.forOffset(offset));
 
   /// Returns this value in ths specified time zone. This method does not expect
   /// the offset in the zone to be the same as for the current value; it simply converts

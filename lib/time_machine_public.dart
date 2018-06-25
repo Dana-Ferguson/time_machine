@@ -22,8 +22,8 @@ export 'src/calendar_system.dart';
 export 'src/isodayofweek.dart' show IsoDayOfWeek;
 
 export 'src/i_datetimezone_provider.dart' show IDateTimeZoneProvider;
-export 'src/datetimezone.dart';
-export 'src/zoneddatetime.dart';
+export 'src/datetimezone.dart' show DateTimeZone;
+export 'src/zoneddatetime.dart' show ZonedDateTime;
 
 export 'src/localinstant.dart';
 export 'src/localtime.dart';

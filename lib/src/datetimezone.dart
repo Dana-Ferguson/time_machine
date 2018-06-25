@@ -225,11 +225,11 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
         if (offsetDateTime.yearMonthDay != date.yearMonthDay) {
           throw new SkippedTimeError(midnight, this);
         }
-        return new ZonedDateTime.trusted(offsetDateTime, this);
+        return IZonedDateTime.trusted(offsetDateTime, this);
       // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
       case 1:
       case 2:
-        return new ZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), this);
+        return IZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), this);
       default:
         throw new StateError("This won't happen.");
     }

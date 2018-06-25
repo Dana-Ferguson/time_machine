@@ -522,7 +522,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in UTC.
   ZonedDateTime inUtc() =>
   // Use the @internal constructors to avoid validation. We know it will be fine.
-  new ZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
+  IZonedDateTime.trusted(new OffsetDateTime.fullTrust(date.yearMonthDayCalendar, time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
   /// Returns the mapping of this local date/time within the given [DateTimeZone],

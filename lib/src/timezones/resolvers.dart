@@ -63,7 +63,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return new ZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).withOffset(after.wallOffset), zone);
+    return IZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).withOffset(after.wallOffset), zone);
   };
 
   /// A [SkippedTimeResolver] which simply throws a [SkippedTimeException].

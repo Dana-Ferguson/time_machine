@@ -59,7 +59,7 @@ final LocalDate TransitionDate = new LocalDate(2000, 6, 1);
 void AmbiguousStartOfDay_TransitionAtMidnight()
 {
   // Occurrence before transition
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionBackwardToMidnightZone);
   var actual = TransitionBackwardToMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -70,7 +70,7 @@ void AmbiguousStartOfDay_TransitionAtMidnight()
 void AmbiguousStartOfDay_TransitionAfterMidnight()
 {
   // Occurrence before transition
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionBackwardAfterMidnightZone);
   var actual = TransitionBackwardAfterMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -81,7 +81,7 @@ void AmbiguousStartOfDay_TransitionAfterMidnight()
 void SkippedStartOfDay_TransitionAtMidnight()
 {
   // 1am because of the skip
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 1, 0).withOffset(new Offset.fromHours(-1)),
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 1, 0).withOffset(new Offset.fromHours(-1)),
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -92,7 +92,7 @@ void SkippedStartOfDay_TransitionAtMidnight()
 void SkippedStartOfDay_TransitionBeforeMidnight()
 {
   // 12.20am because of the skip
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 20).withOffset(new Offset.fromHours(-1)),
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2000, 6, 1, 0, 20).withOffset(new Offset.fromHours(-1)),
       TransitionForwardBeforeMidnightZone);
   var actual = TransitionForwardBeforeMidnightZone.atStartOfDay(TransitionDate);
   expect(expected, actual);
@@ -103,7 +103,7 @@ void SkippedStartOfDay_TransitionBeforeMidnight()
 void UnambiguousStartOfDay()
 {
   // Just a simple midnight in March.
-  var expected = new ZonedDateTime.trusted(new LocalDateTime.at(2000, 3, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
+  var expected = IZonedDateTime.trusted(new LocalDateTime.at(2000, 3, 1, 0, 0).withOffset(new Offset.fromHours(-2)),
       TransitionForwardAtMidnightZone);
   var actual = TransitionForwardAtMidnightZone.atStartOfDay(new LocalDate(2000, 3, 1));
   expect(expected, actual);

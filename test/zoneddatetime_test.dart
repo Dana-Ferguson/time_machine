@@ -541,7 +541,7 @@ Future LocalComparer() async
       .withCalendar(CalendarSystem.persianSimple)
       .inZoneStrictly(london);
 
-  var comparer = ZonedDateTime_LocalComparer.Instance; // ZonedDateTime.Comparer.Local;
+  var comparer = ZonedDateTimeComparer.local;
   TestHelper.TestComparerStruct(comparer.compare, losAngelesAfternoon, londonAfternoon, londonEvening);
   expect(() => comparer.compare(londonPersian, londonEvening), throwsArgumentError);
   expect(comparer.equals(londonPersian, londonEvening), isFalse);
@@ -569,7 +569,7 @@ Future InstantComparer() async
       .withCalendar(CalendarSystem.persianSimple)
       .inZoneStrictly(london);
 
-  var comparer = ZonedDateTime_InstantComparer.Instance; // ZonedDateTime.Comparer.Instant;
+  var comparer = ZonedDateTimeComparer.instant;
   TestHelper.TestComparerStruct(comparer.compare, londonEvening, losAngelesLunchtime, losAngelesAfternoon);
   expect(0, comparer.compare(londonPersian, londonEvening));
   expect(comparer.equals(londonPersian, londonEvening), isTrue);
