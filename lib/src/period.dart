@@ -38,6 +38,21 @@ class _TimeComponentsBetweenResult {
   _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.ticks, this.nanoseconds);
 }
 
+@internal
+abstract class IPeriod {
+  static int daysBetween(LocalDate start, LocalDate end) => Period._daysBetween(start, end);
+
+  static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
+    int hours: 0, int minutes: 0, int seconds: 0,
+    int milliseconds: 0, int ticks: 0, int nanoseconds: 0}) => 
+      new Period._(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds);
+
+  static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);  
+
+  static LocalDate addDateTo(Period period, LocalDate date, int scalar) => period._addDateTo(date, scalar);
+
+  static LocalDateTime addDateTimeTo(Period period, LocalDate date, LocalTime time, int scalar) => period._addDateTimeTo(date, time, scalar);
+}
 
 /// Represents a period of time expressed in human chronological terms: hours, days,
 /// weeks, months and so on.
@@ -58,27 +73,25 @@ class _TimeComponentsBetweenResult {
 /// [LocalDateTime] whereas [Duration] operates on instants
 /// on the time line. (Note that although [ZonedDateTime] includes both concepts, it only supports
 /// duration-based arithmetic.)
-///
-/// <threadsafety>This type is immutable reference type. See the thread safety section of the user guide for more information.</threadsafety>
 @immutable
 class Period {
-// General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
-// value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
-// but it's unlikely to be an issue. Ideally, we'd switch to use BigInteger after detecting that it could be a problem,
-// but without the hit of having to catch the exception...
+  // General implementation note: operations such as normalization work out the total number of nanoseconds as an Int64
+  // value. This can handle +/- 106,751 days, or 292 years. We could move to using BigInteger if we feel that's required,
+  // but it's unlikely to be an issue. Ideally, we'd switch to use BigInteger after detecting that it could be a problem,
+  // but without the hit of having to catch the exception...
 
 
   /// A period containing only zero-valued properties.
-  static const Period Zero = const Period();
+  static const Period Zero = const Period._();
 
 
-/// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
-/// Note that as per the [normalize] method, years and months are unchanged by normalization - so 12 months does not
-/// equal 1 year.
-// todo: what to do about this?
-// static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
-
-// The fields that make up this period.
+  /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
+  /// Note that as per the [normalize] method, years and months are unchanged by normalization - so 12 months does not
+  /// equal 1 year.
+  // todo: what to do about this?
+  // static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
+  
+  // The fields that make up this period.
 
 
   /// Gets the number of nanoseconds within this period.
@@ -151,7 +164,7 @@ class Period {
   final int years;
 
   /// Creates a period with the given time values.
-  @internal const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
+  const Period._({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
     this.hours: 0, this.minutes: 0, this.seconds: 0,
     this.milliseconds: 0, this.ticks: 0, this.nanoseconds: 0});
 
@@ -162,70 +175,70 @@ class Period {
   ///
   /// [years]: The number of years in the new period
   /// Returns: A period consisting of the given number of years.
-  factory Period.fromYears(int years) => new Period(years: years);
+  factory Period.fromYears(int years) => new Period._(years: years);
 
 
   /// Creates a period representing the specified number of months.
   ///
   /// [months]: The number of months in the new period
   /// Returns: A period consisting of the given number of months.
-  factory Period.fromMonths(int months) => new Period(months: months);
+  factory Period.fromMonths(int months) => new Period._(months: months);
 
 
   /// Creates a period representing the specified number of weeks.
   ///
   /// [weeks]: The number of weeks in the new period
   /// Returns: A period consisting of the given number of weeks.
-  factory Period.fromWeeks(int weeks) => new Period(weeks: weeks);
+  factory Period.fromWeeks(int weeks) => new Period._(weeks: weeks);
 
 
   /// Creates a period representing the specified number of days.
   ///
   /// [days]: The number of days in the new period
   /// Returns: A period consisting of the given number of days.
-  factory Period.fromDays(int days) => new Period(days: days);
+  factory Period.fromDays(int days) => new Period._(days: days);
 
 
   /// Creates a period representing the specified number of hours.
   ///
   /// [hours]: The number of hours in the new period
   /// Returns: A period consisting of the given number of hours.
-  factory Period.fromHours(int hours) => new Period(hours: hours);
+  factory Period.fromHours(int hours) => new Period._(hours: hours);
 
 
   /// Creates a period representing the specified number of minutes.
   ///
   /// [minutes]: The number of minutes in the new period
   /// Returns: A period consisting of the given number of minutes.
-  factory Period.fromMinutes(int minutes) => new Period(minutes: minutes);
+  factory Period.fromMinutes(int minutes) => new Period._(minutes: minutes);
 
 
   /// Creates a period representing the specified number of seconds.
   ///
   /// [seconds]: The number of seconds in the new period
   /// Returns: A period consisting of the given number of seconds.
-  factory Period.fromSeconds(int seconds) => new Period(seconds: seconds);
+  factory Period.fromSeconds(int seconds) => new Period._(seconds: seconds);
 
 
   /// Creates a period representing the specified number of milliseconds.
   ///
   /// [milliseconds]: The number of milliseconds in the new period
   /// Returns: A period consisting of the given number of milliseconds.
-  factory Period.fromMilliseconds(int milliseconds) => new Period(milliseconds: milliseconds);
+  factory Period.fromMilliseconds(int milliseconds) => new Period._(milliseconds: milliseconds);
 
 
   /// Creates a period representing the specified number of ticks.
   ///
   /// [ticks]: The number of ticks in the new period
   /// Returns: A period consisting of the given number of ticks.
-  factory Period.fromTicks(int ticks) => new Period(ticks: ticks);
+  factory Period.fromTicks(int ticks) => new Period._(ticks: ticks);
 
 
   /// Creates a period representing the specified number of nanooseconds.
   ///
   /// [nanoseconds]: The number of nanoseconds in the new period
   /// Returns: A period consisting of the given number of nanoseconds.
-  factory Period.fromNanoseconds(int nanoseconds) => new Period(nanoseconds: nanoseconds);
+  factory Period.fromNanoseconds(int nanoseconds) => new Period._(nanoseconds: nanoseconds);
 
 
   /// Adds two periods together, by simply adding the values for each property.
@@ -236,7 +249,7 @@ class Period {
   /// periods.
   Period operator +(Period right) {
     Preconditions.checkNotNull(right, 'right');
-    return new Period(years: years + right.years,
+    return new Period._(years: years + right.years,
         months: months + right.months,
         weeks: weeks + right.weeks,
         days: days + right.days,
@@ -273,7 +286,7 @@ class Period {
   /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").
   Period operator -(Period subtrahend) {
     Preconditions.checkNotNull(subtrahend, 'subtrahend');
-    return new Period(
+    return new Period._(
         years: years - subtrahend.years,
         months: months - subtrahend.months,
         weeks: weeks - subtrahend.weeks,
@@ -332,7 +345,7 @@ class Period {
       PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start.date, endDate)),
       PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start.date, endDate)),
       PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start.date, endDate)),
-      PeriodUnits.days: () => new Period.fromDays(daysBetween(start.date, endDate)),
+      PeriodUnits.days: () => new Period.fromDays(_daysBetween(start.date, endDate)),
       PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.hours.unitsBetween(start, end)),
       PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.minutes.unitsBetween(start, end)),
       PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.seconds.unitsBetween(start, end)),
@@ -385,7 +398,7 @@ class Period {
       remaining = new LocalDateTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
-      return new Period(years: years, months: months, weeks: weeks, days: days);
+      return new Period._(years: years, months: months, weeks: weeks, days: days);
     }
 
     // The remainder of the computation is with fixed-length units, so we can do it all with
@@ -427,7 +440,7 @@ class Period {
       ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.ticks);
       nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.nanoseconds);
     }
-    return new Period(years: years,
+    return new Period._(years: years,
         months: months,
         weeks: weeks,
         days: days,
@@ -527,7 +540,7 @@ class Period {
 
 /// Adds the time components of this period to the given time, scaled accordingly.
 
-  @internal LocalTime addTimeTo(LocalTime time, int scalar) =>
+  LocalTime _addTimeTo(LocalTime time, int scalar) =>
       time.plusHours(hours * scalar)
           .plusMinutes(minutes * scalar)
           .plusSeconds(seconds * scalar)
@@ -538,7 +551,7 @@ class Period {
 
 /// Adds the date components of this period to the given time, scaled accordingly.
 
-  @internal LocalDate addDateTo(LocalDate date, int scalar) =>
+  LocalDate _addDateTo(LocalDate date, int scalar) =>
       date.plusYears(years * scalar)
           .plusMonths(months * scalar)
           .plusWeeks(weeks * scalar)
@@ -546,8 +559,8 @@ class Period {
 
 
   /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
-  @internal LocalDateTime addDateTimeTo(LocalDate date, LocalTime time, int scalar) {
-    date = addDateTo(date, scalar);
+  LocalDateTime _addDateTimeTo(LocalDate date, LocalTime time, int scalar) {
+    date = _addDateTo(date, scalar);
     // todo: probably a better way here
     int extraDays = 0;
     var result = TimePeriodField.hours.addTime(time, hours * scalar, /*ref*/ extraDays);
@@ -571,7 +584,7 @@ class Period {
     PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start, end)),
     PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start, end)),
     PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start, end)),
-    PeriodUnits.days: (start, end) => new Period.fromDays(daysBetween(start, end))
+    PeriodUnits.days: (start, end) => new Period.fromDays(_daysBetween(start, end))
   };
 
   /// Returns the exact difference between two dates or returns the period between a start and an end date, using only the given units.
@@ -605,7 +618,7 @@ class Period {
 
     // Multiple fields todo: if these result_type functions are just used to make periods, we can simply them
     var result = _dateComponentsBetween(start, end, units);
-    return new Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
+    return new Period._(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
   static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
@@ -647,7 +660,7 @@ class Period {
     if (singleFieldFunction != null) return singleFieldFunction(remaining);
 
     var result = _timeComponentsBetween(remaining, units);
-    return new Period(hours: result.hours,
+    return new Period._(hours: result.hours,
         minutes: result.minutes,
         seconds: result.seconds,
         milliseconds: result.milliseconds,
@@ -657,7 +670,7 @@ class Period {
 
   /// Returns the number of days between two dates. This allows optimizations in DateInterval,
   /// and for date calculations which just use days - we don't need state or a virtual method invocation.
-  @internal static int daysBetween(LocalDate start, LocalDate end) {
+  static int _daysBetween(LocalDate start, LocalDate end) {
     // We already assume the calendars are the same.
     if (ILocalDate.yearMonthDay(start) == ILocalDate.yearMonthDay(end)) {
       return 0;
@@ -757,7 +770,7 @@ class Period {
       nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
-    return new Period(years: this.years,
+    return new Period._(years: this.years,
         months: this.months,
         weeks: 0 /* weeks */,
         days: days,
@@ -802,6 +815,7 @@ class Period {
   bool operator==(dynamic other) => other is Period && equals(other);
 }
 
+// todo: why is this private, it's used in period_tests?
 /// Equality comparer which simply normalizes periods before comparing them.
 @private class NormalizingPeriodEqualityComparer {
   @internal static final NormalizingPeriodEqualityComparer instance = new NormalizingPeriodEqualityComparer._();
@@ -832,7 +846,7 @@ class _PeriodComparer // implements Comparer<Period>
     {
   final LocalDateTime _baseDateTime;
 
-  @internal _PeriodComparer(this._baseDateTime);
+  _PeriodComparer(this._baseDateTime);
 
   int compare(Period x, Period y) {
     if (identical(x, y)) {

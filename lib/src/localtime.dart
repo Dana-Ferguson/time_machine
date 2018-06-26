@@ -292,7 +292,7 @@ class LocalTime implements Comparable<LocalTime> {
   LocalTime operator +(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot add a period with a date component to a time");
-    return period.addTimeTo(this, 1);
+    return IPeriod.addTimeTo(period, this, 1);
   }
 
 
@@ -345,7 +345,7 @@ class LocalTime implements Comparable<LocalTime> {
   LocalTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
-    return period.addTimeTo(this, -1);
+    return IPeriod.addTimeTo(period, this, -1);
   }
 
 // todo: this is a mess here ~ I feel like I didn't get the operators and collaries correct here

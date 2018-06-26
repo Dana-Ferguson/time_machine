@@ -540,7 +540,7 @@ void ToString_AllUnits()
   // Period({this.Years: 0, this.Months: 0, this.Weeks: 0, this.Days: 0,
   //    this.Hours: 0, this.Minutes: 0, this.Seconds: 0,
   //    this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});
-  Period period = new Period(years: 1, months: 2, weeks: 3, days: 4,
+  Period period = IPeriod.period(years: 1, months: 2, weeks: 3, days: 4,
       hours: 5, minutes: 6, seconds: 7, milliseconds: 8, ticks: 9, nanoseconds: 10);
   expect("P1Y2M3W4DT5H6M7S8s9t10n", period.toString());
 }

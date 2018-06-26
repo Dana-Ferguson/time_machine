@@ -98,7 +98,7 @@ class DateInterval {
   int get length =>
     // Period.DaysBetween will give us the exclusive result, so we need to add 1
     // to include the end date.
-    Period.daysBetween(start, end) + 1;
+    IPeriod.daysBetween(start, end) + 1;
   
   /// Gets the calendar system of the dates in this interval.
   CalendarSystem get calendar => start.calendar;
@@ -151,7 +151,7 @@ class DateInterval {
     // that isn't in either interval. Note the absence of "+ 1" and the use of >=
     // - it's equivalent to Period.DaysBetween(...) + 1 > Length + interval.Length,
     // but with fewer operations.
-    return Period.daysBetween(_start, _end) >= length + interval.length
+    return IPeriod.daysBetween(_start, _end) >= length + interval.length
         ? null
         : new DateInterval(_start, _end);
   }

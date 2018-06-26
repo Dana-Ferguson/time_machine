@@ -50,9 +50,9 @@ export 'src/time_adjusters.dart';
 export 'src/offset.dart';
 export 'src/offset_date.dart';
 export 'src/offset_time.dart';
-export 'src/offset_datetime.dart';
+export 'src/offset_datetime.dart' show OffsetDateTime;
 
-export 'src/period.dart';
+export 'src/period.dart' show Period;
 export 'src/period_units.dart';
 export 'src/period_builder.dart';
 

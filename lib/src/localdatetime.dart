@@ -298,7 +298,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime plus(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return period.addDateTimeTo(date, time, 1);
+    return IPeriod.addDateTimeTo(period, date, time, 1);
   }
 
 
@@ -335,7 +335,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return period.addDateTimeTo(date, time, -1);
+    return IPeriod.addDateTimeTo(period, date, time, -1);
   }
 
 

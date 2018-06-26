@@ -123,7 +123,7 @@ class PeriodBuilder {
   ///
   /// Returns: A period containing the values from this builder.
   Period build() =>
-      new Period(years: years,
+      IPeriod.period(years: years,
           months: months,
           weeks: weeks,
           days: days,
