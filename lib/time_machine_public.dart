@@ -53,8 +53,8 @@ export 'src/offset_time.dart';
 export 'src/offset_datetime.dart' show OffsetDateTime;
 
 export 'src/period.dart' show Period;
-export 'src/period_units.dart';
-export 'src/period_builder.dart';
+export 'src/period_units.dart' show PeriodUnits;
+export 'src/period_builder.dart' show PeriodBuilder;
 
 bool _initialized = false;
 

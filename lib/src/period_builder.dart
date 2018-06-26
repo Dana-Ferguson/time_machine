@@ -8,11 +8,6 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// A mutable builder class for [Period] values. Each property can
 /// be set independently, and then a Period can be created from the result
 /// using the [build] method.
-///
-/// <threadsafety>
-/// This type is not thread-safe without extra synchronization, but has no
-/// thread affinity.
-/// </threadsafety>
 class PeriodBuilder {
   /// Gets or sets the number of years within the period.
   int years;
