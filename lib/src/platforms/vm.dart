@@ -133,7 +133,7 @@ class TimeMachine  {
       }
     }
     
-    allSpecialInstants = allZoneIntervals.map((z) => z.rawStart);
+    allSpecialInstants = allZoneIntervals.map((z) => z.rawStart).toList();
     var badZones = new HashSet<String>();
 
     zones = lessZones;
