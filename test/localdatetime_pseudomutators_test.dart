@@ -260,7 +260,7 @@ void Plus_FullPeriod() {
   var actual = start.plus(period);
   var expected = new LocalDateTime.at(2012, 6, 27, 17, 21, seconds: 15).plusNanoseconds(8000911);
 
-  expect(expected, actual, reason: "{expected:yyyy-MM-dd HH:mm:ss.fffffffff} != {actual:yyyy-MM-dd HH:mm:ss.fffffffff}");
+  expect(expected, actual, reason: "${expected.toString('yyyy-MM-dd HH:mm:ss.fffffffff')} != ${actual.toString('yyyy-MM-dd HH:mm:ss.fffffffff')}");
 }
 
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";

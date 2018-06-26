@@ -45,7 +45,8 @@ abstract class IPeriod {
   static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
     int hours: 0, int minutes: 0, int seconds: 0,
     int milliseconds: 0, int ticks: 0, int nanoseconds: 0}) => 
-      new Period._(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds);
+      new Period._(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, 
+          milliseconds: milliseconds, ticks: ticks, nanoseconds: nanoseconds);
 
   static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);  
 
