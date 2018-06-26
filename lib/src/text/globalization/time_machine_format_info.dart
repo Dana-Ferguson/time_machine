@@ -393,7 +393,7 @@ class _EraDescription {
 
   @internal factory _EraDescription.forEra(Era era, CultureInfo cultureInfo)
   {
-    String pipeDelimited = PatternResources.getString(era.resourceIdentifier, cultureInfo);
+    String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), cultureInfo);
     String primaryName;
     List<String> allNames;
     if (pipeDelimited == null)

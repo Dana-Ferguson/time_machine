@@ -17,6 +17,7 @@ as timeMachine;
 
 // export 'time_machine.dart' show Instant, AmbiguousTimeError;
 
+// todo: lots of spiders in this one!
 export 'src/calendar_system.dart';
 
 export 'src/isodayofweek.dart' show IsoDayOfWeek;
@@ -55,6 +56,25 @@ export 'src/offset_datetime.dart' show OffsetDateTime;
 export 'src/period.dart' show Period;
 export 'src/period_units.dart' show PeriodUnits;
 export 'src/period_builder.dart' show PeriodBuilder;
+
+// Calendars
+
+export 'src/calendars/gj_yearmonthday_calculator.dart';
+export 'src/calendars/gregorian_yearmonthday_calculator.dart';
+export 'src/calendars/julian_yearmonthday_calculator.dart';
+export 'src/calendars/regular_yearmonthday_calculator.dart';
+export 'src/calendars/year_start_cache_entry.dart';
+export 'src/calendars/yearmonthday_calculator.dart';
+export 'src/calendars/single_era_calculator.dart';
+export 'src/calendars/gj_era_calculator.dart';
+export 'src/calendars/era_calculator.dart';
+export 'src/calendars/era.dart' show IEra;
+
+export 'src/calendars/i_week_rule.dart';
+export 'src/calendars/week_year_rules.dart';
+export 'src/calendars/simple_week_year_rule.dart';
+
+// ***
 
 bool _initialized = false;
 
