@@ -64,6 +64,16 @@ export 'src/calendars/era.dart' show Era;
 export 'src/calendars/i_week_rule.dart' show IWeekYearRule;
 export 'src/calendars/week_year_rules.dart' show WeekYearRules, CalendarWeekRule;
 
+// Fields (no public classes)
+
+// Globalization
+
+export 'src/text/globalization/time_machine_format_info.dart';
+export 'src/text/globalization/pattern_resources.dart';
+export 'src/text/globalization/culture.dart';
+export 'src/text/globalization/culture_io.dart';
+export 'src/text/globalization/datetime_format_info.dart';
+
 // ***
 
 bool _initialized = false;

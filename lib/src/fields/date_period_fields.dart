@@ -6,7 +6,8 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_fields.dart';
 
 /// All the period fields.
-@internal abstract class DatePeriodFields
+@internal
+abstract class DatePeriodFields
 {
   @internal static final IDatePeriodField daysField = new FixedLengthDatePeriodField(1);
   @internal static final IDatePeriodField weeksField = new FixedLengthDatePeriodField(7);

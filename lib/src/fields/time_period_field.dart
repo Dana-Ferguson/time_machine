@@ -21,14 +21,15 @@ class _AddTimeResult {
 /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
 /// of code elegance.
 @immutable
-@internal class TimePeriodField
+@internal
+class TimePeriodField
 {
-  @internal static final TimePeriodField nanoseconds = new TimePeriodField._(1);
-  @internal static final TimePeriodField ticks = new TimePeriodField._(TimeConstants.nanosecondsPerTick);
-  @internal static final TimePeriodField milliseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
-  @internal static final TimePeriodField seconds = new TimePeriodField._(TimeConstants.nanosecondsPerSecond);
-  @internal static final TimePeriodField minutes = new TimePeriodField._(TimeConstants.nanosecondsPerMinute);
-  @internal static final TimePeriodField hours = new TimePeriodField._(TimeConstants.nanosecondsPerHour);
+  static final TimePeriodField nanoseconds = new TimePeriodField._(1);
+  static final TimePeriodField ticks = new TimePeriodField._(TimeConstants.nanosecondsPerTick);
+  static final TimePeriodField milliseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
+  static final TimePeriodField seconds = new TimePeriodField._(TimeConstants.nanosecondsPerSecond);
+  static final TimePeriodField minutes = new TimePeriodField._(TimeConstants.nanosecondsPerMinute);
+  static final TimePeriodField hours = new TimePeriodField._(TimeConstants.nanosecondsPerHour);
 
   final int _unitNanoseconds;
   // The largest number of units (positive or negative) we can multiply unitNanoseconds by without overflowing a long.
@@ -39,7 +40,7 @@ class _AddTimeResult {
         _maxLongUnits = Utility.intMaxValue ~/ _unitNanoseconds,
         _unitsPerDay = TimeConstants.nanosecondsPerDay ~/ _unitNanoseconds;
 
-  @internal LocalDateTime addDateTime(LocalDateTime start, int units)
+  LocalDateTime addDateTime(LocalDateTime start, int units)
   {
     // int extraDays = 0;
     var addTimeResult = addTime(start.time, units, 0);
@@ -49,7 +50,7 @@ class _AddTimeResult {
   }
 
   // todo: is this actually used anywhere? rename
-  @internal LocalTime addTimeSimple(LocalTime localTime, int value)
+  LocalTime addTimeSimple(LocalTime localTime, int value)
   {
     // unchecked
     {
@@ -86,7 +87,7 @@ class _AddTimeResult {
     }
   }
 
-  @internal _AddTimeResult addTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
+  _AddTimeResult addTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
     // if (extraDays == null) return AddTimeSimple(localTime, value);
 
     // unchecked
@@ -131,7 +132,7 @@ class _AddTimeResult {
     }
   }
 
-  @internal int unitsBetween(LocalDateTime start, LocalDateTime end)
+  int unitsBetween(LocalDateTime start, LocalDateTime end)
   {
     LocalInstant startLocalInstant = start.toLocalInstant();
     LocalInstant endLocalInstant = end.toLocalInstant();
@@ -141,13 +142,13 @@ class _AddTimeResult {
 
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
-  @internal int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ _unitNanoseconds;
+  int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ _unitNanoseconds;
 //      span.IsInt64Representable
 //          ? span.ToInt64Nanoseconds() / unitNanoseconds
 //          : (span.ToDecimalNanoseconds() / unitNanoseconds);
 
   /// Returns a [Span] representing the given number of units.
-  @internal Span toSpan(int units) =>
+  Span toSpan(int units) =>
       units >= -_maxLongUnits && units <= _maxLongUnits
           ? new Span(nanoseconds: units * _unitNanoseconds)
           : new Span(nanoseconds: units * /*(decimal)*/_unitNanoseconds);
