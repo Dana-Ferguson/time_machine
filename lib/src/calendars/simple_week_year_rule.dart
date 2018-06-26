@@ -14,7 +14,8 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// year, and the end of the week in the following calendar year, but the whole
 /// week is in the same week-year.)
 @immutable
-@internal /*sealed*/ class SimpleWeekYearRule implements IWeekYearRule {
+@internal
+class SimpleWeekYearRule implements IWeekYearRule {
   final int _minDaysInFirstWeek;
   final IsoDayOfWeek _firstDayOfWeek;
 
@@ -28,7 +29,7 @@ import 'package:time_machine/time_machine_calendars.dart';
   /// This is the state for ISO-like rules.
   final bool _irregularWeeks;
 
-  @internal SimpleWeekYearRule(this._minDaysInFirstWeek, this._firstDayOfWeek, this._irregularWeeks) {
+  SimpleWeekYearRule(this._minDaysInFirstWeek, this._firstDayOfWeek, this._irregularWeeks) {
     Preconditions.debugCheckArgumentRange('minDaysInFirstWeek', _minDaysInFirstWeek, 1, 7);
     Preconditions.checkArgumentRange('firstDayOfWeek', _firstDayOfWeek.value, 1, 7);
   }

@@ -11,17 +11,18 @@ import 'package:time_machine/time_machine_calendars.dart';
 /// YearMonthDay arguments can be assumed to be valid for the relevant calendar,
 /// but other arguments should be validated. (Eras should be validated for nullity as well
 /// as for the presence of a particular era.)
-@internal abstract class EraCalculator
+@internal
+abstract class EraCalculator
 {
   // todo: technically it's the efficient iterable
-  @internal final Iterable<Era> eras;
+  final Iterable<Era> eras;
 
   @protected EraCalculator(Iterable<Era> eras) : eras = eras; // new ReadOnlyCollection<Era>(eras);
 
-  @internal int getMinYearOfEra(Era era);
-  @internal int getMaxYearOfEra(Era era);
-  @internal Era getEra(int absoluteYear);
-  @internal int getYearOfEra(int absoluteYear);
-  @internal int getAbsoluteYear(int yearOfEra, Era era);
+  int getMinYearOfEra(Era era);
+  int getMaxYearOfEra(Era era);
+  Era getEra(int absoluteYear);
+  int getYearOfEra(int absoluteYear);
+  int getAbsoluteYear(int yearOfEra, Era era);
 }
 

@@ -59,20 +59,10 @@ export 'src/period_builder.dart' show PeriodBuilder;
 
 // Calendars
 
-export 'src/calendars/gj_yearmonthday_calculator.dart';
-export 'src/calendars/gregorian_yearmonthday_calculator.dart';
-export 'src/calendars/julian_yearmonthday_calculator.dart';
-export 'src/calendars/regular_yearmonthday_calculator.dart';
-export 'src/calendars/year_start_cache_entry.dart';
-export 'src/calendars/yearmonthday_calculator.dart';
-export 'src/calendars/single_era_calculator.dart';
-export 'src/calendars/gj_era_calculator.dart';
-export 'src/calendars/era_calculator.dart';
-export 'src/calendars/era.dart' show IEra;
+export 'src/calendars/era.dart' show Era;
 
-export 'src/calendars/i_week_rule.dart';
-export 'src/calendars/week_year_rules.dart';
-export 'src/calendars/simple_week_year_rule.dart';
+export 'src/calendars/i_week_rule.dart' show IWeekYearRule;
+export 'src/calendars/week_year_rules.dart' show WeekYearRules, CalendarWeekRule;
 
 // ***
 

@@ -11,8 +11,8 @@ import 'package:time_machine/time_machine.dart';
 
 @internal
 class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
-  @internal static const int minGregorianYear = -9998;
-  @internal static const int maxGregorianYear = 9999;
+  static const int minGregorianYear = -9998;
+  static const int maxGregorianYear = 9999;
 
   // We precompute useful values for each month between these years, as we anticipate most
   // dates will be in this range.
@@ -107,12 +107,11 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     }
   }
 
-  @internal
   GregorianYearMonthDayCalculator() : super(minGregorianYear, maxGregorianYear, _averageDaysPer10Years, -719162) {
     // _gregorianYearMonthDayCalculator_Init();
   }
 
-  @internal @override
+  @override
   int getStartOfYearInDays(int year) {
     // 2014-06-28: Tried removing this entirely (optimized: 5ns => 8ns; unoptimized: 11ns => 8ns)
     // Decided to leave it in, as the optimized case is so much more common.
@@ -122,7 +121,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     return _yearStartDays[year - _firstOptimizedYear];
   }
 
-  @internal @override
+  @override
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) {
     // 2014-06-28: Tried removing this entirely (optimized: 8ns => 13ns; unoptimized: 23ns => 19ns)
     // Also tried computing everything lazily - it's a wash.
@@ -137,10 +136,9 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     return _monthStartDays[yearMonthIndex] + dayOfMonth;
   }
 
-  @internal @override
+  @override
   void validateYearMonthDay(int year, int month, int day) => validateGregorianYearMonthDay(year, month, day);
 
-  @internal
   static void validateGregorianYearMonthDay(int year, int month, int day) {
     // Perform quick validation without calling Preconditions, then do it properly if we're going to throw
     // an exception. Avoiding the method call is pretty extreme, but it does help.
@@ -182,10 +180,10 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   }
 
   // Override GetDaysInYear so we can avoid a pointless virtual method call.
-  @internal @override
+  @override
   int getDaysInYear(int year) => _isGregorianLeapYear(year) ? 366 : 365;
 
-  @internal @override
+  @override
   bool isLeapYear(int year) => _isGregorianLeapYear(year);
 
   static bool _isGregorianLeapYear(int year) => ((year & 3) == 0) && (csharpMod(year, 100) != 0 || csharpMod(year, 400) == 0);

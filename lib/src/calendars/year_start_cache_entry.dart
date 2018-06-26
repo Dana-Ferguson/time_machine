@@ -39,7 +39,6 @@ class YearStartCacheEntry {
   // Smallest (positive) year such that the validator is as high as possible.
   // (We shift the mask down by one because the top bit of the validator is effectively the sign bit for the
   // year, and so a validation value with all bits set is already used for e.g. year -1.)
-  @internal
   static const int invalidEntryYear = (_entryValidationMask >> 1) << _cacheIndexBits;
 
   /// Entry which is guaranteed to be obviously invalid for any real date, by having
@@ -52,7 +51,6 @@ class YearStartCacheEntry {
 
   YearStartCacheEntry(int year, int days) : _value = (days << _entryValidationBits) | _getValidator(year);
 
-  @internal
   static List<YearStartCacheEntry> createCache() {
     List<YearStartCacheEntry> cache = new List<YearStartCacheEntry>(_cacheSize);
     for (int i = 0; i < cache.length; i++) {
@@ -71,17 +69,14 @@ class YearStartCacheEntry {
   (year >> _cacheIndexBits) & _entryValidationMask;
 
   /// Returns the cache index, in [0, CacheSize), that should be used to store the given year's cache entry.
-  @internal
   static int getCacheIndex(int year) =>
   // Effectively keep only the bottom CacheIndexBits bits.
   year & _cacheIndexMask;
 
   /// Returns whether this cache entry is valid for the given year, and so is safe to use.  (We assume that we
   /// have located this entry via the correct cache index.)
-  @internal
   bool isValidForYear(int year) => _getValidator(year) == (_value & _entryValidationMask);
 
   /// Returns the (signed) number of days since the Unix epoch for the cache entry.
-  @internal
   int get startOfYearDays => _value >> _entryValidationBits;
 }

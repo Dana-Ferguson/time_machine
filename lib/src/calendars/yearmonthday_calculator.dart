@@ -19,13 +19,11 @@ abstract class YearMonthDayCalculator {
   /// for more details.
   final List<YearStartCacheEntry> _yearCache = YearStartCacheEntry.createCache();
 
-  @internal
   final int minYear;
 
-  @internal
   final int maxYear;
 
-  @visibleForTesting @internal
+  @visibleForTesting
   final int daysAtStartOfYear1;
 
   // todo: should be private -- but collides with upstream averageDaysPer10Years -- which is differentiated in the code-source by capitalization
@@ -56,43 +54,35 @@ abstract class YearMonthDayCalculator {
   @protected
   int calculateStartOfYearDays(int year);
 
-  @internal
   int getMonthsInYear(int year);
 
-  @internal
   int getDaysInMonth(int year, int month);
 
-  @internal
   bool isLeapYear(int year);
 
-  @internal
   YearMonthDay addMonths(YearMonthDay yearMonthDay, int months);
 
-  @internal
   YearMonthDay getYearMonthDay(int year, int dayOfYear);
 
   /// Returns the number of days in the given year, which will always be within 1 year of
   /// the valid range for the calculator.
-  @internal
   int getDaysInYear(int year);
 
   /// Find the months between [start] and [end].
   /// (If start is earlier than end, the result will be non-negative.)
-  @internal
   int monthsBetween(YearMonthDay start, YearMonthDay end);
 
   /// Adjusts the given YearMonthDay to the specified year, potentially adjusting
   /// other fields as required.
-  @internal
   YearMonthDay setYear(YearMonthDay yearMonthDay, int year);
 
-// Virtual methods (subclasses should check to see whether they could override for performance, or should override for correctness)
-// ^^ todo: investigate this -- we have different pressures than nodatime
+  // Virtual methods (subclasses should check to see whether they could override for performance, or should override for correctness)
+  // ^^ todo: investigate this -- we have different pressures than nodatime
 
   /// Computes the days since the Unix epoch at the start of the given year/month/day.
   /// This is the opposite of [GetYearMonthDay(int)].
   /// This assumes the parameter have been validated previously.
-  @internal @virtual
+  @virtual
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) {
     int year = yearMonthDay.year;
     int startOfYear = getStartOfYearInDays(year);
@@ -105,7 +95,7 @@ abstract class YearMonthDayCalculator {
   ///
   /// The [year] to fetch the days at the start of. This must be within 1 year of the min/max
   /// range, but can exceed it to make week-year calculations simple.
-  @internal @virtual
+  @virtual
   int getStartOfYearInDays(int year) { // todo: tag!
     Preconditions.debugCheckArgumentRange('year', year, minYear - 1, maxYear + 1);
     int cacheIndex = YearStartCacheEntry.getCacheIndex(year);
@@ -129,7 +119,7 @@ abstract class YearMonthDayCalculator {
 
   // Catch-all year/month/day validation. Subclasses can optimize further - currently
   // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
-  @internal @virtual
+  @virtual
   void validateYearMonthDay(int year, int month, int day) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
     Preconditions.checkArgumentRange('month', month, 1, getMonthsInYear(year));
@@ -140,13 +130,11 @@ abstract class YearMonthDayCalculator {
 
   /// Converts from a YearMonthDay representation to "day of year".
   /// This assumes the parameter have been validated previously.
-  @internal
   int getDayOfYear(YearMonthDay yearMonthDay) => getDaysFromStartOfYearToStartOfMonth(yearMonthDay.year, yearMonthDay.month) + yearMonthDay.day;
 
   /// Works out the year/month/day of a given days-since-epoch by first computing the year and day of year,
   /// then getting the month and day from those two. This is how almost all calendars are naturally implemented
   /// anyway.
-  @internal
   YearMonthDay getYearMonthDayFromDaysSinceEpoch(int daysSinceEpoch) {
     // todo: I do not like this solution
     var args = getYear(daysSinceEpoch);
@@ -156,7 +144,6 @@ abstract class YearMonthDayCalculator {
   }
 
   @visibleForTesting // Would be protected otherwise.
-  @internal
   /// Work out the year from the number of days since the epoch, as well as the
   /// day of that year (0-based).
   List<int> getYear(int daysSinceEpoch) {

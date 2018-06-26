@@ -8,9 +8,9 @@ import 'package:time_machine/time_machine_calendars.dart';
 // https://msdn.microsoft.com/en-us/library/system.globalization.calendarweekrule(v=vs.110).aspx
 // todo: if this has no advanced usage anywhere, we can leave it as this.
 enum CalendarWeekRule {
-  FirstDay,
-  FirstFullWeek,
-  FirstFourDayWeek
+  firstDay,
+  firstFullWeek,
+  firstFourDayWeek
 }
 
 /// Factory methods to construct week-year rules supported by Time Machine.
@@ -71,13 +71,13 @@ abstract class WeekYearRules
   static IWeekYearRule fromCalendarWeekRule(CalendarWeekRule calendarWeekRule, IsoDayOfWeek firstDayOfWeek) {
     int minDaysInFirstWeek;
     switch (calendarWeekRule) {
-      case CalendarWeekRule.FirstDay:
+      case CalendarWeekRule.firstDay:
         minDaysInFirstWeek = 1;
         break;
-      case CalendarWeekRule.FirstFourDayWeek:
+      case CalendarWeekRule.firstFourDayWeek:
         minDaysInFirstWeek = 4;
         break;
-      case CalendarWeekRule.FirstFullWeek:
+      case CalendarWeekRule.firstFullWeek:
         minDaysInFirstWeek = 7;
         break;
       default:

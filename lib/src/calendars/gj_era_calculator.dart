@@ -10,11 +10,12 @@ import 'package:time_machine/time_machine_utilities.dart';
 
 /// Era calculator for Gregorian and Julian calendar systems, which use BC and AD.
 @immutable
-@internal class GJEraCalculator extends EraCalculator {
+@internal 
+class GJEraCalculator extends EraCalculator {
   final int _maxYearOfBc;
   final int _maxYearOfAd;
 
-  @internal GJEraCalculator(YearMonthDayCalculator ymdCalculator)
+  GJEraCalculator(YearMonthDayCalculator ymdCalculator)
       : _maxYearOfBc = 1 - ymdCalculator.minYear,
         // Convert from absolute to year-of-era
         _maxYearOfAd = ymdCalculator.maxYear,
@@ -27,7 +28,6 @@ import 'package:time_machine/time_machine_utilities.dart';
     }
   }
 
-  @internal
   @override
   int getAbsoluteYear(int yearOfEra, Era era) {
     _validateEra(era);
@@ -39,24 +39,20 @@ import 'package:time_machine/time_machine_utilities.dart';
     return 1 - yearOfEra;
   }
 
-  @internal
   @override
   int getYearOfEra(int absoluteYear) {
     return absoluteYear > 0 ? absoluteYear : 1 - absoluteYear;
   }
 
-  @internal
   @override
   Era getEra(int absoluteYear) => absoluteYear > 0 ? Era.common : Era.beforeCommon;
 
-  @internal
   @override
   int getMinYearOfEra(Era era) {
     _validateEra(era);
     return 1;
   }
 
-  @internal
   @override
   int getMaxYearOfEra(Era era) {
     _validateEra(era);

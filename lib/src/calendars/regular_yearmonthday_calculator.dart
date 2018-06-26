@@ -11,7 +11,6 @@ import 'package:time_machine/time_machine.dart';
 abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
   final int _monthsInYear;
 
-  @internal
   RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
       int averageDaysPer10Years, int daysAtStartOfYear1)
       : _monthsInYear = monthsInYear,
@@ -19,12 +18,10 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
 
   }
 
-  @internal
   @override int getMonthsInYear(int year) => _monthsInYear;
 
   /// Implements a simple year-setting policy, truncating the day
   /// if necessary.
-  @internal
   @override YearMonthDay setYear(YearMonthDay yearMonthDay, int year) {
     // TODO(2.0): All subclasses have the same logic of "detect leap years,
     // and otherwise we're fine". Put it here instead.
@@ -34,7 +31,6 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
     return new YearMonthDay(year, currentMonth, math.min(currentDay, newDay));
   }
 
-  @internal
   @override YearMonthDay addMonths(YearMonthDay yearMonthDay, int months) {
     if (months == 0) {
       return yearMonthDay;
@@ -76,7 +72,7 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
     return new YearMonthDay(yearToUse, monthToUse, dayToUse);
   }
 
-  @internal // todo: this was ported about as wrong as possible ... check the other calculators?
+  // todo: this was ported about as wrong as possible ... check the other calculators?
   @override int monthsBetween(YearMonthDay start, YearMonthDay end) {
     int startYear = start.year;
     int endYear = end.year;

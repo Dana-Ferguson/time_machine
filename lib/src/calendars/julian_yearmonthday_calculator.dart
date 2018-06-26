@@ -7,14 +7,13 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
-// sealed
-@internal class JulianYearMonthDayCalculator extends GJYearMonthDayCalculator {
+@internal 
+class JulianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int _averageDaysPer10JulianYears = 3653; // Ideally 365.25 per year
 
-  @internal JulianYearMonthDayCalculator()
+  JulianYearMonthDayCalculator()
       : super(-9997, 9998, _averageDaysPer10JulianYears, -719164);
 
-  @internal
   @override
   bool isLeapYear(int year) => (year & 3) == 0;
 

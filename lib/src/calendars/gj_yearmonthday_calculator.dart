@@ -45,7 +45,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   }
 
   // Note: parameter is renamed to d for brevity. It's still the 1-based day-of-year
-  @internal @override
+  @override
   YearMonthDay getYearMonthDay(int year, int d) {
     bool isLeap = isLeapYear(year);
 
@@ -72,10 +72,10 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     return new YearMonthDay(year, (startOfMonth ~/ 29) + 1, dayOfMonth);
   }
 
-  @internal @override
+  @override
   int getDaysInYear(int year) => isLeapYear(year) ? 366 : 365;
 
-  @internal @override
+  @override
   int getDaysInMonth(int year, int month) =>
   // We know that only February differs, so avoid the virtual call for other months.
   month == 2 && isLeapYear(year) ? maxDaysPerMonth[month - 1] : minDaysPerMonth[month - 1];
@@ -84,7 +84,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   int getDaysFromStartOfYearToStartOfMonth(int year, int month) =>
       isLeapYear(year) ? _maxTotalDaysByMonth[month - 1] : _minTotalDaysByMonth[month - 1];
 
-  @internal @override
+  @override
   YearMonthDay setYear(YearMonthDay yearMonthDay, int year) {
     int month = yearMonthDay.month;
     int day = yearMonthDay.day;
