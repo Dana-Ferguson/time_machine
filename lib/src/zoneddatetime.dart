@@ -52,7 +52,7 @@ class ZonedDateTime {
   factory ZonedDateTime([Instant instant = const Instant(), DateTimeZone zone, CalendarSystem calendar]) {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
-    var _offsetDateTime = new OffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
+    var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
     return new ZonedDateTime._trusted(_offsetDateTime, _zone);
   }
 

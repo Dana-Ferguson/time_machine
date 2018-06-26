@@ -180,7 +180,7 @@ class Instant implements Comparable<Instant> {
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
     var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.floorDays);
-    var offsetDateTime = new OffsetDateTime.fullTrust(ymdc, _span.nanosecondOfFloorDay, Offset.zero);
+    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, _span.nanosecondOfFloorDay, Offset.zero);
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 
@@ -194,7 +194,7 @@ class Instant implements Comparable<Instant> {
   /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
   ZonedDateTime inLocalZone([CalendarSystem calendar]) => new ZonedDateTime(this, DateTimeZone.local, calendar);
   
-  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => new OffsetDateTime.fromInstant(this, offset, calendar);
+  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 
   // Add LocalInstant code
   

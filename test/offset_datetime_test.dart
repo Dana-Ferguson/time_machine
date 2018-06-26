@@ -251,7 +251,7 @@ void LocalComparer()
   // Same offset, next day
   var muchLaterLocal = control.plusHours(24);
 
-  var comparer = OffsetDateTime_LocalComparer.instance; // OffsetDateTime.comparer.Local;
+  var comparer = OffsetDateTimeComparer.local;
 
   expect(0, comparer.compare(control, negativeOffset));
   expect(0, comparer.compare(control, positiveOffset));
@@ -299,7 +299,7 @@ void InstantComparer()
   // Earlier instant, later local
   var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.fromHours(10));
 
-  var comparer = OffsetDateTime_InstantComparer.instance; // OffsetDateTime.comparer.Instant;
+  var comparer = OffsetDateTimeComparer.instant;
 
   expect(0, comparer.compare(control, differentCalendar));
   expect(0, comparer.compare(control, equalAndOppositeChanges));

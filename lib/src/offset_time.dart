@@ -35,7 +35,7 @@ class OffsetTime {
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
-  @internal int get hourOfHalfDay => ILocalTime.hourOfHalfDay(_time);
+  /*@internal*/ int get _hourOfHalfDay => ILocalTime.hourOfHalfDay(_time);
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
   int get minute => _time.minute;

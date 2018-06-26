@@ -11,6 +11,20 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 
+@internal
+abstract class IOffsetDateTime {
+  static OffsetDateTime fullTrust(YearMonthDayCalendar yearMonthDayCalendar, int nanosecondOfDay, Offset offset) =>
+      new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanosecondOfDay, offset);
+  
+  static OffsetDateTime lessTrust(YearMonthDayCalendar yearMonthDayCalendar, LocalTime time, Offset offset) =>
+      new OffsetDateTime._lessTrust(yearMonthDayCalendar, time, offset);
+
+  static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem calendar]) =>
+      new OffsetDateTime._fromInstant(instant, offset, calendar);
+
+  static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => offsetDateTime._yearMonthDay;
+}
+
 @immutable
 class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
     {
@@ -28,33 +42,32 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   // should allow us to optimize memory usage too. todo: this may not be the same in Dart
   final YearMonthDayCalendar _yearMonthDayCalendar;
 
-// Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
-// execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
-// value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
-// @private final int nanosecondsAndOffset;
+  // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
+  // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
+  // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
+  // @private final int nanosecondsAndOffset;
 
   final int _nanosecondOfDay;
   final Offset _offset;
 
-  // TRUSTED
-  @internal OffsetDateTime.fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
+  OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
   {
-    calendar.validateYearMonthDay_(yearMonthDay);
+    calendar.validateYearMonthDay_(_yearMonthDay);
   }
 
-  // TRUSTED
-  @internal OffsetDateTime.lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
+  OffsetDateTime._lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
       : _nanosecondOfDay = time.nanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
-    calendar.validateYearMonthDay_(yearMonthDay);
+    calendar.validateYearMonthDay_(_yearMonthDay);
   }
+  
+  // todo: why is this internal?
   
   /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
   /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)`
   /// but with less overhead.
-  @internal factory OffsetDateTime.fromInstant(Instant instant, Offset offset, [CalendarSystem calendar])
+  factory OffsetDateTime._fromInstant(Instant instant, Offset offset, [CalendarSystem calendar])
   {
-    // unchecked
     int days = instant.daysSinceEpoch;
     int nanoOfDay = instant.nanosecondOfDay + offset.nanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) {
@@ -70,7 +83,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
         // todo: can we grab the correct calculator based on the default culture?
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
-    return new OffsetDateTime.fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
+    return new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
   /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
@@ -78,7 +91,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// [localDateTime]: Local date and time to represent
   /// [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this.fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
+      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
 
   /// Gets the calendar system associated with this offset date and time.
   CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
@@ -94,7 +107,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Gets the day of this offset date and time within the month.
   int get day => _yearMonthDayCalendar.day;
 
-  @internal YearMonthDay get yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
+  YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
   /// Gets the week day of this offset date and time expressed as an [IsoDayOfWeek] value.
   IsoDayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
@@ -116,13 +129,13 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
   int get clockHourOfHalfDay {
-    int hohd = hourOfHalfDay;
+    int hohd = _hourOfHalfDay;
     return hohd == 0 ? 12 : hohd;
   }
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
-  @internal int get hourOfHalfDay => (hour % 12);
+  /*internal*/ int get _hourOfHalfDay => (hour % 12);
 
   /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
   int get minute {
@@ -224,7 +237,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
     LocalDate newDate = date.withCalendar(calendar);
-    return new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
@@ -237,7 +250,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = date.adjust(adjuster);
-    return new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
   }
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
@@ -249,7 +262,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = timeOfDay.adjust(adjuster);
-    return new OffsetDateTime.fullTrust(_yearMonthDayCalendar, newTime.nanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.nanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
@@ -278,10 +291,10 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
         nanos += TimeConstants.nanosecondsPerDay;
       }
     }
-    return new OffsetDateTime.fullTrust(
+    return new OffsetDateTime._fullTrust(
         days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(date
             .plusDays(days)), nanos, offset);
-  // _combineNanoOfDayAndOffset(nanos, offset));
+    // _combineNanoOfDayAndOffset(nanos, offset));
   }
 
   /// Constructs a new [OffsetDate] from the date and offset of this value,
@@ -376,7 +389,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// [duration]: The duration to add.
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
   OffsetDateTime operator +(Span span) =>
-      new OffsetDateTime.fromInstant(toInstant() + span, offset);
+      new OffsetDateTime._fromInstant(toInstant() + span, offset);
 
   /// Subtracts a duration from an offset date and time.
   ///
@@ -392,7 +405,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   ///
   /// [span]: The duration to subtract
   /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
-  OffsetDateTime minusSpan(Span span) => new OffsetDateTime.fromInstant(toInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+  OffsetDateTime minusSpan(Span span) => new OffsetDateTime._fromInstant(toInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
   /// Returns a new [OffsetDateTime] with the duration subtracted.
   ///
@@ -449,17 +462,16 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 // todo: very unsure about what to do with these
 
 /// Implementation for [Comparer.Local]
-@private class OffsetDateTime_LocalComparer extends OffsetDateTimeComparer {
-  @internal static final OffsetDateTimeComparer instance = new OffsetDateTime_LocalComparer();
+class _OffsetDateTime_LocalComparer extends OffsetDateTimeComparer {
+  static final OffsetDateTimeComparer _instance = new _OffsetDateTime_LocalComparer._();
 
-  @private OffsetDateTime_LocalComparer() {
-  }
+  _OffsetDateTime_LocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y',
         "Only values with the same calendar system can be compared");
-    int dateComparison = x.calendar.compare(x.yearMonthDay, y.yearMonthDay);
+    int dateComparison = x.calendar.compare(IOffsetDateTime.yearMonthDay(x), IOffsetDateTime.yearMonthDay(y));
     if (dateComparison != 0) {
       return dateComparison;
     }
@@ -482,8 +494,8 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 @immutable
 abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> // : IComparer<OffsetDateTime>, IEqualityComparer<OffsetDateTime>
     {
-// TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
-// but still uses the offset?
+  // TODO(feature): Should we have a comparer which is calendar-sensitive (so will fail if the calendars are different)
+  // but still uses the offset?
 
   /// Gets a comparer which compares [OffsetDateTime] values by their local date/time, without reference to
   /// the offset. Comparisons between two values of different calendar systems will fail with [ArgumentException].
@@ -491,7 +503,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   /// For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
   /// the second value represents a later instant in time.
   /// This property will return a reference to the same instance every time it is called.
-  static OffsetDateTimeComparer get local => OffsetDateTime_LocalComparer.instance;
+  static OffsetDateTimeComparer get local => OffsetDateTimeComparer.local;
 
   /// Returns a comparer which compares [OffsetDateTime] values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
@@ -502,11 +514,11 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   ///
   /// <value>A comparer which compares values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static OffsetDateTimeComparer get instant => OffsetDateTime_InstantComparer.instance;
+  static OffsetDateTimeComparer get instant => OffsetDateTimeComparer.instant;
 
-  /// @internal constructor to prevent external classes from deriving from this.
+  /// internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  @internal Comparer() {
+  OffsetDateTimeComparer._() {
   }
 
   /// Compares two [OffsetDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
@@ -548,13 +560,11 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   int getHashCode(OffsetDateTime obj);
 }
 
-
 /// Implementation for [Comparer.Instant].
-@private class OffsetDateTime_InstantComparer extends OffsetDateTimeComparer {
-  @internal static final OffsetDateTimeComparer instance = new OffsetDateTime_InstantComparer();
+class _OffsetDateTime_InstantComparer extends OffsetDateTimeComparer {
+  static final OffsetDateTimeComparer _instance = new _OffsetDateTime_InstantComparer._();
 
-  @private OffsetDateTime_InstantComparer() {
-  }
+  _OffsetDateTime_InstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) =>

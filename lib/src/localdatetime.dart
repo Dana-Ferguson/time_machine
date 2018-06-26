@@ -513,7 +513,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// This method is purely a convenient alternative to calling the [OffsetDateTime] constructor directly.
   /// * [offset]: The offset to apply.
   /// Returns: The result of this local date/time offset by the given amount.
-  OffsetDateTime withOffset(Offset offset) => new OffsetDateTime.lessTrust(ILocalDate.yearMonthDayCalendar(date), time, offset);
+  OffsetDateTime withOffset(Offset offset) => IOffsetDateTime.lessTrust(ILocalDate.yearMonthDayCalendar(date), time, offset);
 
 
   /// Returns the mapping of this local date/time within [DateTimeZone.utc].
@@ -522,7 +522,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in UTC.
   ZonedDateTime inUtc() =>
   // Use the @internal constructors to avoid validation. We know it will be fine.
-  IZonedDateTime.trusted(new OffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
+  IZonedDateTime.trusted(IOffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
   /// Returns the mapping of this local date/time within the given [DateTimeZone],

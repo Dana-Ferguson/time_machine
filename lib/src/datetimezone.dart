@@ -219,10 +219,10 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       case 0:
         var interval = mapping.lateInterval;
         // Safe to use Start, as it can't extend to the start of time.
-        var offsetDateTime = new OffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
+        var offsetDateTime = IOffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-        if (offsetDateTime.yearMonthDay != ILocalDate.yearMonthDay(date)) {
+        if (IOffsetDateTime.yearMonthDay(offsetDateTime) != ILocalDate.yearMonthDay(date)) {
           throw new SkippedTimeError(midnight, this);
         }
         return IZonedDateTime.trusted(offsetDateTime, this);
