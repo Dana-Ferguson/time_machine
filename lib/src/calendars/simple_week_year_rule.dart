@@ -4,9 +4,9 @@
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
+import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
 /// Implements [IWeekYearRule] for a rule where weeks are regular:
 /// every week has exactly 7 days, which means that some week years straddle

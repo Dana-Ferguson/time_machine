@@ -5,7 +5,7 @@
 import 'package:quiver_hashcode/hashcode.dart';
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: IEquatable<YearMonthDayCalendar>
 /// This is a Year - Month - Day - Calendar TUPLE -- this not actually a Calendar

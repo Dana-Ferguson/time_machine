@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
 /// the new offset, and the transition point.

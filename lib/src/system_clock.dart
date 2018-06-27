@@ -3,7 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Singleton implementation of [IClock] which reads the current system time.
 /// It is recommended that for anything other than throwaway code, this is only referenced

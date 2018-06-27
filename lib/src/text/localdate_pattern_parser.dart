@@ -2,11 +2,11 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_patterns.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/calendars/time_machine_calendars.dart';
+import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
+import 'package:time_machine/src/text/time_machine_text.dart';
+import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Maximum two-digit-year in the template to treat as the current century.
 /// (One day we may want to make this configurable, but it feels very low

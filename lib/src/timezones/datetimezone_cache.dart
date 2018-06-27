@@ -6,9 +6,9 @@ import 'dart:async';
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// Provides an implementation of [IDateTimeZoneProvider] that caches results from an
 /// [IDateTimeZoneSource].

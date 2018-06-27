@@ -7,9 +7,9 @@ import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:collection';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/platforms/platform_io.dart';
 
 @internal

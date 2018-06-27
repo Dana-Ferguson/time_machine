@@ -2,7 +2,7 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:time_machine/time_machine_text.dart';
+import 'package:time_machine/src/text/time_machine_text.dart';
 
 /// Generic interface supporting parsing and formatting. Parsing always results in a 
 /// [ParseResult{T}] which can represent success or failure.

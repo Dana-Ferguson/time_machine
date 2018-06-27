@@ -4,8 +4,6 @@
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-
 abstract class IEra {
   static String resourceIdentifier(Era era) => era._resourceIdentifier;
 }

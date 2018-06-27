@@ -5,8 +5,8 @@ import 'package:meta/meta.dart';
 
 import 'package:time_machine/src/utility/preconditions.dart';
 
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/calendars/time_machine_calendars.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 
 /// The core of date calculations in Time Machine. This class *only* cares about absolute years, and only

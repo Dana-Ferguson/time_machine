@@ -1,8 +1,8 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 /// Exception thrown to indicate that the format pattern provided for either formatting or parsing is invalid.
 class InvalidPatternError extends Error // FormatException

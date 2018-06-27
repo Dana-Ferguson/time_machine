@@ -9,9 +9,9 @@ import 'dart:io';
 
 import 'dart:typed_data';
 import 'package:resource/resource.dart';
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'platform_io.dart';
 

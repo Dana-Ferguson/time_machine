@@ -4,11 +4,11 @@
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_patterns.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
+import 'package:time_machine/src/text/time_machine_text.dart';
+import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 @internal
 abstract class OffsetPatterns {

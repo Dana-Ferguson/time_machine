@@ -4,7 +4,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal
 class BinaryReader {

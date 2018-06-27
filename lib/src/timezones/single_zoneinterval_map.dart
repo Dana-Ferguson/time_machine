@@ -4,8 +4,8 @@
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// Implementation of IZoneIntervalMap which just returns a single interval (provided on construction) regardless of
 /// the instant requested.

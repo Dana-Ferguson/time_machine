@@ -4,9 +4,9 @@
 
 import 'package:meta/meta.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_calendars.dart';
-import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/calendars/time_machine_calendars.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 /// Era calculator for Gregorian and Julian calendar systems, which use BC and AD.
 @immutable

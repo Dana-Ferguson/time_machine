@@ -5,9 +5,9 @@
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// A location entry generated from the "zone1970.tab" file in a TZDB release. This can be used to provide
 /// users with a choice of time zone, although it is not internationalized. This is equivalent to

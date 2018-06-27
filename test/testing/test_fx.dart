@@ -140,7 +140,7 @@ void _writeTestGenFile() {
   sb.writeln();
   sb.writeln("import 'package:test/test.dart';");
   sb.writeln();
-  sb.writeln("import 'package:time_machine/time_machine.dart';");
+  sb.writeln("import 'package:time_machine/time_machine_internal.dart';");
   sb.writeln("import 'package:time_machine/time_machine_calendars.dart';");
   sb.writeln("import 'package:time_machine/time_machine_fields.dart';");
   sb.writeln("import 'package:time_machine/time_machine_globalization.dart';");

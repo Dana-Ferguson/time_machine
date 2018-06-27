@@ -3,9 +3,9 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:math' as math;
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_utilities.dart';
-import 'package:time_machine/time_machine_text.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
+import 'package:time_machine/src/text/time_machine_text.dart';
 
 @internal
 class ValueCursor extends TextCursor {

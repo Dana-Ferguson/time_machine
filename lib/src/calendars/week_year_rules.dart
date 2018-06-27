@@ -2,8 +2,8 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_calendars.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
 // https://msdn.microsoft.com/en-us/library/system.globalization.calendarweekrule(v=vs.110).aspx
 // todo: if this has no advanced usage anywhere, we can leave it as this.

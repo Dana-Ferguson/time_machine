@@ -6,8 +6,8 @@
 // 0958802  on Jun 18, 2017
 
 import 'dart:async';
-import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 // Represents a clock which can return the current time as an <see cref="Instant" />.
 ///

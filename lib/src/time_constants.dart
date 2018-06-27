@@ -5,7 +5,7 @@
 // https://www.dartlang.org/guides/language/effective-dart/style#prefer-using-lowercamelcase-for-constant-names
 
 import 'package:meta/meta.dart';
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 // https://www.dartlang.org/guides/language/effective-dart/design#avoid-defining-a-class-that-contains-only-static-members
 // I invoke example 3.

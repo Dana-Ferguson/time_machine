@@ -2,7 +2,7 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:time_machine/time_machine_utilities.dart';
+import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 // todo: IsoDayOfWeek is called that because 'DayOfWeek' is a BCL enumeration -- I don't think it is here, so we can steal it back?
 // todo: Should this be caled IsoDayOfWeek .. or just DayOfWeek?

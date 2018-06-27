@@ -5,10 +5,10 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'package:test/test.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
