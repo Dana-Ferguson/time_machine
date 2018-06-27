@@ -74,7 +74,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         case 'r':
           return OffsetDateTimePatterns.fullRoundtripPatternImpl;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'OffsetDateTime']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'OffsetDateTime']);
       }
     }
 

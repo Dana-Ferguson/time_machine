@@ -81,7 +81,7 @@ export 'src/text/i_pattern.dart' show IPattern;
 export 'src/text/parse_result.dart' show ParseResult;
 export 'src/text/unparsable_value_error.dart' show UnparsableValueError;
 export 'src/text/period_pattern.dart' show PeriodPattern;
-export 'src/text/invalid_pattern_error.dart';
+export 'src/text/invalid_pattern_error.dart' show InvalidPatternError;
 export 'src/text/delegates.dart';
 export 'src/text/parse_bucket.dart';
 export 'src/text/fixed_format_info_pattern_parser.dart';

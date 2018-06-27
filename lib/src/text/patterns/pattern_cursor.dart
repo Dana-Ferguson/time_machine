@@ -41,7 +41,7 @@ class PatternCursor extends TextCursor {
       builder.write(current);
     }
     if (!endQuoteFound) {
-      throw new InvalidPatternError.format(TextErrorMessages.missingEndQuote, [closeQuote]);
+      throw IInvalidPatternError.format(TextErrorMessages.missingEndQuote, [closeQuote]);
     }
     movePrevious();
     return builder.toString();
@@ -60,7 +60,7 @@ class PatternCursor extends TextCursor {
     // Move the cursor back to the last character of the repeated pattern
     movePrevious();
     if (repeatLength > maximumCount) {
-      throw new InvalidPatternError.format(TextErrorMessages.repeatCountExceeded, [patternCharacter, maximumCount]);
+      throw IInvalidPatternError.format(TextErrorMessages.repeatCountExceeded, [patternCharacter, maximumCount]);
     }
     return repeatLength;
   }

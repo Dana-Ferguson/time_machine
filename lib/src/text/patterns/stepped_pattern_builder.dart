@@ -78,7 +78,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         if ((currentCodeUnit >= _ACodeUnit && currentCodeUnit <= _ZCodeUnit)
             || (currentCodeUnit >= _aCodeUnit && currentCodeUnit <= _zCodeUnit)
             || current == PatternCursor.embeddedPatternStart || current == PatternCursor.embeddedPatternEnd) {
-          throw new InvalidPatternError.format(TextErrorMessages.unquotedLiteral, [current]);
+          throw IInvalidPatternError.format(TextErrorMessages.unquotedLiteral, [current]);
         }
         addLiteral2(patternCursor.current, IParseResult.mismatchedCharacter);
       }
@@ -133,7 +133,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   void addField(PatternFields field, String characterInPattern) {
     PatternFields newUsedFields = _usedFields | field;
     if (newUsedFields == _usedFields) {
-      throw new InvalidPatternError.format(TextErrorMessages.repeatedFieldInPattern, [characterInPattern]);
+      throw IInvalidPatternError.format(TextErrorMessages.repeatedFieldInPattern, [characterInPattern]);
     }
     _usedFields = newUsedFields;
   }

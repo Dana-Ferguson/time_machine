@@ -80,7 +80,7 @@ import 'package:time_machine/time_machine_patterns.dart';
               .withZoneProvider(_zoneProvider)
               .withResolver(_resolver);
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'ZonedDateTime']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'ZonedDateTime']);
       }
     }
 

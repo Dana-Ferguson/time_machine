@@ -5,11 +5,7 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 /// Exception thrown to indicate that the format pattern provided for either formatting or parsing is invalid.
-///
-/// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
-/// See the thread safety section of the user guide for more information.
-/// </threadsafety>
-/*sealed*/ class InvalidPatternError extends Error // FormatException
+class InvalidPatternError extends Error // FormatException
     {
   final String message;
 
@@ -23,6 +19,10 @@ import 'package:time_machine/time_machine_utilities.dart';
   ///
   /// [formatString]: Format string to use in order to create the final message
   /// [parameters]: Format string parameters
-  @internal InvalidPatternError.format(String formatString, List<dynamic> parameters)
+  InvalidPatternError._format(String formatString, List<dynamic> parameters)
       : this(stringFormat(formatString, parameters));
+}
+
+abstract class IInvalidPatternError {
+  static InvalidPatternError format(String formatString, List<dynamic> parameters) => new InvalidPatternError._format(formatString, parameters);
 }

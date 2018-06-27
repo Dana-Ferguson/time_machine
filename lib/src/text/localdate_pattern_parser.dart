@@ -49,7 +49,7 @@ const int _twoDigitYearMax = 30;
       var patternCharacter = patternText[0];
       patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
       if (patternText == null) {
-        throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDate']);
+        throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDate']);
       }
     }
 

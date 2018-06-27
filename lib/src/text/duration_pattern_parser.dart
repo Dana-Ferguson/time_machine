@@ -43,7 +43,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         case 'o':
           return SpanPatterns.roundtripPatternImpl;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Span']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Span']);
       }
     }
 

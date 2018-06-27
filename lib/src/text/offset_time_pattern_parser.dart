@@ -56,7 +56,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         case 'o':
           return OffsetTimePatterns.extendedIsoPatternImpl;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'OffsetTime']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'OffsetTime']);
       }
     }
 

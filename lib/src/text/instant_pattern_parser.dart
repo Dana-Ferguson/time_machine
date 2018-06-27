@@ -28,7 +28,7 @@ import 'package:time_machine/time_machine_patterns.dart';
           patternText = _generalPatternText;
           break;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Instant']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Instant']);
       }
     }
 

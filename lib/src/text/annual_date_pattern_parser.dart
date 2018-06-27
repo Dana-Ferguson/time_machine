@@ -36,7 +36,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         case 'G':
           return AnnualDatePattern.iso;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'AnnualDate']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'AnnualDate']);
       }
     }
 

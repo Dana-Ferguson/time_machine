@@ -17,7 +17,7 @@ class OffsetPatternParser implements IPatternParser<Offset> {
     '\"': SteppedPatternBuilder.handleQuote /**<Offset, OffsetParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<Offset, OffsetParseBucket>*/,
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<Offset>*/),
-    'h': (pattern, builder) => throw new InvalidPatternError.format(TextErrorMessages.hour12PatternNotSupported, ['Offset']),
+    'h': (pattern, builder) => throw IInvalidPatternError.format(TextErrorMessages.hour12PatternNotSupported, ['Offset']),
     'H': SteppedPatternBuilder.handlePaddedField<Offset, _OffsetParseBucket>(
         2, PatternFields.hours24, 0, 23, _getPositiveHours, (bucket, value) => bucket.hours = value),
     'm': SteppedPatternBuilder.handlePaddedField<Offset, _OffsetParseBucket>(
@@ -87,7 +87,7 @@ class OffsetPatternParser implements IPatternParser<Offset> {
           patternText = formatInfo.offsetPatternShortNoPunctuation;
           break;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Offset']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Offset']);
       }
     }
     // This is the only way we'd normally end up in custom parsing land for Z on its own.

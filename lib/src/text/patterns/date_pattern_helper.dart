@@ -55,7 +55,7 @@ abstract class DatePatternHelper {
               assumeFitsInCount: true);
           break;
         default:
-          throw new InvalidPatternError.format(TextErrorMessages.invalidRepeatCount, [pattern.current, count]);
+          throw IInvalidPatternError.format(TextErrorMessages.invalidRepeatCount, [pattern.current, count]);
       }
     };
 

@@ -84,7 +84,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       }
       patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
       if (patternText == null) {
-        throw new InvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDateTime']);
+        throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDateTime']);
       }
     }
 
