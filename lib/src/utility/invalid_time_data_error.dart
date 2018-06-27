@@ -10,11 +10,7 @@
 /// new exception type.
 /// Unfortunately, `InvalidDataException` itself is sealed, so we can't derive from it for the sake
 /// of backward compatibility.
-///
-/// <threadsafety>Any public static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
-/// See the thread safety section of the user guide for more information.
-/// </threadsafety>
-/*sealed*/ class InvalidTimeDataError extends Error
+class InvalidTimeDataError extends Error
 {
   final String message;
   final Error error;

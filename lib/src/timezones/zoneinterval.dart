@@ -12,6 +12,24 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_calendars.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+// todo: thought: should I adopt the *of() Pattern from flutter?
+@internal
+abstract class IZoneInterval {
+  static Instant rawStart(ZoneInterval zoneInterval) => zoneInterval._rawStart;
+  static Instant rawEnd(ZoneInterval zoneInterval) => zoneInterval._rawEnd;
+
+  static ZoneInterval newZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) => 
+      new ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
+
+  static ZoneInterval withStart(ZoneInterval zoneInterval, Instant newStart) => zoneInterval?._withStart(newStart);
+
+  static ZoneInterval withEnd(ZoneInterval zoneInterval, Instant newEnd) => zoneInterval?._withEnd(newEnd);
+
+  static bool containsLocal(ZoneInterval zoneInterval, LocalInstant localInstant) => zoneInterval?._containsLocal(localInstant);
+
+  static bool equalIgnoreBounds(ZoneInterval zoneInterval, ZoneInterval other) => zoneInterval?._equalIgnoreBounds(other);
+}
+
 /// Represents a range of time for which a particular Offset applies.
 @immutable
 class ZoneInterval {
@@ -19,12 +37,12 @@ class ZoneInterval {
   /// Returns the underlying start instant of this zone interval. If the zone interval extends to the
   /// beginning of time, the return value will be [IInstant.beforeMinValue]; this value
   /// should *not* be exposed publicly.
-  @internal final Instant rawStart;
+  final Instant _rawStart;
 
   /// Returns the underlying end instant of this zone interval. If the zone interval extends to the
   /// end of time, the return value will be [IInstant.afterMaxValue]; this value
   /// should *not* be exposed publicly.
-  @internal final Instant rawEnd;
+  final Instant _rawEnd;
 
   final LocalInstant _localStart;
   final LocalInstant _localEnd;
@@ -44,14 +62,14 @@ class ZoneInterval {
 
   /// Returns `true` if this zone interval has a fixed start point, or `false` if it
   /// extends to the beginning of time.
-  bool get hasStart => rawStart.isValid;
+  bool get hasStart => _rawStart.isValid;
 
   /// Gets the last Instant (exclusive) that the Offset applies.
   ///
   /// [InvalidOperationException]: The zone interval extends to the end of time
   Instant get end {
-    Preconditions.checkState(rawEnd.isValid, "Zone interval extends to the end of time");
-    return rawEnd;
+    Preconditions.checkState(_rawEnd.isValid, "Zone interval extends to the end of time");
+    return _rawEnd;
   }
 
   /// Returns `true` if this zone interval has a fixed end point, or `false` if it
@@ -59,7 +77,7 @@ class ZoneInterval {
   ///
   /// <value>`true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.</value>
-  bool get hasEnd => rawEnd.isValid;
+  bool get hasEnd => _rawEnd.isValid;
 
   // TODO(feature): Consider whether we need some way of checking whether IsoLocalStart/End will throw.
   // Clients can check HasStart/HasEnd for infinity, but what about unrepresentable local values?
@@ -119,8 +137,8 @@ class ZoneInterval {
 
   /// Gets the first Instant that the Offset applies.
   Instant get start {
-    Preconditions.checkState(rawStart.isValid, "Zone interval extends to the beginning of time");
-    return rawStart;
+    Preconditions.checkState(_rawStart.isValid, "Zone interval extends to the beginning of time");
+    return _rawStart;
   }
 
   /// Initializes a new instance of the [ZoneInterval] class.
@@ -133,27 +151,27 @@ class ZoneInterval {
   /// [wallOffset]: The [WallOffset] from UTC for this period including any daylight savings.
   /// [savings]: The [WallOffset] daylight savings contribution to the offset.
   /// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
-  @internal factory ZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
+  factory ZoneInterval._(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
     rawStart ??= IInstant.beforeMinValue;
     rawEnd ??= IInstant.afterMaxValue;
     // Work out the corresponding local instants, taking care to "go infinite" appropriately.
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkArgument(rawStart < rawEnd, 'start', "The start Instant must be less than the end Instant");
-    return new ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
+    return new ZoneInterval._new(name, rawStart, rawEnd, wallOffset, savings);
   }
 
-  ZoneInterval._(this.name, this.rawStart, this.rawEnd, this.wallOffset, this.savings) :
-        _localStart = IInstant.safePlus(rawStart, wallOffset),
-        _localEnd = IInstant.safePlus(rawEnd, wallOffset);
+  ZoneInterval._new(this.name, this._rawStart, this._rawEnd, this.wallOffset, this.savings) :
+        _localStart = IInstant.safePlus(_rawStart, wallOffset),
+        _localEnd = IInstant.safePlus(_rawEnd, wallOffset);
 
   /// Returns a copy of this zone interval, but with the given start instant.
-  @internal ZoneInterval withStart(Instant newStart) {
-    return new ZoneInterval(name, newStart, rawEnd, wallOffset, savings);
+  ZoneInterval _withStart(Instant newStart) {
+    return new ZoneInterval._(name, newStart, _rawEnd, wallOffset, savings);
   }
 
   /// Returns a copy of this zone interval, but with the given end instant.
-  @internal ZoneInterval withEnd(Instant newEnd) {
-    return new ZoneInterval(name, rawStart, newEnd, wallOffset, savings);
+  ZoneInterval _withEnd(Instant newEnd) {
+    return new ZoneInterval._(name, _rawStart, newEnd, wallOffset, savings);
   }
 
   /// Determines whether this period contains the given Instant in its range.
@@ -164,17 +182,17 @@ class ZoneInterval {
   /// [instant]: The instant to test.
   ///
   /// `true` if this period contains the given Instant in its range; otherwise, `false`.
-  bool contains(Instant instant) => rawStart <= instant && instant < rawEnd;
+  bool contains(Instant instant) => _rawStart <= instant && instant < _rawEnd;
 
   /// Determines whether this period contains the given LocalInstant in its range.
   ///
   /// [localInstant]: The local instant to test.
   ///
   /// `true` if this period contains the given LocalInstant in its range; otherwise, `false`.
-  @internal bool containsLocal(LocalInstant localInstant) => _localStart <= localInstant && localInstant < _localEnd;
+  bool _containsLocal(LocalInstant localInstant) => _localStart <= localInstant && localInstant < _localEnd;
 
   /// Returns whether this zone interval has the same offsets and name as another.
-  @internal bool equalIgnoreBounds(ZoneInterval other) {
+  bool _equalIgnoreBounds(ZoneInterval other) {
     // todo: debug check only
     Preconditions.checkNotNull(other, 'other');
     return other.wallOffset == wallOffset && other.savings == savings && other.name == name;
@@ -192,19 +210,19 @@ class ZoneInterval {
     if (identical(this, other)) {
       return true;
     }
-    return name == other.name && rawStart == other.rawStart && rawEnd == other.rawEnd
+    return name == other.name && _rawStart == other._rawStart && _rawEnd == other._rawEnd
         && wallOffset == other.wallOffset && savings == other.savings;
   }
 
   @override bool operator==(dynamic other) => other is ZoneInterval ? equals(other) : false;
 
   /// Serves as a hash function for a particular type.
-  @override int get hashCode => hashObjects([name, rawStart, rawEnd, wallOffset, savings]);
+  @override int get hashCode => hashObjects([name, _rawStart, _rawEnd, wallOffset, savings]);
 
   /// Returns a [String] that represents this instance.
   ///
   /// A [String] that represents this instance.
-  @override String toString() => "${name}: [$rawStart, $rawEnd) $wallOffset ($savings)";
+  @override String toString() => "${name}: [$_rawStart, $_rawEnd) $wallOffset ($savings)";
 
 // @override String toString() => "${name}: [$RawStart, $RawEnd) $wallOffset ($savings)";
 // @override String toString() => "${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)";

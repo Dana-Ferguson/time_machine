@@ -99,8 +99,8 @@ void ForInterval()
 {
   var interval = new Interval(Instants[3], Instants[5]);
   var comparer = new ZoneEqualityComparer.forInterval(interval);
-  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, comparer.optionsForTest);
-  expect(interval, comparer.intervalForTest);
+  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, IZoneEqualityComparer.optionsForTest(comparer));
+  expect(interval, IZoneEqualityComparer.intervalForTest(comparer));
 }
 
 @Test()
@@ -110,12 +110,12 @@ void WithOptions()
   var firstComparer = new ZoneEqualityComparer.forInterval(interval);
   var secondComparer = firstComparer.withOptions(ZoneEqualityComparerOptions.matchNames);
 
-  expect(ZoneEqualityComparerOptions.matchNames, secondComparer.optionsForTest);
-  expect(interval, secondComparer.intervalForTest);
+  expect(ZoneEqualityComparerOptions.matchNames, IZoneEqualityComparer.optionsForTest(secondComparer));
+  expect(interval, IZoneEqualityComparer.intervalForTest(secondComparer));
 
   // Validate that the first comparer hasn't changed
-  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, firstComparer.optionsForTest);
-  expect(interval, firstComparer.intervalForTest);
+  expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, IZoneEqualityComparer.optionsForTest(firstComparer));
+  expect(interval, IZoneEqualityComparer.intervalForTest(firstComparer));
 }
 
 @Test()

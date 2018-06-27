@@ -173,29 +173,29 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
 
     // Most of the time we'll go into here... the local instant and the instant
     // are close enough that we've found the right instant.
-    if (interval.containsLocal(localInstant)) {
+    if (IZoneInterval.containsLocal(interval, localInstant)) {
       ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
       if (earlier != null) {
-        return new ZoneLocalMapping(this, localDateTime, earlier, interval, 2);
+        return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, earlier, interval, 2);
       }
       ZoneInterval later = _getLaterMatchingInterval(interval, localInstant);
       if (later != null) {
-        return new ZoneLocalMapping(this, localDateTime, interval, later, 2);
+        return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, interval, later, 2);
       }
-      return new ZoneLocalMapping(this, localDateTime, interval, interval, 1);
+      return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, interval, interval, 1);
     }
     else {
       // Our first guess was wrong. Either we need to change interval by one (either direction)
       // or we're in a gap.
       ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
       if (earlier != null) {
-        return new ZoneLocalMapping(this, localDateTime, earlier, earlier, 1);
+        return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, earlier, earlier, 1);
       }
       ZoneInterval later = _getLaterMatchingInterval(interval, localInstant);
       if (later != null) {
-        return new ZoneLocalMapping(this, localDateTime, later, later, 1);
+        return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, later, later, 1);
       }
-      return new ZoneLocalMapping(this, localDateTime, _getIntervalBeforeGap(localInstant), _getIntervalAfterGap(localInstant), 0);
+      return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, _getIntervalBeforeGap(localInstant), _getIntervalAfterGap(localInstant), 0);
     }
   }
 
@@ -296,14 +296,14 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // Micro-optimization to avoid fetching interval.Start multiple times. Seems
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the start of time, the next check will definitely evaluate to false.
-    Instant intervalStart = interval.rawStart;
+    Instant intervalStart = IZoneInterval.rawStart(interval);
     // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
     if (localInstant.daysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalStart - Span.epsilon);
-      if (candidate.containsLocal(localInstant)) {
+      if (IZoneInterval.containsLocal(candidate, localInstant)) {
         return candidate;
       }
     }
@@ -317,7 +317,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the end of time, the next check will
     // definitely evaluate to false.
-    Instant intervalEnd = interval.rawEnd;
+    Instant intervalEnd = IZoneInterval.rawEnd(interval);
     // Crude but cheap first check to see whether there *might* be a later interval.
     // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
@@ -325,7 +325,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalEnd);
-      if (candidate.containsLocal(localInstant)) {
+      if (IZoneInterval.containsLocal(candidate, localInstant)) {
         return candidate;
       }
     }
@@ -338,7 +338,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     // If the local interval occurs before the zone interval we're looking at starts,
     // we need to find the earlier one; otherwise this interval must come after the gap, and
     // it's therefore the one we want.
-    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.rawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < IZoneInterval.rawStart(guessInterval)) {
       return getZoneInterval(guessInterval.start - Span.epsilon);
     }
     else {
@@ -351,7 +351,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
     ZoneInterval guessInterval = getZoneInterval(guess);
     // If the local interval occurs before the zone interval we're looking at starts,
     // it's the one we're looking for. Otherwise, we need to find the next interval.
-    if (localInstant.minus(guessInterval.wallOffset) < guessInterval.rawStart) {
+    if (localInstant.minus(guessInterval.wallOffset) < IZoneInterval.rawStart(guessInterval)) {
       return guessInterval;
     }
     else {
@@ -412,7 +412,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
       var zoneInterval = getZoneInterval(current);
       yield zoneInterval;
       // If this is the end of time, this will just fail on the next comparison.
-      current = zoneInterval.rawEnd;
+      current = IZoneInterval.rawEnd(zoneInterval);
     }
   }
 

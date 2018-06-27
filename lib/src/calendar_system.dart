@@ -96,7 +96,6 @@ class CalendarSystem {
     return factory();
   }
 
-
   /// Fetches a calendar system by its ordinal value, constructing it if necessary.
   @internal static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
     Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.size, 'ordinal',

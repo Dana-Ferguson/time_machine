@@ -126,7 +126,7 @@ class DateTimeZoneReader extends BinaryReader {
 
     var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
-    return new ZoneInterval(name, start, end, wallOffset, savings);
+    return IZoneInterval.newZoneInterval(name, start, end, wallOffset, savings);
   }
 }
 

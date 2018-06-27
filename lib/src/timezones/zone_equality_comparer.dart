@@ -130,6 +130,16 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   return (options & candidate).value != 0;
 }
 
+@internal
+abstract class IZoneEqualityComparer {
+  /// Returns the interval over which this comparer operates.
+  @visibleForTesting
+  static Interval intervalForTest(ZoneEqualityComparer zoneEqualityComparer) => zoneEqualityComparer._interval;
+  /// Returns the options used by this comparer.
+  @visibleForTesting
+  static ZoneEqualityComparerOptions optionsForTest(ZoneEqualityComparer zoneEqualityComparer) => zoneEqualityComparer._options;
+}
+
 /// Equality comparer for time zones, comparing specific aspects of the zone intervals within
 /// a time zone for a specific interval of the time line.
 ///
@@ -142,16 +152,6 @@ class ZoneEqualityComparer {
 
   final Interval _interval;
   final ZoneEqualityComparerOptions _options;
-
-  /// Returns the interval over which this comparer operates.
-  @visibleForTesting
-  @internal
-  Interval get intervalForTest => _interval;
-
-  /// Returns the options used by this comparer.
-  @visibleForTesting
-  @internal
-  ZoneEqualityComparerOptions get optionsForTest => _options;
 
   final ZoneIntervalEqualityComparer _zoneIntervalComparer;
 
@@ -260,13 +260,14 @@ class ZoneEqualityComparer {
   }
 }
 
-@internal class ZoneIntervalEqualityComparer {
+@internal
+class ZoneIntervalEqualityComparer {
   final ZoneEqualityComparerOptions _options;
   final Interval _interval;
 
-  @internal ZoneIntervalEqualityComparer(this._options, this._interval);
+  ZoneIntervalEqualityComparer(this._options, this._interval);
 
-  @internal Iterable<ZoneInterval> coalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
+  Iterable<ZoneInterval> coalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
   {
     ZoneInterval current = null;
     for (var zoneInterval in zoneIntervals) {
@@ -275,7 +276,7 @@ class ZoneEqualityComparer {
         continue;
       }
       if (_equalExceptStartAndEnd(current, zoneInterval)) {
-        current = current.withEnd(zoneInterval.rawEnd);
+        current = IZoneInterval.withEnd(current, IZoneInterval.rawEnd(zoneInterval));
       }
       else {
         yield current;
@@ -313,11 +314,11 @@ class ZoneEqualityComparer {
 
   Instant _getEffectiveStart(ZoneInterval zoneInterval) =>
       _checkOption(_options, ZoneEqualityComparerOptions.matchStartAndEndTransitions)
-          ? zoneInterval.rawStart : Instant.max(zoneInterval.rawStart, _interval.start);
+          ? IZoneInterval.rawStart(zoneInterval) : Instant.max(IZoneInterval.rawStart(zoneInterval), _interval.start);
 
   Instant _getEffectiveEnd(ZoneInterval zoneInterval) =>
       _checkOption(_options, ZoneEqualityComparerOptions.matchStartAndEndTransitions)
-          ? zoneInterval.rawEnd : Instant.min(zoneInterval.rawEnd, _interval.end);
+          ? IZoneInterval.rawEnd(zoneInterval) : Instant.min(IZoneInterval.rawEnd(zoneInterval), _interval.end);
 
   /// Compares the parts of two zone intervals which are deemed "interesting" by the options.
   /// The wall offset is always compared, regardless of options, but the start/end points are

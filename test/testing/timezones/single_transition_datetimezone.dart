@@ -39,8 +39,8 @@ class SingleTransitionDateTimeZone extends DateTimeZone {
   /// [offsetAfter]: The offset of local time from UTC before the transition.
   /// [id]: ID for the newly created time zone.
   SingleTransitionDateTimeZone.withId(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, String id)
-      : EarlyInterval = new ZoneInterval(id + "-Early", null, transitionPoint, offsetBefore, Offset.zero),
-        LateInterval = new ZoneInterval(id + "-Late", transitionPoint, null, offsetAfter, Offset.zero),
+      : EarlyInterval = IZoneInterval.newZoneInterval(id + "-Early", null, transitionPoint, offsetBefore, Offset.zero),
+        LateInterval = IZoneInterval.newZoneInterval(id + "-Late", transitionPoint, null, offsetAfter, Offset.zero),
         super(id, false, Offset.min(offsetBefore, offsetAfter), Offset. max(offsetBefore, offsetAfter));
 
   /// <inheritdoc />

@@ -17,7 +17,8 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 /// container for the initial zone intervals and a pointer to the time zone that handles all of
 /// the rest until the end of time.
 @immutable // todo: we need immutable lists?
-@internal class PrecalculatedDateTimeZone extends DateTimeZone {
+@internal
+class PrecalculatedDateTimeZone extends DateTimeZone {
   final List<ZoneInterval> _periods;
   final IZoneIntervalMapWithMinMax _tailZone;
 
@@ -35,12 +36,11 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
   /// [tailZone]: The tail zone - which can be any IZoneIntervalMap for normal operation,
   /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.
   @visibleForTesting
-  @internal
   factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone) {
     // We want this to be AfterMaxValue for tail-less zones.
-    var tailZoneStart = intervals[intervals.length - 1].rawEnd;
+    var tailZoneStart = IZoneInterval.rawEnd(intervals[intervals.length - 1]);
     // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
-    var firstTailZoneInterval = tailZone?.getZoneInterval(tailZoneStart)?.withStart(tailZoneStart);
+    var firstTailZoneInterval = IZoneInterval.withStart(tailZone?.getZoneInterval(tailZoneStart), tailZoneStart);
     validatePeriods(intervals, tailZone);
 
     return new PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
@@ -58,7 +58,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
   ///
   /// This is only called from the constructors, but is @internal to make it easier to test.
   /// [ArgumentException]: The periods specified are invalid.
-  @internal static void validatePeriods(List<ZoneInterval> periods, IZoneIntervalMap tailZone) {
+  static void validatePeriods(List<ZoneInterval> periods, IZoneIntervalMap tailZone) {
     Preconditions.checkArgument(periods.length > 0, 'periods', "No periods specified in precalculated time zone");
     Preconditions.checkArgument(!periods[0].hasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
     for (int i = 0; i < periods.length - 1; i++) {
@@ -67,7 +67,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
       Preconditions.checkArgument(periods[i].end == periods[i + 1].start, 'periods', "Non-adjoining ZoneIntervals for precalculated time zone");
     }
     Preconditions.checkArgument(
-        tailZone != null || periods[periods.length - 1].rawEnd == IInstant.afterMaxValue, 'tailZone',
+        tailZone != null || IZoneInterval.rawEnd(periods[periods.length - 1]) == IInstant.afterMaxValue, 'tailZone',
         "Null tail zone given but periods don't cover all of time");
   }
 
@@ -80,7 +80,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
       // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
       // join is seamless.
       ZoneInterval intervalFromTailZone = _tailZone.getZoneInterval(instant);
-      return intervalFromTailZone.rawStart < _tailZoneStart ? _firstTailZoneInterval : intervalFromTailZone;
+      return IZoneInterval.rawStart(intervalFromTailZone) < _tailZoneStart ? _firstTailZoneInterval : intervalFromTailZone;
     }
 
     int lower = 0; // Inclusive
@@ -89,11 +89,11 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
     while (lower < upper) {
       int current = (lower + upper) ~/ 2;
       var candidate = _periods[current];
-      if (candidate.rawStart > instant) {
+      if (IZoneInterval.rawStart(candidate) > instant) {
         upper = current;
       }
       // Safe to use RawEnd, as it's just for the comparison.
-      else if (candidate.rawEnd <= instant) {
+      else if (IZoneInterval.rawEnd(candidate) <= instant) {
         lower = current + 1;
       }
       else {
@@ -108,7 +108,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  @internal void write(IDateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('FixedDateTimeZone.write unimplemented');
     //Preconditions.checkNotNull(writer, 'writer');
     //
@@ -142,7 +142,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
   /// [reader]: The reader.
   /// [id]: The id.
   /// Returns: The time zone.
-  @internal static DateTimeZone read(DateTimeZoneReader reader, String id) {
+  static DateTimeZone read(DateTimeZoneReader reader, String id) {
     var periodsCount = reader.read7BitEncodedInt();
     if (periodsCount > 10000) throw new Exception('Parse error for id = $id. Too many periods. Count = $periodsCount.');
     var periods = new Iterable

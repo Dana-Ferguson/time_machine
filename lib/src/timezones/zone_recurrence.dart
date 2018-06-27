@@ -20,7 +20,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// before the time zones were normalized (i.e. when they were still tightly longitude-based,
 /// with multiple towns in the same country observing different times).
 @immutable
-@internal class ZoneRecurrence {
+@internal
+class ZoneRecurrence {
   final LocalInstant _maxLocalInstant;
   final LocalInstant _minLocalInstant;
 
@@ -54,11 +55,11 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Returns a new recurrence which has the same values as this, but a different name.
-  @internal ZoneRecurrence withName(String name) =>
+  ZoneRecurrence withName(String name) =>
       new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
 
   /// Returns a new recurrence with the same values as this, but just for a single year.
-  @internal ZoneRecurrence forSingleYear(int year) {
+  ZoneRecurrence forSingleYear(int year) {
     return new ZoneRecurrence(name, savings, yearOffset, year, year);
   }
 
@@ -93,7 +94,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The next transition, or null if there is no next transition. The transition may be
   /// infinite, i.e. after the end of representable time.
-  @internal Transition next(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition next(Instant instant, Offset standardOffset, Offset previousSavings) {
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
@@ -151,7 +152,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The previous transition, or null if there is no previous transition. The transition may be
   /// infinite, i.e. before the start of representable time.
-  @internal Transition previousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition previousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
@@ -211,7 +212,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Piggy-backs onto Next, but fails with an InvalidOperationException if there's no such transition.
-  @internal Transition nextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition nextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
     Transition next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
       throw new StateError(
@@ -221,7 +222,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   }
 
   /// Piggy-backs onto PreviousOrSame, but fails with a descriptive InvalidOperationException if there's no such transition.
-  @internal Transition previousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition previousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
     Transition previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
       throw new StateError(
@@ -233,7 +234,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Writes this object to the given [DateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  @internal void write(IDateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not supported');
     //    writer.WriteString(name);
     //    writer.WriteOffset(savings);
@@ -287,7 +288,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
-  @internal ZoneRecurrence toStartOfTime() =>
+  ZoneRecurrence toStartOfTime() =>
       fromYear == Utility.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.int32MinValue, toYear);
 }
 

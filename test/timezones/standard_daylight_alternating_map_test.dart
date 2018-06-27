@@ -35,7 +35,7 @@ new StandardDaylightAlternatingMap(new Offset.fromHours(5), Winter, Summer);
 
 DateTimeZone TestZone = new PrecalculatedDateTimeZone(
   "zone",
-  [ new ZoneInterval("Before", IInstant.beforeMinValue, new Instant.fromUtc(1999, 12, 1, 0, 0), new Offset.fromHours(5), Summer.savings) ],
+  [ IZoneInterval.newZoneInterval("Before", IInstant.beforeMinValue, new Instant.fromUtc(1999, 12, 1, 0, 0), new Offset.fromHours(5), Summer.savings) ],
   new StandardDaylightAlternatingMap(new Offset.fromHours(5), Winter, Summer));
 
 @Test()
@@ -263,10 +263,10 @@ void Extremes()
   var dstOffset = new Offset.fromHours(1);
 
   // Check both year -9998 and 9999, both the infinite interval and the next one in
-  var firstWinter = new ZoneInterval("Winter", IInstant.beforeMinValue, firstSpring, Offset.zero, Offset.zero);
-  var firstSummer = new ZoneInterval("Summer", firstSpring, firstAutumn, dstOffset, dstOffset);
-  var lastSummer = new ZoneInterval("Summer", lastSpring, lastAutumn, dstOffset, dstOffset);
-  var lastWinter = new ZoneInterval("Winter", lastAutumn, IInstant.afterMaxValue, Offset.zero, Offset.zero);
+  var firstWinter = IZoneInterval.newZoneInterval("Winter", IInstant.beforeMinValue, firstSpring, Offset.zero, Offset.zero);
+  var firstSummer = IZoneInterval.newZoneInterval("Summer", firstSpring, firstAutumn, dstOffset, dstOffset);
+  var lastSummer = IZoneInterval.newZoneInterval("Summer", lastSpring, lastAutumn, dstOffset, dstOffset);
+  var lastWinter = IZoneInterval.newZoneInterval("Winter", lastAutumn, IInstant.afterMaxValue, Offset.zero, Offset.zero);
 
   expect(firstWinter, zone.getZoneInterval(Instant.minValue));
   expect(firstWinter, zone.getZoneInterval(new Instant.fromUtc(-9998, 2, 1, 0, 0)));

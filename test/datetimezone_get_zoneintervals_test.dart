@@ -174,7 +174,7 @@ void GetZoneIntervals_WithOptions_Coalescing() {
   expect(3, zoneIntervals.length);
   // CollectionAssert.AreEqual
   expect([ transition1, transition3, transition4], zoneIntervals.map((zi) => zi.end));
-  expect([ IInstant.beforeMinValue, transition1, transition3], zoneIntervals.map((zi) => zi.rawStart));
+  expect([ IInstant.beforeMinValue, transition1, transition3], zoneIntervals.map((zi) => IZoneInterval.rawStart(zi)));
   expect([ "0+0", "1+1", "0+1"], zoneIntervals.map((zi) => zi.name));
 }
 

@@ -7,6 +7,14 @@ import 'dart:async';
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+// todo: the Internal Classes here make me sad
+
+@internal
+abstract class IDateTimeZoneProviders {
+  static void set defaultProvider(IDateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
+}
+
+
 // todo: I think we need an easy way for library users to inject their own IDateTimeZoneSource
 abstract class DateTimeZoneProviders {
   // todo: await ... await ... patterns are so ick.
@@ -19,21 +27,20 @@ abstract class DateTimeZoneProviders {
   /// This is the default [IDateTimeZoneProvider] for the currently loaded TimeMachine.
   /// It will be used internally where-ever timezone support is needed when no provider is provided,
   static IDateTimeZoneProvider get defaultProvider => _defaultProvider;
-  
-  @internal
-  static void set defaultProvider(IDateTimeZoneProvider provider) => _defaultProvider = provider;
+}
+
+@internal
+class ITzdbDateTimeZoneSource {
+  static void loadAllTimeZoneInformation_SetFlag() {
+    if (TzdbDateTimeZoneSource._cachedTzdbIndex != null) throw new StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');
+    TzdbDateTimeZoneSource._loadAllTimeZoneInformation = true;
+  }
 }
 
 class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
   // todo: this is a bandaid ~ we need to rework our infrastructure a bit -- maybe draw some diagrams?
   // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
   static bool _loadAllTimeZoneInformation = false;
-
-  @internal
-  static void loadAllTimeZoneInformation_SetFlag() {
-    if (_cachedTzdbIndex != null) throw new StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');
-    _loadAllTimeZoneInformation = true;
-  }
 
   static Future _init() async {
     if (_cachedTzdbIndex != null) return;

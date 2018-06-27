@@ -1,7 +1,7 @@
 export 'src/timezones/cached_datetimezone.dart';
 export 'src/timezones/caching_zoneinterval_map.dart';
 export 'src/timezones/datetimezone_cache.dart';
-export 'src/timezones/datetimezone_notfound_exception.dart';
+export 'src/timezones/datetimezone_notfound_error.dart';
 export 'src/timezones/delegates.dart';
 export 'src/timezones/fixed_datetimezone.dart';
 // todo: no i* classes in dart

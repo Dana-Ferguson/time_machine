@@ -19,11 +19,12 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// was more effort than it was worth to update. The mechanism is still available for future
 /// expansion though.
 // sealed
-@internal class CachedDateTimeZone extends DateTimeZone {
+@internal
+class CachedDateTimeZone extends DateTimeZone {
   final IZoneIntervalMap _map;
 
   /// Gets the cached time zone.
-  @internal final DateTimeZone timeZone;
+  final DateTimeZone timeZone;
 
   /// Initializes a new instance of the [CachedDateTimeZone] class.
   ///
@@ -37,7 +38,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [timeZone]: The time zone to cache.
   /// Returns: The cached time zone.
-  @internal static DateTimeZone forZone(DateTimeZone timeZone) {
+  static DateTimeZone forZone(DateTimeZone timeZone) {
     // todo: move this as a factory method on DateTimeZone?
     Preconditions.checkNotNull(timeZone, 'timeZone');
     if (timeZone is CachedDateTimeZone || IDateTimeZone.isFixed(timeZone)) {

@@ -10,10 +10,11 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Implementation of IZoneIntervalMap which just returns a single interval (provided on construction) regardless of
 /// the instant requested.
 @immutable
-@internal class SingleZoneIntervalMap implements IZoneIntervalMap {
+@internal
+class SingleZoneIntervalMap implements IZoneIntervalMap {
   final ZoneInterval _interval;
 
-  @internal SingleZoneIntervalMap(this._interval);
+  SingleZoneIntervalMap(this._interval);
 
   ZoneInterval getZoneInterval(Instant instant) => _interval;
 }

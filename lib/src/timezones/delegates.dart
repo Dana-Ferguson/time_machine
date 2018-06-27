@@ -5,6 +5,7 @@
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
+// todo: verify with Dart Style Guide ... Should typedef's be UpperCaseInitial? (have some code that depends on that)
 // Delegates used for mapping local date/time values to ZonedDateTime.
 
 /// Chooses between two [ZonedDateTime] values that resolve to the same [LocalDateTime].

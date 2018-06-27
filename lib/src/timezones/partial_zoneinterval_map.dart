@@ -8,17 +8,18 @@ import 'package:time_machine/time_machine_timezones.dart';
 
 /// Like ZoneIntervalMap, representing just part of the time line. The intervals returned by this map
 /// are clamped to the portion of the time line being represented, to make it easier to work with.
-@internal class PartialZoneIntervalMap
+@internal
+class PartialZoneIntervalMap
 {
   final IZoneIntervalMap _map;
 
   /// Start of the interval during which this map is valid.
-  @internal final Instant start;
+  final Instant start;
 
   /// End (exclusive) of the interval during which this map is valid.
-  @internal final Instant end;
+  final Instant end;
 
-  @internal PartialZoneIntervalMap(this.start, this.end, this._map)
+  PartialZoneIntervalMap(this.start, this.end, this._map)
   {
     // Allowing empty maps makes life simpler.
     // TODO(misc): Does it really? It's a pain in some places...
@@ -29,43 +30,43 @@ import 'package:time_machine/time_machine_timezones.dart';
   // todo: I think this constructors can be made private?
 
   /// Builds a PartialZoneIntervalMap for a single zone interval with the given name, start, end, wall offset and daylight savings.
-  @internal factory PartialZoneIntervalMap.forSingleZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
-      new PartialZoneIntervalMap.forZoneInterval(new ZoneInterval(name, start, end, wallOffset, savings));
+  factory PartialZoneIntervalMap.forSingleZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
+      new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.newZoneInterval(name, start, end, wallOffset, savings));
 
   /// Builds a PartialZoneIntervalMap wrapping the given zone interval, taking its start and end as the start and end of
   /// the portion of the time line handled by the partial map.
-  @internal factory PartialZoneIntervalMap.forZoneInterval(ZoneInterval interval) =>
-      new PartialZoneIntervalMap(interval.rawStart, interval.rawEnd, new SingleZoneIntervalMap(interval));
+  factory PartialZoneIntervalMap.forZoneInterval(ZoneInterval interval) =>
+      new PartialZoneIntervalMap(IZoneInterval.rawStart(interval), IZoneInterval.rawEnd(interval), new SingleZoneIntervalMap(interval));
 
-  @internal ZoneInterval getZoneInterval(Instant instant)
+  ZoneInterval getZoneInterval(Instant instant)
   {
     Preconditions.debugCheckArgument(instant >= start && instant < end, 'instant',
         "Value $instant was not in the range [$start, $end)");
     var interval = _map.getZoneInterval(instant);
     // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
     // but we're not expecting this to be called too often, due to caching.
-    if (interval.rawStart < start)
+    if (IZoneInterval.rawStart(interval) < start)
     {
-      interval = interval.withStart(start);
+      interval = IZoneInterval.withStart(interval, start);
     }
-    if (interval.rawEnd > end)
+    if (IZoneInterval.rawEnd(interval) > end)
     {
-      interval = interval.withEnd(end);
+      interval = IZoneInterval.withEnd(interval, end);
     }
     return interval;
   }
 
   /// Returns true if this map only contains a single interval; that is, if the first interval includes the end of the map.
-  bool get _isSingleInterval => _map.getZoneInterval(start).rawEnd >= end;
+  bool get _isSingleInterval => IZoneInterval.rawEnd(_map.getZoneInterval(start)) >= end;
 
   /// Returns a partial zone interval map equivalent to this one, but with the given start point.
-  @internal PartialZoneIntervalMap withStart(Instant start)
+  PartialZoneIntervalMap withStart(Instant start)
   {
     return new PartialZoneIntervalMap(start, this.end, this._map);
   }
 
   /// Returns a partial zone interval map equivalent to this one, but with the given end point.
-  @internal PartialZoneIntervalMap withEnd(Instant end)
+  PartialZoneIntervalMap withEnd(Instant end)
   {
     return new PartialZoneIntervalMap(this.start, end, this._map);
   }
@@ -75,7 +76,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// the end of the last map being Instant.AfterMaxValue, and each adjacent pair of maps abutting (i.e. current.End == next.Start).
   /// Zone intervals belonging to abutting maps but which are equivalent in terms of offset and name
   /// are coalesced in the resulting map.
-  @internal static IZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
+  static IZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
     var coalescedMaps = new List<PartialZoneIntervalMap>();
     PartialZoneIntervalMap current = null;
@@ -97,7 +98,7 @@ import 'package:time_machine/time_machine_timezones.dart';
       var lastIntervalOfCurrent = current.getZoneInterval(current.end - Span.epsilon);
       var firstIntervalOfNext = next.getZoneInterval(next.start);
 
-      if (!lastIntervalOfCurrent.equalIgnoreBounds(firstIntervalOfNext))
+      if (!IZoneInterval.equalIgnoreBounds(lastIntervalOfCurrent, firstIntervalOfNext))
       {
         // There's a genuine transition at the boundary of the partial maps. Add the current one, and move on
         // to the next.
@@ -112,13 +113,13 @@ import 'package:time_machine/time_machine_timezones.dart';
         // go on until the end of the next one instead.
         if (current._isSingleInterval && next._isSingleInterval)
         {
-          current = new PartialZoneIntervalMap.forZoneInterval(lastIntervalOfCurrent.withEnd(next.end));
+          current = new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, next.end));
         }
         else if (current._isSingleInterval)
         {
           // The next map has at least one transition. Add a single new map for the portion of time from the
           // start of current to the first transition in next, then continue on with the next map, starting at the first transition.
-          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(lastIntervalOfCurrent.withEnd(firstIntervalOfNext.end)));
+          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
           current = next.withStart(firstIntervalOfNext.end);
         }
         else if (next._isSingleInterval)
@@ -126,14 +127,14 @@ import 'package:time_machine/time_machine_timezones.dart';
           // The current map as at least one transition. Add a version of that, clamped to end at the final transition,
           // then continue with a new map which takes in the last portion of the current and the whole of next.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          current = new PartialZoneIntervalMap.forZoneInterval(firstIntervalOfNext.withStart(lastIntervalOfCurrent.start));
+          current = new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withStart(firstIntervalOfNext, lastIntervalOfCurrent.start));
         }
         else
         {
           // Transitions in both maps. Add the part of current before the last transition, and a single map containing
           // the coalesced interval across the boundary, then continue with the next map, starting at the first transition.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(lastIntervalOfCurrent.withEnd(firstIntervalOfNext.end)));
+          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
           current = next.withStart(firstIntervalOfNext.end);
         }
       }
@@ -151,7 +152,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 class _CombinedPartialZoneIntervalMap implements IZoneIntervalMap {
   final List<PartialZoneIntervalMap> _partialMaps;
 
-  @internal _CombinedPartialZoneIntervalMap(this._partialMaps);
+  _CombinedPartialZoneIntervalMap(this._partialMaps);
 
   ZoneInterval getZoneInterval(Instant instant) {
     // We assume the maps are ordered, and start with "beginning of time"

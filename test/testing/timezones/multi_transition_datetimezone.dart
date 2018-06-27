@@ -109,7 +109,7 @@ class MtdtzBuilder {
     EnsureNotBuilt();
     Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
     // The ZoneInterval constructor will perform validation.
-    intervals.add(new ZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
+    intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
     currentName = newName;
     currentStandardOffset = new Offset.fromHours(newStandardOffsetHours);
     currentSavings = new Offset.fromHours(newSavingOffsetHours);
@@ -122,7 +122,7 @@ class MtdtzBuilder {
     EnsureNotBuilt();
     built = true;
     Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
-    intervals.add(new ZoneInterval(currentName, previousStart, null, currentStandardOffset + currentSavings, currentSavings));
+    intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, null, currentStandardOffset + currentSavings, currentSavings));
     return new MultiTransitionDateTimeZone(id, intervals);
   }
 

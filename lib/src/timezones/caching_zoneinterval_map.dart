@@ -9,13 +9,14 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_timezones.dart';
 
 /// Helper methods for creating IZoneIntervalMaps which cache results.
-@internal abstract class CachingZoneIntervalMap
+@internal
+abstract class CachingZoneIntervalMap
 {
 // Currently the only implementation is HashArrayCache. This container class is mostly for historical
 // reasons; it's not really necessary but it does no harm.
 
   /// Returns a caching map for the given input map.
-  @internal static IZoneIntervalMap cacheMap(IZoneIntervalMap map)
+  static IZoneIntervalMap cacheMap(IZoneIntervalMap map)
   {
     return new _HashArrayCache(map);
   }
@@ -51,7 +52,7 @@ class _HashArrayCache implements IZoneIntervalMap {
   final List<_HashCacheNode> _instantCache = new List<_HashCacheNode>(_cacheSize);
   final IZoneIntervalMap _map;
 
-  @internal _HashArrayCache(this._map) {
+  _HashArrayCache(this._map) {
     Preconditions.checkNotNull(_map, 'map');
   // instantCache = new HashCacheNode[CacheSize];
   }
@@ -72,7 +73,7 @@ class _HashArrayCache implements IZoneIntervalMap {
 
     // Note: moving this code into an instance method in HashCacheNode makes a surprisingly
     // large performance difference.
-    while (node.previous != null && node.interval.rawStart > instant) {
+    while (node.previous != null && IZoneInterval.rawStart(node.interval) > instant) {
       node = node.previous;
     }
     return node.interval;
@@ -85,18 +86,18 @@ class _HashArrayCache implements IZoneIntervalMap {
 // than two zone intervals in a period. It halved the performance...
 // sealed
 class _HashCacheNode {
-  @internal final ZoneInterval interval;
+  final ZoneInterval interval;
 
-  @internal final int period;
+  final int period;
 
-  @internal final _HashCacheNode previous;
+  final _HashCacheNode previous;
 
   /// Creates a hash table node with all the information for this period.
   /// We start off by finding the interval for the start of the period, and
   /// then repeatedly check whether that interval ends after the end of the
   /// period - at which point we're done. If not, find the next interval, create
   /// a new node referring to that interval and the previous interval, and keep going.
-  @internal static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
+  static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
     var days = period << _HashArrayCache._periodShift;
     var periodStart = IInstant.untrusted(new Span(days: math.max(days, IInstant.minDays)));
     var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);
@@ -109,7 +110,7 @@ class _HashCacheNode {
     // day boundary.)
     // If the raw end is the end of time, the condition will definitely
     // evaluate to false.
-    while (interval.rawEnd.daysSinceEpoch < nextPeriodStartDays) {
+    while (IZoneInterval.rawEnd(interval).daysSinceEpoch < nextPeriodStartDays) {
       interval = map.getZoneInterval(interval.end);
       node = new _HashCacheNode(interval, period, node);
     }

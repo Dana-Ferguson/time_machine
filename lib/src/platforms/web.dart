@@ -56,7 +56,7 @@ class TimeMachine {
 
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
-    DateTimeZoneProviders.defaultProvider = tzdb;
+    IDateTimeZoneProviders.defaultProvider = tzdb;
     
     _readIntlObject();
 

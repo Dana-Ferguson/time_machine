@@ -92,7 +92,7 @@ Iterable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map) sync*
     var zoneInterval = map.getZoneInterval(current);
     yield zoneInterval;
     // If this is the end of time, this will just fail on the next comparison.
-    current = zoneInterval.rawEnd;
+    current = IZoneInterval.rawEnd(zoneInterval);
   }
 }
 

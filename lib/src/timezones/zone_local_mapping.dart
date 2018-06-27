@@ -15,6 +15,13 @@ import 'package:time_machine/time_machine_timezones.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
+@internal
+abstract class IZoneLocalMapping {
+  static ZoneLocalMapping newZoneLocalMapping
+      (DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count) => 
+      new ZoneLocalMapping._(zone, localDateTime, earlyInterval, lateInterval, count);
+}
+
 /// The result of mapping a [LocalDateTime] within a time zone, i.e. finding out
 /// at what "global" time the "local" time occurred.
 ///
@@ -76,7 +83,7 @@ class ZoneLocalMapping {
   /// original local date and time.</value>
   final int count;
 
-  @internal ZoneLocalMapping(this.zone, this.localDateTime, this.earlyInterval, this.lateInterval, this.count) {
+  ZoneLocalMapping._(this.zone, this.localDateTime, this.earlyInterval, this.lateInterval, this.count) {
     Preconditions.debugCheckNotNull(zone, 'zone');
     Preconditions.debugCheckNotNull(earlyInterval, 'earlyInterval');
     Preconditions.debugCheckNotNull(lateInterval, 'lateInterval');

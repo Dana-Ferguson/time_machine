@@ -10,13 +10,14 @@ import 'package:time_machine/time_machine.dart';
 /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
 /// the new offset, and the transition point.
 @immutable
-@internal class Transition {
-  @internal final Instant instant;
+@internal
+class Transition {
+  final Instant instant;
 
   /// The offset from the time when this transition occurs until the next transition.
-  @internal final Offset newOffset;
+  final Offset newOffset;
 
-  @internal Transition(this.instant, this.newOffset);
+  Transition(this.instant, this.newOffset);
 
   bool equals(Transition other) => instant == other.instant && newOffset == other.newOffset;
 

@@ -35,7 +35,8 @@ class _TransitionRecurrenceResult {
 /// only be used as part of a zone which will only ask it for values within the right
 /// portion of the timeline.
 @immutable
-@internal class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax  {
+@internal
+class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax  {
   final Offset _standardOffset;
   final ZoneRecurrence _standardRecurrence;
   final ZoneRecurrence _dstRecurrence;
@@ -55,7 +56,7 @@ class _TransitionRecurrenceResult {
   /// [standardOffset]: The standard offset.
   /// [startRecurrence]: The start recurrence.
   /// [endRecurrence]: The end recurrence.
-  @internal factory StandardDaylightAlternatingMap(Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
+  factory StandardDaylightAlternatingMap(Offset standardOffset, ZoneRecurrence startRecurrence, ZoneRecurrence endRecurrence)
   {
     // Treat the recurrences as if they extended to the start of time.
     startRecurrence = startRecurrence.toStartOfTime();
@@ -97,7 +98,7 @@ class _TransitionRecurrenceResult {
     // two transitions into the same recurrence in a row.)
     Offset previousSavings = identical(recurrence, _standardRecurrence) ? _dstRecurrence.savings : Offset.zero;
     var previous = recurrence.previousOrSameOrFail(instant, _standardOffset, previousSavings);
-    return new ZoneInterval(recurrence.name, previous.instant, next.instant, _standardOffset + recurrence.savings, recurrence.savings);
+    return IZoneInterval.newZoneInterval(recurrence.name, previous.instant, next.instant, _standardOffset + recurrence.savings, recurrence.savings);
   }
 
   /// Returns the transition occurring strictly after the specified instant. The [recurrence]
@@ -142,7 +143,7 @@ class _TransitionRecurrenceResult {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  @internal void write(IDateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not available.');
     // We don't need everything a recurrence can supply: we know that both recurrences should be
     // infinite, and that only the DST recurrence should have savings.
@@ -155,7 +156,7 @@ class _TransitionRecurrenceResult {
     //    writer.WriteOffset(dstRecurrence.savings);
   }
 
-  @internal static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
+  static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var standardOffset = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
     var standardRecurrence = ZoneRecurrence.read(reader);

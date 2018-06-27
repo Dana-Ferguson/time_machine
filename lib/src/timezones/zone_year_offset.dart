@@ -29,9 +29,10 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Finally the [Mode] property deterines whether the [time] value
 /// is added to the calculated offset to generate an offset within the day.
 @immutable
-@internal class ZoneYearOffset {
+@internal
+class ZoneYearOffset {
   /// An offset that specifies the beginning of the year.
-  @internal static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
+  static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
 
   final int _dayOfMonth;
   final int _dayOfWeek;
@@ -56,7 +57,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [advance]: if set to `true` [advance].
   /// [timeOfDay]: The time of day at which the transition occurs.
   /// [addDay]: Whether to add an extra day (for 24:00 handling). Default is false. 
-  @internal ZoneYearOffset(this.mode, this._monthOfYear, this._dayOfMonth, this._dayOfWeek, this.advanceDayOfWeek, this.timeOfDay, [this._addDay = false]) {
+  ZoneYearOffset(this.mode, this._monthOfYear, this._dayOfMonth, this._dayOfWeek, this.advanceDayOfWeek, this.timeOfDay, [this._addDay = false]) {
     _verifyFieldValue(1, 12, "monthOfYear", _monthOfYear, false);
     _verifyFieldValue(1, 31, "dayOfMonth", _dayOfMonth, true);
     if (_dayOfWeek != 0) {
@@ -123,7 +124,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// LocalInstant is used here so that we can use the representation of "AfterMaxValue"
   /// for December 31st 9999 24:00.
-  @internal LocalInstant getOccurrenceForYear(int year) {
+  LocalInstant getOccurrenceForYear(int year) {
     int actualDayOfMonth = _dayOfMonth > 0 ? _dayOfMonth : CalendarSystem.iso.getDaysInMonth(year, _monthOfYear) + _dayOfMonth + 1;
     if (_monthOfYear == 2 && _dayOfMonth == 29 && !CalendarSystem.iso.isLeapYear(year)) {
       // In zic.c, this would result in an error if dayOfWeek is 0 or AdvanceDayOfWeek is true.
@@ -164,7 +165,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Writes this object to the given [IDateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  @internal void write(IDateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not supported');
     //  // Flags contains four pieces of information in a single byte:
     //  // 0MMDDDAP:
@@ -220,7 +221,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [standardOffset]: The standard offset.
   /// [savings]: The daylight savings adjustment.
   /// Returns: The base time offset as a [Duration].
-  @internal Offset getRuleOffset(Offset standardOffset, Offset savings) {
+  Offset getRuleOffset(Offset standardOffset, Offset savings) {
     // note: switch statements in Dart 1.25 don't work with constant classes
     if (mode == TransitionMode.wall) return standardOffset + savings;
     else if (mode == TransitionMode.standard) return standardOffset;

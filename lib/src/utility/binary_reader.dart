@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:time_machine/time_machine.dart';
 
+@internal
 class BinaryReader {
   // todo: should this be private?
   final ByteData binary;

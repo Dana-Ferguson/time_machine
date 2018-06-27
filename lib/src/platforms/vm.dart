@@ -80,13 +80,13 @@ class TimeMachine  {
   
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
-    TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
+    ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     // todo: we want this for flutter -- do we want this for the VM too?
     ICultures.loadAllCulturesInformation_SetFlag();
     
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
-    DateTimeZoneProviders.defaultProvider = tzdb;
+    IDateTimeZoneProviders.defaultProvider = tzdb;
 
     // Default TimeZone
     //var localTimezoneId = await _getTimeZoneId();
@@ -133,7 +133,7 @@ class TimeMachine  {
       }
     }
     
-    allSpecialInstants = allZoneIntervals.map((z) => z.rawStart).toList();
+    allSpecialInstants = allZoneIntervals.map((z) => IZoneInterval.rawStart(z)).toList();
     var badZones = new HashSet<String>();
 
     zones = lessZones;

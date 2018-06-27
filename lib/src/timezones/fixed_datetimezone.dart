@@ -16,14 +16,15 @@ import 'package:time_machine/time_machine_timezones.dart';
 /// Basic [DateTimeZone] implementation that has a fixed name key and offset i.e.
 /// no daylight savings.
 @immutable
-@internal class FixedDateTimeZone extends DateTimeZone {
+@internal
+class FixedDateTimeZone extends DateTimeZone {
   final ZoneInterval _interval;
 
   /// Creates a new fixed time zone.
   ///
   /// The ID and name (for the [ZoneInterval]) are generated based on the offset.
   /// [offset]: The [Offset] from UTC.
-  @internal FixedDateTimeZone.forOffset(Offset offset) : this.forIdOffset(_makeId(offset), offset);
+  FixedDateTimeZone.forOffset(Offset offset) : this.forIdOffset(_makeId(offset), offset);
   // todo: consider merging these constructors?
 
   /// Initializes a new instance of the [FixedDateTimeZone] class.
@@ -31,7 +32,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// The name (for the [ZoneInterval]) is deemed to be the same as the ID.
   /// [id]: The id.
   /// [offset]: The offset.
-  @internal FixedDateTimeZone.forIdOffset(String id, Offset offset) : this(id, offset, id);
+  FixedDateTimeZone.forIdOffset(String id, Offset offset) : this(id, offset, id);
 
   /// Initializes a new instance of the [FixedDateTimeZone] class.
   ///
@@ -39,8 +40,8 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// [id]: The id.
   /// [offset]: The offset.
   /// [name]: The name to use in the sole [ZoneInterval] in this zone.
-  @internal FixedDateTimeZone(String id, Offset offset, String name)
-      : _interval = new ZoneInterval(name, IInstant.beforeMinValue, IInstant.afterMaxValue, offset, Offset.zero),
+  FixedDateTimeZone(String id, Offset offset, String name)
+      : _interval = IZoneInterval.newZoneInterval(name, IInstant.beforeMinValue, IInstant.afterMaxValue, offset, Offset.zero),
         super(id, true, offset, offset);
 
   /// Makes the id for this time zone. The format is "UTC+/-Offset".
@@ -64,7 +65,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   ///
   /// [id]: ID 
   /// Returns: The parsed time zone, or null if the ID doesn't match.
-  @internal static DateTimeZone getFixedZoneOrNull(String id) {
+  static DateTimeZone getFixedZoneOrNull(String id) {
     if (!id.startsWith(IDateTimeZone.utcId)) {
       return null;
     }
@@ -91,7 +92,7 @@ import 'package:time_machine/time_machine_timezones.dart';
 
   /// @override for efficiency: we know we'll always have an unambiguous mapping for any LocalDateTime.
   @override ZoneLocalMapping mapLocal(LocalDateTime localDateTime) =>
-      new ZoneLocalMapping(this, localDateTime, _interval, _interval, 1);
+      IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, _interval, _interval, 1);
 
   /// Returns the offset from UTC, where a positive duration indicates that local time is later
   /// than UTC. In other words, local time = UTC + offset.
@@ -104,7 +105,7 @@ import 'package:time_machine/time_machine_timezones.dart';
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer.
-  @internal void write(IDateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     throw new UnimplementedError('This feature is not supported.');
     //  Preconditions.checkNotNull(writer, 'writer');
     //  writer.WriteOffset(Offset);
