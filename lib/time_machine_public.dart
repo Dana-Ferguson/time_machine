@@ -79,12 +79,8 @@ export 'src/text/globalization/datetime_format_info.dart' show BclCalendarType, 
 export 'src/text/composite_pattern_builder.dart' show CompositePatternBuilder;
 export 'src/text/i_pattern.dart' show IPattern;
 export 'src/text/parse_result.dart' show ParseResult;
-export 'src/text/text_error_messages.dart';
-export 'src/text/unparsable_value_error.dart';
-export 'src/text/text_cursor.dart';
-export 'src/text/value_cursor.dart';
-export 'src/text/format_helper.dart';
-export 'src/text/period_pattern.dart';
+export 'src/text/unparsable_value_error.dart' show UnparsableValueError;
+export 'src/text/period_pattern.dart' show PeriodPattern;
 export 'src/text/invalid_pattern_error.dart';
 export 'src/text/delegates.dart';
 export 'src/text/parse_bucket.dart';

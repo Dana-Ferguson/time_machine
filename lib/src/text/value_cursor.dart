@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_text.dart';
 
-@internal class ValueCursor extends TextCursor {
+@internal
+class ValueCursor extends TextCursor {
   // '0': 48; '9': 57
   static const int _zeroCodeUnit = 48;
   static const int _nineCodeUnit = 57;
@@ -15,7 +16,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// Initializes a new instance of the [ValueCursor] class.
   ///
   /// [value]: The string to parse.
-  @internal ValueCursor(String value)
+  ValueCursor(String value)
       : super(value);
 
   /// Attempts to match the specified character with the current character of the string. If the
@@ -23,7 +24,7 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [character]: The character to match.
   /// Returns: `true` if the character matches.
-  @internal bool matchSingle(String character) {
+  bool matchSingle(String character) {
     assert(character.length == 1);
     if (current == character) {
       moveNext();
@@ -37,7 +38,7 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [match]: The string to match.
   /// Returns: `true` if the string matches.
-  @internal bool matchText(String match) {
+  bool matchText(String match) {
     // string.CompareOrdinal(Value, Index, match, 0, match.length) == 0) {
     // Value, Index, match, 0, match.length
     if (stringOrdinalCompare(value, index, match, 0, match.length) == 0) {
@@ -49,7 +50,7 @@ import 'package:time_machine/time_machine_text.dart';
 
   /// Attempts to match the specified string with the current point in the string in a case-insensitive
   /// manner, according to the given comparison info. The cursor is optionally updated to the end of the match.
-  @internal bool matchCaseInsensitive(String match, CompareInfo compareInfo, bool moveOnSuccess) {
+  bool matchCaseInsensitive(String match, CompareInfo compareInfo, bool moveOnSuccess) {
     if (match.length > value.length - index) {
       return false;
     }
@@ -91,7 +92,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// A negative number if the value (from the current cursor position) is lexicographically
   /// earlier than the given match string; 0 if they are equal (as far as the end of the match) and
   /// a positive number if the value is lexicographically later than the given match string.
-  @internal int compareOrdinal(String match) {
+  int compareOrdinal(String match) {
     int remaining = value.length - index;
     if (match.length > remaining) {
       // string.CompareOrdinal(Value, Index, match, 0, remaining);
@@ -110,7 +111,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// to be anything specific if the return value is non-null.
   /// Returns: null if the digits were parsed, or the appropriate parse failure
   // hack: we need to know what T is at runtime for error messages
-  @internal ParseResult<T> parseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
+  ParseResult<T> parseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
     result.value = 0;
     int startIndex = index;
     bool negative = current == '-';
@@ -186,7 +187,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  @internal int parseInt64Digits(int minimumDigits, int maximumDigits) {
+  int parseInt64Digits(int minimumDigits, int maximumDigits) {
     int result = 0;
     int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
@@ -219,7 +220,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  @internal int parseDigits(int minimumDigits, int maximumDigits) {
+  int parseDigits(int minimumDigits, int maximumDigits) {
     int result = 0;
     int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
@@ -251,7 +252,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// to be anything specific if the return value is false.
   /// [minimumDigits]: The minimum number of digits that must be specified in the value.
   /// Returns: `true` if the digits were parsed.
-  @internal int parseFraction(int maximumDigits, int scale, int minimumDigits) {
+  int parseFraction(int maximumDigits, int scale, int minimumDigits) {
     Preconditions.debugCheckArgument(maximumDigits <= scale, 'maximumDigits',
         "Must not allow more maximum digits than scale");
 

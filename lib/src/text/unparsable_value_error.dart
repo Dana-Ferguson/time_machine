@@ -4,6 +4,7 @@
 
 /// Exception thrown to indicate that the specified value could not be parsed.
 // todo: should match FormatException's format better..er (Do I want FormatException.. is it compatible? I wish Exception\Error had a common ancestor)
+// todo: Is Unparsable (vs Unparseable) okay phrasing -- it's a bit weird? NotParsedValueError ???
 class UnparsableValueError extends Error { // extends FormatException {
   final String message;
 

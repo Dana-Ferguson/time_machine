@@ -12,16 +12,17 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// have ref parameters indicating failures, unlike subclasses. This class is used as the basis for both
 /// value and pattern parsing, so can make no judgement about what's wrong (i.e. it wouldn't know what
 /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.
-@internal abstract class TextCursor {
+@internal
+abstract class TextCursor {
   /// Gets the length of the string being parsed.
-  @internal final int length;
+  final int length;
 
   /// Gets the string being parsed.
-  @internal final String value;
+  final String value;
 
   /// A nul character. This character is not allowed in any parsable string and is used to
   /// indicate that the current character is not set.
-  @internal static final String nul = new String.fromCharCode(0);
+  static final String nul = new String.fromCharCode(0);
 
   /// Initializes a new instance to parse the given value.
   // Validated by caller.
@@ -31,21 +32,21 @@ import 'package:time_machine/time_machine_utilities.dart';
 
   /// Gets the current character.
   String _current;
-  @internal String get current => _current;
+  String get current => _current;
 
   /// Gets a value indicating whether this instance has more characters.
   ///
   /// <value>
   /// `true` if this instance has more characters; otherwise, `false`.
   /// </value>
-  @internal bool get hasMoreCharacters => (index + 1) < length;
+  bool get hasMoreCharacters => (index + 1) < length;
 
   /// Gets the current index into the string being parsed.
   // todo: { get; private set; }
-  @internal int index;
+  int index;
 
   /// Gets the remainder the string that has not been parsed yet.
-  @internal String get remainder => value.substring(index);
+  String get remainder => value.substring(index);
 
   ///   Returns a [String] that represents this instance.
   ///
@@ -55,7 +56,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Returns the next character if there is one or [nul] if there isn't.
   ///
   /// Returns: 
-  @internal String peekNext() => (hasMoreCharacters ? value[index + 1] : nul);
+  String peekNext() => (hasMoreCharacters ? value[index + 1] : nul);
 
   /// Moves the specified target index. If the new index is out of range of the valid indicies
   /// for this string then the index is set to the beginning or the end of the string whichever
@@ -63,7 +64,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   ///
   /// [targetIndex]: Index of the target.
   /// Returns: `true` if the requested index is in range.
-  @internal bool move(int targetIndex) {
+  bool move(int targetIndex) {
     if (targetIndex >= 0) {
       if (targetIndex < length) {
         index = targetIndex;
@@ -84,7 +85,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Moves to the next character.
   ///
   /// Returns: `true` if the requested index is in range.
-  @internal bool moveNext() {
+  bool moveNext() {
     // Logically this is Move(Index + 1), but it's micro-optimized as we
     // know we'll never hit the lower limit this way.
     int targetIndex = index + 1;
@@ -101,7 +102,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Moves to the previous character.
   ///
   /// Returns: `true` if the requested index is in range.
-  @internal bool movePrevious() {
+  bool movePrevious() {
     // Logically this is Move(Index - 1), but it's micro-optimized as we
     // know we'll never hit the upper limit this way.
     if (index > 0) {

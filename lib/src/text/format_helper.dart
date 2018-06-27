@@ -6,7 +6,8 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
 ///   Provides helper methods for formatting values using pattern strings.
-@internal abstract class FormatHelper {
+@internal
+abstract class FormatHelper {
   // '0': 48; '9': 57
   static const int _zeroCodeUnit = 48;
   static const int _nineCodeUnit = 57;
@@ -20,7 +21,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Formats the given value to two digits, left-padding with '0' if necessary.
   /// It is assumed that the value is in the range [0, 100). This is usually
   /// used for month, day-of-month, hour, minute, second and year-of-century values.
-  @internal static void format2DigitsNonNegative(int value, StringBuffer outputBuffer)
+  static void format2DigitsNonNegative(int value, StringBuffer outputBuffer)
   {
     Preconditions.debugCheckArgumentRange('value', value, 0, 99);
     outputBuffer.writeCharCode(_zeroCodeUnit + value ~/ 10);
@@ -30,7 +31,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// Formats the given value to two digits, left-padding with '0' if necessary.
   /// It is assumed that the value is in the range [-9999, 10000). This is usually
   /// used for year values. If the value is negative, a '-' character is prepended.
-  @internal static void format4DigitsValueFits(int value, StringBuffer outputBuffer) {
+  static void format4DigitsValueFits(int value, StringBuffer outputBuffer) {
     Preconditions.debugCheckArgumentRange('value', value, -9999, 10000);
     if (value < 0) {
       value = -value;
@@ -51,7 +52,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// [value]: The value to format.
   /// [length]: The length to fill.
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void leftPad(int value, int length, StringBuffer outputBuffer) {
+  static void leftPad(int value, int length, StringBuffer outputBuffer) {
     Preconditions.debugCheckArgumentRange('length', length, 1, _maximumPaddingLength);
     if (value >= 0) {
       leftPadNonNegative(value, length, outputBuffer);
@@ -78,7 +79,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// [value]: The value to format.
   /// [length]: The length to fill.
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void leftPadNonNegative(int value, int length, StringBuffer outputBuffer) {
+  static void leftPadNonNegative(int value, int length, StringBuffer outputBuffer) {
     Preconditions.debugCheckArgumentRange('value', value, 0, Utility.int32MaxValue);
     Preconditions.debugCheckArgumentRange('length', length, 1, _maximumPaddingLength);
     // Special handling for common cases, because we really don't want a heap allocation
@@ -150,7 +151,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// [value]: The value to format.
   /// [length]: The length to fill.
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void leftPadNonNegativeInt64(int value, int length, StringBuffer outputBuffer) {
+  static void leftPadNonNegativeInt64(int value, int length, StringBuffer outputBuffer) {
     Preconditions.debugCheckArgumentRange('value', value, 0, Utility.int64MaxValue);
     Preconditions.debugCheckArgumentRange('length', length, 1, _maximumPaddingLength);
     // Special handling for common cases, because we really don't want a heap allocation
@@ -225,7 +226,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// [length]: The length to fill. Must be at most [scale].
   /// [scale]: The scale of the value i.e. the number of significant digits is the range of the value. Must be in the range [1, 7].
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void appendFraction(int value, int length, int scale, StringBuffer outputBuffer) {
+  static void appendFraction(int value, int length, int scale, StringBuffer outputBuffer) {
     int relevantDigits = value;
     while (scale > length)
     {
@@ -261,7 +262,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   /// [length]: The length to fill. Must be at most [scale].
   /// [scale]: The scale of the value i.e. the number of significant digits is the range of the value. Must be in the range [1, 7].
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void appendFractionTruncate(int value, int length, int scale, StringBuffer outputBuffer) {
+  static void appendFractionTruncate(int value, int length, int scale, StringBuffer outputBuffer) {
     int relevantDigits = value;
     while (scale > length)
     {
@@ -309,7 +310,7 @@ import 'package:time_machine/time_machine_utilities.dart';
   ///
   /// [value]: The value to format.
   /// [outputBuffer]: The output buffer to add the digits to.
-  @internal static void formatInvariant(int value, StringBuffer outputBuffer) {
+  static void formatInvariant(int value, StringBuffer outputBuffer) {
     if (value <= 0) {
       if (value == 0) {
         outputBuffer.write('0');
