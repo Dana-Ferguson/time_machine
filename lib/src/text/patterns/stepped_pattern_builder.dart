@@ -473,9 +473,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     var templateTime = timeBucketExtractor(createSampleBucket()).templateValue;
     addField(PatternFields.embeddedTime, characterInPattern);
     addEmbeddedPattern(
-        LocalTimePattern
-            .create(embeddedPatternText, formatInfo, templateTime)
-            .underlyingPattern,
+        ILocalTimePattern.underlyingPattern(ILocalTimePattern.create(embeddedPatternText, formatInfo, templateTime)),
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
           timeBucket.hours24 = value.hour;

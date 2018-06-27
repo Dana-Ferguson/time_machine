@@ -8,9 +8,9 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-
 /// Pattern parser for [LocalTime] values.
-@internal /*sealed*/ class LocalTimePatternParser implements IPatternParser<LocalTime> {
+@internal
+class LocalTimePatternParser implements IPatternParser<LocalTime> {
   final LocalTime _templateValue;
 
   static final Map<String /*char*/, CharacterHandler<LocalTime, LocalTimeParseBucket>> _patternCharacterHandlers =
@@ -81,32 +81,32 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-@internal /*sealed*/ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
-  @internal final LocalTime templateValue;
+@internal
+class LocalTimeParseBucket extends ParseBucket<LocalTime> {
+  final LocalTime templateValue;
 
   /// The fractions of a second in nanoseconds, in the range [0, 999999999]
-  @internal int fractionalSeconds = 0;
+  int fractionalSeconds = 0;
 
   /// The hours in the range [0, 23].
-  @internal int hours24 = 0;
+  int hours24 = 0;
 
   /// The hours in the range [1, 12].
-  @internal int hours12 = 0;
+  int hours12 = 0;
 
   /// The minutes in the range [0, 59].
-  @internal int minutes = 0;
+  int minutes = 0;
 
   /// The seconds in the range [0, 59].
-  @internal int seconds = 0;
+  int seconds = 0;
 
   /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
   /// where we're parsing but there is no AM or PM designator.
-  @internal int amPm = 0;
+  int amPm = 0;
 
-  @internal LocalTimeParseBucket(this.templateValue);
+  LocalTimeParseBucket(this.templateValue);
 
   /// Calculates the value from the parsed pieces.
-  @internal
   @override
   ParseResult<LocalTime> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedTime)) {

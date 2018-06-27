@@ -19,9 +19,17 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// from needing TimeFormatInfo.InvariantInfo...
 abstract class _Patterns
 {
-  @internal static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
+  static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
 }
 
+@internal
+abstract class ILocalTimePattern {
+  static final PatternBclSupport<LocalTime> bclSupport = new PatternBclSupport<LocalTime>(LocalTimePattern._defaultFormatPattern, (fi) => fi.localTimePatternParser);
+  static LocalTimePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalTime templateValue) =>
+      LocalTimePattern._create(patternText, formatInfo, templateValue);
+
+  static IPartialPattern<LocalTime> underlyingPattern(LocalTimePattern localDatePattern) => localDatePattern._underlyingPattern;
+}
 
 /// Represents a pattern for parsing and formatting [LocalTime] values.
 @immutable
@@ -33,24 +41,21 @@ class LocalTimePattern implements IPattern<LocalTime> {
 
   static const String _defaultFormatPattern = "T"; // Long
 
-  @internal static final PatternBclSupport<LocalTime> bclSupport =
-  new PatternBclSupport<LocalTime>(_defaultFormatPattern, (fi) => fi.localTimePatternParser);
-
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an internal interface.
-  @internal final IPartialPattern<LocalTime> underlyingPattern;
+  final IPartialPattern<LocalTime> _underlyingPattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo formatInfo;
+  final TimeMachineFormatInfo _formatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
   final LocalTime templateValue;
 
-  LocalTimePattern._(this.patternText, this.formatInfo, this.templateValue, this.underlyingPattern);
+  LocalTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -59,13 +64,13 @@ class LocalTimePattern implements IPattern<LocalTime> {
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<LocalTime> parse(String text) => underlyingPattern.parse(text);
+  ParseResult<LocalTime> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given local time as text according to the rules of this pattern.
   ///
   /// [value]: The local time to format.
   /// Returns: The local time formatted according to this pattern.
-  String format(LocalTime value) => underlyingPattern.format(value);
+  String format(LocalTime value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -73,7 +78,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(LocalTime value, StringBuffer builder) => underlyingPattern.appendFormat(value, builder);
+  StringBuffer appendFormat(LocalTime value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
@@ -82,7 +87,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static LocalTimePattern create(String patternText, TimeMachineFormatInfo formatInfo,
+  static LocalTimePattern _create(String patternText, TimeMachineFormatInfo formatInfo,
       LocalTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
@@ -92,12 +97,12 @@ class LocalTimePattern implements IPattern<LocalTime> {
         : new LocalTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     // (Alternatively, we could just return it directly, instead of creating a new object.)
-    pattern = pattern is LocalTimePattern ? pattern.underlyingPattern : pattern;
+    pattern = pattern is LocalTimePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalTime>;
     return new LocalTimePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
-// todo: Create names
+  // todo: Create names
 
   /// Creates a pattern for the given pattern text, culture, and template value or [LocalTime.midnight].
   ///
@@ -109,7 +114,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern createWithCulture(String patternText, CultureInfo cultureInfo, [LocalTime templateValue]) =>
-      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? LocalTime.midnight);
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? LocalTime.midnight);
   
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -121,7 +126,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern createWithCurrentCulture(String patternText) =>
-      create(patternText, TimeMachineFormatInfo.currentInfo, LocalTime.midnight);
+      _create(patternText, TimeMachineFormatInfo.currentInfo, LocalTime.midnight);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -133,7 +138,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalTimePattern createWithInvariantCulture(String patternText) =>
-      create(patternText, TimeMachineFormatInfo.invariantInfo, LocalTime.midnight);
+      _create(patternText, TimeMachineFormatInfo.invariantInfo, LocalTime.midnight);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
@@ -141,7 +146,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
   LocalTimePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
-      create(patternText, formatInfo, templateValue);
+      _create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
@@ -156,5 +161,5 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
   /// Returns: A new pattern with the given template value.
   LocalTimePattern withTemplateValue(LocalTime newTemplateValue) =>
-      create(patternText, formatInfo, newTemplateValue);
+      _create(patternText, _formatInfo, newTemplateValue);
 }
