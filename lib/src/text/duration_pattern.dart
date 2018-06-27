@@ -11,25 +11,19 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 // Nested class for ease of type initialization
-@internal abstract class SpanPatterns
+@internal
+abstract class SpanPatterns
 {
-  @internal static final SpanPattern roundtripPatternImpl = SpanPattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+  static final SpanPattern roundtripPatternImpl = SpanPattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+  static final PatternBclSupport<Span> bclSupport = new PatternBclSupport<Span>("o", (fi) => fi.spanPatternParser);
 }
 
 /// Represents a pattern for parsing and formatting [Span] values.
-///
-/// <threadsafety>
-/// When used with a read-only [CultureInfo], this type is immutable and instances
-/// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
-/// not currently enforced.
-/// </threadsafety>
-@immutable // Well, assuming an immutable culture...
+@immutable
 class SpanPattern implements IPattern<Span> {
   /// Gets the general pattern for Spans using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
   /// This pattern round-trips.
   static SpanPattern get roundtrip => SpanPatterns.roundtripPatternImpl;
-
-  @internal static final PatternBclSupport<Span> bclSupport = new PatternBclSupport<Span>("o", (fi) => fi.spanPatternParser);
 
   final IPattern<Span> _pattern;
 
@@ -115,6 +109,6 @@ class SpanPattern implements IPattern<Span> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  SpanPattern WithCulture(CultureInfo cultureInfo) =>
+  SpanPattern withCulture(CultureInfo cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

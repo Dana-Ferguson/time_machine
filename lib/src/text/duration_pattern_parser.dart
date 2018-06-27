@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal /*sealed*/ class SpanPatternParser implements IPatternParser<Span> {
+@internal
+class SpanPatternParser implements IPatternParser<Span> {
   static final Map</*char*/String, CharacterHandler<Span, _SpanParseBucket>> _patternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<Span, SpanParseBucket>*/,
@@ -148,23 +149,22 @@ class _SpanParseBucket extends ParseBucket<Span> {
 
   // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
   // than to manipulate a real Span.
-  @internal bool isNegative = false;
+  bool isNegative = false;
   /*BigInt*/ int _currentNanos = 0;
 
-  @internal void addNanoseconds(int nanoseconds) {
+  void addNanoseconds(int nanoseconds) {
     this._currentNanos += nanoseconds;
   }
 
-  @internal void addDays(int days) {
+  void addDays(int days) {
     _currentNanos += days * _bigIntegerNanosecondsPerDay;
   }
 
-  @internal void addUnits(int units, /*BigInt*/ int nanosecondsPerUnit) {
+  void addUnits(int units, /*BigInt*/ int nanosecondsPerUnit) {
     _currentNanos += units * nanosecondsPerUnit;
   }
 
   /// Calculates the value from the parsed pieces.
-  @internal
   @override
   ParseResult<Span> calculateValue(PatternFields usedFields, String text) {
     if (isNegative) {

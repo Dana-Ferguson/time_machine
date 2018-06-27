@@ -271,7 +271,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
   @Test()
   void WithCulture() {
-    var pattern = SpanPattern.createWithInvariantCulture("H:mm").WithCulture(TestCultures.DotTimeSeparator);
+    var pattern = SpanPattern.createWithInvariantCulture("H:mm").withCulture(TestCultures.DotTimeSeparator);
     var text = pattern.format(new Span(minutes: 90));
     expect("1.30", text);
   }
