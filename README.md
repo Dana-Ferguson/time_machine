@@ -56,12 +56,10 @@ print(localClone.value);
 
 A lot of functionality works at this time, but the public API is starting to stabilize. TZDB QoL 
 changes are in progress. This is a preview release. Documentation was also ported,
-but some things changed for Dart and the documentation will have minor inaccuracies in some places.
+but some things changed for Dart and the documentation will have minor inaccuracies in some places (and we need
+an additional formatting pass).
 
-Don't use any functions annotated with `@internal`. I don't intend to keep this annotation, but with
-`part` \ `part of` [usage discouraged](https://www.dartlang.org/guides/libraries/create-library-packages#organizing-a-library-package)
-and no [friend](https://github.com/dart-lang/sdk/issues/22841) semantics, I'm unsure of the direction to go with this.
- - [ ] Prototype an automated tool to produce public interface files?
+Don't use any functions annotated with `@internal`. As of v0.3 you should not find any, but if you do, let me know.
 
 Todo:
  - [x] Port over major classes
@@ -69,12 +67,14 @@ Todo:
  - [ ] Dartification of the API
    - [X] First pass style updates
    - [X] Second pass ergonomics updates
-   - [ ] Synchronous TZDB timezone provider
+   - [X] Synchronous TZDB timezone provider
+   - [ ] Review all I/O and associated classes and their structure
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
  - [X] Implement Dart4Web features
- - [ ] *maybe*: Create simple website with samples (at minimal a samples directory in github)
+ - [ ] Unit tests running in DartWeb (_for fidelity_: need a mirror-less version)
+ - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not included in this repository.
 
@@ -131,3 +131,4 @@ Overriding `toString()` with optional arguments doesn't work in DDC. We use this
 optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
 Still investigating potential solutions, but looks like `waiting` might be an okay algorithm, since it works
 in the newer DDC. I'm hoping Dart 2 stable launches [soon](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable).
+
