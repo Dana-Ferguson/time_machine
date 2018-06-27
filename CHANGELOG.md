@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3
+
+- Coalesced imports into a single import and all `@internal` functionality is now hidden.
+
 ## 0.2.2
 
 - Fixed bug introduced in 0.2.1; (Conditional Imports are hard); `dart.library.js` seems to evaluate to false in DDC stable.
