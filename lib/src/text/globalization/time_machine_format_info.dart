@@ -171,7 +171,7 @@ class TimeMachineFormatInfo {
 
   FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =
-          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
       _offsetDateTimePatternParser =

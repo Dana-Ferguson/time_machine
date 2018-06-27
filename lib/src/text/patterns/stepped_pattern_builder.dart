@@ -419,10 +419,8 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
           addField(PatternFields.embeddedDate, 'l');
           addField(PatternFields.embeddedTime, 'l');
           addEmbeddedPattern(
-              LocalDateTimePattern
-                  .create(embeddedPatternText, formatInfo, templateDate.at(templateTime))
-                  .underlyingPattern,
-                  (TBucket bucket, LocalDateTime value) {
+              LocalDateTimePatterns.underlyingPattern(LocalDateTimePatterns.create(embeddedPatternText, formatInfo, templateDate.at(templateTime))),
+              (TBucket bucket, LocalDateTime value) {
                 var dateBucket = dateBucketExtractor(bucket);
                 var timeBucket = timeBucketExtractor(bucket);
                 dateBucket.calendar = value.calendar;

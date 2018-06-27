@@ -590,13 +590,13 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   /*sealed*/ class Data extends PatternTestData<LocalDateTime> {
   // Default to the start of the year 2000.
-  /*protected*/ @override LocalDateTime get DefaultTemplate => LocalDateTimePattern.defaultTemplateValue;
+  /*protected*/ @override LocalDateTime get DefaultTemplate => LocalDateTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
   Data([LocalDateTime value = null])
-      : super(value ?? LocalDateTimePattern.defaultTemplateValue);
+      : super(value ?? LocalDateTimePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0, int millis = 0])
       : super(new LocalDateTime.at(

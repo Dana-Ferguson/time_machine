@@ -28,7 +28,7 @@ abstract class ILocalTimePattern {
   static LocalTimePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalTime templateValue) =>
       LocalTimePattern._create(patternText, formatInfo, templateValue);
 
-  static IPartialPattern<LocalTime> underlyingPattern(LocalTimePattern localDatePattern) => localDatePattern._underlyingPattern;
+  static IPartialPattern<LocalTime> underlyingPattern(LocalTimePattern localTimePattern) => localTimePattern._underlyingPattern;
 }
 
 /// Represents a pattern for parsing and formatting [LocalTime] values.

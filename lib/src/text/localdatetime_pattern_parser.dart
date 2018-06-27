@@ -7,9 +7,9 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-
 /// Parser for patterns of [LocalDateTime] values.
-@internal /*sealed*/ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
+@internal
+class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   // Split the template value into date and time once, to avoid doing it every time we parse.
   final LocalDate _templateValueDate;
   final LocalTime _templateValueTime;
@@ -56,7 +56,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.time, null),
   };
 
-  @internal LocalDateTimePatternParser(LocalDateTime templateValue)
+  LocalDateTimePatternParser(LocalDateTime templateValue)
       : _templateValueDate = templateValue.date,
         _templateValueTime = templateValue.time;
 
@@ -112,11 +112,12 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 }
 
-@internal /*sealed*/ class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
+@internal
+class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
+  final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
 
-  @internal LocalDateTimeParseBucket(LocalDate templateValueDate, LocalTime templateValueTime)
+  LocalDateTimeParseBucket(LocalDate templateValueDate, LocalTime templateValueTime)
       : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
         time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
 
@@ -125,7 +126,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// This would normally be the [calculateValue] method, but we want
   /// to be able to use the same logic when parsing an [OffsetDateTime]
   /// and [ZonedDateTime].
-  @internal static ParseResult<LocalDateTime> combineBuckets(PatternFields usedFields,
+  static ParseResult<LocalDateTime> combineBuckets(PatternFields usedFields,
 /*LocalDatePatternParser.*/LocalDateParseBucket dateBucket,
 /*LocalTimePatternParser.*/LocalTimeParseBucket timeBucket,
       String text) {

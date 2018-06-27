@@ -610,5 +610,5 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringLocalDateTime(this);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      LocalDateTimePattern.BclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      LocalDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 }

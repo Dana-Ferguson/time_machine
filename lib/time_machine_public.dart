@@ -85,8 +85,7 @@ export 'src/text/invalid_pattern_error.dart' show InvalidPatternError;
 
 export 'src/text/localdate_pattern.dart' show LocalDatePattern;
 export 'src/text/localtime_pattern.dart' show LocalTimePattern;
-export 'src/text/localdatetime_pattern_parser.dart';
-export 'src/text/localdatetime_pattern.dart';
+export 'src/text/localdatetime_pattern.dart' show LocalDateTimePattern;
 
 export 'src/text/annual_date_pattern.dart';
 export 'src/text/annual_date_pattern_parser.dart';
