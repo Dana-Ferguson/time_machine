@@ -92,11 +92,9 @@ export 'src/text/duration_pattern.dart' show SpanPattern;
 export 'src/text/instant_pattern.dart' show InstantPattern;
 export 'src/text/offset_date_pattern.dart' show OffsetDatePattern;
 export 'src/text/offset_datetime_pattern.dart' show OffsetDateTimePattern;
-
 export 'src/text/offset_pattern.dart' show OffsetPattern;
+export 'src/text/offset_time_pattern.dart' show OffsetTimePattern;
 
-export 'src/text/offset_time_pattern.dart';
-export 'src/text/offset_time_pattern_parser.dart';
 export 'src/text/zoneddatetime_pattern.dart';
 export 'src/text/zoneddatetime_pattern_parser.dart';
 

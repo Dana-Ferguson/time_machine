@@ -150,7 +150,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void CreateWithInvariantCulture() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("HH:mm:sso<g>");
-    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.formatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, OffsetTimePatterns.formatInfo(pattern)), isTrue);
     var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
     expect("12:34:56+02", pattern.format(ot));
   }
@@ -203,12 +203,12 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
 
 @internal /*sealed*/class Data extends PatternTestData<OffsetTime> {
   // Default to the start of the year 2000 UTC
-  /*protected*/ @override OffsetTime get DefaultTemplate => OffsetTimePattern.defaultTemplateValue;
+  /*protected*/ @override OffsetTime get DefaultTemplate => OffsetTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetTime value = null]) : super(value ?? OffsetTimePattern.defaultTemplateValue);
+  @internal Data([OffsetTime value = null]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
 

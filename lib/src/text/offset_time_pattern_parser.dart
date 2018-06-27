@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal /*sealed*/ class OffsetTimePatternParser implements IPatternParser<OffsetTime> {
+@internal
+class OffsetTimePatternParser implements IPatternParser<OffsetTime> {
   final OffsetTime _templateValue;
 
   static final Map<String/*char*/, CharacterHandler<OffsetTime, _OffsetTimeParseBucket>> _patternCharacterHandlers =
@@ -38,7 +39,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     'l': (cursor, builder) => builder.addEmbeddedTimePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.time, (value) => value.timeOfDay),
   };
 
-  @internal OffsetTimePatternParser(this._templateValue);
+  OffsetTimePatternParser(this._templateValue);
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -77,15 +78,13 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 class _OffsetTimeParseBucket extends ParseBucket<OffsetTime> {
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
-  @internal Offset offset;
+  final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
+  Offset offset;
 
-  @internal _OffsetTimeParseBucket(OffsetTime templateValue)
+  _OffsetTimeParseBucket(OffsetTime templateValue)
       :time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
         offset = templateValue.offset;
 
-
-  @internal
   @override
   ParseResult<OffsetTime> calculateValue(PatternFields usedFields, String text) {
     ParseResult<LocalTime> timeResult = time.calculateValue(usedFields & PatternFields.allTimeFields, text);
