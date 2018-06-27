@@ -60,5 +60,12 @@ abstract class Clock
     var zone = await (await DateTimeZoneProviders.tzdb).getSystemDefault();
     return new ZonedClock(this, zone, CalendarSystem.iso);
   }
+
+  /// The default [Clock] is the [SystemClock] but can be changed by the user.
+  /// This is used for [Instant.now]. Replacing this with [FakeClock] can be useful
+  /// for testing.
+  ///
+  /// Library writers should not set this variable.
+  static Clock current = SystemClock.instance;
 }
 

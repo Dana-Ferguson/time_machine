@@ -60,11 +60,17 @@ class Instant implements Comparable<Instant> {
     return new Instant._trusted(_span);
   }
 
+  /// [Clock.getCurrentInstant] for [Clock.current].
+  factory Instant.now() {
+    return Clock.current.getCurrentInstant();
+  }
+
   const Instant._trusted(this._span);
   // todo: to untrusted factories
   Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
   Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
+  // todo: should this mirror functionality more similar to `new DateTime()`?
   const Instant() : _span = Span.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);

@@ -97,8 +97,9 @@ export 'src/text/offset_time_pattern.dart' show OffsetTimePattern;
 export 'src/text/zoneddatetime_pattern.dart' show ZonedDateTimePattern;
 
 // TimeZones
-// todo: why is this public?
+// todo: why is this public? (investigate)
 export 'src/timezones/datetimezone_cache.dart' show DateTimeZoneCache;
+
 export 'src/timezones/datetimezone_notfound_error.dart' show DateTimeZoneNotFoundError;
 export 'src/timezones/delegates.dart';
 export 'src/timezones/i_datetimezone_source.dart' show IDateTimeZoneSource;
@@ -117,6 +118,7 @@ export 'src/timezones/zone_local_mapping.dart' show ZoneLocalMapping;
 bool _initialized = false;
 
 abstract class TimeMachine {
+  TimeMachine() { throw new StateError('TimeMachine can not be instantiated.'); }
   static Future initialize([dynamic arg]) {
     if (_initialized) return null;
     _initialized = true;

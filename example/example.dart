@@ -6,18 +6,15 @@ import 'dart:async';
 import 'package:time_machine/time_machine.dart';
 
 Future main() async {
-  // todo: demonstrate a test clock
-  // var clockForTesting = new FakeClock();
-
   try {
     // Sets up timezone and culture information
     await TimeMachine.initialize();
     print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
-
+    
     var tzdb = await DateTimeZoneProviders.tzdb;
     var paris = await tzdb["Europe/Paris"];
 
-    var now = SystemClock.instance.getCurrentInstant();
+    var now = new Instant.now();
 
     print('\nBasic');
     print('UTC Time: $now');
