@@ -386,7 +386,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void CreateWithInvariantCulture() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
-    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.formatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, OffsetDateTimePatterns.formatInfo(pattern)), isTrue);
     var odt = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56).withOffset(new Offset.fromHours(2));
     expect("2017-08-23T12:34:56+02", pattern.format(odt));
   }
@@ -452,12 +452,12 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
 @internal /*sealed*/ class Data extends PatternTestData<OffsetDateTime> {
   // Default to the start of the year 2000 UTC
-  /*protected*/ @override OffsetDateTime get DefaultTemplate => OffsetDateTimePattern.defaultTemplateValue;
+  /*protected*/ @override OffsetDateTime get DefaultTemplate => OffsetDateTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePattern.defaultTemplateValue);
+  @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
       : super(new LocalDateTime.at(year, month, day, 0, 0).withOffset(Offset.zero));

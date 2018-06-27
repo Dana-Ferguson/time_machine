@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal /*sealed*/ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
+@internal
+class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
   final OffsetDateTime _templateValue;
 
   static final Map<String/*char*/, CharacterHandler<OffsetDateTime, _OffsetDateTimeParseBucket>> _patternCharacterHandlers =
@@ -54,7 +55,7 @@ import 'package:time_machine/time_machine_patterns.dart';
             cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime)
   };
 
-  @internal OffsetDateTimePatternParser(this._templateValue);
+  OffsetDateTimePatternParser(this._templateValue);
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -96,17 +97,16 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 class _OffsetDateTimeParseBucket extends ParseBucket<OffsetDateTime> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
-  @internal Offset offset;
+  final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
+  Offset offset;
 
-  @internal _OffsetDateTimeParseBucket(OffsetDateTime templateValue)
+  _OffsetDateTimeParseBucket(OffsetDateTime templateValue)
       : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
         time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
         offset = templateValue.offset;
 
 
-  @internal
   @override
   ParseResult<OffsetDateTime> calculateValue(PatternFields usedFields, String text) {
     var localResult = /*LocalDateTimePatternParser.*/LocalDateTimeParseBucket.combineBuckets(usedFields, date, time, text);
