@@ -7,11 +7,12 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Base class for "buckets" of parse data - as field values are parsed, they are stored in a bucket,
 /// then the final value is calculated at the end.
-@internal abstract class ParseBucket<T> {
+@internal
+abstract class ParseBucket<T> {
   /// Performs the final conversion from fields to a value. The parse can still fail here, if there
   /// are incompatible field values.
   ///
   /// [usedFields]: Indicates which fields were part of the original text pattern.
   /// [value]: Complete value being parsed
-  @internal ParseResult<T> calculateValue(PatternFields usedFields, String value);
+  ParseResult<T> calculateValue(PatternFields usedFields, String value);
 }
