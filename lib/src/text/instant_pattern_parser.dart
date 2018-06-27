@@ -12,7 +12,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 ///
 /// Supported standard patterns:
 ///  * g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ
-@internal /*sealed*/ class InstantPatternParser implements IPatternParser<Instant> {
+@internal
+class InstantPatternParser implements IPatternParser<Instant> {
   static const String _generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
   static const String beforeMinValueText = "StartOfTime";
   static const String afterMaxValueText = "EndOfTime";
@@ -38,7 +39,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 // This not only converts between LocalDateTime and Instant; it also handles infinity.
-/*sealed*/ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
+class _LocalDateTimePatternAdapter implements IPattern<Instant> {
   final IPattern<LocalDateTime> _pattern;
 
   _LocalDateTimePatternAdapter(this._pattern);

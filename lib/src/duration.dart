@@ -245,7 +245,7 @@ class Span implements Comparable<Span> {
 // @override toString() => '$totalSeconds seconds';
 
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      SpanPattern.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      SpanPatterns.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
 
 
   Span operator +(Span other) => new Span._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);

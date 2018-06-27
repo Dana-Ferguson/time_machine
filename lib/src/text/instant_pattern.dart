@@ -10,17 +10,20 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
 abstract class _InstantPatterns
 {
-  @internal static final InstantPattern extendedIsoPatternImpl = InstantPattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
-  @internal static final InstantPattern generalPatternImpl = InstantPattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
+  static final InstantPattern extendedIsoPatternImpl = InstantPattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
+  static final InstantPattern generalPatternImpl = InstantPattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
+}
+
+abstract class InstantPatterns {
+  static final PatternBclSupport<Instant> bclSupport = new PatternBclSupport<Instant>(InstantPattern._defaultFormatPattern, (fi) => fi.instantPatternParser);
 }
 
 /// Represents a pattern for parsing and formatting [Instant] values.
-@immutable // Well, assuming an immutable culture...
+@immutable
 class InstantPattern implements IPattern<Instant> {
   /// Gets the general pattern, which always uses an invariant culture. The general pattern represents
   /// an instant as a UTC date/time in ISO-8601 style "uuuu-MM-ddTHH:mm:ss'Z'".
@@ -35,8 +38,6 @@ class InstantPattern implements IPattern<Instant> {
   static InstantPattern get extendedIso => _InstantPatterns.extendedIsoPatternImpl;
 
   static const String _defaultFormatPattern = "g";
-
-  @internal static final PatternBclSupport<Instant> bclSupport = new PatternBclSupport<Instant>(_defaultFormatPattern, (fi) => fi.instantPatternParser);
 
   final IPattern<Instant> _pattern;
 
