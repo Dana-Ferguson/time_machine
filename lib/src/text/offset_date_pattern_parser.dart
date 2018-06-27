@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal /*sealed*/ class OffsetDatePatternParser implements IPatternParser<OffsetDate> {
+@internal
+class OffsetDatePatternParser implements IPatternParser<OffsetDate> {
   final OffsetDate _templateValue;
 
   static final Map<String/*char*/, CharacterHandler<OffsetDate, _OffsetDateParseBucket>> _patternCharacterHandlers =
@@ -33,7 +34,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     'l': (cursor, builder) => builder.addEmbeddedDatePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.date, (value) => value.date)
   };
 
-  @internal OffsetDatePatternParser(this._templateValue);
+  OffsetDatePatternParser(this._templateValue);
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -74,14 +75,13 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 class _OffsetDateParseBucket extends ParseBucket<OffsetDate> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
-  @internal Offset offset;
+  final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  Offset offset;
 
-  @internal _OffsetDateParseBucket(OffsetDate templateValue)
+  _OffsetDateParseBucket(OffsetDate templateValue)
       : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
         offset = templateValue.offset;
 
-  @internal
   @override
   ParseResult<OffsetDate> calculateValue(PatternFields usedFields, String text) {
     ParseResult<LocalDate> dateResult = date.calculateValue(usedFields & PatternFields.allDateFields, text);

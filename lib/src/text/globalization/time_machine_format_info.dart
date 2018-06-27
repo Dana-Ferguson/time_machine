@@ -179,7 +179,7 @@ class TimeMachineFormatInfo {
 
   FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser =>
       _offsetDatePatternParser =
-          _ensureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser =>
       _offsetTimePatternParser =

@@ -157,7 +157,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetDatePattern.createWithInvariantCulture("yyyy-MM-ddo<g>");
     // Assert.AreSame(NodaFormatInfo.InvariantInfo, pattern.FormatInfo);
-    expect(identical(TimeMachineFormatInfo.invariantInfo, pattern.formatInfo), isTrue);
+    expect(identical(TimeMachineFormatInfo.invariantInfo, OffsetDatePatterns.formatInfo(pattern)), isTrue);
     var od = new LocalDate(2017, 8, 23).withOffset(new Offset.fromHours(2));
     expect("2017-08-23+02", pattern.format(od));
   }
@@ -221,12 +221,12 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 @internal /*sealed*/ class Data extends PatternTestData<OffsetDate>
 {
 // Default to the start of the year 2000 UTC
-/*protected*/ @override OffsetDate get DefaultTemplate => OffsetDatePattern.defaultTemplateValue;
+/*protected*/ @override OffsetDate get DefaultTemplate => OffsetDatePatterns.defaultTemplateValue;
 
 /// Initializes a new instance of the [Data] class.
 ///
 /// [value]: The value.
-@internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePattern.defaultTemplateValue)
+@internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePatterns.defaultTemplateValue)
 {
 }
 

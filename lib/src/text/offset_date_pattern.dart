@@ -12,25 +12,22 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-@internal abstract class OffsetDatePatterns {
-  @internal static final OffsetDatePattern generalIsoPatternImpl = OffsetDatePattern._create(
-      "uuuu'-'MM'-'ddo<G>", TimeMachineFormatInfo.invariantInfo, OffsetDatePattern.defaultTemplateValue);
-  @internal static final OffsetDatePattern fullRoundtripPatternImpl = OffsetDatePattern._create(
-      "uuuu'-'MM'-'ddo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, OffsetDatePattern.defaultTemplateValue);
-  @internal static final PatternBclSupport<OffsetDate> bclSupport = new PatternBclSupport<OffsetDate>("G", (fi) => fi.offsetDatePatternParser);
+@internal
+abstract class OffsetDatePatterns {
+  static final OffsetDatePattern generalIsoPatternImpl = OffsetDatePattern._create(
+      "uuuu'-'MM'-'ddo<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
+  static final OffsetDatePattern fullRoundtripPatternImpl = OffsetDatePattern._create(
+      "uuuu'-'MM'-'ddo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
+  static final PatternBclSupport<OffsetDate> bclSupport = new PatternBclSupport<OffsetDate>("G", (fi) => fi.offsetDatePatternParser);
+
+  static final OffsetDate defaultTemplateValue = new LocalDate(2000, 1, 1).withOffset(Offset.zero);
+
+  static TimeMachineFormatInfo formatInfo(OffsetDatePattern offsetDatePattern) => offsetDatePattern._formatInfo;
 }
 
 /// Represents a pattern for parsing and formatting [OffsetDate] values.
-///
-/// <threadsafety>
-/// When used with a read-only [CultureInfo], this type is immutable and instances
-/// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
-/// not currently enforced.
-/// </threadsafety>
-@immutable // Well, assuming an immutable culture...
-/*sealed*/ class OffsetDatePattern implements IPattern<OffsetDate> {
-  @internal static final OffsetDate defaultTemplateValue = new LocalDate(2000, 1, 1).withOffset(Offset.zero);
-
+@immutable
+class OffsetDatePattern implements IPattern<OffsetDate> {
   /// Gets an invariant offset date pattern based on ISO-8601, including offset from UTC.
   ///
   /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
@@ -54,13 +51,13 @@ import 'package:time_machine/time_machine_patterns.dart';
   final String patternText;
 
   /// Gets the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo formatInfo;
+  final TimeMachineFormatInfo _formatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
   final OffsetDate templateValue;
 
-  OffsetDatePattern._(this.patternText, this.formatInfo, this.templateValue, this._pattern);
+  OffsetDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -121,7 +118,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetDatePattern createWithInvariantCulture(String patternText) =>
-      _create(patternText, TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.invariantInfo, OffsetDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
@@ -134,7 +131,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetDatePattern createWithCurrentCulture(String patternText) =>
-      _create(patternText, TimeMachineFormatInfo.currentInfo, defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.currentInfo, OffsetDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
@@ -142,7 +139,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [patternText]: The pattern text to use in the new pattern.
   /// Returns: A new pattern with the given pattern text.
   OffsetDatePattern withPatternText(String patternText) =>
-      _create(patternText, formatInfo, templateValue);
+      _create(patternText, _formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
@@ -166,7 +163,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// [newTemplateValue]: The template value to use in the new pattern.
   /// Returns: A new pattern with the given template value.
   OffsetDatePattern withTemplateValue(OffsetDate newTemplateValue) =>
-      _create(patternText, formatInfo, newTemplateValue);
+      _create(patternText, _formatInfo, newTemplateValue);
 
   /// Creates a pattern like this one, but with the template value modified to use
   /// the specified calendar system.
