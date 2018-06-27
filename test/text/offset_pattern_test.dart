@@ -732,10 +732,10 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal
   @override
   IPartialPattern<Offset> CreatePartialPattern() =>
+      OffsetPatterns.underlyingPattern(
       OffsetPattern
           .createWithInvariantCulture(super.Pattern)
-          .withCulture(Culture)
-          .underlyingPattern;
+          .withCulture(Culture));
 }
 
 

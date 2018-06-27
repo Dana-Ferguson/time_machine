@@ -89,9 +89,7 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
   static void _handleOffset(PatternCursor pattern, SteppedPatternBuilder<OffsetDateTime, _OffsetDateTimeParseBucket> builder) {
     builder.addField(PatternFields.embeddedOffset, pattern.current);
     String embeddedPattern = pattern.getEmbeddedPattern();
-    var offsetPattern = OffsetPattern
-        .create(embeddedPattern, builder.formatInfo)
-        .underlyingPattern;
+    var offsetPattern = OffsetPatterns.underlyingPattern(OffsetPatterns.create(embeddedPattern, builder.formatInfo));
     builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 }

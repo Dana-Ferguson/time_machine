@@ -9,7 +9,6 @@ import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 @internal
-/*sealed*/
 class OffsetPatternParser implements IPatternParser<Offset> {
   static final Map<String /*char*/, CharacterHandler<Offset, _OffsetParseBucket>> _patternCharacterHandlers = {
     '%': SteppedPatternBuilder.handlePercent /**<Offset, OffsetParseBucket>*/,
@@ -130,7 +129,6 @@ class OffsetPatternParser implements IPatternParser<Offset> {
 class _ZPrefixPattern implements IPartialPattern<Offset> {
   final IPartialPattern<Offset> _fullPattern;
 
-  @internal
   _ZPrefixPattern(this._fullPattern);
 
   ParseResult<Offset> parse(String text) => text == "Z" ? ParseResult.forValue<Offset>(Offset.zero) : _fullPattern.parse(text);
@@ -154,15 +152,12 @@ class _ZPrefixPattern implements IPartialPattern<Offset> {
 /// Provides a container for the interim parsed pieces of an [Offset] value.
 class _OffsetParseBucket extends ParseBucket<Offset> {
   /// The hours in the range [0, 23].
-  @internal
   int hours = 0;
 
   /// The minutes in the range [0, 59].
-  @internal
   int minutes = 0;
 
   /// The seconds in the range [0, 59].
-  @internal
   int seconds = 0;
 
   /// Gets a value indicating whether this instance is negative.
@@ -173,7 +168,6 @@ class _OffsetParseBucket extends ParseBucket<Offset> {
   bool isNegative = false;
 
   /// Calculates the value from the parsed pieces.
-  @internal
   @override
   ParseResult<Offset> calculateValue(PatternFields usedFields, String text) {
     int totalSeconds = hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute + seconds;

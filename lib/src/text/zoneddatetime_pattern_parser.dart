@@ -115,9 +115,7 @@ import 'package:time_machine/time_machine_patterns.dart';
       SteppedPatternBuilder<ZonedDateTime, _ZonedDateTimeParseBucket> builder) {
     builder.addField(PatternFields.embeddedOffset, pattern.current);
     String embeddedPattern = pattern.getEmbeddedPattern();
-    var offsetPattern = OffsetPattern
-        .create(embeddedPattern, builder.formatInfo)
-        .underlyingPattern;
+    var offsetPattern = OffsetPatterns.underlyingPattern(OffsetPatterns.create(embeddedPattern, builder.formatInfo));
     builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 
@@ -158,7 +156,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
       return null;
     }
     value.move(value.index + 3);
-    var pattern = OffsetPattern.generalInvariant.underlyingPattern;
+    var pattern = OffsetPatterns.underlyingPattern(OffsetPattern.generalInvariant);
     var parseResult = pattern.parsePartial(value);
     return parseResult.success ? new DateTimeZone.forOffset(parseResult.value) : DateTimeZone.utc;
   }

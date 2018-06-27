@@ -10,6 +10,14 @@ import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
+@internal
+abstract class OffsetPatterns {
+  static final PatternBclSupport<Offset> bclSupport = new PatternBclSupport<Offset>(OffsetPattern._defaultFormatPattern, (fi) => fi.offsetPatternParser);
+  static IPartialPattern<Offset> underlyingPattern(OffsetPattern offsetPattern) => offsetPattern._underlyingPattern;
+
+  static OffsetPattern create(String patternText, TimeMachineFormatInfo formatInfo) => OffsetPattern._create(patternText, formatInfo);
+}
+
 /// Represents a pattern for parsing and formatting [Offset] values.
 @immutable
 class OffsetPattern implements IPattern<Offset> {
@@ -22,16 +30,14 @@ class OffsetPattern implements IPattern<Offset> {
 
   static const String _defaultFormatPattern = "g";
 
-  @internal static final PatternBclSupport<Offset> bclSupport = new PatternBclSupport<Offset>(_defaultFormatPattern, (fi) => fi.offsetPatternParser);
-
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an @internal interface.
-  @internal final IPartialPattern<Offset> underlyingPattern;
+  final IPartialPattern<Offset> _underlyingPattern;
 
-  OffsetPattern._(this.patternText, this.underlyingPattern);
+  OffsetPattern._(this.patternText, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -40,13 +46,13 @@ class OffsetPattern implements IPattern<Offset> {
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Offset> parse(String text) => underlyingPattern.parse(text);
+  ParseResult<Offset> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given offset as text according to the rules of this pattern.
   ///
   /// [value]: The offset to format.
   /// Returns: The offset formatted according to this pattern.
-  String format(Offset value) => underlyingPattern.format(value);
+  String format(Offset value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -54,7 +60,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(Offset value, StringBuffer builder) => underlyingPattern.appendFormat(value, builder);
+  StringBuffer appendFormat(Offset value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.
   ///
@@ -62,7 +68,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// [formatInfo]: Localization information
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static OffsetPattern create(String patternText, TimeMachineFormatInfo formatInfo) {
+  static OffsetPattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.offsetPatternParser.parsePattern(patternText) as IPartialPattern<Offset>;
@@ -77,8 +83,8 @@ class OffsetPattern implements IPattern<Offset> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetPattern create2(String patternText, CultureInfo cultureInfo) =>
-      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  static OffsetPattern createWithCulture(String patternText, CultureInfo cultureInfo) =>
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -90,7 +96,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static OffsetPattern createWithCurrentCulture(String patternText) =>
-      create(patternText, TimeMachineFormatInfo.currentInfo);
+      _create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -101,12 +107,12 @@ class OffsetPattern implements IPattern<Offset> {
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetPattern createWithInvariantCulture(String patternText) => create(patternText, TimeMachineFormatInfo.invariantInfo);
+  static OffsetPattern createWithInvariantCulture(String patternText) => _create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  OffsetPattern withCulture(CultureInfo cultureInfo) => create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  OffsetPattern withCulture(CultureInfo cultureInfo) => _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }
