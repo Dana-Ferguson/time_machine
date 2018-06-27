@@ -14,24 +14,23 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// from needing NodaFormatInfo.InvariantInfo...
 abstract class _Patterns
 {
-  @internal static final LocalDatePattern isoPatternImpl = LocalDatePattern.createWithInvariantCulture("uuuu'-'MM'-'dd");
+  static final LocalDatePattern isoPatternImpl = LocalDatePattern.createWithInvariantCulture("uuuu'-'MM'-'dd");
 }
 
+@internal
+abstract class ILocalDatePattern {
+  static LocalDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) =>
+      LocalDatePattern._create(patternText, formatInfo, templateValue);
+
+  static final LocalDate defaultTemplateValue = new LocalDate(2000, 1, 1);
+  static final PatternBclSupport<LocalDate> bclSupport = new PatternBclSupport<LocalDate>(LocalDatePattern._defaultFormatPattern, (fi) => fi.localDatePatternParser);
+  static IPartialPattern<LocalDate> underlyingPattern(LocalDatePattern localDatePattern) => localDatePattern._underlyingPattern;
+}
 
 /// Represents a pattern for parsing and formatting [LocalDate] values.
-///
-/// <threadsafety>
-/// When used with a read-only [CultureInfo], this type is immutable and instances
-/// may be shared freely between threads. We recommend only using read-only cultures for patterns, although this is
-/// not currently enforced.
-/// </threadsafety>
-@immutable // Well, assuming an immutable culture...
-/*sealed*/ class LocalDatePattern implements IPattern<LocalDate> {
-  @internal static final LocalDate defaultTemplateValue = new LocalDate(2000, 1, 1);
-
+@immutable
+class LocalDatePattern implements IPattern<LocalDate> {
   static const String _defaultFormatPattern = "D"; // Long
-
-  @internal static final PatternBclSupport<LocalDate> bclSupport = new PatternBclSupport<LocalDate>(_defaultFormatPattern, (fi) => fi.localDatePatternParser);
 
   /// Gets an invariant local date pattern which is ISO-8601 compatible.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
@@ -39,19 +38,19 @@ abstract class _Patterns
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an internal interface.
-  @internal final IPartialPattern<LocalDate> underlyingPattern;
+  final IPartialPattern<LocalDate> _underlyingPattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
   /// Returns the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo formatInfo;
+  final TimeMachineFormatInfo _formatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
   final LocalDate templateValue;
 
-  LocalDatePattern._(this.patternText, this.formatInfo, this.templateValue, this.underlyingPattern);
+  LocalDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -60,13 +59,13 @@ abstract class _Patterns
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<LocalDate> parse(String text) => underlyingPattern.parse(text);
+  ParseResult<LocalDate> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given local date as text according to the rules of this pattern.
   ///
   /// [value]: The local date to format.
   /// Returns: The local date formatted according to this pattern.
-  String format(LocalDate value) => underlyingPattern.format(value);
+  String format(LocalDate value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -74,8 +73,9 @@ abstract class _Patterns
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(LocalDate value, StringBuffer builder) => underlyingPattern.appendFormat(value, builder);
+  StringBuffer appendFormat(LocalDate value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
+  // todo: to factory... or merge with default constructor?
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
   /// [patternText]: Pattern text to create the pattern for
@@ -83,20 +83,19 @@ abstract class _Patterns
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static LocalDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) {
+  static LocalDatePattern _create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
-    var pattern = templateValue == defaultTemplateValue
+    var pattern = templateValue == ILocalDatePattern.defaultTemplateValue
         ? formatInfo.localDatePatternParser.parsePattern(patternText)
         : new LocalDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
-    pattern = pattern is LocalDatePattern ? pattern.underlyingPattern : pattern;
+    pattern = pattern is LocalDatePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDate>;
     return new LocalDatePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
-  // todo: naming strategy: Create, Create2, Create3
   /// Creates a pattern for the given pattern text, culture, and template value.
   ///
   /// See the user guide for the available pattern text options.
@@ -107,7 +106,7 @@ abstract class _Patterns
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static LocalDatePattern createWithCulture(String patternText, CultureInfo cultureInfo, [LocalDate templateValue]) =>
-      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? ILocalDatePattern.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -118,7 +117,7 @@ abstract class _Patterns
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDatePattern createWithCurrentCulture(String patternText) => create(patternText, TimeMachineFormatInfo.currentInfo, defaultTemplateValue);
+  static LocalDatePattern createWithCurrentCulture(String patternText) => _create(patternText, TimeMachineFormatInfo.currentInfo, ILocalDatePattern.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -129,14 +128,14 @@ abstract class _Patterns
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting local dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalDatePattern createWithInvariantCulture(String patternText) => create(patternText, TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
+  static LocalDatePattern createWithInvariantCulture(String patternText) => _create(patternText, TimeMachineFormatInfo.invariantInfo, ILocalDatePattern.defaultTemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  LocalDatePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) => create(patternText, formatInfo, templateValue);
+  LocalDatePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) => _create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
@@ -149,7 +148,7 @@ abstract class _Patterns
   ///
   /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
   /// Returns: A new pattern with the given template value.
-  LocalDatePattern withTemplateValue(LocalDate newTemplateValue) => create(patternText, formatInfo, newTemplateValue);
+  LocalDatePattern withTemplateValue(LocalDate newTemplateValue) => _create(patternText, _formatInfo, newTemplateValue);
 
   /// Creates a pattern like this one, but with the template value modified to use
   /// the specified calendar system.

@@ -167,7 +167,7 @@ class TimeMachineFormatInfo {
       _localTimePatternParser = _ensureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.midnight));
 
   FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
-      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.defaultTemplateValue));
+      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(ILocalDatePattern.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =

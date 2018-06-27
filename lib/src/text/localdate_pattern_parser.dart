@@ -14,7 +14,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 const int _twoDigitYearMax = 30;
 
 /// Parser for patterns of [LocalDate] values.
-@internal /*sealed*/ class LocalDatePatternParser implements IPatternParser<LocalDate> {
+@internal
+class LocalDatePatternParser implements IPatternParser<LocalDate> {
   final LocalDate _templateValue;
 
   // todo: was Map<Char
@@ -34,7 +35,7 @@ const int _twoDigitYearMax = 30;
     'g': DatePatternHelper.createEraHandler<LocalDate, LocalDateParseBucket>((date) => date.era, (bucket) => bucket),
   };
 
-  @internal LocalDatePatternParser(this._templateValue);
+  LocalDatePatternParser(this._templateValue);
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -76,24 +77,25 @@ const int _twoDigitYearMax = 30;
 // todo: was a sub class of LocalDatePatternParser
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-@internal /*sealed*/ class LocalDateParseBucket extends ParseBucket<LocalDate> {
-  @internal final LocalDate templateValue;
+@internal
+class LocalDateParseBucket extends ParseBucket<LocalDate> {
+  final LocalDate templateValue;
 
-  @internal CalendarSystem calendar;
-  @internal int year = 0;
+  CalendarSystem calendar;
+  int year = 0;
   Era _era = Era.common;
-  @internal int yearOfEra = 0;
-  @internal int monthOfYearNumeric = 0;
-  @internal int monthOfYearText = 0;
-  @internal int dayOfMonth = 0;
-  @internal int dayOfWeek = 0;
+  int yearOfEra = 0;
+  int monthOfYearNumeric = 0;
+  int monthOfYearText = 0;
+  int dayOfMonth = 0;
+  int dayOfWeek = 0;
 
-  @internal LocalDateParseBucket(this.templateValue) {
+  LocalDateParseBucket(this.templateValue) {
     // Only fetch this once.
     this.calendar = templateValue.calendar;
   }
 
-  @internal ParseResult<TResult> parseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
+  ParseResult<TResult> parseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
     var compareInfo = formatInfo.compareInfo;
     for (var era in calendar.eras) {
       for (String eraName in formatInfo.getEraNames(era)) {
