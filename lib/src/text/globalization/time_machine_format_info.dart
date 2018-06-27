@@ -187,7 +187,7 @@ class TimeMachineFormatInfo {
 
   FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
       _zonedDateTimePatternParser = _ensureFixedFormatInitialized(
-          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.defaultTemplateValue, Resolvers.strictResolver, null));
+          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePatterns.defaultTemplateValue, Resolvers.strictResolver, null));
 
   FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
       _annualDatePatternParser =

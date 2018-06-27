@@ -775,7 +775,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
 /*sealed*/class Data extends PatternTestData<ZonedDateTime> {
 // Default to the start of the year 2000 UTC
-/*protected*/ @override ZonedDateTime get DefaultTemplate => ZonedDateTimePattern.defaultTemplateValue;
+/*protected*/ @override ZonedDateTime get DefaultTemplate => ZonedDateTimePatterns.defaultTemplateValue;
 
   @internal ZoneLocalMappingResolver Resolver;
   @internal IDateTimeZoneProvider ZoneProvider;
@@ -783,7 +783,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePattern.defaultTemplateValue) {
+  Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePatterns.defaultTemplateValue) {
     Resolver = Resolvers.strictResolver;
     ZoneProvider = TestProvider;
   }

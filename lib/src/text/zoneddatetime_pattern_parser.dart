@@ -9,7 +9,8 @@ import 'package:time_machine/time_machine_timezones.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
+@internal
+class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
   final ZonedDateTime _templateValue;
   final IDateTimeZoneProvider _zoneProvider;
   final ZoneLocalMappingResolver _resolver;
@@ -58,7 +59,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime),
   };
 
-  @internal ZonedDateTimePatternParser(this._templateValue, this._resolver, this._zoneProvider);
+  ZonedDateTimePatternParser(this._templateValue, this._resolver, this._zoneProvider);
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -123,20 +124,20 @@ import 'package:time_machine/time_machine_patterns.dart';
 }
 
 class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
-  @internal final /*LocalDatePatternParser.*/LocalDateParseBucket date;
-  @internal final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
+  final /*LocalDatePatternParser.*/LocalDateParseBucket date;
+  final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
   DateTimeZone _zone;
-  @internal Offset offset;
+  Offset offset;
   final ZoneLocalMappingResolver _resolver;
   final IDateTimeZoneProvider _zoneProvider;
 
-  @internal _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
+  _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
       : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
         time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
         _zone = templateValue.zone;
 
 
-  @internal ParseResult<ZonedDateTime> parseZone(ValueCursor value) {
+  ParseResult<ZonedDateTime> parseZone(ValueCursor value) {
     DateTimeZone zone = _tryParseFixedZone(value) ?? _tryParseProviderZone(value);
 
     if (zone == null) {
@@ -216,7 +217,6 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     return null;
   }
 
-  @internal
   @override
   ParseResult<ZonedDateTime> calculateValue(PatternFields usedFields, String text) {
     var localResult = /*LocalDateTimePatternParser.*/LocalDateTimeParseBucket.combineBuckets(usedFields, date, time, text);
