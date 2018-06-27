@@ -15,7 +15,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   final TimeMachineFormatInfo _formatInfo;
   final int Function(TResult) _getter;
 
-  @internal _MonthFormatActionHolder(this._formatInfo, this._count, this._getter);
+  _MonthFormatActionHolder(this._formatInfo, this._count, this._getter);
 
   @override
   Function(TResult, StringBuffer) buildFormatAction(PatternFields finalFields) {
@@ -29,9 +29,10 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
 
 /// Common methods used when parsing dates - these are used from both LocalDateTimePatternParser
 /// and LocalDatePatternParser.
-@internal abstract class DatePatternHelper {
+@internal
+abstract class DatePatternHelper {
   /// Creates a character handler for the year-of-era specifier (y).
-  @internal static CharacterHandler<TResult, TBucket> createYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) yearGetter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(4);
@@ -62,7 +63,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   }
 
   /// Creates a character handler for the month-of-year specifier (M).
-  @internal static CharacterHandler<TResult, TBucket> createMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createMonthOfYearHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) numberGetter, Function(TBucket, int) textSetter, Function(TBucket, int) numberSetter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(4);
@@ -103,7 +104,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
 
 
   /// Creates a character handler for the day specifier (d).
-  @internal static CharacterHandler<TResult, TBucket> createDayHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createDayHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) dayOfMonthGetter, int Function(TResult) dayOfWeekGetter,
       Function(TBucket, int) dayOfMonthSetter, Function(TBucket, int) dayOfWeekSetter) {
     return(pattern, builder) {
@@ -133,7 +134,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   }
 
   /// Creates a character handler for the era specifier (g).
-  @internal static CharacterHandler<TResult, TBucket> createEraHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createEraHandler<TResult, TBucket extends ParseBucket<TResult>>
       (Era Function(TResult) eraFromValue, /*LocalDatePatternParser.*/LocalDateParseBucket Function(TBucket) dateBucketFromBucket) {
     return (pattern, builder) {
       pattern.getRepeatCount(2);
@@ -153,7 +154,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
   }
 
   /// Creates a character handler for the calendar specifier (c).
-  @internal static CharacterHandler<TResult, TBucket> createCalendarHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createCalendarHandler<TResult, TBucket extends ParseBucket<TResult>>
       (CalendarSystem Function(TResult) getter, Function(TBucket, CalendarSystem) setter) {
     return (pattern, builder) {
       builder.addField(PatternFields.calendar, pattern.current);

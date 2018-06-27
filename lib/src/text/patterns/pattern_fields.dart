@@ -11,6 +11,7 @@ import 'package:time_machine/time_machine_utilities.dart';
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,
 /// due to concepts such as "sign".
+@internal
 @immutable
 class PatternFields {
   final int _value;
@@ -106,8 +107,8 @@ class PatternFields {
   }
 
   /// Returns true if the given set of fields contains any of the target fields.
-  @internal bool hasAny(PatternFields target) => (_value & target._value) != 0;
+  bool hasAny(PatternFields target) => (_value & target._value) != 0;
 
   /// Returns true if the given set of fields contains all of the target fields.
-  @internal bool hasAll(PatternFields target) => (_value & target._value) == target._value;
+  bool hasAll(PatternFields target) => (_value & target._value) == target._value;
 }

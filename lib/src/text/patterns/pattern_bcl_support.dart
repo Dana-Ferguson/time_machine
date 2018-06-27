@@ -8,7 +8,8 @@ import 'package:time_machine/time_machine_text.dart';
 
 /// Class providing simple support for the various Parse/TryParse/ParseExact/TryParseExact/Format overloads
 /// provided by individual types.
-@internal /*sealed*/ class PatternBclSupport<T>
+@internal
+class PatternBclSupport<T>
 {
   final FixedFormatInfoPatternParser<T> Function(TimeMachineFormatInfo) _patternParser;
   final String _defaultFormatPattern;

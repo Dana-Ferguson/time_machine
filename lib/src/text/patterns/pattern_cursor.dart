@@ -8,14 +8,15 @@ import 'package:time_machine/time_machine_text.dart';
 
 
 /// Extends [TextCursor] to simplify parsing patterns such as "uuuu-MM-dd".
-@internal /*sealed*/ class PatternCursor extends TextCursor {
+@internal
+class PatternCursor extends TextCursor {
   /// The character signifying the start of an embedded pattern.
-  @internal static const String embeddedPatternStart = '<';
+  static const String embeddedPatternStart = '<';
 
   /// The character signifying the end of an embedded pattern.
-  @internal static const String embeddedPatternEnd = '>';
+  static const String embeddedPatternEnd = '>';
 
-  @internal PatternCursor(String pattern)
+  PatternCursor(String pattern)
       : super(pattern);
 
   /// Gets the quoted string.
@@ -23,7 +24,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// The cursor is left positioned at the end of the quoted region.
   /// [closeQuote]: The close quote character to match for the end of the quoted string.
   /// Returns: The quoted string sans open and close quotes. This can be an empty string but will not be null.
-  @internal String getQuotedString(String closeQuote) {
+  String getQuotedString(String closeQuote) {
     var builder = new StringBuffer(); //Length - Index);
     bool endQuoteFound = false;
     while (moveNext()) {
@@ -51,7 +52,7 @@ import 'package:time_machine/time_machine_text.dart';
   ///
   /// [maximumCount]: The maximum number of repetitions allowed.
   /// Returns: The repetition count which is alway at least `1`.
-  @internal int getRepeatCount(int maximumCount) {
+  int getRepeatCount(int maximumCount) {
     String patternCharacter = current;
     int startPos = index;
     while (moveNext() && current == patternCharacter) {}
@@ -77,7 +78,7 @@ import 'package:time_machine/time_machine_text.dart';
   /// on the final `&gt;` afterwards.
   ///
   /// Returns: The embedded pattern, not including the start/end pattern characters.
-  @internal String getEmbeddedPattern() {
+  String getEmbeddedPattern() {
     if (!moveNext() || current != embeddedPatternStart) {
       throw new InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternStart, [embeddedPatternStart]));
     }

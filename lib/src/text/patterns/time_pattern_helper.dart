@@ -9,15 +9,16 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Common methods used when parsing dates - these are used from LocalDateTimePatternParser,
 /// OffsetPatternParser and LocalTimePatternParser.
-@internal abstract class TimePatternHelper
+@internal
+abstract class TimePatternHelper
 {
   /// Creates a character handler for a dot (period). This is *not* culture sensitive - it is
   /// always treated as a literal, but with the additional behaviour that if it's followed by an 'F' pattern,
   /// that makes the period optional.
-  @internal static CharacterHandler<TResult, TBucket> createPeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createPeriodHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
-// Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
+      // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
 
       // If the next part of the pattern is an F, then this decimal separator is effectively optional.
       // At parse time, we need to check whether we've matched the decimal separator. If we have, match the fractional
@@ -55,7 +56,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   /// Creates a character handler for a dot (period) or comma, which have the same meaning.
   /// Formatting always uses a dot, but parsing will allow a comma instead, to conform with
   /// ISO-8601. This is *not* culture sensitive.
-  @internal static CharacterHandler<TResult, TBucket> createCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createCommaDotHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
 // Note: Deliberately *not* using the decimal separator of the culture - see issue 21.
@@ -100,7 +101,7 @@ import 'package:time_machine/time_machine_patterns.dart';
   }
 
   /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
-  @internal static CharacterHandler<TResult, TBucket> createFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       String patternCharacter = pattern.current;
@@ -127,7 +128,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     };
   }
 
-  @internal static CharacterHandler<TResult, TBucket> createAmPmHandler<TResult, TBucket extends ParseBucket<TResult>>
+  static CharacterHandler<TResult, TBucket> createAmPmHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter) {
     return(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(2);

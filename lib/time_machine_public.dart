@@ -72,6 +72,9 @@ export 'src/text/globalization/culture.dart' show Cultures, CultureInfo;
 // todo: Do we want to expose the Builder?
 export 'src/text/globalization/datetime_format_info.dart' show BclCalendarType, DateTimeFormatInfo, DateTimeFormatInfoBuilder;
 
+// Patterns (no public classes)
+
+
 // ***
 
 bool _initialized = false;
