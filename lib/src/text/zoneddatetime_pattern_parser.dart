@@ -20,8 +20,8 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.handleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<ZonedDateTime, ZonedDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<ZonedDateTime>*/),
-    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.mismatchedCharacter /**<ZonedDateTime>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch /**<ZonedDateTime>*/),
+    'T': (pattern, builder) => builder.addLiteral2('T', IParseResult.mismatchedCharacter /**<ZonedDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
@@ -34,7 +34,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<ZonedDateTime>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<ZonedDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
@@ -142,7 +142,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     DateTimeZone zone = _tryParseFixedZone(value) ?? _tryParseProviderZone(value);
 
     if (zone == null) {
-      return ParseResult.noMatchingZoneId<ZonedDateTime>(value);
+      return IParseResult.noMatchingZoneId<ZonedDateTime>(value);
     }
     _zone = zone;
     return null;
@@ -234,10 +234,10 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
         return ParseResult.forValue<ZonedDateTime>(_zone.resolveLocal(localDateTime, _resolver));
       }
       on SkippedTimeError {
-        return ParseResult.skippedLocalTime<ZonedDateTime>(text);
+        return IParseResult.skippedLocalTime<ZonedDateTime>(text);
       }
       on AmbiguousTimeError {
-        return ParseResult.ambiguousLocalTime<ZonedDateTime>(text);
+        return IParseResult.ambiguousLocalTime<ZonedDateTime>(text);
       }
     }
 
@@ -247,7 +247,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     switch (mapping.count) {
       // If the local time was skipped, the offset has to be invalid.
       case 0:
-        return ParseResult.invalidOffset<ZonedDateTime>(text);
+        return IParseResult.invalidOffset<ZonedDateTime>(text);
       case 1:
         result = mapping.first(); // We'll validate in a minute
         break;
@@ -260,7 +260,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
         throw new /*InvalidOperationException*/ StateError("Mapping has count outside range 0-2; should not happen.");
     }
     if (result.offset != offset) {
-      return ParseResult.invalidOffset<ZonedDateTime>(text);
+      return IParseResult.invalidOffset<ZonedDateTime>(text);
     }
     return ParseResult.forValue<ZonedDateTime>(result);
   }

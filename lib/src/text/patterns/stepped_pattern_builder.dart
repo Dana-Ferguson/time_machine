@@ -80,7 +80,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
             || current == PatternCursor.embeddedPatternStart || current == PatternCursor.embeddedPatternEnd) {
           throw new InvalidPatternError.format(TextErrorMessages.unquotedLiteral, [current]);
         }
-        addLiteral2(patternCursor.current, ParseResult.mismatchedCharacter);
+        addLiteral2(patternCursor.current, IParseResult.mismatchedCharacter);
       }
     }
   }
@@ -155,11 +155,11 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
       int value = cursor.parseInt64Digits(minimumDigits, maximumDigits);
       if (value == null) {
         cursor.move(startingIndex);
-        return ParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+        return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (value < minimumValue || value > maximumValue) {
         cursor.move(startingIndex);
-        return ParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
+        return IParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);
@@ -176,20 +176,20 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
       bool negative = cursor.matchSingle('-');
       if (negative && minimumValue >= 0) {
         cursor.move(startingIndex);
-        return ParseResult.unexpectedNegative<TResult>(cursor);
+        return IParseResult.unexpectedNegative<TResult>(cursor);
       }
 
       value = cursor.parseDigits(minimumDigits, maximumDigits);
       if (value == null) {
         cursor.move(startingIndex);
-        return ParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+        return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
       }
       if (negative) {
         value = -value;
       }
       if (value < minimumValue || value > maximumValue) {
         cursor.move(startingIndex);
-        return ParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
+        return IParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
       }
 
       valueSetter(bucket, value);
@@ -216,14 +216,14 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
   static void handleQuote<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     String quoted = pattern.getQuotedString(pattern.current);
-    builder.addLiteral1(quoted, ParseResult.quotedStringMismatch);
+    builder.addLiteral1(quoted, IParseResult.quotedStringMismatch);
   }
 
   static void handleBackslash<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     if (!pattern.moveNext()) {
       throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
     }
-    builder.addLiteral2(pattern.current, ParseResult.escapedCharacterMismatch);
+    builder.addLiteral2(pattern.current, IParseResult.escapedCharacterMismatch);
   }
 
   /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
@@ -283,7 +283,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         str.move(str.index + matchCursor.longestMatch);
         return null;
       }
-      return ParseResult.mismatchedText<TResult>(str, field);
+      return IParseResult.mismatchedText<TResult>(str, field);
     });
   }
 /*
@@ -335,7 +335,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         signSetter(bucket, true);
         return null;
       }
-      return ParseResult.missingSign<TResult>(str);
+      return IParseResult.missingSign<TResult>(str);
     }
     );
     addFormatAction((TResult value, StringBuffer sb) => sb.write(nonNegativePredicate(value) ? "+" : "-"));
@@ -352,7 +352,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         return null;
       }
       if (str.matchSingle("+")) {
-        return ParseResult.positiveSignInvalid<TResult>(str);
+        return IParseResult.positiveSignInvalid<TResult>(str);
       }
       signSetter(bucket, true);
       return null;
@@ -545,15 +545,15 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   {
     if (_parseActions == null)
     {
-      return ParseResult.formatOnlyPattern;
+      return IParseResult.formatOnlyPattern;
     }
     if (text == null)
     {
-      return ParseResult.argumentNull<TResult>("text");
+      return IParseResult.argumentNull<TResult>("text");
     }
     if (text.length == 0)
     {
-      return ParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty;
     }
 
     var valueCursor = new ValueCursor(text);
@@ -568,7 +568,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     // Check that we've used up all the text
     if (valueCursor.current != TextCursor.nul)
     {
-      return ParseResult.extraValueCharacters<TResult>(valueCursor, valueCursor.remainder);
+      return IParseResult.extraValueCharacters<TResult>(valueCursor, valueCursor.remainder);
     }
     return result;
   }

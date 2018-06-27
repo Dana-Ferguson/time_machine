@@ -8,14 +8,15 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_text.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
-@internal /*sealed*/ class OffsetPatternParser implements IPatternParser<Offset> {
-  static final Map<String /*char*/, CharacterHandler<Offset, _OffsetParseBucket>> _patternCharacterHandlers =
-  {
+@internal
+/*sealed*/
+class OffsetPatternParser implements IPatternParser<Offset> {
+  static final Map<String /*char*/, CharacterHandler<Offset, _OffsetParseBucket>> _patternCharacterHandlers = {
     '%': SteppedPatternBuilder.handlePercent /**<Offset, OffsetParseBucket>*/,
     '\'': SteppedPatternBuilder.handleQuote /**<Offset, OffsetParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<Offset, OffsetParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<Offset, OffsetParseBucket>*/,
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<Offset>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<Offset>*/),
     'h': (pattern, builder) => throw new InvalidPatternError.format(TextErrorMessages.hour12PatternNotSupported, ['Offset']),
     'H': SteppedPatternBuilder.handlePaddedField<Offset, _OffsetParseBucket>(
         2, PatternFields.hours24, 0, 23, _getPositiveHours, (bucket, value) => bucket.hours = value),
@@ -33,11 +34,9 @@ import 'package:time_machine/time_machine_patterns.dart';
   // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
   static int _getPositiveHours(Offset offset) => offset.milliseconds.abs() ~/ TimeConstants.millisecondsPerHour;
 
-  static int _getPositiveMinutes(Offset offset) =>
-      (offset.milliseconds.abs() % TimeConstants.millisecondsPerHour) ~/ TimeConstants.millisecondsPerMinute;
+  static int _getPositiveMinutes(Offset offset) => (offset.milliseconds.abs() % TimeConstants.millisecondsPerHour) ~/ TimeConstants.millisecondsPerMinute;
 
-  static int _getPositiveSeconds(Offset offset) =>
-      (offset.milliseconds.abs() % TimeConstants.millisecondsPerMinute) ~/ TimeConstants.millisecondsPerSecond;
+  static int _getPositiveSeconds(Offset offset) => (offset.milliseconds.abs() % TimeConstants.millisecondsPerMinute) ~/ TimeConstants.millisecondsPerSecond;
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -52,21 +51,21 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (patternText.length == 1) {
       switch (patternText) {
         case "g":
-          return (new CompositePatternBuilder<Offset>()
-            ..add(_parsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)..add(
-              // _hasZeroSeconds, _hasZeroSecondsAndMinutes can be supplied directly in DartVM
-              // we get this failure in Flutter: '(#lib1::Offset) → dart.core::bool' that isn't of expected type '(dynamic) → dart.core::bool'
-              //  --> which saddens me
-              // todo: investigate (I feel when all the platforms are on the same version of Dart, life will get easier)
-                _parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), (arg) => _hasZeroSeconds(arg))..add(
-                _parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg))).buildAsPartial();
+          return ICompositePatternBuilder.buildAsPartial(new CompositePatternBuilder<Offset>()
+            ..add(_parsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)
+            // _hasZeroSeconds, _hasZeroSecondsAndMinutes can be supplied directly in DartVM
+            // we get this failure in Flutter: '(#lib1::Offset) → dart.core::bool' that isn't of expected type '(dynamic) → dart.core::bool'
+            //  --> which saddens me
+            // todo: investigate (I feel when all the platforms are on the same version of Dart, life will get easier)
+            ..add(_parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), (arg) => _hasZeroSeconds(arg))
+            ..add(_parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
         case "G":
           return new _ZPrefixPattern(_parsePartialPattern("g", formatInfo));
         case "i":
-          return (new CompositePatternBuilder<Offset>()
-            ..add(_parsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)..add(
-                _parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), (arg) => _hasZeroSeconds(arg))..add(
-                _parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg))).buildAsPartial();
+          return ICompositePatternBuilder.buildAsPartial(new CompositePatternBuilder<Offset>()
+            ..add(_parsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)
+            ..add(_parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), (arg) => _hasZeroSeconds(arg))
+            ..add(_parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
         case "I":
           return new _ZPrefixPattern(_parsePartialPattern("i", formatInfo));
         case "l":
@@ -131,7 +130,8 @@ import 'package:time_machine/time_machine_patterns.dart';
 class _ZPrefixPattern implements IPartialPattern<Offset> {
   final IPartialPattern<Offset> _fullPattern;
 
-  @internal _ZPrefixPattern(this._fullPattern);
+  @internal
+  _ZPrefixPattern(this._fullPattern);
 
   ParseResult<Offset> parse(String text) => text == "Z" ? ParseResult.forValue<Offset>(Offset.zero) : _fullPattern.parse(text);
 
@@ -154,13 +154,16 @@ class _ZPrefixPattern implements IPartialPattern<Offset> {
 /// Provides a container for the interim parsed pieces of an [Offset] value.
 class _OffsetParseBucket extends ParseBucket<Offset> {
   /// The hours in the range [0, 23].
-  @internal int hours = 0;
+  @internal
+  int hours = 0;
 
   /// The minutes in the range [0, 59].
-  @internal int minutes = 0;
+  @internal
+  int minutes = 0;
 
   /// The seconds in the range [0, 59].
-  @internal int seconds = 0;
+  @internal
+  int seconds = 0;
 
   /// Gets a value indicating whether this instance is negative.
   ///
@@ -180,4 +183,3 @@ class _OffsetParseBucket extends ParseBucket<Offset> {
     return ParseResult.forValue<Offset>(new Offset.fromSeconds(totalSeconds));
   }
 }
-

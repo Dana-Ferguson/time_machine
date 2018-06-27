@@ -6,6 +6,11 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 import 'package:time_machine/time_machine_text.dart';
 
+
+abstract class ICompositePatternBuilder {
+  static IPartialPattern<T> buildAsPartial<T>(CompositePatternBuilder<T> compositePatternBuilder) => compositePatternBuilder._buildAsPartial();
+}
+
 /// A builder for composite patterns.
 ///
 /// A composite pattern is a combination of multiple patterns. When parsing, these are checked
@@ -19,8 +24,7 @@ import 'package:time_machine/time_machine_text.dart';
 /// [T]: The type of value to be parsed or formatted by the resulting pattern.
 ///
 /// This type is mutable, and should not be used between multiple threads. The patterns created
-/// by the [build] method are immutable and can be used between multiple threads, assuming
-/// that each component (both pattern and predicate) is also immutable.
+/// by the [build] method are immutable.
 class CompositePatternBuilder<T> {
   final List<IPattern<T>> _patterns = new List<IPattern<T>>();
   // note: this was originally List<bool Function(T arg), but had to be dropped, because
@@ -54,10 +58,10 @@ class CompositePatternBuilder<T> {
   /// Returns: A pattern using the patterns added to this builder.
   IPattern<T> build() {
     Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
-    return new _CompositePattern<T>(_patterns, _formatPredicates);
+    return new _CompositePattern<T>._(_patterns, _formatPredicates);
   }
 
-  @internal IPartialPattern<T> buildAsPartial() {
+  IPartialPattern<T> _buildAsPartial() {
     Preconditions.debugCheckState(_patterns.every((p) => p is IPartialPattern<T>), "All patterns should be partial");
     return build(); // as IPartialPattern<T>;
   }
@@ -67,16 +71,16 @@ class _CompositePattern<T> implements IPartialPattern<T> {
   final List<IPattern<T>> _patterns;
   final List<bool Function(dynamic arg)> _formatPredicates;
 
-  @internal _CompositePattern(this._patterns, this._formatPredicates);
+  _CompositePattern._(this._patterns, this._formatPredicates);
 
   ParseResult<T> parse(String text) {
     for (IPattern<T> pattern in _patterns) {
       ParseResult<T> result = pattern.parse(text);
-      if (result.success || !result.continueAfterErrorWithMultipleFormats) {
+      if (result.success || !IParseResult.continueAfterErrorWithMultipleFormats(result)) {
         return result;
       }
     }
-    return ParseResult.noMatchingFormat<T>(new ValueCursor(text));
+    return IParseResult.noMatchingFormat<T>(new ValueCursor(text));
   }
 
   ParseResult<T> parsePartial(ValueCursor cursor) {
@@ -84,12 +88,12 @@ class _CompositePattern<T> implements IPartialPattern<T> {
     for (IPartialPattern<T> pattern in _patterns) {
       cursor.move(index);
       ParseResult<T> result = pattern.parsePartial(cursor);
-      if (result.success || !result.continueAfterErrorWithMultipleFormats) {
+      if (result.success || !IParseResult.continueAfterErrorWithMultipleFormats(result)) {
         return result;
       }
     }
     cursor.move(index);
-    return ParseResult.noMatchingFormat<T>(cursor);
+    return IParseResult.noMatchingFormat<T>(cursor);
   }
 
   String format(T value) => _findFormatPattern(value).format(value);

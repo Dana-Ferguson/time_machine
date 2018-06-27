@@ -38,5 +38,3 @@ export 'src/text/offset_time_pattern.dart';
 export 'src/text/offset_time_pattern_parser.dart';
 export 'src/text/zoneddatetime_pattern.dart';
 export 'src/text/zoneddatetime_pattern_parser.dart';
-
-// export 'src/text/globalization/time_machine_format_info.dart';

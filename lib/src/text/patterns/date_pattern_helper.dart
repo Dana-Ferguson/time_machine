@@ -166,7 +166,7 @@ abstract class DatePatternHelper {
             return null;
           }
         }
-        return ParseResult.noMatchingCalendarSystem<TResult>(cursor);
+        return IParseResult.noMatchingCalendarSystem<TResult>(cursor);
       });
       builder.addFormatAction((value, sb) => sb.write(getter(value).id));
     };

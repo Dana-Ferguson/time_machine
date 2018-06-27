@@ -16,7 +16,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.handleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<OffsetDate, OffsetDateParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<OffsetDate, OffsetDateParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<OffsetDate>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch /**<OffsetDate>*/),
     'y': DatePatternHelper.createYearOfEraHandler<OffsetDate, _OffsetDateParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<OffsetDate, _OffsetDateParseBucket>(

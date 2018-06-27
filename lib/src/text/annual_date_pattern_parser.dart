@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.handleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<AnnualDate, AnnualDateParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<AnnualDate, AnnualDateParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<AnnualDate>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch /**<AnnualDate>*/),
     'M': DatePatternHelper.createMonthOfYearHandler<AnnualDate, AnnualDateParseBucket>
       ((value) => value.month, (bucket, value) => bucket.monthOfYearText = value, (bucket, value) => bucket.monthOfYearNumeric = value),
     'd': _handleDayOfMonth
@@ -87,7 +87,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     int day = usedFields.hasAny(PatternFields.dayOfMonth) ? dayOfMonth : templateValue.day;
     // Validate for the year 2000, just like the AnnualDate constructor does.
     if (day > CalendarSystem.iso.getDaysInMonth(2000, monthOfYearNumeric)) {
-      return ParseResult.dayOfMonthOutOfRangeNoYear<AnnualDate>(text, day, monthOfYearNumeric);
+      return IParseResult.dayOfMonthOutOfRangeNoYear<AnnualDate>(text, day, monthOfYearNumeric);
     }
 
     return ParseResult.forValue<AnnualDate>(new AnnualDate(monthOfYearNumeric, day));
@@ -105,7 +105,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }
     else if (x == PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText) {
       if (monthOfYearNumeric != monthOfYearText) {
-        return ParseResult.inconsistentMonthValues<AnnualDate>(text);
+        return IParseResult.inconsistentMonthValues<AnnualDate>(text);
       }
     // No need to change MonthOfYearNumeric - this was just a check
     }
@@ -132,7 +132,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     }*/
 
     if (monthOfYearNumeric > CalendarSystem.iso.getMonthsInYear(2000)) {
-      return ParseResult.isoMonthOutOfRange<AnnualDate>(text, monthOfYearNumeric);
+      return IParseResult.isoMonthOutOfRange<AnnualDate>(text, monthOfYearNumeric);
     }
     return null;
   }

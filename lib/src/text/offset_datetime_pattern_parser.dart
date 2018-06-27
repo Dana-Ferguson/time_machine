@@ -17,8 +17,8 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.handleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<OffsetDateTime, OffsetDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<OffsetDateTime>*/),
-    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.mismatchedCharacter /**<OffsetDateTime>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch /**<OffsetDateTime>*/),
+    'T': (pattern, builder) => builder.addLiteral2('T', IParseResult.mismatchedCharacter /**<OffsetDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
@@ -31,7 +31,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<OffsetDateTime, _OffsetDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<OffsetDateTime>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<OffsetDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(

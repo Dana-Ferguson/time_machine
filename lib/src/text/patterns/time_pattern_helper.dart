@@ -38,7 +38,7 @@ abstract class TimePatternHelper
           // Last argument is 1 because we need at least one digit after the decimal separator
           var fractionalSeconds = valueCursor.parseFraction(count, maxCount, 1);
           if (fractionalSeconds == null) {
-            return ParseResult.mismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
+            return IParseResult.mismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
           }
           // No need to validate the value - we've got one to three digits, so the range 0-999 is guaranteed.
           setter(bucket, fractionalSeconds);
@@ -48,7 +48,7 @@ abstract class TimePatternHelper
         builder.addFormatFractionTruncate(count, maxCount, getter);
       }
       else {
-        builder.addLiteral2('.', ParseResult.mismatchedCharacter);
+        builder.addLiteral2('.', IParseResult.mismatchedCharacter);
       }
     };
   }
@@ -81,7 +81,7 @@ abstract class TimePatternHelper
           int fractionalSeconds = valueCursor.parseFraction(count, maxCount, 1);
           // Last argument is 1 because we need at least one digit to be present after a decimal separator
           if (fractionalSeconds == null) {
-            return ParseResult.mismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
+            return IParseResult.mismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
           }
           // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
           setter(bucket, fractionalSeconds);
@@ -94,7 +94,7 @@ abstract class TimePatternHelper
         builder.addParseAction((ValueCursor str, ParseBucket bucket) =>
         str.matchSingle('.') || str.matchSingle(',')
             ? null
-            : ParseResult.mismatchedCharacter<TResult>(str, ';'));
+            : IParseResult.mismatchedCharacter<TResult>(str, ';'));
         builder.addFormatAction((TResult value, StringBuffer sb) => sb.write('.'));
       }
     };
@@ -113,7 +113,7 @@ abstract class TimePatternHelper
         // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
         // "up to count" digits.
         if (fractionalSeconds == null) {
-          return ParseResult.mismatchedNumber<TResult>(str, stringFilled(patternCharacter, count));
+          return IParseResult.mismatchedNumber<TResult>(str, stringFilled(patternCharacter, count));
         }
         // No need to validate the value - we've got an appropriate number of digits, so the range is guaranteed.
         setter(bucket, fractionalSeconds);
@@ -174,7 +174,7 @@ abstract class TimePatternHelper
             amPmSetter(bucket, 1);
             return null;
           }
-          return ParseResult.missingAmPmDesignator<TResult>(str);
+          return IParseResult.missingAmPmDesignator<TResult>(str);
         });
         builder.addFormatAction((value, sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator[0] : amDesignator[0]));
         return;
@@ -195,7 +195,7 @@ abstract class TimePatternHelper
           amPmSetter(bucket, 1 - longerValue);
           return null;
         }
-        return ParseResult.missingAmPmDesignator<TResult>(str);
+        return IParseResult.missingAmPmDesignator<TResult>(str);
       });
       builder.addFormatAction((TResult value, StringBuffer sb) => sb.write(hourOfDayGetter(value) > 11 ? pmDesignator : amDesignator));
     };

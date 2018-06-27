@@ -16,13 +16,13 @@ import 'package:time_machine/time_machine_text.dart';
 class ParseResult<T> {
   final T _value;
   final Error Function() _errorProvider;
-  @internal final bool continueAfterErrorWithMultipleFormats;
+  final bool _continueAfterErrorWithMultipleFormats;
 
-  ParseResult._error(this._errorProvider, this.continueAfterErrorWithMultipleFormats) : _value = null;
+  ParseResult._error(this._errorProvider, this._continueAfterErrorWithMultipleFormats) : _value = null;
 
   ParseResult._(this._value)
       : _errorProvider = null,
-        continueAfterErrorWithMultipleFormats = false;
+        _continueAfterErrorWithMultipleFormats = false;
 
   /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
   /// otherwise.
@@ -85,7 +85,7 @@ class ParseResult<T> {
     Preconditions.checkNotNull(projection, 'projection');
     return success
         ? ParseResult.forValue<TTarget>(projection(value))
-        : new ParseResult<TTarget>._error(_errorProvider, continueAfterErrorWithMultipleFormats);
+        : new ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
   }
 
   /// Converts this result to a new target type by propagating the exception provider.
@@ -97,8 +97,10 @@ class ParseResult<T> {
       // InvalidOperationException
       throw new StateError("ConvertError should not be called on a successful parse result");
     }
-    return new ParseResult<TTarget>._error(_errorProvider, continueAfterErrorWithMultipleFormats);
+    return new ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
   }
+
+  // todo: convert to factories.. also, why are these public?
 
   /// Produces a ParseResult which represents a successful parse operation.
   ///
@@ -118,129 +120,130 @@ class ParseResult<T> {
   /// Returns: A ParseResult representing a failed parsing operation.
   static ParseResult<T> forError<T>(Error Function() errorProvider) =>
       new ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
+}
 
-  @internal static ParseResult<T> forInvalidValue<T>(ValueCursor cursor, String formatString, [List<dynamic> parameters = const []]) =>
-      _forInvalidValueError(() => _forInvalidValueErrorProvider(cursor, formatString, parameters));
+@internal
+abstract class IParseResult {
+  static bool continueAfterErrorWithMultipleFormats(ParseResult result) => result._continueAfterErrorWithMultipleFormats;
+  
+  static ParseResult<T> forInvalidValue<T>(ValueCursor cursor, String formatString, [List<dynamic> parameters = const []]) =>
+      _forInvalidValueError(() {
+        // Format the message which is specific to the kind of parse error.
+        String detailMessage = stringFormat(formatString, parameters);
+        // Format the overall message, containing the parse error and the value itself.
+        String overallMessage = stringFormat(TextErrorMessages.unparsableValue, [detailMessage, cursor]);
+        return new UnparsableValueError(overallMessage);
+      });
 
-  static Error _forInvalidValueErrorProvider(ValueCursor cursor, String formatString, List<dynamic> parameters) {
-    // Format the message which is specific to the kind of parse error.
-    String detailMessage = stringFormat(formatString, parameters);
-    // Format the overall message, containing the parse error and the value itself.
-    String overallMessage = stringFormat(TextErrorMessages.unparsableValue, [detailMessage, cursor]);
-    return new UnparsableValueError(overallMessage);
-  }
-
-  @internal static ParseResult<T> forInvalidValuePostParse<T>(String text, String formatString, [List<dynamic> parameters = const[]]) =>
-      _forInvalidValueError(() => _forInvalidValuePostParseErrorProvider(text, formatString, parameters));
-
-  static Error _forInvalidValuePostParseErrorProvider(String text, String formatString, List<dynamic> parameters) {
-    // Format the message which is specific to the kind of parse error.
-    String detailMessage = stringFormat(formatString, parameters);
-    // Format the overall message, containing the parse error and the value itself.
-    String overallMessage = stringFormat(TextErrorMessages.unparsableValuePostParse, [detailMessage, text]);
-    return new UnparsableValueError(overallMessage);
-  }
+  static ParseResult<T> forInvalidValuePostParse<T>(String text, String formatString, [List<dynamic> parameters = const[]]) =>
+      _forInvalidValueError(() {
+        // Format the message which is specific to the kind of parse error.
+        String detailMessage = stringFormat(formatString, parameters);
+        // Format the overall message, containing the parse error and the value itself.
+        String overallMessage = stringFormat(TextErrorMessages.unparsableValuePostParse, [detailMessage, text]);
+        return new UnparsableValueError(overallMessage);
+      });
 
   // note: was ForInvalidValue
   static ParseResult<T> _forInvalidValueError<T>(Error Function() errorProvider) => new ParseResult<T>._error(errorProvider, true);
 
-  @internal static ParseResult<T> argumentNull<T>(String parameter) => new ParseResult<T>._error(() => new ArgumentError.notNull(parameter), false);
+  static ParseResult<T> argumentNull<T>(String parameter) => new ParseResult<T>._error(() => new ArgumentError.notNull(parameter), false);
 
-  @internal static ParseResult<T> positiveSignInvalid<T>(ValueCursor cursor) => forInvalidValue<T>(cursor, TextErrorMessages.positiveSignInvalid);
+  static ParseResult<T> positiveSignInvalid<T>(ValueCursor cursor) => forInvalidValue<T>(cursor, TextErrorMessages.positiveSignInvalid);
 
   // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
   // Also, there's no point in including the text.
-  @internal static final ParseResult valueStringEmpty =
+  static final ParseResult valueStringEmpty =
   new ParseResult._error(() => new UnparsableValueError(TextErrorMessages.valueStringEmpty), false);
 
-  @internal static ParseResult<T> extraValueCharacters<T>(ValueCursor cursor, String remainder) =>
-      ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.extraValueCharacters, [remainder]);
+  static ParseResult<T> extraValueCharacters<T>(ValueCursor cursor, String remainder) =>
+      IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.extraValueCharacters, [remainder]);
 
-  @internal static ParseResult<T> quotedStringMismatch<T>(ValueCursor cursor) => ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.quotedStringMismatch);
+  static ParseResult<T> quotedStringMismatch<T>(ValueCursor cursor) => IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.quotedStringMismatch);
 
-  @internal static ParseResult<T> escapedCharacterMismatch<T>(ValueCursor cursor, String patternCharacter) =>
-      ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.escapedCharacterMismatch, [patternCharacter]);
+  static ParseResult<T> escapedCharacterMismatch<T>(ValueCursor cursor, String patternCharacter) =>
+      IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.escapedCharacterMismatch, [patternCharacter]);
 
-  @internal static ParseResult<T> endOfString<T>(ValueCursor cursor) => ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.endOfString);
+  static ParseResult<T> endOfString<T>(ValueCursor cursor) => IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.endOfString);
 
-  @internal static ParseResult<T> timeSeparatorMismatch<T>(ValueCursor cursor) =>
-      ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.timeSeparatorMismatch);
+  static ParseResult<T> timeSeparatorMismatch<T>(ValueCursor cursor) =>
+      IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.timeSeparatorMismatch);
 
-  @internal static ParseResult<T> dateSeparatorMismatch<T>(ValueCursor cursor) =>
-      ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.dateSeparatorMismatch);
+  static ParseResult<T> dateSeparatorMismatch<T>(ValueCursor cursor) =>
+      IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.dateSeparatorMismatch);
 
-  @internal static ParseResult<T> missingNumber<T>(ValueCursor cursor) => ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.missingNumber);
+  static ParseResult<T> missingNumber<T>(ValueCursor cursor) => IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.missingNumber);
 
-  @internal static ParseResult<T> unexpectedNegative<T>(ValueCursor cursor) => ParseResult.forInvalidValue<T>(cursor, TextErrorMessages.unexpectedNegative);
+  static ParseResult<T> unexpectedNegative<T>(ValueCursor cursor) => IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.unexpectedNegative);
 
   /// This isn't really an issue with the value so much as the pattern... but the result is the same.
-  @internal static final ParseResult formatOnlyPattern =
+  static final ParseResult formatOnlyPattern =
   new ParseResult._error(() => new UnparsableValueError(TextErrorMessages.formatOnlyPattern), true);
 
-  @internal static ParseResult<T> mismatchedNumber<T>(ValueCursor cursor, String pattern) =>
+  static ParseResult<T> mismatchedNumber<T>(ValueCursor cursor, String pattern) =>
       forInvalidValue(cursor, TextErrorMessages.mismatchedNumber, [pattern]);
 
-  @internal static ParseResult<T> mismatchedCharacter<T>(ValueCursor cursor, String patternCharacter) =>
+  static ParseResult<T> mismatchedCharacter<T>(ValueCursor cursor, String patternCharacter) =>
       forInvalidValue(cursor, TextErrorMessages.mismatchedCharacter, [patternCharacter]);
 
-  @internal static ParseResult<T> mismatchedText<T>(ValueCursor cursor, String field) => forInvalidValue(cursor, TextErrorMessages.mismatchedText, [field]);
+  static ParseResult<T> mismatchedText<T>(ValueCursor cursor, String field) => forInvalidValue(cursor, TextErrorMessages.mismatchedText, [field]);
 
-  @internal static ParseResult<T> noMatchingFormat<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingFormat);
+  static ParseResult<T> noMatchingFormat<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingFormat);
 
   // todo: this will not work in JSDart
-  @internal static ParseResult<T> valueOutOfRange<T>(ValueCursor cursor, dynamic value, String tType) =>
+  static ParseResult<T> valueOutOfRange<T>(ValueCursor cursor, dynamic value, String tType) =>
       forInvalidValue(cursor, TextErrorMessages.valueOutOfRange, [value, tType]);
 
-  @internal static ParseResult<T> missingSign<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.missingSign);
+  static ParseResult<T> missingSign<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.missingSign);
 
-  @internal static ParseResult<T> missingAmPmDesignator<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.missingAmPmDesignator);
+  static ParseResult<T> missingAmPmDesignator<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.missingAmPmDesignator);
 
-  @internal static ParseResult<T> noMatchingCalendarSystem<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingCalendarSystem);
+  static ParseResult<T> noMatchingCalendarSystem<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingCalendarSystem);
 
-  @internal static ParseResult<T> noMatchingZoneId<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingZoneId);
+  static ParseResult<T> noMatchingZoneId<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.noMatchingZoneId);
 
-  @internal static ParseResult<T> invalidHour24<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.invalidHour24);
+  static ParseResult<T> invalidHour24<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.invalidHour24);
 
-  @internal static ParseResult<T> fieldValueOutOfRange<T>(ValueCursor cursor, int value, String field, String tType) =>
+  static ParseResult<T> fieldValueOutOfRange<T>(ValueCursor cursor, int value, String field, String tType) =>
       forInvalidValue(cursor, TextErrorMessages.fieldValueOutOfRange, [value, field, tType]);
 
-  @internal static ParseResult<T> fieldValueOutOfRangePostParse<T>(String text, int value, String field, String tType) =>
+  static ParseResult<T> fieldValueOutOfRangePostParse<T>(String text, int value, String field, String tType) =>
       forInvalidValuePostParse(text, TextErrorMessages.fieldValueOutOfRange, [value, field, tType]);
 
   /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
-  @internal static ParseResult<T> inconsistentValues<T>(String text, String field1, String field2, String tType) =>
+  static ParseResult<T> inconsistentValues<T>(String text, String field1, String field2, String tType) =>
       forInvalidValuePostParse(text, TextErrorMessages.inconsistentValues2, [field1, field2, tType]);
 
   /// The month of year is inconsistent between the text and numeric specifications.
   /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
-  @internal static ParseResult<T> inconsistentMonthValues<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.inconsistentMonthTextValue);
+  static ParseResult<T> inconsistentMonthValues<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.inconsistentMonthTextValue);
 
   /// The day of month is inconsistent with the day of week value.
   /// We can't use InconsistentValues for this as the pattern character is the same in both cases.
-  @internal static ParseResult<T> inconsistentDayOfWeekTextValue<T>(String text) =>
+  static ParseResult<T> inconsistentDayOfWeekTextValue<T>(String text) =>
       forInvalidValuePostParse(text, TextErrorMessages.inconsistentDayOfWeekTextValue);
 
   /// We'd expected to get to the end of the string now, but we haven't.
-  @internal static ParseResult<T> expectedEndOfString<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.expectedEndOfString);
+  static ParseResult<T> expectedEndOfString<T>(ValueCursor cursor) => forInvalidValue(cursor, TextErrorMessages.expectedEndOfString);
 
-  @internal static ParseResult<T> yearOfEraOutOfRange<T>(String text, int value, Era era, CalendarSystem calendar) =>
+  static ParseResult<T> yearOfEraOutOfRange<T>(String text, int value, Era era, CalendarSystem calendar) =>
       forInvalidValuePostParse(text, TextErrorMessages.yearOfEraOutOfRange, [value, era.name, calendar.name]);
 
-  @internal static ParseResult<T> monthOutOfRange<T>(String text, int month, int year) =>
+  static ParseResult<T> monthOutOfRange<T>(String text, int month, int year) =>
       forInvalidValuePostParse(text, TextErrorMessages.monthOutOfRange, [month, year]);
 
-  @internal static ParseResult<T> isoMonthOutOfRange<T>(String text, int month) =>
+  static ParseResult<T> isoMonthOutOfRange<T>(String text, int month) =>
       forInvalidValuePostParse(text, TextErrorMessages.isoMonthOutOfRange, [month]);
 
-  @internal static ParseResult<T> dayOfMonthOutOfRange<T>(String text, int day, int month, int year) =>
+  static ParseResult<T> dayOfMonthOutOfRange<T>(String text, int day, int month, int year) =>
       forInvalidValuePostParse(text, TextErrorMessages.dayOfMonthOutOfRange, [day, month, year]);
 
-  @internal static ParseResult<T> dayOfMonthOutOfRangeNoYear<T>(String text, int day, int month) =>
+  static ParseResult<T> dayOfMonthOutOfRangeNoYear<T>(String text, int day, int month) =>
       forInvalidValuePostParse(text, TextErrorMessages.dayOfMonthOutOfRangeNoYear, [day, month]);
 
-  @internal static ParseResult<T> invalidOffset<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.invalidOffset);
+  static ParseResult<T> invalidOffset<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.invalidOffset);
 
-  @internal static ParseResult<T> skippedLocalTime<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.skippedLocalTime);
+  static ParseResult<T> skippedLocalTime<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.skippedLocalTime);
 
-  @internal static ParseResult<T> ambiguousLocalTime<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.ambiguousLocalTime);
+  static ParseResult<T> ambiguousLocalTime<T>(String text) => forInvalidValuePostParse(text, TextErrorMessages.ambiguousLocalTime);
 }

@@ -23,7 +23,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<LocalTime, LocalTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<LocalTime>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<LocalTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
         2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
@@ -135,12 +135,12 @@ import 'package:time_machine/time_machine_patterns.dart';
     if (usedFields.hasAny(PatternFields.hours24)) {
       if (usedFields.hasAll(PatternFields.hours12 | PatternFields.hours24)) {
         if (hours12 % 12 != hours24 % 12) {
-          return ParseResult.inconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
+          return IParseResult.inconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
         }
       }
       if (usedFields.hasAny(PatternFields.amPm)) {
         if (hours24 ~/ 12 != amPm) {
-          return ParseResult.inconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
+          return IParseResult.inconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
         }
       }
       hour.value = hours24;

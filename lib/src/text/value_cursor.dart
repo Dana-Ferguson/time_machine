@@ -117,7 +117,7 @@ import 'package:time_machine/time_machine_text.dart';
     if (negative) {
       if (!moveNext()) {
         move(startIndex);
-        return ParseResult.endOfString<T>(this);
+        return IParseResult.endOfString<T>(this);
       }
     }
     int count = 0;
@@ -132,7 +132,7 @@ import 'package:time_machine/time_machine_text.dart';
 
     if (count == 0) {
       move(startIndex);
-      return ParseResult.missingNumber<T>(this);
+      return IParseResult.missingNumber<T>(this);
     }
 
     if (result.value >= 922337203685477580 && (digit = _getDigit()) != -1) {
@@ -173,7 +173,7 @@ import 'package:time_machine/time_machine_text.dart';
     }
     String badValue = value.substring(startIndex, index /*- startIndex*/);
     move(startIndex);
-    return ParseResult.valueOutOfRange<T>(this, badValue, tType);
+    return IParseResult.valueOutOfRange<T>(this, badValue, tType);
   }
 
   /// Parses digits at the current point in the string, as an [Int64] value.

@@ -20,8 +20,8 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\'': SteppedPatternBuilder.handleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<LocalDateTime, LocalDateTimeParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<LocalDateTime, LocalDateTimeParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch /**<LocalDateTime>*/),
-    'T': (pattern, builder) => builder.addLiteral2('T', ParseResult.mismatchedCharacter /**<LocalDateTime>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch /**<LocalDateTime>*/),
+    'T': (pattern, builder) => builder.addLiteral2('T', IParseResult.mismatchedCharacter /**<LocalDateTime>*/),
     'y': DatePatternHelper.createYearOfEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.yearOfEra, (bucket, value) =>
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField /**<LocalDateTime, LocalDateTimeParseBucket>*/
@@ -35,7 +35,7 @@ import 'package:time_machine/time_machine_patterns.dart';
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ';': TimePatternHelper.createCommaDotHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<LocalDateTime>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<LocalDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
       (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
@@ -150,7 +150,7 @@ import 'package:time_machine/time_machine_patterns.dart';
 
     if (hour24) {
       if (time != LocalTime.midnight) {
-        return ParseResult.invalidHour24<LocalDateTime>(text);
+        return IParseResult.invalidHour24<LocalDateTime>(text);
       }
       date = date.plusDays(1);
     }

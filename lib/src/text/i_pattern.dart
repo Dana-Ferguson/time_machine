@@ -11,7 +11,7 @@ import 'package:time_machine/time_machine_text.dart';
 /// times, rather than specifying the pattern text repeatedly. All patterns are immutable and thread-safe,
 /// and include the culture used for localization purposes.
 ///
-/// <typeparam name="T">Type of value to parse or format.</typeparam>
+/// [T]: Type of value to parse or format.
 abstract class IPattern<T> {
   /// Parses the given text value according to the rules of this pattern.
   ///

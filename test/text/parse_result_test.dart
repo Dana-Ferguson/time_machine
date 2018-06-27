@@ -26,7 +26,7 @@ Future main() async {
   await runTests();
 }
 
-@private final ParseResult<int> FailureResult = ParseResult.forInvalidValue<int>(new ValueCursor("text"), "text");
+final ParseResult<int> _failureResult = IParseResult.forInvalidValue<int>(new ValueCursor("text"), "text");
 
 @Test()
 void Value_Success()
@@ -38,7 +38,7 @@ void Value_Success()
 @Test()
 void Value_Failure()
 {
-  expect(() => FailureResult.value.hashCode, willThrow<UnparsableValueError>());
+  expect(() => _failureResult.value.hashCode, willThrow<UnparsableValueError>());
 }
 
 @Test()
@@ -52,7 +52,7 @@ void Exception_Success()
 void Exception_Failure()
 {
   // Assert.IsInstanceOf<UnparsableValueError>(FailureResult.Exception);
-  expect(FailureResult.error, new isInstanceOf<UnparsableValueError>());
+  expect(_failureResult.error, new isInstanceOf<UnparsableValueError>());
 }
 
 @Test()
@@ -65,7 +65,7 @@ void GetValueOrThrow_Success()
 @Test()
 void GetValueOrThrow_Failure()
 {
-  expect(() => FailureResult.getValueOrThrow(), willThrow<UnparsableValueError>());
+  expect(() => _failureResult.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
 @Test()
@@ -83,14 +83,14 @@ void TryGetValue_Failure()
 // expect(FailureResult.TryGetValue(-1, out int actual), isFalse);
 
   int actual;
-  expect(actual = FailureResult.TryGetValue(-1), -1);
+  expect(actual = _failureResult.TryGetValue(-1), -1);
   expect(-1, actual);
 }
 
 @Test()
 void Convert_ForFailureResult()
 {
-  ParseResult<String> converted = FailureResult.convert((x) => "xx${x}xx");
+  ParseResult<String> converted = _failureResult.convert((x) => "xx${x}xx");
   expect(() => converted.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
@@ -105,7 +105,7 @@ void Convert_ForSuccessResult()
 @Test()
 void ConvertError_ForFailureResult()
 {
-  ParseResult<String> converted = FailureResult.convertError<String>();
+  ParseResult<String> converted = _failureResult.convertError<String>();
   expect(() => converted.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 

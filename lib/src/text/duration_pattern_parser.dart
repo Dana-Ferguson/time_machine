@@ -15,7 +15,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     '\"': SteppedPatternBuilder.handleQuote /**<Span, SpanParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<Span, SpanParseBucket>*/,
     '.': TimePatternHelper.createPeriodHandler<Span, _SpanParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
-    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, ParseResult.timeSeparatorMismatch /**<Span>*/),
+    ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<Span>*/),
     'D': _createDayHandler(),
     'H': _createTotalHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay, 402653184),
     'h': _createPartialHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay),
@@ -171,7 +171,7 @@ class _SpanParseBucket extends ParseBucket<Span> {
       _currentNanos = -_currentNanos;
     }
     if (_currentNanos < ISpan.minNanoseconds || _currentNanos > ISpan.maxNanoseconds) {
-      return ParseResult.forInvalidValuePostParse<Span>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
+      return IParseResult.forInvalidValuePostParse<Span>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
     }
     return ParseResult.forValue<Span>(new Span(nanoseconds: _currentNanos));
   }

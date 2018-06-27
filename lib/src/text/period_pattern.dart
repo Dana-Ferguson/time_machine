@@ -69,29 +69,29 @@ class PeriodPattern implements IPattern<Period> {
   }
 
   static ParseResult<Period> _invalidUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.invalidUnitSpecifier, [unitCharacter]);
+      IParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.invalidUnitSpecifier, [unitCharacter]);
 
   static ParseResult<Period> _repeatedUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.repeatedUnitSpecifier, [unitCharacter]);
+      IParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.repeatedUnitSpecifier, [unitCharacter]);
 
   static ParseResult<Period> _misplacedUnit(ValueCursor cursor, String unitCharacter) =>
-      ParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.misplacedUnitSpecifier, [unitCharacter]);
+      IParseResult.forInvalidValue<Period>(cursor, TextErrorMessages.misplacedUnitSpecifier, [unitCharacter]);
 }
 
 class _RoundtripPatternImpl implements IPattern<Period> {
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return ParseResult.argumentNull<Period>("text");
+      return IParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return ParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty;
     }
 
     ValueCursor valueCursor = new ValueCursor(text);
 
     valueCursor.moveNext();
     if (valueCursor.current != 'P') {
-      return ParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
+      return IParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
     PeriodBuilder builder = new PeriodBuilder();
@@ -107,7 +107,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
         return failure;
       }
       if (valueCursor.length == valueCursor.index) {
-        return ParseResult.endOfString<Period>(valueCursor);
+        return IParseResult.endOfString<Period>(valueCursor);
       }
       // Various failure cases:
       // - Repeated unit (e.g. P1M2M)
@@ -195,17 +195,17 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
   // TODO(misc): Tidy this up a *lot*.
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return ParseResult.argumentNull<Period>("text");
+      return IParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return ParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty;
     }
 
     ValueCursor valueCursor = new ValueCursor(text);
 
     valueCursor.moveNext();
     if (valueCursor.current != 'P') {
-      return ParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
+      return IParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
     PeriodBuilder builder = new PeriodBuilder();
@@ -222,7 +222,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         return failure;
       }
       if (valueCursor.length == valueCursor.index) {
-        return ParseResult.endOfString<Period>(valueCursor);
+        return IParseResult.endOfString<Period>(valueCursor);
       }
       // Various failure cases:
       // - Repeated unit (e.g. P1M2M)
@@ -283,12 +283,12 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         builder.seconds = unitValue.value;
 
         if (!valueCursor.moveNext()) {
-          return ParseResult.missingNumber<Period>(valueCursor);
+          return IParseResult.missingNumber<Period>(valueCursor);
         }
         int totalNanoseconds = valueCursor.parseFraction(9, 9, 1);
         // Can cope with at most 999999999 nanoseconds
         if (totalNanoseconds == null) {
-          return ParseResult.missingNumber<Period>(valueCursor);
+          return IParseResult.missingNumber<Period>(valueCursor);
         }
         // Use whether or not the seconds value was negative (even if 0)
         // as the indication of whether this value is negative.
@@ -300,10 +300,10 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         builder.nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerTick);
 
         if (valueCursor.current != 'S') {
-          return ParseResult.mismatchedCharacter<Period>(valueCursor, 'S');
+          return IParseResult.mismatchedCharacter<Period>(valueCursor, 'S');
         }
         if (valueCursor.moveNext()) {
-          return ParseResult.expectedEndOfString<Period>(valueCursor);
+          return IParseResult.expectedEndOfString<Period>(valueCursor);
         }
         return ParseResult.forValue<Period>(builder.build());
       }
@@ -312,7 +312,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
       unitsSoFar |= unit;
     }
     if (unitsSoFar.value == 0) {
-      return ParseResult.forInvalidValue<Period>(valueCursor, TextErrorMessages.emptyPeriod);
+      return IParseResult.forInvalidValue<Period>(valueCursor, TextErrorMessages.emptyPeriod);
     }
     return ParseResult.forValue<Period>(builder.build());
   }

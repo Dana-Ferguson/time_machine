@@ -25,7 +25,7 @@ const int _twoDigitYearMax = 30;
     '\'': SteppedPatternBuilder.handleQuote/**<LocalDate, LocalDateParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote/**<LocalDate, LocalDateParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash/**<LocalDate, LocalDateParseBucket>*/,
-    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, ParseResult.dateSeparatorMismatch/**<LocalDate>*/),
+    '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch/**<LocalDate>*/),
     'y': DatePatternHelper.createYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.yearOfEra, (bucket, value) => bucket.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.year = value),
     'M': DatePatternHelper.createMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.month, (bucket, value) => bucket.monthOfYearText = value, (bucket, value) => bucket.monthOfYearNumeric = value),
@@ -103,7 +103,7 @@ const int _twoDigitYearMax = 30;
         }
       }
     }
-    return ParseResult.mismatchedText<TResult>(cursor, 'g');
+    return IParseResult.mismatchedText<TResult>(cursor, 'g');
   }
 
   @internal
@@ -125,13 +125,13 @@ const int _twoDigitYearMax = 30;
 
     int day = usedFields.hasAny(PatternFields.dayOfMonth) ? dayOfMonth : templateValue.day;
     if (day > calendar.getDaysInMonth(year, monthOfYearNumeric)) {
-      return ParseResult.dayOfMonthOutOfRange<LocalDate>(text, day, monthOfYearNumeric, year);
+      return IParseResult.dayOfMonthOutOfRange<LocalDate>(text, day, monthOfYearNumeric, year);
     }
 
     LocalDate value = new LocalDate(year, monthOfYearNumeric, day, calendar);
 
     if (usedFields.hasAny(PatternFields.dayOfWeek) && dayOfWeek != value.dayOfWeek.value) {
-      return ParseResult.inconsistentDayOfWeekTextValue<LocalDate>(text);
+      return IParseResult.inconsistentDayOfWeekTextValue<LocalDate>(text);
     }
 
     return ParseResult.forValue<LocalDate>(value);
@@ -162,11 +162,11 @@ const int _twoDigitYearMax = 30;
   ParseResult<LocalDate> _determineYear(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.year)) {
       if (year > calendar.maxYear || year < calendar.minYear) {
-        return ParseResult.fieldValueOutOfRangePostParse<LocalDate>(text, year, 'u', 'LocalDate');
+        return IParseResult.fieldValueOutOfRangePostParse<LocalDate>(text, year, 'u', 'LocalDate');
       }
 
       if (usedFields.hasAny(PatternFields.era) && _era != calendar.getEra(year)) {
-        return ParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate');
+        return IParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate');
       }
 
       if (usedFields.hasAny(PatternFields.yearOfEra)) {
@@ -176,7 +176,7 @@ const int _twoDigitYearMax = 30;
           yearOfEraFromYear = yearOfEraFromYear % 100;
         }
         if (yearOfEraFromYear != yearOfEra) {
-          return ParseResult.inconsistentValues<LocalDate>(text, 'y', 'u', 'LocalDate');
+          return IParseResult.inconsistentValues<LocalDate>(text, 'y', 'u', 'LocalDate');
         }
       }
       return null;
@@ -186,7 +186,7 @@ const int _twoDigitYearMax = 30;
     if (!usedFields.hasAny(PatternFields.yearOfEra)) {
       year = templateValue.year;
       return usedFields.hasAny(PatternFields.era) && _era != calendar.getEra(year)
-          ? ParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
+          ? IParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
     }
 
     if (!usedFields.hasAny(PatternFields.era)) {
@@ -203,7 +203,7 @@ const int _twoDigitYearMax = 30;
 
     if (yearOfEra < calendar.getMinYearOfEra(_era) ||
         yearOfEra > calendar.getMaxYearOfEra(_era)) {
-      return ParseResult.yearOfEraOutOfRange<LocalDate>(text, yearOfEra, _era, calendar);
+      return IParseResult.yearOfEraOutOfRange<LocalDate>(text, yearOfEra, _era, calendar);
     }
     year = calendar.getAbsoluteYear(yearOfEra, _era);
     return null;
@@ -223,7 +223,7 @@ const int _twoDigitYearMax = 30;
     }
     else if (x == _monthOfYearText_booleanOR_monthOfYearText) { // PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText:
       if (monthOfYearNumeric != monthOfYearText) {
-        return ParseResult.inconsistentMonthValues<LocalDate>(text);
+        return IParseResult.inconsistentMonthValues<LocalDate>(text);
       }
     // No need to change MonthOfYearNumeric - this was just a check
     }
@@ -251,7 +251,7 @@ const int _twoDigitYearMax = 30;
     }*/
 
     if (monthOfYearNumeric > calendar.getMonthsInYear(year)) {
-      return ParseResult.monthOutOfRange<LocalDate>(text, monthOfYearNumeric, year);
+      return IParseResult.monthOutOfRange<LocalDate>(text, monthOfYearNumeric, year);
     }
     return null;
   }
