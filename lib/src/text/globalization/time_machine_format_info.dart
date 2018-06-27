@@ -20,7 +20,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 /// CultureInfo itself may be mutable. If the CultureInfo is mutated after initialization, results are not
 /// guaranteed: some aspects of the CultureInfo may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
-@internal  class TimeMachineFormatInfo {
+@internal
+class TimeMachineFormatInfo {
   // todo: remove for Dart
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
@@ -66,7 +67,6 @@ import 'package:time_machine/time_machine_globalization.dart';
   ///
   /// [cultureInfo]: The culture info to use.
   @visibleForTesting
-  @internal
   TimeMachineFormatInfo(CultureInfo cultureInfo)
       : this.withDateTimeFormat(cultureInfo, cultureInfo?.dateTimeFormat);
 
@@ -77,7 +77,6 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// [cultureInfo]: The culture info to use for text comparisons and resource lookups.
   /// [dateTimeFormat]: The date/time format to use for format strings etc.
   @visibleForTesting
-  @internal
   TimeMachineFormatInfo.withDateTimeFormat(this.cultureInfo, this.dateTimeFormat)
       : _eraDescriptions = new Map<Era, _EraDescription>() {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
@@ -155,42 +154,42 @@ import 'package:time_machine/time_machine_globalization.dart';
   /// Gets the text comparison information associated with this format provider.
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
-  @internal FixedFormatInfoPatternParser<Span> get spanPatternParser =>
+  FixedFormatInfoPatternParser<Span> get spanPatternParser =>
       _spanPatternParser = _ensureFixedFormatInitialized(_spanPatternParser, () => new SpanPatternParser());
 
-  @internal FixedFormatInfoPatternParser<Offset> get offsetPatternParser =>
+  FixedFormatInfoPatternParser<Offset> get offsetPatternParser =>
       _offsetPatternParser = _ensureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
 
-  @internal FixedFormatInfoPatternParser<Instant> get instantPatternParser =>
+  FixedFormatInfoPatternParser<Instant> get instantPatternParser =>
       _instantPatternParser = _ensureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
 
-  @internal FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser =>
+  FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser =>
       _localTimePatternParser = _ensureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.midnight));
 
-  @internal FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
+  FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
       _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePattern.defaultTemplateValue));
 
-  @internal FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
+  FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =
           _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePattern.defaultTemplateValue));
 
-  @internal FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
+  FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
       _offsetDateTimePatternParser =
           _ensureFixedFormatInitialized(_offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePattern.defaultTemplateValue));
 
-  @internal FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser =>
+  FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser =>
       _offsetDatePatternParser =
           _ensureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePattern.defaultTemplateValue));
 
-  @internal FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser =>
+  FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser =>
       _offsetTimePatternParser =
           _ensureFixedFormatInitialized(_offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePattern.defaultTemplateValue));
 
-  @internal FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
+  FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
       _zonedDateTimePatternParser = _ensureFixedFormatInitialized(
           _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePattern.defaultTemplateValue, Resolvers.strictResolver, null));
 
-  @internal FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
+  FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
       _annualDatePatternParser =
           _ensureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePattern.defaultTemplateValue));
 
@@ -337,7 +336,7 @@ import 'package:time_machine/time_machine_globalization.dart';
       PatternResources.getString("OffsetPatternShortNoPunctuation", cultureInfo);
 
   /// Clears the cache. Only used for test purposes.
-  @internal static void clearCache() => _cache.clear();
+ static void clearCache() => _cache.clear();
 
   /// Gets the [TimeMachineFormatInfo] for the given [CultureInfo].
   ///
@@ -345,7 +344,7 @@ import 'package:time_machine/time_machine_globalization.dart';
   ///
   /// [cultureInfo]: The culture info.
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
-  @internal static TimeMachineFormatInfo getFormatInfo(CultureInfo cultureInfo) {
+ static TimeMachineFormatInfo getFormatInfo(CultureInfo cultureInfo) {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
     if (cultureInfo == CultureInfo.invariantCulture) {
       return invariantInfo;
@@ -386,13 +385,12 @@ import 'package:time_machine/time_machine_globalization.dart';
 
 /// The description for an era: the primary name and all possible names.
 class _EraDescription {
-  @internal final String primaryName;
-  @internal final /*ReadOnlyCollection*/ List<String> allNames;
+ final String primaryName;
+ final /*ReadOnlyCollection*/ List<String> allNames;
 
-  _EraDescription._(this.primaryName, this.allNames);
+ _EraDescription._(this.primaryName, this.allNames);
 
-  @internal factory _EraDescription.forEra(Era era, CultureInfo cultureInfo)
-  {
+ factory _EraDescription.forEra(Era era, CultureInfo cultureInfo) {
     String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), cultureInfo);
     String primaryName;
     List<String> allNames;

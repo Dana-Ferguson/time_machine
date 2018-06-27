@@ -68,7 +68,7 @@ class TimeMachine {
     // Default Culture
     var cultureId = _locale;
     var culture = await Cultures.getCulture(cultureId);
-    Cultures.currentCulture = culture;
+    ICultures.currentCulture = culture;
     // todo: remove CultureInfo.currentCulture
     
     // todo: set default calendar from [_calendar]

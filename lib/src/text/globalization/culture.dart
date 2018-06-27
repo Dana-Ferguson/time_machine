@@ -8,17 +8,20 @@ import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_utilities.dart';
 
+@internal
+abstract class ICultures {
+  static void set currentCulture(CultureInfo value) => Cultures._currentCulture = value;
+  static void loadAllCulturesInformation_SetFlag() {
+    if (Cultures._loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
+    Cultures._loadAllCulturesInformation = true;
+  }
+}
+
 abstract class Cultures {
   // todo: this is a bandaid ~ we need to rework our infrastructure a bit -- maybe draw some diagrams?
   // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
   static bool _loadAllCulturesInformation = false;
 
-  @internal
-  static void loadAllCulturesInformation_SetFlag() {
-    if (_loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
-    _loadAllCulturesInformation = true;
-  }
-  
   static CultureLoader _loader = null;
   static Future<CultureLoader> get _cultures async => _loader??= await (_loadAllCulturesInformation ? CultureLoader.loadAll() : CultureLoader.load());
 
@@ -30,8 +33,6 @@ abstract class Cultures {
   // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
   static CultureInfo _currentCulture = null;
   static CultureInfo get currentCulture => _currentCulture??=invariantCulture;
-  @internal
-  static void set currentCulture(CultureInfo value) => _currentCulture = value;
 }
 
 // todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!

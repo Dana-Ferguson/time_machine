@@ -3,7 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:meta/meta.dart';
 
-
+// todo: evaluate name, need, and should this be combined with something else?
 enum BclCalendarType {
   unknown,
   gregorian,

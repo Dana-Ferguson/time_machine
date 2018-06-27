@@ -82,7 +82,7 @@ class TimeMachine  {
   static Future initialize() async {
     TzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     // todo: we want this for flutter -- do we want this for the VM too?
-    Cultures.loadAllCulturesInformation_SetFlag();
+    ICultures.loadAllCulturesInformation_SetFlag();
     
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
@@ -99,7 +99,7 @@ class TimeMachine  {
     // Default Culture
     var cultureId = Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
     var culture = await Cultures.getCulture(cultureId);
-    Cultures.currentCulture = culture;
+    ICultures.currentCulture = culture;
     // todo: remove CultureInfo.currentCulture
   }
 
