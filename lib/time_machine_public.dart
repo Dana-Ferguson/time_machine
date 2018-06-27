@@ -87,8 +87,7 @@ export 'src/text/localdate_pattern.dart' show LocalDatePattern;
 export 'src/text/localtime_pattern.dart' show LocalTimePattern;
 export 'src/text/localdatetime_pattern.dart' show LocalDateTimePattern;
 
-export 'src/text/annual_date_pattern.dart';
-export 'src/text/annual_date_pattern_parser.dart';
+export 'src/text/annual_date_pattern.dart' show AnnualDatePattern;
 export 'src/text/duration_pattern.dart';
 export 'src/text/duration_pattern_parser.dart';
 export 'src/text/instant_pattern.dart';

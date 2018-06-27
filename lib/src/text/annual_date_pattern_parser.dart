@@ -7,7 +7,8 @@ import 'package:time_machine/time_machine_globalization.dart';
 import 'package:time_machine/time_machine_patterns.dart';
 
 /// Parser for patterns of [AnnualDate] values.
-@internal /*sealed*/ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
+@internal
+class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
   final AnnualDate _templateValue;
 
   static final Map<String /*char*/, CharacterHandler<AnnualDate, AnnualDateParseBucket>> _patternCharacterHandlers = {
@@ -21,7 +22,7 @@ import 'package:time_machine/time_machine_patterns.dart';
     'd': _handleDayOfMonth
   };
 
-  @internal AnnualDatePatternParser(this._templateValue);
+  AnnualDatePatternParser(this._templateValue);
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -67,13 +68,14 @@ import 'package:time_machine/time_machine_patterns.dart';
 
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by AnnualDateTimePattern to store and calculate values.
-@internal class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
-  @internal final AnnualDate templateValue;
-  @internal int monthOfYearNumeric = 0;
-  @internal int monthOfYearText = 0;
-  @internal int dayOfMonth = 0;
+@internal
+class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
+  final AnnualDate templateValue;
+  int monthOfYearNumeric = 0;
+  int monthOfYearText = 0;
+  int dayOfMonth = 0;
 
-  @internal AnnualDateParseBucket(this.templateValue);
+  AnnualDateParseBucket(this.templateValue);
 
   @internal
   @override

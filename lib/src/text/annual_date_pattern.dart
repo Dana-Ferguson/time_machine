@@ -14,19 +14,25 @@ import 'package:time_machine/time_machine_patterns.dart';
 /// from needing NodaFormatInfo.InvariantInfo...
 abstract class _Patterns
 {
-  @internal static final AnnualDatePattern isoPatternImpl = AnnualDatePattern.createWithInvariantCulture("MM'-'dd");
+  static final AnnualDatePattern isoPatternImpl = AnnualDatePattern.createWithInvariantCulture("MM'-'dd");
 }
 
+@internal
+abstract class AnnualDatePatterns {
+  static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) =>
+      AnnualDatePattern._create(patternText, formatInfo, templateValue);
+  static final AnnualDate defaultTemplateValue = new AnnualDate(1, 1);
+
+  static final PatternBclSupport<AnnualDate> bclSupport =
+    new PatternBclSupport<AnnualDate>(AnnualDatePattern._defaultFormatPattern, (fi) => fi.annualDatePatternParser);
+
+  static IPartialPattern<AnnualDate> underlyingPattern(AnnualDatePattern annualDatePattern) => annualDatePattern._underlyingPattern;
+}
 
 /// Represents a pattern for parsing and formatting [AnnualDate] values.
 @immutable 
 class AnnualDatePattern implements IPattern<AnnualDate> {
-  @internal static final AnnualDate defaultTemplateValue = new AnnualDate(1, 1);
-
   static const String _defaultFormatPattern = "G"; // General, ISO-like
-
-  @internal static final PatternBclSupport<AnnualDate> bclSupport =
-  new PatternBclSupport<AnnualDate>(_defaultFormatPattern, (fi) => fi.annualDatePatternParser);
 
   /// Gets an invariant annual date pattern which is compatible with the month/day part of ISO-8601.
   /// This corresponds to the text pattern "MM'-'dd".
@@ -34,19 +40,19 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an @internal interface.
-  @internal final IPartialPattern<AnnualDate> underlyingPattern;
+  final IPartialPattern<AnnualDate> _underlyingPattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
   /// Returns the localization information used in this pattern.
-  @internal final TimeMachineFormatInfo formatInfo;
+  final TimeMachineFormatInfo _formatInfo;
 
   /// Gets the value used as a template for parsing: any field values unspecified
   /// in the pattern are taken from the template.
   final AnnualDate templateValue;
 
-  AnnualDatePattern._(this.patternText, this.formatInfo, this.templateValue, this.underlyingPattern);
+  AnnualDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -55,13 +61,13 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<AnnualDate> parse(String text) => underlyingPattern.parse(text);
+  ParseResult<AnnualDate> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given annual date as text according to the rules of this pattern.
   ///
   /// [value]: The annual date to format.
   /// Returns: The annual date formatted according to this pattern.
-  String format(AnnualDate value) => underlyingPattern.format(value);
+  String format(AnnualDate value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -69,7 +75,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(AnnualDate value, StringBuffer builder) => underlyingPattern.appendFormat(value, builder);
+  StringBuffer appendFormat(AnnualDate value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
@@ -78,15 +84,15 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  @internal static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) {
+  static AnnualDatePattern _create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     // Use the "fixed" parser for the common case of the default template value.
-    var pattern = templateValue == defaultTemplateValue
+    var pattern = templateValue == AnnualDatePatterns.defaultTemplateValue
         ? formatInfo.annualDatePatternParser.parsePattern(patternText)
         : new AnnualDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
-    pattern = pattern is AnnualDatePattern ? pattern.underlyingPattern : pattern;
+    pattern = pattern is AnnualDatePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<AnnualDate>;
     return new AnnualDatePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
@@ -101,7 +107,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern createWithCulture(String patternText, CultureInfo cultureInfo, [AnnualDate templateValue]) =>
-      create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? AnnualDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
@@ -113,7 +119,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern createWithCurrentCulture(String patternText) =>
-      create(patternText, TimeMachineFormatInfo.currentInfo, defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.currentInfo, AnnualDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
@@ -125,7 +131,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
   static AnnualDatePattern createWithInvariantCulture(String patternText) =>
-      create(patternText, TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
+      _create(patternText, TimeMachineFormatInfo.invariantInfo, AnnualDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
@@ -133,7 +139,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
   AnnualDatePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
-      create(patternText, formatInfo, templateValue);
+      _create(patternText, formatInfo, templateValue);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
@@ -148,5 +154,5 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
   /// Returns: A new pattern with the given template value.
   AnnualDatePattern withTemplateValue(AnnualDate newTemplateValue) =>
-      create(patternText, formatInfo, newTemplateValue);
+      _create(patternText, _formatInfo, newTemplateValue);
 }

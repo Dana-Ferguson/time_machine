@@ -276,12 +276,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
 
 /*sealed*/ class Data extends PatternTestData<AnnualDate> {
   // Default to January 1st
-  @override AnnualDate get DefaultTemplate => AnnualDatePattern.defaultTemplateValue;
+  @override AnnualDate get DefaultTemplate => AnnualDatePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([AnnualDate value = null]) : super(value ?? AnnualDatePattern.defaultTemplateValue)
+  Data([AnnualDate value = null]) : super(value ?? AnnualDatePatterns.defaultTemplateValue)
   {
   }
 
