@@ -81,7 +81,8 @@ External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are prod
 The unit testing framework uses reflection and won't work in Dart4Web 2.0 
 or later; we'll cross this bridge later. Version 1.0 will not occur until after we get full unit testing in DDC and D2JS.
 - [ ] That bridge has been crossed; a static non-mirror test-set can be produced from the dynamic mirror-ed test set,
- but Dart2JS fails on `Isolate.resolvePackageUri` -- and it's shouldn't. Action item = investigate.
+ but Dart2JS fails on `Isolate.resolvePackageUri` -- and it's shouldn't. Action item = investigate. Verified the DDC test app
+ after `pub build` will fail as well. This is sad.
 
 Future Todo:
  - [ ] Produce our own TSDB files
