@@ -82,7 +82,16 @@ The unit testing framework uses reflection and won't work in Dart4Web 2.0
 or later; we'll cross this bridge later. Version 1.0 will not occur until after we get full unit testing in DDC and D2JS.
 - [ ] That bridge has been crossed; a static non-mirror test-set can be produced from the dynamic mirror-ed test set,
  but Dart2JS fails on `Isolate.resolvePackageUri` -- and it's shouldn't. Action item = investigate. Verified the DDC test app
- after `pub build` will fail as well. This is sad.
+ after `pub build` will fail as well. This is sad. (see, below:)
+
+**Isolate.resolvePackageUri**
+
+| Version              | VM  | DDC | Dart2JS | Flutter |
+| --------------       |:---:|:---:|:-------:|:-------:|
+| Stable 1.24.3        | yes | yes | no      | n/a |
+| Beta 2.0.0-dev.63.0* | yes | yes | no      | no  |
+* I could not get this week's dev.65.0 to run.
+* It's starting to look like [`Resource`](https://github.com/dart-lang/resource) isn't a viable path forward.
 
 Future Todo:
  - [ ] Produce our own TSDB files
