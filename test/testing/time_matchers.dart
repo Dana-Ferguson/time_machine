@@ -4,7 +4,6 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 
 Matcher instantIsCloseTo(Instant value) => new InstantIsCloseTo(value, Span.epsilon);

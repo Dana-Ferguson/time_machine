@@ -11,7 +11,7 @@
 
 export 'package:time_machine/time_machine.dart' show TimeMachine;
 
-export 'testing/test_fx.dart';
+// export 'testing/test_fx.dart';
 export 'testing/time_matchers.dart';
 export 'testing/test_helper.dart';
 
@@ -20,8 +20,16 @@ export 'testing/timezones/single_transition_datetimezone.dart';
 export 'testing/timezones/multi_transition_datetimezone.dart';
 export 'testing/timezones/fake_datetimezone_source.dart';
 
+export 'testing/test_fx_attributes.dart';
+
+import 'dart:async';
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
+
+import 'testing/test_fx_interface.dart'
+  if (dart.library.io) 'testing/test_fx.dart'
+as helpingMachine;
+
+Future<dynamic> runTests() => helpingMachine.runTests();
 
 // From Testing Objects
 abstract class TestObjects {

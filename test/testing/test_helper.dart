@@ -1,22 +1,49 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
-import 'dart:async';
-import 'dart:math' as math;
-
-import 'dart:mirrors';
-import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
-import 'test_fx.dart';
-import 'time_matchers.dart';
+import 'test_helper_interface.dart'
+  if (dart.library.html) 'test_helper_without_mirrors.dart'
+  if (dart.library.io) 'test_helper_with_mirrors.dart'
+as helpingMachine;
+
+Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction = null;
+Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction = null;
+Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction = null;
+
+void SetFunctions() {
+  helpingMachine.setFunctions();
+}
 
 /// Provides methods to help run tests for some of the system interfaces and object support.
 abstract class TestHelper
 {
-// static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+  ///   Tests the equality and inequality operators (==, !=) if they exist on the object.
+  ///
+  /// <typeparam name="T">The type to test.</typeparam>
+  /// [value]: The base value.
+  /// [equalValue]: The value equal to but not the same object as the base value.
+  /// [unequalValue]: The value not equal to the base value.
+  static void TestOperatorEquality<T>(T value, T equalValue, T unequalValue) => testOperatorEqualityFunction;
+
+  /// Tests the equality (==), inequality (!=), less than (&lt;), greater than (&gt;), less than or equals (&lt;=),
+  /// and greater than or equals (&gt;=) operators if they exist on the object.
+  ///
+  /// <typeparam name="T">The type to test.</typeparam>
+  /// [value]: The base value.
+  /// [equalValue]: The value equal to but not the same object as the base value.
+  /// [greaterValue]: The values greater than the base value, in ascending order.
+  static void TestOperatorComparisonEquality<T>(T value, T equalValue, List<T> greaterValues) => testOperatorComparisonEqualityFunction;
+
+  /// Tests the less than (&lt;) and greater than (&gt;) operators if they exist on the object.
+  ///
+  /// <typeparam name="T">The type to test.</typeparam>
+  /// [value]: The base value.
+  /// [equalValue]: The value equal to but not the same object as the base value.
+  /// [greaterValue]: The values greater than the base value, in ascending order.
+  static void TestOperatorComparison<T>(T value, T equalValue, List<T> greaterValues) => testOperatorComparisonFunction;
 
   /// Does nothing other than let us prove method or constructor calls don't throw.
   static void Consume<T>(T ignored)
@@ -300,172 +327,6 @@ abstract class TestHelper
     }
     expect(value.hashCode, value.hashCode, reason: "hashCode twice for same object");
     expect(value.hashCode, equalValue.hashCode, reason: "hashCode for two different but equal objects");
-  }
-
-  /// Tests the less than (&lt;) and greater than (&gt;) operators if they exist on the object.
-  ///
-  /// <typeparam name="T">The type to test.</typeparam>
-  /// [value]: The base value.
-  /// [equalValue]: The value equal to but not the same object as the base value.
-  /// [greaterValue]: The values greater than the base value, in ascending order.
-  static void TestOperatorComparison<T>(T value, T equalValue, List<T> greaterValues) {
-    ValidateInput(value, equalValue, greaterValues, "greaterValue");
-
-    // Note: Dart is doing type erasure??? -- T becomes dynamic at runtime when it shouldn't be.
-    // todo: re-evaluate after Dart 2.0
-    InstanceMirror valueMirror = reflect(value);
-    InstanceMirror equalValueMirror = reflect(equalValue);
-    ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
-
-    var gt = new Symbol(">");
-    var lt = new Symbol("<");
-    var greaterThan = classMirror.declarations[gt];
-    var lessThan = classMirror.declarations[lt];
-
-// print(instanceMirror.invoke(gt.simpleName, [null]).reflectee);
-// print(instanceMirror.invoke(lt.simpleName, [null]).reflectee);
-
-    // Comparisons only involving equal values
-    if (greaterThan != null) {
-      // if (!type.GetTypeInfo().IsValueType)
-      {
-        expect(valueMirror.invoke(gt, [null]).reflectee, isTrue, reason: "value > null");
-      // expect(greaterThan.Invoke(null, [ null, value ], isFalse, reason: "null > value");
-      }
-      expect(valueMirror.invoke(gt, [value]).reflectee, isFalse, reason: "value > value");
-      expect(valueMirror.invoke(gt, [equalValue]).reflectee, isFalse, reason: "value > equalValue");
-      expect(equalValueMirror.invoke(gt, [value]).reflectee, isFalse, reason: "equalValue > value");
-    }
-    if (lessThan != null) {
-      // if (!type.GetTypeInfo().IsValueType)
-      {
-        expect(valueMirror.invoke(lt, [null]).reflectee, isFalse, reason: "value < null");
-      // expect(lessThan.Invoke(null, [ null, value ], isTrue, reason: "null < value");
-      }
-      expect(valueMirror.invoke(lt, [value]).reflectee, isFalse, reason: "value > value");
-      expect(valueMirror.invoke(lt, [equalValue]).reflectee, isFalse, reason: "value > equalValue");
-      expect(equalValueMirror.invoke(lt, [value]).reflectee, isFalse, reason: "equalValue > value");
-    }
-
-    // Then comparisons involving the greater values
-    for (var greaterValue in greaterValues) {
-      InstanceMirror greaterValueMirror = reflect(greaterValue);
-      if (greaterThan != null) {
-        expect(valueMirror.invoke(gt, [greaterValue]).reflectee, isFalse, reason: "value > greaterValue");
-        expect(greaterValueMirror.invoke(gt, [value]).reflectee, isTrue, reason: "greaterValue > value");
-      }
-      if (lessThan != null) {
-        expect(valueMirror.invoke(lt, [greaterValue]).reflectee, isTrue, reason: "value < greaterValue");
-        expect(greaterValueMirror.invoke(lt, [value]).reflectee, isFalse, reason: "greaterValue < value");
-      }
-      // Now move up to the next pair...
-      value = greaterValue;
-    }
-  }
-
-  /// Tests the equality (==), inequality (!=), less than (&lt;), greater than (&gt;), less than or equals (&lt;=),
-  /// and greater than or equals (&gt;=) operators if they exist on the object.
-  ///
-  /// <typeparam name="T">The type to test.</typeparam>
-  /// [value]: The base value.
-  /// [equalValue]: The value equal to but not the same object as the base value.
-  /// [greaterValue]: The values greater than the base value, in ascending order.
-  static void TestOperatorComparisonEquality<T>(T value, T equalValue, List<T> greaterValues) {
-    for (var greaterValue in greaterValues) {
-      TestOperatorEquality<T>(value, equalValue, greaterValue);
-    }
-    TestOperatorComparison<T>(value, equalValue, greaterValues);
-
-    InstanceMirror valueMirror = reflect(value);
-    InstanceMirror equalValueMirror = reflect(equalValue);
-    ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
-
-    var gte = new Symbol(">=");
-    var lte = new Symbol("<=");
-    var greaterThanOrEqual = classMirror.declarations[gte];
-    var lessThanOrEqual = classMirror.declarations[lte];
-
-    // First the comparisons with equal values
-    if (greaterThanOrEqual != null) {
-      //if (!type.GetTypeInfo().IsValueType)
-      {
-        expect(valueMirror.invoke(gte, [null]).reflectee, isTrue, reason: "value >= null");
-      // expect(valueMirror.invoke(gte, [value]), greaterThanOrEqual.Invoke(null, [ null, value ], isFalse, reason: "null >= value");
-      }
-      expect(valueMirror.invoke(gte, [value]).reflectee, isTrue, reason: "value >= value");
-      expect(valueMirror.invoke(gte, [equalValue]).reflectee, isTrue, reason: "value >= equalValue");
-      expect(equalValueMirror.invoke(gte, [value]).reflectee, isTrue, reason: "equalValue >= value");
-    }
-    if (lessThanOrEqual != null) {
-      //if (!type.GetTypeInfo().IsValueType)
-      {
-        expect(valueMirror.invoke(lte, [null]).reflectee, isFalse, reason: "value <= null");
-      // expect(lessThanOrEqual.Invoke(null, [ null, value ], isTrue, reason: "null <= value");
-      }
-      expect(valueMirror.invoke(lte, [value]).reflectee, isTrue, reason: "value <= value");
-      expect(valueMirror.invoke(lte, [equalValue]).reflectee, isTrue, reason: "value <= equalValue");
-      expect(equalValueMirror.invoke(lte, [value]).reflectee, isTrue, reason: "equalValue <= value");
-    }
-
-    // Now the "greater than" values
-    for (var greaterValue in greaterValues) {
-      InstanceMirror greaterValueMirror = reflect(greaterValue);
-      if (greaterThanOrEqual != null) {
-        expect(valueMirror.invoke(gte, [greaterValue]).reflectee, isFalse, reason: "value >= greaterValue");
-        expect(greaterValueMirror.invoke(gte, [value]).reflectee, isTrue, reason: "greaterValue >= value");
-      }
-      if (lessThanOrEqual != null) {
-        expect(valueMirror.invoke(lte, [greaterValue]).reflectee, isTrue, reason: "value <= greaterValue");
-        expect(greaterValueMirror.invoke(lte, [value]).reflectee, isFalse, reason: "greaterValue <= value");
-      }
-      // Now move up to the next pair...
-      value = greaterValue;
-    }
-  }
-
-  ///   Tests the equality and inequality operators (==, !=) if they exist on the object.
-  ///
-  /// <typeparam name="T">The type to test.</typeparam>
-  /// [value]: The base value.
-  /// [equalValue]: The value equal to but not the same object as the base value.
-  /// [unequalValue]: The value not equal to the base value.
-  static void TestOperatorEquality<T>(T value, T equalValue, T unequalValue) {
-    ValidateInput(value, equalValue, [unequalValue], "unequalValue");
-
-    InstanceMirror valueMirror = reflect(value);
-    InstanceMirror equalValueMirror = reflect(equalValue);
-    ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
-
-    var equ = new Symbol("==");
-    var equality = classMirror.declarations[equ];
-
-    if (equality != null) {
-      // if (!type.GetTypeInfo().IsValueType)
-      {
-        // expect(equality.Invoke(null, [ null, null ], isTrue, reason: "null == null");
-        expect(valueMirror.invoke(equ, [null]).reflectee, isFalse, reason: "value == null");
-      // expect(equality.Invoke(null, [ null, value ], isFalse, reason: "null == value");
-      }
-      expect(valueMirror.invoke(equ, [value]).reflectee, isTrue, reason: "value == value");
-      expect(valueMirror.invoke(equ, [equalValue]).reflectee, isTrue, reason: "value == equalValue");
-      expect(equalValueMirror.invoke(equ, [value]).reflectee, isTrue, reason: "equalValue == value");
-      expect(valueMirror.invoke(equ, [unequalValue]).reflectee, isFalse, reason: "value == unequalValue");
-    }
-    /*
-    var inequality = type.GetMethod("op_Inequality", [ type, type ]);
-    if (inequality != null)
-    {
-    if (!type.GetTypeInfo().IsValueType)
-    {
-    // expect(inequality.Invoke(null, [ null, null ], isFalse, reason: "null != null");
-    expect(inequality.Invoke(null, [ value, null ], isTrue, reason: "value != null");
-    // expect(inequality.Invoke(null, [ null, value ], isTrue, reason: "null != value");
-    }
-    expect(inequality.Invoke(null, [ value, value ], isFalse, reason: "value != value");
-    expect(inequality.Invoke(null, [ value, equalValue ], isFalse, reason: "value != equalValue");
-    expect(inequality.Invoke(null, [ equalValue, value ], isFalse, reason: "equalValue != value");
-    expect(inequality.Invoke(null, [ value, unequalValue ], isTrue, reason: "value != unequalValue");
-    }*/
   }
 
   /// Validates that the input parameters to the test methods are valid.

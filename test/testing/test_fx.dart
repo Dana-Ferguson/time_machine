@@ -6,6 +6,7 @@ import 'dart:mirrors';
 import 'dart:io';
 
 import 'package:test/test.dart';
+import 'test_fx_attributes.dart';
 
 // todo: should this be a separate test_package?
 // todo: it seems the test runner is synchronous, I guess that's okay
@@ -17,64 +18,28 @@ import 'package:test/test.dart';
 // I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion --> fixable via build.yaml???)
 // Transformers are dead in 2.0, long live build.yaml???
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
-const bool testGenTest = false;
+const bool testGenTest = true;
 String _classVarName;
 StringBuffer _gen_sb_imports = new StringBuffer();
 StringBuffer _gen_sb_methodCalls = new StringBuffer();
 String _testFilePath = 'unknown_test.dart';
 
-class SkipMe {
-  final String reason;
+Iterable<TestCase> toTestCases(TestCaseSource testCaseSource, ObjectMirror mirror) {
+  var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable;
 
-  const SkipMe([this.reason]);
-  const SkipMe.unimplemented() : reason = 'unimplemented';
-  const SkipMe.parseIds() : reason = 'cannot parse dtz ids';
-  const SkipMe.noCompareInfo() : reason = 'compare info is not ported';
-  const SkipMe.text() : reason = 'text';
-}
+  if (argumentsSource.isEmpty) return const [];
+  var testCases = new List<TestCase>();
 
-class Test {
-  final String name;
-  const Test([this.name]);
-}
-
-class TestCase {
-  final Iterable arguments;
-  final String description;
-
-  const TestCase(this.arguments, [this.description]);
-}
-
-class TestCaseSource {
-  // List of Lists (n-arguments), or just a List (single argument)
-  final Symbol source;
-  final String description;
-
-  const TestCaseSource(this.source, [this.description]);
-
-  Iterable<TestCase> toTestCases(ObjectMirror mirror) {
-    var argumentsSource = mirror.getField(source).reflectee as Iterable;
-
-    if (argumentsSource.isEmpty) return const [];
-    var testCases = new List<TestCase>();
-
-    for (var arguments in argumentsSource) {
-      if (arguments is TestCaseData) {
-        if (arguments.arguments is List) testCases.add(new TestCase(arguments.arguments, arguments.name));
-        else testCases.add(new TestCase([arguments.arguments], arguments.name));
-      }
-      else if (arguments is List) testCases.add(new TestCase(arguments));
-      else testCases.add(new TestCase([arguments]));
+  for (var arguments in argumentsSource) {
+    if (arguments is TestCaseData) {
+      if (arguments.arguments is List) testCases.add(new TestCase(arguments.arguments, arguments.name));
+      else testCases.add(new TestCase([arguments.arguments], arguments.name));
     }
-
-    return testCases;
+    else if (arguments is List) testCases.add(new TestCase(arguments));
+    else testCases.add(new TestCase([arguments]));
   }
-}
 
-class TestCaseData {
-  String name;
-  Object arguments;
-  TestCaseData(this.arguments);
+  return testCases;
 }
 
 int _skippedTotal = 0;
@@ -140,14 +105,8 @@ void _writeTestGenFile() {
   sb.writeln();
   sb.writeln("import 'package:test/test.dart';");
   sb.writeln();
-  sb.writeln("import 'package:time_machine/time_machine_internal.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_calendars.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_fields.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_globalization.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_patterns.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_text.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_utilities.dart';");
-  sb.writeln("import 'package:time_machine/time_machine_timezones.dart';");
+  sb.writeln("import 'package:time_machine/src/time_machine_internal.dart';");
+  sb.writeln("import 'package:time_machine/time_machine.dart';");
   sb.writeln();
   
   sb.write(_gen_sb_imports);
@@ -223,7 +182,7 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
   method
       .metadata
       .where((m) => m.reflectee is TestCaseSource)
-      .map((m) => (m.reflectee as TestCaseSource).toTestCases(mirror))
+      .map((m) => toTestCases(m.reflectee as TestCaseSource, mirror))
       .fold(null, (p, e) => testCases.addAll(e));
 
   if (testCases.isEmpty) {
