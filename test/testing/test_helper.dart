@@ -13,7 +13,7 @@ Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction 
 Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction = null;
 Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction = null;
 
-void SetFunctions() {
+void setFunctions() {
   helpingMachine.setFunctions();
 }
 

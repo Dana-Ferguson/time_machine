@@ -9,7 +9,8 @@
 //import 'package:matcher/matcher.dart';
 //import 'package:time_machine/time_machine_timezones.dart';
 
-export 'package:time_machine/time_machine.dart' show TimeMachine;
+import 'package:time_machine/time_machine.dart' as publicMachine;
+import 'testing/test_helper.dart' as helper;
 
 // export 'testing/test_fx.dart';
 export 'testing/time_matchers.dart';
@@ -30,6 +31,14 @@ import 'testing/test_fx_interface.dart'
 as helpingMachine;
 
 Future<dynamic> runTests() => helpingMachine.runTests();
+
+abstract class TimeMachine {
+  TimeMachine() { throw new StateError('TimeMachine can not be instantiated.'); }
+  static Future initialize([dynamic arg]) async {
+    helper.setFunctions();
+    await publicMachine.TimeMachine.initialize(arg);
+  }
+}
 
 // From Testing Objects
 abstract class TestObjects {

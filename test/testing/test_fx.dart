@@ -18,7 +18,7 @@ import 'test_fx_attributes.dart';
 // I was going to use Reflectable, but it's 2.0 version adds too much boiler (in a viral fashion --> fixable via build.yaml???)
 // Transformers are dead in 2.0, long live build.yaml???
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
-const bool testGenTest = true;
+const bool testGenTest = false;
 String _classVarName;
 StringBuffer _gen_sb_imports = new StringBuffer();
 StringBuffer _gen_sb_methodCalls = new StringBuffer();
@@ -106,7 +106,7 @@ void _writeTestGenFile() {
   sb.writeln("import 'package:test/test.dart';");
   sb.writeln();
   sb.writeln("import 'package:time_machine/src/time_machine_internal.dart';");
-  sb.writeln("import 'package:time_machine/time_machine.dart';");
+  sb.writeln("import '../time_machine_testing.dart';");
   sb.writeln();
   
   sb.write(_gen_sb_imports);

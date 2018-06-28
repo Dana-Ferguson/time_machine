@@ -19,6 +19,7 @@ void setFunctions() {
   testOperatorComparisonFunction = TestHelperWithMirrors.TestOperatorComparison;
   testOperatorComparisonEqualityFunction = TestHelperWithMirrors.TestOperatorComparisonEquality;
   testOperatorEqualityFunction = TestHelperWithMirrors.TestOperatorEquality;
+  print("Operator Functions with Mirrors!");
 }
 
 /// Provides methods to help run tests for some of the system interfaces and object support.
