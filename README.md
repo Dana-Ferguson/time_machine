@@ -112,7 +112,7 @@ It would look just like the VM example.
 ```dart
 class Foo {
   // Okay in Dart_VM 1.24 -- Okay in DartPad\Dart2JS
-  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev63 (but no conditional imports? so TimeMachine doesn't work)
+  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev63
   @override String toString([int x = 0, int y = 0, int z = 0]) 
     => '${x + y+ x}';
 }

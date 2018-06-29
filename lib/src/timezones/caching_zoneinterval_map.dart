@@ -63,7 +63,7 @@ class _HashArrayCache implements IZoneIntervalMap {
   /// [instant]: The Instant to test.
   /// Returns: The defined ZoneOffsetPeriod or null.
   ZoneInterval getZoneInterval(Instant instant) {
-    int period = instant.daysSinceEpoch >> _periodShift;
+    int period = safeRightShift(instant.daysSinceEpoch, _periodShift);
     int index = period & _cachePeriodMask;
     var node = _instantCache[index];
     if (node == null || node.period != period) {
@@ -98,6 +98,7 @@ class _HashCacheNode {
   /// period - at which point we're done. If not, find the next interval, create
   /// a new node referring to that interval and the previous interval, and keep going.
   static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
+    // todo: does this need to be a safe shift?
     var days = period << _HashArrayCache._periodShift;
     var periodStart = IInstant.untrusted(new Span(days: math.max(days, IInstant.minDays)));
     var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);

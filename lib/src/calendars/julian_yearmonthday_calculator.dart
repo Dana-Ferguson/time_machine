@@ -28,7 +28,7 @@ class JulianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     if (relativeYear <= 0) {
       // Add 3 before shifting right since /4 and >>2 behave differently
       // on negative numbers.
-      leapYears = (relativeYear + 3) >> 2;
+      leapYears = safeRightShift(relativeYear + 3, 2);
     }
     else {
       leapYears = relativeYear >> 2;

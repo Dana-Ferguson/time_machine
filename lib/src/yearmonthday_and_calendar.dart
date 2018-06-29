@@ -33,7 +33,6 @@ class YearMonthDayCalendar {
   // final int _value;
   final YearMonthDay yearMonthDay;
 
-  
   YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
 // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
@@ -63,8 +62,6 @@ class YearMonthDayCalendar {
   // Just for testing purposes...
   @visibleForTesting
   static YearMonthDayCalendar Parse(String text) {
-// throw new UnimplementedError('We need to be able to parse the CalendarOrdinal Enum.');
-
     // Handle a leading - to negate the year
     if (text.startsWith("-")) {
       var ymdc = Parse(text.substring(1));
@@ -79,7 +76,7 @@ class YearMonthDayCalendar {
         // bits[3]));
         CalendarOrdinal.parse(bits[3]));
   }
-  
+
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
   @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';

@@ -90,6 +90,8 @@ abstract class IDateTimeZoneWriter {
 //
 }
 
+// todo: all of these may affect performance
+
 // todo: only use this for porting... remove all of these later
 @deprecated
 class OutBox<T> {
@@ -97,8 +99,24 @@ class OutBox<T> {
   OutBox(this.value);
 }
 
+// https://en.wikipedia.org/wiki/Modulo_operation
 // we should only use this where 'x' can be negative
 int csharpMod(num x, int y) {
   if (x >= 0) return x % y;
   return -((-x)%y);
 }
+
+// https://en.wikipedia.org/wiki/Arithmetic_shift#Handling_the_issue_in_programming_languages
+// JS does bit shifting with two's complement preserved
+// DartVM (like nearly everything else) does bit shifting arithmetically
+// These shifts always work, so... I don't now if the `x>=0` check actually saves anytime or not.
+int negRightShift(int x, int y) {
+  return -(~x >> y) -1;
+}
+
+int negLeftShift(int x, int y) {
+  return -~(x << y) -1;
+}
+
+int safeRightShift(int x, int y) => x >= 0 ? x >> y : -(~x >> y) -1; 
+int safeLeftShift(int x, int y) => x >= 0 ? x << y : -~(x << y) -1;

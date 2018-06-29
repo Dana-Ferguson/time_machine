@@ -165,7 +165,8 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
       // (year / 4) - (year / 100) + (year / 400),
       // it works for both positive and negative values, except this optimization
       // eliminates two divisions.
-      leapYears = ((year + 3) >> 2) - leapYears + ((leapYears + 3) >> 2) - 1;
+      // leapYears = ((year + 3) >> 2) - leapYears + ((leapYears + 3) >> 2) - 1;
+      leapYears = safeRightShift(year + 3, 2) - leapYears + safeRightShift(leapYears + 3, 2) - 1;
     }
     else {
       leapYears = (year >> 2) - leapYears + (leapYears >> 2);
