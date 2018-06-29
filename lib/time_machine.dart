@@ -11,11 +11,6 @@ import 'src/platforms/platform_io.dart'
   // or at lest it seemed it should be, when I tried `dart.library.js` in chrome, it failed to evaluate to true
   if (dart.library.html) 'src/platforms/web.dart'
   if (dart.library.io) 'src/platforms/vm.dart'
-  //if (dart.library.js) "package:time_machine/src/platforms/web.dart"
-  //if (dart.library.io) "package:time_machine/src/platforms/vm.dart"
-  // looks like Flutter has all the same import defines as the vm does.. so, I'm going with a runtime flag instead of a compile time flag
-  // e.g., Flutter does not support mirrors and isolates (I think) -- yet, the defines are true
-  // if (dart.library.io) "src/platforms/flutter.dart"
 as timeMachine;
 
 // todo: lots of spiders in this one!

@@ -17,28 +17,19 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import 'platform_io.dart';
 
 class _WebMachineIO implements PlatformIO {
-  // todo: now, we are using [Resource] we can move this back out of the Platform directory
   @override
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return new ByteData(0);
 
-    // HttpRequest file = await HttpRequest.request('../lib/data/$path/$filename', responseType: 'blob', mimeType: 'application/octet-stream');
-    var resource = new Resource("package:time_machine/data/$path/$filename");
-
+    var resource = new Resource("packages/time_machine/data/$path/$filename");
     // todo: probably a better way to do this
     var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
     return binary;
   }
-  
+
   @override
   Future/**<Map<String, dynamic>>*/ getJson(String path, String filename) async {
-    // var file = await HttpRequest.getString('../lib/data/$path/$filename');
-    // return JSON.decode(file);
-    
-    // todo: this throws a cast error failure... looks like we're going to need seperate
-    // Map<String, dynamic> and a List / JSArray methods
-
-    var resource = new Resource("package:time_machine/data/$path/$filename");
+    var resource = new Resource("packages/time_machine/data/$path/$filename");
     return JSON.decode(await resource.readAsString());
   }
 }
@@ -48,7 +39,7 @@ Future initialize(dynamic arg) => TimeMachine.initialize();
 class TimeMachine {
   // todo: is it okay to have a Logger in a library... can this be 'tree-shaken out' for users who aren't logging?
   static final Logger _log = new Logger('TimeMachine');
-  
+
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
     print('Web machine!');
@@ -58,7 +49,7 @@ class TimeMachine {
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
     IDateTimeZoneProviders.defaultProvider = tzdb;
-    
+
     _readIntlObject();
 
     // Default TimeZone
@@ -71,7 +62,7 @@ class TimeMachine {
     var culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture;
     // todo: remove CultureInfo.currentCulture
-    
+
     // todo: set default calendar from [_calendar]
   }
 

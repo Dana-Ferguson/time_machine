@@ -19,9 +19,8 @@ class _VirtualMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return new ByteData(0);
-    // var file = new File('${Directory.current.path}/lib/data/$path/$filename');
-    var resource = new Resource("package:time_machine/data/$path/$filename");
 
+    var resource = new Resource("package:time_machine/data/$path/$filename");
     // todo: probably a better way to do this
     var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
     return binary;
@@ -30,9 +29,6 @@ class _VirtualMachineIO implements PlatformIO {
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    // var file = new File('${Directory.current.path}/lib/data/$path/$filename');
-    // return JSON.decode(await file.readAsString());
-    
     var resource = new Resource("package:time_machine/data/$path/$filename");
     return JSON.decode(await resource.readAsString());
   }
