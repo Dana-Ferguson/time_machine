@@ -42,7 +42,6 @@ class TimeMachine {
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
-    print('Web machine!');
     // Map IO functions
     PlatformIO.local = new _WebMachineIO();
 

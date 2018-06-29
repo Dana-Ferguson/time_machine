@@ -76,7 +76,6 @@ class TimeMachine  {
   
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
-    print('VIRTUAL machine!');
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     // todo: we want this for flutter -- do we want this for the VM too?
     ICultures.loadAllCulturesInformation_SetFlag();
