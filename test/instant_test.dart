@@ -132,7 +132,7 @@ void FromUnixTimeMilliseconds_Valid()
 // @Test()
 void FromUnixTimeMilliseconds_TooLarge()
 {
-  expect(() => new Instant.fromUnixTimeMilliseconds(Utility.int64MaxValue ~/ 100), throwsException);
+  expect(() => new Instant.fromUnixTimeMilliseconds(Platform.int64MaxValue ~/ 100), throwsException);
 }
 
 
@@ -140,7 +140,7 @@ void FromUnixTimeMilliseconds_TooLarge()
 void FromUnixTimeMilliseconds_TooSmall()
 {
   // expect(() => throw new Exception('boom'), throwsException);
-  expect(new Instant.fromUnixTimeMilliseconds(Utility.int64MinValue ~/ 100), throwsException);
+  expect(new Instant.fromUnixTimeMilliseconds(Platform.int64MinValue ~/ 100), throwsException);
 }
 
 
@@ -156,14 +156,14 @@ void FromUnixTimeSeconds_Valid()
 //@Test()
 void FromUnixTimeSeconds_TooLarge()
 {
-  expect(() => new Instant.fromUnixTimeSeconds(Utility.int64MaxValue ~/ 1000000), throwsException);
+  expect(() => new Instant.fromUnixTimeSeconds(Platform.int64MaxValue ~/ 1000000), throwsException);
 }
 
 
 //@Test()
 void FromUnixTimeSeconds_TooSmall()
 {
-  expect(() => new Instant.fromUnixTimeSeconds(Utility.int64MinValue ~/ 1000000), throwsException);
+  expect(() => new Instant.fromUnixTimeSeconds(Platform.int64MinValue ~/ 1000000), throwsException);
 }
 
 @Test()
@@ -212,12 +212,12 @@ void UnixConversions_ExtremeValues()
   var t = new Instant.fromUnixTimeTicks(x);
   expect(max, new Instant.fromUnixTimeSeconds(max.toUnixTimeSeconds()));
   expect(max, new Instant.fromUnixTimeMilliseconds(max.toUnixTimeMilliseconds()));
-  expect(max, new Instant.fromUnixTimeTicks(max.toUnixTimeTicks()));
+  if (Platform.isVM) expect(max, new Instant.fromUnixTimeTicks(max.toUnixTimeTicks()));
 
   var min = Instant.minValue;
   expect(min, new Instant.fromUnixTimeSeconds(min.toUnixTimeSeconds()));
   expect(min, new Instant.fromUnixTimeMilliseconds(min.toUnixTimeMilliseconds()));
-  expect(min, new Instant.fromUnixTimeTicks(min.toUnixTimeTicks()));
+  if (Platform.isVM) expect(min, new Instant.fromUnixTimeTicks(min.toUnixTimeTicks()));
 }
 
 @Test() @SkipMe.unimplemented()

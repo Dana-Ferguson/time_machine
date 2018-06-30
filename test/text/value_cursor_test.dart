@@ -263,7 +263,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(actual = value.parseInt64Digits(1, 13), isNotNull);
     expect(actual, 9999999999999 /*L*/);
     // Assert.Greater(9999999999999/*L*/, Utility.int32MaxValue);
-    expect(9999999999999 /*L*/, greaterThan(Utility.int32MaxValue));
+    expect(9999999999999 /*L*/, greaterThan(Platform.int32MaxValue));
   }
 
   @Test()
@@ -371,7 +371,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.parseInt64<String>(result, 'String'), isNull);
-    expect(Utility.int64MaxValue, result.value);
+    expect(Platform.int64MaxValue, result.value);
   }
 
   @Test()
@@ -380,7 +380,7 @@ class ValueCursorTest extends TextCursorTestBase {
     expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
     expect(value.parseInt64<String>(result, 'String'), isNull);
-    expect(Utility.int64MinValue, result.value);
+    expect(Platform.int64MinValue, result.value);
   }
 
   @Test()

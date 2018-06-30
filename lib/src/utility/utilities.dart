@@ -2,23 +2,9 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'dart:math' as math;
-import 'package:logging/logging.dart';
 
 // todo: should this be called Utility? or even be packaged like it is?
-abstract class Utility {
-  static final Logger _log = new Logger('Utility');
-
-  // Log Levels:
-  // FINEST, FINER, FINE, CONFIG, INFO, WARNING, SEVERE, SHOUT
-  static void printAllLogs() {
-    Logger.root.level = Level.CONFIG; // Level.ALL;
-    Logger.root.onRecord.listen((LogRecord rec) {
-      print('${rec.level.name}: ${rec.time}: ${rec.message}');
-    });
-  }
-
-  static bool _isDartVM = null;
-  static bool get isDartVM => _isDartVM ??= _checkForDartVM();
+abstract class Platform {
   static bool _checkForDartVM() {
     double n = 1.0;
     String s = n.toString();
@@ -26,10 +12,31 @@ abstract class Utility {
       return true;
     else if (s == '1') return false;
 
-    _log.warning('Performed simple isDart (or JS) check and it did not turn out as expected. s == $s;');
-
     return false;
   }
+
+  static void startWeb() {
+    _isWeb = true;
+    _isVM = false;
+  }
+
+  static void startVM() {
+    _isWeb = false;
+    _isVM = true;
+  }
+
+  static Object dirtyCheck() {
+    var isDartVM = _checkForDartVM();
+    _isVM = isDartVM;
+    _isWeb = !_isVM;
+    return null;
+  }
+
+  static bool _isWeb = null;
+  static bool _isVM = null;
+
+  static bool get isWeb => _isWeb ?? dirtyCheck() ?? _isWeb;
+  static bool get isVM => _isVM ?? dirtyCheck() ?? _isVM;
 
   static const intMaxValueJS = 9007199254740992; // math.pow(2, 53);
   static const intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
@@ -41,7 +48,7 @@ abstract class Utility {
   static int _intMaxValue = null;
   static int get intMaxValue => _intMaxValue ?? (_intMaxValue = _getIntMaxValue());
   static int _getIntMaxValue() {
-    if (isDartVM) return math.pow(2, 63);
+    if (isVM) return math.pow(2, 63);
     return intMaxValueJS;
   }
 }

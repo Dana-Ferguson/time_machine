@@ -148,7 +148,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// positive values are supported.
   void addParseInt64ValueAction(int minimumDigits, int maximumDigits, String patternChar,
       int minimumValue, int maximumValue, Function(TBucket, int) valueSetter) {
-    Preconditions.debugCheckArgumentRange('minimumValue', minimumValue, 0, Utility.int64MaxValue);
+    Preconditions.debugCheckArgumentRange('minimumValue', minimumValue, 0, Platform.int64MaxValue);
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.index;

@@ -93,7 +93,7 @@ void PlusTicks_Simple()
 @Test()
 void PlusTicks_Long()
 {
-  expect(TimeConstants.ticksPerDay > Utility.int32MaxValue, isTrue);
+  expect(TimeConstants.ticksPerDay > Platform.int32MaxValue, isTrue);
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(12, 15, 9);
   LocalTime expectedBackward = new LocalTime(12, 15, 7);

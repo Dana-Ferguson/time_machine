@@ -5,13 +5,11 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' as io;
 
 import 'dart:typed_data';
 import 'package:resource/resource.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'platform_io.dart';
 
@@ -56,7 +54,7 @@ class _FlutterMachineIO implements PlatformIO {
 }
 
 Future initialize(dynamic arg) {
-  if (Platform.isIOS || Platform.isAndroid || Platform.isFuchsia) {
+  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
     if (arg == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
     PlatformIO.local = new _FlutterMachineIO(arg);
@@ -73,13 +71,15 @@ Future initialize(dynamic arg) {
 // IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {
   static bool _longIdNames = false;
-  
+
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
+    Platform.startVM();
+
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
     // todo: we want this for flutter -- do we want this for the VM too?
     ICultures.loadAllCulturesInformation_SetFlag();
-    
+
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;
     IDateTimeZoneProviders.defaultProvider = tzdb;
@@ -93,7 +93,7 @@ class TimeMachine  {
     TzdbIndex.localId = local.id;
 
     // Default Culture
-    var cultureId = Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
+    var cultureId = io.Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
     var culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture;
     // todo: remove CultureInfo.currentCulture
@@ -193,49 +193,49 @@ class TimeMachine  {
   // for the time, the above method is preferred.
   static Future<String> _getTimeZoneId() async {
     try {
-      if (Platform.isFuchsia) {
+      if (io.Platform.isFuchsia) {
         //
       }
-      else if (Platform.isLinux) {
+      else if (io.Platform.isLinux) {
         // e.g. cat /etc/timezone /g --> 'America/New_York\n'
-        var id = await Process.run("cat", ["/etc/timezone"]);
+        var id = await io.Process.run("cat", ["/etc/timezone"]);
         return (id.stdout as String).trim();
       }
-      else if (Platform.isWindows) {
+      else if (io.Platform.isWindows) {
         // todo: Test
         // This returns a CLDR windows timezone see: https://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml
         // We can then convert this to a TZDB timezone.
         // e.g. tzutl /g --> 'Eastern Standard Time'
-        var id = await Process.run("tzutil", ['/g']);
+        var id = await io.Process.run("tzutil", ['/g']);
         return windowsZoneToCldrZone((id.stdout as String).trim());
       }
-      else if (Platform.isAndroid) {
+      else if (io.Platform.isAndroid) {
         //
       }
-      else if (Platform.isIOS) {
+      else if (io.Platform.isIOS) {
         //
       }
-      else if (Platform.isMacOS) {
+      else if (io.Platform.isMacOS) {
         //
       }
     } catch (e) {
       // todo: custom error type
-      throw new StateError('LocalTimeZone not found; OS is ${Platform.operatingSystem}; Error was $e');
+      throw new StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; Error was $e');
     }
 
-    throw new StateError('LocalTimeZone not found; OS is ${Platform.operatingSystem}; OS was unsupported.');
+    throw new StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
   }
 
   static Map<String, String> _windowsZones;
   static Future windowsZoneToCldrZone(String id) async {
     if (_windowsZones == null) {
-      var file = new File('${Directory.current.path}/lib/data/zones.json');
+      var file = new io.File('${io.Directory.current.path}/lib/data/zones.json');
       _windowsZones = JSON.decode(await file.readAsString());
     }
 
     return _windowsZones[id];
   }
-   
+
   static const int _minZoneLongIdLength = 9;
   static const int _maxZoneShortIdLength = 5;
   static const Map<String, String> _zoneIdMap = const {

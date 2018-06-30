@@ -156,7 +156,7 @@ class Instant implements Comparable<Instant> {
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
   DateTime toDateTimeUtc() {
-    if (Utility.isDartVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
+    if (Platform.isVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
     return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);
   }
 
@@ -167,7 +167,7 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
-    if (Utility.isDartVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
+    if (Platform.isVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
     return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 

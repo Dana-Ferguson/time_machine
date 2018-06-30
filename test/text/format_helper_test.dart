@@ -42,9 +42,9 @@ Future main() async {
 @TestCase(const [-123, 6, "-000123"])
 @TestCase(const [-123, 7, "-0000123"])
 @TestCase(const [-123, 15, "-000000000000123"])
-@TestCase(const [Utility.int32MinValue, 15, "-000002147483648"])
-@TestCase(const [Utility.int32MinValue, 10, "-2147483648"])
-@TestCase(const [Utility.int32MinValue, 3, "-2147483648"])
+@TestCase(const [Platform.int32MinValue, 15, "-000002147483648"])
+@TestCase(const [Platform.int32MinValue, 10, "-2147483648"])
+@TestCase(const [Platform.int32MinValue, 3, "-2147483648"])
 void TestLeftPad(int value, int length, String expected)
 {
   var builder = new StringBuffer();
@@ -94,7 +94,7 @@ void TestAppendFractionTruncate(String initial, int value, int length, int scale
 @TestCase(const [0, "x0"])
 @TestCase(const [-1230, "x-1230"])
 @TestCase(const [1230, "x1230"])
-@TestCase(const [Utility.int64MinValue, "x-9223372036854775808"])
+@TestCase(const [Platform.int64MinValue, "x-9223372036854775808"])
 void FormatInvariant(int value, String expected)
 {
   var builder = new StringBuffer("x");

@@ -960,9 +960,9 @@ void FromNanoseconds()
 @Test()
 void AddPeriodToPeriod_NoOverflow()
 {
-  Period p1 = new Period.fromHours(Utility.int64MaxValue);
+  Period p1 = new Period.fromHours(Platform.int64MaxValue);
   Period p2 = new Period.fromMinutes(60);
-  expect((new PeriodBuilder()..hours = Utility.int64MaxValue..minutes = 60).build(), p1 + p2);
+  expect((new PeriodBuilder()..hours = Platform.int64MaxValue..minutes = 60).build(), p1 + p2);
 }
 
 /* We don't overflow

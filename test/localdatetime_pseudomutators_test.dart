@@ -211,7 +211,7 @@ void PlusTicks_Simple()
 @Test()
 void PlusTicks_Long()
 {
-  expect(TimeConstants.ticksPerDay > Utility.int32MaxValue, isTrue);
+  expect(TimeConstants.ticksPerDay > Platform.int32MaxValue, isTrue);
   LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
   LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 3, 12, 15, seconds: 8);
   LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 1, 12, 15, seconds: 8);
@@ -361,8 +361,8 @@ void With_DateAdjuster()
 @Test()
 @TestCase(const [-9998, 1, 1, -1])
 @TestCase(const [9999, 12, 31, 24])
-@TestCase(const [1970, 1, 1, Utility.int64MaxValue])
-@TestCase(const [1970, 1, 1, Utility.int64MinValue])
+@TestCase(const [1970, 1, 1, Platform.int64MaxValue])
+@TestCase(const [1970, 1, 1, Platform.int64MinValue])
 void PlusHours_Overflow(int year, int month, int day, int hours)
 {
   TestHelper.AssertOverflow<int, LocalDateTime>(new LocalDateTime.at(year, month, day, 0, 0).plusHours, hours);

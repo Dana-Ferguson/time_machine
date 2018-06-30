@@ -3,7 +3,6 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
-import 'dart:html';
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:js';
@@ -42,6 +41,8 @@ class TimeMachine {
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
+    Platform.startWeb();
+
     // Map IO functions
     PlatformIO.local = new _WebMachineIO();
 

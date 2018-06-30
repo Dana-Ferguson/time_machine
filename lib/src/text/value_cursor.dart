@@ -142,7 +142,7 @@ class ValueCursor extends TextCursor {
       }
       if (negative && digit == 8) {
         moveNext();
-        result.value = Utility.int64MinValue;
+        result.value = Platform.int64MinValue;
         return null;
       }
       if (digit > 7) {

@@ -40,7 +40,7 @@ abstract class ISpan {
   /*BigInteger.One*/;
 
   // 285420 years worth -- we are good for anything;
-  static const int maxMillis = Utility.intMaxValueJS;
+  static const int maxMillis = Platform.intMaxValueJS;
   static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
   static bool isInt64Representable(Span span) => span._isInt64Representable;
@@ -308,7 +308,7 @@ class Span implements Comparable<Span> {
   }
 
   bool get _isInt64Representable {
-    if (Utility.intMaxValue / TimeConstants.nanosecondsPerMillisecond < _milliseconds) {
+    if (Platform.intMaxValue / TimeConstants.nanosecondsPerMillisecond < _milliseconds) {
       return false;
     }
 

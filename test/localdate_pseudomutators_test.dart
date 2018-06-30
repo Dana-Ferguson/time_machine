@@ -149,8 +149,8 @@ void PlusWeeks_Simple()
 @TestCase(const [-9996, 1, 1, -1000])
 @TestCase(const [9999, 12, 31, 1])
 @TestCase(const [9997, 12, 31, 1000])
-@TestCase(const [2000, 1, 1, Utility.int32MaxValue])
-@TestCase(const [1, 1, 1, Utility.int32MinValue])
+@TestCase(const [2000, 1, 1, Platform.int32MaxValue])
+@TestCase(const [1, 1, 1, Platform.int32MinValue])
 void PlusDays_OutOfRange(int year, int month, int day, int days)
 {
   var start = new LocalDate(year, month, day);

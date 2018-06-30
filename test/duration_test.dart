@@ -29,8 +29,8 @@ void DefaultConstructor()
 // this and older Span tests.
 
 @Test()
-@TestCase(const [Utility.int64MinValue])
-@TestCase(const [Utility.int64MinValue + 1])
+@TestCase(const [Platform.int64MinValue])
+@TestCase(const [Platform.int64MinValue + 1])
 @TestCase(const [-TimeConstants.nanosecondsPerDay - 1])
 @TestCase(const [-TimeConstants.nanosecondsPerDay])
 @TestCase(const [-TimeConstants.nanosecondsPerDay + 1])
@@ -40,8 +40,8 @@ void DefaultConstructor()
 @TestCase(const [TimeConstants.nanosecondsPerDay - 1])
 @TestCase(const [TimeConstants.nanosecondsPerDay])
 @TestCase(const [TimeConstants.nanosecondsPerDay + 1])
-@TestCase(const [Utility.int64MaxValue - 1])
-@TestCase(const [Utility.int64MaxValue])
+@TestCase(const [Platform.int64MaxValue - 1])
+@TestCase(const [Platform.int64MaxValue])
 void Int64Conversions(int int64Nanos)
 {
   var nanoseconds = new Span(nanoseconds: int64Nanos);
@@ -49,8 +49,8 @@ void Int64Conversions(int int64Nanos)
 }
 
 @Test()
-@TestCase(const [Utility.int64MinValue])
-@TestCase(const [Utility.int64MinValue + 1])
+@TestCase(const [Platform.int64MinValue])
+@TestCase(const [Platform.int64MinValue + 1])
 @TestCase(const [-TimeConstants.nanosecondsPerDay - 1])
 @TestCase(const [-TimeConstants.nanosecondsPerDay])
 @TestCase(const [-TimeConstants.nanosecondsPerDay + 1])
@@ -60,8 +60,8 @@ void Int64Conversions(int int64Nanos)
 @TestCase(const [TimeConstants.nanosecondsPerDay - 1])
 @TestCase(const [TimeConstants.nanosecondsPerDay])
 @TestCase(const [TimeConstants.nanosecondsPerDay + 1])
-@TestCase(const [Utility.int64MaxValue - 1])
-@TestCase(const [Utility.int64MaxValue])
+@TestCase(const [Platform.int64MaxValue - 1])
+@TestCase(const [Platform.int64MaxValue])
 void BigIntegerConversions(int int64Nanos)
 {
   // todo: BigInteger is a separate class in Dart2.0

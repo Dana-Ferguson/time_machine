@@ -37,7 +37,7 @@ class TimePeriodField
   final int _unitsPerDay;
 
   TimePeriodField._(this._unitNanoseconds) :
-        _maxLongUnits = Utility.intMaxValue ~/ _unitNanoseconds,
+        _maxLongUnits = Platform.intMaxValue ~/ _unitNanoseconds,
         _unitsPerDay = TimeConstants.nanosecondsPerDay ~/ _unitNanoseconds;
 
   LocalDateTime addDateTime(LocalDateTime start, int units)

@@ -156,9 +156,9 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..text = "PT1H-1M",
 
     // Max/min
-    new Data(new Period.fromHours(Utility.int64MaxValue))
+    new Data(new Period.fromHours(Platform.int64MaxValue))
       ..text = "PT9223372036854775807H",
-    new Data(new Period.fromHours(Utility.int64MinValue))
+    new Data(new Period.fromHours(Platform.int64MinValue))
       ..text = "PT-9223372036854775808H",
   ];
 

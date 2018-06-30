@@ -32,7 +32,7 @@ class ZoneRecurrence {
   final int toYear;
 
   // todo: there seems to be a lot of dependence on 'number systems' here -- not sure Dart likes this
-  bool get isInfinite => toYear == Utility.int32MaxValue;
+  bool get isInfinite => toYear == Platform.int32MaxValue;
 
   /// Initializes a new instance of the [ZoneRecurrence] class.
   ///
@@ -42,15 +42,15 @@ class ZoneRecurrence {
   /// [fromYear]: The first year in which this recurrence is valid
   /// [toYear]: The last year in which this recurrence is valid
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
-      : this._minLocalInstant = fromYear == Utility.int32MinValue ? LocalInstant.beforeMinValue : yearOffset?.getOccurrenceForYear(fromYear),
-        this._maxLocalInstant = toYear == Utility.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset?.getOccurrenceForYear(toYear) {
+      : this._minLocalInstant = fromYear == Platform.int32MinValue ? LocalInstant.beforeMinValue : yearOffset?.getOccurrenceForYear(fromYear),
+        this._maxLocalInstant = toYear == Platform.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset?.getOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
     // todo: magic numbers
-    Preconditions.checkArgument(fromYear == Utility.int32MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
+    Preconditions.checkArgument(fromYear == Platform.int32MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
         "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
-    Preconditions.checkArgument(toYear == Utility.int32MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',
+    Preconditions.checkArgument(toYear == Platform.int32MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',
         "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
   }
 
@@ -289,6 +289,6 @@ class ZoneRecurrence {
   /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
   ZoneRecurrence toStartOfTime() =>
-      fromYear == Utility.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Utility.int32MinValue, toYear);
+      fromYear == Platform.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Platform.int32MinValue, toYear);
 }
 

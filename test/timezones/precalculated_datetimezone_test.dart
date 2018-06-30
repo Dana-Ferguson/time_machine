@@ -29,10 +29,10 @@ final ZoneInterval ThirdInterval =
 IZoneInterval.newZoneInterval("Third", SecondInterval.end, new Instant.fromUtc(2005, 1, 20, 8, 0), new Offset.fromHours(-5), Offset.zero);
 
 final ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.zero,
-new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0)), 1960, Utility.int32MaxValue);
+new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0)), 1960, Platform.int32MaxValue);
 
 final ZoneRecurrence Summer = new ZoneRecurrence("Summer", new Offset.fromHours(1),
-new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 1960, Utility.int32MaxValue);
+new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 1960, Platform.int32MaxValue);
 
 final StandardDaylightAlternatingMap TailZone =
 new StandardDaylightAlternatingMap(new Offset.fromHours(-6), Winter, Summer);

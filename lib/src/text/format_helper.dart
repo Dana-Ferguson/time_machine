@@ -60,7 +60,7 @@ abstract class FormatHelper {
     }
     outputBuffer.write('-');
     // Special case, as we can't use Math.Abs.
-    if (value == Utility.int32MinValue) {
+    if (value == Platform.int32MinValue) {
       if (length > 10) {
         outputBuffer.write("000000".substring(16 - length));
       }
@@ -80,7 +80,7 @@ abstract class FormatHelper {
   /// [length]: The length to fill.
   /// [outputBuffer]: The output buffer to add the digits to.
   static void leftPadNonNegative(int value, int length, StringBuffer outputBuffer) {
-    Preconditions.debugCheckArgumentRange('value', value, 0, Utility.int32MaxValue);
+    Preconditions.debugCheckArgumentRange('value', value, 0, Platform.int32MaxValue);
     Preconditions.debugCheckArgumentRange('length', length, 1, _maximumPaddingLength);
     // Special handling for common cases, because we really don't want a heap allocation
     // if we can help it...
@@ -152,7 +152,7 @@ abstract class FormatHelper {
   /// [length]: The length to fill.
   /// [outputBuffer]: The output buffer to add the digits to.
   static void leftPadNonNegativeInt64(int value, int length, StringBuffer outputBuffer) {
-    Preconditions.debugCheckArgumentRange('value', value, 0, Utility.int64MaxValue);
+    Preconditions.debugCheckArgumentRange('value', value, 0, Platform.int64MaxValue);
     Preconditions.debugCheckArgumentRange('length', length, 1, _maximumPaddingLength);
     // Special handling for common cases, because we really don't want a heap allocation
     // if we can help it...
@@ -316,7 +316,7 @@ abstract class FormatHelper {
         outputBuffer.write('0');
         return;
       }
-      if (value == Utility.int64MinValue) {
+      if (value == Platform.int64MinValue) {
         outputBuffer.write("-9223372036854775808");
         return;
       }
