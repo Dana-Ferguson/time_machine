@@ -60,7 +60,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
   // todo: I really don't like this one at all: LocalDateTime.at
 
-  @internal LocalDateTime(this.date, this.time);
+  @wasInternal LocalDateTime(this.date, this.time);
 
   /// Gets the calendar system associated with this local date and time.
   CalendarSystem get calendar => date.calendar;

@@ -13,20 +13,19 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 @immutable
 class OffsetTime {
   final LocalTime _time;
-  final Offset _offset;
+  /// Gets the offset from UTC of this value.
+  final Offset offset;
 
   /// Constructs an instance of the specified time and offset.
   ///
   /// [time]: The time part of the value.
   /// [offset]: The offset part of the value.
-  OffsetTime(this._time, this._offset);
+  OffsetTime(this._time, this.offset);
 
+  // todo: consider combining this with _time -- Why does is this, 'timeOfDay' ???
   /// Gets the time-of-day represented by this value.
   LocalTime get timeOfDay => _time;
-
-  /// Gets the offset from UTC of this value.
-  Offset get offset => _offset;
-
+  
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
   int get hour => _time.hour;
 
@@ -74,7 +73,7 @@ class OffsetTime {
   /// [adjuster]: The adjuster to apply.
   /// Returns: The adjusted offset date.
   OffsetTime adjust(LocalTime Function(LocalTime) adjuster) =>
-      new OffsetTime(timeOfDay.adjust(adjuster), _offset);
+      new OffsetTime(timeOfDay.adjust(adjuster), offset);
 
   /// Combines this [OffsetTime] with the given [LocalDate]
   /// into an [OffsetDateTime].
@@ -86,14 +85,14 @@ class OffsetTime {
   /// Returns a hash code for this offset time.
   ///
   /// Returns: A hash code for this offset time.
-  @override int get hashCode => hash2(_time, _offset);
+  @override int get hashCode => hash2(_time, offset);
 
   /// Compares two [OffsetTime] values for equality. This requires
   /// that the date values be the same and the offsets.
   ///
   /// [other]: The value to compare this offset time with.
   /// Returns: True if the given value is another offset time equal to this one; false otherwise.
-  bool equals(OffsetTime other) => timeOfDay == other.timeOfDay && _offset == other._offset;
+  bool equals(OffsetTime other) => timeOfDay == other.timeOfDay && offset == other.offset;
 
   /// Implements the operator == (equality).
   ///

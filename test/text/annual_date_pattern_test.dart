@@ -274,7 +274,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   void ParseNull() => AssertParseNull(AnnualDatePattern.iso);
 }
 
-/*sealed*/ class Data extends PatternTestData<AnnualDate> {
+class Data extends PatternTestData<AnnualDate> {
   // Default to January 1st
   @override AnnualDate get DefaultTemplate => AnnualDatePatterns.defaultTemplateValue;
 

@@ -36,6 +36,7 @@ abstract class IZonedDateTime {
 /// [ZonedDateTime.Comparer] nested class (or implement your own comparison).
 @immutable
 class ZonedDateTime {
+  // todo: why isn't this exposed directly?
   final OffsetDateTime _offsetDateTime;
   /// Gets the time zone associated with this value.
   final DateTimeZone zone;

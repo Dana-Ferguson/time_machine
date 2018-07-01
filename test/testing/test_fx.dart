@@ -6,6 +6,8 @@ import 'dart:mirrors';
 import 'dart:io';
 
 import 'package:test/test.dart';
+import 'package:time_machine/src/time_machine_internal.dart';
+import '../text/pattern_test_data.dart';
 import 'test_fx_attributes.dart';
 
 // todo: should this be a separate test_package?
@@ -107,6 +109,9 @@ void _writeTestGenFile() {
   sb.writeln();
   sb.writeln("import 'package:time_machine/src/time_machine_internal.dart';");
   sb.writeln("import '../time_machine_testing.dart';");
+  if (_includeTestCulturesImport) {
+    sb.writeln("import '../text/test_cultures.dart';");
+  }
   sb.writeln();
   
   sb.write(_gen_sb_imports);
@@ -114,6 +119,9 @@ void _writeTestGenFile() {
   
   sb.writeln('Future main() async {');
   sb.writeln('  await TimeMachine.initialize();');
+  if (_getTzdb) {
+    sb.writeln('  var tzdb = await DateTimeZoneProviders.tzdb;');
+  }
   sb.writeln();
   sb.write(_gen_sb_methodCalls);
   sb.writeln('}');
@@ -126,7 +134,7 @@ void _writeTestGenFile() {
 }
 
 void _printImport(Uri uri) {
-  var sb = _gen_sb_imports..write("import '../"); // test/");
+  var sb = _gen_sb_imports..write("import '.."); // test/");
   var path = uri.pathSegments;
   
   for (var p in path.skipWhile((p) => p != 'test').skip(1)) {
@@ -141,6 +149,7 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
   var sb = _gen_sb_methodCalls..write("  test('$testName', () ");
   
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
+  isFuture = true; // note: this is an override
   if (isFuture) sb.write('async => await '); else sb.write('=> ');
 
   if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
@@ -158,16 +167,208 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
         first = false;
       }
       
-      if (arg is String) {
-        sb..write("'")..write(arg)..write("'");
-      }
-      sb.write(arg);
+      sb.write(_printNewObject(arg));
     }
   }
   // ${testCase.arguments.join(', ')});
   sb.write ('));');
   
   sb.writeln();
+}
+
+bool _includeTestCulturesImport = false;
+bool _getTzdb = false;
+
+String _printNewObject(Object obj) {
+  var sb = new StringBuffer();
+  if (obj == null) {
+    sb..write('null');
+  }
+  else if (obj is String) {
+    // todo: I need to scape this?
+    sb..write("'")..write(_escapeText(obj))..write("'");
+  }
+  else if (obj is CultureInfo) {
+    var name = obj.name;
+    if (name == '' || name == null) {
+      sb.write('null');
+    }
+    else if (name == 'AwkwardAmPmDesignatorCulture') {
+      sb.write('TestCultures.AwkwardAmPmDesignatorCulture');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'AwkwardDayOfWeekCulture') {
+      sb.write('TestCultures.AwkwardDayOfWeekCulture');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'GenitiveNameTestCultureWithLeadingNames') {
+      sb.write('TestCultures.GenitiveNameTestCultureWithLeadingNames');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'GenitiveNameTestCulture') {
+      sb.write('TestCultures.GenitiveNameTestCulture');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'fi-FI-DotTimeSeparator') {
+      sb.write('TestCultures.DotTimeSeparator');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'fr-CA') {
+      sb.write('TestCultures.FrCa');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'FrFr') {
+      sb.write('TestCultures.frFr');
+      _includeTestCulturesImport = true;
+    }
+    else if (name == 'EnUs') {
+      sb.write('TestCultures.enUs');
+      _includeTestCulturesImport = true;
+    }
+    /*else if (name == '') {
+      sb.write('TestCultures.');
+    }*/
+    else if (name == CultureInfo.invariantCultureId) {
+      sb.write('Cultures.invariantCulture');
+    }
+    else sb.write('await Cultures.getCulture("${name}")');
+  }
+  else if (obj is PatternTestData) {
+    sb..write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})')
+    // ..write('..Value =${_printNewObject(arg.Value)}')
+      ..write('..DefaultTemplate =${_printNewObject(obj.DefaultTemplate)}')
+      ..write('..Culture = ${_printNewObject(obj.Culture)}')
+      ..write('..StandardPattern =${_printNewObject(obj.StandardPattern)}')
+      ..write('..Pattern =${_printNewObject(obj.Pattern)}')
+      ..write('..text =${_printNewObject(obj.text)}')
+      ..write('..Template =${_printNewObject(obj.Template)}')
+      ..write('..Description =${_printNewObject(obj.Description)}')
+      ..write('..Message =${_printNewObject(obj.Message)}')
+      ..write('..Parameters.addAll(${_printNewObject(obj.Parameters)})')
+    ;
+  }
+  else if (obj is AnnualDate) {
+    sb.write('new AnnualDate(${obj.month}, ${obj.day})');
+  }
+  else if (obj is List) {
+    if (obj.isEmpty) {
+      sb.write('[]');
+    } else {
+      sb.write('[');
+
+      sb.write(_printNewObject(obj.first));
+      for (var item in obj.skip(1)) {
+        sb..write(', ')..write(_printNewObject(item));
+      }
+
+      sb.write(']');
+    }
+  }
+  else if (obj is num) {
+    sb.write(obj);
+  }
+  else if (obj is CalendarSystem) {
+    // todo: pull this information directly from CalendarSystem?
+    if (obj.id == "Gregorian") {
+      sb.write('CalendarSystem.gregorian');
+    } else if (obj.id == "ISO") {
+      sb.write('CalendarSystem.iso');
+    } else if (obj.id == "Julian") {
+      sb.write('CalendarSystem.julian');
+    }
+    else {
+      sb.write('CalendarSystem.${obj.id}');
+    }
+  }
+  else if (obj is Instant) {
+    var span = obj.timeSinceEpoch;
+    var ms = ISpan.millisecondsOf(span);
+    var ns = ISpan.nanosecondsIntervalOf(span);
+    sb.write('IInstant.trusted(ISpan.trusted($ms, $ns))');
+  }
+  else if (obj is Span) {
+    var span = obj;
+    var ms = ISpan.millisecondsOf(span);
+    var ns = ISpan.nanosecondsIntervalOf(span);
+    sb.write('ISpan.trusted($ms, $ns)');
+  }
+  else if (obj is DateTimeZone) {
+    _getTzdb = true;
+    sb.write('await tzdb["${obj.id}"]');
+  }
+  else if (obj is IsoDayOfWeek) {
+    sb.write('IsoDayOfWeek.${obj.toString().toLowerCase()}');
+  }
+  else if (obj is CalendarOrdinal) {
+    sb.write('new CalendarOrdinal(${obj.value})');
+  }
+  else if (obj is YearMonthDayCalculator) {
+    sb.write('new ${obj.runtimeType}()');
+  }
+  else if (obj is InstantPattern) {
+    // sb.write('InstantPattern.createWithCulture(${_printNewObject(obj.patternText)}, ${_printNewObject(InstantPatterns.patternOf(obj))})');
+    sb.write('InstantPattern.general');
+  }
+  else if (obj is ZonedDateTime) {
+    var instant = obj.toInstant();
+    var zone = obj.zone;
+    var calendar = obj.calendar;
+    sb.write('new ZonedDateTime(${_printNewObject(instant)}, ${_printNewObject(zone)}, ${_printNewObject(calendar)})');
+  }
+  else if (obj is LocalDate) {
+    var year = obj.year;
+    var month = obj.month;
+    var day = obj.day;
+    var calendar = obj.calendar;
+    sb.write('new LocalDate($year, $month, $day, ${_printNewObject(calendar)})');
+  }
+  else if (obj is LocalTime) {
+    var nanoseconds = obj.nanosecondOfDay;
+    sb.write('ILocalTime.fromNanoseconds($nanoseconds)');
+  }
+  else if (obj is LocalDateTime) {
+    sb.write('new LocalDateTime(${_printNewObject(obj.date)}, ${_printNewObject(obj.time)})');
+  }
+  else if (obj is OffsetDate) {
+    var date = obj.date;
+    var offset = obj.offset;
+    sb.write('new OffsetDate(${_printNewObject(date)}, ${_printNewObject(offset)})');
+  }
+  else if (obj is Offset) {
+    var seconds = obj.seconds;
+    sb.write('new Offset.fromSeconds($seconds)');
+  }
+  else if (obj is OffsetDateTime) {
+    var localDateTime = obj.localDateTime;
+    var offset = obj.offset;
+    sb.write('new OffsetDateTime(${_printNewObject(localDateTime)}, ${_printNewObject(offset)})');
+  }
+  else if (obj is OffsetTime) {
+    var time = obj.timeOfDay;
+    var offset= obj.offset;
+    sb.write('new OffsetTime(${_printNewObject(time)}, ${_printNewObject(offset)})');
+  }
+  else if (obj is bool) {
+    sb.write(obj);
+  }
+  else if (obj is PeriodUnits) {
+    sb.write('new PeriodUnits(${obj.value})');
+  }
+  else {
+    sb..write('"Type = ${obj.runtimeType}; toString = ${obj.toString()}"');
+  }
+
+  // sb.write('/*${obj.runtimeType}*/');
+
+  return sb.toString();
+}
+
+// we're doing this in the worst way possible
+String _escapeText(String text) {
+  text = text.replaceAll("\\", '\\\\');
+  text = text.replaceAll('"', '\\"');
+  text = text.replaceAll("'", "\\'");
+  return text;
 }
 
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
@@ -232,7 +433,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   if (testGenTest) 
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
-    print('var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();');
+    _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
   }
   var declarations = new List<DeclarationMirror>()..addAll(classMirror.declarations.values);
   while (classMirror.superclass != null) {

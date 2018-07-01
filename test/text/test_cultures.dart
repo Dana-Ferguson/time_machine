@@ -144,7 +144,7 @@ import 'text_cursor_test_base_tests.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final CultureInfo DotTimeSeparator =
-  new CultureInfo('fi-FI', (new DateTimeFormatInfoBuilder()
+  new CultureInfo('fi-FI-DotTimeSeparator', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'ap.'
     ..pmDesignator = 'ip.'
     ..timeSeparator = '.'
@@ -181,7 +181,7 @@ import 'text_cursor_test_base_tests.dart';
     ..shortTimePattern = 'H.mm'
     ..longTimePattern = 'H.mm.ss').Build());
   static final CultureInfo GenitiveNameTestCulture =
-  new CultureInfo('', (new DateTimeFormatInfoBuilder()
+  new CultureInfo('GenitiveNameTestCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -202,7 +202,7 @@ import 'text_cursor_test_base_tests.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final CultureInfo GenitiveNameTestCultureWithLeadingNames =
-  new CultureInfo('', (new DateTimeFormatInfoBuilder()
+  new CultureInfo('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -223,7 +223,7 @@ import 'text_cursor_test_base_tests.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final CultureInfo AwkwardDayOfWeekCulture =
-  new CultureInfo('', (new DateTimeFormatInfoBuilder()
+  new CultureInfo('AwkwardDayOfWeekCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -243,7 +243,7 @@ import 'text_cursor_test_base_tests.dart';
     ..longTimePattern = 'HH:mm:ss').Build());
 
   static final CultureInfo AwkwardAmPmDesignatorCulture =
-  new CultureInfo('', (new DateTimeFormatInfoBuilder()
+  new CultureInfo('AwkwardAmPmDesignatorCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'Foo'
     ..pmDesignator = 'FooBar'
     ..timeSeparator = ':'

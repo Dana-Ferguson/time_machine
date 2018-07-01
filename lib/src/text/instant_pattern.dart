@@ -20,6 +20,7 @@ abstract class _InstantPatterns
 
 abstract class InstantPatterns {
   static final PatternBclSupport<Instant> bclSupport = new PatternBclSupport<Instant>(InstantPattern._defaultFormatPattern, (fi) => fi.instantPatternParser);
+  static IPattern<Instant> patternOf(InstantPattern instantPattern) => instantPattern._pattern;
 }
 
 /// Represents a pattern for parsing and formatting [Instant] values.
@@ -42,9 +43,9 @@ class InstantPattern implements IPattern<Instant> {
   final IPattern<Instant> _pattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
-  final String PatternText;
+  final String patternText;
 
-  InstantPattern._(this.PatternText, this._pattern);
+  InstantPattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -120,7 +121,7 @@ class InstantPattern implements IPattern<Instant> {
   ///
   /// [formatInfo]: The localization information to use in the new pattern.
   /// Returns: A new pattern with the given localization information.
-  InstantPattern _withFormatInfo(TimeMachineFormatInfo formatInfo) => _create(PatternText, formatInfo);
+  InstantPattern _withFormatInfo(TimeMachineFormatInfo formatInfo) => _create(patternText, formatInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.

@@ -46,44 +46,43 @@ class Offset implements Comparable<Offset> {
   static const int _minNanoseconds = -18 * TimeConstants.nanosecondsPerHour;
   static const int _maxNanoseconds = 18 * TimeConstants.nanosecondsPerHour;
 
-  final int _seconds;
+  /// Gets the number of seconds represented by this offset, which may be negative.
+  final int seconds;
 
+  // todo: look at combining with fromSeconds()???
   /// Initializes a new instance of the [Offset] struct.
   ///
   /// [seconds]: The number of seconds in the offset.
-  Offset._([this._seconds = 0]) {
+  Offset._([this.seconds = 0]) {
     // Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
-    assert(_seconds >= _minSeconds && _seconds <= _maxSeconds, 'seconds ($seconds) should be >= $_minSeconds && <= $_maxSeconds');
+    assert(seconds >= _minSeconds && seconds <= _maxSeconds, 'seconds ($seconds) should be >= $_minSeconds && <= $_maxSeconds');
   }
 
 // Offset.fromHours(int hours) : this(hours * TimeConstants.secondsPerHour);
 
   // todo: constant?
-  Span toSpan() => new Span(seconds: _seconds);
-
-  /// Gets the number of seconds represented by this offset, which may be negative.
-  int get seconds => _seconds;
+  Span toSpan() => new Span(seconds: seconds);
 
 
   /// Gets the number of milliseconds represented by this offset, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the number of seconds is simply multiplied
   /// by 1,000 to give the number of milliseconds.
-  int get milliseconds => (_seconds * TimeConstants.millisecondsPerSecond);
+  int get milliseconds => (seconds * TimeConstants.millisecondsPerSecond);
 
 
   /// Gets the number of ticks represented by this offset, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the number of seconds is simply multiplied
   /// by 10,000,000 to give the number of ticks.
-  int get ticks => (_seconds * TimeConstants.ticksPerSecond);
+  int get ticks => (seconds * TimeConstants.ticksPerSecond);
 
 
   /// Gets the number of nanoseconds represented by this offset, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the number of seconds is simply multiplied
   /// by 1,000,000,000 to give the number of nanoseconds.
-  int get nanoseconds => (_seconds * TimeConstants.nanosecondsPerSecond);
+  int get nanoseconds => (seconds * TimeConstants.nanosecondsPerSecond);
 
 
   /// Returns the greater offset of the given two, i.e. the one which will give a later local
@@ -330,7 +329,7 @@ class Offset implements Comparable<Offset> {
       new Offset.fromSeconds(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
   /// Converts this offset to a [Duration] value.
-  Duration toDuration() => new Duration(seconds: _seconds);
+  Duration toDuration() => new Duration(seconds: seconds);
   
   /// Converts the given [Duration] to an offset, with fractional seconds truncated.
   ///

@@ -174,6 +174,8 @@ class Instant implements Comparable<Instant> {
   int get daysSinceEpoch => _span.floorDays; //days;
   int get nanosecondOfDay => _span.nanosecondOfFloorDay; //nanosecondOfDay;
 
+  // todo: should this just be spanSinceEpoch() ?? would def. increase discoverability
+  // todo: or could we just make Span be Time??? Would the be cool or confusing?
   // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
   Span get timeSinceEpoch => _span;
 

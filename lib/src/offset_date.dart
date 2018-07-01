@@ -13,20 +13,16 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 @immutable
 class OffsetDate // : IEquatable<OffsetDate>
 {
-  final LocalDate _date;
-  final Offset _offset;
+  /// Gets the local date represented by this value.
+  final LocalDate date;
+  /// Gets the local date represented by this value.
+  final Offset offset;
   
   /// Constructs an instance of the specified date and offset.
   ///
   /// [date]: The date part of the value.
   /// [offset]: The offset part of the value.
-  OffsetDate(this._date, this._offset);
-  
-  /// Gets the local date represented by this value.
-  LocalDate get date => _date;
-  
-  /// Gets the offset from UTC of this value.
-  Offset get offset => _offset;
+  OffsetDate(this.date, this.offset);
 
   /// Gets the calendar system associated with this offset date.
   CalendarSystem get calendar => date.calendar;
@@ -58,7 +54,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   ///
   /// [offset]: The new UTC offset.
   /// Returns: A new `OffsetDate` for the same date, but with the specified UTC offset.
-  OffsetDate withOffset(Offset offset) => new OffsetDate(this._date, offset);
+  OffsetDate withOffset(Offset offset) => new OffsetDate(this.date, offset);
   
   /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -69,7 +65,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// [adjuster]: The adjuster to apply.
   /// Returns: The adjusted offset date.
   OffsetDate adjust(LocalDate Function(LocalDate) adjuster) =>
-      new OffsetDate(date.adjust(adjuster), _offset);
+      new OffsetDate(date.adjust(adjuster), offset);
 
 
   /// Creates a new [OffsetDate] representing the same physical date and offset, but in a different calendar.
@@ -79,7 +75,7 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// [calendar]: The calendar system to convert this offset date to.
   /// Returns: The converted `OffsetDate`.
   OffsetDate withCalendar(CalendarSystem calendar) =>
-      new OffsetDate(date.withCalendar(calendar), _offset);
+      new OffsetDate(date.withCalendar(calendar), offset);
 
 
   /// Combines this [OffsetDate] with the given [LocalTime]
@@ -93,14 +89,14 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// Returns a hash code for this offset date.
   ///
   /// Returns: A hash code for this offset date.
-  @override int get hashCode => hash2(_date, _offset);
+  @override int get hashCode => hash2(date, offset);
 
   /// Compares two [OffsetDate] values for equality. This requires
   /// that the date values be the same (in the same calendar) and the offsets.
   ///
   /// [other]: The value to compare this offset date with.
   /// Returns: True if the given value is another offset date equal to this one; false otherwise.
-  bool equals(OffsetDate other) => date == other.date && _offset == other._offset;
+  bool equals(OffsetDate other) => date == other.date && offset == other.offset;
   
   /// Implements the operator == (equality).
   ///

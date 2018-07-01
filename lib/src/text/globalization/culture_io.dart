@@ -23,7 +23,9 @@ class CultureLoader {
     // This won't have any filenames in it.
     // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
     var cultureIds = new HashSet<String>();
-    var cache = <String, CultureInfo>{};
+    var cache = <String, CultureInfo>{
+      CultureInfo.invariantCultureId: CultureInfo.invariantCulture
+    };
 
     var binary = await PlatformIO.local.getBinary('cultures', 'cultures.bin');
     var reader = new CultureReader(binary);

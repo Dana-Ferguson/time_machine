@@ -48,15 +48,16 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   // @private final int nanosecondsAndOffset;
 
   final int _nanosecondOfDay;
-  final Offset _offset;
+  /// Gets the offset from UTC.
+  final Offset offset;
 
-  OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this._offset) // this.nanosecondsAndOffset)
+  OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this.offset) // this.nanosecondsAndOffset)
   {
     calendar.validateYearMonthDay_(_yearMonthDay);
   }
 
   OffsetDateTime._lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
-      : _nanosecondOfDay = time.nanosecondOfDay, _offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
+      : _nanosecondOfDay = time.nanosecondOfDay, offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
     calendar.validateYearMonthDay_(_yearMonthDay);
   }
@@ -187,11 +188,10 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// will not have any offset information.
   LocalTime get timeOfDay => ILocalTime.fromNanoseconds(nanosecondOfDay);
 
-  /// Gets the offset from UTC.
-  Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
+  // Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
   /// Returns the number of nanoseconds in the offset, without going via an Offset.
-  int get _offsetNanoseconds => _offset.nanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
+  int get _offsetNanoseconds => offset.nanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
 
   /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
   ///
@@ -237,7 +237,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
     LocalDate newDate = date.withCalendar(calendar);
-    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
   }
 
   /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
@@ -250,7 +250,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = date.adjust(adjuster);
-    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, _offset); // nanosecondsAndOffset);
+    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
   }
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
@@ -262,7 +262,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = timeOfDay.adjust(adjuster);
-    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.nanosecondOfDay, _offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.nanosecondOfDay, offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
@@ -318,7 +318,7 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
   /// [other]: The value to compare this offset date/time with.
   /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
-      this._yearMonthDayCalendar == other._yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this._offset == other._offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
+      this._yearMonthDayCalendar == other._yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this.offset == other.offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
 
   /// Returns a [String] that represents this instance.
   ///

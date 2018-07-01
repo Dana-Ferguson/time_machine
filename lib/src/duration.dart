@@ -48,6 +48,10 @@ abstract class ISpan {
   
   static int floorTicks(Span span) => span._floorTicks;
   static int floorSeconds(Span span) => span._floorSeconds;
+  
+  static int millisecondsOf(Span span) => span._milliseconds;
+  static int nanosecondsIntervalOf(Span span) => span._nanosecondsInterval;
+  static Span trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Span._trusted(milliseconds, nanosecondsInterval);
 }
 
 @immutable
