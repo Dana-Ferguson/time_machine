@@ -1,7 +1,6 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-// todo: make this time_machine_internal.dart and then hide the other imports! (move library documentation here)
 // todo: investigate: https://github.com/pinkfish/flutter_native_timezone
 
 // https://github.com/dart-lang/sdk/issues/24581
@@ -113,7 +112,7 @@ export 'src/timezones/zone_local_mapping.dart' show ZoneLocalMapping;
 bool _initialized = false;
 
 abstract class TimeMachine {
-  TimeMachine() { throw new StateError('TimeMachine can not be instantiated.'); }
+  TimeMachine() { throw new StateError('TimeMachine can not be instantiated, because no platform has been detected.'); }
   static Future initialize([dynamic arg]) {
     if (_initialized) return null;
     _initialized = true;
