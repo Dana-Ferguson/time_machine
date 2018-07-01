@@ -22,6 +22,10 @@ abstract class PatternTestData<T> {
   /// Standard pattern, expected to format/parse the same way as Pattern.
   @internal IPattern<T> StandardPattern;
 
+  /// This lets the JS_Test_Gen know what to put. (This is a total cop-out ~ complexity level is too high)
+  /// rational: there are 33 usages of StandardPattern, it's easier to annotate than spend a week creating the most beautiful reflection program
+  @internal String StandardPatternCode;
+
   /// Pattern text.
   @internal String Pattern;
 

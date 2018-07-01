@@ -100,6 +100,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // The value includes milliseconds, which aren't formatted.
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.generalIso
+      ..StandardPatternCode = 'OffsetTimePattern.generalIso'
       ..Pattern = "G"
       ..text = "13:45:30+01"
       ..Culture = TestCultures.FrFr,
@@ -111,11 +112,13 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetTimePattern.generalIso
+      ..StandardPatternCode = 'OffsetTimePattern.generalIso'
       ..Pattern = "G"
       ..text = "13:45:30+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.extendedIso
+      ..StandardPatternCode = 'OffsetTimePattern.extendedIso'
       ..Pattern = "o"
       ..text = "13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
@@ -123,6 +126,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // Property-only patterns
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetTimePattern.rfc3339
+      ..StandardPatternCode = 'OffsetTimePattern.rfc3339'
       ..Pattern = "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..text = "13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,

@@ -213,16 +213,20 @@ String _printNewObject(Object obj) {
       sb.write('TestCultures.DotTimeSeparator');
       _includeTestCulturesImport = true;
     }
+    else if (name == 'fr-FI') {
+      sb.write('TestCultures.DotTimeSeparator');
+      _includeTestCulturesImport = true;
+    }
     else if (name == 'fr-CA') {
       sb.write('TestCultures.FrCa');
       _includeTestCulturesImport = true;
     }
-    else if (name == 'FrFr') {
-      sb.write('TestCultures.frFr');
+    else if (name == 'fr-FR') {
+      sb.write('TestCultures.FrFr');
       _includeTestCulturesImport = true;
     }
-    else if (name == 'EnUs') {
-      sb.write('TestCultures.enUs');
+    else if (name == 'en-US') {
+      sb.write('TestCultures.EnUs');
       _includeTestCulturesImport = true;
     }
     /*else if (name == '') {
@@ -234,17 +238,16 @@ String _printNewObject(Object obj) {
     else sb.write('await Cultures.getCulture("${name}")');
   }
   else if (obj is PatternTestData) {
-    sb..write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})')
-    // ..write('..Value =${_printNewObject(arg.Value)}')
-      ..write('..DefaultTemplate =${_printNewObject(obj.DefaultTemplate)}')
-      ..write('..Culture = ${_printNewObject(obj.Culture)}')
-      ..write('..StandardPattern =${_printNewObject(obj.StandardPattern)}')
-      ..write('..Pattern =${_printNewObject(obj.Pattern)}')
-      ..write('..text =${_printNewObject(obj.text)}')
-      ..write('..Template =${_printNewObject(obj.Template)}')
-      ..write('..Description =${_printNewObject(obj.Description)}')
-      ..write('..Message =${_printNewObject(obj.Message)}')
-      ..write('..Parameters.addAll(${_printNewObject(obj.Parameters)})')
+    sb.write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})');
+    if (obj.DefaultTemplate != null) sb.write('..DefaultTemplate =${_printNewObject(obj.DefaultTemplate)}');
+    if (obj.Culture != null) sb.write('..Culture = ${_printNewObject(obj.Culture)}');
+    if (obj.StandardPattern != null) sb.write('..StandardPattern =${obj.StandardPatternCode}');
+    if (obj.Pattern != null) sb.write('..Pattern =${_printNewObject(obj.Pattern)}');
+    if (obj.text != null) sb.write('..text =${_printNewObject(obj.text)}');
+    if (obj.Template != null) sb.write('..Template =${_printNewObject(obj.Template)}');
+    if (obj.Description != null) sb.write('..Description =${_printNewObject(obj.Description)}');
+    if (obj.Message != null) sb.write('..Message =${_printNewObject(obj.Message)}');
+    if (obj.Parameters.isNotEmpty) sb.write('..Parameters.addAll(${_printNewObject(obj.Parameters)})');
     ;
   }
   else if (obj is AnnualDate) {

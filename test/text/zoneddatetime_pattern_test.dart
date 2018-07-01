@@ -326,12 +326,14 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     // Standard patterns without a DateTimeZoneProvider
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso
+      ..StandardPatternCode = 'ZonedDateTimePattern.generalFormatOnlyIso'
       ..Pattern = "G"
       ..text = "2009-06-15T13:45:30 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..ZoneProvider = null,
     new Data(MsdnStandardExample)
       ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso
+      ..StandardPatternCode = 'ZonedDateTimePattern.extendedFormatOnlyIso'
       ..Pattern = "F"
       ..text = "2009-06-15T13:45:30.09 UTC (+00)"
       ..Culture = TestCultures.FrFr
@@ -339,12 +341,14 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     // Standard patterns without a resolver
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso
+      ..StandardPatternCode = 'ZonedDateTimePattern.generalFormatOnlyIso'
       ..Pattern = "G"
       ..text = "2009-06-15T13:45:30 UTC (+00)"
       ..Culture = TestCultures.FrFr
       ..Resolver = null,
     new Data(MsdnStandardExample)
       ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso
+      ..StandardPatternCode = 'ZonedDateTimePattern.extendedFormatOnlyIso'
       ..Pattern = "F"
       ..text = "2009-06-15T13:45:30.09 UTC (+00)"
       ..Culture = TestCultures.FrFr
@@ -498,6 +502,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         0,
         TestZone1)
       ..StandardPattern = ZonedDateTimePattern.generalFormatOnlyIso.withZoneProvider(TestProvider)
+      ..StandardPatternCode = 'ZonedDateTimePattern.generalFormatOnlyIso.withZoneProvider(TestProvider)'
       ..Pattern = "G"
       ..text = "2013-01-13T15:44:30 ab (+02)"
       ..Culture = TestCultures.FrFr,
@@ -511,6 +516,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         90,
         TestZone1)
       ..StandardPattern = ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider)
+      ..StandardPatternCode = 'ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider)'
       ..Pattern = "F"
       ..text = "2013-01-13T15:44:30.09 ab (+02)"
       ..Culture = TestCultures.FrFr,

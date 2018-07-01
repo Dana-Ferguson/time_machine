@@ -225,11 +225,13 @@ class SpanPatternTest extends PatternTestBase<Span> {
     // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
     new Data.dhmsn(1, 2, 3, 4, 123456789)
       ..StandardPattern = SpanPattern.roundtrip
+      ..StandardPatternCode = 'SpanPattern.roundtrip'
       ..Pattern = "o"
       ..text = "1:02:03:04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,
     new Data.dhmsn(-1, -2, -3, -4, -123456789)
       ..StandardPattern = SpanPattern.roundtrip
+      ..StandardPatternCode = 'SpanPattern.roundtrip'
       ..Pattern = "o"
       ..text = "-1:02:03:04.123456789"
       ..Culture = TestCultures.DotTimeSeparator,

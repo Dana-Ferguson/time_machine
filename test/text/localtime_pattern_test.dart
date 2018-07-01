@@ -936,6 +936,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
     // Patterns obtainable by properties but not single character standard patterns
     new Data.nano(1, 2, 3, 123456700 /*L*/)
       ..StandardPattern = LocalTimePattern.extendedIso
+      ..StandardPatternCode = 'LocalTimePattern.extendedIso'
       ..Culture = TestCultures.EnUs
       ..text = "01:02:03.1234567"
       ..Pattern = "HH':'mm':'ss;FFFFFFF",

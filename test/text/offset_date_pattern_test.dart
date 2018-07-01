@@ -118,11 +118,13 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDatePattern.generalIso
+      ..StandardPatternCode = 'OffsetDatePattern.generalIso'
       ..Pattern = "G"
       ..text = "2009-06-15+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDatePattern.fullRoundtrip
+      ..StandardPatternCode = 'OffsetDatePattern.fullRoundtrip'
       ..Pattern = "r"
       ..text = "2009-06-15+01 (ISO)"
       ..Culture = TestCultures.FrFr,

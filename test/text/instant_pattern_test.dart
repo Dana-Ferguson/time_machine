@@ -140,6 +140,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
     // General pattern has no standard single character.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..StandardPattern = InstantPattern.general
+      ..StandardPatternCode = 'InstantPattern.general'
       ..text = "2012-01-31T17:36:45Z"
       ..Pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
   ];

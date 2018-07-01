@@ -221,16 +221,19 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = OffsetDateTimePattern.generalIso
+      ..StandardPatternCode = 'OffsetDateTimePattern.generalIso'
       ..Pattern = "G"
       ..text = "2009-06-15T13:45:30+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.extendedIso
+      ..StandardPatternCode = 'OffsetDateTimePattern.extendedIso'
       ..Pattern = "o"
       ..text = "2009-06-15T13:45:30.09+01"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.fullRoundtrip
+      ..StandardPatternCode = 'OffsetDateTimePattern.fullRoundtrip'
       ..Pattern = "r"
       ..text = "2009-06-15T13:45:30.09+01 (ISO)"
       ..Culture = TestCultures.FrFr,
@@ -238,6 +241,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     // Property-only patterns            
     new Data(MsdnStandardExample)
       ..StandardPattern = OffsetDateTimePattern.rfc3339
+      ..StandardPatternCode = 'OffsetDateTimePattern.rfc3339'
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..text = "2009-06-15T13:45:30.09+01:00"
       ..Culture = TestCultures.FrFr,

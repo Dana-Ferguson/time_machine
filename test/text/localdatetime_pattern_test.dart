@@ -265,36 +265,43 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // Culture has no impact on round-trip or sortable formats
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.bclRoundtrip
+      ..StandardPatternCode = 'LocalDateTimePattern.bclRoundtrip'
       ..Pattern = "o"
       ..text = "2009-06-15T13:45:30.0900000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.bclRoundtrip
+      ..StandardPatternCode = 'LocalDateTimePattern.bclRoundtrip'
       ..Pattern = "O"
       ..text = "2009-06-15T13:45:30.0900000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.fullRoundtripWithoutCalendar
+      ..StandardPatternCode = 'LocalDateTimePattern.fullRoundtripWithoutCalendar'
       ..Pattern = "R"
       ..text = "2009-06-15T13:45:30.090000000"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.fullRoundtrip
+      ..StandardPatternCode = 'LocalDateTimePattern.fullRoundtrip'
       ..Pattern = "r"
       ..text = "2009-06-15T13:45:30.090000000 (ISO)"
       ..Culture = TestCultures.FrFr,
     new Data(MsdnStandardExampleNoMillis)
       ..StandardPattern = LocalDateTimePattern.generalIso
+      ..StandardPatternCode = 'LocalDateTimePattern.generalIso'
       ..Pattern = "s"
       ..text = "2009-06-15T13:45:30"
       ..Culture = TestCultures.FrFr,
     new Data(SampleLocalDateTime)
       ..StandardPattern = LocalDateTimePattern.fullRoundtripWithoutCalendar
+      ..StandardPatternCode = 'LocalDateTimePattern.fullRoundtripWithoutCalendar'
       ..Pattern = "R"
       ..text = "1976-06-19T21:13:34.123456789"
       ..Culture = TestCultures.FrFr,
     new Data(SampleLocalDateTime)
       ..StandardPattern = LocalDateTimePattern.fullRoundtrip
+      ..StandardPatternCode = 'LocalDateTimePattern.fullRoundtrip'
       ..Pattern = "r"
       ..text = "1976-06-19T21:13:34.123456789 (ISO)"
       ..Culture = TestCultures.FrFr,
@@ -320,6 +327,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // Standard invariant patterns with a property but no pattern character
     new Data(MsdnStandardExample)
       ..StandardPattern = LocalDateTimePattern.extendedIso
+      ..StandardPatternCode = 'LocalDateTimePattern.extendedIso'
       ..Pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF"
       ..text = "2009-06-15T13:45:30.09"
       ..Culture = TestCultures.FrFr,
