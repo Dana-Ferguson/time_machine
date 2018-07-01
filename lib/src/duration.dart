@@ -173,21 +173,21 @@ class Span implements Comparable<Span> {
 
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
 
-  int get hours => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
+  int get hours => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
 
-  int get minutes => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
+  int get minutes => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
 
-  int get seconds => csharpMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
+  int get seconds => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
 
-  int get milliseconds => csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond);
+  int get milliseconds => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
 
   // microseconds?
   int get subsecondTicks =>
-      csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
-          + csharpMod((_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick), TimeConstants.ticksPerSecond);
+      arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
+          + arithmeticMod((_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick), TimeConstants.ticksPerSecond);
 
   int get subsecondNanoseconds =>
-      csharpMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
+      arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
   double get totalDays => _milliseconds / TimeConstants.millisecondsPerDay + _nanosecondsInterval / TimeConstants.nanosecondsPerDay;

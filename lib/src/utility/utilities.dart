@@ -108,7 +108,7 @@ class OutBox<T> {
 
 // https://en.wikipedia.org/wiki/Modulo_operation
 // we should only use this where 'x' can be negative
-int csharpMod(num x, int y) {
+int arithmeticMod(num x, int y) {
   if (x >= 0) return x % y;
   return -((-x)%y);
 }

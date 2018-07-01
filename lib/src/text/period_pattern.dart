@@ -295,9 +295,9 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         if (negative) {
           totalNanoseconds = -totalNanoseconds;
         }
-        builder.milliseconds = csharpMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
-        builder.ticks = csharpMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerTick, TimeConstants.ticksPerMillisecond);
-        builder.nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerTick);
+        builder.milliseconds = arithmeticMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
+        builder.ticks = arithmeticMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerTick, TimeConstants.ticksPerMillisecond);
+        builder.nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerTick);
 
         if (valueCursor.current != 'S') {
           return IParseResult.mismatchedCharacter<Period>(valueCursor, 'S');

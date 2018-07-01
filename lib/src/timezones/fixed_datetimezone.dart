@@ -53,7 +53,7 @@ class FixedDateTimeZone extends DateTimeZone {
       return IDateTimeZone.utcId;
     }
 
-    if (csharpMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
+    if (arithmeticMod(offset.seconds, TimeConstants.secondsPerHour) == 0) {
       return '${IDateTimeZone.utcId}${offset.seconds > 0 ? '+' : '-'}${(offset.seconds.abs() ~/ TimeConstants.secondsPerHour).toString().padLeft(2, '0')}';
     }
 

@@ -184,7 +184,7 @@ class SimpleWeekYearRule implements IWeekYearRule {
       // However, YearMonthDayCalculator.GetStartOfYearInDays already handles min/max -/+ 1.
       int startOfCalendarYear = yearMonthDayCalculator.getStartOfYearInDays(weekYear);
       int startOfYearDayOfWeek = /*unchecked*/(startOfCalendarYear >= -3 ? 1 + ((startOfCalendarYear + 3) % 7)
-          : 7 + csharpMod((startOfCalendarYear + 4), 7));
+          : 7 + arithmeticMod((startOfCalendarYear + 4), 7));
 
       // How many days have there been from the start of the week containing
       // the first day of the year, until the first day of the year? To put it another

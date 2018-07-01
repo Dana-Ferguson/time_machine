@@ -115,9 +115,10 @@ void PlusMinutes_WouldOverflowNaively()
   LocalTime start = new LocalTime(12, 34, 56);
   // Very big value, which just wraps round a *lot* and adds one minute.
   // There's no way we could compute that many nanoseconds.
-  int value = (TimeConstants.nanosecondsPerDay << 15) + 1;
+  // note: left-shifting on Web caps at 32 bit and doesn't work here, and the max-int-value is much lower
+  int value = Platform.isVM ? (TimeConstants.nanosecondsPerDay << 15) + 1 : (TimeConstants.nanosecondsPerDay * 100) + 1;
   LocalTime expected = new LocalTime(12, 35, 56);
   LocalTime actual = start.plusMinutes(value);
-  expect(expected, actual);
+  expect(actual, expected);
 }
 

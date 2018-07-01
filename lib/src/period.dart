@@ -765,11 +765,11 @@ class Period {
       nanoseconds = totalNanoseconds % TimeConstants.nanosecondsPerMillisecond;
     }
     else {
-      hours = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
-      minutes = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
-      seconds = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
-      milliseconds = csharpMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond), TimeConstants.millisecondsPerSecond);
-      nanoseconds = csharpMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
+      hours = arithmeticMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
+      minutes = arithmeticMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
+      seconds = arithmeticMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
+      milliseconds = arithmeticMod((totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond), TimeConstants.millisecondsPerSecond);
+      nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
     return new Period._(years: this.years,
