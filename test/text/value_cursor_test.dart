@@ -3,24 +3,13 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
-import 'dart:math' as math;
-import 'dart:mirrors';
 
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/calendars/time_machine_calendars.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
-import 'pattern_test_base.dart';
-import 'pattern_test_data.dart';
-import 'test_cultures.dart';
 import 'text_cursor_test_base_tests.dart';
 
 Future main() async {
@@ -367,19 +356,27 @@ class ValueCursorTest extends TextCursorTestBase {
 
   @Test()
   void ParseInt64_MaxValue() {
+    // Can't parse this in JS
+    if (Platform.isWeb) return;
+
     var value = new ValueCursor("9223372036854775807");
     expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNull);
+    var parseResult = value.parseInt64<String>(result, 'String');
+    expect(parseResult, isNull);
     expect(Platform.int64MaxValue, result.value);
   }
 
   @Test()
   void ParseInt64_MinValue() {
+    // Can't parse this in JS
+    if (Platform.isWeb) return;
+
     var value = new ValueCursor("-9223372036854775808");
     expect(value.moveNext(), isTrue);
     OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNull);
+    var parseResult = value.parseInt64<String>(result, 'String');
+    expect(parseResult, isNull);
     expect(Platform.int64MinValue, result.value);
   }
 

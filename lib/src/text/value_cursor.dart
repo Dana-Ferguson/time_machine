@@ -103,6 +103,9 @@ class ValueCursor extends TextCursor {
     return stringOrdinalCompare(value, index, match, 0, match.length);
   }
 
+  // hack: we need to know what T is at runtime for error messages
+  // todo: <T> on these values currently don't do anything -- we can't access T directly on VM -- and on JS, I'm not sure it even exists
+  //  --> [tType] ferries the information across we need. <T> should be the value being parsed by the Value_Cursor, but I don't think anything enforces that
   /// Parses digits at the current point in the string as a signed 64-bit integer value.
   /// Currently this method only supports cultures whose negative sign is "-" (and
   /// using ASCII digits).
@@ -110,7 +113,6 @@ class ValueCursor extends TextCursor {
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is non-null.
   /// Returns: null if the digits were parsed, or the appropriate parse failure
-  // hack: we need to know what T is at runtime for error messages
   ParseResult<T> parseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
     result.value = 0;
     int startIndex = index;
