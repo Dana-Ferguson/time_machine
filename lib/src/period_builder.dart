@@ -45,7 +45,7 @@ class PeriodBuilder {
   /// allows object initializers to be used.
   ///
   /// [period]: An existing period to copy values from.
-  PeriodBuilder([Period period = Period.Zero]) {
+  PeriodBuilder([Period period = Period.zero]) {
     Preconditions.checkNotNull(period, 'period');
     years = period.years;
     months = period.months;

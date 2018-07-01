@@ -164,7 +164,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   ];
 
   @internal final List<Data> FormatAndParseData = [
-    new Data(Period.Zero)
+    new Data(Period.zero)
       ..text = "P0D",
 
     // All single values

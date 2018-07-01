@@ -324,7 +324,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
     Preconditions.checkNotNull(builder, 'builder');
     value = value.normalize();
     // Always ensure we've got *some* unit; arbitrarily pick days.
-    if (value.equals(Period.Zero)) {
+    if (value.equals(Period.zero)) {
       builder.write("P0D");
       return builder;
     }

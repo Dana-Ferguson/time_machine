@@ -106,7 +106,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   @internal List<Data> FormatOnlyData = [];
 
   @internal static final List<Data> FormatAndParseData = [
-    new Data(Period.Zero)
+    new Data(Period.zero)
       ..text = "P",
 
     // All single values                                                                

@@ -92,21 +92,25 @@ void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
 }
 
 @Test()
-void BetweenLocalDateTimes_NotInt64Representable()
-{
+void BetweenLocalDateTimes_NotInt64Representable() {
   LocalDateTime start = new LocalDateTime.at(-5000, 1, 1, 0, 1, seconds: 2, milliseconds: 123);
   LocalDateTime end = new LocalDateTime.at(9000, 1, 1, 1, 2, seconds: 3, milliseconds: 456);
-  expect(ISpan.isInt64Representable(end.toLocalInstant().timeSinceLocalEpoch - start.toLocalInstant().timeSinceLocalEpoch), isFalse);
+  expect(ISpan.isInt64Representable(end
+      .toLocalInstant()
+      .timeSinceLocalEpoch - start
+      .toLocalInstant()
+      .timeSinceLocalEpoch), isFalse);
 
   Period expected = (new PeriodBuilder()
     // 365.2425 * 14000 = 5113395
     ..hours = 5113395 * 24 + 1
-  ..minutes = 1
-  ..seconds = 1
-  ..milliseconds = 333
+    ..minutes = 1
+    ..seconds = 1
+    ..milliseconds = 333
   ).build();
-Period actual = Period.between(start, end, PeriodUnits.allTimeUnits);
-expect(expected, actual);
+
+  Period actual = Period.between(start, end, PeriodUnits.allTimeUnits);
+  expect(actual, expected);
 }
 
 @Test()
@@ -562,7 +566,7 @@ void ToString_Mixed()
 @Test()
 void ToString_Zero()
 {
-  expect("P", Period.Zero.toString());
+  expect("P", Period.zero.toString());
 }
 
 @Test()
@@ -692,7 +696,7 @@ expect(original, original.normalize());
 void Normalize_ZeroResult()
 {
   var original = (new PeriodBuilder()..years = 0).build();
-expect(Period.Zero, original.normalize());
+expect(Period.zero, original.normalize());
 }
 
 /* We don't overflow
@@ -842,14 +846,14 @@ void Comparer_NullWithNull()
 void Comparer_NullWithNonNull()
 {
   var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
-  expect(comparer.compare(null, Period.Zero),  lessThan(0));
+  expect(comparer.compare(null, Period.zero),  lessThan(0));
 }
 
 @Test()
 void Comparer_NonNullWithNull()
 {
   var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
-  expect(comparer.compare(Period.Zero, null),  greaterThan(0));
+  expect(comparer.compare(Period.zero, null),  greaterThan(0));
 }
 
 @Test()
@@ -923,7 +927,7 @@ void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, Stri
 void Between_LocalDateTime_SameValue()
 {
   LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0);
-  expect(Period.Zero, Period.between(start, start));
+  expect(Period.zero, Period.between(start, start));
 }
 
 @Test()

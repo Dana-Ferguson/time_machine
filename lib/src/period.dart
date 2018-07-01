@@ -83,7 +83,7 @@ class Period {
 
 
   /// A period containing only zero-valued properties.
-  static const Period Zero = const Period._();
+  static const Period zero = const Period._();
 
 
   /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -322,7 +322,7 @@ class Period {
     Preconditions.checkArgument(calendar == end.calendar, 'end', "start and end must use the same calendar system");
 
     if (start == end) {
-      return Zero;
+      return zero;
     }
 
     // Adjust for situations like "days between 5th January 10am and 7th Janary 5am" which should be one
@@ -441,6 +441,7 @@ class Period {
       ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.ticks);
       nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.nanoseconds);
     }
+
     return new Period._(years: years,
         months: months,
         weeks: weeks,
@@ -610,7 +611,7 @@ class Period {
     Preconditions.checkArgument(calendar == end.calendar, 'end', "start and end must use the same calendar system");
 
     if (start == end) {
-      return Zero;
+      return zero;
     }
 
     // Optimization for single field

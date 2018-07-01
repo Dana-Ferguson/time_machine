@@ -142,14 +142,19 @@ class TimePeriodField
 
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
-  int getUnitsInDuration(Span span) => span.totalNanoseconds ~/ _unitNanoseconds;
-//      span.IsInt64Representable
-//          ? span.ToInt64Nanoseconds() / unitNanoseconds
-//          : (span.ToDecimalNanoseconds() / unitNanoseconds);
+  int getUnitsInDuration(Span span) {
+    return span.totalNanoseconds ~/ _unitNanoseconds;
+  }
 
   /// Returns a [Span] representing the given number of units.
   Span toSpan(int units) =>
       units >= -_maxLongUnits && units <= _maxLongUnits
           ? new Span(nanoseconds: units * _unitNanoseconds)
-          : new Span(nanoseconds: units * /*(decimal)*/_unitNanoseconds);
+          : _toSpanSafely(units);
+  
+  Span _toSpanSafely(int units) {
+    var milliseconds = units * (_unitNanoseconds ~/ 1000000);
+    var nanoseconds = units * (_unitNanoseconds % 1000000);
+    return new Span(milliseconds: milliseconds, nanoseconds: nanoseconds);
+  }
 }

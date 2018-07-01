@@ -110,6 +110,6 @@ void Build_MultipleUnits() {
 @Test()
 void Build_Zero()
 {
-  expect(Period.Zero, new PeriodBuilder().build());
+  expect(Period.zero, new PeriodBuilder().build());
 }
 
