@@ -15,9 +15,13 @@ import '../time_machine_testing.dart';
 
 Future main() async {
   await TimeMachine.initialize();
-  timeZone = CachedDateTimeZone.forZone(await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"]);
+  await setup();
 
   await runTests();
+}
+
+Future setup() async {
+  timeZone = CachedDateTimeZone.forZone(await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"]);
 }
 
 CachedDateTimeZone timeZone; // = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb["America/Los_Angeles"];

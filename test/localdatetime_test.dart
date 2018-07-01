@@ -17,8 +17,13 @@ DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
 
 Future main() async {
   await TimeMachine.initialize();
-  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  await setup();
+
   await runTests();
+}
+
+Future setup() async {
+  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
 }
 
 @Test()

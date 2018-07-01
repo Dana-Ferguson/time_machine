@@ -27,14 +27,17 @@ DateTimeZone Pacific;
 
 Future main() async {
   await TimeMachine.initialize();
-  
+  await setup();
+
+  await runTests();
+}
+
+Future setup() async {
   LosAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
   NewZealand = await (await DateTimeZoneProviders.tzdb)["Pacific/Auckland"];
   Paris = await (await DateTimeZoneProviders.tzdb)["Europe/Paris"];
   NewYork = await (await DateTimeZoneProviders.tzdb)["America/New_York"];
   Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
-
-  await runTests();
 }
 
 /// Local midnight at the start of the transition (June 1st) becomes 1am.

@@ -60,9 +60,11 @@ Future runTests() async {
 
   for (var lib in testLibs) {
     if (testGenTest) _printImport(lib.uri);
-    
+
     for (DeclarationMirror declaration in lib.declarations.values) {
+      if (testGenTest && declaration is MethodMirror && _nameOf(declaration) == 'setup') _setupMethod = true;
       if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
+
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
       if (test.isEmpty) continue;
 
@@ -122,6 +124,9 @@ void _writeTestGenFile() {
   if (_getTzdb) {
     sb.writeln('  var tzdb = await DateTimeZoneProviders.tzdb;');
   }
+  if (_setupMethod) {
+    sb.writeln('  await setup();');
+  }
   sb.writeln();
   sb.write(_gen_sb_methodCalls);
   sb.writeln('}');
@@ -178,6 +183,7 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
 
 bool _includeTestCulturesImport = false;
 bool _getTzdb = false;
+bool _setupMethod = false;
 
 String _printNewObject(Object obj) {
   var sb = new StringBuffer();
@@ -234,6 +240,11 @@ String _printNewObject(Object obj) {
     }*/
     else if (name == CultureInfo.invariantCultureId) {
       sb.write('Cultures.invariantCulture');
+    }
+    // see: LocaltimePatternTests.CreateCustomAmPmCulture
+    else if (name == 'ampmDesignators') {
+      sb.write("new CultureInfo('ampmDesignators'/*CultureInfo.invariantCultureId*/, (new DateTimeFormatInfoBuilder.invariantCulture()..amDesignator = '${obj
+          .dateTimeFormat.amDesignator}'..pmDesignator = '${obj.dateTimeFormat.pmDesignator}').Build())");
     }
     else sb.write('await Cultures.getCulture("${name}")');
   }

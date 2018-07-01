@@ -18,9 +18,13 @@ IDateTimeZoneProvider Tzdb;
 /// Tests for DateTimeZoneCache.
 Future main() async {
   await TimeMachine.initialize();
-  Tzdb = await DateTimeZoneProviders.tzdb;
+  await setup();
 
   await runTests();
+}
+
+Future setup() async {
+  Tzdb = await DateTimeZoneProviders.tzdb;
 }
 
 void Construction_NullProvider()

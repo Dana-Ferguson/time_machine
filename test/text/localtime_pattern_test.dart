@@ -17,14 +17,18 @@ import 'test_cultures.dart';
 
 Future main() async {
   await TimeMachine.initialize();
+  await setup();
+
+  await runTests();
+}
+
+Future setup() async {
   var sw = new Stopwatch()..start();
   var ids = await Cultures.ids;
   for(var id in ids) {
     _allCultures.add(await Cultures.getCulture(id));
   }
   print('Time to load cultures: ${sw.elapsedMilliseconds} ms;');
-
-  await runTests();
 }
 
 @Test()
@@ -947,7 +951,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @private static CultureInfo CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
-    return new CultureInfo(CultureInfo.invariantCultureId, (
+    return new CultureInfo('ampmDesignators'/*CultureInfo.invariantCultureId*/, (
         new DateTimeFormatInfoBuilder.invariantCulture()
           ..amDesignator = amDesignator
           ..pmDesignator = pmDesignator).Build());

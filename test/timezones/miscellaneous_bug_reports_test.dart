@@ -20,10 +20,15 @@ IDateTimeZoneProvider Tzdb;
 /// to regression testing.
 Future main() async {
   await TimeMachine.initialize();
-  Tzdb = await DateTimeZoneProviders.tzdb;
+  await setup();
 
   await runTests();
 }
+
+Future setup() async {
+  Tzdb = await DateTimeZoneProviders.tzdb;
+}
+
 
 @Test()
 Future Niue() async

@@ -18,9 +18,13 @@ import '../time_machine_testing.dart';
 /// been its DST offset, i.e. +1.)
 Future main() async {
   await TimeMachine.initialize();
-  Algiers = await (await DateTimeZoneProviders.tzdb)["Africa/Algiers"];
+  await setup();
 
   await runTests();
+}
+
+Future setup() async {
+  Algiers = await (await DateTimeZoneProviders.tzdb)["Africa/Algiers"];
 }
 
 DateTimeZone Algiers;

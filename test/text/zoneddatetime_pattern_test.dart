@@ -39,7 +39,12 @@ DateTimeZone etcGMT_12;
 
 Future main() async {
   await TimeMachine.initialize();
-  
+  await setup();
+
+  await runTests();
+}
+
+Future setup() async {
   Tzdb = await DateTimeZoneProviders.tzdb;
   France = await Tzdb["Europe/Paris"];
   Athens = await Tzdb["Europe/Athens"];
@@ -48,8 +53,6 @@ Future main() async {
 
   // todo: implement CanonicalIdMap
   etcGMT_12 = new FixedDateTimeZone('Etc/GMT-12', new Offset.fromHours(12), '+12');
-
-  await runTests();
 }
 
 @Test()

@@ -19,10 +19,14 @@ DateTimeZone Jordan;
 /// in our parser.
 Future main() async {
   await TimeMachine.initialize();
-  Tzdb = await DateTimeZoneProviders.tzdb;
-  Jordan = await Tzdb["Asia/Amman"];
+  await setup();
 
   await runTests();
+}
+
+Future setup() async {
+  Tzdb = await DateTimeZoneProviders.tzdb;
+  Jordan = await Tzdb["Asia/Amman"];
 }
 
 /// If all of these transitions are right, we're probably okay... in particular,

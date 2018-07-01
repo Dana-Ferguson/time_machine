@@ -16,12 +16,16 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import '../time_machine_testing.dart';
 
 Future main() async {
+  await setup();
+
+  await runTests();
+}
+
+Future setup() async {
   ExpectedZone = (new MtdtzBuilder.withName(-2, "Start")
     ..Add(Instants['C'], 2, 1, "Middle")
     ..Add(Instants['G'], 1, 0, "End")
   ).Build();
-
-  await runTests();
 }
 
 // Arbitrary instants which are useful for the tests. They happen to be a year

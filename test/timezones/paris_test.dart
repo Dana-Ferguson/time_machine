@@ -26,11 +26,15 @@ Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21);
 /// 2011 spring transition: March 27th
 Future main() async {
   await TimeMachine.initialize();
+  await setup();
+
+  await runTests();
+}
+
+Future setup() async {
   Tzdb = await DateTimeZoneProviders.tzdb;
   // Make sure we deal with the uncached time zone
   Paris = Uncached(await Tzdb["Europe/Paris"]);
-
-  await runTests();
 }
 
 @Test()
