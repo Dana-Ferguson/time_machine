@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4
+
+- DartVM mirrors based unit tests can now be used to compute DartWeb non-mirrors based unit tests. All web-compatible
+unit tests are now passing, and TimeMachine is safe for use when compiling via Dart2JS.
+
 ## 0.3
 
 - Coalesced imports into a single import and all `@internal` functionality is now hidden.

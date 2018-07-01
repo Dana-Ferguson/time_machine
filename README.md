@@ -1,7 +1,7 @@
 # Dart Time Machine
 
 Time Machine is a date and time API for Dart (port of [Noda Time](https://www.nodatime.org)).
-Time Machine is timezone and culture sensitive. Intended targets are DartVM, Dart4Web, and Flutter.
+Time Machine is timezone and culture sensitive that targets DartVM, Dart4Web, and Dart4Mobile ([Flutter](https://flutter.io/)).
 
 Example Code:
 
@@ -13,7 +13,7 @@ print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 var tzdb = await DateTimeZoneProviders.tzdb;
 var paris = await tzdb["Europe/Paris"];
 
-var now = SystemClock.instance.getCurrentInstant();
+var now = new Instant.now();
 
 print('\nBasic');
 print('UTC Time: $now');
@@ -54,16 +54,16 @@ print(localClone.value);
 
 ![selection_118](https://user-images.githubusercontent.com/7284858/41519378-c058d6a0-7295-11e8-845d-6782f1e7cbbe.png)
 
-A lot of functionality works at this time, but the public API is starting to stabilize. TZDB QoL 
-changes are in progress. This is a preview release. Documentation was also ported,
+Most functionality works at this time; All unit tests pass on DartVM and DartWeb. The public API is stabilizing.
+TZDB QoL changes are in progress. This is a preview release. Documentation was also ported,
 but some things changed for Dart and the documentation will have minor inaccuracies in some places (and we need
 an additional formatting pass).
 
 Don't use any functions annotated with `@internal`. As of v0.3 you should not find any, but if you do, let me know.
 
 Todo:
- - [x] Port over major classes
- - [x] Port over corresponding unit tests
+ - [x] Port NodaTime
+ - [x] Unit tests passing in DartVM
  - [ ] Dartification of the API
    - [X] First pass style updates
    - [X] Second pass ergonomics updates
@@ -73,10 +73,13 @@ Todo:
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
  - [X] Implement Dart4Web features
- - [ ] Unit tests running in DartWeb (_for fidelity_: ***In-Progress***)
+ - [X] Unit tests passing in DartWeb
+ - [ ] Fix DartDoc Formatting
  - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
 
-External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not included in this repository.
+External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not 
+included in this repository. The goal is to port all this functionality to Dart, the initial tool was created for
+boot strapping -- and guaranteeing that our data in exactly the same thing that Noda Time would see (to ease porting).
 
 Future Todo:
  - [ ] Produce our own TSDB files
@@ -129,3 +132,5 @@ optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` 
 Still investigating potential solutions, but looks like `waiting` might be an okay algorithm, since it works
 in the newer DDC. I'm hoping Dart 2 stable launches [soon](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable).
 
+`toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
+[contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient.
