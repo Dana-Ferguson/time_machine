@@ -113,10 +113,21 @@ void UnambiguousStartOfDay()
   expect(expected, new LocalDate(2000, 3, 1).atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
 
-T capture<T extends Error>(action()) {
+T captureVM<T extends Error>(action()) {
   try {
     action();
   } on T catch (error) {
+    return error;
+  };
+
+  return null;
+}
+
+// DartWeb fails to reify generic types (see above) -- so, type erasure does have its own power.
+Object capture(action()) {
+  try {
+    action();
+  } catch (error) {
     return error;
   };
 
