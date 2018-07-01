@@ -7,11 +7,8 @@ import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:js';
 
-import 'package:logging/logging.dart';
 import 'package:resource/resource.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'platform_io.dart';
 
@@ -36,9 +33,6 @@ class _WebMachineIO implements PlatformIO {
 Future initialize(dynamic arg) => TimeMachine.initialize();
 
 class TimeMachine {
-  // todo: is it okay to have a Logger in a library... can this be 'tree-shaken out' for users who aren't logging?
-  static final Logger _log = new Logger('TimeMachine');
-
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
   static Future initialize() async {
     Platform.startWeb();
@@ -90,7 +84,7 @@ class TimeMachine {
       _dayFormat = options['day'];
     }
     catch (e, s) {
-      _log.warning('Failed to get platform local information.\n$e\n$s');
+      print('Failed to get platform local information.\n$e\n$s');
     }
   }
 }

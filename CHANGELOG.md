@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1
+
+- Missed a logging reference (took it out).
+
+
 ## 0.4
 
 - DartVM mirrors based unit tests can now be used to compute DartWeb non-mirrors based unit tests. All web-compatible
