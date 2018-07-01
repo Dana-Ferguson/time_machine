@@ -75,12 +75,16 @@ void FieldsOf_GreatAchievement()
   expect(38, now.minute);
   expect(25, now.second);
   expect(345, now.millisecond);
-  expect(3458760, now.tickOfSecond); // 3458765
-  expect(18 * TimeConstants.ticksPerHour +
-      38 * TimeConstants.ticksPerMinute +
-      25 * TimeConstants.ticksPerSecond +
-      3458760, // 3458765
-      now.tickOfDay);
+
+  // DartWeb only does millisecond precision in dart:core (which TimeOfGreatAchievement is funnelled through)
+  if (Platform.isVM) {
+    expect(3458760, now.tickOfSecond); // 3458765
+    expect(18 * TimeConstants.ticksPerHour +
+        38 * TimeConstants.ticksPerMinute +
+        25 * TimeConstants.ticksPerSecond +
+        3458760, // 3458765
+        now.tickOfDay);
+  }
 }
 
 @Test()
@@ -91,7 +95,11 @@ void ConstructLocalInstant_WithAllFields()
   int bclDays = (bclTicks ~/ TimeConstants.ticksPerDay);
   int bclTickOfDay = bclTicks % TimeConstants.ticksPerDay;
   expect(bclDays, localAchievement.daysSinceEpoch);
-  expect(bclTickOfDay, localAchievement.nanosecondOfDay / TimeConstants.nanosecondsPerTick);
+  if (Platform.isVM) {
+    expect(bclTickOfDay, localAchievement.nanosecondOfDay / TimeConstants.nanosecondsPerTick);
+  } else {
+    expect(bclTickOfDay / TimeConstants.ticksPerMillisecond, localAchievement.nanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
+  }
 }
 
 @Test()
