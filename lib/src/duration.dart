@@ -54,6 +54,19 @@ abstract class ISpan {
   static Span trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Span._trusted(milliseconds, nanosecondsInterval);
 }
 
+/*
+  Potentially:
+    // 68 years as int32 on VM
+    // 292271023045 years as int64 on VM
+    // 142710460 years on JS before precision loss
+    final int _seconds;
+    // 0  to 999999999 ~ 30 bits ~ 4 bytes on VM
+    final int _nanosecondOfSecond;
+
+  // 8 or 12 bytes on VM (slight optimization)
+  // 16 bytes on JS (no change)
+*/
+
 @immutable
 class Span implements Comparable<Span> {
   // 285420 years max (unlimited on VM)

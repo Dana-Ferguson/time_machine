@@ -26,8 +26,7 @@ abstract class IOffsetDateTime {
 }
 
 @immutable
-class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializable
-    {
+class OffsetDateTime {
   // todo: We can't use this either
   // @private static const int NanosecondsBits = 47;
 
@@ -39,15 +38,15 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
   // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
-  // should allow us to optimize memory usage too. todo: this may not be the same in Dart
+  // should allow us to optimize memory usage too.
   final YearMonthDayCalendar _yearMonthDayCalendar;
 
   // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
   // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
   // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
   // @private final int nanosecondsAndOffset;
-
   final int _nanosecondOfDay;
+  
   /// Gets the offset from UTC.
   final Offset offset;
 
@@ -124,9 +123,6 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
   int get hour => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
-  // Effectively nanoseconds / NanosecondsPerHour, but apparently rather more efficient.
-  // Dart: doesn't work in JS
-  // ((nanosecondOfDay >> 13) ~/ 439453125);
 
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
   int get clockHourOfHalfDay {
@@ -159,16 +155,16 @@ class OffsetDateTime // : IEquatable<OffsetDateTime>, IFormattable, IXmlSerializ
 
   // TODO(optimization): Rewrite for performance?
   /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => ((tickOfDay % TimeConstants.ticksPerSecond));
+  int get tickOfSecond => tickOfDay % TimeConstants.ticksPerSecond;
 
   /// Gets the tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.
   int get tickOfDay => nanosecondOfDay ~/ TimeConstants.nanosecondsPerTick;
 
   /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => ((nanosecondOfDay % TimeConstants.nanosecondsPerSecond));
+  int get nanosecondOfSecond => nanosecondOfDay % TimeConstants.nanosecondsPerSecond;
 
   /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => _nanosecondOfDay; // nanosecondsAndOffset & NanosecondsMask;
+  int get nanosecondOfDay => _nanosecondOfDay;
 
   /// Returns the local date and time represented within this offset date and time.
   // todo: should this be a const? or cached -- or???
