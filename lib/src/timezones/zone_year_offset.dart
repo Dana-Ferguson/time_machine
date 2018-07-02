@@ -153,7 +153,7 @@ class ZoneYearOffset {
       }
       date = date.plusDays(1);
     }
-    return (date.at(timeOfDay)).toLocalInstant();
+    return ILocalDateTime.toLocalInstant(date.at(timeOfDay));
   }
 
   /// Writes this object to the given [IDateTimeZoneWriter].

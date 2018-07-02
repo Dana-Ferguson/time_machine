@@ -70,7 +70,7 @@ class ZonedDateTime {
   factory ZonedDateTime.fromLocal(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
   {
     zone = Preconditions.checkNotNull(zone, 'zone');
-    Instant candidateInstant = localDateTime.toLocalInstant().minus(offset);
+    Instant candidateInstant = ILocalDateTime.toLocalInstant(localDateTime).minus(offset);
     Offset correctOffset = zone.getUtcOffset(candidateInstant);
     // Not using Preconditions, to avoid building the string unnecessarily.
     if (correctOffset != offset) {

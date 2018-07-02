@@ -87,7 +87,7 @@ class ZoneInterval {
   // Use the Start property to trigger the appropriate end-of-time exception.
   // Call Plus to trigger an appropriate out-of-range exception.
   // todo: check this -- I'm not sure how I got so confused on this
-  new LocalDateTime.fromInstant(IInstant.safePlus(start, wallOffset)); // .WithOffset(wallOffset));
+  ILocalDateTime.fromInstant(IInstant.safePlus(start, wallOffset)); // .WithOffset(wallOffset));
 
 
   /// Gets the local end time of the interval, as a [LocalDateTime]
@@ -102,7 +102,7 @@ class ZoneInterval {
   LocalDateTime get isoLocalEnd =>
   // Use the End property to trigger the appropriate end-of-time exception.
   // Call Plus to trigger an appropriate out-of-range exception.
-  new LocalDateTime.fromInstant(IInstant.plusOffset(end, wallOffset));
+  ILocalDateTime.fromInstant(IInstant.plusOffset(end, wallOffset));
 
 
   /// Gets the name of this offset period (e.g. PST or PDT).

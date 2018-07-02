@@ -167,7 +167,7 @@ abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
   /// [localDateTime]: The local date and time to map in this time zone.
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
   @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
-    LocalInstant localInstant = localDateTime.toLocalInstant();
+    LocalInstant localInstant = ILocalDateTime.toLocalInstant(localDateTime);
     Instant firstGuess = localInstant.minusZeroOffset();
     ZoneInterval interval = getZoneInterval(firstGuess);
 

@@ -15,6 +15,12 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 // TODO(feature): Calendar-neutral comparer.
 
+@internal
+abstract class ILocalDateTime {
+  static LocalInstant toLocalInstant(LocalDateTime localDateTime) => localDateTime._toLocalInstant();
+  static LocalDateTime fromInstant(LocalInstant localInstant) => new LocalDateTime._fromLocalInstant(localInstant);
+}
+
 /// A date and time in a particular calendar system. A LocalDateTime value does not represent an
 /// instant on the global time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
 /// occurred at different instants for different people around the world.
@@ -38,7 +44,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [localInstant]: The local instant.
   /// Returns: The resulting date/time.
-  @internal LocalDateTime.fromInstant(LocalInstant localInstant)
+  LocalDateTime._fromLocalInstant(LocalInstant localInstant)
       : date = ILocalDate.fromDaysSinceEpoch(localInstant.daysSinceEpoch),
         time = ILocalTime.fromNanoseconds(localInstant.nanosecondOfDay);
 
@@ -146,7 +152,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
 
-  @internal LocalInstant toLocalInstant() => new LocalInstant.daysNanos(ILocalDate.daysSinceEpoch(date), time.nanosecondOfDay);
+  LocalInstant _toLocalInstant() => new LocalInstant.daysNanos(ILocalDate.daysSinceEpoch(date), time.nanosecondOfDay);
 
   /// Converts a [DateTime] of any kind to a LocalDateTime in the specified or ISO calendar. This does not perform
   /// any time zone conversions, so a DateTime with a [DateTime.Kind] of [DateTimeKind.utc]
@@ -521,7 +527,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// As UTC is a fixed time zone, there is no chance that this local date/time is ambiguous or skipped.
   /// Returns: The result of mapping this local date/time in UTC.
   ZonedDateTime inUtc() =>
-  // Use the @internal constructors to avoid validation. We know it will be fine.
+  // Use the internal constructors to avoid validation. We know it will be fine.
   IZonedDateTime.trusted(IOffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 

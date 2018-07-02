@@ -408,11 +408,8 @@ class Period {
     // Where we can optimize, do everything with int arithmetic (as we do for Between(LocalTime, LocalTime)).
     // Otherwise (rare case), use duration arithmetic.
     int hours, minutes, seconds, milliseconds, ticks, nanoseconds;
-    var span = end
-        .toLocalInstant()
-        .timeSinceLocalEpoch - remaining
-        .toLocalInstant()
-        .timeSinceLocalEpoch;
+    var span = ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
+        - ILocalDateTime.toLocalInstant(remaining).timeSinceLocalEpoch;
     if (ISpan.isInt64Representable(span)) {
       var result = _timeComponentsBetween(span.totalNanoseconds, units);
       hours = result.hours;

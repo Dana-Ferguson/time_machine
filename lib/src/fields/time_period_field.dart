@@ -134,8 +134,8 @@ class TimePeriodField
 
   int unitsBetween(LocalDateTime start, LocalDateTime end)
   {
-    LocalInstant startLocalInstant = start.toLocalInstant();
-    LocalInstant endLocalInstant = end.toLocalInstant();
+    LocalInstant startLocalInstant = ILocalDateTime.toLocalInstant(start);
+    LocalInstant endLocalInstant = ILocalDateTime.toLocalInstant(end);
     Span span = endLocalInstant.timeSinceLocalEpoch - startLocalInstant.timeSinceLocalEpoch;
     return getUnitsInDuration(span);
   }
