@@ -61,7 +61,7 @@ an additional formatting pass).
 
 Don't use any functions annotated with `@internal`. As of v0.3 you should not find any, but if you do, let me know.
 
-Todo:
+Todo (before v1):
  - [x] Port NodaTime
  - [x] Unit tests passing in DartVM
  - [ ] Dartification of the API
@@ -76,6 +76,8 @@ Todo:
  - [X] Unit tests passing in DartWeb
  - [ ] Fix DartDoc Formatting
  - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
+ - [ ] Rename `Span` (correlates to `dart:core`'s `Duration`). As a quantity of time, maybe `TimeSpan` or `Time` (in my head,
+ I highly correlate Spans with Arrays ... is this normal?)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not 
 included in this repository. The goal is to port all this functionality to Dart, the initial tool was created for

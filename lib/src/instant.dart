@@ -126,6 +126,7 @@ class Instant implements Comparable<Instant> {
       other is Span ? minus(other) :
       throw new ArgumentError('Expected Span or Instant.');
 
+  // todo: this name is really bad
   // todo: think about this name ... it's not good
   // Instant minusSpan(Span span) => new Instant._trusted(_span - span);
   Span spanTo(Instant instant) => _span - instant._span;
