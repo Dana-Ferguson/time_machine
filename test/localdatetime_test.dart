@@ -202,7 +202,7 @@ void DayOfWeek_AroundEpoch()
     // Check once per hour of the day, just in case something's messed up based on the time of day.
     for (int hour = 0; hour < 24; hour++)
     {
-      expect(new IsoDayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
+      expect(new DayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
       dateTime = dateTime.plusHours(1);
     }
   }

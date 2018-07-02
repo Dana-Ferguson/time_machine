@@ -109,8 +109,8 @@ class OffsetDateTime {
 
   YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
-  /// Gets the week day of this offset date and time expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  /// Gets the week day of this offset date and time expressed as an [DayOfWeek] value.
+  DayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this offset date and time within the era.
   int get yearOfEra => calendar.getYearOfEra(_yearMonthDayCalendar.year);

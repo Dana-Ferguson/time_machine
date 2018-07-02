@@ -33,7 +33,7 @@ void SimpleProperties()
   expect(2012, value.yearOfEra);
   expect(2, value.month);
   expect(10, value.day);
-  expect(IsoDayOfWeek.friday, value.dayOfWeek);
+  expect(DayOfWeek.friday, value.dayOfWeek);
   expect(41, value.dayOfYear);
   expect(8, value.clockHourOfHalfDay);
   expect(8, value.hour);

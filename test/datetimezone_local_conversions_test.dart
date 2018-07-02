@@ -321,7 +321,7 @@ void AtStrictly_InWinter()
   expect(2009, when.year);
   expect(12, when.month);
   expect(22, when.day);
-  expect(IsoDayOfWeek.tuesday, when.dayOfWeek);
+  expect(DayOfWeek.tuesday, when.dayOfWeek);
   expect(21, when.hour);
   expect(39, when.minute);
   expect(30, when.second);

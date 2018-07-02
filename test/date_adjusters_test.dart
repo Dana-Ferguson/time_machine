@@ -38,12 +38,12 @@ void DayOfMonth()
 }
 
 @Test()
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.monday, 2014, 8, 18], "Same day-of-week")
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.tuesday, 2014, 8, 19])
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.sunday, 2014, 8, 24])
-@TestCase(const [2014, 8, 31, IsoDayOfWeek.monday, 2014, 9, 1], "Wrap month")
+@TestCase(const [2014, 8, 18, DayOfWeek.monday, 2014, 8, 18], "Same day-of-week")
+@TestCase(const [2014, 8, 18, DayOfWeek.tuesday, 2014, 8, 19])
+@TestCase(const [2014, 8, 18, DayOfWeek.sunday, 2014, 8, 24])
+@TestCase(const [2014, 8, 31, DayOfWeek.monday, 2014, 9, 1], "Wrap month")
 void NextOrSame(
-    int year, int month, int day, IsoDayOfWeek dayOfWeek,
+    int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
@@ -53,12 +53,12 @@ void NextOrSame(
 }
 
 @Test()
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.monday, 2014, 8, 18], "Same day-of-week")
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.tuesday, 2014, 8, 12])
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.sunday, 2014, 8, 17])
-@TestCase(const [2014, 8, 1, IsoDayOfWeek.thursday, 2014, 7, 31], "Wrap month")
+@TestCase(const [2014, 8, 18, DayOfWeek.monday, 2014, 8, 18], "Same day-of-week")
+@TestCase(const [2014, 8, 18, DayOfWeek.tuesday, 2014, 8, 12])
+@TestCase(const [2014, 8, 18, DayOfWeek.sunday, 2014, 8, 17])
+@TestCase(const [2014, 8, 1, DayOfWeek.thursday, 2014, 7, 31], "Wrap month")
 void PreviousOrSame(
-    int year, int month, int day, IsoDayOfWeek dayOfWeek,
+    int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
@@ -68,12 +68,12 @@ void PreviousOrSame(
 }
 
 @Test()
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.monday, 2014, 8, 25], "Same day-of-week")
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.tuesday, 2014, 8, 19])
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.sunday, 2014, 8, 24])
-@TestCase(const [2014, 8, 31, IsoDayOfWeek.monday, 2014, 9, 1], "Wrap month")
+@TestCase(const [2014, 8, 18, DayOfWeek.monday, 2014, 8, 25], "Same day-of-week")
+@TestCase(const [2014, 8, 18, DayOfWeek.tuesday, 2014, 8, 19])
+@TestCase(const [2014, 8, 18, DayOfWeek.sunday, 2014, 8, 24])
+@TestCase(const [2014, 8, 31, DayOfWeek.monday, 2014, 9, 1], "Wrap month")
 void Next(
-    int year, int month, int day, IsoDayOfWeek dayOfWeek,
+    int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
@@ -83,12 +83,12 @@ void Next(
 }
 
 @Test()
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.monday, 2014, 8, 11], "Same day-of-week")
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.tuesday, 2014, 8, 12])
-@TestCase(const [2014, 8, 18, IsoDayOfWeek.sunday, 2014, 8, 17])
-@TestCase(const [2014, 8, 1, IsoDayOfWeek.thursday, 2014, 7, 31], "Wrap month")
+@TestCase(const [2014, 8, 18, DayOfWeek.monday, 2014, 8, 11], "Same day-of-week")
+@TestCase(const [2014, 8, 18, DayOfWeek.tuesday, 2014, 8, 12])
+@TestCase(const [2014, 8, 18, DayOfWeek.sunday, 2014, 8, 17])
+@TestCase(const [2014, 8, 1, DayOfWeek.thursday, 2014, 7, 31], "Wrap month")
 void Previous(
-    int year, int month, int day, IsoDayOfWeek dayOfWeek,
+    int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
   LocalDate start = new LocalDate(year, month, day);
@@ -119,7 +119,7 @@ void Month_InvalidAdjustment()
 @Test()
 void IsoDayOfWeekAdjusters_Invalid()
 {
-  var invalid = new IsoDayOfWeek (10); //IsoDayOfWeek) 10;
+  var invalid = new DayOfWeek (10); //IsoDayOfWeek) 10;
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));

@@ -25,7 +25,7 @@ void EpochProperties()
   expect(1970, date.year);
   expect(1970, date.yearOfEra);
   expect(1, date.day);
-  expect(IsoDayOfWeek.thursday, date.dayOfWeek);
+  expect(DayOfWeek.thursday, date.dayOfWeek);
   expect(1, date.dayOfYear);
   expect(1, date.month);
 }
@@ -41,7 +41,7 @@ void ArbitraryDateProperties()
   expect(2011, date.year);
   expect(2011, date.yearOfEra);
   expect(5, date.day);
-  expect(IsoDayOfWeek.saturday, date.dayOfWeek);
+  expect(DayOfWeek.saturday, date.dayOfWeek);
   expect(64, date.dayOfYear);
   expect(3, date.month);
 }

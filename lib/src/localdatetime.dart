@@ -91,8 +91,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Gets the day of this local date and time within the month.
   int get day => date.day;
 
-  /// Gets the week day of this local date and time expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => date.dayOfWeek;
+  /// Gets the week day of this local date and time expressed as an [DayOfWeek] value.
+  DayOfWeek get dayOfWeek => date.dayOfWeek;
 
   /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
   int get hour => time.hour;
@@ -488,7 +488,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   LocalDateTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addDateTime(this, nanoseconds);
 
 
-  /// Returns the next [LocalDateTime] falling on the specified [IsoDayOfWeek],
+  /// Returns the next [LocalDateTime] falling on the specified [DayOfWeek],
   /// at the same time of day as this value.
   /// This is a strict "next" - if this value on already falls on the target
   /// day of the week, the returned value will be a week later.
@@ -498,10 +498,10 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime next(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.next(targetDayOfWeek), time);
+  LocalDateTime next(DayOfWeek targetDayOfWeek) => new LocalDateTime(date.next(targetDayOfWeek), time);
 
 
-  /// Returns the previous [LocalDateTime] falling on the specified [IsoDayOfWeek],
+  /// Returns the previous [LocalDateTime] falling on the specified [DayOfWeek],
   /// at the same time of day as this value.
   /// This is a strict "previous" - if this value on already falls on the target
   /// day of the week, the returned value will be a week earlier.
@@ -511,7 +511,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime previous(IsoDayOfWeek targetDayOfWeek) => new LocalDateTime(date.previous(targetDayOfWeek), time);
+  LocalDateTime previous(DayOfWeek targetDayOfWeek) => new LocalDateTime(date.previous(targetDayOfWeek), time);
 
 
   /// Returns an [OffsetDateTime] for this local date/time with the given offset.

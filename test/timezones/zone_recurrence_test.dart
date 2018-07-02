@@ -23,7 +23,7 @@ Future main() async {
 @Test()
 void Constructor_nullName_exception()
 {
-  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.midnight);
+  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
   // Assert.Throws(typeof(ArgumentNullException), () => new ZoneRecurrence(null, Offset.zero, yearOffset, 1971, 2009), "Null name");
   expect(() => new ZoneRecurrence(null, Offset.zero, yearOffset, 1971, 2009), throwsArgumentError, reason: "Null name");
 }
@@ -189,7 +189,7 @@ void Serialization_Infinite()
 @Test()
 void IEquatable_Tests()
 {
-  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.midnight);
+  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
 
   var value = new ZoneRecurrence("bob", Offset.zero, yearOffset, 1971, 2009);
   var equalValue = new ZoneRecurrence("bob", Offset.zero, yearOffset, 1971, 2009);
@@ -232,7 +232,7 @@ void December31st2400_AskAtNanoBeforeLastTransition()
 @Test()
 void WithName()
 {
-  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.midnight);
+  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
   var original = new ZoneRecurrence("original", new Offset.fromHours(1), yearOffset, 1900, 2000);
   var renamed = original.withName("renamed");
   expect("renamed", renamed.name);
@@ -245,7 +245,7 @@ void WithName()
 @Test()
 void ForSingleYear()
 {
-  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.midnight);
+  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
   var original = new ZoneRecurrence("original", new Offset.fromHours(1), yearOffset, 1900, 2000);
   var singleYear = original.forSingleYear(2017);
   expect(original.name, singleYear.name);
@@ -258,7 +258,7 @@ void ForSingleYear()
 @Test()
 void ZoneRecurrenceToString()
 {
-  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, IsoDayOfWeek.wednesday.value, true, LocalTime.midnight);
+  var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("name", new Offset.fromHours(1), yearOffset, 1900, 2000);
   print(recurrence.toString());
   expect(recurrence.toString(),

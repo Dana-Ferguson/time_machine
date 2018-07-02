@@ -29,6 +29,7 @@ class ZoneYearOffset {
   static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
 
   final int _dayOfMonth;
+  // todo: should this be [DayOfWeek]?
   final int _dayOfWeek;
   final int _monthOfYear;
   final bool _addDay;

@@ -51,10 +51,10 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the next occurrence of the
   /// specified day-of-week, or the original date if the day is already corret.
-  static LocalDate Function(LocalDate) nextOrSame(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) nextOrSame(DayOfWeek dayOfWeek) {
     // Avoids boxing...
-    if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
+    if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
+      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.dayOfWeek == dayOfWeek ? date : date.next(dayOfWeek);
   }
@@ -66,10 +66,10 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the previous occurrence of the
   /// specified day-of-week, or the original date if the day is already corret.
-  static LocalDate Function(LocalDate) previousOrSame(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) previousOrSame(DayOfWeek dayOfWeek) {
     // Avoids boxing...
-    if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
+    if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
+      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.dayOfWeek == dayOfWeek ? date : date.previous(dayOfWeek);
   }
@@ -83,10 +83,10 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the next occurrence of the
   /// specified day-of-week.
-  static LocalDate Function(LocalDate) next(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) next(DayOfWeek dayOfWeek) {
     // Avoids boxing...
-    if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
+    if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
+      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.next(dayOfWeek);
   }
@@ -100,10 +100,10 @@ class DateAdjusters {
   /// [dayOfWeek]: The day-of-week to adjust dates to.
   /// An adjuster which advances a date to the previous occurrence of the
   /// specified day-of-week.
-  static LocalDate Function(LocalDate) previous(IsoDayOfWeek dayOfWeek) {
+  static LocalDate Function(LocalDate) previous(DayOfWeek dayOfWeek) {
     // Avoids boxing...
-    if (dayOfWeek < IsoDayOfWeek.monday || dayOfWeek > IsoDayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, IsoDayOfWeek.monday.value, IsoDayOfWeek.sunday.value, 'dayOfWeek');
+    if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
+      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.previous(dayOfWeek);
   }

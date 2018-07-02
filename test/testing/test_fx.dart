@@ -310,7 +310,7 @@ String _printNewObject(Object obj) {
     _getTzdb = true;
     sb.write('await tzdb["${obj.id}"]');
   }
-  else if (obj is IsoDayOfWeek) {
+  else if (obj is DayOfWeek) {
     sb.write('IsoDayOfWeek.${obj.toString().toLowerCase()}');
   }
   else if (obj is CalendarOrdinal) {

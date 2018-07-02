@@ -28,7 +28,7 @@ abstract class WeekYearRules
   /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
   /// week 52 of week-year 2010. Conversely, December 31st 2012 is a Monday,
   /// so is part of week 1 of week-year 2013.
-  static final IWeekYearRule iso = new SimpleWeekYearRule(4, IsoDayOfWeek.monday, false);
+  static final IWeekYearRule iso = new SimpleWeekYearRule(4, DayOfWeek.monday, false);
 
   /// Creates a week year rule where the boundary between one week-year and the next
   /// is parameterized in terms of how many days of the first week of the week
@@ -49,7 +49,7 @@ abstract class WeekYearRules
   /// [firstDayOfWeek]: The first day of the week.
   /// A [SimpleWeekYearRule] with the specified minimum number of days in the first
   /// week and first day of the week.
-  static IWeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [IsoDayOfWeek firstDayOfWeek = IsoDayOfWeek.monday])
+  static IWeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [DayOfWeek firstDayOfWeek = DayOfWeek.monday])
   => new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
   /// Creates a rule which behaves the same way as the BCL
@@ -68,7 +68,7 @@ abstract class WeekYearRules
   /// A rule which behaves the same way as the BCL
   /// [Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)]
   /// method.
-  static IWeekYearRule fromCalendarWeekRule(CalendarWeekRule calendarWeekRule, IsoDayOfWeek firstDayOfWeek) {
+  static IWeekYearRule fromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek) {
     int minDaysInFirstWeek;
     switch (calendarWeekRule) {
       case CalendarWeekRule.firstDay:

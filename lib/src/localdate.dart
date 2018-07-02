@@ -93,8 +93,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// Gets the number of days since the Unix epoch for this date.
   int get _daysSinceEpoch => calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
 
-  /// Gets the week day of this local date expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  /// Gets the week day of this local date expressed as an [DayOfWeek] value.
+  DayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this local date within the era.
   int get yearOfEra => calendar.getYearOfEra(_yearMonthDayCalendar.year);
@@ -154,7 +154,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [weekOfWeekYear]: ISO-8601 week of week year of value to return
   /// [dayOfWeek]: ISO-8601 day of week to return
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
-  factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek)
+  factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
   => WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
@@ -172,7 +172,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [dayOfWeek]: The day-of-week of the value to return.
   /// The date corresponding to the given year and month, on the given occurrence of the
   /// given day of week.
-  factory LocalDate.fromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek)
+  factory LocalDate.fromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek)
   {
     // This validates year and month as well as getting us a useful date.
     LocalDate startOfMonth = new LocalDate(year, month, 1);
@@ -473,7 +473,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The current value plus the given number of weeks.
   LocalDate plusWeeks(int weeks) => DatePeriodFields.weeksField.add(this, weeks);
 
-  /// Returns the next [LocalDate] falling on the specified [IsoDayOfWeek].
+  /// Returns the next [LocalDate] falling on the specified [DayOfWeek].
   /// This is a strict "next" - if this date on already falls on the target
   /// day of the week, the returned value will be a week later.
   ///
@@ -482,15 +482,15 @@ class LocalDate implements Comparable<LocalDate> {
   /// [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDate next(IsoDayOfWeek targetDayOfWeek)
+  LocalDate next(DayOfWeek targetDayOfWeek)
   {
     // Avoids boxing...
-    if (targetDayOfWeek < IsoDayOfWeek.monday || targetDayOfWeek > IsoDayOfWeek.sunday)
+    if (targetDayOfWeek < DayOfWeek.monday || targetDayOfWeek > DayOfWeek.sunday)
     {
       throw new RangeError('targetDayOfWeek');
     }
     // This will throw the desired exception for calendars with different week systems.
-    IsoDayOfWeek thisDay = dayOfWeek;
+    DayOfWeek thisDay = dayOfWeek;
     int difference = targetDayOfWeek - thisDay;
     if (difference <= 0)
     {
@@ -499,7 +499,7 @@ class LocalDate implements Comparable<LocalDate> {
     return plusDays(difference);
   }
 
-  /// Returns the previous [LocalDate] falling on the specified [IsoDayOfWeek].
+  /// Returns the previous [LocalDate] falling on the specified [DayOfWeek].
   /// This is a strict "previous" - if this date on already falls on the target
   /// day of the week, the returned value will be a week earlier.
   ///
@@ -508,15 +508,15 @@ class LocalDate implements Comparable<LocalDate> {
   /// [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDate previous(IsoDayOfWeek targetDayOfWeek)
+  LocalDate previous(DayOfWeek targetDayOfWeek)
   {
     // Avoids boxing...
-    if (targetDayOfWeek < IsoDayOfWeek.monday || targetDayOfWeek > IsoDayOfWeek.sunday)
+    if (targetDayOfWeek < DayOfWeek.monday || targetDayOfWeek > DayOfWeek.sunday)
     {
       throw new RangeError('targetDayOfWeek');
     }
     // This will throw the desired exception for calendars with different week systems.
-    IsoDayOfWeek thisDay = dayOfWeek;
+    DayOfWeek thisDay = dayOfWeek;
     int difference = targetDayOfWeek - thisDay;
     if (difference >= 0)
     {

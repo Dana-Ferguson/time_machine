@@ -64,7 +64,7 @@ abstract class IWeekYearRule
   /// [calendar]: The calendar system for the date.
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
-  LocalDate getLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar);
+  LocalDate getLocalDate(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek, CalendarSystem calendar);
 
   /// Calculates the week-year in which the given date occurs, according to this rule.
   ///
@@ -104,7 +104,7 @@ abstract class WeekYearRuleExtensions
   /// depending on [weekYear] and [weekOfWeekYear].
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
-  static LocalDate getLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek) =>
+  static LocalDate getLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek) =>
   Preconditions.checkNotNull(rule, 'rule').getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Convenience overload to call [IWeekYearRule.GetWeeksInWeekYear(int, CalendarSystem)] with

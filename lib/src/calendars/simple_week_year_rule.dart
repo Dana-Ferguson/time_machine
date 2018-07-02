@@ -17,7 +17,7 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 @internal
 class SimpleWeekYearRule implements IWeekYearRule {
   final int _minDaysInFirstWeek;
-  final IsoDayOfWeek _firstDayOfWeek;
+  final DayOfWeek _firstDayOfWeek;
 
   /// If true, the boundary of a calendar year sometimes splits a week in half. The
   /// last day of the calendar year is *always* in the last week of the same week-year, but
@@ -35,7 +35,7 @@ class SimpleWeekYearRule implements IWeekYearRule {
   }
 
   /// <inheritdoc />
-  LocalDate getLocalDate(int weekYear, int weekOfWeekYear, IsoDayOfWeek dayOfWeek, CalendarSystem calendar) {
+  LocalDate getLocalDate(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek, CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
     _validateWeekYear(weekYear, calendar);
 

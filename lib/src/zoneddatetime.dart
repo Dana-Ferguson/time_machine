@@ -131,8 +131,8 @@ class ZonedDateTime {
   /// Gets the day of this zoned date and time within the month.
   int get day => _offsetDateTime.day;
 
-  /// Gets the week day of this zoned date and time expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => _offsetDateTime.dayOfWeek;
+  /// Gets the week day of this zoned date and time expressed as an [DayOfWeek] value.
+  DayOfWeek get dayOfWeek => _offsetDateTime.dayOfWeek;
 
   /// Gets the hour of day of this zoned date and time, in the range 0 to 23 inclusive.
   int get hour => _offsetDateTime.hour;

@@ -465,13 +465,13 @@ class CalendarSystem {
   ///
   /// [yearMonthDay]: The year, month and day to use to find the day of the week
   /// Returns: The day of the week as an IsoDayOfWeek
-  @internal IsoDayOfWeek getDayOfWeek(YearMonthDay yearMonthDay) {
+  @internal DayOfWeek getDayOfWeek(YearMonthDay yearMonthDay) {
     // DebugValidateYearMonthDay(yearMonthDay);
     int daysSinceEpoch = yearMonthDayCalculator.getDaysSinceEpoch(yearMonthDay);
     // % operations in C# retain their sign, in Dart they are always positive
     int numericDayOfWeek = daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
         : 7 + -(-(daysSinceEpoch + 4) % 7);
-    return new IsoDayOfWeek(numericDayOfWeek);
+    return new DayOfWeek(numericDayOfWeek);
   }
 
 

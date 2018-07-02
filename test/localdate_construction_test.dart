@@ -143,18 +143,18 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 {
   // Week year 2005 only has 52 weeks
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate.fromWeekYearWeekAndDay(2005, 53, IsoDayOfWeek.sunday), throwsRangeError);
+  expect(() => new LocalDate.fromWeekYearWeekAndDay(2005, 53, DayOfWeek.sunday), throwsRangeError);
 }
 
 @Test()
-@TestCase(const [2014, 8, 3, IsoDayOfWeek.sunday, 17])
-@TestCase(const [2014, 8, 3, IsoDayOfWeek.friday, 15])
+@TestCase(const [2014, 8, 3, DayOfWeek.sunday, 17])
+@TestCase(const [2014, 8, 3, DayOfWeek.friday, 15])
 // Needs "rewind" logic as August 1st 2014 is a Friday
-@TestCase(const [2014, 8, 3, IsoDayOfWeek.thursday, 21])
-@TestCase(const [2014, 8, 5, IsoDayOfWeek.sunday, 31])
+@TestCase(const [2014, 8, 3, DayOfWeek.thursday, 21])
+@TestCase(const [2014, 8, 5, DayOfWeek.sunday, 31])
 // Only 4 Mondays in August in 2014.
-@TestCase(const [2014, 8, 5, IsoDayOfWeek.monday, 25])
-void FromYearMonthWeekAndDay(int year, int month, int occurrence, IsoDayOfWeek dayOfWeek, int expectedDay)
+@TestCase(const [2014, 8, 5, DayOfWeek.monday, 25])
+void FromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek, int expectedDay)
 {
   var date = new LocalDate.fromYearMonthWeekAndDay(year, month, occurrence, dayOfWeek);
   expect(year, date.year);

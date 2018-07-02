@@ -39,7 +39,7 @@ void FieldsOf_UnixEpoch()
   expect(1, epoch.month);
   expect(1, epoch.day);
   expect(1, epoch.dayOfYear);
-  expect(IsoDayOfWeek.thursday, epoch.dayOfWeek);
+  expect(DayOfWeek.thursday, epoch.dayOfWeek);
   expect(Era.common, epoch.era);
   expect(0, epoch.hour);
   expect(0, epoch.minute);
@@ -64,7 +64,7 @@ void FieldsOf_GreatAchievement()
   expect(11, now.month);
   expect(27, now.day);
   // expect(TimeOfGreatAchievement.dayOfYear, now.DayOfYear);
-  expect(IsoDayOfWeek.friday, now.dayOfWeek);
+  expect(DayOfWeek.friday, now.dayOfWeek);
   expect(Era.common, now.era);
   expect(18, now.hour);
   expect(38, now.minute);

@@ -266,17 +266,17 @@ void Plus_FullPeriod() {
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";
 // the result is the next day-of-month in November 2011 with that target day.
 // The tests are picked somewhat arbitrarily...
-@TestCase(const [10, IsoDayOfWeek.wednesday, 16])
-@TestCase(const [10, IsoDayOfWeek.friday, 11])
-@TestCase(const [10, IsoDayOfWeek.thursday, 17])
-@TestCase(const [11, IsoDayOfWeek.wednesday, 16])
-@TestCase(const [11, IsoDayOfWeek.thursday, 17])
-@TestCase(const [11, IsoDayOfWeek.friday, 18])
-@TestCase(const [11, IsoDayOfWeek.saturday, 12])
-@TestCase(const [11, IsoDayOfWeek.sunday, 13])
-@TestCase(const [12, IsoDayOfWeek.friday, 18])
-@TestCase(const [13, IsoDayOfWeek.friday, 18])
-void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
+@TestCase(const [10, DayOfWeek.wednesday, 16])
+@TestCase(const [10, DayOfWeek.friday, 11])
+@TestCase(const [10, DayOfWeek.thursday, 17])
+@TestCase(const [11, DayOfWeek.wednesday, 16])
+@TestCase(const [11, DayOfWeek.thursday, 17])
+@TestCase(const [11, DayOfWeek.friday, 18])
+@TestCase(const [11, DayOfWeek.saturday, 12])
+@TestCase(const [11, DayOfWeek.sunday, 13])
+@TestCase(const [12, DayOfWeek.friday, 18])
+@TestCase(const [13, DayOfWeek.friday, 18])
+void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = new LocalDateTime.at(2011, 11, dayOfMonth, 15, 25, seconds: 30).plusNanoseconds(123456789);
   LocalDateTime target = start.next(targetDayOfWeek);
@@ -289,7 +289,7 @@ void Next(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [0])
 @TestCase(const [-1])
 @TestCase(const [8])
-void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
+void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDateTime start = new LocalDateTime.at(2011, 1, 1, 15, 25, seconds: 30).plusNanoseconds(123456789);
   expect(() => start.next(targetDayOfWeek), throwsRangeError);
@@ -297,17 +297,17 @@ void Next_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
 
 // Each test case gives a day-of-month in November 2011 and a target "next day of week";
 // the result is the next day-of-month in November 2011 with that target day.
-@TestCase(const [10, IsoDayOfWeek.wednesday, 9])
-@TestCase(const [10, IsoDayOfWeek.friday, 4])
-@TestCase(const [10, IsoDayOfWeek.thursday, 3])
-@TestCase(const [11, IsoDayOfWeek.wednesday, 9])
-@TestCase(const [11, IsoDayOfWeek.thursday, 10])
-@TestCase(const [11, IsoDayOfWeek.friday, 4])
-@TestCase(const [11, IsoDayOfWeek.saturday, 5])
-@TestCase(const [11, IsoDayOfWeek.sunday, 6])
-@TestCase(const [12, IsoDayOfWeek.friday, 11])
-@TestCase(const [13, IsoDayOfWeek.friday, 11])
-void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
+@TestCase(const [10, DayOfWeek.wednesday, 9])
+@TestCase(const [10, DayOfWeek.friday, 4])
+@TestCase(const [10, DayOfWeek.thursday, 3])
+@TestCase(const [11, DayOfWeek.wednesday, 9])
+@TestCase(const [11, DayOfWeek.thursday, 10])
+@TestCase(const [11, DayOfWeek.friday, 4])
+@TestCase(const [11, DayOfWeek.saturday, 5])
+@TestCase(const [11, DayOfWeek.sunday, 6])
+@TestCase(const [12, DayOfWeek.friday, 11])
+@TestCase(const [13, DayOfWeek.friday, 11])
+void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = new LocalDateTime.at(2011, 11, dayOfMonth, 15, 25, seconds: 30).plusNanoseconds(123456789);
   LocalDateTime target = start.previous(targetDayOfWeek);
@@ -319,7 +319,7 @@ void Previous(int dayOfMonth, IsoDayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [0])
 @TestCase(const [-1])
 @TestCase(const [8])
-void Previous_InvalidArgument(IsoDayOfWeek targetDayOfWeek)
+void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDateTime start = new LocalDateTime.at(2011, 1, 1, 15, 25, seconds: 30).plusNanoseconds(123456789);
   expect(() => start.previous(targetDayOfWeek), throwsRangeError);

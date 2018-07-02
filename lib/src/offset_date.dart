@@ -38,8 +38,8 @@ class OffsetDate // : IEquatable<OffsetDate>
   /// Gets the day of this offset date within the month.
   int get day => date.day;
   
-  /// Gets the week day of this offset date expressed as an [IsoDayOfWeek] value.
-  IsoDayOfWeek get dayOfWeek => date.dayOfWeek;
+  /// Gets the week day of this offset date expressed as an [DayOfWeek] value.
+  DayOfWeek get dayOfWeek => date.dayOfWeek;
 
   /// Gets the year of this offset date within the era.
   int get yearOfEra => date.yearOfEra;
