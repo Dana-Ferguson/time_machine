@@ -158,7 +158,6 @@ class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
     return ParseResult.forValue<LocalDateTime>(date.at(time));
   }
 
-  @internal
   @override
   ParseResult<LocalDateTime> calculateValue(PatternFields usedFields, String text) =>
       combineBuckets(usedFields, date, time, text);

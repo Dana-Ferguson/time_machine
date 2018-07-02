@@ -76,8 +76,7 @@ class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
   int dayOfMonth = 0;
 
   AnnualDateParseBucket(this.templateValue);
-
-  @internal
+  
   @override
   ParseResult<AnnualDate> calculateValue(PatternFields usedFields, String text) {
     // This will set MonthOfYearNumeric if necessary

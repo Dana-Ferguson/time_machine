@@ -14,10 +14,10 @@ class PatternBclSupport<T>
   final FixedFormatInfoPatternParser<T> Function(TimeMachineFormatInfo) _patternParser;
   final String _defaultFormatPattern;
 
-  @internal PatternBclSupport(this._defaultFormatPattern, this._patternParser);
+  PatternBclSupport(this._defaultFormatPattern, this._patternParser);
 
   // todo: do we want to provide an interface for formatProviders?
-  @internal String format(T value, String patternText, /**IFormatProvider*/ Object formatProvider)
+  String format(T value, String patternText, /**IFormatProvider*/ Object formatProvider)
   {
     if (patternText == null || patternText.length == 0)
     {

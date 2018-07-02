@@ -22,7 +22,7 @@ class Cache<TKey, TValue> {
   final Map<TKey, TValue> _dictionary;
 
   // todo: Do i want to make our own IEqualityComparer for use here?
-  @internal Cache(this._size, this._valueFactory /*, IEqualityComparer<TKey> keyComparer*/) :
+  Cache(this._size, this._valueFactory /*, IEqualityComparer<TKey> keyComparer*/) :
         //   external factory LinkedHashMap(
         //      {bool equals(K key1, K key2),
         //      int hashCode(K key),
@@ -34,7 +34,7 @@ class Cache<TKey, TValue> {
   ///
   /// [key]: Key to fetch
   /// Returns: The value associated with the key.
-  @internal TValue getOrAdd(TKey key)
+  TValue getOrAdd(TKey key)
   {
     // lock (mutex)
     // First check the cache...
@@ -58,13 +58,13 @@ class Cache<TKey, TValue> {
   }
 
   /// Returns the number of entries currently in the cache, primarily for diagnostic purposes.
-  @internal int get count => _dictionary.length;
+  int get count => _dictionary.length;
 
   /// Returns a copy of the keys in the cache as a list, for diagnostic purposes.
-  @internal List<TKey> get keys => new List<TKey>.unmodifiable(_keyList);
+  List<TKey> get keys => new List<TKey>.unmodifiable(_keyList);
 
   /// Clears the cache.
-  @internal void clear()
+  void clear()
   {
     _keyList.clear();
     _dictionary.clear();
