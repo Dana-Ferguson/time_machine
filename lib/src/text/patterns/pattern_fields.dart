@@ -21,14 +21,14 @@ class PatternFields {
   static const List<String> _stringRepresentations = const [
     'None', 'Sign', 'Months', 'Weeks', 'Days', 'AllDateUnits', 'YearMonthDay', 'AmPm', 'Year', 'YearTwoDigits', 'YearOfEra',
     'MonthOfYearNumeric', 'MonthOfYearText', 'DayOfMonth', 'DayOfWeek', 'Era', 'Calendar', 'Zone', 'ZoneAbbreviation',
-    'EmbeddedOffset', 'TotalDuration', 'EmbeddedDate', 'EmbeddedTime', 'AllTimeFields', 'AllDateFields'
+    'EmbeddedOffset', 'TotalTime', 'EmbeddedDate', 'EmbeddedTime', 'AllTimeFields', 'AllDateFields'
   ];
 
   static const List<PatternFields> _isoConstants = const [
     none, sign, hours12, hours24, minutes, seconds, fractionalSeconds,
     amPm, year, yearTwoDigits, yearOfEra, monthOfYearNumeric, monthOfYearText,
     dayOfMonth, dayOfWeek, era, calendar, zone, zoneAbbreviation, embeddedOffset,
-    totalSpan, embeddedDate, embeddedTime, allTimeFields, allDateFields
+    totalTime, embeddedDate, embeddedTime, allTimeFields, allDateFields
   ];
 
   // todo: look at: Constants --> Strings; and then maybe Strings --> Constants ~ but the strings wrapped in a class that doesn't care about case
@@ -38,7 +38,7 @@ class PatternFields {
     fractionalSeconds: 'YearMonthDay', amPm: 'AmPm', year: 'Year', yearTwoDigits: 'YearTwoDigits', yearOfEra: 'YearOfEra',
     monthOfYearNumeric: 'MonthOfYearNumeric', monthOfYearText: 'MonthOfYearText', dayOfMonth: 'DayOfMonth', dayOfWeek: 'DayOfWeek',
     era: 'Era', calendar: 'Calendar', zone: 'Zone', zoneAbbreviation: 'ZoneAbbreviation', embeddedOffset: 'EmbeddedOffset',
-    totalSpan: 'TotalDuration', embeddedDate: 'EmbeddedDate', embeddedTime: 'EmbeddedTime', allTimeFields: 'AllTimeFields',
+    totalTime: 'TotalTime', embeddedDate: 'EmbeddedDate', embeddedTime: 'EmbeddedTime', allTimeFields: 'AllTimeFields',
     allDateFields: 'AllDateFields'
   };
 
@@ -63,7 +63,7 @@ class PatternFields {
   static const PatternFields zone = const PatternFields(1 << 16);
   static const PatternFields zoneAbbreviation = const PatternFields(1 << 17);
   static const PatternFields embeddedOffset = const PatternFields(1 << 18);
-  static const PatternFields totalSpan = const PatternFields(1 << 19); // D, H, M, or S in a DurationPattern.
+  static const PatternFields totalTime = const PatternFields(1 << 19); // D, H, M, or S in a DurationPattern.
   static const PatternFields embeddedDate = const PatternFields(1 << 20); // No other date fields permitted, use calendar/year/month/day from bucket
   static const PatternFields embeddedTime = const PatternFields(
       1 << 21); // No other time fields permitted, user hours24/minutes/seconds/fractional seconds from bucket

@@ -18,8 +18,8 @@ abstract class IInstant {
   static const int minDays = -4371222;
   static const int maxDays = 2932896; // 104249991
 
-  static Instant trusted(Time span) => new Instant._trusted(span);
-  static Instant untrusted(Time span) => new Instant._untrusted(span);
+  static Instant trusted(Time time) => new Instant._trusted(time);
+  static Instant untrusted(Time time) => new Instant._untrusted(time);
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
   /// This must never be exposed.
@@ -51,13 +51,13 @@ class Instant implements Comparable<Instant> {
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
   static final Instant maxValue = new Instant._trusted(new Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
-  final Time _span;
+  final Time _epochTime;
 
   // todo: investigate if this is okay ... see Instant.cs#115
-  factory Instant._untrusted(Time _span) {
-    if (_span < minValue._span) return IInstant.beforeMinValue;
-    if (_span > maxValue._span) return IInstant.afterMaxValue;
-    return new Instant._trusted(_span);
+  factory Instant._untrusted(Time time) {
+    if (time < minValue._epochTime) return IInstant.beforeMinValue;
+    if (time > maxValue._epochTime) return IInstant.afterMaxValue;
+    return new Instant._trusted(time);
   }
 
   /// [Clock.getCurrentInstant] for [Clock.current].
@@ -65,31 +65,31 @@ class Instant implements Comparable<Instant> {
     return Clock.current.getCurrentInstant();
   }
 
-  const Instant._trusted(this._span);
+  const Instant._trusted(this._epochTime);
   // todo: to untrusted factories
-  Instant.fromUnixTimeTicks(int ticks) : _span = new Time(ticks: ticks);
-  Instant.fromUnixTimeSeconds(int seconds) : _span = new Time(seconds: seconds);
-  Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Time(milliseconds: milliseconds);
+  Instant.fromUnixTimeTicks(int ticks) : _epochTime = new Time(ticks: ticks);
+  Instant.fromUnixTimeSeconds(int seconds) : _epochTime = new Time(seconds: seconds);
+  Instant.fromUnixTimeMilliseconds(int milliseconds) : _epochTime = new Time(milliseconds: milliseconds);
   // todo: should this mirror functionality more similar to `new DateTime()`?
-  const Instant() : _span = Time.zero;
+  const Instant() : _epochTime = Time.zero;
 
-  int compareTo(Instant other) => _span.compareTo(other._span);
+  int compareTo(Instant other) => _epochTime.compareTo(other._epochTime);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
 
-  @override int get hashCode => _span.hashCode;
-  @override bool operator==(dynamic other) => other is Instant && _span == other._span;
+  @override int get hashCode => _epochTime.hashCode;
+  @override bool operator==(dynamic other) => other is Instant && _epochTime == other._epochTime;
 
-  Instant operator+(Time span) => this.plus(span);
+  Instant operator+(Time time) => this.plus(time);
   // Instant operator-(Span span) => this.minus(span);
-  Instant plus(Time span) => new Instant._untrusted(_span + span);
-  Instant minus(Time span) => new Instant._untrusted(_span - span);
+  Instant plus(Time time) => new Instant._untrusted(_epochTime + time);
+  Instant minus(Time time) => new Instant._untrusted(_epochTime - time);
 
   LocalInstant _plusOffset(Offset offset) {
-    return new LocalInstant(_span + offset.toSpan());
+    return new LocalInstant(_epochTime + offset.toSpan());
   }
 
   LocalInstant _safePlus(Offset offset) {
-    var days = _span.floorDays;
+    var days = _epochTime.floorDays;
     // plusOffset(offset);
     // If we can do the arithmetic safely, do so.
     if (days > IInstant.minDays && days < IInstant.maxDays)
@@ -106,7 +106,7 @@ class Instant implements Comparable<Instant> {
       return LocalInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = ITime.plusSmallNanoseconds(_span, offset.nanoseconds);
+    var asDuration = ITime.plusSmallNanoseconds(_epochTime, offset.nanoseconds);
     if (asDuration.floorDays < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
@@ -122,19 +122,19 @@ class Instant implements Comparable<Instant> {
 
   // todo: is there any clever way to add type annotations to this?
   dynamic operator-(dynamic other) =>
-      other is Instant ? spanTo(other) :
+      other is Instant ? timeUntil(other) :
       other is Time ? minus(other) :
       throw new ArgumentError('Expected Span or Instant.');
 
   // todo: this name is really bad
   // todo: think about this name ... it's not good
   // Instant minusSpan(Span span) => new Instant._trusted(_span - span);
-  Time spanTo(Instant instant) => _span - instant._span;
+  Time timeUntil(Instant instant) => _epochTime - instant._epochTime;
 
-  bool operator<(Instant other) => _span < other._span;
-  bool operator<=(Instant other) => _span <= other._span;
-  bool operator>(Instant other) => _span > other._span;
-  bool operator>=(Instant other) => _span >= other._span;
+  bool operator<(Instant other) => _epochTime < other._epochTime;
+  bool operator<=(Instant other) => _epochTime <= other._epochTime;
+  bool operator>(Instant other) => _epochTime > other._epochTime;
+  bool operator>=(Instant other) => _epochTime >= other._epochTime;
 
   // Convenience methods from Nodatime -- evaluate if I want to keep these
   factory Instant.fromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
@@ -157,8 +157,8 @@ class Instant implements Comparable<Instant> {
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 
   DateTime toDateTimeUtc() {
-    if (Platform.isVM) return new DateTime.fromMicrosecondsSinceEpoch(_span.totalMicroseconds.toInt(), isUtc: true);
-    return new DateTime.fromMillisecondsSinceEpoch(_span.totalMilliseconds.toInt(), isUtc: true);
+    if (Platform.isVM) return new DateTime.fromMicrosecondsSinceEpoch(_epochTime.totalMicroseconds.toInt(), isUtc: true);
+    return new DateTime.fromMillisecondsSinceEpoch(_epochTime.totalMilliseconds.toInt(), isUtc: true);
   }
 
   // DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
@@ -172,24 +172,21 @@ class Instant implements Comparable<Instant> {
     return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
-  int get daysSinceEpoch => _span.floorDays; //days;
-  int get nanosecondOfDay => _span.nanosecondOfFloorDay; //nanosecondOfDay;
+  int get daysSinceEpoch => _epochTime.floorDays; //days;
+  int get nanosecondOfDay => _epochTime.nanosecondOfFloorDay; //nanosecondOfDay;
 
-  // todo: should this just be spanSinceEpoch() ?? would def. increase discoverability
-  // todo: or could we just make Span be Time??? Would the be cool or confusing?
-  // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
-  Time get timeSinceEpoch => _span;
+  Time get timeSinceEpoch => _epochTime;
 
-  int toUnixTimeSeconds() => ITime.floorSeconds(_span);
-  int toUnixTimeMilliseconds() => _span.floorMilliseconds; //.totalMilliseconds.toInt();
-  int toUnixTimeTicks() => ITime.floorTicks(_span); //.totalTicks.toInt();
+  int toUnixTimeSeconds() => ITime.floorSeconds(_epochTime);
+  int toUnixTimeMilliseconds() => _epochTime.floorMilliseconds; //.totalMilliseconds.toInt();
+  int toUnixTimeTicks() => ITime.floorTicks(_epochTime); //.totalTicks.toInt();
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_span.floorDays);
-    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, _span.nanosecondOfFloorDay, Offset.zero);
+    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(_epochTime.floorDays);
+    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, _epochTime.nanosecondOfFloorDay, Offset.zero);
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 

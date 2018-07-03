@@ -219,18 +219,18 @@ class ZonedDateTime {
   /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
   ///
   /// [zonedDateTime]: The value to add the duration to.
-  /// [span]: The duration to add
+  /// [time]: The duration to add
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime addSpan(ZonedDateTime zonedDateTime, Time span) => zonedDateTime + span;
+  static ZonedDateTime addTime(ZonedDateTime zonedDateTime, Time time) => zonedDateTime + time;
 
   /// Returns the result of adding a duration to this zoned date and time.
   ///
   /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
   ///
-  /// [span]: The duration to add
+  /// [time]: The duration to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusSpan(Time span) => this + span;
+  ZonedDateTime plusTime(Time time) => this + time;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
@@ -280,27 +280,26 @@ class ZonedDateTime {
   /// The returned value retains the calendar system and time zone of [zonedDateTime].
   ///
   /// [zonedDateTime]: The [ZonedDateTime] to add the duration to.
-  /// [span]: The duration to add.
+  /// [time]: The duration to add.
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  ZonedDateTime operator +(Time span) =>
-      new ZonedDateTime(toInstant() + span, zone, calendar);
+  ZonedDateTime operator +(Time time) =>
+      new ZonedDateTime(toInstant() + time, zone, calendar);
 
   /// Subtracts a duration from a zoned date and time.
   ///
   /// This is an alternative way of calling [op_Subtraction(ZonedDateTime, Duration)].
   ///
   /// [zonedDateTime]: The value to subtract the duration from.
-  /// [span]: The duration to subtract.
+  /// [time]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime subtractSpan(ZonedDateTime zonedDateTime, Time span) => zonedDateTime.minusSpan(span);
+  static ZonedDateTime subtractTime(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.minusTime(time);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
   /// [op_Subtraction(ZonedDateTime, Duration)]
   ///
-  /// [span]: The duration to subtract
+  /// [time]: The duration to subtract
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
-
-  ZonedDateTime minusSpan(Time span) => new ZonedDateTime(toInstant() - span, zone, calendar);
+  ZonedDateTime minusTime(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
@@ -340,10 +339,10 @@ class ZonedDateTime {
   /// The returned value retains the calendar system and time zone of [zonedDateTime].
   ///
   /// [zonedDateTime]: The value to subtract the duration from.
-  /// [span]: The duration to subtract.
+  /// [time]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
 // todo: I really do not like this pattern
-  dynamic operator -(dynamic start) => start is Time ? minusSpan(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
+  dynamic operator -(dynamic start) => start is Time ? minusTime(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
 
   /// Returns the [ZoneInterval] containing this value, in the time zone this
   /// value refers to.

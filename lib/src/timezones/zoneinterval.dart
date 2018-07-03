@@ -52,7 +52,7 @@ class ZoneInterval {
   /// This is effectively `End - Start`.
   ///
   /// [InvalidOperationException]: This zone extends to the start or end of time.
-  Time get span => end - start;
+  Time get totalTime => end - start;
 
   /// Returns `true` if this zone interval has a fixed start point, or `false` if it
   /// extends to the beginning of time.

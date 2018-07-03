@@ -66,11 +66,11 @@ class TimePatternParser implements IPatternParser<Time> {
       // Needs to be big enough for 1449551462400 seconds
       int count = pattern.getRepeatCount(13);
       // AddField would throw an inappropriate exception here, so handle it specially.
-      if ((builder.usedFields & PatternFields.totalSpan).value != 0) {
+      if ((builder.usedFields & PatternFields.totalTime).value != 0) {
         throw new InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
       }
       builder.addField(field, pattern.current);
-      builder.addField(PatternFields.totalSpan, pattern.current);
+      builder.addField(PatternFields.totalTime, pattern.current);
       builder.addParseInt64ValueAction(count, 13, pattern.current, 0, maxValue, (bucket, value) => bucket.addUnits(value, nanosecondsPerUnit));
       builder.addFormatAction((Time value, StringBuffer sb) =>
           FormatHelper.leftPadNonNegativeInt64(_getPositiveNanosecondUnits(value, nanosecondsPerUnit, unitsPerDay), count, sb));
@@ -81,11 +81,11 @@ class TimePatternParser implements IPatternParser<Time> {
     return (pattern, builder) {
       int count = pattern.getRepeatCount(8); // Enough for 16777216
       // AddField would throw an inappropriate exception here, so handle it specially.
-      if ((builder.usedFields & PatternFields.totalSpan).value != 0) {
+      if ((builder.usedFields & PatternFields.totalTime).value != 0) {
         throw new InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
       }
       builder.addField(PatternFields.dayOfMonth, pattern.current);
-      builder.addField(PatternFields.totalSpan, pattern.current);
+      builder.addField(PatternFields.totalTime, pattern.current);
       builder.addParseValueAction(count, 8, pattern.current, 0, 16777216, (bucket, value) => bucket.addDays(value));
       builder.addFormatLeftPad(count, (span) {
         int days = span.floorDays;

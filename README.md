@@ -76,8 +76,8 @@ Todo (before v1):
  - [X] Unit tests passing in DartWeb
  - [ ] Fix DartDoc Formatting
  - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
- - [ ] Rename `Span` (correlates to `dart:core`'s `Duration`). As a quantity of time, maybe `TimeSpan` or `Time` (in my head,
- I highly correlate Spans with Arrays ... is this normal?)
+ - [X] Rename `Span` (correlates to `dart:core`'s `Duration`). Renamed to `time` (denotatively correct, and maybe 
+ connotatively wrong, vs. all wrong)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not 
 included in this repository. The goal is to port all this functionality to Dart, the initial tool was created for

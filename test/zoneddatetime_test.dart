@@ -60,7 +60,7 @@ void Add_AroundTimeZoneTransition()
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
   // 24 hours elapsed, and it's 4pm
   ZonedDateTime afterExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  ZonedDateTime afterAdd = ZonedDateTime.addSpan(before, Time.oneDay);
+  ZonedDateTime afterAdd = ZonedDateTime.addTime(before, Time.oneDay);
   ZonedDateTime afterOperator = before + Time.oneDay;
 
   expect(afterExpected, afterAdd);
@@ -78,8 +78,8 @@ void Add_MethodEquivalents()
   const int ticks = 5432112345;
 
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  expect(before + Time.oneDay, ZonedDateTime.addSpan(before, Time.oneDay));
-  expect(before + Time.oneDay, before.plusSpan(Time.oneDay));
+  expect(before + Time.oneDay, ZonedDateTime.addTime(before, Time.oneDay));
+  expect(before + Time.oneDay, before.plusTime(Time.oneDay));
 
   expect(before + new Time(hours: hours), before.plusHours(hours));
   expect(before + new Time(hours: -hours), before.plusHours(-hours));
@@ -107,7 +107,7 @@ void Subtract_AroundTimeZoneTransition()
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
   // 24 hours earlier, and it's 3pm
   ZonedDateTime beforeExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  ZonedDateTime beforeSubtract = ZonedDateTime.subtractSpan(after, Time.oneDay);
+  ZonedDateTime beforeSubtract = ZonedDateTime.subtractTime(after, Time.oneDay);
   ZonedDateTime beforeOperator = after - Time.oneDay;
 
   expect(beforeExpected, beforeSubtract);
@@ -118,8 +118,8 @@ void Subtract_AroundTimeZoneTransition()
 void SubtractDuration_MethodEquivalents()
 {
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  expect(after - Time.oneDay, ZonedDateTime.subtractSpan(after, Time.oneDay));
-  expect(after - Time.oneDay, after.minusSpan(Time.oneDay));
+  expect(after - Time.oneDay, ZonedDateTime.subtractTime(after, Time.oneDay));
+  expect(after - Time.oneDay, after.minusTime(Time.oneDay));
 }
 
 @Test()

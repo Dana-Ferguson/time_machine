@@ -46,7 +46,7 @@ void ComputedProperties()
   LocalDateTime end = new LocalDateTime.at(2011, 8, 2, 22, 45);
   expect(start, SampleInterval.isoLocalStart);
   expect(end, SampleInterval.isoLocalEnd);
-  expect(SampleEnd - SampleStart, SampleInterval.span);
+  expect(SampleEnd - SampleStart, SampleInterval.totalTime);
 }
 
 @Test()
