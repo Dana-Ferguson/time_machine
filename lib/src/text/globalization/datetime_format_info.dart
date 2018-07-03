@@ -4,7 +4,7 @@
 import 'package:meta/meta.dart';
 
 // todo: evaluate name, need, and should this be combined with something else?
-enum BclCalendarType {
+enum CalendarType {
   unknown,
   gregorian,
   persian,
@@ -28,7 +28,7 @@ class DateTimeFormatInfo {
   final List<String> abbreviatedMonthGenitiveNames;
 
   // BCL Calendar Class
-  final BclCalendarType calendar;
+  final CalendarType calendar;
 
   final List<String> eraNames;
   String getEraName(int era) {
@@ -81,7 +81,7 @@ class DateTimeFormatInfoBuilder {
   List<String> abbreviatedMonthGenitiveNames;
 
   // BCL Calendar Class
-  BclCalendarType calendar;
+  CalendarType calendar;
 
   List<String> eraNames;
 
@@ -147,7 +147,7 @@ class DateTimeFormatInfoBuilder {
         abbreviatedMonthNames = _invariantAbbreviatedMonthNames,
         monthGenitiveNames = _invariantMonthNames,
         abbreviatedMonthGenitiveNames = _invariantAbbreviatedMonthNames,
-        calendar = BclCalendarType.gregorian,
+        calendar = CalendarType.gregorian,
         eraNames = const ['A.D.'],
         fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss',
         shortDatePattern = 'MM/dd/yyyy',

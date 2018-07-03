@@ -98,7 +98,7 @@ class CultureReader extends BinaryReader {
       ..abbreviatedMonthGenitiveNames = readStringList()
 
       ..eraNames = readStringList()
-      ..calendar = BclCalendarType.values[read7BitEncodedInt()]
+      ..calendar = CalendarType.values[read7BitEncodedInt()]
 
       ..fullDateTimePattern = readString()
       ..shortDatePattern = readString()

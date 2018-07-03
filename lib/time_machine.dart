@@ -65,7 +65,7 @@ export 'src/calendars/week_year_rules.dart' show WeekYearRules, CalendarWeekRule
 // Globalization
 export 'src/text/globalization/culture.dart' show Cultures, CultureInfo;
 // todo: Do we want to expose the Builder?
-export 'src/text/globalization/datetime_format_info.dart' show BclCalendarType, DateTimeFormatInfo, DateTimeFormatInfoBuilder;
+export 'src/text/globalization/datetime_format_info.dart' show CalendarType, DateTimeFormatInfo, DateTimeFormatInfoBuilder;
 
 // Patterns (no public classes)
 

@@ -421,9 +421,9 @@ class _EraDescription {
     var calendar = culture.dateTimeFormat.calendar;
 
     bool getEraFromCalendar =
-        (era == Era.common && calendar == BclCalendarType.gregorian) ||
-        (era == Era.annoPersico && calendar == BclCalendarType.persian) ||
-        (era == Era.annoHegirae && (calendar == BclCalendarType.hijri || calendar == BclCalendarType.umAlQura));
+        (era == Era.common && calendar == CalendarType.gregorian) ||
+        (era == Era.annoPersico && calendar == CalendarType.persian) ||
+        (era == Era.annoHegirae && (calendar == CalendarType.hijri || calendar == CalendarType.umAlQura));
 
     return getEraFromCalendar ? culture.dateTimeFormat.getEraName(1) : null;
   }

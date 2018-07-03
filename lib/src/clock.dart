@@ -46,6 +46,7 @@ abstract class Clock
   /// Returns: A [ZonedClock] with the given clock, in the UTC time zone and ISO calendar system.
   ZonedClock inUtc() => new ZonedClock(this, DateTimeZone.utc, CalendarSystem.iso);
 
+  // todo: rename inLocalZone?
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// in the TZDB mapping for the system default time zone time zone and the ISO calendar system.
   ///

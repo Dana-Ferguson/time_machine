@@ -81,7 +81,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
     ..monthGenitiveNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', '']
     ..abbreviatedMonthGenitiveNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['AD']
     ..fullDateTimePattern = 'dddd, MMMM d, yyyy h:mm:ss tt'
     ..shortDatePattern = 'M/d/yyyy'
@@ -100,7 +100,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthNames = const ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.', '']
     ..monthGenitiveNames = const ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre', '']
     ..abbreviatedMonthGenitiveNames = const ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['ap. J.-C.']
     ..fullDateTimePattern = 'dddd d MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'dd/MM/yyyy'
@@ -119,7 +119,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthNames = const ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.', '']
     ..monthGenitiveNames = const ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre', '']
     ..abbreviatedMonthGenitiveNames = const ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['ap. J.-C.']
     ..fullDateTimePattern = 'd MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'yyyy-MM-dd'
@@ -156,7 +156,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthGenitiveNames = const [
       'tammik.', 'helmik.', 'maalisk.', 'huhtik.', 'toukok.', 'kesäk.', 'heinäk.', 'elok.', 'syysk.', 'lokak.', 'marrask.', 'jouluk.', ''
     ]
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['jKr.']
     ..fullDateTimePattern = 'dddd d. MMMM yyyy H.mm.ss'
     ..shortDatePattern = 'd.M.yyyy'
@@ -177,7 +177,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
       'FullGenName', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''
     ]
     ..abbreviatedMonthGenitiveNames = const ['AbbrGenName', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['A.D.']
     ..fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'MM/dd/yyyy'
@@ -198,7 +198,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
       'MonthName-Genitive', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''
     ]
     ..abbreviatedMonthGenitiveNames = const ['MN-Gen', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['A.D.']
     ..fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'MM/dd/yyyy'
@@ -217,7 +217,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
     ..monthGenitiveNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', '']
     ..abbreviatedMonthGenitiveNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['A.D.']
     ..fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'MM/dd/yyyy'
@@ -237,7 +237,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..abbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
     ..monthGenitiveNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', '']
     ..abbreviatedMonthGenitiveNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', '']
-    ..calendar = BclCalendarType.gregorian
+    ..calendar = CalendarType.gregorian
     ..eraNames = const ['A.D.']
     ..fullDateTimePattern = 'dddd, dd MMMM yyyy HH:mm:ss'
     ..shortDatePattern = 'MM/dd/yyyy'
