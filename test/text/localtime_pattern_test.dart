@@ -952,7 +952,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
   @private static Culture CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
     return new Culture('ampmDesignators'/*CultureInfo.invariantCultureId*/, (
-        new DateTimeFormatInfoBuilder.invariantCulture()
+        new DateTimeFormatBuilder.invariant()
           ..amDesignator = amDesignator
           ..pmDesignator = pmDesignator).Build());
   }

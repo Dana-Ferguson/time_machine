@@ -46,7 +46,7 @@ class Culture {
 
   bool get isReadOnly => true;
 
-  final DateTimeFormatInfo dateTimeFormat;
+  final DateTimeFormat dateTimeFormat;
   // todo: remove, maybe?
   final CompareInfo compareInfo;
 
@@ -54,7 +54,7 @@ class Culture {
   static const invariantId = "Invariant Culture";
 
   Culture._invariant()
-      : dateTimeFormat = new DateTimeFormatInfoBuilder.invariantCulture().Build(),
+      : dateTimeFormat = new DateTimeFormatBuilder.invariant().Build(),
         name = invariantId,
         compareInfo = null
   ;

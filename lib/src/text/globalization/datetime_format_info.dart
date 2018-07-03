@@ -13,7 +13,7 @@ enum CalendarType {
 }
 
 @immutable
-class DateTimeFormatInfo {
+class DateTimeFormat {
   final String amDesignator;
   final String pmDesignator;
 
@@ -43,9 +43,9 @@ class DateTimeFormatInfo {
   final String shortTimePattern;
   final String longTimePattern;
 
-  factory DateTimeFormatInfo.invariantCulture() => new DateTimeFormatInfoBuilder.invariantCulture().Build();
+  factory DateTimeFormat.invariantCulture() => new DateTimeFormatBuilder.invariant().Build();
 
-  DateTimeFormatInfo(
+  DateTimeFormat(
       this.amDesignator,
       this.pmDesignator,
       this.timeSeparator,
@@ -66,7 +66,7 @@ class DateTimeFormatInfo {
       );
 }
 
-class DateTimeFormatInfoBuilder {
+class DateTimeFormatBuilder {
   String amDesignator;
   String pmDesignator;
 
@@ -91,8 +91,8 @@ class DateTimeFormatInfoBuilder {
   String shortTimePattern;
   String longTimePattern;
 
-  DateTimeFormatInfo Build() =>
-      new DateTimeFormatInfo(
+  DateTimeFormat Build() =>
+      new DateTimeFormat(
           amDesignator,
           pmDesignator,
           timeSeparator,
@@ -111,7 +111,7 @@ class DateTimeFormatInfoBuilder {
           shortTimePattern,
           longTimePattern);
 
-  DateTimeFormatInfoBuilder([DateTimeFormatInfo info = null]) {
+  DateTimeFormatBuilder([DateTimeFormat info = null]) {
     if (info == null) return;
     amDesignator = info.amDesignator;
     pmDesignator = info.pmDesignator;
@@ -136,7 +136,7 @@ class DateTimeFormatInfoBuilder {
   static final List<String> _invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
   static final List<String> _invariantAbbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
 
-  DateTimeFormatInfoBuilder.invariantCulture()
+  DateTimeFormatBuilder.invariant()
       : amDesignator = 'AM',
         pmDesignator = 'PM',
         timeSeparator = ':',

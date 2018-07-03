@@ -72,7 +72,7 @@ class TimeMachineFormatInfo {
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based on
   /// potentially disparate [System.Globalization.CultureInfo] and
-  /// [DateTimeFormatInfo] instances.
+  /// [DateTimeFormat] instances.
   ///
   /// [cultureInfo]: The culture info to use for text comparisons and resource lookups.
   /// [dateTimeFormat]: The date/time format to use for format strings etc.
@@ -262,11 +262,11 @@ class TimeMachineFormatInfo {
 
   /// Gets the BCL date time format associated with this formatting information.
   ///
-  /// This is usually the [DateTimeFormatInfo] from [Culture],
+  /// This is usually the [DateTimeFormat] from [Culture],
   /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
   /// CultureInfo, that's used for format strings but the invariant culture is used for
   /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
-  final DateTimeFormatInfo dateTimeFormat;
+  final DateTimeFormat dateTimeFormat;
 
   /// Gets the time separator.
   String get timeSeparator => dateTimeFormat.timeSeparator;
@@ -370,7 +370,7 @@ class TimeMachineFormatInfo {
       return getFormatInfo(currentInfo.cultureInfo);
     } else if (formatProvider is Culture) {
       return getFormatInfo(formatProvider);
-    } else if (formatProvider is DateTimeFormatInfo) {
+    } else if (formatProvider is DateTimeFormat) {
       return new TimeMachineFormatInfo.withDateTimeFormat(Culture.invariant, formatProvider);
     }
 

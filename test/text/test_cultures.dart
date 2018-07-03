@@ -70,7 +70,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
   // Generated this from C#
   static final Culture EnUs =
-  new Culture('en-US', (new DateTimeFormatInfoBuilder()
+  new Culture('en-US', (new DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -89,7 +89,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'h:mm tt'
     ..longTimePattern = 'h:mm:ss tt').Build());
   static final Culture FrFr =
-  new Culture('fr-FR', (new DateTimeFormatInfoBuilder()
+  new Culture('fr-FR', (new DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -108,7 +108,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture FrCa =
-  new Culture('fr-CA', (new DateTimeFormatInfoBuilder()
+  new Culture('fr-CA', (new DateTimeFormatBuilder()
     ..amDesignator = 'a.m.'
     ..pmDesignator = 'p.m.'
     ..timeSeparator = ' '
@@ -127,7 +127,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture DotTimeSeparator =
-  new Culture('fi-FI-DotTimeSeparator', (new DateTimeFormatInfoBuilder()
+  new Culture('fi-FI-DotTimeSeparator', (new DateTimeFormatBuilder()
     ..amDesignator = 'ap.'
     ..pmDesignator = 'ip.'
     ..timeSeparator = '.'
@@ -164,7 +164,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'H.mm'
     ..longTimePattern = 'H.mm.ss').Build());
   static final Culture GenitiveNameTestCulture =
-  new Culture('GenitiveNameTestCulture', (new DateTimeFormatInfoBuilder()
+  new Culture('GenitiveNameTestCulture', (new DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -185,7 +185,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture GenitiveNameTestCultureWithLeadingNames =
-  new Culture('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatInfoBuilder()
+  new Culture('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -206,7 +206,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture AwkwardDayOfWeekCulture =
-  new Culture('AwkwardDayOfWeekCulture', (new DateTimeFormatInfoBuilder()
+  new Culture('AwkwardDayOfWeekCulture', (new DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -226,7 +226,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longTimePattern = 'HH:mm:ss').Build());
 
   static final Culture AwkwardAmPmDesignatorCulture =
-  new Culture('AwkwardAmPmDesignatorCulture', (new DateTimeFormatInfoBuilder()
+  new Culture('AwkwardAmPmDesignatorCulture', (new DateTimeFormatBuilder()
     ..amDesignator = 'Foo'
     ..pmDesignator = 'FooBar'
     ..timeSeparator = ':'

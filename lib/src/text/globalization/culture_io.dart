@@ -83,8 +83,8 @@ class CultureReader extends BinaryReader {
     return new Culture(name, datetimeFormat);
   }
 
-  DateTimeFormatInfo readDateTimeFormatInfo() {
-    return (new DateTimeFormatInfoBuilder()
+  DateTimeFormat readDateTimeFormatInfo() {
+    return (new DateTimeFormatBuilder()
       ..amDesignator = readString()
       ..pmDesignator = readString()
       ..timeSeparator = readString()
