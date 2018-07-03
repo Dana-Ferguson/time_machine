@@ -95,7 +95,7 @@ class PartialZoneIntervalMap
         continue;
       }
 
-      var lastIntervalOfCurrent = current.getZoneInterval(current.end - Span.epsilon);
+      var lastIntervalOfCurrent = current.getZoneInterval(current.end - Time.epsilon);
       var firstIntervalOfNext = next.getZoneInterval(next.start);
 
       if (!IZoneInterval.equalIgnoreBounds(lastIntervalOfCurrent, firstIntervalOfNext))

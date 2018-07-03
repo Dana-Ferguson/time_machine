@@ -25,7 +25,7 @@ import '../time_machine_testing.dart';
 class FakeClock extends Clock {
   // private readonly object mutex = new object();
   Instant _now;
-  Span _autoAdvance = Span.zero;
+  Time _autoAdvance = Time.zero;
 
   /// Creates a fake clock initially set to the given instant. The clock will advance by the given duration on
   /// each read.
@@ -33,7 +33,7 @@ class FakeClock extends Clock {
   /// [initial]: The initial instant.
   /// [autoAdvance]: The duration to advance the clock on each read.
   /// <seealso cref="AutoAdvance"/>
-  FakeClock(Instant initial, [Span autoAdvance = Span.zero]) {
+  FakeClock(Instant initial, [Time autoAdvance = Time.zero]) {
     _now = initial;
     this._autoAdvance = autoAdvance;
   }
@@ -57,7 +57,7 @@ class FakeClock extends Clock {
   ///
   /// [duration]: The duration to advance the clock by (or if negative, the duration to move it back
   /// by).
-  void Advance(Span duration) {
+  void Advance(Time duration) {
     //lock (mutex)
     {
       _now += duration;
@@ -68,43 +68,43 @@ class FakeClock extends Clock {
   ///
   /// [nanoseconds]: The number of nanoseconds to advance the clock by (or if negative, the number to move it back
   /// by).
-  void AdvanceNanoseconds(int nanoseconds) => Advance(new Span(nanoseconds: nanoseconds));
+  void AdvanceNanoseconds(int nanoseconds) => Advance(new Time(nanoseconds: nanoseconds));
 
   /// Advances the clock by the given number of ticks.
   ///
   /// [ticks]: The number of ticks to advance the clock by (or if negative, the number to move it back
   /// by).
-  void AdvanceTicks(int ticks) => Advance(new Span(ticks: ticks));
+  void AdvanceTicks(int ticks) => Advance(new Time(ticks: ticks));
 
   /// Advances the clock by the given number of milliseconds.
   ///
   /// [milliseconds]: The number of milliseconds to advance the clock by (or if negative, the number
   /// to move it back by).
-  void AdvanceMilliseconds(int milliseconds) => Advance(new Span(milliseconds: milliseconds));
+  void AdvanceMilliseconds(int milliseconds) => Advance(new Time(milliseconds: milliseconds));
 
   /// Advances the clock by the given number of seconds.
   ///
   /// [seconds]: The number of seconds to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceSeconds(int seconds) => Advance(new Span(seconds: seconds));
+  void AdvanceSeconds(int seconds) => Advance(new Time(seconds: seconds));
 
   /// Advances the clock by the given number of minutes.
   ///
   /// [minutes]: The number of minutes to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceMinutes(int minutes) => Advance(new Span(minutes: minutes));
+  void AdvanceMinutes(int minutes) => Advance(new Time(minutes: minutes));
 
   /// Advances the clock by the given number of hours.
   ///
   /// [hours]: The number of hours to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceHours(int hours) => Advance(new Span(hours: hours));
+  void AdvanceHours(int hours) => Advance(new Time(hours: hours));
 
   /// Advances the clock by the given number of standard (24-hour) days.
   ///
   /// [days]: The number of days to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceDays(int days) => Advance(new Span(days: days));
+  void AdvanceDays(int days) => Advance(new Time(days: days));
 
   /// Resets the clock to the given instant.
   /// The value of the [AutoAdvance] property will be unchanged.
@@ -143,8 +143,8 @@ class FakeClock extends Clock {
   /// The value could even be negative, to simulate particularly odd system clock effects.
   ///
   /// <seealso cref="GetCurrentInstant"/>
-  Span get AutoAdvance => _autoAdvance;
+  Time get AutoAdvance => _autoAdvance;
 
-  void set AutoAdvance(Span value) => _autoAdvance = value;
+  void set AutoAdvance(Time value) => _autoAdvance = value;
 }
 

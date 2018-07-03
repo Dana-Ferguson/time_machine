@@ -44,7 +44,7 @@ void FirstTransitions()
   var nameChangeInstant = new Instant.fromUtc(1891, 3, 14, 23, 51, 39);
   var utcChangeInstant = new Instant.fromUtc(1911, 3, 10, 23, 51, 39);
 
-  var beforeNameChange = Paris.getZoneInterval(nameChangeInstant - Span.epsilon);
+  var beforeNameChange = Paris.getZoneInterval(nameChangeInstant - Time.epsilon);
   var afterNameChange = Paris.getZoneInterval(nameChangeInstant);
   var afterSmallChange = Paris.getZoneInterval(utcChangeInstant);
 

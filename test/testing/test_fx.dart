@@ -300,7 +300,7 @@ String _printNewObject(Object obj) {
     var ns = ISpan.nanosecondsIntervalOf(span);
     sb.write('IInstant.trusted(ISpan.trusted($ms, $ns))');
   }
-  else if (obj is Span) {
+  else if (obj is Time) {
     var span = obj;
     var ms = ISpan.millisecondsOf(span);
     var ns = ISpan.nanosecondsIntervalOf(span);

@@ -92,7 +92,7 @@ void PreviousOrSame_LastYear()
 {
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
-  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1971, 1, 1, 0, 0) - Span.epsilon, Offset.zero, Offset.zero);
+  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1971, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(TimeConstants.unixEpoch, Offset.zero);
   expect(expected, actual);
 }
@@ -102,8 +102,8 @@ void PreviousOrSameTwice_LastYear()
 {
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1973);
-  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1972, 1, 1, 0, 0) - Span.epsilon, Offset.zero, Offset.zero);
-  actual = recurrence.previousOrSame(actual.instant - Span.epsilon, Offset.zero, Offset.zero);
+  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1972, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
+  actual = recurrence.previousOrSame(actual.instant - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(TimeConstants.unixEpoch, Offset.zero);
   expect(expected, actual);
 }
@@ -124,7 +124,7 @@ void PreviousOrSame_BeforeFirstYear_null()
 {
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
-  Transition actual = recurrence.previousOrSame(TimeConstants.unixEpoch - Span.epsilon, Offset.zero, Offset.zero);
+  Transition actual = recurrence.previousOrSame(TimeConstants.unixEpoch - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = null;
   expect(expected, actual);
 }
@@ -221,7 +221,7 @@ void December31st2400_AskAtNanoBeforeLastTransition()
 
   // We can find the final transition
   var finalTransition = new Instant.fromUtc(5001, 1, 1, 0, 0);
-  var next = recurrence.next(finalTransition - Span.epsilon, Offset.zero, Offset.zero);
+  var next = recurrence.next(finalTransition - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(finalTransition, new Offset.fromHours(1));
   expect(expected, next);
 

@@ -136,25 +136,25 @@ class TimePeriodField
   {
     LocalInstant startLocalInstant = ILocalDateTime.toLocalInstant(start);
     LocalInstant endLocalInstant = ILocalDateTime.toLocalInstant(end);
-    Span span = endLocalInstant.timeSinceLocalEpoch - startLocalInstant.timeSinceLocalEpoch;
+    Time span = endLocalInstant.timeSinceLocalEpoch - startLocalInstant.timeSinceLocalEpoch;
     return getUnitsInDuration(span);
   }
 
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
-  int getUnitsInDuration(Span span) {
+  int getUnitsInDuration(Time span) {
     return span.totalNanoseconds ~/ _unitNanoseconds;
   }
 
-  /// Returns a [Span] representing the given number of units.
-  Span toSpan(int units) =>
+  /// Returns a [Time] representing the given number of units.
+  Time toSpan(int units) =>
       units >= -_maxLongUnits && units <= _maxLongUnits
-          ? new Span(nanoseconds: units * _unitNanoseconds)
+          ? new Time(nanoseconds: units * _unitNanoseconds)
           : _toSpanSafely(units);
   
-  Span _toSpanSafely(int units) {
+  Time _toSpanSafely(int units) {
     var milliseconds = units * (_unitNanoseconds ~/ 1000000);
     var nanoseconds = units * (_unitNanoseconds % 1000000);
-    return new Span(milliseconds: milliseconds, nanoseconds: nanoseconds);
+    return new Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
   }
 }

@@ -27,6 +27,7 @@ class DateTimeFormat {
   final List<String> monthGenitiveNames;
   final List<String> abbreviatedMonthGenitiveNames;
 
+  // todo: convert to non-BCL or remove?
   // BCL Calendar Class
   final CalendarType calendar;
 

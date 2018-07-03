@@ -60,8 +60,8 @@ void GetZoneIntervals_FixedZone()
 @Test()
 void GetZoneIntervals_SingleTransitionZone_IntervalCoversTransition()
 {
-  Instant start = TestZone.Transition - new Span(days: 5);
-  Instant end = TestZone.Transition + new Span(days: 5);
+  Instant start = TestZone.Transition - new Time(days: 5);
+  Instant end = TestZone.Transition + new Time(days: 5);
   var expected = [ TestZone.EarlyInterval, TestZone.LateInterval ];
   var actual = TestZone.getZoneIntervalsFromTo(start, end);
   // CollectionAssert.AreEqual(expected, actual.toList());
@@ -71,8 +71,8 @@ void GetZoneIntervals_SingleTransitionZone_IntervalCoversTransition()
 @Test()
 void GetZoneIntervals_SingleTransitionZone_IntervalDoesNotCoverTransition()
 {
-  Instant start = TestZone.Transition - new Span(days: 10);
-  Instant end = TestZone.Transition - new Span(days: 5);
+  Instant start = TestZone.Transition - new Time(days: 10);
+  Instant end = TestZone.Transition - new Time(days: 5);
   var expected = [ TestZone.EarlyInterval ];
   var actual = TestZone.getZoneIntervalsFromTo(start, end);
   // CollectionAssert.AreEqual(expected, actual.toList());
@@ -82,8 +82,8 @@ void GetZoneIntervals_SingleTransitionZone_IntervalDoesNotCoverTransition()
 @Test()
 void GetZoneIntervals_IncludesStart()
 {
-  Instant start = TestZone.Transition - Span.epsilon;
-  Instant end = TestZone.Transition + new Span(days: 5);
+  Instant start = TestZone.Transition - Time.epsilon;
+  Instant end = TestZone.Transition + new Time(days: 5);
   var expected = [TestZone.EarlyInterval, TestZone.LateInterval ];
   var actual = TestZone.getZoneIntervalsFromTo(start, end);
   // CollectionAssert.AreEqual(expected, actual.toList());
@@ -93,7 +93,7 @@ void GetZoneIntervals_IncludesStart()
 @Test()
 void GetZoneIntervals_ExcludesEnd()
 {
-  Instant start = TestZone.Transition - new Span(days: 10);
+  Instant start = TestZone.Transition - new Time(days: 10);
   Instant end = TestZone.Transition;
   var expected = [ TestZone.EarlyInterval ];
   var actual = TestZone.getZoneIntervalsFromTo(start, end);

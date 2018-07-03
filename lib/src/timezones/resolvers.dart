@@ -34,7 +34,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
     // Given that there's a zone after before, it can't extend to the end of time.
-    return new ZonedDateTime(before.end - Span.epsilon, zone, local.calendar);
+    return new ZonedDateTime(before.end - Time.epsilon, zone, local.calendar);
   };
 
   /// A [SkippedTimeResolver] which returns the first tick of the time zone interval

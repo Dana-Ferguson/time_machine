@@ -43,15 +43,15 @@ abstract class ISpan {
   static const int maxMillis = Platform.intMaxValueJS;
   static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
-  static bool isInt64Representable(Span span) => span._isInt64Representable;
-  static Span plusSmallNanoseconds(Span span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
+  static bool isInt64Representable(Time span) => span._isInt64Representable;
+  static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
   
-  static int floorTicks(Span span) => span._floorTicks;
-  static int floorSeconds(Span span) => span._floorSeconds;
+  static int floorTicks(Time span) => span._floorTicks;
+  static int floorSeconds(Time span) => span._floorSeconds;
   
-  static int millisecondsOf(Span span) => span._milliseconds;
-  static int nanosecondsIntervalOf(Span span) => span._nanosecondsInterval;
-  static Span trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Span._trusted(milliseconds, nanosecondsInterval);
+  static int millisecondsOf(Time span) => span._milliseconds;
+  static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
+  static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._trusted(milliseconds, nanosecondsInterval);
 }
 
 /*
@@ -67,8 +67,12 @@ abstract class ISpan {
   // 16 bytes on JS (no change)
 */
 
+// TimeSpan / Span -- I think denotes two points in time (and span between two points)
+// Time?
+// ElapsedTime?
+// Elapsed? <-- (intransitive, of time) To pass or move by.
 @immutable
-class Span implements Comparable<Span> {
+class Time implements Comparable<Time> {
   // 285420 years max (unlimited on VM)
   final int _milliseconds;
 
@@ -80,24 +84,24 @@ class Span implements Comparable<Span> {
   // this is only true on the VM....
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
-  static const Span zero = const Span._trusted(0);
+  static const Time zero = const Time._trusted(0);
 
-  /// Gets a [Span] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static const Span epsilon = const Span._trusted(0, 1);
+  /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
+  static const Time epsilon = const Time._trusted(0, 1);
 
-  /// Gets the maximum value supported by [Span]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
-  static Span maxValue = new Span(days: ISpan.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+  /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
+  static Time maxValue = new Time(days: ISpan.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
-  /// Gets the minimum (largest negative) value supported by [Span].
-  static Span minValue = new Span(days: ISpan.minDays);
+  /// Gets the minimum (largest negative) value supported by [Time].
+  static Time minValue = new Time(days: ISpan.minDays);
 
-  static Span oneDay = new Span(days: 1);
-  static Span oneWeek = new Span(days: 7);
+  static Time oneDay = new Time(days: 1);
+  static Time oneWeek = new Time(days: 7);
 
-  const Span._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
+  const Time._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
 
-  factory Span._untrusted(int milliseconds, [int nanoseconds = 0]) {
-    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Span._trusted(milliseconds, nanoseconds);
+  factory Time._untrusted(int milliseconds, [int nanoseconds = 0]) {
+    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Time._trusted(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
@@ -115,13 +119,13 @@ class Span implements Comparable<Span> {
       nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
     }
 
-    return new Span._trusted(milliseconds, nanoseconds);
+    return new Time._trusted(milliseconds, nanoseconds);
 
     // todo: custom errors
     // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
   }
 
-  factory Span({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
+  factory Time({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
     int milliseconds = 0, int microseconds = 0, int ticks = 0, int nanoseconds = 0}) {
     milliseconds += days * TimeConstants.millisecondsPerDay;
     milliseconds += hours * TimeConstants.millisecondsPerHour;
@@ -131,11 +135,11 @@ class Span implements Comparable<Span> {
     nanoseconds += microseconds * TimeConstants.nanosecondsPerMicrosecond;
     nanoseconds += ticks * TimeConstants.nanosecondsPerTick;
 
-    return new Span._untrusted(milliseconds, nanoseconds);
+    return new Time._untrusted(milliseconds, nanoseconds);
   }
 
   // todo: should these be the default constructor?
-  factory Span.complex({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
+  factory Time.complex({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
     num milliseconds = 0, num microseconds = 0, num ticks = 0, num nanoseconds = 0}) {
     int _days = days.floor();
     int _hours = hours.floor();
@@ -162,10 +166,10 @@ class Span implements Comparable<Span> {
 
 // print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
 
-    return new Span._untrusted(totalMilliseconds, intervalNanoseconds);
+    return new Time._untrusted(totalMilliseconds, intervalNanoseconds);
   }
 
-  Span.fromDuration(Duration duration)
+  Time.fromDuration(Duration duration)
       :
         _milliseconds = duration.inMilliseconds,
         _nanosecondsInterval = TimeConstants.nanosecondsPerMicrosecond
@@ -251,9 +255,9 @@ class Span implements Comparable<Span> {
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
-  Span get spanOfDay => new Span._trusted (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  Time get spanOfDay => new Time._trusted (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
-  Span get spanOfFloorDay => new Span._trusted (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  Time get spanOfFloorDay => new Time._trusted (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
@@ -262,63 +266,63 @@ class Span implements Comparable<Span> {
 // @override toString() => '$totalSeconds seconds';
 
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      SpanPatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+      TimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
 
 
-  Span operator +(Span other) => new Span._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
+  Time operator +(Time other) => new Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
 
-  Span operator -(Span other) => new Span._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
+  Time operator -(Time other) => new Time._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
 
-  Span operator -() => new Span._untrusted(-_milliseconds, -_nanosecondsInterval);
+  Time operator -() => new Time._untrusted(-_milliseconds, -_nanosecondsInterval);
 
-  Span plus(Span other) => this + other;
+  Time plus(Time other) => this + other;
 
-  Span minus(Span other) => this - other;
+  Time minus(Time other) => this - other;
 
-  Span operator *(num factor) => new Span._untrusted(_milliseconds * factor, _nanosecondsInterval * factor);
+  Time operator *(num factor) => new Time._untrusted(_milliseconds * factor, _nanosecondsInterval * factor);
 
   // Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
 
   // note: this is wrong'ish*
   // Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
   // note: this works on VM (because of BigInt)
-  Span operator /(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
+  Time operator /(num factor) => new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
 
   // This is what it will look like in JS -- only fails 1 unit test though
   // Span operator/(num factor) => new Span(nanoseconds: ((_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) / factor).toInt());
 
-  Span multiply(num factor) => this * factor;
+  Time multiply(num factor) => this * factor;
 
-  Span divide(num factor) => this / factor;
+  Time divide(num factor) => this / factor;
 
-  Span _plusSmallNanoseconds(int nanoseconds) => new Span._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
+  Time _plusSmallNanoseconds(int nanoseconds) => new Time._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
-  bool operator ==(dynamic other) => other is Span && equals(other);
+  bool operator ==(dynamic other) => other is Time && equals(other);
 
-  bool operator >=(Span other) =>
+  bool operator >=(Time other) =>
       other == null ? true : (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval >= other._nanosecondsInterval);
 
-  bool operator <=(Span other) =>
+  bool operator <=(Time other) =>
       other == null ? false : (_milliseconds < other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval <= other._nanosecondsInterval);
 
-  bool operator >(Span other) =>
+  bool operator >(Time other) =>
       other == null ? true : (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval > other._nanosecondsInterval);
 
-  bool operator <(Span other) => other == null ? false : (_milliseconds < other._milliseconds) ||
+  bool operator <(Time other) => other == null ? false : (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
   
 
-  static Span max(Span x, Span y) => x > y ? x : y;
+  static Time max(Time x, Time y) => x > y ? x : y;
 
-  static Span min(Span x, Span y) => x < y ? x : y;
+  static Time min(Time x, Time y) => x < y ? x : y;
 
-  bool equals(Span other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
+  bool equals(Time other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 
-  int compareTo(Span other) {
+  int compareTo(Time other) {
     if (other == null) return 1;
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);

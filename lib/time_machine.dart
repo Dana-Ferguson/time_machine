@@ -25,7 +25,7 @@ export 'src/localtime.dart' show LocalTime;
 export 'src/localdate.dart' show LocalDate;
 export 'src/localdatetime.dart' show LocalDateTime;
 
-export 'src/duration.dart' show Span;
+export 'src/duration.dart' show Time;
 export 'src/instant.dart' show Instant;
 export 'src/interval.dart' show Interval;
 
@@ -82,7 +82,7 @@ export 'src/text/localtime_pattern.dart' show LocalTimePattern;
 export 'src/text/localdatetime_pattern.dart' show LocalDateTimePattern;
 
 export 'src/text/annual_date_pattern.dart' show AnnualDatePattern;
-export 'src/text/duration_pattern.dart' show SpanPattern;
+export 'src/text/duration_pattern.dart' show TimePattern;
 export 'src/text/instant_pattern.dart' show InstantPattern;
 export 'src/text/offset_date_pattern.dart' show OffsetDatePattern;
 export 'src/text/offset_datetime_pattern.dart' show OffsetDateTimePattern;

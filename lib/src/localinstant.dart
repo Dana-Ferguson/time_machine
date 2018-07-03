@@ -19,18 +19,18 @@ class LocalInstant {
   static final LocalInstant afterMaxValue = new LocalInstant._trusted(IInstant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
 
   /// Elapsed time since the local 1970-01-01T00:00:00.
-  final Span _span;
+  final Time _span;
 
   LocalInstant._ (this._span);
 
   /// Constructor which should *only* be used to construct the invalid instances.
   factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
   {
-    return new LocalInstant._(new Span(days: days));
+    return new LocalInstant._(new Time(days: days));
   }
 
   /// Initializes a new instance of [LocalInstant].
-  factory LocalInstant(Span nanoseconds) {
+  factory LocalInstant(Time nanoseconds) {
     // todo: would it? (from Dart perspective -- we have different bounds? or do we? -- investigate)
     //int days = nanoseconds.FloorDays;
     //if (days < Instant.MinDays || days > Instant.MaxDays)
@@ -46,7 +46,7 @@ class LocalInstant {
   /// [nanoOfDay]: Nanosecond of the local day.
   factory LocalInstant.daysNanos(int days, int nanoOfDay)
   {
-    return new LocalInstant._(new Span(days: days, nanoseconds: nanoOfDay));
+    return new LocalInstant._(new Time(days: days, nanoseconds: nanoOfDay));
   }
 
   /// Returns whether or not this is a valid instant. Returns true for all but
@@ -54,7 +54,7 @@ class LocalInstant {
   bool get isValid => daysSinceEpoch >= IInstant.minDays && daysSinceEpoch <= IInstant.maxDays;
 
   /// Number of nanoseconds since the local unix epoch.
-  Span get timeSinceLocalEpoch => _span;
+  Time get timeSinceLocalEpoch => _span;
 
   /// Number of days since the local unix epoch.
   int get daysSinceEpoch => _span.floorDays;

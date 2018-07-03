@@ -16,9 +16,9 @@ Future main() async {
   await runTests();
 }
 
-final Instant one = IInstant.untrusted(new Span(nanoseconds: 1));
-final Instant threeMillion = IInstant.untrusted(new Span(nanoseconds: 3000000));
-final Instant negativeFiftyMillion = IInstant.untrusted(new Span(nanoseconds: -50000000));
+final Instant one = IInstant.untrusted(new Time(nanoseconds: 1));
+final Instant threeMillion = IInstant.untrusted(new Time(nanoseconds: 3000000));
+final Instant negativeFiftyMillion = IInstant.untrusted(new Time(nanoseconds: -50000000));
 
 @Test()
 // Gregorian calendar: 1957-10-04
@@ -40,7 +40,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
 
 @Test()
 void BasicSpanTests() {
-  var aSpan = new Span.complex(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
+  var aSpan = new Time.complex(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
 // print('aSpan.totalDays = ${aSpan.totalDays}');
 
   expect(aSpan.totalDays, 11+2);
@@ -207,7 +207,7 @@ void UnixConversions_ExtremeValues()
 {
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
-  var max = Instant.maxValue - new Span(seconds: 1) + Span.epsilon;
+  var max = Instant.maxValue - new Time(seconds: 1) + Time.epsilon;
   var x = max.toUnixTimeTicks();
   var t = new Instant.fromUnixTimeTicks(x);
   expect(max, new Instant.fromUnixTimeSeconds(max.toUnixTimeSeconds()));
@@ -347,7 +347,7 @@ void DefaultConstructor()
 @TestCase(const [101, 1])
 void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 {
-  Span nanos = new Span(nanoseconds: nanoseconds);
+  Time nanos = new Time(nanoseconds: nanoseconds);
   Instant instant = IInstant.untrusted(nanos); //.FromUntrustedDuration(nanos);
   expect(instant.toUnixTimeTicks(), expectedTicks);
 }
@@ -379,8 +379,8 @@ void PlusDuration_Overflow()
 @Test()
 void ExtremeArithmetic()
 {
-  Span hugeAndPositive = Instant.maxValue - Instant.minValue;
-  Span hugeAndNegative = Instant.minValue - Instant.maxValue;
+  Time hugeAndPositive = Instant.maxValue - Instant.minValue;
+  Time hugeAndNegative = Instant.minValue - Instant.maxValue;
   expect(hugeAndNegative, -hugeAndPositive);
   expect(Instant.maxValue, Instant.minValue - hugeAndNegative);
   expect(Instant.maxValue, Instant.minValue + hugeAndPositive);
@@ -441,14 +441,14 @@ void FromTicksSinceUnixEpoch_Range()
 void PlusOffset()
 {
   var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, new Offset.fromHours(1));
-  expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
+  expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
 void SafePlus_NormalTime()
 {
   var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, new Offset.fromHours(1));
-  expect(new Span(hours: 1), localInstant.timeSinceLocalEpoch);
+  expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
@@ -461,7 +461,7 @@ void SafePlus_NormalTime()
 void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
       ? IInstant.beforeMinValue
-      : Instant.minValue + new Span(hours: initialOffset);
+      : Instant.minValue + new Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.beforeMinValue
       : IInstant.plusOffset(Instant.minValue, new Offset.fromHours(finalOffset));
@@ -480,7 +480,7 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
 void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
       ? IInstant.afterMaxValue
-      : Instant.maxValue + new Span(hours: initialOffset);
+      : Instant.maxValue + new Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.afterMaxValue
       : IInstant.plusOffset( Instant.maxValue, new Offset.fromHours(finalOffset));

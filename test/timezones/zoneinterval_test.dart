@@ -91,11 +91,11 @@ void Contains_LocalInstant_WholeOfTime()
 @Test()
 void Contains_OutsideLocalInstantange()
 {
-  ZoneInterval veryEarly = IZoneInterval.newZoneInterval("Very early", IInstant.beforeMinValue, Instant.minValue + new Span(hours: 8), new Offset.fromHours(-9), Offset.zero);
-  ZoneInterval veryLate = IZoneInterval.newZoneInterval("Very late", Instant.maxValue - new Span(hours: 8), IInstant.afterMaxValue, new Offset.fromHours(9), Offset.zero);
+  ZoneInterval veryEarly = IZoneInterval.newZoneInterval("Very early", IInstant.beforeMinValue, Instant.minValue + new Time(hours: 8), new Offset.fromHours(-9), Offset.zero);
+  ZoneInterval veryLate = IZoneInterval.newZoneInterval("Very late", Instant.maxValue - new Time(hours: 8), IInstant.afterMaxValue, new Offset.fromHours(9), Offset.zero);
   // The instants are contained...
-  expect(veryEarly.contains(Instant.minValue + new Span(hours: 4)), isTrue);
-  expect(veryLate.contains(Instant.maxValue - new Span(hours: 4)), isTrue);
+  expect(veryEarly.contains(Instant.minValue + new Time(hours: 4)), isTrue);
+  expect(veryLate.contains(Instant.maxValue - new Time(hours: 4)), isTrue);
   // But there are no valid local instants
   expect(IZoneInterval.containsLocal(veryEarly, IInstant.plusOffset(Instant.minValue, Offset.zero)), isFalse);
   expect(IZoneInterval.containsLocal(veryLate, IInstant.plusOffset(Instant.maxValue, Offset.zero)), isFalse);
@@ -129,8 +129,8 @@ void Equality()
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.fromHours(1), new Offset.fromHours(2)),
       // Unequal values
       [IZoneInterval.newZoneInterval("name2", SampleStart, SampleEnd, new Offset.fromHours(1), new Offset.fromHours(2)),
-      IZoneInterval.newZoneInterval("name", SampleStart.plus(Span.epsilon), SampleEnd, new Offset.fromHours(1), new Offset.fromHours(2)),
-      IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd.plus(Span.epsilon), new Offset.fromHours(1), new Offset.fromHours(2)),
+      IZoneInterval.newZoneInterval("name", SampleStart.plus(Time.epsilon), SampleEnd, new Offset.fromHours(1), new Offset.fromHours(2)),
+      IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd.plus(Time.epsilon), new Offset.fromHours(1), new Offset.fromHours(2)),
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.fromHours(2), new Offset.fromHours(2)),
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.fromHours(1), new Offset.fromHours(3))]);
 }

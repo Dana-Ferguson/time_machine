@@ -763,7 +763,7 @@ void ToDuration_ValidWithZeroValuesInMonthYearUnits()
   Period period = new Period.fromMonths(1) + new Period.fromYears(1);
   period = period - period + new Period.fromDays(1);
   expect(period.hasTimeComponent, isFalse);
-  expect(Span.oneDay, period.toSpan());
+  expect(Time.oneDay, period.toSpan());
 }
 
 /* We don't overflow

@@ -697,16 +697,16 @@ class Period {
   ///
   /// [InvalidOperationException]: The month or year property in the period is non-zero.
   /// [OverflowException]: The period doesn't have years or months, but the calculation
-  /// overflows the bounds of [Span]. In some cases this may occur even though the theoretical
+  /// overflows the bounds of [Time]. In some cases this may occur even though the theoretical
   /// result would be valid due to balancing positive and negative values, but for simplicity there is
   /// no attempt to work around this - in realistic periods, it shouldn't be a problem.
   /// Returns: The duration of the period.
-  Span toSpan() {
+  Time toSpan() {
     if (months != 0 || years != 0) {
       // todo: does this apply to us?
       throw new StateError("Cannot construct span of period with non-zero months or years.");
     }
-    return new Span(nanoseconds: _totalNanoseconds);
+    return new Time(nanoseconds: _totalNanoseconds);
   }
   
   /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).

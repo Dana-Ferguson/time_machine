@@ -37,7 +37,7 @@ void Equality()
 @Test()
 void MinusOffset_Zero_IsNeutralElement()
 {
-  Instant sampleInstant = IInstant.trusted(new Span(days: 1, nanoseconds: 23456));
+  Instant sampleInstant = IInstant.trusted(new Time(days: 1, nanoseconds: 23456));
   LocalInstant sampleLocalInstant = new LocalInstant.daysNanos(1, 23456);
   expect(sampleInstant, sampleLocalInstant.minus(Offset.zero));
   expect(sampleInstant, sampleLocalInstant.minusZeroOffset());
@@ -68,7 +68,7 @@ void SafeMinus_NormalTime()
 {
   var start = new LocalInstant.daysNanos(0, 0);
   var end = start.safeMinus(new Offset.fromHours(1));
-  expect(new Span(hours: -1), end.timeSinceEpoch);
+  expect(new Time(hours: -1), end.timeSinceEpoch);
 }
 
 // A null offset indicates "BeforeMinValue". Otherwise, MinValue.Plus(offset)
@@ -85,7 +85,7 @@ void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int fina
       : IInstant.plusOffset(Instant.minValue, new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
       ? IInstant.beforeMinValue
-      : Instant.minValue + new Span(hours: finalOffset);
+      : Instant.minValue + new Time(hours: finalOffset);
   var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(actual, expected);
 }
@@ -104,7 +104,7 @@ void SafeMinus_NearEndOfTime(int initialOffset, int offsetToSubtract, int finalO
       : IInstant.plusOffset(Instant.maxValue, new Offset.fromHours(initialOffset));
   var expected = finalOffset == null
       ? IInstant.afterMaxValue
-      : Instant.maxValue + new Span(hours: finalOffset);
+      : Instant.maxValue + new Time(hours: finalOffset);
   var actual = start.safeMinus(new Offset.fromHours(offsetToSubtract));
   expect(expected, actual);
 }

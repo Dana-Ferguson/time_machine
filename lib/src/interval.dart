@@ -85,7 +85,7 @@ class Interval {
   /// This will always be a non-negative duration, though it may be zero.
   ///
   /// [InvalidOperationException]: The interval extends to the start or end of time.
-  Span get span => end - start;
+  Time get span => end - start;
 
   /// Returns whether or not this interval contains the given instant.
   ///

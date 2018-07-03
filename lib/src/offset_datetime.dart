@@ -36,6 +36,7 @@ class OffsetDateTime {
   static const int _minBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
   static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
+  // todo: verify this for Dart
   /// These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
   /// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
   /// should allow us to optimize memory usage too.
@@ -61,7 +62,7 @@ class OffsetDateTime {
     calendar.validateYearMonthDay_(_yearMonthDay);
   }
   
-  // todo: why is this internal?
+  // todo: why is this internal? ... this looks like it would help develop good mental models ... is that correct?
   
   /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
   /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)`
@@ -194,10 +195,10 @@ class OffsetDateTime {
   /// Returns: The instant represented by this offset date and time
   Instant toInstant() => IInstant.untrusted(_toElapsedTimeSinceEpoch());
 
-  Span _toElapsedTimeSinceEpoch() {
+  Time _toElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
     int days = calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
-    Span elapsedTime = new Span(days: days, nanoseconds: nanosecondOfDay - _offsetNanoseconds);
+    Time elapsedTime = new Time(days: days, nanoseconds: nanosecondOfDay - _offsetNanoseconds);
     // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
   }
@@ -331,7 +332,7 @@ class OffsetDateTime {
   /// [offsetDateTime]: The value to add the duration to.
   /// [duration]: The duration to add
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
-  static OffsetDateTime add(OffsetDateTime offsetDateTime, Span span) => offsetDateTime + span;
+  static OffsetDateTime add(OffsetDateTime offsetDateTime, Time span) => offsetDateTime + span;
 
   /// Returns the result of adding a duration to this offset date and time.
   ///
@@ -339,43 +340,43 @@ class OffsetDateTime {
   ///
   /// [duration]: The duration to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plus(Span span) => this + span;
+  OffsetDateTime plus(Time span) => this + span;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
   /// [hours]: The number of hours to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusHours(int hours) => this + new Span(hours: hours);
+  OffsetDateTime plusHours(int hours) => this + new Time(hours: hours);
 
   /// Returns the result of adding an increment of minutes to this zoned date and time
   ///
   /// [minutes]: The number of minutes to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusMinutes(int minutes) => this + new Span(minutes: minutes);
+  OffsetDateTime plusMinutes(int minutes) => this + new Time(minutes: minutes);
 
   /// Returns the result of adding an increment of seconds to this zoned date and time
   ///
   /// [seconds]: The number of seconds to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusSeconds(int seconds) => this + new Span(seconds: seconds);
+  OffsetDateTime plusSeconds(int seconds) => this + new Time(seconds: seconds);
 
   /// Returns the result of adding an increment of milliseconds to this zoned date and time
   ///
   /// [milliseconds]: The number of milliseconds to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusMilliseconds(int milliseconds) => this + new Span(milliseconds: milliseconds);
+  OffsetDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
 
   /// Returns the result of adding an increment of ticks to this zoned date and time
   ///
   /// [ticks]: The number of ticks to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusTicks(int ticks) => this + new Span(ticks: ticks);
+  OffsetDateTime plusTicks(int ticks) => this + new Time(ticks: ticks);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///
   /// [nanoseconds]: The number of nanoseconds to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusNanoseconds(int nanoseconds) => this + new Span(nanoseconds: nanoseconds);
+  OffsetDateTime plusNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
 
   /// Returns a new [OffsetDateTime] with the time advanced by the given duration.
   ///
@@ -384,7 +385,7 @@ class OffsetDateTime {
   /// [offsetDateTime]: The [OffsetDateTime] to add the duration to.
   /// [duration]: The duration to add.
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
-  OffsetDateTime operator +(Span span) =>
+  OffsetDateTime operator +(Time span) =>
       new OffsetDateTime._fromInstant(toInstant() + span, offset);
 
   /// Subtracts a duration from an offset date and time.
@@ -394,14 +395,14 @@ class OffsetDateTime {
   /// [offsetDateTime]: The value to subtract the duration from.
   /// [duration]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
-  static OffsetDateTime subtract(OffsetDateTime offsetDateTime, Span span) => offsetDateTime - span;
+  static OffsetDateTime subtract(OffsetDateTime offsetDateTime, Time span) => offsetDateTime - span;
 
   /// Returns the result of subtracting a duration from this offset date and time, for a fluent alternative to
   /// [op_Subtraction(OffsetDateTime, Duration)]
   ///
   /// [span]: The duration to subtract
   /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
-  OffsetDateTime minusSpan(Span span) => new OffsetDateTime._fromInstant(toInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+  OffsetDateTime minusSpan(Time span) => new OffsetDateTime._fromInstant(toInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
   /// Returns a new [OffsetDateTime] with the duration subtracted.
   ///
@@ -423,7 +424,7 @@ class OffsetDateTime {
   /// Returns: The elapsed duration from [start] to [end].
   dynamic operator -(dynamic value) =>
   // todo: dynamic dispatch... still complaining... change API to prevent dynamic dispatch?
-  value is Span ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
+  value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
 
 // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
 
@@ -435,7 +436,7 @@ class OffsetDateTime {
   /// then the result will be positive.
   /// [start]: The offset date and time to subtract from [end].
   /// Returns: The elapsed duration from [start] to [end].
-  static Span subtractOffsetDateTimes(OffsetDateTime end, OffsetDateTime start) => end.minusOffsetDateTime(start);
+  static Time subtractOffsetDateTimes(OffsetDateTime end, OffsetDateTime start) => end.minusOffsetDateTime(start);
 
   /// Returns the result of subtracting another offset date and time from this one, resulting in the elapsed duration
   /// between the two instants represented in the values.
@@ -444,7 +445,7 @@ class OffsetDateTime {
   ///
   /// [other]: The offset date and time to subtract from this one.
   /// Returns: The elapsed duration from [other] to this value.
-  Span minusOffsetDateTime(OffsetDateTime other) => toInstant() - other.toInstant();
+  Time minusOffsetDateTime(OffsetDateTime other) => toInstant() - other.toInstant();
 
 
   /// Implements the operator == (equality).

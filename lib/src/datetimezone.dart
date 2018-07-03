@@ -302,7 +302,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     if (localInstant.daysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
-      ZoneInterval candidate = getZoneInterval(intervalStart - Span.epsilon);
+      ZoneInterval candidate = getZoneInterval(intervalStart - Time.epsilon);
       if (IZoneInterval.containsLocal(candidate, localInstant)) {
         return candidate;
       }
@@ -339,7 +339,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     // we need to find the earlier one; otherwise this interval must come after the gap, and
     // it's therefore the one we want.
     if (localInstant.minus(guessInterval.wallOffset) < IZoneInterval.rawStart(guessInterval)) {
-      return getZoneInterval(guessInterval.start - Span.epsilon);
+      return getZoneInterval(guessInterval.start - Time.epsilon);
     }
     else {
       return guessInterval;

@@ -46,7 +46,7 @@ void Various()
   // the start point is "inside" both.
   AssertEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // When we extend backwards a bit, we can see the difference between the two.
-  AssertNotEqual(zone1, zone2, Instants[1] - Span.epsilon, Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
+  AssertNotEqual(zone1, zone2, Instants[1] - Time.epsilon, Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // Or if we force the start and end transitions to be exact...
   AssertNotEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.matchStartAndEndTransitions);
 

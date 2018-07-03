@@ -60,8 +60,8 @@ void Add_AroundTimeZoneTransition()
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
   // 24 hours elapsed, and it's 4pm
   ZonedDateTime afterExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  ZonedDateTime afterAdd = ZonedDateTime.addSpan(before, Span.oneDay);
-  ZonedDateTime afterOperator = before + Span.oneDay;
+  ZonedDateTime afterAdd = ZonedDateTime.addSpan(before, Time.oneDay);
+  ZonedDateTime afterOperator = before + Time.oneDay;
 
   expect(afterExpected, afterAdd);
   expect(afterExpected, afterOperator);
@@ -78,26 +78,26 @@ void Add_MethodEquivalents()
   const int ticks = 5432112345;
 
   ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  expect(before + Span.oneDay, ZonedDateTime.addSpan(before, Span.oneDay));
-  expect(before + Span.oneDay, before.plusSpan(Span.oneDay));
+  expect(before + Time.oneDay, ZonedDateTime.addSpan(before, Time.oneDay));
+  expect(before + Time.oneDay, before.plusSpan(Time.oneDay));
 
-  expect(before + new Span(hours: hours), before.plusHours(hours));
-  expect(before + new Span(hours: -hours), before.plusHours(-hours));
+  expect(before + new Time(hours: hours), before.plusHours(hours));
+  expect(before + new Time(hours: -hours), before.plusHours(-hours));
 
-  expect(before + new Span(minutes: minutes), before.plusMinutes(minutes));
-  expect(before + new Span(minutes: -minutes), before.plusMinutes(-minutes));
+  expect(before + new Time(minutes: minutes), before.plusMinutes(minutes));
+  expect(before + new Time(minutes: -minutes), before.plusMinutes(-minutes));
 
-  expect(before + new Span(seconds: seconds), before.plusSeconds(seconds));
-  expect(before + new Span(seconds: -seconds), before.plusSeconds(-seconds));
+  expect(before + new Time(seconds: seconds), before.plusSeconds(seconds));
+  expect(before + new Time(seconds: -seconds), before.plusSeconds(-seconds));
 
-  expect(before + new Span(milliseconds: milliseconds), before.plusMilliseconds(milliseconds));
-  expect(before + new Span(milliseconds: -milliseconds), before.plusMilliseconds(-milliseconds));
+  expect(before + new Time(milliseconds: milliseconds), before.plusMilliseconds(milliseconds));
+  expect(before + new Time(milliseconds: -milliseconds), before.plusMilliseconds(-milliseconds));
 
-  expect(before + new Span(ticks: ticks), before.plusTicks(ticks));
-  expect(before + new Span(ticks: -ticks), before.plusTicks(-ticks));
+  expect(before + new Time(ticks: ticks), before.plusTicks(ticks));
+  expect(before + new Time(ticks: -ticks), before.plusTicks(-ticks));
 
-  expect(before + new Span(nanoseconds: nanoseconds), before.plusNanoseconds(nanoseconds));
-  expect(before + new Span(nanoseconds: -nanoseconds), before.plusNanoseconds(-nanoseconds));
+  expect(before + new Time(nanoseconds: nanoseconds), before.plusNanoseconds(nanoseconds));
+  expect(before + new Time(nanoseconds: -nanoseconds), before.plusNanoseconds(-nanoseconds));
 }
 
 @Test()
@@ -107,8 +107,8 @@ void Subtract_AroundTimeZoneTransition()
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
   // 24 hours earlier, and it's 3pm
   ZonedDateTime beforeExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
-  ZonedDateTime beforeSubtract = ZonedDateTime.subtractSpan(after, Span.oneDay);
-  ZonedDateTime beforeOperator = after - Span.oneDay;
+  ZonedDateTime beforeSubtract = ZonedDateTime.subtractSpan(after, Time.oneDay);
+  ZonedDateTime beforeOperator = after - Time.oneDay;
 
   expect(beforeExpected, beforeSubtract);
   expect(beforeExpected, beforeOperator);
@@ -118,8 +118,8 @@ void Subtract_AroundTimeZoneTransition()
 void SubtractDuration_MethodEquivalents()
 {
   ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
-  expect(after - Span.oneDay, ZonedDateTime.subtractSpan(after, Span.oneDay));
-  expect(after - Span.oneDay, after.minusSpan(Span.oneDay));
+  expect(after - Time.oneDay, ZonedDateTime.subtractSpan(after, Time.oneDay));
+  expect(after - Time.oneDay, after.minusSpan(Time.oneDay));
 }
 
 @Test()
@@ -130,7 +130,7 @@ void Subtraction_ZonedDateTime()
   ZonedDateTime start = new LocalDateTime.at(2014, 08, 14, 5, 51).inUtc();
   // Sample zone is UTC+4 at this point, so this is 14:00Z.
   ZonedDateTime end = SampleZone.atStrictly(new LocalDateTime.at(2014, 08, 14, 18, 0));
-  Span expected = new Span(hours: 8) + new Span(minutes: 9);
+  Time expected = new Time(hours: 8) + new Time(minutes: 9);
   expect(expected, end - start);
   expect(expected, end.minus(start));
   expect(expected, ZonedDateTime.subtract(end, start));
@@ -157,7 +157,7 @@ Future IsDaylightSavings() async
   // a savings offset.
   var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
-  var winter = (winterSummerTransition - Span.epsilon).inZone(zone);
+  var winter = (winterSummerTransition - Time.epsilon).inZone(zone);
   var summer = winterSummerTransition.inZone(zone);
   expect(winter.isDaylightSavingTime(), isFalse);
   expect(summer.isDaylightSavingTime(), isTrue);

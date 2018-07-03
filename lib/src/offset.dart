@@ -61,7 +61,7 @@ class Offset implements Comparable<Offset> {
 // Offset.fromHours(int hours) : this(hours * TimeConstants.secondsPerHour);
 
   // todo: constant?
-  Span toSpan() => new Span(seconds: seconds);
+  Time toSpan() => new Time(seconds: seconds);
 
 
   /// Gets the number of milliseconds represented by this offset, which may be negative.
@@ -342,12 +342,12 @@ class Offset implements Comparable<Offset> {
     return new Offset.fromSeconds(seconds);
   }
 
-  /// Converts the given [Span] to an offset, with fractional seconds truncated.
+  /// Converts the given [Time] to an offset, with fractional seconds truncated.
   ///
-  /// [timeSpan]: The [Span] to convert
+  /// [timeSpan]: The [Time] to convert
   /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
   /// Returns: An offset for the same time as the given time span.
-  factory Offset.fromSpan(Span timeSpan) {
+  factory Offset.fromSpan(Time timeSpan) {
     int seconds = timeSpan.totalSeconds.floor();
     Preconditions.checkArgumentRange('timeSpan', seconds, _minTicks, _maxTicks);
     return new Offset.fromSeconds(seconds);

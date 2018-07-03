@@ -21,8 +21,8 @@ Future main() async {
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Span();
-  expect(Span.zero, actual);
+  var actual = new Time();
+  expect(Time.zero, actual);
 }
 
 // Tests copied from Nanoseconds in its brief existence... there may well be some overlap between
@@ -44,7 +44,7 @@ void DefaultConstructor()
 @TestCase(const [Platform.int64MaxValue])
 void Int64Conversions(int int64Nanos)
 {
-  var nanoseconds = new Span(nanoseconds: int64Nanos);
+  var nanoseconds = new Time(nanoseconds: int64Nanos);
   expect(int64Nanos, nanoseconds.totalNanoseconds); // .toInt64Nanoseconds());
 }
 
@@ -66,19 +66,19 @@ void BigIntegerConversions(int int64Nanos)
 {
   // todo: BigInteger is a separate class in Dart2.0
   /*BigInteger*/ int bigIntegerNanos = int64Nanos;
-  var nanoseconds = new Span(nanoseconds: bigIntegerNanos);
+  var nanoseconds = new Time(nanoseconds: bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.totalNanoseconds); // .ToBigIntegerNanoseconds());
 
   // And multiply it by 100, which proves we still work for values out of the range of Int64
   bigIntegerNanos *= 100;
-  nanoseconds = new Span(nanoseconds: bigIntegerNanos);
+  nanoseconds = new Time(nanoseconds: bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.totalNanoseconds); // .ToBigIntegerNanoseconds());
 }
 
 @Test()
 void ConstituentParts_Positive()
 {
-  var nanos = new Span(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
+  var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
   expect(5, nanos.floorDays);
   expect(100, nanos.nanosecondOfFloorDay);
 }
@@ -86,7 +86,7 @@ void ConstituentParts_Positive()
 @Test()
 void ConstituentParts_Negative()
 {
-  var nanos = new Span(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
+  var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
   expect(-5, nanos.floorDays);
   expect(100, nanos.nanosecondOfFloorDay);
 }
@@ -94,7 +94,7 @@ void ConstituentParts_Negative()
 @Test()
 void ConstituentParts_Large() {
   // And outside the normal range of long...
-  var nanos = new Span(nanoseconds: TimeConstants.nanosecondsPerDay * /*(BigInteger)*/ 365000 + /*(BigInteger)*/ 500);
+  var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * /*(BigInteger)*/ 365000 + /*(BigInteger)*/ 500);
   expect(365000, nanos.floorDays);
   if (Platform.isVM) expect(500, nanos.nanosecondOfFloorDay);
 }
@@ -107,9 +107,9 @@ void Addition_Subtraction(int leftDays, int leftNanos,
     int rightDays, int rightNanos,
     int resultDays, int resultNanos)
 {
-  var left = new Span(days: leftDays, nanoseconds: leftNanos);
-  var right = new Span(days: rightDays, nanoseconds: rightNanos);
-  var result = new Span(days: resultDays, nanoseconds: resultNanos);
+  var left = new Time(days: leftDays, nanoseconds: leftNanos);
+  var right = new Time(days: rightDays, nanoseconds: rightNanos);
+  var result = new Time(days: resultDays, nanoseconds: resultNanos);
 
   expect(result, left + right);
   expect(result, left.plus(right));
@@ -123,10 +123,10 @@ void Addition_Subtraction(int leftDays, int leftNanos,
 @Test()
 void Equality()
 {
-  var equal1 = new Span(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Span(ticks: TimeConstants.ticksPerHour * 25);
-  var different1 = new Span(days: 1, nanoseconds: 200);
-  var different2 = new Span(days: 2, nanoseconds: TimeConstants.ticksPerHour);
+  var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
+  var equal2 = new Time(ticks: TimeConstants.ticksPerHour * 25);
+  var different1 = new Time(days: 1, nanoseconds: 200);
+  var different2 = new Time(days: 2, nanoseconds: TimeConstants.ticksPerHour);
 
   TestHelper.TestEqualsStruct(equal1, equal2, [different1]);
   TestHelper.TestOperatorEquality(equal1, equal2, different1);
@@ -138,14 +138,14 @@ void Equality()
 @Test()
 void Comparison()
 {
-  var equal1 = new Span(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Span(ticks: TimeConstants.ticksPerHour * 25);
-  var greater1 = new Span(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour + 1);
-  var greater2 = new Span(days: 2, nanoseconds: 0);
+  var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
+  var equal2 = new Time(ticks: TimeConstants.ticksPerHour * 25);
+  var greater1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour + 1);
+  var greater2 = new Time(days: 2, nanoseconds: 0);
 
-  TestHelper.TestCompareToStruct<Span>(equal1, equal2, [greater1]);
+  TestHelper.TestCompareToStruct<Time>(equal1, equal2, [greater1]);
   // TestHelper.TestNonGenericCompareTo(equal1, equal2, [greater1]);
-  TestHelper.TestOperatorComparisonEquality<Span>(equal1, equal2, [greater1, greater2]);
+  TestHelper.TestOperatorComparisonEquality<Time>(equal1, equal2, [greater1, greater2]);
 }
 
 @Test()
@@ -157,8 +157,8 @@ void Comparison()
 @TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 1, 0], "Large scalar")
 void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Span(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Span(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   expect(expected, start * scalar);
 }
 
@@ -169,8 +169,8 @@ void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedD
 @TestCase(const [365000, 500, -365001, TimeConstants.nanosecondsPerDay - 500])
 void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Span(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Span(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   expect(expected, -start);
   // Test it the other way round as well...
   expect(start, -expected);
@@ -197,8 +197,8 @@ void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expe
 @TestCase(const [365000, 3000, 1000, 365, 3])
 void Division(int startDays, int startNanoOfDay, int divisor, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Span(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Span(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   if (Platform.isVM) {
     expect(expected, start / divisor);
   } else {
@@ -261,9 +261,9 @@ void Validation()
 //TestHelper.AssertOutOfRange(Span.FromDays, -(1 << 24) - 1);
 
   // todo: I owe you out of range behavior
-  expect(new Span(days: (1 << 24) - 1), isNot(throwsException));
+  expect(new Time(days: (1 << 24) - 1), isNot(throwsException));
   //expect(new Span(days: (1 << 24)), throwsException);
-  expect(new Span(days: -(1 << 24)), isNot(throwsException));
+  expect(new Time(days: -(1 << 24)), isNot(throwsException));
 //expect(new Span(days: -(1 << 24) - 1), throwsException);
 }
 
@@ -279,7 +279,7 @@ void Validation()
 void PositiveComponents()
 {
   // Worked out with a calculator :)
-  Span duration = new Span(nanoseconds: 1234567890123456);
+  Time duration = new Time(nanoseconds: 1234567890123456);
   expect(14, duration.days);
   expect(24967890123456, duration.nanosecondOfDay);
   expect(6, duration.hours);
@@ -294,7 +294,7 @@ void PositiveComponents()
 void NegativeComponents()
 {
   // Worked out with a calculator :) // -1234567 890123456
-  Span duration = new Span(nanoseconds: -1234567890123456);
+  Time duration = new Time(nanoseconds: -1234567890123456);
   expect(-14, duration.days);
   expect(-24967890123456, duration.nanosecondOfDay);
   expect(-6, duration.hours);
@@ -308,8 +308,8 @@ void NegativeComponents()
 @Test()
 void PositiveTotals()
 {
-  Span duration = new Span(days: 4) + new Span(hours: 3) + new Span(minutes: 2) + new Span(seconds: 1)
-      + new Span(nanoseconds: 123456789);
+  Time duration = new Time(days: 4) + new Time(hours: 3) + new Time(minutes: 2) + new Time(seconds: 1)
+      + new Time(nanoseconds: 123456789);
   expect(4.1264, closeTo(duration.totalDays, 0.0001));
   expect(99.0336, closeTo(duration.totalHours, 0.0001));
   expect(5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -322,8 +322,8 @@ void PositiveTotals()
 @Test()
 void NegativeTotals()
 {
-  Span duration = new Span(days: -4) + new Span(hours: -3) + new Span(minutes: -2) + new Span(seconds: -1)
-      + new Span(nanoseconds: -123456789);
+  Time duration = new Time(days: -4) + new Time(hours: -3) + new Time(minutes: -2) + new Time(seconds: -1)
+      + new Time(nanoseconds: -123456789);
   expect(-4.1264, closeTo(duration.totalDays, 0.0001));
   expect(-99.0336, closeTo(duration.totalHours, 0.0001));
   expect(-5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -337,31 +337,31 @@ void MaxMinRelationship()
 {
   // Max and Min work like they do for other signed types - basically the max value is one less than the absolute
   // of the min value.
-  expect(Span.minValue, -Span.maxValue - Span.epsilon);
+  expect(Time.minValue, -Time.maxValue - Time.epsilon);
 }
 
 @Test()
 void Max()
 {
-  Span x = new Span(nanoseconds: 100);
-  Span y = new Span(nanoseconds: 200);
-  expect(y, Span.max(x, y));
-  expect(y, Span.max(y, x));
-  expect(x, Span.max(x, Span.minValue));
-  expect(x, Span.max(Span.minValue, x));
-  expect(Span.maxValue, Span.max(Span.maxValue, x));
-  expect(Span.maxValue, Span.max(x, Span.maxValue));
+  Time x = new Time(nanoseconds: 100);
+  Time y = new Time(nanoseconds: 200);
+  expect(y, Time.max(x, y));
+  expect(y, Time.max(y, x));
+  expect(x, Time.max(x, Time.minValue));
+  expect(x, Time.max(Time.minValue, x));
+  expect(Time.maxValue, Time.max(Time.maxValue, x));
+  expect(Time.maxValue, Time.max(x, Time.maxValue));
 }
 
 @Test()
 void Min()
 {
-  Span x = new Span(nanoseconds: 100);
-  Span y = new Span(nanoseconds: 200);
-  expect(x, Span.min(x, y));
-  expect(x, Span.min(y, x));
-  expect(Span.minValue, Span.min(x, Span.minValue));
-  expect(Span.minValue, Span.min(Span.minValue, x));
-  expect(x, Span.min(Span.maxValue, x));
-  expect(x, Span.min(x, Span.maxValue));
+  Time x = new Time(nanoseconds: 100);
+  Time y = new Time(nanoseconds: 200);
+  expect(x, Time.min(x, y));
+  expect(x, Time.min(y, x));
+  expect(Time.minValue, Time.min(x, Time.minValue));
+  expect(Time.minValue, Time.min(Time.minValue, x));
+  expect(x, Time.min(Time.maxValue, x));
+  expect(x, Time.min(x, Time.maxValue));
 }

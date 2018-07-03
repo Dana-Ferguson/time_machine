@@ -50,9 +50,9 @@ void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed(
 {
   var actual = timeZone.getZoneInterval(summer);
   expect(timeZone.getZoneInterval(TimeConstants.unixEpoch), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 2000 * 7)), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 3000 * 7)), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Span(days: 4000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 2000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 3000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 4000 * 7)), isNotNull);
   var newPeriod = timeZone.getZoneInterval(summer);
   expect(identical(actual, newPeriod), isTrue);
 }

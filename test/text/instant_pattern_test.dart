@@ -75,7 +75,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   @Test()
   void IsoHandlesCommas() {
-    Instant expected = new Instant.fromUtc(2012, 1, 1, 0, 0) + Span.epsilon;
+    Instant expected = new Instant.fromUtc(2012, 1, 1, 0, 0) + Time.epsilon;
     Instant actual = InstantPattern.extendedIso
         .parse("2012-01-01T00:00:00,000000001Z")
         .value;

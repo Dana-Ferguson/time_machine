@@ -18,15 +18,15 @@ abstract class IInstant {
   static const int minDays = -4371222;
   static const int maxDays = 2932896; // 104249991
 
-  static Instant trusted(Span span) => new Instant._trusted(span);
-  static Instant untrusted(Span span) => new Instant._untrusted(span);
+  static Instant trusted(Time span) => new Instant._trusted(span);
+  static Instant untrusted(Time span) => new Instant._untrusted(span);
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
   /// This must never be exposed.
-  static final Instant beforeMinValue = new Instant._trusted(new Span(days: ISpan.minDays)); //, deliberatelyInvalid: true);
+  static final Instant beforeMinValue = new Instant._trusted(new Time(days: ISpan.minDays)); //, deliberatelyInvalid: true);
   /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
   /// This must never be exposed.
-  static final Instant afterMaxValue = new Instant._trusted(new Span(days: ISpan.maxDays)); //, deliberatelyInvalid: true);
+  static final Instant afterMaxValue = new Instant._trusted(new Time(days: ISpan.maxDays)); //, deliberatelyInvalid: true);
 
   // note: Extensions would be `better than sliced bread` here!!!!
   static LocalInstant plusOffset(Instant instant, Offset offset) => instant._plusOffset(offset);
@@ -46,15 +46,15 @@ class Instant implements Comparable<Instant> {
   // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
   /// Represents the smallest possible [Instant].
   /// This value is equivalent to -9998-01-01T00:00:00Z
-  static final Instant minValue = new Instant._trusted(new Span(days: IInstant.minDays));
+  static final Instant minValue = new Instant._trusted(new Time(days: IInstant.minDays));
   /// Represents the largest possible [Instant].
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
-  static final Instant maxValue = new Instant._trusted(new Span(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
+  static final Instant maxValue = new Instant._trusted(new Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
-  final Span _span;
+  final Time _span;
 
   // todo: investigate if this is okay ... see Instant.cs#115
-  factory Instant._untrusted(Span _span) {
+  factory Instant._untrusted(Time _span) {
     if (_span < minValue._span) return IInstant.beforeMinValue;
     if (_span > maxValue._span) return IInstant.afterMaxValue;
     return new Instant._trusted(_span);
@@ -67,11 +67,11 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this._span);
   // todo: to untrusted factories
-  Instant.fromUnixTimeTicks(int ticks) : _span = new Span(ticks: ticks);
-  Instant.fromUnixTimeSeconds(int seconds) : _span = new Span(seconds: seconds);
-  Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Span(milliseconds: milliseconds);
+  Instant.fromUnixTimeTicks(int ticks) : _span = new Time(ticks: ticks);
+  Instant.fromUnixTimeSeconds(int seconds) : _span = new Time(seconds: seconds);
+  Instant.fromUnixTimeMilliseconds(int milliseconds) : _span = new Time(milliseconds: milliseconds);
   // todo: should this mirror functionality more similar to `new DateTime()`?
-  const Instant() : _span = Span.zero;
+  const Instant() : _span = Time.zero;
 
   int compareTo(Instant other) => _span.compareTo(other._span);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
@@ -79,10 +79,10 @@ class Instant implements Comparable<Instant> {
   @override int get hashCode => _span.hashCode;
   @override bool operator==(dynamic other) => other is Instant && _span == other._span;
 
-  Instant operator+(Span span) => this.plus(span);
+  Instant operator+(Time span) => this.plus(span);
   // Instant operator-(Span span) => this.minus(span);
-  Instant plus(Span span) => new Instant._untrusted(_span + span);
-  Instant minus(Span span) => new Instant._untrusted(_span - span);
+  Instant plus(Time span) => new Instant._untrusted(_span + span);
+  Instant minus(Time span) => new Instant._untrusted(_span - span);
 
   LocalInstant _plusOffset(Offset offset) {
     return new LocalInstant(_span + offset.toSpan());
@@ -123,13 +123,13 @@ class Instant implements Comparable<Instant> {
   // todo: is there any clever way to add type annotations to this?
   dynamic operator-(dynamic other) =>
       other is Instant ? spanTo(other) :
-      other is Span ? minus(other) :
+      other is Time ? minus(other) :
       throw new ArgumentError('Expected Span or Instant.');
 
   // todo: this name is really bad
   // todo: think about this name ... it's not good
   // Instant minusSpan(Span span) => new Instant._trusted(_span - span);
-  Span spanTo(Instant instant) => _span - instant._span;
+  Time spanTo(Instant instant) => _span - instant._span;
 
   bool operator<(Instant other) => _span < other._span;
   bool operator<=(Instant other) => _span <= other._span;
@@ -141,7 +141,7 @@ class Instant implements Comparable<Instant> {
   {
     var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
-    return new Instant._trusted(new Span(days: days, nanoseconds:  nanoOfDay));
+    return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
 
   static Instant max(Instant x, Instant y) => x > y ? x : y;
@@ -165,11 +165,11 @@ class Instant implements Comparable<Instant> {
   // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
   DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
   
-  factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Span.complex(days: julianDate);
+  factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
 
   factory Instant.fromDateTime(DateTime dateTime) {
-    if (Platform.isVM) return new Instant._trusted(new Span(microseconds: dateTime.microsecondsSinceEpoch));
-    return new Instant._trusted(new Span(milliseconds: dateTime.millisecondsSinceEpoch));
+    if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
+    return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
   int get daysSinceEpoch => _span.floorDays; //days;
@@ -178,7 +178,7 @@ class Instant implements Comparable<Instant> {
   // todo: should this just be spanSinceEpoch() ?? would def. increase discoverability
   // todo: or could we just make Span be Time??? Would the be cool or confusing?
   // TimeSinceEpoch in Nodatime .. todo: should we change this to conform?
-  Span get timeSinceEpoch => _span;
+  Time get timeSinceEpoch => _span;
 
   int toUnixTimeSeconds() => ISpan.floorSeconds(_span);
   int toUnixTimeMilliseconds() => _span.floorMilliseconds; //.totalMilliseconds.toInt();

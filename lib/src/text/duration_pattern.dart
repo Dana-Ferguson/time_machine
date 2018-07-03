@@ -12,25 +12,25 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 // Nested class for ease of type initialization
 @internal
-abstract class SpanPatterns
+abstract class TimePatterns
 {
-  static final SpanPattern roundtripPatternImpl = SpanPattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
-  static final PatternBclSupport<Span> bclSupport = new PatternBclSupport<Span>("o", (fi) => fi.spanPatternParser);
+  static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+  static final PatternBclSupport<Time> bclSupport = new PatternBclSupport<Time>("o", (fi) => fi.spanPatternParser);
 }
 
-/// Represents a pattern for parsing and formatting [Span] values.
+/// Represents a pattern for parsing and formatting [Time] values.
 @immutable
-class SpanPattern implements IPattern<Span> {
+class TimePattern implements IPattern<Time> {
   /// Gets the general pattern for Spans using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
   /// This pattern round-trips.
-  static SpanPattern get roundtrip => SpanPatterns.roundtripPatternImpl;
+  static TimePattern get roundtrip => TimePatterns.roundtripPatternImpl;
 
-  final IPattern<Span> _pattern;
+  final IPattern<Time> _pattern;
 
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
-  SpanPattern._(this.patternText, this._pattern);
+  TimePattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -39,13 +39,13 @@ class SpanPattern implements IPattern<Span> {
   ///
   /// [text]: The text value to parse.
   /// Returns: The result of parsing, which may be successful or unsuccessful.
-  ParseResult<Span> parse(String text) => _pattern.parse(text);
+  ParseResult<Time> parse(String text) => _pattern.parse(text);
 
   /// Formats the given Span as text according to the rules of this pattern.
   ///
   /// [value]: The Span to format.
   /// Returns: The Span formatted according to this pattern.
-  String format(Span value) => _pattern.format(value);
+  String format(Time value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
@@ -53,7 +53,7 @@ class SpanPattern implements IPattern<Span> {
   /// [value]: The value to format.
   /// [builder]: The `StringBuilder` to append to.
   /// Returns: The builder passed in as [builder].
-  StringBuffer appendFormat(Span value, StringBuffer builder) => _pattern.appendFormat(value, builder);
+  StringBuffer appendFormat(Time value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   // todo: should this be internal, or should all the other *_pattern classes creates' be private
   /// Creates a pattern for the given pattern text and format info.
@@ -62,11 +62,11 @@ class SpanPattern implements IPattern<Span> {
   /// [formatInfo]: Localization information
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
+  static TimePattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternTex');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.spanPatternParser.parsePattern(patternText);
-    return new SpanPattern._(patternText, pattern);
+    return new TimePattern._(patternText, pattern);
   }
 
   /// Creates a pattern for the given pattern text and culture.
@@ -77,7 +77,7 @@ class SpanPattern implements IPattern<Span> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern createWithCulture(String patternText, Culture cultureInfo) =>
+  static TimePattern createWithCulture(String patternText, Culture cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -89,7 +89,7 @@ class SpanPattern implements IPattern<Span> {
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern createWithCurrentCulture(String patternText) =>
+  static TimePattern createWithCurrentCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
@@ -101,7 +101,7 @@ class SpanPattern implements IPattern<Span> {
   /// [patternText]: Pattern text to create the pattern for
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern createWithInvariantCulture(String patternText) =>
+  static TimePattern createWithInvariantCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
@@ -109,6 +109,6 @@ class SpanPattern implements IPattern<Span> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  SpanPattern withCulture(Culture cultureInfo) =>
+  TimePattern withCulture(Culture cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

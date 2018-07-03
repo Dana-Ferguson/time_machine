@@ -100,7 +100,7 @@ class _HashCacheNode {
   static _HashCacheNode createNode(int period, ZoneIntervalMap map) {
     // todo: does this need to be a safe shift?
     var days = period << _HashArrayCache._periodShift;
-    var periodStart = IInstant.untrusted(new Span(days: math.max(days, IInstant.minDays)));
+    var periodStart = IInstant.untrusted(new Time(days: math.max(days, IInstant.minDays)));
     var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);
 
     var interval = map.getZoneInterval(periodStart);

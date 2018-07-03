@@ -221,7 +221,7 @@ class ZonedDateTime {
   /// [zonedDateTime]: The value to add the duration to.
   /// [span]: The duration to add
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime addSpan(ZonedDateTime zonedDateTime, Span span) => zonedDateTime + span;
+  static ZonedDateTime addSpan(ZonedDateTime zonedDateTime, Time span) => zonedDateTime + span;
 
   /// Returns the result of adding a duration to this zoned date and time.
   ///
@@ -230,49 +230,49 @@ class ZonedDateTime {
   /// [span]: The duration to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusSpan(Span span) => this + span;
+  ZonedDateTime plusSpan(Time span) => this + span;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
   /// [hours]: The number of hours to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusHours(int hours) => this + new Span(hours: hours);
+  ZonedDateTime plusHours(int hours) => this + new Time(hours: hours);
 
   /// Returns the result of adding an increment of minutes to this zoned date and time
   ///
   /// [minutes]: The number of minutes to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusMinutes(int minutes) => this + new Span(minutes: minutes);
+  ZonedDateTime plusMinutes(int minutes) => this + new Time(minutes: minutes);
 
   /// Returns the result of adding an increment of seconds to this zoned date and time
   ///
   /// [seconds]: The number of seconds to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusSeconds(int seconds) => this + new Span(seconds: seconds);
+  ZonedDateTime plusSeconds(int seconds) => this + new Time(seconds: seconds);
 
   /// Returns the result of adding an increment of milliseconds to this zoned date and time
   ///
   /// [milliseconds]: The number of milliseconds to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusMilliseconds(int milliseconds) => this + new Span(milliseconds: milliseconds);
+  ZonedDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
 
   /// Returns the result of adding an increment of ticks to this zoned date and time
   ///
   /// [ticks]: The number of ticks to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusTicks(int ticks) => this + new Span(ticks: ticks);
+  ZonedDateTime plusTicks(int ticks) => this + new Time(ticks: ticks);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///
   /// [nanoseconds]: The number of nanoseconds to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusNanoseconds(int nanoseconds) => this + new Span(nanoseconds: nanoseconds);
+  ZonedDateTime plusNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
 
   /// Returns a new [ZonedDateTime] with the time advanced by the given duration. Note that
   /// due to daylight saving time changes this may not advance the local time by the same amount.
@@ -282,7 +282,7 @@ class ZonedDateTime {
   /// [zonedDateTime]: The [ZonedDateTime] to add the duration to.
   /// [span]: The duration to add.
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  ZonedDateTime operator +(Span span) =>
+  ZonedDateTime operator +(Time span) =>
       new ZonedDateTime(toInstant() + span, zone, calendar);
 
   /// Subtracts a duration from a zoned date and time.
@@ -292,7 +292,7 @@ class ZonedDateTime {
   /// [zonedDateTime]: The value to subtract the duration from.
   /// [span]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime subtractSpan(ZonedDateTime zonedDateTime, Span span) => zonedDateTime.minusSpan(span);
+  static ZonedDateTime subtractSpan(ZonedDateTime zonedDateTime, Time span) => zonedDateTime.minusSpan(span);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
   /// [op_Subtraction(ZonedDateTime, Duration)]
@@ -300,7 +300,7 @@ class ZonedDateTime {
   /// [span]: The duration to subtract
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
 
-  ZonedDateTime minusSpan(Span span) => new ZonedDateTime(toInstant() - span, zone, calendar);
+  ZonedDateTime minusSpan(Time span) => new ZonedDateTime(toInstant() - span, zone, calendar);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
@@ -310,7 +310,7 @@ class ZonedDateTime {
   /// then the result will be positive.
   /// [start]: The zoned date and time to subtract from [end].
   /// Returns: The elapsed duration from [start] to [end].
-  static Span subtract(ZonedDateTime end, ZonedDateTime start) => end.minus(start);
+  static Time subtract(ZonedDateTime end, ZonedDateTime start) => end.minus(start);
 
   /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
   /// between the two instants represented in the values.
@@ -320,7 +320,7 @@ class ZonedDateTime {
   /// [other]: The zoned date and time to subtract from this one.
   /// Returns: The elapsed duration from [other] to this value.
 
-  Span minus(ZonedDateTime other) => toInstant() - other.toInstant();
+  Time minus(ZonedDateTime other) => toInstant() - other.toInstant();
 
   /// Subtracts one [ZonedDateTime] from another, resulting in the elapsed time between
   /// the two values.
@@ -343,7 +343,7 @@ class ZonedDateTime {
   /// [span]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
 // todo: I really do not like this pattern
-  dynamic operator -(dynamic start) => start is Span ? minusSpan(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
+  dynamic operator -(dynamic start) => start is Time ? minusSpan(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
 
   /// Returns the [ZoneInterval] containing this value, in the time zone this
   /// value refers to.

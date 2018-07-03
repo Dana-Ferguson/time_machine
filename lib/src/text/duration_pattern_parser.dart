@@ -8,14 +8,14 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 @internal
-class SpanPatternParser implements IPatternParser<Span> {
-  static final Map</*char*/String, CharacterHandler<Span, _SpanParseBucket>> _patternCharacterHandlers =
+class TimePatternParser implements IPatternParser<Time> {
+  static final Map</*char*/String, CharacterHandler<Time, _TimeParseBucket>> _patternCharacterHandlers =
   {
     '%': SteppedPatternBuilder.handlePercent /**<Span, SpanParseBucket>*/,
     '\'': SteppedPatternBuilder.handleQuote /**<Span, SpanParseBucket>*/,
     '\"': SteppedPatternBuilder.handleQuote /**<Span, SpanParseBucket>*/,
     '\\': SteppedPatternBuilder.handleBackslash /**<Span, SpanParseBucket>*/,
-    '.': TimePatternHelper.createPeriodHandler<Span, _SpanParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
+    '.': TimePatternHelper.createPeriodHandler<Time, _TimeParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<Span>*/),
     'D': _createDayHandler(),
     'H': _createTotalHandler(PatternFields.hours24, TimeConstants.nanosecondsPerHour, TimeConstants.hoursPerDay, 402653184),
@@ -24,15 +24,15 @@ class SpanPatternParser implements IPatternParser<Span> {
     'm': _createPartialHandler(PatternFields.minutes, TimeConstants.nanosecondsPerMinute, TimeConstants.minutesPerHour),
     'S': _createTotalHandler(PatternFields.seconds, TimeConstants.nanosecondsPerSecond, TimeConstants.secondsPerDay, 1449551462400),
     's': _createPartialHandler(PatternFields.seconds, TimeConstants.nanosecondsPerSecond, TimeConstants.secondsPerMinute),
-    'f': TimePatternHelper.createFractionHandler<Span, _SpanParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
-    'F': TimePatternHelper.createFractionHandler<Span, _SpanParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
+    'f': TimePatternHelper.createFractionHandler<Time, _TimeParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
+    'F': TimePatternHelper.createFractionHandler<Time, _TimeParseBucket>(9, _getPositiveNanosecondOfSecond, (bucket, value) => bucket.addNanoseconds(value)),
     '+': _handlePlus,
     '-': _handleMinus,
   };
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Span> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
+  IPattern<Time> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
@@ -42,25 +42,25 @@ class SpanPatternParser implements IPatternParser<Span> {
     if (patternText.length == 1) {
       switch (patternText[0]) {
         case 'o':
-          return SpanPatterns.roundtripPatternImpl;
+          return TimePatterns.roundtripPatternImpl;
         default:
           throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Span']);
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<Span, _SpanParseBucket>(formatInfo,
-            () => new _SpanParseBucket());
+    var patternBuilder = new SteppedPatternBuilder<Time, _TimeParseBucket>(formatInfo,
+            () => new _TimeParseBucket());
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     // Somewhat random sample, admittedly...
     // dana: todo: why is this?
-    return patternBuilder.build(new Span(hours: 1) + new Span(minutes: 30) + new Span(seconds: 5) + new Span(milliseconds: 500));
+    return patternBuilder.build(new Time(hours: 1) + new Time(minutes: 30) + new Time(seconds: 5) + new Time(milliseconds: 500));
   }
 
-  static int _getPositiveNanosecondOfSecond(Span Span) {
-    return Span.nanosecondOfDay.abs() % TimeConstants.nanosecondsPerSecond;
+  static int _getPositiveNanosecondOfSecond(Time time) {
+    return time.nanosecondOfDay.abs() % TimeConstants.nanosecondsPerSecond;
   }
 
-  static CharacterHandler<Span, _SpanParseBucket> _createTotalHandler
+  static CharacterHandler<Time, _TimeParseBucket> _createTotalHandler
       (PatternFields field, int nanosecondsPerUnit, int unitsPerDay, int maxValue) {
     return (pattern, builder) {
       // Needs to be big enough for 1449551462400 seconds
@@ -72,12 +72,12 @@ class SpanPatternParser implements IPatternParser<Span> {
       builder.addField(field, pattern.current);
       builder.addField(PatternFields.totalSpan, pattern.current);
       builder.addParseInt64ValueAction(count, 13, pattern.current, 0, maxValue, (bucket, value) => bucket.addUnits(value, nanosecondsPerUnit));
-      builder.addFormatAction((Span value, StringBuffer sb) =>
+      builder.addFormatAction((Time value, StringBuffer sb) =>
           FormatHelper.leftPadNonNegativeInt64(_getPositiveNanosecondUnits(value, nanosecondsPerUnit, unitsPerDay), count, sb));
     };
   }
 
-  static CharacterHandler<Span, _SpanParseBucket> _createDayHandler() {
+  static CharacterHandler<Time, _TimeParseBucket> _createDayHandler() {
     return (pattern, builder) {
       int count = pattern.getRepeatCount(8); // Enough for 16777216
       // AddField would throw an inappropriate exception here, so handle it specially.
@@ -100,7 +100,7 @@ class SpanPatternParser implements IPatternParser<Span> {
     };
   }
 
-  static CharacterHandler<Span, _SpanParseBucket> _createPartialHandler
+  static CharacterHandler<Time, _TimeParseBucket> _createPartialHandler
       (PatternFields field, int nanosecondsPerUnit, int unitsPerContainer) {
     return (pattern, builder) {
       int count = pattern.getRepeatCount(2);
@@ -115,24 +115,24 @@ class SpanPatternParser implements IPatternParser<Span> {
     };
   }
 
-  static void _handlePlus(PatternCursor pattern, SteppedPatternBuilder<Span, _SpanParseBucket> builder) {
+  static void _handlePlus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (Span) => Span.floorDays >= 0);
+    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (time) => time.floorDays >= 0);
   }
 
-  static void _handleMinus(PatternCursor pattern, SteppedPatternBuilder<Span, _SpanParseBucket> builder) {
+  static void _handleMinus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (Span) => Span.floorDays >= 0);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (time) => time.floorDays >= 0);
   }
 
-  static int _getPositiveNanosecondUnits(Span Span, int nanosecondsPerUnit, int unitsPerDay) {
+  static int _getPositiveNanosecondUnits(Time time, int nanosecondsPerUnit, int unitsPerDay) {
     // The property is declared as an int, but we it as a long to force 64-bit arithmetic when multiplying.
-    int floorDays = Span.floorDays;
+    int floorDays = time.floorDays;
     if (floorDays >= 0) {
-      return floorDays * unitsPerDay + Span.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
+      return floorDays * unitsPerDay + time.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
     }
     else {
-      int nanosecondOfDay = Span.nanosecondOfDay;
+      int nanosecondOfDay = time.nanosecondOfDay;
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay
@@ -144,7 +144,7 @@ class SpanPatternParser implements IPatternParser<Span> {
 
 // todo: convert int to BigInt for Dart 2.0
 /// Provides a container for the interim parsed pieces of an [Offset] value.
-class _SpanParseBucket extends ParseBucket<Span> {
+class _TimeParseBucket extends ParseBucket<Time> {
   static final /*BigInt*/ int _bigIntegerNanosecondsPerDay = TimeConstants.nanosecondsPerDay;
 
   // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
@@ -166,13 +166,13 @@ class _SpanParseBucket extends ParseBucket<Span> {
 
   /// Calculates the value from the parsed pieces.
   @override
-  ParseResult<Span> calculateValue(PatternFields usedFields, String text) {
+  ParseResult<Time> calculateValue(PatternFields usedFields, String text) {
     if (isNegative) {
       _currentNanos = -_currentNanos;
     }
     if (_currentNanos < ISpan.minNanoseconds || _currentNanos > ISpan.maxNanoseconds) {
-      return IParseResult.forInvalidValuePostParse<Span>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
+      return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
     }
-    return ParseResult.forValue<Span>(new Span(nanoseconds: _currentNanos));
+    return ParseResult.forValue<Time>(new Time(nanoseconds: _currentNanos));
   }
 }

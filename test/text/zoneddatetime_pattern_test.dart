@@ -234,7 +234,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Resolver = Resolvers.createMappingResolver(Resolvers.throwWhenAmbiguous, Resolvers.returnStartOfIntervalAfter),
 
     // Skipped value, resolver returns end of first interval
-    new Data(TestZone1.Transition.minus(Span.epsilon).inZone(TestZone1))
+    new Data(TestZone1.Transition.minus(Time.epsilon).inZone(TestZone1))
       ..pattern = "yyyy-MM-dd HH:mm z"
       ..text = "2010-01-01 01:30 ab"
       ..Resolver = Resolvers.createMappingResolver(Resolvers.throwWhenAmbiguous, Resolvers.returnEndOfIntervalBefore),
@@ -306,7 +306,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = "2013-01-13 16:02 Europe/Paris",
 
     // Ambiguous value - would be invalid if parsed with a strict parser.
-    new Data(TestZone2.Transition.plus(new Span(minutes: 30)).inZone(TestZone2))
+    new Data(TestZone2.Transition.plus(new Time(minutes: 30)).inZone(TestZone2))
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2010-01-01 01:30",
 
@@ -416,24 +416,24 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = "2005-01-01 +01 01:30 ab",
 
     // Ambiguous value, resolver returns later value.
-    new Data(TestZone2.Transition.plus(new Span(minutes: 30)).inZone(TestZone2))
+    new Data(TestZone2.Transition.plus(new Time(minutes: 30)).inZone(TestZone2))
       ..pattern = "yyyy-MM-dd HH:mm z"
       ..text = "2010-01-01 01:30 abc"
       ..Resolver = Resolvers.createMappingResolver(Resolvers.returnLater, Resolvers.throwWhenSkipped),
 
     // Ambiguous value, resolver returns earlier value.
-    new Data(TestZone2.Transition.plus(new Span(minutes: -30)).inZone(TestZone2))
+    new Data(TestZone2.Transition.plus(new Time(minutes: -30)).inZone(TestZone2))
       ..pattern = "yyyy-MM-dd HH:mm z"
       ..text = "2010-01-01 01:30 abc"
       ..Resolver = Resolvers.createMappingResolver(Resolvers.returnEarlier, Resolvers.throwWhenSkipped),
 
     // Ambiguous local value, but with offset for later value (smaller offset).
-    new Data(TestZone2.Transition.plus(new Span(minutes: 30)).inZone(TestZone2))
+    new Data(TestZone2.Transition.plus(new Time(minutes: 30)).inZone(TestZone2))
       ..pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..text = "2010-01-01 01:30 abc +01",
 
     // Ambiguous local value, but with offset for earlier value (greater offset).
-    new Data(TestZone2.Transition.plus(new Span(minutes: -30)).inZone(TestZone2))
+    new Data(TestZone2.Transition.plus(new Time(minutes: -30)).inZone(TestZone2))
       ..pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..text = "2010-01-01 01:30 abc +02",
 
@@ -753,7 +753,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   Future FindLongestZoneId() async {
     DateTimeZone CreateZone(String id) =>
-        new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch - new Span(days: 1), new Offset.fromHours(-1), new Offset.fromHours(0), id);
+        new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch - new Time(days: 1), new Offset.fromHours(-1), new Offset.fromHours(0), id);
 
     var source = (new FakeDateTimeZoneSourceBuilder(
         [CreateZone("ABC"),
