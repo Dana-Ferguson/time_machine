@@ -9,6 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 ///
 /// [T]: The type of value to be parsed or formatted.
 @internal
+@interface
 abstract class IPartialPattern<T> implements IPattern<T>
 {
   /// Parses a value from the current position in the cursor. This will

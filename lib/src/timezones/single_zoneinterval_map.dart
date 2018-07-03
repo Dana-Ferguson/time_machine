@@ -11,7 +11,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// the instant requested.
 @immutable
 @internal
-class SingleZoneIntervalMap implements IZoneIntervalMap {
+class SingleZoneIntervalMap implements ZoneIntervalMap {
   final ZoneInterval _interval;
 
   SingleZoneIntervalMap(this._interval);

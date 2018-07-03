@@ -21,7 +21,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 // sealed
 @internal
 class CachedDateTimeZone extends DateTimeZone {
-  final IZoneIntervalMap _map;
+  final ZoneIntervalMap _map;
 
   /// Gets the cached time zone.
   final DateTimeZone timeZone;

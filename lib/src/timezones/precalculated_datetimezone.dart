@@ -20,7 +20,7 @@ typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 @internal
 class PrecalculatedDateTimeZone extends DateTimeZone {
   final List<ZoneInterval> _periods;
-  final IZoneIntervalMapWithMinMax _tailZone;
+  final ZoneIntervalMapWithMinMax _tailZone;
 
   /// The first instant covered by the tail zone, or Instant.AfterMaxValue if there's no tail zone.
   final Instant _tailZoneStart;
@@ -36,7 +36,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   /// [tailZone]: The tail zone - which can be any IZoneIntervalMap for normal operation,
   /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.
   @visibleForTesting
-  factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone) {
+  factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax tailZone) {
     // We want this to be AfterMaxValue for tail-less zones.
     var tailZoneStart = IZoneInterval.rawEnd(intervals[intervals.length - 1]);
     // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
@@ -58,7 +58,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   ///
   /// This is only called from the constructors, but is @internal to make it easier to test.
   /// [ArgumentException]: The periods specified are invalid.
-  static void validatePeriods(List<ZoneInterval> periods, IZoneIntervalMap tailZone) {
+  static void validatePeriods(List<ZoneInterval> periods, ZoneIntervalMap tailZone) {
     Preconditions.checkArgument(periods.length > 0, 'periods', "No periods specified in precalculated time zone");
     Preconditions.checkArgument(!periods[0].hasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
     for (int i = 0; i < periods.length - 1; i++) {
@@ -160,7 +160,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
 
   /// Reasonably simple way of computing the maximum/minimum offset
   /// from either periods or transitions, with or without a tail zone.
-  static Offset _computeOffset(List<ZoneInterval> intervals, IZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
+  static Offset _computeOffset(List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
     Preconditions.checkNotNull(intervals, 'intervals');
     Preconditions.checkArgument(intervals.length > 0, 'intervals', "No intervals specified");
     Offset ret = intervals[0].wallOffset;

@@ -12,7 +12,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import '../time_machine_testing.dart';
 
 DateTimeZone Paris;
-IDateTimeZoneProvider Tzdb;
+DateTimeZoneProvider Tzdb;
 
 // Until 1911, Paris was 9 minutes and 21 seconds off UTC.
 Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21);

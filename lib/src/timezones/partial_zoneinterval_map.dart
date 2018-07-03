@@ -11,7 +11,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 @internal
 class PartialZoneIntervalMap
 {
-  final IZoneIntervalMap _map;
+  final ZoneIntervalMap _map;
 
   /// Start of the interval during which this map is valid.
   final Instant start;
@@ -76,7 +76,7 @@ class PartialZoneIntervalMap
   /// the end of the last map being Instant.AfterMaxValue, and each adjacent pair of maps abutting (i.e. current.End == next.Start).
   /// Zone intervals belonging to abutting maps but which are equivalent in terms of offset and name
   /// are coalesced in the resulting map.
-  static IZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
+  static ZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
     var coalescedMaps = new List<PartialZoneIntervalMap>();
     PartialZoneIntervalMap current = null;
@@ -149,7 +149,7 @@ class PartialZoneIntervalMap
 }
 
 /// Implementation of IZoneIntervalMap used by ConvertToFullMap
-class _CombinedPartialZoneIntervalMap implements IZoneIntervalMap {
+class _CombinedPartialZoneIntervalMap implements ZoneIntervalMap {
   final List<PartialZoneIntervalMap> _partialMaps;
 
   _CombinedPartialZoneIntervalMap(this._partialMaps);

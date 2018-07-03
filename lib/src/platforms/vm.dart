@@ -103,7 +103,7 @@ class TimeMachine  {
   /// with known timezones and narrow down which timezone the local computer is in.
   ///
   /// note: during testing, bugs were found with dart's zone interval id -- it sometimes does daylight savings when it didn't exist 
-  static Future<DateTimeZone> _figureOutTimeZone(IDateTimeZoneProvider provider, [bool strict = false]) async {
+  static Future<DateTimeZone> _figureOutTimeZone(DateTimeZoneProvider provider, [bool strict = false]) async {
     var zones = <DateTimeZone>[];
     // load all the timezones; todo: fast_cache method
     for (var id in provider.ids) {

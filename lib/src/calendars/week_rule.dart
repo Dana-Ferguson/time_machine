@@ -38,7 +38,8 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 ///
 /// All implementations within Time Machine are immutable, and it is advised that any external implementations
 /// should be immutable too.
-abstract class IWeekYearRule
+@interface
+abstract class WeekYearRule
 {
   /// Creates a [LocalDate] from a given week-year, week within that week-year,
   /// and day-of-week, for the specified calendar system.
@@ -87,7 +88,7 @@ abstract class IWeekYearRule
 }
 
 // todo: No extension methods in Dart ... look at ergonomics here
-/// Extension methods on [IWeekYearRule].
+/// Extension methods on [WeekYearRule].
 abstract class WeekYearRuleExtensions
 {
   /// Convenience method to call [IWeekYearRule.GetLocalDate(int, int, IsoDayOfWeek, CalendarSystem)]
@@ -104,7 +105,7 @@ abstract class WeekYearRuleExtensions
   /// depending on [weekYear] and [weekOfWeekYear].
   /// [ArgumentOutOfRangeException]: The parameters do not combine to form a valid date.
   /// Returns: A [LocalDate] corresponding to the specified values.
-  static LocalDate getLocalDate(IWeekYearRule rule, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek) =>
+  static LocalDate getLocalDate(WeekYearRule rule, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek) =>
   Preconditions.checkNotNull(rule, 'rule').getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Convenience overload to call [IWeekYearRule.GetWeeksInWeekYear(int, CalendarSystem)] with
@@ -113,6 +114,6 @@ abstract class WeekYearRuleExtensions
   /// [rule]: The rule to delegate the call to.
   /// [weekYear]: The week year to calculate the number of contained weeks.
   /// Returns: The number of weeks in the given week year.
-  static int getWeeksInWeekYear(IWeekYearRule rule, int weekYear) =>
+  static int getWeeksInWeekYear(WeekYearRule rule, int weekYear) =>
   Preconditions.checkNotNull(rule, 'rule').getWeeksInWeekYear(weekYear, CalendarSystem.iso);
 }

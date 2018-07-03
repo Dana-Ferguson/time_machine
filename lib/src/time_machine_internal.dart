@@ -9,7 +9,7 @@ export 'calendar_system.dart';
 
 export 'isodayofweek.dart';
 
-export 'i_datetimezone_provider.dart';
+export 'datetimezone_provider.dart';
 export 'datetimezone.dart';
 export 'zoneddatetime.dart';
 
@@ -90,3 +90,10 @@ class _DDCSupportHack {
 /// DDC has some bugs -- and I want to reserve judgement until 2.0 stable
 /// 1) DDC can't @override methods without parameters with optional parameters, while Dart2JS and DartVM can.
 const Object ddcSupportHack = const _DDCSupportHack();
+
+/// This indicates that the class is meant to be used as an interface
+class _Interface {
+  const _Interface();
+}
+
+const Object interface = const _Interface();

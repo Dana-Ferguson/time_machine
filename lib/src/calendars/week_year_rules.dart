@@ -16,7 +16,7 @@ enum CalendarWeekRule {
 /// Factory methods to construct week-year rules supported by Time Machine.
 abstract class WeekYearRules
 {
-  /// Returns an [IWeekYearRule] consistent with ISO-8601.
+  /// Returns an [WeekYearRule] consistent with ISO-8601.
   ///
   /// In the standard ISO-8601 week algorithm, the first week of the year
   /// is that in which at least 4 days are in the year. As a result of this
@@ -28,7 +28,7 @@ abstract class WeekYearRules
   /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
   /// week 52 of week-year 2010. Conversely, December 31st 2012 is a Monday,
   /// so is part of week 1 of week-year 2013.
-  static final IWeekYearRule iso = new SimpleWeekYearRule(4, DayOfWeek.monday, false);
+  static final WeekYearRule iso = new SimpleWeekYearRule(4, DayOfWeek.monday, false);
 
   /// Creates a week year rule where the boundary between one week-year and the next
   /// is parameterized in terms of how many days of the first week of the week
@@ -49,7 +49,7 @@ abstract class WeekYearRules
   /// [firstDayOfWeek]: The first day of the week.
   /// A [SimpleWeekYearRule] with the specified minimum number of days in the first
   /// week and first day of the week.
-  static IWeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [DayOfWeek firstDayOfWeek = DayOfWeek.monday])
+  static WeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [DayOfWeek firstDayOfWeek = DayOfWeek.monday])
   => new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
   /// Creates a rule which behaves the same way as the BCL
@@ -68,7 +68,7 @@ abstract class WeekYearRules
   /// A rule which behaves the same way as the BCL
   /// [Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)]
   /// method.
-  static IWeekYearRule fromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek) {
+  static WeekYearRule fromCalendarWeekRule(CalendarWeekRule calendarWeekRule, DayOfWeek firstDayOfWeek) {
     int minDaysInFirstWeek;
     switch (calendarWeekRule) {
       case CalendarWeekRule.firstDay:

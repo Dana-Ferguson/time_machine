@@ -12,7 +12,8 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// isn't very significant even for very fast calls (cache hits). The interface ends up
 /// feeling slightly cleaner elsewhere in the code.
 @internal
-abstract class IZoneIntervalMap
+@interface
+abstract class ZoneIntervalMap
 {
   ZoneInterval getZoneInterval(Instant instant);
 }
@@ -20,7 +21,8 @@ abstract class IZoneIntervalMap
 // This is slightly ugly, but it allows us to use any time zone as the tail
 // zone for PrecalculatedDateTimeZone, which is handy for testing.
 @internal
-abstract class IZoneIntervalMapWithMinMax extends IZoneIntervalMap
+@interface
+abstract class ZoneIntervalMapWithMinMax extends ZoneIntervalMap
 {
   Offset get minOffset;
   Offset get maxOffset;

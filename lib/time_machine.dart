@@ -17,7 +17,7 @@ export 'src/calendar_system.dart' show CalendarSystem;
 
 export 'src/isodayofweek.dart' show DayOfWeek;
 
-export 'src/i_datetimezone_provider.dart' show IDateTimeZoneProvider;
+export 'src/datetimezone_provider.dart' show DateTimeZoneProvider;
 export 'src/datetimezone.dart' show DateTimeZone;
 export 'src/zoneddatetime.dart' show ZonedDateTime;
 
@@ -57,7 +57,7 @@ export 'src/utility/invalid_time_data_error.dart' show InvalidTimeDataError;
 
 // Calendars
 export 'src/calendars/era.dart' show Era;
-export 'src/calendars/i_week_rule.dart' show IWeekYearRule;
+export 'src/calendars/week_rule.dart' show WeekYearRule;
 export 'src/calendars/week_year_rules.dart' show WeekYearRules, CalendarWeekRule;
 
 // Fields (no public classes)
@@ -96,7 +96,7 @@ export 'src/timezones/datetimezone_cache.dart' show DateTimeZoneCache;
 
 export 'src/timezones/datetimezone_notfound_error.dart' show DateTimeZoneNotFoundError;
 export 'src/timezones/delegates.dart';
-export 'src/timezones/i_datetimezone_source.dart' show IDateTimeZoneSource;
+export 'src/timezones/datetimezone_source.dart' show DateTimeZoneSource;
 export 'src/timezones/invalid_datetimezone_source_error.dart' show InvalidDateTimeZoneSourceError;
 export 'src/timezones/resolvers.dart' show Resolvers;
 export 'src/timezones/tzdb_datetimezone_source.dart' show DateTimeZoneProviders, TzdbDateTimeZoneSource;

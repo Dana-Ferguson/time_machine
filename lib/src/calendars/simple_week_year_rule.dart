@@ -8,14 +8,14 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
-/// Implements [IWeekYearRule] for a rule where weeks are regular:
+/// Implements [WeekYearRule] for a rule where weeks are regular:
 /// every week has exactly 7 days, which means that some week years straddle
 /// the calendar year boundary. (So the start of a week can occur in one calendar
 /// year, and the end of the week in the following calendar year, but the whole
 /// week is in the same week-year.)
 @immutable
 @internal
-class SimpleWeekYearRule implements IWeekYearRule {
+class SimpleWeekYearRule implements WeekYearRule {
   final int _minDaysInFirstWeek;
   final DayOfWeek _firstDayOfWeek;
 

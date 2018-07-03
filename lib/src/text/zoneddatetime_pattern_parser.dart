@@ -12,7 +12,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 @internal
 class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
   final ZonedDateTime _templateValue;
-  final IDateTimeZoneProvider _zoneProvider;
+  final DateTimeZoneProvider _zoneProvider;
   final ZoneLocalMappingResolver _resolver;
 
   static final Map<String /*char*/, CharacterHandler<ZonedDateTime, _ZonedDateTimeParseBucket>> _patternCharacterHandlers =
@@ -129,7 +129,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   DateTimeZone _zone;
   Offset offset;
   final ZoneLocalMappingResolver _resolver;
-  final IDateTimeZoneProvider _zoneProvider;
+  final DateTimeZoneProvider _zoneProvider;
 
   _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
       : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),

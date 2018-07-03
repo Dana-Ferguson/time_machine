@@ -29,8 +29,8 @@ final SingleTransitionDateTimeZone TestZone3 = new SingleTransitionDateTimeZone.
     new Instant.fromUtc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "abcd");
 
 
-IDateTimeZoneProvider TestProvider;
-IDateTimeZoneProvider Tzdb;
+DateTimeZoneProvider TestProvider;
+DateTimeZoneProvider Tzdb;
 DateTimeZone France;
 DateTimeZone Athens;
 DateTimeZone etcGMT_12;
@@ -785,7 +785,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 /*protected*/ @override ZonedDateTime get DefaultTemplate => ZonedDateTimePatterns.defaultTemplateValue;
 
   @internal ZoneLocalMappingResolver Resolver;
-  @internal IDateTimeZoneProvider ZoneProvider;
+  @internal DateTimeZoneProvider ZoneProvider;
 
   /// Initializes a new instance of the [Data] class.
   ///

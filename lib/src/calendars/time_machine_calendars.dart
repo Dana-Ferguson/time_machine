@@ -12,6 +12,6 @@ export 'gj_era_calculator.dart';
 export 'era_calculator.dart';
 export 'era.dart';
 
-export 'i_week_rule.dart';
+export 'week_rule.dart';
 export 'week_year_rules.dart';
 export 'simple_week_year_rule.dart';

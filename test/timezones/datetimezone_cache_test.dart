@@ -13,7 +13,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-IDateTimeZoneProvider Tzdb;
+DateTimeZoneProvider Tzdb;
 
 /// Tests for DateTimeZoneCache.
 Future main() async {
@@ -260,7 +260,7 @@ Future GetSystemDefault_SourceReturnsNullId() async
 }
 
 
-class TestDateTimeZoneSource extends IDateTimeZoneSource {
+class TestDateTimeZoneSource extends DateTimeZoneSource {
   String LastRequestedId;
   final List<String> ids;
 

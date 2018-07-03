@@ -45,19 +45,19 @@ abstract class IDateTimeZone {
 /// or Olson database).
 ///
 /// To obtain a [DateTimeZone] for a given timezone ID, use one of the methods on
-/// [IDateTimeZoneProvider] (and see [DateTimeZoneProviders] for access to the built-in
+/// [DateTimeZoneProvider] (and see [DateTimeZoneProviders] for access to the built-in
 /// providers). The UTC timezone is also available via the [utc] property on this class.
 ///
 /// To obtain a [DateTimeZone] representing the system default time zone, you can either call
-/// [IDateTimeZoneProvider.getSystemDefault] on a provider to obtain the [DateTimeZone] that
+/// [DateTimeZoneProvider.getSystemDefault] on a provider to obtain the [DateTimeZone] that
 /// the provider considers matches the system default time zone
 ///
 /// Note that Time Machine does not require that [DateTimeZone] instances be singletons.
 /// Comparing two time zones for equality is not straightforward: if you care about whether two
 /// zones act the same way within a particular portion of time, use [ZoneEqualityComparer].
-/// Additional guarantees are provided by [IDateTimeZoneProvider] and [DateTimeZone.forOffset].
+/// Additional guarantees are provided by [DateTimeZoneProvider] and [DateTimeZone.forOffset].
 @immutable
-abstract class DateTimeZone implements IZoneIntervalMapWithMinMax {
+abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Gets the UTC (Coordinated Universal Time) time zone.
   ///
   /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to

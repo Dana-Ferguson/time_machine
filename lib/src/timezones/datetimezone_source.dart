@@ -15,7 +15,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 ///
 /// Implementations need not cache time zones or the available time zone IDs.
 /// Caching is typically provided by [DateTimeZoneCache], which most consumers should use instead of
-/// consuming [IDateTimeZoneSource] directly in order to get better performance.
+/// consuming [DateTimeZoneSource] directly in order to get better performance.
 ///
 /// It is expected that any exceptions thrown are implementation-specific; nothing is explicitly
 /// specified in the interface. Typically this would be unusual to the point that callers would not
@@ -23,9 +23,8 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// this clearly, so that clients will know to handle the exceptions appropriately. No wrapper exception
 /// type is provided by Time Machine to handle this situation, and code in Time Machine does not try to catch
 /// such exceptions.
-///
-/// <threadsafety>Implementations are not required to be thread-safe.</threadsafety>
-abstract class IDateTimeZoneSource {
+@interface
+abstract class DateTimeZoneSource {
   /// Returns an unordered enumeration of the IDs available from this source.
   ///
   /// Every value in this enumeration must return a valid time zone from [forId] for the life of the source.

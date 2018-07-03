@@ -9,7 +9,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 /// A time zone source for test purposes.
 /// Create instances via [FakeDateTimeZoneSource.Builder].
-class FakeDateTimeZoneSource extends IDateTimeZoneSource {
+class FakeDateTimeZoneSource extends DateTimeZoneSource {
   final Map<String, DateTimeZone> _zones;
   final Map<String, String> _bclToZoneIds;
 
@@ -20,7 +20,7 @@ class FakeDateTimeZoneSource extends IDateTimeZoneSource {
   /// Creates a time zone provider ([DateTimeZoneCache]) from this source.
   ///
   /// Returns: A provider backed by this source.
-  Future<IDateTimeZoneProvider> ToProvider() => DateTimeZoneCache.getCache(this);
+  Future<DateTimeZoneProvider> ToProvider() => DateTimeZoneCache.getCache(this);
 
   /// <inheritdoc />
   Future<Iterable<String>> getIds() => new Future.value(_zones.keys);

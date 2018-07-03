@@ -16,7 +16,7 @@ abstract class CachingZoneIntervalMap
 // reasons; it's not really necessary but it does no harm.
 
   /// Returns a caching map for the given input map.
-  static IZoneIntervalMap cacheMap(IZoneIntervalMap map)
+  static ZoneIntervalMap cacheMap(ZoneIntervalMap map)
   {
     return new _HashArrayCache(map);
   }
@@ -35,7 +35,7 @@ abstract class CachingZoneIntervalMap
 /// If another call is made which maps to the same cache entry number but is for a different
 /// period, the existing hash entry is simply overridden.
 // sealed
-class _HashArrayCache implements IZoneIntervalMap {
+class _HashArrayCache implements ZoneIntervalMap {
   // Currently we have no need or way to create hash cache zones with
   // different cache sizes. But the cache size should always be a power of 2 to get the
   // "period to cache entry" conversion simply as a bitmask operation.
@@ -50,7 +50,7 @@ class _HashArrayCache implements IZoneIntervalMap {
   static const int _periodShift = 5;
 
   final List<_HashCacheNode> _instantCache = new List<_HashCacheNode>(_cacheSize);
-  final IZoneIntervalMap _map;
+  final ZoneIntervalMap _map;
 
   _HashArrayCache(this._map) {
     Preconditions.checkNotNull(_map, 'map');
@@ -97,7 +97,7 @@ class _HashCacheNode {
   /// then repeatedly check whether that interval ends after the end of the
   /// period - at which point we're done. If not, find the next interval, create
   /// a new node referring to that interval and the previous interval, and keep going.
-  static _HashCacheNode createNode(int period, IZoneIntervalMap map) {
+  static _HashCacheNode createNode(int period, ZoneIntervalMap map) {
     // todo: does this need to be a safe shift?
     var days = period << _HashArrayCache._periodShift;
     var periodStart = IInstant.untrusted(new Span(days: math.max(days, IInstant.minDays)));

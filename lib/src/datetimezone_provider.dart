@@ -10,14 +10,15 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Provides stable, performant time zone data.
 ///
-/// Consumers should be able to treat an [IDateTimeZoneProvider] like a cache: 
+/// Consumers should be able to treat an [DateTimeZoneProvider] like a cache: 
 /// lookups should be quick (after at most one lookup of a given ID), and multiple calls for a given ID must
 /// always return references to equal instances, even if they are not references to a single instance.
 /// Consumers should not feel the need to cache data accessed through this interface.
-/// Implementations designed to work with any [IDateTimeZoneSource] implementation (such as
+/// Implementations designed to work with any [DateTimeZoneSource] implementation (such as
 /// [DateTimeZoneCache]) should not attempt to handle exceptions thrown by the source. A source-specific
 /// provider may do so, as it has more detailed knowledge of what can go wrong and how it can best be handled.
-abstract class IDateTimeZoneProvider {
+@interface
+abstract class DateTimeZoneProvider {
   /// Gets the version ID of this provider.
   final String versionId = null;
 

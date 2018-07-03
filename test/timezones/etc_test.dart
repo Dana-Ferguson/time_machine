@@ -12,7 +12,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-IDateTimeZoneProvider Tzdb;
+DateTimeZoneProvider Tzdb;
 
 /// Tests for fixed "Etc/GMT+x" zones. These just test that the time zones are built
 /// appropriately; FixedDateTimeZoneTest takes care of the rest.

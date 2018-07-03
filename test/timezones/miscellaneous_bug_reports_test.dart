@@ -12,7 +12,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-IDateTimeZoneProvider Tzdb;
+DateTimeZoneProvider Tzdb;
 
 /// Fixture for miscellaneous bug reports and oddities which don't really fit anywhere else.
 /// Quite often the cause of a problem is nowhere near the test code; it's still useful

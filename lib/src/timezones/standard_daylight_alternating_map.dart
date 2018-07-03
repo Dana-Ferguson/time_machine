@@ -36,7 +36,7 @@ class _TransitionRecurrenceResult {
 /// portion of the timeline.
 @immutable
 @internal
-class StandardDaylightAlternatingMap implements IZoneIntervalMapWithMinMax  {
+class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   final Offset _standardOffset;
   final ZoneRecurrence _standardRecurrence;
   final ZoneRecurrence _dstRecurrence;

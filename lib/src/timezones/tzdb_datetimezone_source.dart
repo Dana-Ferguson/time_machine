@@ -11,7 +11,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 @internal
 abstract class IDateTimeZoneProviders {
-  static void set defaultProvider(IDateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
+  static void set defaultProvider(DateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
 }
 
 
@@ -19,14 +19,14 @@ abstract class IDateTimeZoneProviders {
 abstract class DateTimeZoneProviders {
   // todo: await ... await ... patterns are so ick.
 
-  static Future<IDateTimeZoneProvider> _tzdb;
+  static Future<DateTimeZoneProvider> _tzdb;
 
-  static Future<IDateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
+  static Future<DateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
 
-  static IDateTimeZoneProvider _defaultProvider;
-  /// This is the default [IDateTimeZoneProvider] for the currently loaded TimeMachine.
+  static DateTimeZoneProvider _defaultProvider;
+  /// This is the default [DateTimeZoneProvider] for the currently loaded TimeMachine.
   /// It will be used internally where-ever timezone support is needed when no provider is provided,
-  static IDateTimeZoneProvider get defaultProvider => _defaultProvider;
+  static DateTimeZoneProvider get defaultProvider => _defaultProvider;
 }
 
 @internal
@@ -37,7 +37,7 @@ class ITzdbDateTimeZoneSource {
   }
 }
 
-class TzdbDateTimeZoneSource extends IDateTimeZoneSource {
+class TzdbDateTimeZoneSource extends DateTimeZoneSource {
   // todo: this is a bandaid ~ we need to rework our infrastructure a bit -- maybe draw some diagrams?
   // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
   static bool _loadAllTimeZoneInformation = false;

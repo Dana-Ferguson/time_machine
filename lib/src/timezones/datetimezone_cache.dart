@@ -10,8 +10,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
-/// Provides an implementation of [IDateTimeZoneProvider] that caches results from an
-/// [IDateTimeZoneSource].
+/// Provides an implementation of [DateTimeZoneProvider] that caches results from an
+/// [DateTimeZoneSource].
 ///
 /// The process of loading or creating time zones may be an expensive operation. This class implements an
 /// unlimited-size non-expiring cache over a time zone source, and adapts an implementation of the
@@ -19,11 +19,11 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 ///
 /// see also: [DateTimeZoneProviders]
 @immutable // only; caches are naturally mutable internally.
-class DateTimeZoneCache extends IDateTimeZoneProvider {
-  final IDateTimeZoneSource _source;
+class DateTimeZoneCache extends DateTimeZoneProvider {
+  final DateTimeZoneSource _source;
   final Map<String, DateTimeZone> _timeZoneMap = new Map<String, DateTimeZone>();
 
-  /// Gets the version ID of this provider. This is simply the [IDateTimeZoneSource.versionId] returned by
+  /// Gets the version ID of this provider. This is simply the [DateTimeZoneSource.versionId] returned by
   /// the underlying source.
   final String versionId;
 
@@ -35,15 +35,15 @@ class DateTimeZoneCache extends IDateTimeZoneProvider {
 
   // todo: anyway I can make this a regular constructor???
   // note: this is a Static Constructor (against the requirements of the Style guide), because it's a future
-  /// Creates a provider backed by the given [IDateTimeZoneSource].
+  /// Creates a provider backed by the given [DateTimeZoneSource].
   ///
   /// Note that the source will never be consulted for requests for the fixed-offset timezones "UTC" and
   /// "UTC+/-Offset" (a standard implementation will be returned instead). This is true even if these IDs are
   /// advertised by the source.
   ///
-  /// [source]: The [IDateTimeZoneSource] for this provider.
+  /// [source]: The [DateTimeZoneSource] for this provider.
   /// [InvalidDateTimeZoneSourceException]: [source] violates its contract.
-  static Future<DateTimeZoneCache> getCache(IDateTimeZoneSource source) async {
+  static Future<DateTimeZoneCache> getCache(DateTimeZoneSource source) async {
     Preconditions.checkNotNull(source, 'source');
     var VersionId = await source.versionId;
 

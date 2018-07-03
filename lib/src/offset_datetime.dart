@@ -36,19 +36,19 @@ class OffsetDateTime {
   static const int _minBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
   static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
-  // These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
-  // we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
-  // should allow us to optimize memory usage too.
+  /// These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
+  /// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
+  /// should allow us to optimize memory usage too.
   final YearMonthDayCalendar _yearMonthDayCalendar;
+  final int _nanosecondOfDay;
+
+  /// Gets the offset from UTC.
+  final Offset offset;
 
   // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
   // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
   // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
   // @private final int nanosecondsAndOffset;
-  final int _nanosecondOfDay;
-  
-  /// Gets the offset from UTC.
-  final Offset offset;
 
   OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this.offset) // this.nanosecondsAndOffset)
   {

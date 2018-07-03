@@ -88,7 +88,7 @@ void ConvertToFullMap(String intervalBreaks) {
 // It's just a copy from DateTimeZone, with the interval taken out.
 // It could be an extension method on IZoneIntervalMap, with optional interval.
 // On the other hand, IZoneIntervalMap is internal, so it would only be used by us.
-Iterable<ZoneInterval> GetZoneIntervals(IZoneIntervalMap map) sync*
+Iterable<ZoneInterval> GetZoneIntervals(ZoneIntervalMap map) sync*
 {
   var current = Instant.minValue;
   while (current < IInstant.afterMaxValue)

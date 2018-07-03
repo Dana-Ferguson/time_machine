@@ -5,8 +5,8 @@ export 'datetimezone_notfound_error.dart';
 export 'delegates.dart';
 export 'fixed_datetimezone.dart';
 
-export 'i_datetimezone_source.dart';
-export 'i_zoneinterval_map.dart';
+export 'datetimezone_source.dart';
+export 'zoneinterval_map.dart';
 export 'invalid_datetimezone_source_error.dart';
 export 'partial_zoneinterval_map.dart';
 export 'precalculated_datetimezone.dart';
