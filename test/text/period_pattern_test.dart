@@ -14,15 +14,15 @@ Future main() async {
 
 /// A container for test data for formatting and parsing [Period] objects.
 class Data extends PatternTestData<Period> {
-  @override Period get DefaultTemplate => new Period.fromDays(0);
+  @override Period get defaultTemplate => new Period.fromDays(0);
 
   Data([Period value = null]) : super(value ?? new Period.fromDays(0)) {
-    this.StandardPattern = PeriodPattern.roundtrip;
+    this.standardPattern = PeriodPattern.roundtrip;
   }
 
   Data.builder(PeriodBuilder builder) : this(builder.build());
 
   @internal
   @override
-  IPattern<Period> CreatePattern() => StandardPattern;
+  IPattern<Period> CreatePattern() => standardPattern;
 }

@@ -13,7 +13,7 @@ import 'pattern_test_base.dart';
 import 'pattern_test_data.dart';
 import 'test_cultures.dart';
 
-@private final List<CultureInfo> _allCultures = [];
+@private final List<Culture> _allCultures = [];
 
 Future main() async {
   await TimeMachine.initialize();
@@ -33,7 +33,7 @@ Future setup() async {
 
 @Test()
 class LocalTimePatternTest extends PatternTestBase<LocalTime> {
-  List<CultureInfo> get Cultures => _allCultures;
+  List<Culture> get Cultures => _allCultures;
   @private static final DateTime SampleDateTime = new DateTime(
       2000,
       1,
@@ -48,364 +48,364 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 // Characters we expect to work the same in Noda Time as in the BCL.
 // @private static const String ExpectedCharacters = "hHms.:fFtT ";
 
-  @private static final CultureInfo AmOnlyCulture = CreateCustomAmPmCulture("am", "");
-  @private static final CultureInfo PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
-  @private static final CultureInfo NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
+  @private static final Culture AmOnlyCulture = CreateCustomAmPmCulture("am", "");
+  @private static final Culture PmOnlyCulture = CreateCustomAmPmCulture("", "pm");
+  @private static final Culture NoAmOrPmCulture = CreateCustomAmPmCulture("", "");
 
   @internal final List<Data> InvalidPatternData = [
     new Data()
-      ..Pattern = ""
-      ..Message = TextErrorMessages.formatStringEmpty,
+      ..pattern = ""
+      ..message = TextErrorMessages.formatStringEmpty,
     new Data()
-      ..Pattern = "!"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['!', 'LocalTime']),
+      ..pattern = "!"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['!', 'LocalTime']),
     new Data()
-      ..Pattern = "%"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['%', 'LocalTime']),
+      ..pattern = "%"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['%', 'LocalTime']),
     new Data()
-      ..Pattern = "\\"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['\\', 'LocalTime']),
+      ..pattern = "\\"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['\\', 'LocalTime']),
     new Data()
-      ..Pattern = "%%"
-      ..Message = TextErrorMessages.percentDoubled,
+      ..pattern = "%%"
+      ..message = TextErrorMessages.percentDoubled,
     new Data()
-      ..Pattern = "%\\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = "%\\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "ffffffffff"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['f', 9]),
+      ..pattern = "ffffffffff"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['f', 9]),
     new Data()
-      ..Pattern = "FFFFFFFFFF"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['F', 9]),
+      ..pattern = "FFFFFFFFFF"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['F', 9]),
     new Data()
-      ..Pattern = "H%"
-      ..Message = TextErrorMessages.percentAtEndOfString,
+      ..pattern = "H%"
+      ..message = TextErrorMessages.percentAtEndOfString,
     new Data()
-      ..Pattern = "HHH"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['H', 2]),
+      ..pattern = "HHH"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['H', 2]),
     new Data()
-      ..Pattern = "mmm"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['m', 2]),
+      ..pattern = "mmm"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['m', 2]),
     new Data()
-      ..Pattern = "mmmmmmmmmmmmmmmmmmm"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['m', 2]),
+      ..pattern = "mmmmmmmmmmmmmmmmmmm"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['m', 2]),
     new Data()
-      ..Pattern = "'qwe"
-      ..Message = TextErrorMessages.missingEndQuote
-      ..Parameters.addAll(['\'']),
+      ..pattern = "'qwe"
+      ..message = TextErrorMessages.missingEndQuote
+      ..parameters.addAll(['\'']),
     new Data()
-      ..Pattern = "'qwe\\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = "'qwe\\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "'qwe\\'"
-      ..Message = TextErrorMessages.missingEndQuote
-      ..Parameters.addAll(['\'']),
+      ..pattern = "'qwe\\'"
+      ..message = TextErrorMessages.missingEndQuote
+      ..parameters.addAll(['\'']),
     new Data()
-      ..Pattern = "sss"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['s', 2]),
+      ..pattern = "sss"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['s', 2]),
     // T isn't valid in a time pattern
     new Data()
-      ..Pattern = "1970-01-01THH:mm:ss"
-      ..Message = TextErrorMessages.unquotedLiteral
-      ..Parameters.addAll(['T'])
+      ..pattern = "1970-01-01THH:mm:ss"
+      ..message = TextErrorMessages.unquotedLiteral
+      ..parameters.addAll(['T'])
   ];
 
   @internal List<Data> ParseFailureData = [
     new Data()
       ..text = "17 6"
-      ..Pattern = "HH h"
-      ..Message = TextErrorMessages.inconsistentValues2
-      ..Parameters.addAll(['H', 'h', 'LocalTime']),
+      ..pattern = "HH h"
+      ..message = TextErrorMessages.inconsistentValues2
+      ..parameters.addAll(['H', 'h', 'LocalTime']),
     new Data()
       ..text = "17 AM"
-      ..Pattern = "HH tt"
-      ..Message = TextErrorMessages.inconsistentValues2
-      ..Parameters.addAll(['H', 't', 'LocalTime']),
+      ..pattern = "HH tt"
+      ..message = TextErrorMessages.inconsistentValues2
+      ..parameters.addAll(['H', 't', 'LocalTime']),
     new Data()
       ..text = "5 foo"
-      ..Pattern = "h t"
-      ..Message = TextErrorMessages.missingAmPmDesignator,
+      ..pattern = "h t"
+      ..message = TextErrorMessages.missingAmPmDesignator,
     new Data()
       ..text = "04."
-      ..Pattern = "ss.FF"
-      ..Message = TextErrorMessages.mismatchedNumber
-      ..Parameters.addAll(["FF"]),
+      ..pattern = "ss.FF"
+      ..message = TextErrorMessages.mismatchedNumber
+      ..parameters.addAll(["FF"]),
     new Data()
       ..text = "04."
-      ..Pattern = "ss.ff"
-      ..Message = TextErrorMessages.mismatchedNumber
-      ..Parameters.addAll(["ff"]),
+      ..pattern = "ss.ff"
+      ..message = TextErrorMessages.mismatchedNumber
+      ..parameters.addAll(["ff"]),
     new Data()
       ..text = "05 Foo"
-      ..Pattern = "HH tt"
-      ..Message = TextErrorMessages.missingAmPmDesignator
+      ..pattern = "HH tt"
+      ..message = TextErrorMessages.missingAmPmDesignator
   ];
 
   @internal List<Data> ParseOnlyData = [
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 400)
       ..text = "40"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 400)
       ..text = "40"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 400)
       ..text = "400"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 400)
       ..text = "40"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(0, 0, 0, 400)
       ..text = "400"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(0, 0, 0, 400)
       ..text = "4000"
-      ..Pattern = "ffff",
+      ..pattern = "ffff",
     new Data.hms(0, 0, 0, 400)
       ..text = "40000"
-      ..Pattern = "fffff",
+      ..pattern = "fffff",
     new Data.hms(0, 0, 0, 400)
       ..text = "400000"
-      ..Pattern = "ffffff",
+      ..pattern = "ffffff",
     new Data.hms(0, 0, 0, 400)
       ..text = "4000000"
-      ..Pattern = "fffffff",
+      ..pattern = "fffffff",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(0, 0, 0, 450)
       ..text = "45"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(0, 0, 0, 450)
       ..text = "45"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 450)
       ..text = "45"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 450)
       ..text = "450"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(0, 0, 0, 400)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(0, 0, 0, 450)
       ..text = "45"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(0, 0, 0, 450)
       ..text = "45"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 456)
       ..text = "456"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(0, 0, 0, 456)
       ..text = "456"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
 
     new Data.hms(0, 0, 0, 0)
       ..text = "0"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(0, 0, 0, 0)
       ..text = "00"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(0, 0, 0, 8)
       ..text = "008"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(0, 0, 0, 8)
       ..text = "008"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(5, 0, 0, 0)
       ..text = "05"
-      ..Pattern = "HH",
+      ..pattern = "HH",
     new Data.hms(0, 6, 0, 0)
       ..text = "06"
-      ..Pattern = "mm",
+      ..pattern = "mm",
     new Data.hms(0, 0, 7, 0)
       ..text = "07"
-      ..Pattern = "ss",
+      ..pattern = "ss",
     new Data.hms(5, 0, 0, 0)
       ..text = "5"
-      ..Pattern = "%H",
+      ..pattern = "%H",
     new Data.hms(0, 6, 0, 0)
       ..text = "6"
-      ..Pattern = "%m",
+      ..pattern = "%m",
     new Data.hms(0, 0, 7, 0)
       ..text = "7"
-      ..Pattern = "%s",
+      ..pattern = "%s",
 
     // AM/PM designator is case-insensitive for both short and long forms
     new Data.hms(17, 0, 0, 0)
       ..text = "5 p"
-      ..Pattern = "h t",
+      ..pattern = "h t",
     new Data.hms(17, 0, 0, 0)
       ..text = "5 pm"
-      ..Pattern = "h tt",
+      ..pattern = "h tt",
 
     // Parsing using the semi-colon "comma dot" specifier
     new Data.hms(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;fff"
+      ..pattern = "HH:mm:ss;fff"
       ..text = "16:05:20,352",
     new Data.hms(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;FFF"
+      ..pattern = "HH:mm:ss;FFF"
       ..text = "16:05:20,352",
 
     // Empty fractional section
     new Data.hms(0, 0, 4, 0)
       ..text = "04"
-      ..Pattern = "ssFF",
+      ..pattern = "ssFF",
     new Data.hms(0, 0, 4, 0)
       ..text = "040"
-      ..Pattern = "ssFF",
+      ..pattern = "ssFF",
     new Data.hms(0, 0, 4, 0)
       ..text = "040"
-      ..Pattern = "ssFFF",
+      ..pattern = "ssFFF",
     new Data.hms(0, 0, 4, 0)
       ..text = "04"
-      ..Pattern = "ss.FF",
+      ..pattern = "ss.FF",
   ];
 
   @internal List<Data> FormatOnlyData = [
     new Data.hms(5, 6, 7, 8)
       ..text = ""
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(5, 6, 7, 8)
       ..text = ""
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(1, 1, 1, 400)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(1, 1, 1, 400)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(1, 1, 1, 400)
       ..text = "4"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(1, 1, 1, 400)
       ..text = "4"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(1, 1, 1, 400)
       ..text = "40"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(1, 1, 1, 400)
       ..text = "400"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(1, 1, 1, 400)
       ..text = "4000"
-      ..Pattern = "ffff",
+      ..pattern = "ffff",
     new Data.hms(1, 1, 1, 400)
       ..text = "40000"
-      ..Pattern = "fffff",
+      ..pattern = "fffff",
     new Data.hms(1, 1, 1, 400)
       ..text = "400000"
-      ..Pattern = "ffffff",
+      ..pattern = "ffffff",
     new Data.hms(1, 1, 1, 400)
       ..text = "4000000"
-      ..Pattern = "fffffff",
+      ..pattern = "fffffff",
     new Data.hms(1, 1, 1, 450)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(1, 1, 1, 450)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(1, 1, 1, 450)
       ..text = "45"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(1, 1, 1, 450)
       ..text = "45"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(1, 1, 1, 450)
       ..text = "45"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(1, 1, 1, 450)
       ..text = "450"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(1, 1, 1, 456)
       ..text = "4"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(1, 1, 1, 456)
       ..text = "4"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(1, 1, 1, 456)
       ..text = "45"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(1, 1, 1, 456)
       ..text = "45"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(1, 1, 1, 456)
       ..text = "456"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(1, 1, 1, 456)
       ..text = "456"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 0)
       ..text = ""
-      ..Pattern = "FF",
+      ..pattern = "FF",
 
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "0"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "00"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "008"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "008"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "05"
-      ..Pattern = "HH",
+      ..pattern = "HH",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06"
-      ..Pattern = "mm",
+      ..pattern = "mm",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "07"
-      ..Pattern = "ss",
+      ..pattern = "ss",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5"
-      ..Pattern = "%H",
+      ..pattern = "%H",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%m",
+      ..pattern = "%m",
     new Data.hms(5, 6, 7, 8)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "7"
-      ..Pattern = "%s",
+      ..pattern = "%s",
   ];
 
   @internal List<Data> DefaultPatternData = [
@@ -419,539 +419,539 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
     // US uses hh:mm:ss tt for the "long" pattern
     new Data.hms(17, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5:00:00 PM",
     new Data.hms(5, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5:00:00 AM",
     new Data.hms(5, 12, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5:12:00 AM",
     new Data.hms(5, 12, 34, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5:12:34 AM",
   ];
 
   @internal final List<Data> TemplateValueData = [
     // Pattern specifies nothing - template value is passed through
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "X"
-      ..Pattern = "'X'"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "'X'"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     // Tests for each individual field being propagated
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "mm:ss.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "mm:ss.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "HH:ss.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:ss.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:mm.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07:08"
-      ..Pattern = "HH:mm:ss"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:mm:ss"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%h"
-      ..Template = new LocalTime(1, 2, 3),
+      ..pattern = "%h"
+      ..template = new LocalTime(1, 2, 3),
     new Data(new LocalTime(18, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%h"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "%h"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(2, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "AM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(14, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "PM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(2, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "AM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(2, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(2, 2, 3),
     new Data(new LocalTime(14, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "PM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(2, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(2, 2, 3),
     new Data(new LocalTime(17, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5 PM"
-      ..Pattern = "h tt"
-      ..Template = new LocalTime(1, 2, 3),
+      ..pattern = "h tt"
+      ..template = new LocalTime(1, 2, 3),
   ];
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
   @internal final List<Data> FormatAndParseData = [
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "."
-      ..Pattern = "%.",
+      ..pattern = "%.",
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ":"
-      ..Pattern = "%:",
+      ..pattern = "%:",
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "."
-      ..Pattern = "%.",
+      ..pattern = "%.",
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "."
-      ..Pattern = "%:",
+      ..pattern = "%:",
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "H"
-      ..Pattern = "\\H",
+      ..pattern = "\\H",
     new Data(LocalTime.midnight)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "HHss"
-      ..Pattern = "'HHss'",
+      ..pattern = "'HHss'",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "%f",
+      ..pattern = "%f",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "%F",
+      ..pattern = "%F",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "100000000"
-      ..Pattern = "fffffffff",
+      ..pattern = "fffffffff",
     new Data.hms(0, 0, 0, 100)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "FFFFFFFFF",
+      ..pattern = "FFFFFFFFF",
     new Data.hms(0, 0, 0, 120)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "ff",
+      ..pattern = "ff",
     new Data.hms(0, 0, 0, 120)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "FF",
+      ..pattern = "FF",
     new Data.hms(0, 0, 0, 120)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 123)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123"
-      ..Pattern = "fff",
+      ..pattern = "fff",
     new Data.hms(0, 0, 0, 123)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123"
-      ..Pattern = "FFF",
+      ..pattern = "FFF",
     new Data.hms(0, 0, 0, 123, 4000)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1234"
-      ..Pattern = "ffff",
+      ..pattern = "ffff",
     new Data.hms(0, 0, 0, 123, 4000)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1234"
-      ..Pattern = "FFFF",
+      ..pattern = "FFFF",
     new Data.hms(0, 0, 0, 123, 4500)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12345"
-      ..Pattern = "fffff",
+      ..pattern = "fffff",
     new Data.hms(0, 0, 0, 123, 4500)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12345"
-      ..Pattern = "FFFFF",
+      ..pattern = "FFFFF",
     new Data.hms(0, 0, 0, 123, 4560)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123456"
-      ..Pattern = "ffffff",
+      ..pattern = "ffffff",
     new Data.hms(0, 0, 0, 123, 4560)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123456"
-      ..Pattern = "FFFFFF",
+      ..pattern = "FFFFFF",
     new Data.hms(0, 0, 0, 123, 4567)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1234567"
-      ..Pattern = "fffffff",
+      ..pattern = "fffffff",
     new Data.hms(0, 0, 0, 123, 4567)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1234567"
-      ..Pattern = "FFFFFFF",
+      ..pattern = "FFFFFFF",
     new Data.nano(0, 0, 0, 123456780 /*L*/)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12345678"
-      ..Pattern = "ffffffff",
+      ..pattern = "ffffffff",
     new Data.nano(0, 0, 0, 123456780 /*L*/)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12345678"
-      ..Pattern = "FFFFFFFF",
+      ..pattern = "FFFFFFFF",
     new Data.nano(0, 0, 0, 123456789 /*L*/)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123456789"
-      ..Pattern = "fffffffff",
+      ..pattern = "fffffffff",
     new Data.nano(0, 0, 0, 123456789 /*L*/)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "123456789"
-      ..Pattern = "FFFFFFFFF",
+      ..pattern = "FFFFFFFFF",
     new Data.hms(0, 0, 0, 600)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ".6"
-      ..Pattern = ".f",
+      ..pattern = ".f",
     new Data.hms(0, 0, 0, 600)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ".6"
-      ..Pattern = ".F",
+      ..pattern = ".F",
     new Data.hms(0, 0, 0, 600)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ".6"
-      ..Pattern = ".FFF", // Elided fraction
+      ..pattern = ".FFF", // Elided fraction
     new Data.hms(0, 0, 0, 678)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ".678"
-      ..Pattern = ".fff",
+      ..pattern = ".fff",
     new Data.hms(0, 0, 0, 678)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = ".678"
-      ..Pattern = ".FFF",
+      ..pattern = ".FFF",
     new Data.hms(0, 0, 12, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "%s",
+      ..pattern = "%s",
     new Data.hms(0, 0, 12, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "ss",
+      ..pattern = "ss",
     new Data.hms(0, 0, 2, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "2"
-      ..Pattern = "%s",
+      ..pattern = "%s",
     new Data.hms(0, 12, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "%m",
+      ..pattern = "%m",
     new Data.hms(0, 12, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "mm",
+      ..pattern = "mm",
     new Data.hms(0, 2, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "2"
-      ..Pattern = "%m",
+      ..pattern = "%m",
     new Data.hms(1, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "1"
-      ..Pattern = "H.FFF", // Missing fraction
+      ..pattern = "H.FFF", // Missing fraction
     new Data.hms(12, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "%H",
+      ..pattern = "%H",
     new Data.hms(12, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12"
-      ..Pattern = "HH",
+      ..pattern = "HH",
     new Data.hms(2, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "2"
-      ..Pattern = "%H",
+      ..pattern = "%H",
     new Data.hms(2, 0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "2"
-      ..Pattern = "%H",
+      ..pattern = "%H",
     new Data.hms(0, 0, 12, 340)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "12.34"
-      ..Pattern = "ss.FFF",
+      ..pattern = "ss.FFF",
 
     new Data.hms(14, 15, 16)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 700)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.7"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 780)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.78"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.789"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1000)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.7891"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1200)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.78912"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1230)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.789123"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1234)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "14:15:16.7891234"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 700)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.7"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 780)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.78"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.789"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1000)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.7891"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1200)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.78912"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1230)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.789123"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.hms(14, 15, 16, 789, 1234)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.7891234"
-      ..Pattern = "r",
+      ..pattern = "r",
     new Data.nano(14, 15, 16, 789123456 /*L*/)
-      ..Culture = TestCultures.DotTimeSeparator
+      ..culture = TestCultures.DotTimeSeparator
       ..text = "14.15.16.789123456"
-      ..Pattern = "r",
+      ..pattern = "r",
 
     // ------------ Template value tests ----------
     // Mixtures of 12 and 24 hour times
     new Data.hms(18, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "18 6 PM"
-      ..Pattern = "HH h tt",
+      ..pattern = "HH h tt",
     new Data.hms(18, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "18 6"
-      ..Pattern = "HH h",
+      ..pattern = "HH h",
     new Data.hms(18, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "18 PM"
-      ..Pattern = "HH tt",
+      ..pattern = "HH tt",
     new Data.hms(18, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6 PM"
-      ..Pattern = "h tt",
+      ..pattern = "h tt",
     new Data.hms(6, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%h",
+      ..pattern = "%h",
     new Data.hms(0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "AM"
-      ..Pattern = "tt",
+      ..pattern = "tt",
     new Data.hms(12, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "PM"
-      ..Pattern = "tt",
+      ..pattern = "tt",
     new Data.hms(0, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "A"
-      ..Pattern = "%t",
+      ..pattern = "%t",
     new Data.hms(12, 0, 0)
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "P"
-      ..Pattern = "%t",
+      ..pattern = "%t",
 
     // Pattern specifies nothing - template value is passed through
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "*"
-      ..Pattern = "%*"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "%*"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     // Tests for each individual field being propagated
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "mm:ss.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "mm:ss.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "HH:ss.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:ss.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:mm.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
-      ..Pattern = "HH:mm.FFFFFFF"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:mm.FFFFFFF"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
     new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "06:07:08"
-      ..Pattern = "HH:mm:ss"
-      ..Template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..pattern = "HH:mm:ss"
+      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%h"
-      ..Template = new LocalTime(1, 2, 3),
+      ..pattern = "%h"
+      ..template = new LocalTime(1, 2, 3),
     new Data(new LocalTime(18, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "6"
-      ..Pattern = "%h"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "%h"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(2, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "AM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(14, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "PM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(14, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(14, 2, 3),
     new Data(new LocalTime(2, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "AM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(2, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(2, 2, 3),
     new Data(new LocalTime(14, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "PM"
-      ..Pattern = "tt"
-      ..Template = new LocalTime(2, 2, 3),
+      ..pattern = "tt"
+      ..template = new LocalTime(2, 2, 3),
     new Data(new LocalTime(17, 2, 3))
-      ..Culture = TestCultures.EnUs
+      ..culture = TestCultures.EnUs
       ..text = "5 PM"
-      ..Pattern = "h tt"
-      ..Template = new LocalTime(1, 2, 3),
+      ..pattern = "h tt"
+      ..template = new LocalTime(1, 2, 3),
 // --------------- end of template value tests ----------------------
 
     // Only one of the AM/PM designator is present. We should still be able to work out what is meant, by the presence
     // or absense of the non-empty one.
     new Data.hms(5, 0, 0)
-      ..Culture = AmOnlyCulture
+      ..culture = AmOnlyCulture
       ..text = "5 am"
-      ..Pattern = "h tt",
+      ..pattern = "h tt",
     new Data.hms(15, 0, 0)
-      ..Culture = AmOnlyCulture
+      ..culture = AmOnlyCulture
       ..text = "3 "
-      ..Pattern = "h tt"
-      ..Description = "Implicit PM",
+      ..pattern = "h tt"
+      ..description = "Implicit PM",
     new Data.hms(5, 0, 0)
-      ..Culture = AmOnlyCulture
+      ..culture = AmOnlyCulture
       ..text = "5 a"
-      ..Pattern = "h t",
+      ..pattern = "h t",
     new Data.hms(15, 0, 0)
-      ..Culture = AmOnlyCulture
+      ..culture = AmOnlyCulture
       ..text = "3 "
-      ..Pattern = "h t"
-      ..Description = "Implicit PM",
+      ..pattern = "h t"
+      ..description = "Implicit PM",
 
     new Data.hms(5, 0, 0)
-      ..Culture = PmOnlyCulture
+      ..culture = PmOnlyCulture
       ..text = "5 "
-      ..Pattern = "h tt",
+      ..pattern = "h tt",
     new Data.hms(15, 0, 0)
-      ..Culture = PmOnlyCulture
+      ..culture = PmOnlyCulture
       ..text = "3 pm"
-      ..Pattern = "h tt",
+      ..pattern = "h tt",
     new Data.hms(5, 0, 0)
-      ..Culture = PmOnlyCulture
+      ..culture = PmOnlyCulture
       ..text = "5 "
-      ..Pattern = "h t",
+      ..pattern = "h t",
     new Data.hms(15, 0, 0)
-      ..Culture = PmOnlyCulture
+      ..culture = PmOnlyCulture
       ..text = "3 p"
-      ..Pattern = "h t",
+      ..pattern = "h t",
 
     // AM / PM designators are both empty strings. The parsing side relies on the AM/PM value being correct on the
     // template value. (The template value is for the wrong actual hour, but in the right side of noon.)
     new Data.hms(5, 0, 0)
-      ..Culture = NoAmOrPmCulture
+      ..culture = NoAmOrPmCulture
       ..text = "5 "
-      ..Pattern = "h tt"
-      ..Template = new LocalTime(2, 0, 0),
+      ..pattern = "h tt"
+      ..template = new LocalTime(2, 0, 0),
     new Data.hms(15, 0, 0)
-      ..Culture = NoAmOrPmCulture
+      ..culture = NoAmOrPmCulture
       ..text = "3 "
-      ..Pattern = "h tt"
-      ..Template = new LocalTime(14, 0, 0),
+      ..pattern = "h tt"
+      ..template = new LocalTime(14, 0, 0),
     new Data.hms(5, 0, 0)
-      ..Culture = NoAmOrPmCulture
+      ..culture = NoAmOrPmCulture
       ..text = "5 "
-      ..Pattern = "h t"
-      ..Template = new LocalTime(2, 0, 0),
+      ..pattern = "h t"
+      ..template = new LocalTime(2, 0, 0),
     new Data.hms(15, 0, 0)
-      ..Culture = NoAmOrPmCulture
+      ..culture = NoAmOrPmCulture
       ..text = "3 "
-      ..Pattern = "h t"
-      ..Template = new LocalTime(14, 0, 0),
+      ..pattern = "h t"
+      ..template = new LocalTime(14, 0, 0),
 
     // Use of the semi-colon "comma dot" specifier
     new Data.hms(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;fff"
+      ..pattern = "HH:mm:ss;fff"
       ..text = "16:05:20.352",
     new Data.hms(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;FFF"
+      ..pattern = "HH:mm:ss;FFF"
       ..text = "16:05:20.352",
     new Data.hms(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;FFF 'end'"
+      ..pattern = "HH:mm:ss;FFF 'end'"
       ..text = "16:05:20.352 end",
     new Data.hms(16, 05, 20)
-      ..Pattern = "HH:mm:ss;FFF 'end'"
+      ..pattern = "HH:mm:ss;FFF 'end'"
       ..text = "16:05:20 end",
 
     // Patterns obtainable by properties but not single character standard patterns
     new Data.nano(1, 2, 3, 123456700 /*L*/)
-      ..StandardPattern = LocalTimePattern.extendedIso
-      ..StandardPatternCode = 'LocalTimePattern.extendedIso'
-      ..Culture = TestCultures.EnUs
+      ..standardPattern = LocalTimePattern.extendedIso
+      ..standardPatternCode = 'LocalTimePattern.extendedIso'
+      ..culture = TestCultures.EnUs
       ..text = "01:02:03.1234567"
-      ..Pattern = "HH':'mm':'ss;FFFFFFF",
+      ..pattern = "HH':'mm':'ss;FFFFFFF",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
-  @private static CultureInfo CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
-    return new CultureInfo('ampmDesignators'/*CultureInfo.invariantCultureId*/, (
+  @private static Culture CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
+    return new Culture('ampmDesignators'/*CultureInfo.invariantCultureId*/, (
         new DateTimeFormatInfoBuilder.invariantCulture()
           ..amDesignator = amDesignator
           ..pmDesignator = pmDesignator).Build());
@@ -1010,7 +1010,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
   @Test()
   void CreateWithCurrentCulture() {
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
-    CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
+    Culture.current = TestCultures.DotTimeSeparator;
     {
       var pattern = LocalTimePattern.createWithCurrentCulture("HH:mm");
       var text = pattern.format(new LocalTime(13, 45));
@@ -1066,7 +1066,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 /*sealed*/ class Data extends PatternTestData<LocalTime>
 {
   // Default to midnight
-  /*protected*/ @override LocalTime get DefaultTemplate => LocalTime.midnight;
+  /*protected*/ @override LocalTime get defaultTemplate => LocalTime.midnight;
 
   Data([LocalTime value = null]) : super(value ?? LocalTime.midnight);
 
@@ -1080,8 +1080,8 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 
 
   @internal @override IPattern<LocalTime> CreatePattern() =>
-  LocalTimePattern.createWithInvariantCulture(super.Pattern)
-      .withTemplateValue(Template)
-      .withCulture(Culture);
+  LocalTimePattern.createWithInvariantCulture(super.pattern)
+      .withTemplateValue(template)
+      .withCulture(culture);
 }
 

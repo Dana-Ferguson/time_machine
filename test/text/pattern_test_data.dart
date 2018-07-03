@@ -14,69 +14,69 @@ abstract class PatternTestData<T> {
   @internal final T Value;
 
   /*final*/
-  T DefaultTemplate;
+  T defaultTemplate;
 
   /// Culture of the pattern.
-  @internal CultureInfo Culture = CultureInfo.invariantCulture;
+  @internal Culture culture = Culture.invariant;
 
   /// Standard pattern, expected to format/parse the same way as Pattern.
-  @internal IPattern<T> StandardPattern;
+  @internal IPattern<T> standardPattern;
 
   /// This lets the JS_Test_Gen know what to put. (This is a total cop-out ~ complexity level is too high)
   /// rational: there are 33 usages of StandardPattern, it's easier to annotate than spend a week creating the most beautiful reflection program
-  @internal String StandardPatternCode;
+  @internal String standardPatternCode;
 
   /// Pattern text.
-  @internal String Pattern;
+  @internal String pattern;
 
   /// String value to be parsed, and expected result of formatting.
   @internal String text;
 
   /// Template value to specify in the pattern
-  @internal T Template;
+  @internal T template;
 
   /// Extra description for the test case
-  @internal String Description;
+  @internal String description;
 
   /// Message format to verify for exceptions.
-  @internal String Message;
+  @internal String message;
 
   /// Message parameters to verify for exceptions.
-  @internal final List Parameters = new List();
+  @internal final List parameters = new List();
 
   @internal PatternTestData(this.Value) {
-    Template = DefaultTemplate;
+    template = defaultTemplate;
   }
 
   @internal IPattern<T> CreatePattern();
 
   @internal void TestParse() {
-    assert(Message == null);
+    assert(message == null);
     IPattern<T> pattern = CreatePattern();
     var result = pattern.parse(text);
     var actualValue = result.value;
     expect(actualValue, Value);
 
-    if (StandardPattern != null) {
-      assert(Value == StandardPattern
+    if (standardPattern != null) {
+      assert(Value == standardPattern
           .parse(text)
           .value);
     }
   }
 
   @internal void TestFormat() {
-    assert(Message == null);
+    assert(message == null);
     IPattern<T> pattern = CreatePattern();
     expect(pattern.format(Value), text);
 
-    if (StandardPattern != null) {
-      expect(StandardPattern.format(Value), text);
+    if (standardPattern != null) {
+      expect(standardPattern.format(Value), text);
     }
   }
 
   @internal void TestParsePartial() {
     var pattern = CreatePartialPattern();
-    assert(Message == null);
+    assert(message == null);
     var cursor = new ValueCursor("^" + text + "#");
     // Move to the ^
     cursor.moveNext();
@@ -93,7 +93,7 @@ abstract class PatternTestData<T> {
   }
 
   @internal void TestAppendFormat() {
-    assert(Message == null);
+    assert(message == null);
     var pattern = CreatePattern();
     var builder = new StringBuffer("x");
     pattern.appendFormat(Value, builder);
@@ -102,7 +102,7 @@ abstract class PatternTestData<T> {
   }
 
   @internal void TestInvalidPattern() {
-    String expectedMessage = FormatMessage(Message, Parameters);
+    String expectedMessage = FormatMessage(message, parameters);
     try {
       CreatePattern();
       // "Expected InvalidPatternException"
@@ -115,7 +115,7 @@ abstract class PatternTestData<T> {
   }
 
   void TestParseFailure() {
-    String expectedMessage = FormatMessage(Message, Parameters);
+    String expectedMessage = FormatMessage(message, parameters);
     IPattern<T> pattern = CreatePattern();
 
     var result = pattern.parse(text);
@@ -137,17 +137,17 @@ abstract class PatternTestData<T> {
     try {
       StringBuffer builder = new StringBuffer();
       builder.write("Value=$Value; ");
-      builder.write("Pattern=$Pattern; ");
+      builder.write("Pattern=$pattern; ");
       builder.write("Text=$text; ");
-      if (Culture != CultureInfo.invariantCulture) {
-        builder.write("Culture=$Culture; ");
+      if (culture != Culture.invariant) {
+        builder.write("Culture=$culture; ");
       }
-      if (Description != null) {
-        builder.write("Description=$Description; ");
+      if (description != null) {
+        builder.write("Description=$description; ");
       }
       // if (!Template.Equals(DefaultTemplate)) {
-      if (Template != DefaultTemplate) {
-        builder.write("Template=$Template;");
+      if (template != defaultTemplate) {
+        builder.write("Template=$template;");
       }
       return builder.toString();
     }

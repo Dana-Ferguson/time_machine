@@ -521,7 +521,7 @@ void ZonedDateTime_ToString_WithFormat()
 {
   var local = new LocalDateTime.at(2013, 7, 23, 13, 05, seconds: 20);
   ZonedDateTime zoned = local.inZoneStrictly(SampleZone);
-  expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", CultureInfo.invariantCulture));
+  expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", Culture.invariant));
 }
 
 @Test() @SkipMe.unimplemented()

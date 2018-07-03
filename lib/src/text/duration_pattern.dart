@@ -77,7 +77,7 @@ class SpanPattern implements IPattern<Span> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static SpanPattern createWithCulture(String patternText, CultureInfo cultureInfo) =>
+  static SpanPattern createWithCulture(String patternText, Culture cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -109,6 +109,6 @@ class SpanPattern implements IPattern<Span> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  SpanPattern withCulture(CultureInfo cultureInfo) =>
+  SpanPattern withCulture(Culture cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

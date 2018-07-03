@@ -20,8 +20,8 @@ class CultureLoader {
     // This won't have any filenames in it.
     // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
     var cultureIds = new HashSet<String>();
-    var cache = <String, CultureInfo>{
-      CultureInfo.invariantCultureId: CultureInfo.invariantCulture
+    var cache = <String, Culture>{
+      Culture.invariantCultureId: Culture.invariant
     };
 
     var binary = await PlatformIO.local.getBinary('cultures', 'cultures.bin');
@@ -57,16 +57,16 @@ class CultureLoader {
   }
 
   final HashSet<String> _cultureIds;
-  final Map<String, CultureInfo> _cache = { };
+  final Map<String, Culture> _cache = { };
 
   Iterable<String> get cultureIds => _cultureIds;
   bool zoneIdExists(String zoneId) => _cultureIds.contains(zoneId);
   
-  CultureInfo _cultureFromBinary(ByteData binary) {
+  Culture _cultureFromBinary(ByteData binary) {
     return new CultureReader(binary).readCultureInfo();
   }
 
-  Future<CultureInfo> getCulture(String cultureId) async {
+  Future<Culture> getCulture(String cultureId) async {
     return _cache[cultureId] ??= _cultureFromBinary(await PlatformIO.local.getBinary('cultures', '$cultureId.bin'));
   }
 
@@ -77,10 +77,10 @@ class CultureLoader {
 class CultureReader extends BinaryReader {
   CultureReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 
-  CultureInfo readCultureInfo() {
+  Culture readCultureInfo() {
     var name = readString();
     var datetimeFormat = readDateTimeFormatInfo();
-    return new CultureInfo(name, datetimeFormat);
+    return new Culture(name, datetimeFormat);
   }
 
   DateTimeFormatInfo readDateTimeFormatInfo() {

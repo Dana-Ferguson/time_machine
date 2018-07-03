@@ -22,63 +22,63 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   @internal List<Data> ParseFailureData = [
     new Data()
       ..text = "X5H"
-      ..Message = TextErrorMessages.mismatchedCharacter
-      ..Parameters.addAll(['P']),
+      ..message = TextErrorMessages.mismatchedCharacter
+      ..parameters.addAll(['P']),
     new Data()
       ..text = ""
-      ..Message = TextErrorMessages.valueStringEmpty,
+      ..message = TextErrorMessages.valueStringEmpty,
     new Data()
       ..text = "PJ"
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "P5J"
-      ..Message = TextErrorMessages.invalidUnitSpecifier
-      ..Parameters.addAll(['J']),
+      ..message = TextErrorMessages.invalidUnitSpecifier
+      ..parameters.addAll(['J']),
     new Data()
       ..text = "P5D10M"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['M']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['M']),
     new Data()
       ..text = "P6M5D6D"
-      ..Message = TextErrorMessages.repeatedUnitSpecifier
-      ..Parameters.addAll(['D']),
+      ..message = TextErrorMessages.repeatedUnitSpecifier
+      ..parameters.addAll(['D']),
     new Data()
       ..text = "PT5M10H"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['H']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['H']),
     new Data()
       ..text = "P5H"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['H']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['H']),
     new Data()
       ..text = "PT5Y"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['Y']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['Y']),
     new Data()
       ..text = "PX"
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "P10M-"
-      ..Message = TextErrorMessages.endOfString,
+      ..message = TextErrorMessages.endOfString,
     new Data()
       ..text = "P5"
-      ..Message = TextErrorMessages.endOfString,
+      ..message = TextErrorMessages.endOfString,
     new Data()
       ..text = "P9223372036854775808H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["9223372036854775808", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
       ..text = "P-9223372036854775809H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["-9223372036854775809", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
       ..text = "P10000000000000000000H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["10000000000000000000", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
       ..text = "P-10000000000000000000H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["-10000000000000000000", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["-10000000000000000000", 'Period']),
   ];
 
   @internal List<Data> ParseOnlyData = [

@@ -66,7 +66,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void MatchCaseInsensitive_MatchAndMove() {
     var value = new ValueCursor("abcd");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.matchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, true), isTrue);
+    expect(value.matchCaseInsensitive("AbC", Culture.invariant.compareInfo, true), isTrue);
     ValidateCurrentCharacter(value, 3, 'd');
   }
 
@@ -75,7 +75,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void MatchCaseInsensitive_MatchWithoutMoving() {
     var value = new ValueCursor("abcd");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.matchCaseInsensitive("AbC", CultureInfo.invariantCulture.compareInfo, false), isTrue);
+    expect(value.matchCaseInsensitive("AbC", Culture.invariant.compareInfo, false), isTrue);
     // We're still looking at the start
     ValidateCurrentCharacter(value, 0, 'a');
   }
@@ -85,7 +85,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void MatchCaseInsensitive_StringNotMatched() {
     var value = new ValueCursor("xabcdef");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
-    expect(value.matchCaseInsensitive("abc", CultureInfo.invariantCulture.compareInfo, true), isFalse);
+    expect(value.matchCaseInsensitive("abc", Culture.invariant.compareInfo, true), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 
@@ -94,7 +94,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void MatchCaseInsensitive_StringOverLongStringToMatch() {
     var value = new ValueCursor("x");
     expect(value.moveNext(), isTrue);
-    expect(value.matchCaseInsensitive("long String", CultureInfo.invariantCulture.compareInfo, true), isFalse);
+    expect(value.matchCaseInsensitive("long String", Culture.invariant.compareInfo, true), isFalse);
     ValidateCurrentCharacter(value, 0, 'x');
   }
 

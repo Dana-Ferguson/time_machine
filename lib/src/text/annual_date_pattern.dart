@@ -106,7 +106,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// [templateValue]: Template value to use for unspecified fields. Defaults to a template value of 2000-01-01. 
   /// Returns: A pattern for parsing and formatting annual dates.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static AnnualDatePattern createWithCulture(String patternText, CultureInfo cultureInfo, [AnnualDate templateValue]) =>
+  static AnnualDatePattern createWithCulture(String patternText, Culture cultureInfo, [AnnualDate templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? AnnualDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -146,7 +146,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  AnnualDatePattern withCulture(CultureInfo cultureInfo) =>
+  AnnualDatePattern withCulture(Culture cultureInfo) =>
       _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.

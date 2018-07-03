@@ -52,9 +52,9 @@ import 'package:time_machine/src/time_machine_internal.dart';
       .Select(CultureInfo.ReadOnly)
       .ToList();*/
 
-  @internal static final CultureInfo Invariant = CultureInfo.invariantCulture;
+  @internal static final Culture Invariant = Culture.invariant;
 
-  static CultureInfo getCulture(String id) {
+  static Culture getCulture(String id) {
     switch (id) {
       case 'en-US': return EnUs;
       case 'fr-FR': return FrFr;
@@ -69,8 +69,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
 // don't need it to be US English really, just an example...
 
   // Generated this from C#
-  static final CultureInfo EnUs =
-  new CultureInfo('en-US', (new DateTimeFormatInfoBuilder()
+  static final Culture EnUs =
+  new Culture('en-US', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -88,8 +88,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'dddd, MMMM d, yyyy'
     ..shortTimePattern = 'h:mm tt'
     ..longTimePattern = 'h:mm:ss tt').Build());
-  static final CultureInfo FrFr =
-  new CultureInfo('fr-FR', (new DateTimeFormatInfoBuilder()
+  static final Culture FrFr =
+  new Culture('fr-FR', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -107,8 +107,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'dddd d MMMM yyyy'
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
-  static final CultureInfo FrCa =
-  new CultureInfo('fr-CA', (new DateTimeFormatInfoBuilder()
+  static final Culture FrCa =
+  new Culture('fr-CA', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'a.m.'
     ..pmDesignator = 'p.m.'
     ..timeSeparator = ' '
@@ -126,8 +126,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'd MMMM yyyy'
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
-  static final CultureInfo DotTimeSeparator =
-  new CultureInfo('fi-FI-DotTimeSeparator', (new DateTimeFormatInfoBuilder()
+  static final Culture DotTimeSeparator =
+  new Culture('fi-FI-DotTimeSeparator', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'ap.'
     ..pmDesignator = 'ip.'
     ..timeSeparator = '.'
@@ -163,8 +163,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'dddd d. MMMM yyyy'
     ..shortTimePattern = 'H.mm'
     ..longTimePattern = 'H.mm.ss').Build());
-  static final CultureInfo GenitiveNameTestCulture =
-  new CultureInfo('GenitiveNameTestCulture', (new DateTimeFormatInfoBuilder()
+  static final Culture GenitiveNameTestCulture =
+  new Culture('GenitiveNameTestCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -184,8 +184,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'dddd, dd MMMM yyyy'
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
-  static final CultureInfo GenitiveNameTestCultureWithLeadingNames =
-  new CultureInfo('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatInfoBuilder()
+  static final Culture GenitiveNameTestCultureWithLeadingNames =
+  new Culture('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -205,8 +205,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longDatePattern = 'dddd, dd MMMM yyyy'
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
-  static final CultureInfo AwkwardDayOfWeekCulture =
-  new CultureInfo('AwkwardDayOfWeekCulture', (new DateTimeFormatInfoBuilder()
+  static final Culture AwkwardDayOfWeekCulture =
+  new Culture('AwkwardDayOfWeekCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -225,8 +225,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
 
-  static final CultureInfo AwkwardAmPmDesignatorCulture =
-  new CultureInfo('AwkwardAmPmDesignatorCulture', (new DateTimeFormatInfoBuilder()
+  static final Culture AwkwardAmPmDesignatorCulture =
+  new Culture('AwkwardAmPmDesignatorCulture', (new DateTimeFormatInfoBuilder()
     ..amDesignator = 'Foo'
     ..pmDesignator = 'FooBar'
     ..timeSeparator = ':'

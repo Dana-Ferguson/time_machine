@@ -105,7 +105,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static LocalTimePattern createWithCulture(String patternText, CultureInfo cultureInfo, [LocalTime templateValue]) =>
+  static LocalTimePattern createWithCulture(String patternText, Culture cultureInfo, [LocalTime templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue ?? LocalTime.midnight);
   
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -145,7 +145,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  LocalTimePattern withCulture(CultureInfo cultureInfo) =>
+  LocalTimePattern withCulture(Culture cultureInfo) =>
       _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern like this one, but with the specified template value.

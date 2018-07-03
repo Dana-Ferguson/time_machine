@@ -22,127 +22,127 @@ Future main() async {
 class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
-      ..Pattern = ""
-      ..Message = TextErrorMessages.formatStringEmpty,
+      ..pattern = ""
+      ..message = TextErrorMessages.formatStringEmpty,
     new Data()
-      ..Pattern = "!"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['!', 'AnnualDate']),
+      ..pattern = "!"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['!', 'AnnualDate']),
     new Data()
-      ..Pattern = "%"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll([ '%', 'AnnualDate']),
+      ..pattern = "%"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll([ '%', 'AnnualDate']),
     new Data()
-      ..Pattern = "\\"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll([ '\\', 'AnnualDate']),
+      ..pattern = "\\"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll([ '\\', 'AnnualDate']),
     new Data()
-      ..Pattern = "%%"
-      ..Message = TextErrorMessages.percentDoubled,
+      ..pattern = "%%"
+      ..message = TextErrorMessages.percentDoubled,
     new Data()
-      ..Pattern = "%\\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = "%\\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "MMMMM"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll([ 'M', 4]),
+      ..pattern = "MMMMM"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll([ 'M', 4]),
     new Data()
-      ..Pattern = "ddd"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll([ 'd', 2]),
+      ..pattern = "ddd"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll([ 'd', 2]),
     new Data()
-      ..Pattern = "M%"
-      ..Message = TextErrorMessages.percentAtEndOfString,
+      ..pattern = "M%"
+      ..message = TextErrorMessages.percentAtEndOfString,
     new Data()
-      ..Pattern = "'qwe"
-      ..Message = TextErrorMessages.missingEndQuote
-      ..Parameters.addAll([ '\'']),
+      ..pattern = "'qwe"
+      ..message = TextErrorMessages.missingEndQuote
+      ..parameters.addAll([ '\'']),
     new Data()
-      ..Pattern = "'qwe\\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = "'qwe\\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "'qwe\\'"
-      ..Message = TextErrorMessages.missingEndQuote
-      ..Parameters.addAll([ '\'']),
+      ..pattern = "'qwe\\'"
+      ..message = TextErrorMessages.missingEndQuote
+      ..parameters.addAll([ '\'']),
 
     // Common typo (m doesn't mean months)
     new Data()
-      ..Pattern = "mm-dd"
-      ..Message = TextErrorMessages.unquotedLiteral
-      ..Parameters.addAll([ 'm']),
+      ..pattern = "mm-dd"
+      ..message = TextErrorMessages.unquotedLiteral
+      ..parameters.addAll([ 'm']),
     // T isn't valid in a date pattern
     new Data()
-      ..Pattern = "MM-ddT00:00:00"
-      ..Message = TextErrorMessages.unquotedLiteral
-      ..Parameters.addAll([ 'T'])
+      ..pattern = "MM-ddT00:00:00"
+      ..message = TextErrorMessages.unquotedLiteral
+      ..parameters.addAll([ 'T'])
   ];
 
   @internal List<Data> ParseFailureData = [
     new Data()
-      ..Pattern = "MM dd MMMM"
+      ..pattern = "MM dd MMMM"
       ..text = "10 09 January"
-      ..Message = TextErrorMessages.inconsistentMonthTextValue,
+      ..message = TextErrorMessages.inconsistentMonthTextValue,
     new Data()
-      ..Pattern = "MM dd MMMM"
+      ..pattern = "MM dd MMMM"
       ..text = "10 09 FooBar"
-      ..Message = TextErrorMessages.mismatchedText
-      ..Parameters.addAll(['M']),
+      ..message = TextErrorMessages.mismatchedText
+      ..parameters.addAll(['M']),
     new Data()
-      ..Pattern = "MM/dd"
+      ..pattern = "MM/dd"
       ..text = "02-29"
-      ..Message = TextErrorMessages.dateSeparatorMismatch,
+      ..message = TextErrorMessages.dateSeparatorMismatch,
     // Don't match a short name against a long pattern
     new Data()
-      ..Pattern = "MMMM dd"
+      ..pattern = "MMMM dd"
       ..text = "Oct 09"
-      ..Message = TextErrorMessages.mismatchedText
-      ..Parameters.addAll(['M']),
+      ..message = TextErrorMessages.mismatchedText
+      ..parameters.addAll(['M']),
     // Or vice versa... although this time we match the "Oct" and then fail as we're expecting a space
     new Data()
-      ..Pattern = "MMM dd"
+      ..pattern = "MMM dd"
       ..text = "October 09"
-      ..Message = TextErrorMessages.mismatchedCharacter
-      ..Parameters.addAll([' ']),
+      ..message = TextErrorMessages.mismatchedCharacter
+      ..parameters.addAll([' ']),
 
     // Invalid month, day
     new Data()
-      ..Pattern = "MM dd"
+      ..pattern = "MM dd"
       ..text = "15 29"
-      ..Message = TextErrorMessages.isoMonthOutOfRange
-      ..Parameters.addAll([ 15]),
+      ..message = TextErrorMessages.isoMonthOutOfRange
+      ..parameters.addAll([ 15]),
     new Data()
-      ..Pattern = "MM dd"
+      ..pattern = "MM dd"
       ..text = "02 35"
-      ..Message = TextErrorMessages.dayOfMonthOutOfRangeNoYear
-      ..Parameters.addAll([ 35, 2])
+      ..message = TextErrorMessages.dayOfMonthOutOfRangeNoYear
+      ..parameters.addAll([ 35, 2])
   ];
 
   @internal List<Data> ParseOnlyData = [
     // Month parsing should be case-insensitive
     new Data.monthDay(10, 3)
-      ..Pattern = "MMM dd"
+      ..pattern = "MMM dd"
       ..text = "OcT 03",
     new Data.monthDay(10, 3)
-      ..Pattern = "MMMM dd"
+      ..pattern = "MMMM dd"
       ..text = "OcToBeR 03",
 
     // Genitive name is an extension of the non-genitive name; parse longer first.
     new Data.monthDay(1, 10)
-      ..Pattern = "MMMM dd"
+      ..pattern = "MMMM dd"
       ..text = "MonthName-Genitive 10"
-      ..Culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
+      ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
     new Data.monthDay(1, 10)
-      ..Pattern = "MMMM dd"
+      ..pattern = "MMMM dd"
       ..text = "MonthName 10"
-      ..Culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
+      ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
     new Data.monthDay(1, 10)
-      ..Pattern = "MMM dd"
+      ..pattern = "MMM dd"
       ..text = "MN-Gen 10"
-      ..Culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
+      ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
     new Data.monthDay(1, 10)
-      ..Pattern = "MMM dd"
+      ..pattern = "MMM dd"
       ..text = "MN 10"
-      ..Culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
+      ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
   ];
 
   @internal List<Data> FormatOnlyData = [];
@@ -150,67 +150,67 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   @internal List<Data> FormatAndParseData = [
     // Standard patterns
     new Data.monthDay(10, 20)
-      ..Pattern = "G"
+      ..pattern = "G"
       ..text = "10-20",
 
     // Custom patterns
     new Data.monthDay(10, 3)
-      ..Pattern = "MM/dd"
+      ..pattern = "MM/dd"
       ..text = "10/03",
     new Data.monthDay(10, 3)
-      ..Pattern = "MM/dd"
+      ..pattern = "MM/dd"
       ..text = "10-03"
-      ..Culture = TestCultures.FrCa,
+      ..culture = TestCultures.FrCa,
     new Data.monthDay(10, 3)
-      ..Pattern = "MMdd"
+      ..pattern = "MMdd"
       ..text = "1003",
     new Data.monthDay(7, 3)
-      ..Pattern = "M d"
+      ..pattern = "M d"
       ..text = "7 3",
 
     // Template value provides the month when we only specify the day
     new Data.monthDay(5, 10)
-      ..Pattern = "dd"
+      ..pattern = "dd"
       ..text = "10"
-      ..Template = new AnnualDate(5, 20),
+      ..template = new AnnualDate(5, 20),
     // Template value provides the day when we only specify the month
     new Data.monthDay(10, 20)
-      ..Pattern = "MM"
+      ..pattern = "MM"
       ..text = "10"
-      ..Template = new AnnualDate(5, 20),
+      ..template = new AnnualDate(5, 20),
 
     // When we parse in all of the below tests, we'll use the month and day-of-month if it's provided;
     // the template value is specified to allow simple roundtripping.
     // Non-genitive month name when there's no "day of month"
     new Data.monthDay(1, 3)
-      ..Pattern = "MMMM"
+      ..pattern = "MMMM"
       ..text = "FullNonGenName"
-      ..Culture = TestCultures.GenitiveNameTestCulture
-      ..Template = new AnnualDate(5, 3),
+      ..culture = TestCultures.GenitiveNameTestCulture
+      ..template = new AnnualDate(5, 3),
     new Data.monthDay(1, 3)
-      ..Pattern = "MMM"
+      ..pattern = "MMM"
       ..text = "AbbrNonGenName"
-      ..Culture = TestCultures.GenitiveNameTestCulture
-      ..Template = new AnnualDate(5, 3),
+      ..culture = TestCultures.GenitiveNameTestCulture
+      ..template = new AnnualDate(5, 3),
     // Genitive month name when the pattern includes "day of month"
     new Data.monthDay(1, 3)
-      ..Pattern = "MMMM dd"
+      ..pattern = "MMMM dd"
       ..text = "FullGenName 03"
-      ..Culture = TestCultures.GenitiveNameTestCulture
-      ..Template = new AnnualDate(5, 3),
+      ..culture = TestCultures.GenitiveNameTestCulture
+      ..template = new AnnualDate(5, 3),
     // TODO: Check whether or not this is actually appropriate
     new Data.monthDay(1, 3)
-      ..Pattern = "MMM dd"
+      ..pattern = "MMM dd"
       ..text = "AbbrGenName 03"
-      ..Culture = TestCultures.GenitiveNameTestCulture
-      ..Template = new AnnualDate(5, 3),
+      ..culture = TestCultures.GenitiveNameTestCulture
+      ..template = new AnnualDate(5, 3),
 
     // Month handling with both text and numeric
     new Data.monthDay(10, 9)
-      ..Pattern = "MMMM dd MM"
+      ..pattern = "MMMM dd MM"
       ..text = "October 09 10",
     new Data.monthDay(10, 9)
-      ..Pattern = "MMM dd MM"
+      ..pattern = "MMM dd MM"
       ..text = "Oct 09 10",
   ];
 
@@ -222,12 +222,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   {
     var date = new AnnualDate(8, 23);
     // using (CultureSaver.SetTestCultures(TestCultures.FrFr))
-    CultureInfo.currentCulture = TestCultures.getCulture('fr-FR');
+    Culture.current = TestCultures.getCulture('fr-FR');
     var pattern = AnnualDatePattern.createWithCurrentCulture("MM/dd");
     expect("08/23", pattern.format(date));
 
     // using (CultureSaver.SetTestCultures(TestCultures.FrCa))
-    CultureInfo.currentCulture = TestCultures.getCulture('fr-CA');
+    Culture.current = TestCultures.getCulture('fr-CA');
     pattern = AnnualDatePattern.createWithCurrentCulture("MM/dd");
     expect("08-23", pattern.format(date));
   }
@@ -266,7 +266,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
 
 class Data extends PatternTestData<AnnualDate> {
   // Default to January 1st
-  @override AnnualDate get DefaultTemplate => AnnualDatePatterns.defaultTemplateValue;
+  @override AnnualDate get defaultTemplate => AnnualDatePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
@@ -280,8 +280,8 @@ class Data extends PatternTestData<AnnualDate> {
   @internal
   @override
   IPattern<AnnualDate> CreatePattern() =>
-      AnnualDatePattern.createWithInvariantCulture(super.Pattern)
-          .withTemplateValue(Template)
-          .withCulture(Culture);
+      AnnualDatePattern.createWithInvariantCulture(super.pattern)
+          .withTemplateValue(template)
+          .withCulture(culture);
 }
 

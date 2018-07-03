@@ -126,7 +126,7 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting zoned date/times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static ZonedDateTimePattern createWithCulture(String patternText, CultureInfo cultureInfo,
+  static ZonedDateTimePattern createWithCulture(String patternText, Culture cultureInfo,
       [ZoneLocalMappingResolver resolver, DateTimeZoneProvider zoneProvider, ZonedDateTime templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), resolver ?? Resolvers.strictResolver, 
           zoneProvider ?? DateTimeZoneProviders.defaultProvider, templateValue ?? ZonedDateTimePatterns.defaultTemplateValue);
@@ -181,7 +181,7 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  ZonedDateTimePattern withCulture(CultureInfo cultureInfo) =>
+  ZonedDateTimePattern withCulture(Culture cultureInfo) =>
       _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified

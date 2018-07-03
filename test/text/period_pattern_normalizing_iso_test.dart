@@ -23,88 +23,88 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   @internal final List<Data> ParseFailureData = [
     new Data()
       ..text = "X5H"
-      ..Message = TextErrorMessages.mismatchedCharacter
-      ..Parameters.addAll(['P']),
+      ..message = TextErrorMessages.mismatchedCharacter
+      ..parameters.addAll(['P']),
     new Data()
       ..text = ""
-      ..Message = TextErrorMessages.valueStringEmpty,
+      ..message = TextErrorMessages.valueStringEmpty,
     new Data()
       ..text = "P5J"
-      ..Message = TextErrorMessages.invalidUnitSpecifier
-      ..Parameters.addAll(['J']),
+      ..message = TextErrorMessages.invalidUnitSpecifier
+      ..parameters.addAll(['J']),
     new Data()
       ..text = "P5D10M"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['M']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['M']),
     new Data()
       ..text = "P6M5D6D"
-      ..Message = TextErrorMessages.repeatedUnitSpecifier
-      ..Parameters.addAll(['D']),
+      ..message = TextErrorMessages.repeatedUnitSpecifier
+      ..parameters.addAll(['D']),
     new Data()
       ..text = "PT5M10H"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['H']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['H']),
     new Data()
       ..text = "P5H"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['H']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['H']),
     new Data()
       ..text = "PT5Y"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['Y']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['Y']),
     // Invalid in ISO.
     new Data()
       ..text = "P"
-      ..Message = TextErrorMessages.emptyPeriod,
+      ..message = TextErrorMessages.emptyPeriod,
     new Data()
       ..text = "PX"
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "P10M-"
-      ..Message = TextErrorMessages.endOfString,
+      ..message = TextErrorMessages.endOfString,
     new Data()
       ..text = "P5"
-      ..Message = TextErrorMessages.endOfString,
+      ..message = TextErrorMessages.endOfString,
     new Data()
       ..text = "PT9223372036854775808H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["9223372036854775808", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["9223372036854775808", 'Period']),
     new Data()
       ..text = "PT-9223372036854775809H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["-9223372036854775809", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["-9223372036854775809", 'Period']),
     new Data()
       ..text = "PT10000000000000000000H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["10000000000000000000", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["10000000000000000000", 'Period']),
     new Data()
       ..text = "PT-10000000000000000000H"
-      ..Message = TextErrorMessages.valueOutOfRange
-      ..Parameters.addAll(["-10000000000000000000", 'Period']),
+      ..message = TextErrorMessages.valueOutOfRange
+      ..parameters.addAll(["-10000000000000000000", 'Period']),
     new Data()
       ..text = "P5.5S"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['.']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['.']),
     new Data()
       ..text = "PT.5S"
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "PT0.5X"
-      ..Message = TextErrorMessages.mismatchedCharacter
-      ..Parameters.addAll(['S']),
+      ..message = TextErrorMessages.mismatchedCharacter
+      ..parameters.addAll(['S']),
     new Data()
       ..text = "PT0.X"
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "PT5S0.5S"
-      ..Message = TextErrorMessages.misplacedUnitSpecifier
-      ..Parameters.addAll(['.']),
+      ..message = TextErrorMessages.misplacedUnitSpecifier
+      ..parameters.addAll(['.']),
     new Data()
       ..text = "PT5."
-      ..Message = TextErrorMessages.missingNumber,
+      ..message = TextErrorMessages.missingNumber,
     new Data()
       ..text = "PT5.5SX"
-      ..Message = TextErrorMessages.expectedEndOfString
+      ..message = TextErrorMessages.expectedEndOfString
   ];
 
   @internal final List<Data> ParseOnlyData = [
@@ -211,7 +211,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
     print ('Constructor called.');
     for (var sequence in [ ParseFailureData, ParseData, FormatData]) {
       for (var item in sequence) {
-        item.StandardPattern = PeriodPattern.normalizingIso;
+        item.standardPattern = PeriodPattern.normalizingIso;
       }
     }
   }

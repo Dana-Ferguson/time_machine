@@ -322,7 +322,7 @@ class OffsetDateTime {
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? CultureInfo.currentCulture);
+      OffsetDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
 
   /// Adds a duration to an offset date and time.
   ///

@@ -110,7 +110,7 @@ void ToString_WithFormat()
   LocalTime time = new LocalTime(14, 15, 12, 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
-  expect(offsetDate.toString("HH:mm:ss.fff o<-HH>", CultureInfo.invariantCulture), "14:15:12.123 01");
+  expect(offsetDate.toString("HH:mm:ss.fff o<-HH>", Culture.invariant), "14:15:12.123 01");
 }
 
 @Test()
@@ -119,7 +119,7 @@ void ToString_WithNullFormat()
   LocalTime time = new LocalTime(14, 15, 12, 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
-  expect(offsetDate.toString(null, CultureInfo.invariantCulture), "14:15:12+01");
+  expect(offsetDate.toString(null, Culture.invariant), "14:15:12+01");
 }
 
 @Test() @SkipMe("Investigate CultureSaver")

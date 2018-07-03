@@ -26,8 +26,8 @@ class TimeMachineFormatInfo {
   // Names that we can use to check for broken Mono behaviour.
   // The cloning is *also* to work around a Mono bug, where even read-only cultures can change...
   // See http://bugzilla.xamarin.com/show_bug.cgi?id=3279
-  static final List<String> _shortInvariantMonthNames = CultureInfo.invariantCulture.dateTimeFormat.abbreviatedMonthNames.toList(growable: false);
-  static final List<String> _longInvariantMonthNames = CultureInfo.invariantCulture.dateTimeFormat.monthNames.toList(growable: false);
+  static final List<String> _shortInvariantMonthNames = Culture.invariant.dateTimeFormat.abbreviatedMonthNames.toList(growable: false);
+  static final List<String> _longInvariantMonthNames = Culture.invariant.dateTimeFormat.monthNames.toList(growable: false);
 
   // Patterns
   FixedFormatInfoPatternParser<Span> _spanPatternParser;
@@ -44,13 +44,13 @@ class TimeMachineFormatInfo {
 
   /// A TimeMachineFormatInfo wrapping the invariant culture.
   // Note: this must occur below the pattern parsers, to make type initialization work...
-  static final TimeMachineFormatInfo invariantInfo = new TimeMachineFormatInfo(CultureInfo.invariantCulture);
+  static final TimeMachineFormatInfo invariantInfo = new TimeMachineFormatInfo(Culture.invariant);
 
   // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
   // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
   // used by any particular application.
   // 500 should be ample for almost all cases, without being enormous.
-  static final Cache<CultureInfo, TimeMachineFormatInfo> _cache = new Cache<CultureInfo, TimeMachineFormatInfo>
+  static final Cache<Culture, TimeMachineFormatInfo> _cache = new Cache<Culture, TimeMachineFormatInfo>
     (500, (culture) => new TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<CultureInfo>()*/);
 
   List<String> _longMonthNames;
@@ -67,7 +67,7 @@ class TimeMachineFormatInfo {
   ///
   /// [cultureInfo]: The culture info to use.
   @visibleForTesting
-  TimeMachineFormatInfo(CultureInfo cultureInfo)
+  TimeMachineFormatInfo(Culture cultureInfo)
       : this.withDateTimeFormat(cultureInfo, cultureInfo?.dateTimeFormat);
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based on
@@ -149,7 +149,7 @@ class TimeMachineFormatInfo {
 
   /// Gets the culture info associated with this format provider. This is used
   /// for resource lookups and text comparisons.
-  final CultureInfo cultureInfo;
+  final Culture cultureInfo;
 
   /// Gets the text comparison information associated with this format provider.
   CompareInfo get compareInfo => cultureInfo.compareInfo;
@@ -262,7 +262,7 @@ class TimeMachineFormatInfo {
 
   /// Gets the BCL date time format associated with this formatting information.
   ///
-  /// This is usually the [DateTimeFormatInfo] from [CultureInfo],
+  /// This is usually the [DateTimeFormatInfo] from [Culture],
   /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
   /// CultureInfo, that's used for format strings but the invariant culture is used for
   /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
@@ -312,7 +312,7 @@ class TimeMachineFormatInfo {
   }
 
   /// Gets the [TimeMachineFormatInfo] object for the current thread.
-  static TimeMachineFormatInfo get currentInfo => getInstance(CultureInfo.currentCulture);
+  static TimeMachineFormatInfo get currentInfo => getInstance(Culture.current);
 
   /// Gets the [Offset] "l" pattern.
   String get offsetPatternLong => PatternResources.getString("OffsetPatternLong", cultureInfo);
@@ -338,15 +338,15 @@ class TimeMachineFormatInfo {
   /// Clears the cache. Only used for test purposes.
  static void clearCache() => _cache.clear();
 
-  /// Gets the [TimeMachineFormatInfo] for the given [CultureInfo].
+  /// Gets the [TimeMachineFormatInfo] for the given [Culture].
   ///
   /// This method maintains a cache of results for read-only cultures.
   ///
   /// [cultureInfo]: The culture info.
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
- static TimeMachineFormatInfo getFormatInfo(CultureInfo cultureInfo) {
+ static TimeMachineFormatInfo getFormatInfo(Culture cultureInfo) {
     Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
-    if (cultureInfo == CultureInfo.invariantCulture) {
+    if (cultureInfo == Culture.invariant) {
       return invariantInfo;
     }
     // Never cache (or consult the cache) for non-read-only cultures.
@@ -368,10 +368,10 @@ class TimeMachineFormatInfo {
   static TimeMachineFormatInfo getInstance(/*IFormatProvider*/ dynamic formatProvider) {
     if (formatProvider == null) {
       return getFormatInfo(currentInfo.cultureInfo);
-    } else if (formatProvider is CultureInfo) {
+    } else if (formatProvider is Culture) {
       return getFormatInfo(formatProvider);
     } else if (formatProvider is DateTimeFormatInfo) {
-      return new TimeMachineFormatInfo.withDateTimeFormat(CultureInfo.invariantCulture, formatProvider);
+      return new TimeMachineFormatInfo.withDateTimeFormat(Culture.invariant, formatProvider);
     }
 
     throw new ArgumentError("Cannot use provider of type ${formatProvider
@@ -390,7 +390,7 @@ class _EraDescription {
 
  _EraDescription._(this.primaryName, this.allNames);
 
- factory _EraDescription.forEra(Era era, CultureInfo cultureInfo) {
+ factory _EraDescription.forEra(Era era, Culture cultureInfo) {
     String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), cultureInfo);
     String primaryName;
     List<String> allNames;
@@ -417,7 +417,7 @@ class _EraDescription {
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that
   /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
   /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
-  static String _getEraNameFromBcl(Era era, CultureInfo culture) {
+  static String _getEraNameFromBcl(Era era, Culture culture) {
     var calendar = culture.dateTimeFormat.calendar;
 
     bool getEraFromCalendar =

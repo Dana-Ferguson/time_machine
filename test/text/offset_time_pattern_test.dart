@@ -30,55 +30,55 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
 
   @internal final List<Data> InvalidPatternData = [
     new Data()
-      ..Pattern = ""
-      ..Message = TextErrorMessages.formatStringEmpty,
+      ..pattern = ""
+      ..message = TextErrorMessages.formatStringEmpty,
     // Invalid patterns involving embedded values
     new Data()
-      ..Pattern = "l<t> l<T>"
-      ..Message = TextErrorMessages.repeatedFieldInPattern
-      ..Parameters.addAll(['l']),
+      ..pattern = "l<t> l<T>"
+      ..message = TextErrorMessages.repeatedFieldInPattern
+      ..parameters.addAll(['l']),
     new Data()
-      ..Pattern = "l<T> HH"
-      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
+      ..pattern = "l<T> HH"
+      ..message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
-      ..Pattern = "l<HH:mm:ss> HH"
-      ..Message = TextErrorMessages.timeFieldAndEmbeddedTime,
+      ..pattern = "l<HH:mm:ss> HH"
+      ..message = TextErrorMessages.timeFieldAndEmbeddedTime,
     new Data()
-      ..Pattern = r"l<\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = r"l<\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "x"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['x', 'OffsetTime']),
+      ..pattern = "x"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['x', 'OffsetTime']),
   ];
 
   @internal List<Data> ParseFailureData = [
     // Failures copied from LocalDateTimePatternTest
     new Data()
-      ..Pattern = "HH:mm:ss"
+      ..pattern = "HH:mm:ss"
       ..text = "Complete mismatch"
-      ..Message = TextErrorMessages.mismatchedNumber
-      ..Parameters.addAll(["HH"]),
+      ..message = TextErrorMessages.mismatchedNumber
+      ..parameters.addAll(["HH"]),
 
     new Data()
-      ..Pattern = "HH:mm:ss o<+HH>"
+      ..pattern = "HH:mm:ss o<+HH>"
       ..text = "16:02 +15:00"
-      ..Message = TextErrorMessages.timeSeparatorMismatch,
+      ..message = TextErrorMessages.timeSeparatorMismatch,
     // It's not ideal that the type reported is LocalTime rather than OffsetTime, but probably not worth fixing.
     new Data()
-      ..Pattern = "HH:mm:ss tt o<+HH>"
+      ..pattern = "HH:mm:ss tt o<+HH>"
       ..text = "16:02:00 AM +15:00"
-      ..Message = TextErrorMessages.inconsistentValues2
-      ..Parameters.addAll(['H', 't', 'LocalTime']),
+      ..message = TextErrorMessages.inconsistentValues2
+      ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
 
   @internal List<Data> ParseOnlyData = [
     // Parsing using the semi-colon "comma dot" specifier
     new Data.d(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;fff"
+      ..pattern = "HH:mm:ss;fff"
       ..text = "16:05:20,352",
     new Data.d(16, 05, 20, 352)
-      ..Pattern = "HH:mm:ss;FFF"
+      ..pattern = "HH:mm:ss;FFF"
       ..text = "16:05:20,352",
   ];
 
@@ -86,15 +86,15 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     // Our template value has an offset of 0, but the value has an offset of 1.
     // The pattern doesn't include the offset, so that information is lost - no round-trip.
     new Data(MsdnStandardExample)
-      ..Pattern = "HH:mm:ss.FF"
+      ..pattern = "HH:mm:ss.FF"
       ..text = "13:45:30.09",
     // The value includes milliseconds, which aren't formatted.
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetTimePattern.generalIso
-      ..StandardPatternCode = 'OffsetTimePattern.generalIso'
-      ..Pattern = "G"
+      ..standardPattern = OffsetTimePattern.generalIso
+      ..standardPatternCode = 'OffsetTimePattern.generalIso'
+      ..pattern = "G"
       ..text = "13:45:30+01"
-      ..Culture = TestCultures.FrFr,
+      ..culture = TestCultures.FrFr,
   ];
 
   @internal List<Data> FormatAndParseData = [
@@ -102,37 +102,37 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
 
     // Standard patterns (all invariant)
     new Data(MsdnStandardExampleNoMillis)
-      ..StandardPattern = OffsetTimePattern.generalIso
-      ..StandardPatternCode = 'OffsetTimePattern.generalIso'
-      ..Pattern = "G"
+      ..standardPattern = OffsetTimePattern.generalIso
+      ..standardPatternCode = 'OffsetTimePattern.generalIso'
+      ..pattern = "G"
       ..text = "13:45:30+01"
-      ..Culture = TestCultures.FrFr,
+      ..culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetTimePattern.extendedIso
-      ..StandardPatternCode = 'OffsetTimePattern.extendedIso'
-      ..Pattern = "o"
+      ..standardPattern = OffsetTimePattern.extendedIso
+      ..standardPatternCode = 'OffsetTimePattern.extendedIso'
+      ..pattern = "o"
       ..text = "13:45:30.09+01"
-      ..Culture = TestCultures.FrFr,
+      ..culture = TestCultures.FrFr,
 
     // Property-only patterns
     new Data(MsdnStandardExample)
-      ..StandardPattern = OffsetTimePattern.rfc3339
-      ..StandardPatternCode = 'OffsetTimePattern.rfc3339'
-      ..Pattern = "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
+      ..standardPattern = OffsetTimePattern.rfc3339
+      ..standardPatternCode = 'OffsetTimePattern.rfc3339'
+      ..pattern = "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>"
       ..text = "13:45:30.09+01:00"
-      ..Culture = TestCultures.FrFr,
+      ..culture = TestCultures.FrFr,
 
     // Embedded patterns
     new Data.c(11, 55, 30, AthensOffset)
-      ..Pattern = "l<HH_mm_ss> o<g>"
+      ..pattern = "l<HH_mm_ss> o<g>"
       ..text = "11_55_30 +03",
     new Data.c(11, 55, 30, AthensOffset)
-      ..Pattern = "l<T> o<g>"
+      ..pattern = "l<T> o<g>"
       ..text = "11:55:30 +03",
 
     // Fields not otherwise covered
     new Data(MsdnStandardExample)
-      ..Pattern = "h:mm:ss.FF tt o<g>"
+      ..pattern = "h:mm:ss.FF tt o<g>"
       ..text = "1:45:30.09 PM +01",
   ];
 
@@ -153,12 +153,12 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void CreateWithCurrentCulture() {
     var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
-    CultureInfo.currentCulture = TestCultures.FrFr;
+    Culture.current = TestCultures.FrFr;
     {
       var pattern = OffsetTimePattern.createWithCurrentCulture("l<t> o<g>");
       expect("12:34 +02", pattern.format(ot));
     }
-    CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
+    Culture.current = TestCultures.DotTimeSeparator;
     {
       var pattern = OffsetTimePattern.createWithCurrentCulture("l<t> o<g>");
       expect("12.34 +02", pattern.format(ot));
@@ -198,7 +198,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
 
 @internal /*sealed*/class Data extends PatternTestData<OffsetTime> {
   // Default to the start of the year 2000 UTC
-  /*protected*/ @override OffsetTime get DefaultTemplate => OffsetTimePatterns.defaultTemplateValue;
+  /*protected*/ @override OffsetTime get defaultTemplate => OffsetTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
@@ -221,7 +221,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @internal
   @override
   IPattern<OffsetTime> CreatePattern() =>
-      OffsetTimePattern.createWithCulture(super.Pattern, super.Culture, Template);
+      OffsetTimePattern.createWithCulture(super.pattern, super.culture, template);
 }
 
 

@@ -20,53 +20,53 @@ Future main() async {
 class InstantPatternTest extends PatternTestBase<Instant> {
   @internal final List<Data> InvalidPatternData = [
     new Data()
-      ..Pattern = ""
-      ..Message = TextErrorMessages.formatStringEmpty,
+      ..pattern = ""
+      ..message = TextErrorMessages.formatStringEmpty,
     new Data()
-      ..Pattern = "!"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['!', 'Instant']),
+      ..pattern = "!"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['!', 'Instant']),
     new Data()
-      ..Pattern = "%"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['%', 'Instant']),
+      ..pattern = "%"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['%', 'Instant']),
     new Data()
-      ..Pattern = "\\"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['\\', 'Instant']),
+      ..pattern = "\\"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['\\', 'Instant']),
     // Just a few - these are taken from other tests
     new Data()
-      ..Pattern = "%%"
-      ..Message = TextErrorMessages.percentDoubled,
+      ..pattern = "%%"
+      ..message = TextErrorMessages.percentDoubled,
     new Data()
-      ..Pattern = "%\\"
-      ..Message = TextErrorMessages.escapeAtEndOfString,
+      ..pattern = "%\\"
+      ..message = TextErrorMessages.escapeAtEndOfString,
     new Data()
-      ..Pattern = "ffffffffff"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['f', 9]),
+      ..pattern = "ffffffffff"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['f', 9]),
     new Data()
-      ..Pattern = "FFFFFFFFFF"
-      ..Message = TextErrorMessages.repeatCountExceeded
-      ..Parameters.addAll(['F', 9]),
+      ..pattern = "FFFFFFFFFF"
+      ..message = TextErrorMessages.repeatCountExceeded
+      ..parameters.addAll(['F', 9]),
   ];
 
   @internal List<Data> ParseFailureData = [
     new Data()
       ..text = "rubbish"
-      .. Pattern = "yyyyMMdd'T'HH:mm:ss"
-      ..Message = TextErrorMessages.mismatchedNumber
-      ..Parameters.addAll(["yyyy"]),
+      .. pattern = "yyyyMMdd'T'HH:mm:ss"
+      ..message = TextErrorMessages.mismatchedNumber
+      ..parameters.addAll(["yyyy"]),
     new Data()
       ..text = "17 6"
-      .. Pattern = "HH h"
-      ..Message = TextErrorMessages.inconsistentValues2
-      ..Parameters.addAll(['H', 'h', 'LocalTime']),
+      .. pattern = "HH h"
+      ..message = TextErrorMessages.inconsistentValues2
+      ..parameters.addAll(['H', 'h', 'LocalTime']),
     new Data()
       ..text = "17 AM"
-      .. Pattern = "HH tt"
-      ..Message = TextErrorMessages.inconsistentValues2
-      ..Parameters.addAll(['H', 't', 'LocalTime']),
+      .. pattern = "HH tt"
+      ..message = TextErrorMessages.inconsistentValues2
+      ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
 
   @internal List<Data> ParseOnlyData = [];
@@ -85,7 +85,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @Test()
   void CreateWithCurrentCulture() {
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
-    CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
+    Culture.current = TestCultures.DotTimeSeparator;
     {
       var pattern = InstantPattern.createWithCurrentCulture("HH:mm:ss");
       var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
@@ -108,31 +108,31 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @internal final List<Data> FormatAndParseData = [
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..text = "2012-01-31T17:36:45"
-      ..Pattern = "yyyy-MM-dd'T'HH:mm:ss",
+      ..pattern = "yyyy-MM-dd'T'HH:mm:ss",
     // Check that unquoted T still works.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
       .. text = "2012-01-31T17:36:45"
-      ..Pattern = "yyyy-MM-ddTHH:mm:ss",
+      ..pattern = "yyyy-MM-ddTHH:mm:ss",
     new Data.fromUtc(2012, 4, 28, 0, 0, 0)
       .. text = "2012 avr. 28"
-      ..Pattern = "yyyy MMM dd"
-      ..Culture = TestCultures.FrFr,
+      ..pattern = "yyyy MMM dd"
+      ..culture = TestCultures.FrFr,
     new Data()
       ..text = " 1970 "
-      ..Pattern = " yyyy ",
+      ..pattern = " yyyy ",
     new Data(Instant.minValue)
       ..text = "-9998-01-01T00:00:00Z"
-      ..Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
+      ..pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
     new Data(Instant.maxValue)
       ..text = "9999-12-31T23:59:59.999999999Z"
-      ..Pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
+      ..pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
 
     // General pattern has no standard single character.
     new Data.fromUtc(2012, 1, 31, 17, 36, 45)
-      ..StandardPattern = InstantPattern.general
-      ..StandardPatternCode = 'InstantPattern.general'
+      ..standardPattern = InstantPattern.general
+      ..standardPatternCode = 'InstantPattern.general'
       ..text = "2012-01-31T17:36:45Z"
-      ..Pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
+      ..pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
@@ -142,7 +142,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
 /// A container for test data for formatting and parsing [LocalTime] objects.
 /*sealed*/ class Data extends PatternTestData<Instant> {
-/*protected*/ @override Instant get DefaultTemplate => TimeConstants.unixEpoch;
+/*protected*/ @override Instant get defaultTemplate => TimeConstants.unixEpoch;
 
   Data([Instant value = null]) : super(value ?? TimeConstants.unixEpoch);
 
@@ -152,6 +152,6 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @internal
   @override
   IPattern<Instant> CreatePattern() =>
-      InstantPattern.createWithInvariantCulture(super.Pattern).withCulture(Culture);
+      InstantPattern.createWithInvariantCulture(super.pattern).withCulture(culture);
 }
 

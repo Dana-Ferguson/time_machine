@@ -194,7 +194,7 @@ String _printNewObject(Object obj) {
     // todo: I need to scape this?
     sb..write("'")..write(_escapeText(obj))..write("'");
   }
-  else if (obj is CultureInfo) {
+  else if (obj is Culture) {
     var name = obj.name;
     if (name == '' || name == null) {
       sb.write('null');
@@ -238,7 +238,7 @@ String _printNewObject(Object obj) {
     /*else if (name == '') {
       sb.write('TestCultures.');
     }*/
-    else if (name == CultureInfo.invariantCultureId) {
+    else if (name == Culture.invariantCultureId) {
       sb.write('Cultures.invariantCulture');
     }
     // see: LocaltimePatternTests.CreateCustomAmPmCulture
@@ -250,15 +250,15 @@ String _printNewObject(Object obj) {
   }
   else if (obj is PatternTestData) {
     sb.write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})');
-    if (obj.DefaultTemplate != null) sb.write('..DefaultTemplate =${_printNewObject(obj.DefaultTemplate)}');
-    if (obj.Culture != null) sb.write('..Culture = ${_printNewObject(obj.Culture)}');
-    if (obj.StandardPattern != null) sb.write('..StandardPattern =${obj.StandardPatternCode}');
-    if (obj.Pattern != null) sb.write('..Pattern =${_printNewObject(obj.Pattern)}');
+    if (obj.defaultTemplate != null) sb.write('..defaultTemplate =${_printNewObject(obj.defaultTemplate)}');
+    if (obj.culture != null) sb.write('..culture = ${_printNewObject(obj.culture)}');
+    if (obj.standardPattern != null) sb.write('..standardPattern =${obj.standardPatternCode}');
+    if (obj.pattern != null) sb.write('..pattern =${_printNewObject(obj.pattern)}');
     if (obj.text != null) sb.write('..text =${_printNewObject(obj.text)}');
-    if (obj.Template != null) sb.write('..Template =${_printNewObject(obj.Template)}');
-    if (obj.Description != null) sb.write('..Description =${_printNewObject(obj.Description)}');
-    if (obj.Message != null) sb.write('..Message =${_printNewObject(obj.Message)}');
-    if (obj.Parameters.isNotEmpty) sb.write('..Parameters.addAll(${_printNewObject(obj.Parameters)})');
+    if (obj.template != null) sb.write('..template =${_printNewObject(obj.template)}');
+    if (obj.description != null) sb.write('..description =${_printNewObject(obj.description)}');
+    if (obj.message != null) sb.write('..message =${_printNewObject(obj.message)}');
+    if (obj.parameters.isNotEmpty) sb.write('..parameters.addAll(${_printNewObject(obj.parameters)})');
     ;
   }
   else if (obj is AnnualDate) {

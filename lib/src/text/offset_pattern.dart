@@ -83,7 +83,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// [cultureInfo]: The culture to use in the pattern
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetPattern createWithCulture(String patternText, CultureInfo cultureInfo) =>
+  static OffsetPattern createWithCulture(String patternText, Culture cultureInfo) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
@@ -114,5 +114,5 @@ class OffsetPattern implements IPattern<Offset> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  OffsetPattern withCulture(CultureInfo cultureInfo) => _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  OffsetPattern withCulture(Culture cultureInfo) => _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 }

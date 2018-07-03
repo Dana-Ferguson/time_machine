@@ -23,15 +23,15 @@ class SpanPatternTest extends PatternTestBase<Span> {
   @internal  final List<Data> FormatOnlyData = [
     // No sign, so we can't parse it.
     new Data.hm(-1, 0)
-      ..Pattern = "HH:mm"
+      ..pattern = "HH:mm"
       ..text = "01:00",
 
     // Loss of nano precision
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..Pattern = "D:hh:mm:ss.ffff"
+      ..pattern = "D:hh:mm:ss.ffff"
       ..text = "1:02:03:04.1234",
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..Pattern = "D:hh:mm:ss.FFFF"
+      ..pattern = "D:hh:mm:ss.FFFF"
       ..text = "1:02:03:04.1234",
   ];
 
@@ -41,56 +41,56 @@ class SpanPatternTest extends PatternTestBase<Span> {
   /// Test data for invalid patterns
   @internal  final List<Data> InvalidPatternData = [
     new Data()
-      ..Pattern = ""
-      ..Message = TextErrorMessages.formatStringEmpty,
+      ..pattern = ""
+      ..message = TextErrorMessages.formatStringEmpty,
     new Data()
-      ..Pattern = "HH:MM"
-      ..Message = TextErrorMessages.multipleCapitalSpanFields,
+      ..pattern = "HH:MM"
+      ..message = TextErrorMessages.multipleCapitalSpanFields,
     new Data()
-      ..Pattern = "HH D"
-      ..Message = TextErrorMessages.multipleCapitalSpanFields,
+      ..pattern = "HH D"
+      ..message = TextErrorMessages.multipleCapitalSpanFields,
     new Data()
-      ..Pattern = "MM mm"
-      ..Message = TextErrorMessages.repeatedFieldInPattern
-      ..Parameters.addAll(['m']),
+      ..pattern = "MM mm"
+      ..message = TextErrorMessages.repeatedFieldInPattern
+      ..parameters.addAll(['m']),
     new Data()
-      ..Pattern = "G"
-      ..Message = TextErrorMessages.unknownStandardFormat
-      ..Parameters.addAll(['G', 'Span'])
+      ..pattern = "G"
+      ..message = TextErrorMessages.unknownStandardFormat
+      ..parameters.addAll(['G', 'Span'])
   ];
 
   /// Tests for parsing failures (of values)
   @internal  final List<Data> ParseFailureData = [
     new Data(Span.zero)
-      ..Pattern = "H:mm"
+      ..pattern = "H:mm"
       ..text = "1:60"
-      ..Message = TextErrorMessages.fieldValueOutOfRange
-      ..Parameters.addAll([60, 'm', 'Span']),
+      ..message = TextErrorMessages.fieldValueOutOfRange
+      ..parameters.addAll([60, 'm', 'Span']),
     // Total field values out of range
     new Data(Span.minValue)
-      ..Pattern = "-D:hh:mm:ss.fffffffff"
+      ..pattern = "-D:hh:mm:ss.fffffffff"
       ..text = "16777217:00:00:00.000000000"
       ..
-      Message = TextErrorMessages.fieldValueOutOfRange
-      ..Parameters.addAll(["16777217", 'D', 'Span']),
+      message = TextErrorMessages.fieldValueOutOfRange
+      ..parameters.addAll(["16777217", 'D', 'Span']),
     new Data(Span.minValue)
-      ..Pattern = "-H:mm:ss.fffffffff"
+      ..pattern = "-H:mm:ss.fffffffff"
       ..text = "402653185:00:00.000000000"
       ..
-      Message = TextErrorMessages.fieldValueOutOfRange
-      ..Parameters.addAll(["402653185", 'H', 'Span']),
+      message = TextErrorMessages.fieldValueOutOfRange
+      ..parameters.addAll(["402653185", 'H', 'Span']),
     new Data(Span.minValue)
-      ..Pattern = "-M:ss.fffffffff"
+      ..pattern = "-M:ss.fffffffff"
       ..text = "24159191041:00.000000000"
       ..
-      Message = TextErrorMessages.fieldValueOutOfRange
-      ..Parameters.addAll(["24159191041", 'M', 'Span']),
+      message = TextErrorMessages.fieldValueOutOfRange
+      ..parameters.addAll(["24159191041", 'M', 'Span']),
     new Data(Span.minValue)
-      ..Pattern = "-S.fffffffff"
+      ..pattern = "-S.fffffffff"
       ..text = "1449551462401.000000000"
       ..
-      Message = TextErrorMessages.fieldValueOutOfRange
-      ..Parameters.addAll(["1449551462401", 'S', 'Span']),
+      message = TextErrorMessages.fieldValueOutOfRange
+      ..parameters.addAll(["1449551462401", 'S', 'Span']),
 
   /* note: In Dart we don't go out of range -- todo: evaluate -- should we?
     // Each field in range, but overall result out of range
@@ -135,96 +135,96 @@ class SpanPatternTest extends PatternTestBase<Span> {
       ..Message = TextErrorMessages.OverallValueOutOfRange
       ..Parameters.addAll(['Span']),*/
     new Data(Span.minValue)
-      ..Pattern = "'x'S"
+      ..pattern = "'x'S"
       ..text = "x"
-      ..Message = TextErrorMessages.mismatchedNumber
-      ..Parameters.addAll(["S"])
+      ..message = TextErrorMessages.mismatchedNumber
+      ..parameters.addAll(["S"])
   ];
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
   @internal  final List<Data> FormatAndParseData = [
     new Data.hm(1, 2)
-      ..Pattern = "+HH:mm"
+      ..pattern = "+HH:mm"
       ..text = "+01:02",
     new Data.hm(-1, -2)
-      ..Pattern = "+HH:mm"
+      ..pattern = "+HH:mm"
       ..text = "-01:02",
     new Data.hm(1, 2)
-      ..Pattern = "-HH:mm"
+      ..pattern = "-HH:mm"
       ..text = "01:02",
     new Data.hm(-1, -2)
-      ..Pattern = "-HH:mm"
+      ..pattern = "-HH:mm"
       ..text = "-01:02",
 
     new Data.hm(26, 3)
-      ..Pattern = "D:h:m"
+      ..pattern = "D:h:m"
       ..text = "1:2:3",
     new Data.hm(26, 3)
-      ..Pattern = "DD:hh:mm"
+      ..pattern = "DD:hh:mm"
       ..text = "01:02:03",
     new Data.hm(242, 3)
-      ..Pattern = "D:hh:mm"
+      ..pattern = "D:hh:mm"
       ..text = "10:02:03",
 
     new Data.hm(2, 3)
-      ..Pattern = "H:mm"
+      ..pattern = "H:mm"
       ..text = "2:03",
     new Data.hm(2, 3)
-      ..Pattern = "HH:mm"
+      ..pattern = "HH:mm"
       ..text = "02:03",
     new Data.hm(26, 3)
-      ..Pattern = "HH:mm"
+      ..pattern = "HH:mm"
       ..text = "26:03",
     new Data.hm(260, 3)
-      ..Pattern = "HH:mm"
+      ..pattern = "HH:mm"
       ..text = "260:03",
 
     new Data.hms(2, 3, 4)
-      ..Pattern = "H:mm:ss"
+      ..pattern = "H:mm:ss"
       ..text = "2:03:04",
 
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..Pattern = "D:hh:mm:ss.fffffffff"
+      ..pattern = "D:hh:mm:ss.fffffffff"
       ..text = "1:02:03:04.123456789",
     new Data.dhmsn(1, 2, 3, 4, 123456000)
-      ..Pattern = "D:hh:mm:ss.fffffffff"
+      ..pattern = "D:hh:mm:ss.fffffffff"
       ..text = "1:02:03:04.123456000",
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..Pattern = "D:hh:mm:ss.FFFFFFFFF"
+      ..pattern = "D:hh:mm:ss.FFFFFFFFF"
       ..text = "1:02:03:04.123456789",
     new Data.dhmsn(1, 2, 3, 4, 123456000)
-      ..Pattern = "D:hh:mm:ss.FFFFFFFFF"
+      ..pattern = "D:hh:mm:ss.FFFFFFFFF"
       ..text = "1:02:03:04.123456",
     new Data.hms(1, 2, 3)
-      ..Pattern = "M:ss"
+      ..pattern = "M:ss"
       ..text = "62:03",
     new Data.hms(1, 2, 3)
-      ..Pattern = "MMM:ss"
+      ..pattern = "MMM:ss"
       ..text = "062:03",
 
     new Data.dhmsn(0, 0, 1, 2, 123400000)
-      ..Pattern = "SS.FFFF"
+      ..pattern = "SS.FFFF"
       ..text = "62.1234",
 
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..Pattern = "D:hh:mm:ss.FFFFFFFFF"
+      ..pattern = "D:hh:mm:ss.FFFFFFFFF"
       ..text = "1.02.03.04.123456789"
-      ..Culture = TestCultures.DotTimeSeparator,
+      ..culture = TestCultures.DotTimeSeparator,
 
     // Roundtrip pattern is invariant; redundantly specify the culture to validate that it doesn't make a difference.
     new Data.dhmsn(1, 2, 3, 4, 123456789)
-      ..StandardPattern = SpanPattern.roundtrip
-      ..StandardPatternCode = 'SpanPattern.roundtrip'
-      ..Pattern = "o"
+      ..standardPattern = SpanPattern.roundtrip
+      ..standardPatternCode = 'SpanPattern.roundtrip'
+      ..pattern = "o"
       ..text = "1:02:03:04.123456789"
-      ..Culture = TestCultures.DotTimeSeparator,
+      ..culture = TestCultures.DotTimeSeparator,
     new Data.dhmsn(-1, -2, -3, -4, -123456789)
-      ..StandardPattern = SpanPattern.roundtrip
-      ..StandardPatternCode = 'SpanPattern.roundtrip'
-      ..Pattern = "o"
+      ..standardPattern = SpanPattern.roundtrip
+      ..standardPatternCode = 'SpanPattern.roundtrip'
+      ..pattern = "o"
       ..text = "-1:02:03:04.123456789"
-      ..Culture = TestCultures.DotTimeSeparator,
+      ..culture = TestCultures.DotTimeSeparator,
 
   // Extremes...
   /* todo: our extremes are different (could be different based on platform?)
@@ -270,7 +270,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
   @Test()
   void CreateWithCurrentCulture() {
-    CultureInfo.currentCulture = TestCultures.DotTimeSeparator;
+    Culture.current = TestCultures.DotTimeSeparator;
         // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
         {
       var pattern = SpanPattern.createWithCurrentCulture("H:mm");
@@ -283,7 +283,7 @@ class SpanPatternTest extends PatternTestBase<Span> {
 /// A container for test data for formatting and parsing [Duration] objects.
 /*sealed*/ class Data extends PatternTestData<Span> {
 // Ignored anyway...
-/*protected*/ @override Span get DefaultTemplate => Span.zero;
+/*protected*/ @override Span get defaultTemplate => Span.zero;
 
 
   Data([Span value = Span.zero]) : super(value);
@@ -298,6 +298,6 @@ class SpanPatternTest extends PatternTestBase<Span> {
 
   @internal
   @override
-  IPattern<Span> CreatePattern() => SpanPattern.createWithCulture(super.Pattern, Culture);
+  IPattern<Span> CreatePattern() => SpanPattern.createWithCulture(super.pattern, culture);
 }
 

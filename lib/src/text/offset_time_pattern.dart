@@ -121,7 +121,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting local times.
   /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetTimePattern createWithCulture(String patternText, CultureInfo cultureInfo, OffsetTime templateValue) =>
+  static OffsetTimePattern createWithCulture(String patternText, Culture cultureInfo, OffsetTime templateValue) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture, using the default
@@ -169,7 +169,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  OffsetTimePattern withCulture(CultureInfo cultureInfo) =>
+  OffsetTimePattern withCulture(Culture cultureInfo) =>
       _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
 
   /// Creates a pattern for the same original pattern text and culture as this pattern, but with
