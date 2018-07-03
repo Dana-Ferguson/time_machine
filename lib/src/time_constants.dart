@@ -37,9 +37,6 @@ class TimeConstants {
   static const int millisecondsPerDay = millisecondsPerHour * hoursPerDay;
   static const int millisecondsPerWeek = millisecondsPerDay * daysPerWeek;
 
-// todo: we are probably not using Durations
-// static const Duration ZERO = const Duration(seconds: 0);
-
   static const int nanosecondsPerTick = 100;
   static const int nanosecondsPerMicrosecond = 1000;
   static const int nanosecondsPerSecond = nanosecondsPerMillisecond * millisecondsPerSecond;
@@ -57,23 +54,10 @@ class TimeConstants {
   static const int ticksPerDay = ticksPerHour * hoursPerDay;
   static const int ticksPerWeek = ticksPerDay * daysPerWeek;
 
-
   /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
   static final Instant unixEpoch = new Instant.fromUnixTimeSeconds(0);
-
-  // todo: probably remove me
-  /// The instant at the BCL epoch of midnight 1st January 0001 UTC.
-  static final Instant bclEpoch = new Instant.fromUtc(1, 1, 1, 0, 0);
 
   /// The instant at the Julian epoch of noon (UTC) January 1st 4713 BCE in the proleptic
   /// Julian calendar, or November 24th 4714 BCE in the proleptic Gregorian calendar.
   static final Instant julianEpoch = new Instant.fromUtc(-4713, 11, 24, 12, 0);
-
-  // These are checked in TimeConstantsTest. todo: test these when we make the tests
-  /// The number of ticks in a BCL DateTime at the Unix epoch.
-  /// This number is out of precision for JS
-  @visibleForTesting static final int bclTicksAtUnixEpoch = 621355968000000000;
-
-  /// The number of days in a BCL DateTime at the Unix epoch.
-  @visibleForTesting static final int bclDaysAtUnixEpoch = 719162;
 }
