@@ -28,7 +28,7 @@ abstract class Cultures {
   static Future<Iterable<String>> get ids async => (await _cultures).cultureIds;
   static Future<Culture> getCulture(String id) async => (await _cultures).getCulture(id);
 
-  static final Culture invariantCulture = new Culture._invariantCulture();
+  static final Culture invariantCulture = new Culture._invariant();
 
   // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
   static Culture _currentCulture = null;
@@ -38,7 +38,7 @@ abstract class Cultures {
 // todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!
 @immutable
 class Culture {
-  static final Culture invariant = new Culture._invariantCulture();
+  static final Culture invariant = new Culture._invariant();
 
   static Culture _current = null;
   static Culture get current => _current??=invariant;
@@ -51,11 +51,11 @@ class Culture {
   final CompareInfo compareInfo;
 
   final String name;
-  static const invariantCultureId = "Invariant Culture";
+  static const invariantId = "Invariant Culture";
 
-  Culture._invariantCulture()
+  Culture._invariant()
       : dateTimeFormat = new DateTimeFormatInfoBuilder.invariantCulture().Build(),
-        name = invariantCultureId,
+        name = invariantId,
         compareInfo = null
   ;
 

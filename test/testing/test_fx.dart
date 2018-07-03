@@ -238,7 +238,7 @@ String _printNewObject(Object obj) {
     /*else if (name == '') {
       sb.write('TestCultures.');
     }*/
-    else if (name == Culture.invariantCultureId) {
+    else if (name == Culture.invariantId) {
       sb.write('Cultures.invariantCulture');
     }
     // see: LocaltimePatternTests.CreateCustomAmPmCulture

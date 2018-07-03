@@ -21,7 +21,7 @@ class CultureLoader {
     // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
     var cultureIds = new HashSet<String>();
     var cache = <String, Culture>{
-      Culture.invariantCultureId: Culture.invariant
+      Culture.invariantId: Culture.invariant
     };
 
     var binary = await PlatformIO.local.getBinary('cultures', 'cultures.bin');
