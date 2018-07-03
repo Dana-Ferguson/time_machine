@@ -296,14 +296,14 @@ String _printNewObject(Object obj) {
   }
   else if (obj is Instant) {
     var span = obj.timeSinceEpoch;
-    var ms = ISpan.millisecondsOf(span);
-    var ns = ISpan.nanosecondsIntervalOf(span);
+    var ms = ITime.millisecondsOf(span);
+    var ns = ITime.nanosecondsIntervalOf(span);
     sb.write('IInstant.trusted(ISpan.trusted($ms, $ns))');
   }
   else if (obj is Time) {
     var span = obj;
-    var ms = ISpan.millisecondsOf(span);
-    var ns = ISpan.nanosecondsIntervalOf(span);
+    var ms = ITime.millisecondsOf(span);
+    var ns = ITime.nanosecondsIntervalOf(span);
     sb.write('ISpan.trusted($ms, $ns)');
   }
   else if (obj is DateTimeZone) {

@@ -95,7 +95,7 @@ void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
 void BetweenLocalDateTimes_NotInt64Representable() {
   LocalDateTime start = new LocalDateTime.at(-5000, 1, 1, 0, 1, seconds: 2, milliseconds: 123);
   LocalDateTime end = new LocalDateTime.at(9000, 1, 1, 1, 2, seconds: 3, milliseconds: 456);
-  expect(ISpan.isInt64Representable(
+  expect(ITime.isInt64Representable(
       ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
           - ILocalDateTime.toLocalInstant(start).timeSinceLocalEpoch), isFalse);
 

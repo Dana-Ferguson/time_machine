@@ -170,7 +170,7 @@ class _TimeParseBucket extends ParseBucket<Time> {
     if (isNegative) {
       _currentNanos = -_currentNanos;
     }
-    if (_currentNanos < ISpan.minNanoseconds || _currentNanos > ISpan.maxNanoseconds) {
+    if (_currentNanos < ITime.minNanoseconds || _currentNanos > ITime.maxNanoseconds) {
       return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
     }
     return ParseResult.forValue<Time>(new Time(nanoseconds: _currentNanos));

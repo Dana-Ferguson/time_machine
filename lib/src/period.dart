@@ -410,7 +410,7 @@ class Period {
     int hours, minutes, seconds, milliseconds, ticks, nanoseconds;
     var span = ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
         - ILocalDateTime.toLocalInstant(remaining).timeSinceLocalEpoch;
-    if (ISpan.isInt64Representable(span)) {
+    if (ITime.isInt64Representable(span)) {
       var result = _timeComponentsBetween(span.totalNanoseconds, units);
       hours = result.hours;
       minutes = result.minutes;

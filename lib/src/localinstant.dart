@@ -75,7 +75,7 @@ class LocalInstant {
   ///
   /// [offset]: The offset between UTC and a time zone for this local instant
   /// Returns: A new [Instant] representing the difference of the given values.
-  Instant minus(Offset offset) => IInstant.untrusted(ISpan.plusSmallNanoseconds(_span, -offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
+  Instant minus(Offset offset) => IInstant.untrusted(ITime.plusSmallNanoseconds(_span, -offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
 
   /// Implements the operator == (equality).
   ///
@@ -99,7 +99,7 @@ class LocalInstant {
       return IInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = ISpan.plusSmallNanoseconds(_span, -offset.nanoseconds);
+    var asDuration = ITime.plusSmallNanoseconds(_span, -offset.nanoseconds);
     if (asDuration.days < IInstant.minDays) { // FloorDays
       return IInstant.beforeMinValue;
     }

@@ -27,7 +27,7 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 // Span (working name atm) is cool... but its a pre-existing concept in many languages that isn't time related
 
 @internal
-abstract class ISpan {
+abstract class ITime {
   // This is 104249991 days
   static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
   // ~maxDays would be 4190717304 on JS (-104249992 is the correct number)
@@ -90,10 +90,10 @@ class Time implements Comparable<Time> {
   static const Time epsilon = const Time._trusted(0, 1);
 
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
-  static Time maxValue = new Time(days: ISpan.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+  static Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
   /// Gets the minimum (largest negative) value supported by [Time].
-  static Time minValue = new Time(days: ISpan.minDays);
+  static Time minValue = new Time(days: ITime.minDays);
 
   static Time oneDay = new Time(days: 1);
   static Time oneWeek = new Time(days: 7);
