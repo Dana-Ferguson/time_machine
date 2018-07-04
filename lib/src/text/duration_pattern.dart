@@ -15,7 +15,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 abstract class TimePatterns
 {
   static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
-  static final PatternBclSupport<Time> bclSupport = new PatternBclSupport<Time>("o", (fi) => fi.spanPatternParser);
+  static final PatternBclSupport<Time> bclSupport = new PatternBclSupport<Time>("o", (fi) => fi.timePatternParser);
 }
 
 /// Represents a pattern for parsing and formatting [Time] values.
@@ -65,7 +65,7 @@ class TimePattern implements IPattern<Time> {
   static TimePattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternTex');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = formatInfo.spanPatternParser.parsePattern(patternText);
+    var pattern = formatInfo.timePatternParser.parsePattern(patternText);
     return new TimePattern._(patternText, pattern);
   }
 

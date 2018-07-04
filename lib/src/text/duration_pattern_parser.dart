@@ -44,7 +44,7 @@ class TimePatternParser implements IPatternParser<Time> {
         case 'o':
           return TimePatterns.roundtripPatternImpl;
         default:
-          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Span']);
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Time']);
       }
     }
 
@@ -171,7 +171,7 @@ class _TimeParseBucket extends ParseBucket<Time> {
       _currentNanos = -_currentNanos;
     }
     if (_currentNanos < ITime.minNanoseconds || _currentNanos > ITime.maxNanoseconds) {
-      return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Span']);
+      return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Time']);
     }
     return ParseResult.forValue<Time>(new Time(nanoseconds: _currentNanos));
   }

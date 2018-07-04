@@ -30,7 +30,7 @@ class TimeMachineFormatInfo {
   static final List<String> _longInvariantMonthNames = Culture.invariant.dateTimeFormat.monthNames.toList(growable: false);
 
   // Patterns
-  FixedFormatInfoPatternParser<Time> _spanPatternParser;
+  FixedFormatInfoPatternParser<Time> _timePatternParser;
   FixedFormatInfoPatternParser<Offset> _offsetPatternParser;
   FixedFormatInfoPatternParser<Instant> _instantPatternParser;
   FixedFormatInfoPatternParser<LocalTime> _localTimePatternParser;
@@ -154,8 +154,8 @@ class TimeMachineFormatInfo {
   /// Gets the text comparison information associated with this format provider.
   CompareInfo get compareInfo => cultureInfo.compareInfo;
 
-  FixedFormatInfoPatternParser<Time> get spanPatternParser =>
-      _spanPatternParser = _ensureFixedFormatInitialized(_spanPatternParser, () => new TimePatternParser());
+  FixedFormatInfoPatternParser<Time> get timePatternParser =>
+      _timePatternParser = _ensureFixedFormatInitialized(_timePatternParser, () => new TimePatternParser());
 
   FixedFormatInfoPatternParser<Offset> get offsetPatternParser =>
       _offsetPatternParser = _ensureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
