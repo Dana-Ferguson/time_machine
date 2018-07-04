@@ -33,6 +33,12 @@ abstract class IInstant {
   static LocalInstant safePlus(Instant instant, Offset offset) => instant._safePlus(offset);
 }
 
+/// Represents an instant on the global timeline, with nanosecond resolution.
+///
+/// An [Instant] has no concept of a particular time zone or calendar: it simply represents a point in
+/// time that can be globally agreed-upon.
+///
+/// This type is immutable.
 @immutable
 class Instant implements Comparable<Instant> {
   // todo: Min\MaxTicks tack 62 bits ~ these will not work for the JSVM - check if this is okay?

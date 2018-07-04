@@ -54,6 +54,9 @@ abstract class ITime {
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._trusted(milliseconds, nanosecondsInterval);
 }
 
+// Implementation note:
+// When/if BigInt is becoming part of dart:core, add a nanosecond API supporting it?
+
 /*
   Potentially:
     // 68 years as int32 on VM
@@ -71,6 +74,28 @@ abstract class ITime {
 // Time?
 // ElapsedTime?
 // Elapsed? <-- (intransitive, of time) To pass or move by.
+
+
+
+
+/// Represents a fixed (and calendar-independent) length of time.
+///
+/// A [Time] is a fixed length of time defined by an integral number of nanoseconds.
+/// Although [Time]s are usually used with a positive number of nanoseconds, negative [Time]s are valid, and may occur
+/// naturally when e.g. subtracting an earlier [Instant] from a later one.
+///
+/// A [Time] represents a fixed length of elapsed time along the time line that occupies the same amount of
+/// time regardless of when it is applied. In contrast, [Period] represents a period of time in
+/// calendrical terms (years, months, days, and so on) that may vary in elapsed time when applied.
+///
+/// In general, use [Time] to represent durations applied to global types like [Instant]
+/// and [ZonedDateTime]; use [Period] to represent a period applied to local types like
+/// [LocalDateTime].
+///
+/// The range of valid values of a [Time] is greater than the span of time supported by Time Machine - so for
+/// example, subtracting one [Instant] from another will always give a valid [Time].
+///
+/// This type is an immutable type.
 @immutable
 class Time implements Comparable<Time> {
   // 285420 years max (unlimited on VM)
