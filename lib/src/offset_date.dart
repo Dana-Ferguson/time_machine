@@ -10,6 +10,10 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
+/// A combination of a [LocalDate]> and an [Offset], to represent
+/// a date at a specific offset from UTC but without any time-of-day information.
+///
+/// This type is immutable.
 @immutable
 class OffsetDate // : IEquatable<OffsetDate>
 {

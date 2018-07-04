@@ -25,6 +25,14 @@ abstract class IOffsetDateTime {
   static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => offsetDateTime._yearMonthDay;
 }
 
+/// A local date and time in a particular calendar system, combined with an offset from UTC.
+///
+/// A value of this type unambiguously represents both a local time and an instant on the timeline,
+/// but does not have a well-defined time zone. This means you cannot reliably know what the local
+/// time would be five minutes later, for example. While this doesn't sound terribly useful, it's very common
+/// in text representations.
+///
+/// This type is immutable.
 @immutable
 class OffsetDateTime {
   // todo: We can't use this either

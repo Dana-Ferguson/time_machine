@@ -95,7 +95,7 @@ abstract class ITime {
 /// The range of valid values of a [Time] is greater than the span of time supported by Time Machine - so for
 /// example, subtracting one [Instant] from another will always give a valid [Time].
 ///
-/// This type is an immutable type.
+/// This type is immutable.
 @immutable
 class Time implements Comparable<Time> {
   // 285420 years max (unlimited on VM)
