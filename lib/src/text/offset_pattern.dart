@@ -12,7 +12,13 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 @internal
 abstract class OffsetPatterns {
-  static final PatternBclSupport<Offset> bclSupport = new PatternBclSupport<Offset>(OffsetPattern._defaultFormatPattern, (fi) => fi.offsetPatternParser);
+  static String format(Offset offset, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .offsetPatternParser
+          .parsePattern(patternText ?? OffsetPattern._defaultFormatPattern)
+          .format(offset);
+
   static IPartialPattern<Offset> underlyingPattern(OffsetPattern offsetPattern) => offsetPattern._underlyingPattern;
 
   static OffsetPattern create(String patternText, TimeMachineFormatInfo formatInfo) => OffsetPattern._create(patternText, formatInfo);

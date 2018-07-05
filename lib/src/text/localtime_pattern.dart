@@ -5,18 +5,20 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-
-// todo: we may not need _Patterns classes for our Dart port
-/// Class whose existence is solely to avoid type initialization order issues, most of which stem
-/// from needing TimeFormatInfo.InvariantInfo...
-abstract class _Patterns
-{
-  static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
-}
-
 @internal
-abstract class ILocalTimePattern {
-  static final PatternBclSupport<LocalTime> bclSupport = new PatternBclSupport<LocalTime>(LocalTimePattern._defaultFormatPattern, (fi) => fi.localTimePatternParser);
+abstract class LocalTimePatterns {
+  // todo: we may not need _Patterns classes for our Dart port
+  /// Class whose existence is solely to avoid type initialization order issues, most of which stem
+  /// from needing TimeFormatInfo.InvariantInfo...
+  static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
+
+  static String format(LocalTime localTime, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .localTimePatternParser
+          .parsePattern(patternText ?? LocalTimePattern._defaultFormatPattern)
+          .format(localTime);
+
   static LocalTimePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalTime templateValue) =>
       LocalTimePattern._create(patternText, formatInfo, templateValue);
 
@@ -29,7 +31,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// Gets an invariant local time pattern which is ISO-8601 compatible, providing up to 9 decimal places.
   /// (These digits are omitted when unnecessary.)
   /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
-  static final LocalTimePattern extendedIso = _Patterns.extendedIsoPatternImpl;
+  static final LocalTimePattern extendedIso = LocalTimePatterns.extendedIsoPatternImpl;
 
   static const String _defaultFormatPattern = "T"; // Long
 

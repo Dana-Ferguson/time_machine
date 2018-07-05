@@ -110,6 +110,6 @@ class OffsetTime {
   ///
   /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
   /// or null to use the current thread's culture to obtain a format provider.
-  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetTimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+  @override String toString([String patternText, Culture culture]) =>
+      OffsetTimePatterns.format(this, patternText, culture);
 }

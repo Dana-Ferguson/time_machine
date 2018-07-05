@@ -38,21 +38,11 @@ class TimePatternParser implements IPatternParser<Time> {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
-    // The sole standard pattern...
-    if (patternText.length == 1) {
-      switch (patternText[0]) {
-        case 'o':
-          return TimePatterns.roundtripPatternImpl;
-        default:
-          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'Time']);
-      }
-    }
-
     var patternBuilder = new SteppedPatternBuilder<Time, _TimeParseBucket>(formatInfo,
             () => new _TimeParseBucket());
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     // Somewhat random sample, admittedly...
-    // dana: todo: why is this?
+    // dana: todo: why is this? ... how much overhead does this add?
     return patternBuilder.build(new Time(hours: 1) + new Time(minutes: 30) + new Time(seconds: 5) + new Time(milliseconds: 500));
   }
 

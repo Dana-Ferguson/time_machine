@@ -12,10 +12,14 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 // Nested class for ease of type initialization
 @internal
-abstract class TimePatterns
-{
+abstract class TimePatterns {
   static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
-  static final PatternBclSupport<Time> bclSupport = new PatternBclSupport<Time>("o", (fi) => fi.timePatternParser);
+  static String format(Time time, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+        .getInstance(culture)
+        .timePatternParser
+        .parsePattern(patternText ?? roundtripPatternImpl.patternText)
+        .format(time);
 }
 
 /// Represents a pattern for parsing and formatting [Time] values.
@@ -109,6 +113,6 @@ class TimePattern implements IPattern<Time> {
   ///
   /// [cultureInfo]: The culture to use in the new pattern.
   /// Returns: A new pattern with the given culture.
-  TimePattern withCulture(Culture cultureInfo) =>
-      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  TimePattern withCulture(Culture culture) =>
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture));
 }

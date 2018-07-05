@@ -24,7 +24,12 @@ class OffsetTimePatterns {
       "HH':'mm':'ss;FFFFFFFFFo<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
   static final OffsetTimePattern rfc3339PatternImpl = OffsetTimePattern._create(
       "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
-  static final PatternBclSupport<OffsetTime> bclSupport = new PatternBclSupport<OffsetTime>("G", (fi) => fi.offsetTimePatternParser);
+  static String format(OffsetTime offsetTime, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .offsetTimePatternParser
+          .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
+          .format(offsetTime);
 
   static final OffsetTime defaultTemplateValue = LocalTime.midnight.withOffset(Offset.zero);
 

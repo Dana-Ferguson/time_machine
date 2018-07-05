@@ -18,7 +18,13 @@ abstract class ZonedDateTimePatterns
 {
   static final ZonedDateTimePattern generalFormatOnlyPatternImpl = ZonedDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o<g>')'", null);
   static final ZonedDateTimePattern extendedFormatOnlyPatternImpl = ZonedDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'", null);
-  static final PatternBclSupport<ZonedDateTime> bclSupport = new PatternBclSupport<ZonedDateTime>("G", (fi) => fi.zonedDateTimePatternParser);
+  static String format(ZonedDateTime zonedDateTime, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .zonedDateTimePatternParser
+          // "G"
+          .parsePattern(patternText ?? generalFormatOnlyPatternImpl.patternText)
+          .format(zonedDateTime);
 
   static final ZonedDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0).inUtc();
 }

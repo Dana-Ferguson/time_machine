@@ -14,7 +14,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 ///  * g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ
 @internal
 class InstantPatternParser implements IPatternParser<Instant> {
-  static const String _generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+  static const String generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
   static const String beforeMinValueText = "StartOfTime";
   static const String afterMaxValueText = "EndOfTime";
 
@@ -22,15 +22,6 @@ class InstantPatternParser implements IPatternParser<Instant> {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
-    }
-    if (patternText.length == 1) {
-      switch (patternText) {
-        case "g": // Simplest way of handling the general pattern...
-          patternText = _generalPatternText;
-          break;
-        default:
-          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText, 'Instant']);
-      }
     }
 
     IPattern<LocalDateTime> localResult = formatInfo.localDateTimePatternParser.parsePattern(patternText);

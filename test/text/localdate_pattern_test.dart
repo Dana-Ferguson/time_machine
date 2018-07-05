@@ -573,12 +573,12 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 
 class Data extends PatternTestData<LocalDate> {
 // Default to the start of the year 2000.
-  @override LocalDate get defaultTemplate => ILocalDatePattern.defaultTemplateValue;
+  @override LocalDate get defaultTemplate => LocalDatePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDate value = null]) : super(value ?? ILocalDatePattern.defaultTemplateValue);
+  Data([LocalDate value = null]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day) : super(new LocalDate(year, month, day));
 

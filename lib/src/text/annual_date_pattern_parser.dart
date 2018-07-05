@@ -32,15 +32,6 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
-    if (patternText.length == 1) {
-      switch (patternText[0]) {
-        case 'G':
-          return AnnualDatePattern.iso;
-        default:
-          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternText[0], 'AnnualDate']);
-      }
-    }
-
     var patternBuilder = new SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket>(formatInfo,
             () => new AnnualDateParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);

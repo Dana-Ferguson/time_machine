@@ -246,8 +246,8 @@ class Offset implements Comparable<Offset> {
   /// The value of the current instance in the default format pattern ("g"), using the current thread's
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringOffset(this); // OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetPatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+  @override String toString([String patternText, Culture culture]) =>
+      OffsetPatterns.format(this, patternText, culture);
 
   // todo: I still feel like Offset has a ridiculous amount of from[x] constructors
   /// Returns an offset for the given seconds value, which may be negative.

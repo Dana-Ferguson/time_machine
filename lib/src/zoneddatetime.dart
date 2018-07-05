@@ -372,13 +372,13 @@ class ZonedDateTime {
   ///
   /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
   /// or null to use the current thread's culture to obtain a format provider.
-  @override String toString([String patternText, /**IFormatProvider*/ dynamic formatProvider]) => 
-      ZonedDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+  @override String toString([String patternText, Culture culture]) =>
+      ZonedDateTimePatterns.format(this, patternText, culture);
 
   @ddcSupportHack
-  String toStringDDC([String patternText, /**IFormatProvider*/ dynamic formatProvider]) => 
-      ZonedDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
-  
+  String toStringDDC([String patternText, Culture culture]) =>
+      ZonedDateTimePatterns.format(this, patternText, culture);
+
   /// Constructs a [DateTime] from this [ZonedDateTime] which has a
   /// [DateTime.Kind] of [DateTimeKind.utc] and represents the same instant of time as
   /// this value rather than the same local time.

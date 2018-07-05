@@ -154,11 +154,11 @@ class Instant implements Comparable<Instant> {
   static Instant min(Instant x, Instant y) => x < y ? x : y;
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
-  @override String toString([String patternText, /**IFormatProvider*/ dynamic formatProvider]) =>
-      InstantPatterns.bclSupport.format(this, patternText, formatProvider ?? Cultures.currentCulture);
+  @override String toString([String patternText, Culture culture]) =>
+      InstantPatterns.format(this, patternText, culture);
 
-  @ddcSupportHack String toStringDDC([String patternText, /**IFormatProvider*/ dynamic formatProvider]) =>
-      InstantPatterns.bclSupport.format(this, patternText, formatProvider ?? Cultures.currentCulture);
+  @ddcSupportHack String toStringDDC([String patternText, Culture culture]) =>
+      InstantPatterns.format(this, patternText, culture);
 
   double toJulianDate() => (this - TimeConstants.julianEpoch).totalDays;
 

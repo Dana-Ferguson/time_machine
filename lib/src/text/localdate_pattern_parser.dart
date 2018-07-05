@@ -46,9 +46,10 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
     }
 
     if (patternText.length == 1) {
-      // todo: char
+      // todo: do we want this functionality? (this was similar to the BCL support patterns
+      // -- except it hits up dateTimeFormat stuff -- is there a different way this could or should be accessed?
       var patternCharacter = patternText[0];
-      patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
+      patternText = _expandStandardFormatPattern(patternText, formatInfo);
       if (patternText == null) {
         throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDate']);
       }

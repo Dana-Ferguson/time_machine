@@ -287,12 +287,8 @@ class Time implements Comparable<Time> {
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
 
-// todo: we need a good formatting story -- work with (or be compatible with DateFormat class)
-// @override toString() => '$totalSeconds seconds';
-
-  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      TimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
-
+  @override String toString([String patternText, Culture culture]) =>
+      TimePatterns.format(this, patternText, culture);
 
   Time operator +(Time other) => new Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
 

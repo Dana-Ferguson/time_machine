@@ -330,8 +330,8 @@ class OffsetDateTime {
   /// The value of the current instance in the default format pattern ("G"), using the current thread's
   /// culture to obtain a format provider.
   // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
-  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      OffsetDateTimePatterns.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+  @override String toString([String patternText, Culture culture]) =>
+      OffsetDateTimePatterns.format(this, patternText, culture);
 
   /// Adds a duration to an offset date and time.
   ///

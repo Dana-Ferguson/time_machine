@@ -453,7 +453,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     var templateDate = dateBucketExtractor(createSampleBucket()).templateValue;
     addField(PatternFields.embeddedDate, characterInPattern);
     addEmbeddedPattern(
-        ILocalDatePattern.underlyingPattern(ILocalDatePattern.create(embeddedPatternText, formatInfo, templateDate)),
+        LocalDatePatterns.underlyingPattern(LocalDatePatterns.create(embeddedPatternText, formatInfo, templateDate)),
             (TBucket bucket, LocalDate value) {
           var dateBucket = dateBucketExtractor(bucket);
           dateBucket.calendar = value.calendar;
@@ -471,7 +471,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     var templateTime = timeBucketExtractor(createSampleBucket()).templateValue;
     addField(PatternFields.embeddedTime, characterInPattern);
     addEmbeddedPattern(
-        ILocalTimePattern.underlyingPattern(ILocalTimePattern.create(embeddedPatternText, formatInfo, templateTime)),
+        LocalTimePatterns.underlyingPattern(LocalTimePatterns.create(embeddedPatternText, formatInfo, templateTime)),
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
           timeBucket.hours24 = value.hour;

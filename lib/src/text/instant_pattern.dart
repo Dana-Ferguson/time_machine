@@ -10,17 +10,21 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
-/// Class whose existence is solely to avoid type initialization order issues, most of which stem
-/// from needing NodaFormatInfo.InvariantInfo...
-abstract class _InstantPatterns
-{
+@internal
+abstract class InstantPatterns {
+  /// Class whose existence is solely to avoid type initialization order issues, most of which stem
+  /// from needing NodaFormatInfo.InvariantInfo...
   static final InstantPattern extendedIsoPatternImpl = InstantPattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'");
   static final InstantPattern generalPatternImpl = InstantPattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss'Z'");
-}
 
-abstract class InstantPatterns {
-  static final PatternBclSupport<Instant> bclSupport = new PatternBclSupport<Instant>(InstantPattern._defaultFormatPattern, (fi) => fi.instantPatternParser);
   static IPattern<Instant> patternOf(InstantPattern instantPattern) => instantPattern._pattern;
+
+  static String format(Instant instant, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .instantPatternParser
+          .parsePattern(patternText ?? InstantPatternParser.generalPatternText)
+          .format(instant);
 }
 
 /// Represents a pattern for parsing and formatting [Instant] values.
@@ -28,7 +32,7 @@ abstract class InstantPatterns {
 class InstantPattern implements IPattern<Instant> {
   /// Gets the general pattern, which always uses an invariant culture. The general pattern represents
   /// an instant as a UTC date/time in ISO-8601 style "uuuu-MM-ddTHH:mm:ss'Z'".
-  static InstantPattern get general => _InstantPatterns.generalPatternImpl;
+  static InstantPattern get general => InstantPatterns.generalPatternImpl;
 
   /// Gets an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy. (These digits are omitted when unnecessary.)
@@ -36,7 +40,7 @@ class InstantPattern implements IPattern<Instant> {
   ///
   /// <value>An invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy.</value>
-  static InstantPattern get extendedIso => _InstantPatterns.extendedIsoPatternImpl;
+  static InstantPattern get extendedIso => InstantPatterns.extendedIsoPatternImpl;
 
   static const String _defaultFormatPattern = "g";
 

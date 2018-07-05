@@ -16,10 +16,13 @@ abstract class LocalDateTimePatterns
   static final LocalDateTimePattern fullRoundtripWithoutCalendarImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
   static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 
-  // todo: I popped this into [LocalDateTimePatterns] instead of `ILocalDateTimePatterns`... what should I do going forward?, not sure I like 'IClass' for 'Internal Class'
   static final LocalDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0);
-  static final PatternBclSupport<LocalDateTime> bclSupport = new PatternBclSupport<LocalDateTime>(
-      LocalDateTimePattern._defaultFormatPattern, (fi) => fi.localDateTimePatternParser);
+  static String format(LocalDateTime localDateTime, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .localDateTimePatternParser
+          .parsePattern(patternText ?? LocalDateTimePattern._defaultFormatPattern)
+          .format(localDateTime);
 
   static IPartialPattern<LocalDateTime> underlyingPattern(LocalDateTimePattern localDateTimePattern) => localDateTimePattern._underlyingPattern;
 

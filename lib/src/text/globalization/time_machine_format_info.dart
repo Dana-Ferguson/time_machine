@@ -167,7 +167,7 @@ class TimeMachineFormatInfo {
       _localTimePatternParser = _ensureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.midnight));
 
   FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
-      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(ILocalDatePattern.defaultTemplateValue));
+      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =
@@ -194,6 +194,7 @@ class TimeMachineFormatInfo {
           _ensureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePatterns.defaultTemplateValue));
 
 
+  // todo: I think I can simplify the usage of this
   FixedFormatInfoPatternParser<T> _ensureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T> field,
       IPatternParser<T> Function() patternParserFactory) {
     // lock (fieldLock)
@@ -260,7 +261,7 @@ class TimeMachineFormatInfo {
     return _shortDayNames;
   }
 
-  /// Gets the BCL date time format associated with this formatting information.
+  /// Gets the date time format associated with this formatting information.
   ///
   /// This is usually the [DateTimeFormat] from [Culture],
   /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
@@ -356,6 +357,7 @@ class TimeMachineFormatInfo {
     return _cache.getOrAdd(cultureInfo);
   }
 
+  // todo: remove the [DateTimeFormat] pathway, we're going Culture first.
   /// Gets the [TimeMachineFormatInfo] for the given [IIFormatProvider]. If the
   /// format provider is null then the format object for the current thread is returned. If it's
   /// a CultureInfo, that's used for everything. If it's a DateTimeFormatInfo, that's used for
@@ -380,7 +382,7 @@ class TimeMachineFormatInfo {
   }
 
   /// Returns a [String] that represents this instance.
-  @override String toString() => "TimeMachineInfo[" + cultureInfo.name + "]";
+  @override String toString() => "TimeMachineInfo[${cultureInfo.name}]";
 }
 
 /// The description for an era: the primary name and all possible names.

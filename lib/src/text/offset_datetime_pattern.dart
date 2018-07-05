@@ -22,7 +22,13 @@ abstract class OffsetDateTimePatterns {
       "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
   static final OffsetDateTimePattern fullRoundtripPatternImpl = OffsetDateTimePattern._create(
       "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
-  static final PatternBclSupport<OffsetDateTime> bclSupport = new PatternBclSupport<OffsetDateTime>("G", (fi) => fi.offsetDateTimePatternParser);
+
+  static String format(OffsetDateTime offsetDateTime, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .offsetDateTimePatternParser
+          .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
+          .format(offsetDateTime);
 
   static final OffsetDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0).withOffset(Offset.zero);
 

@@ -18,7 +18,13 @@ abstract class OffsetDatePatterns {
       "uuuu'-'MM'-'ddo<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
   static final OffsetDatePattern fullRoundtripPatternImpl = OffsetDatePattern._create(
       "uuuu'-'MM'-'ddo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
-  static final PatternBclSupport<OffsetDate> bclSupport = new PatternBclSupport<OffsetDate>("G", (fi) => fi.offsetDatePatternParser);
+
+  static String format(OffsetDate offsetDate, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture)
+          .offsetDatePatternParser
+          .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
+          .format(offsetDate);
 
   static final OffsetDate defaultTemplateValue = new LocalDate(2000, 1, 1).withOffset(Offset.zero);
 

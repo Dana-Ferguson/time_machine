@@ -537,6 +537,6 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
   /// or null to use the current thread's culture to obtain a format provider.
-  @override String toString([String patternText = null, /*IFormatProvider*/ dynamic formatProvider = null]) =>
-      ILocalTimePattern.bclSupport.format(this, patternText, formatProvider ?? Culture.current);
+  @override String toString([String patternText, Culture culture]) =>
+      LocalTimePatterns.format(this, patternText, culture);
 }

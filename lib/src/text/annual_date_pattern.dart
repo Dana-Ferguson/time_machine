@@ -10,23 +10,24 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
+/// todo: investigate, probably not needed for Dart
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
-/// from needing NodaFormatInfo.InvariantInfo...
-abstract class _Patterns
-{
-  static final AnnualDatePattern isoPatternImpl = AnnualDatePattern.createWithInvariantCulture("MM'-'dd");
-}
-
+/// from needing TimeFormatInfo.InvariantInfo...
 @internal
 abstract class AnnualDatePatterns {
   static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) =>
       AnnualDatePattern._create(patternText, formatInfo, templateValue);
   static final AnnualDate defaultTemplateValue = new AnnualDate(1, 1);
 
-  static final PatternBclSupport<AnnualDate> bclSupport =
-    new PatternBclSupport<AnnualDate>(AnnualDatePattern._defaultFormatPattern, (fi) => fi.annualDatePatternParser);
-
   static IPartialPattern<AnnualDate> underlyingPattern(AnnualDatePattern annualDatePattern) => annualDatePattern._underlyingPattern;
+
+  static final AnnualDatePattern isoPatternImpl = AnnualDatePattern.createWithInvariantCulture("MM'-'dd");
+  static String format(AnnualDate annualDate, String patternText, Culture culture) =>
+      TimeMachineFormatInfo
+          .getInstance(culture ?? Culture.current)
+          .annualDatePatternParser
+          .parsePattern(patternText ?? isoPatternImpl.patternText)
+          .format(annualDate);
 }
 
 /// Represents a pattern for parsing and formatting [AnnualDate] values.
@@ -36,7 +37,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
 
   /// Gets an invariant annual date pattern which is compatible with the month/day part of ISO-8601.
   /// This corresponds to the text pattern "MM'-'dd".
-  static AnnualDatePattern get iso => _Patterns.isoPatternImpl;
+  static AnnualDatePattern get iso => AnnualDatePatterns.isoPatternImpl;
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an @internal interface.
