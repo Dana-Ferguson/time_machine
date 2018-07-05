@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:time_machine/time_machine.dart';
+import 'package:time_machine/time_machine_text_patterns.dart';
 
 Future main() async {
   try {
