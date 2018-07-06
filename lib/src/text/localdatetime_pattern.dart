@@ -12,7 +12,7 @@ abstract class LocalDateTimePatterns
 {
   static final LocalDateTimePattern generalIsoPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");
   static final LocalDateTimePattern extendedIsoPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF");
-  static final LocalDateTimePattern bclRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
+  static final LocalDateTimePattern roundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff");
   static final LocalDateTimePattern fullRoundtripWithoutCalendarImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
   static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 
@@ -43,9 +43,6 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy. (These digits are omitted when unnecessary.)
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF".
-  ///
-  /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 9 decimal places
-  /// of sub-second accuracy.</value>
   static LocalDateTimePattern get extendedIso => LocalDateTimePatterns.extendedIsoPatternImpl;
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
@@ -54,19 +51,13 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff". It does not necessarily
   /// round-trip all `LocalDateTime` values as it will lose sub-tick information. Use
   /// [fullRoundtripWithoutCalendar]
-  ///
-  /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
-  /// of sub-second accuracy which are always present (including trailing zeroes).</value>
-  static LocalDateTimePattern get bclRoundtrip => LocalDateTimePatterns.bclRoundtripPatternImpl;
+  static LocalDateTimePattern get roundtrip => LocalDateTimePatterns.roundtripPatternImpl;
 
   /// Gets an invariant local date/time pattern which round trips values, but doesn't include the calendar system.
   /// It provides up to 9 decimal places of sub-second accuracy which are always present (including trailing zeroes).
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff". It will
   /// round-trip all [LocalDateTime] values if the calendar system of the template value is the same
   /// as the calendar system of the original value.
-  ///
-  /// <value>An invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
-  /// of sub-second accuracy which are always present (including trailing zeroes).</value>
   static LocalDateTimePattern get fullRoundtripWithoutCalendar => LocalDateTimePatterns.fullRoundtripWithoutCalendarImpl;
 
   /// Gets an invariant local date/time pattern which round trips values including the calendar system.

@@ -260,13 +260,13 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..culture = TestCultures.FrFr,
     // Culture has no impact on round-trip or sortable formats
     new Data(MsdnStandardExample)
-      ..standardPattern = LocalDateTimePattern.bclRoundtrip
+      ..standardPattern = LocalDateTimePattern.roundtrip
       ..standardPatternCode = 'LocalDateTimePattern.bclRoundtrip'
       ..pattern = "o"
       ..text = "2009-06-15T13:45:30.0900000"
       ..culture = TestCultures.FrFr,
     new Data(MsdnStandardExample)
-      ..standardPattern = LocalDateTimePattern.bclRoundtrip
+      ..standardPattern = LocalDateTimePattern.roundtrip
       ..standardPatternCode = 'LocalDateTimePattern.bclRoundtrip'
       ..pattern = "O"
       ..text = "2009-06-15T13:45:30.0900000"

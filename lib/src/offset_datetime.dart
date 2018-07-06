@@ -41,8 +41,8 @@ class OffsetDateTime {
   // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
   //@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
   //@private static const int OffsetMask = ~NanosecondsMask;
-  static const int _minBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
-  static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
+  //static const int _minBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
+  //static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
   // todo: verify this for Dart
   /// These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,

@@ -71,7 +71,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
     if (patternText.length == 1) {
       String /*char*/ patternCharacter = patternText[0];
       if (patternCharacter == 'o' || patternCharacter == 'O') {
-        return LocalDateTimePatterns.bclRoundtripPatternImpl;
+        return LocalDateTimePatterns.roundtripPatternImpl;
       }
       if (patternCharacter == 'r') {
         return LocalDateTimePatterns.fullRoundtripPatternImpl;
