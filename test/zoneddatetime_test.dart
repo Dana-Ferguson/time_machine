@@ -25,7 +25,7 @@ final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone
 @Test()
 void SimpleProperties()
 {
-  var value = SampleZone.atStrictly(new LocalDateTime.at(2012, 2, 10, 8, 9, seconds: 10).plusNanoseconds(123456789));
+  var value = new ZonedDateTime.atStrictly(new LocalDateTime.at(2012, 2, 10, 8, 9, seconds: 10).plusNanoseconds(123456789), SampleZone);
   expect(new LocalDate(2012, 2, 10), value.date);
   expect(new LocalTime.fromHourMinuteSecondNanosecond(8, 9, 10, 123456789), value.timeOfDay);
   expect(Era.common, value.era);
@@ -57,9 +57,9 @@ void SimpleProperties()
 void Add_AroundTimeZoneTransition()
 {
   // Before the transition at 3pm...
-  ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
+  ZonedDateTime before = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0), SampleZone);
   // 24 hours elapsed, and it's 4pm
-  ZonedDateTime afterExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
+  ZonedDateTime afterExpected = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0), SampleZone);
   ZonedDateTime afterAdd = ZonedDateTime.addTime(before, Time.oneDay);
   ZonedDateTime afterOperator = before + Time.oneDay;
 
@@ -77,7 +77,7 @@ void Add_MethodEquivalents()
   const int nanoseconds = 12345;
   const int ticks = 5432112345;
 
-  ZonedDateTime before = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
+  ZonedDateTime before = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0), SampleZone);
   expect(before + Time.oneDay, ZonedDateTime.addTime(before, Time.oneDay));
   expect(before + Time.oneDay, before.plusTime(Time.oneDay));
 
@@ -104,9 +104,9 @@ void Add_MethodEquivalents()
 void Subtract_AroundTimeZoneTransition()
 {
   // After the transition at 4pm...
-  ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
+  ZonedDateTime after = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0), SampleZone);
   // 24 hours earlier, and it's 3pm
-  ZonedDateTime beforeExpected = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0));
+  ZonedDateTime beforeExpected = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 12, 15, 0), SampleZone);
   ZonedDateTime beforeSubtract = ZonedDateTime.subtractTime(after, Time.oneDay);
   ZonedDateTime beforeOperator = after - Time.oneDay;
 
@@ -117,7 +117,7 @@ void Subtract_AroundTimeZoneTransition()
 @Test()
 void SubtractDuration_MethodEquivalents()
 {
-  ZonedDateTime after = SampleZone.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0));
+  ZonedDateTime after = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 6, 13, 16, 0), SampleZone);
   expect(after - Time.oneDay, ZonedDateTime.subtractTime(after, Time.oneDay));
   expect(after - Time.oneDay, after.minusTime(Time.oneDay));
 }
@@ -129,7 +129,7 @@ void Subtraction_ZonedDateTime()
   // but we'll use two different time zones.
   ZonedDateTime start = new LocalDateTime.at(2014, 08, 14, 5, 51).inUtc();
   // Sample zone is UTC+4 at this point, so this is 14:00Z.
-  ZonedDateTime end = SampleZone.atStrictly(new LocalDateTime.at(2014, 08, 14, 18, 0));
+  ZonedDateTime end = new ZonedDateTime.atStrictly(new LocalDateTime.at(2014, 08, 14, 18, 0), SampleZone);
   Time expected = new Time(hours: 8) + new Time(minutes: 9);
   expect(expected, end - start);
   expect(expected, end.minus(start));
@@ -258,7 +258,7 @@ void ToBclTypes_TruncateNanosTowardStartOfTime(int year)
 @Test()
 void ToDateTimeUtc()
 {
-  ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0));
+  ZonedDateTime zoned = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0), SampleZone);
   // Note that this is 10pm the previous day, UTC - so 1am local time
   DateTime expected = new DateTime.utc(2011, 3, 4, 22, 0, 0);
   DateTime actual = zoned.toDateTimeUtc();
@@ -284,7 +284,7 @@ void ToDateTimeUtc_InRangeAfterUtcAdjustment()
 @Test()
 void ToDateTimeUnspecified()
 {
-  ZonedDateTime zoned = SampleZone.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0));
+  ZonedDateTime zoned = new ZonedDateTime.atStrictly(new LocalDateTime.at(2011, 3, 5, 1, 0), SampleZone);
   DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0);
   DateTime actual = zoned.toDateTimeLocal();
   expect(actual, expected);
@@ -296,7 +296,7 @@ void ToDateTimeUnspecified()
 void ToOffsetDateTime()
 {
   var local = new LocalDateTime.at(1911, 3, 5, 1, 0); // Early interval
-  var zoned = SampleZone.atStrictly(local);
+  var zoned = new ZonedDateTime.atStrictly(local, SampleZone);
   var offsetDateTime = zoned.toOffsetDateTime();
   expect(local, offsetDateTime.localDateTime);
   expect(SampleZone.EarlyInterval.wallOffset, offsetDateTime.offset);

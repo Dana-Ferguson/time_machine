@@ -49,14 +49,14 @@ void BasicSpanTests() {
 @Test()
 void FromUtcNoSeconds()
 {
-  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35)).toInstant();
+  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35), DateTimeZone.utc).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
-  Instant viaUtc = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23)).toInstant();
+  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23), DateTimeZone.utc).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35, 23));
 }
 
@@ -65,7 +65,7 @@ void FromUtcWithSeconds()
 void InUtc()
 {
   ZonedDateTime viaInstant = new Instant.fromUtc(2008, 4, 3, 10, 35, 23).inUtc();
-  ZonedDateTime expected = DateTimeZone.utc.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23));
+  ZonedDateTime expected = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23), DateTimeZone.utc);
   expect(expected, viaInstant);
 }
 
@@ -78,7 +78,7 @@ Future InZone () async
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
   LocalDateTime local = new LocalDateTime.at(2008, 6, 10, 14, 16, seconds: 17);
-  ZonedDateTime expected = london.atStrictly(local);
+  ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
 
   expect(expected, viaInstant);
 }
@@ -229,7 +229,7 @@ Future InZoneWithCalendar () async
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
   LocalDateTime local = new LocalDateTime.at(1720, 10, 2, 12, 10, calendar: copticCalendar);
-  ZonedDateTime expected = london.atStrictly(local);
+  ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
   expect(viaInstant, expected);
 }
 

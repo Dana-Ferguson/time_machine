@@ -392,8 +392,8 @@ void InZone()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.at(2009, 11, 1, 1, 30);
   var skipped = new LocalDateTime.at(2009, 3, 8, 2, 30);
-  expect(Pacific.atLeniently(ambiguous), ambiguous.inZone(Pacific, Resolvers.lenientResolver));
-  expect(Pacific.atLeniently(skipped), skipped.inZone(Pacific, Resolvers.lenientResolver));
+  expect(new ZonedDateTime.atLeniently(ambiguous, Pacific), ambiguous.inZone(Pacific, Resolvers.lenientResolver));
+  expect(new ZonedDateTime.atLeniently(skipped, Pacific), skipped.inZone(Pacific, Resolvers.lenientResolver));
 }
 
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar

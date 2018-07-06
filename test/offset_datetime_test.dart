@@ -195,7 +195,7 @@ void InFixedZone()
   OffsetDateTime odt = new OffsetDateTime(local, offset);
 
   ZonedDateTime zoned = odt.inFixedZone;
-  expect(new DateTimeZone.forOffset(offset).atStrictly(local), zoned);
+  expect(new ZonedDateTime.atStrictly(local, new DateTimeZone.forOffset(offset)), zoned);
 }
 
 @Test()

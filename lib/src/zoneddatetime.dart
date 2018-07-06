@@ -80,6 +80,94 @@ class ZonedDateTime {
     return new ZonedDateTime._trusted(offsetDateTime, zone);
   }
 
+  /// Returns the earliest valid [ZonedDateTime] with the given local date.
+  ///
+  /// If midnight exists unambiguously on the given date, it is returned.
+  /// If the given date has an ambiguous start time (e.g. the clocks go back from 1am to midnight)
+  /// then the earlier ZonedDateTime is returned. If the given date has no midnight (e.g. the clocks
+  /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
+  /// of the transition.
+  ///
+  /// [date]: The local date to map in this time zone.
+  /// [SkippedTimeError]: The entire day was skipped due to a very large time zone transition.
+  /// (This is extremely rare.)
+  /// Returns: The [ZonedDateTime] representing the earliest time in the given date, in this time zone.
+  factory ZonedDateTime.atStartOfDay(LocalDate date, DateTimeZone zone) {
+    LocalDateTime midnight = date.atMidnight();
+    var mapping = zone.mapLocal(midnight);
+    switch (mapping.count) {
+    // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
+      case 0:
+        var interval = mapping.lateInterval;
+        // Safe to use Start, as it can't extend to the start of time.
+        var offsetDateTime = IOffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
+        // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
+        // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
+        if (IOffsetDateTime.yearMonthDay(offsetDateTime) != ILocalDate.yearMonthDay(date)) {
+          throw new SkippedTimeError(midnight, zone);
+        }
+        return IZonedDateTime.trusted(offsetDateTime, zone);
+    // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
+      case 1:
+      case 2:
+        return IZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), zone);
+      default:
+        throw new StateError("This won't happen.");
+    }
+  }
+
+  /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime], following
+  /// the given [ZoneLocalMappingResolver] to handle ambiguity and skipped times.
+  ///
+  /// This is a convenience method for calling [mapLocal] and passing the result to the resolver.
+  /// Common options for resolvers are provided in the static [Resolvers] class.
+  ///
+  /// See [atStrictly] and [atLeniently] for alternative ways to map a local time to a
+  /// specific instant.
+  ///
+  /// [localDateTime]: The local date and time to map in this time zone.
+  /// [resolver]: The resolver to apply to the mapping.
+  /// Returns: The result of resolving the mapping.
+  factory ZonedDateTime.resolveLocal(LocalDateTime localDateTime, DateTimeZone zone, ZoneLocalMappingResolver resolver) {
+    Preconditions.checkNotNull(resolver, 'resolver');
+    return resolver(zone.mapLocal(localDateTime));
+  }
+  
+  // todo: should these be factory methods for constructing ZonedDateTime's?
+  /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime], if and only if
+  /// that mapping is unambiguous in this time zone.  Otherwise, [SkippedTimeError] or
+  /// [AmbiguousTimeException] is thrown, depending on whether the mapping is ambiguous or the local
+  /// date/time is skipped entirely.
+  ///
+  /// See [atLeniently] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
+  /// specific instant.
+  ///
+  /// [localDateTime]: The local date and time to map into this time zone.
+  /// [SkippedTimeError]: The given local date/time is skipped in this time zone.
+  /// [AmbiguousTimeException]: The given local date/time is ambiguous in this time zone.
+  /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
+  factory ZonedDateTime.atStrictly(LocalDateTime localDateTime, DateTimeZone zone) =>
+      new ZonedDateTime.resolveLocal(localDateTime, zone, Resolvers.strictResolver);
+
+  /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
+  /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
+  /// by the duration of the "gap".
+  ///
+  /// See [atStrictly] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
+  /// specific instant.
+  /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
+  /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
+  /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
+  /// by using [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)], passing in a resolver
+  /// created from [Resolvers.returnLater] and [Resolvers.returnStartOfIntervalAfter].
+  ///
+  /// [localDateTime]: The local date/time to map.
+  /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
+  /// or the forward-shifted value if the given local date/time is skipped.
+  factory ZonedDateTime.atLeniently(LocalDateTime localDateTime, DateTimeZone zone) =>
+      new ZonedDateTime.resolveLocal(localDateTime, zone, Resolvers.lenientResolver);
+
+
   /// Gets the offset of the local representation of this value from UTC.
   Offset get offset => _offsetDateTime.offset;
 

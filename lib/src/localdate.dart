@@ -420,7 +420,7 @@ class LocalDate implements Comparable<LocalDate> {
   ZonedDateTime atStartOfDayInZone(DateTimeZone zone)
   {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.atStartOfDay(this);
+    return new ZonedDateTime.atStartOfDay(this, zone);
   }
 
   /// Creates a new LocalDate representing the same physical date, but in a different calendar.

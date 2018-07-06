@@ -531,6 +531,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   IZonedDateTime.trusted(IOffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
 
 
+  // todo: are these convenience functions still needed? (since we made the DateTimeZone ZonedDateTime constructors, constructors on ZonedDateTime?) 
   /// Returns the mapping of this local date/time within the given [DateTimeZone],
   /// with "strict" rules applied such that an exception is thrown if either the mapping is
   /// ambiguous or the time is skipped.
@@ -545,7 +546,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in the given time zone.
   ZonedDateTime inZoneStrictly(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.atStrictly(this);
+    return new ZonedDateTime.atStrictly(this, zone);
   }
 
 
@@ -566,7 +567,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in the given time zone.
   ZonedDateTime inZoneLeniently(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
-    return zone.atLeniently(this);
+    return new ZonedDateTime.atLeniently(this, zone);
   }
 
 
@@ -583,7 +584,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ZonedDateTime inZone(DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(resolver, 'resolver');
-    return zone.resolveLocal(this, resolver);
+    return new ZonedDateTime.resolveLocal(this, zone, resolver);
   }
 
 
