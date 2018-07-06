@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- Major API Changes (Sorry!)
+- Span (denotatively and connotatively wrong) to Time (to just connotatively wrong)
+- text_patterns moved to time_machine_text_patterns from time_machine global (still thinking about what things should be not visible by default)
+
 ## 0.4.1
 
 - Missed a logging reference (took it out).
