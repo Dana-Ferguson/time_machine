@@ -69,6 +69,7 @@ Todo (before v1):
    - [X] Second pass ergonomics updates
    - [X] Synchronous TZDB timezone provider
    - [ ] Review all I/O and associated classes and their structure
+   - [ ] Simplify the API and make the best use of named constructors
  - [ ] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
