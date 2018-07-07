@@ -42,7 +42,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       13,
       34,
       123); //.AddTicks(4567);
-  @private static final LocalTime SampleLocalTime = new LocalTime.fromHourMinuteSecondMillisecondTick(21, 13, 34, 123, 4567);
+  @private static final LocalTime SampleLocalTime = new LocalTime(21, 13, 34, 123, 4567 * TimeConstants.nanosecondsPerTick);
 
 // No BCL here. (also we'd need ExpectedCharacters to be a string?)
 // Characters we expect to work the same in Noda Time as in the BCL.
@@ -434,32 +434,32 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
   @internal final List<Data> TemplateValueData = [
     // Pattern specifies nothing - template value is passed through
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
+    new Data(new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "X"
       ..pattern = "'X'"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
     // Tests for each individual field being propagated
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
+    new Data(new LocalTime(1, 6, 7, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "mm:ss.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 2, 7, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "HH:ss.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 7, 3, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "HH:mm.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 7, 8, 4, 5 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07:08"
       ..pattern = "HH:mm:ss"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
@@ -792,37 +792,37 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..pattern = "%t",
 
     // Pattern specifies nothing - template value is passed through
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5))
+    new Data(new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "*"
       ..pattern = "%*"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
     // Tests for each individual field being propagated
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(1, 6, 7, 8, 9))
+    new Data(new LocalTime(1, 6, 7, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "mm:ss.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 2, 7, 8, 9))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 2, 7, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "HH:ss.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 7, 3, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "HH:mm.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 3, 8, 9))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 7, 3, 8, 9 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07.0080009"
       ..pattern = "HH:mm.FFFFFFF"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
-    new Data(new LocalTime.fromHourMinuteSecondMillisecondTick(6, 7, 8, 4, 5))
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
+    new Data(new LocalTime(6, 7, 8, 4, 5 * TimeConstants.nanosecondsPerTick))
       ..culture = TestCultures.EnUs
       ..text = "06:07:08"
       ..pattern = "HH:mm:ss"
-      ..template = new LocalTime.fromHourMinuteSecondMillisecondTick(1, 2, 3, 4, 5),
+      ..template = new LocalTime(1, 2, 3, 4, 5 * TimeConstants.nanosecondsPerTick),
 
     // Hours are tricky because of the ways they can be specified
     new Data(new LocalTime(6, 2, 3))
@@ -1071,7 +1071,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
   Data([LocalTime value = null]) : super(value ?? LocalTime.midnight);
 
   Data.hms(int hours, int minutes, int seconds, [int milliseconds = 0, int ticksWithinMillisecond = 0])
-      : super(new LocalTime.fromHourMinuteSecondMillisecondTick(hours, minutes, seconds, milliseconds, ticksWithinMillisecond));
+      : super(new LocalTime(hours, minutes, seconds, milliseconds, ticksWithinMillisecond * TimeConstants.nanosecondsPerTick));
 
   Data.nano(int hours, int minutes, int seconds, int /*long*/ nanoOfSecond)
       : super(new LocalTime(hours, minutes, seconds).plusNanoseconds(nanoOfSecond))

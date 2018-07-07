@@ -67,7 +67,7 @@ void InvalidConstructionToMillisecond(int hour, int minute, int second, int mill
 @TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond])
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
-  expect(() => new LocalTime.fromHourMinuteSecondMillisecondTick(hour, minute, second, millisecond, tick), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, second, millisecond, tick * TimeConstants.nanosecondsPerTick), throwsRangeError);
 }
 
 @Test()

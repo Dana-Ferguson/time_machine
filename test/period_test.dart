@@ -282,7 +282,7 @@ void BetweenLocalDateTimes_InvalidUnits()
 void BetweenLocalTimes_InvalidUnits()
 {
   LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t2 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
   expect(() => Period.betweenTimes(t1, t2, new PeriodUnits(0)), throwsArgumentError);
   expect(() => Period.betweenTimes(t1, t2, new PeriodUnits(-1)), throwsArgumentError);
   expect(() => Period.betweenTimes(t1, t2, PeriodUnits.yearMonthDay), throwsArgumentError);
@@ -313,7 +313,7 @@ void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits 
 void BetweenLocalTimes_MovingForwards()
 {
   LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t2 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
   expect(new Period.fromHours(5) + new Period.fromMinutes(30) + new Period.fromSeconds(45) +
       new Period.fromMilliseconds(20) + new Period.fromTicks(5),
       Period.betweenTimes(t1, t2));
@@ -322,7 +322,7 @@ void BetweenLocalTimes_MovingForwards()
 @Test()
 void BetweenLocalTimes_MovingBackwards()
 {
-  LocalTime t1 = new LocalTime.fromHourMinuteSecondMillisecondTick(15, 30, 45, 20, 5);
+  LocalTime t1 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
   LocalTime t2 = new LocalTime(10, 0);
   expect(new Period.fromHours(-5) + new Period.fromMinutes(-30) + new Period.fromSeconds(-45) +
       new Period.fromMilliseconds(-20) + new Period.fromTicks(-5),

@@ -201,9 +201,9 @@ void PlusMilliseconds_Simple()
 void PlusTicks_Simple()
 {
   LocalDate date = new LocalDate(2011, 4, 2);
-  LocalTime startTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
-  LocalTime expectedForwardTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
-  LocalTime expectedBackwardTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
+  LocalTime startTime = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, 301, 1500 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, 300, 3500 * TimeConstants.nanosecondsPerTick);
   expect(date.at(expectedForwardTime), (date.at(startTime)).plusTicks(4000));
   expect(date.at(expectedBackwardTime), (date.at(startTime)).plusTicks(-4000));
 }
@@ -224,9 +224,9 @@ void PlusNanoseconds_Simple()
 {
   // Just use the ticks values
   LocalDate date = new LocalDate(2011, 4, 2);
-  LocalTime startTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
-  LocalTime expectedForwardTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7540);
-  LocalTime expectedBackwardTime = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7460);
+  LocalTime startTime = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, 300, 7540 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, 300, 7460 * TimeConstants.nanosecondsPerTick);
   expect(date.at(expectedForwardTime), (date.at(startTime)).plusNanoseconds(4000));
   expect(date.at(expectedBackwardTime), (date.at(startTime)).plusNanoseconds(-4000));
 }

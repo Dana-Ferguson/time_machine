@@ -54,60 +54,31 @@ class LocalTime implements Comparable<LocalTime> {
   /// [minute]: The minute of the hour.
   /// [second]: The second of the minute.
   /// [millisecond]: The millisecond of the second.
+  /// [nanosecondWithinMillisecond]: The nanosecond within the millisecond in the desired time, in the range [0, 999999].
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
   /// Returns: The resulting time.
-  LocalTime(int hour, int minute, [int second = 0, int millisecond = 0]) :
-        _nanoseconds = _getNanosecondsFromHourMinuteSecondMillisecond(hour, minute, second, millisecond);
+  LocalTime(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecondWithinMillisecond = 0]) :
+        _nanoseconds = _getNanosecondsFromHourMinuteSecondMillisecond(hour, minute, second, millisecond, nanosecondWithinMillisecond);
 
-  static int _getNanosecondsFromHourMinuteSecondMillisecond(int hour, int minute, [int second = 0, int millisecond = 0]) {
-    // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
-        minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
-        second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
-        millisecond < 0 || millisecond > TimeConstants.millisecondsPerSecond - 1) {
-      Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
-      Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
-      Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
-      Preconditions.checkArgumentRange('millisecond', millisecond, 0, TimeConstants.millisecondsPerSecond - 1);
-    }
-    return (
-        hour * TimeConstants.nanosecondsPerHour +
-            minute * TimeConstants.nanosecondsPerMinute +
-            second * TimeConstants.nanosecondsPerSecond +
-            millisecond * TimeConstants.nanosecondsPerMillisecond);
-  }
-
-  // todo: this is a large amount of factory constructors -- can we condense with named parameters?
-
-  /// Factory method to create a local time at the given hour, minute, second, millisecond and tick within millisecond.
-  ///
-  /// [hour]: The hour of day.
-  /// [minute]: The minute of the hour.
-  /// [second]: The second of the minute.
-  /// [millisecond]: The millisecond of the second.
-  /// [tickWithinMillisecond]: The tick within the millisecond.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
-  /// Returns: The resulting time.
-  factory LocalTime.fromHourMinuteSecondMillisecondTick(int hour, int minute, int second, int millisecond, int tickWithinMillisecond) {
+  static int _getNanosecondsFromHourMinuteSecondMillisecond(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecondWithinMillisecond = 0]) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
         minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
         second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
         millisecond < 0 || millisecond > TimeConstants.millisecondsPerSecond - 1 ||
-        tickWithinMillisecond < 0 || tickWithinMillisecond > TimeConstants.ticksPerMillisecond - 1) {
+        nanosecondWithinMillisecond < 0 || nanosecondWithinMillisecond > TimeConstants.nanosecondsPerMillisecond) {
       Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
       Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
       Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
       Preconditions.checkArgumentRange('millisecond', millisecond, 0, TimeConstants.millisecondsPerSecond - 1);
-      Preconditions.checkArgumentRange('tickWithinMillisecond', tickWithinMillisecond, 0, TimeConstants.ticksPerMillisecond - 1);
+      Preconditions.checkArgumentRange('nanosecond', nanosecondWithinMillisecond, 0, TimeConstants.nanosecondsPerMillisecond - 1);
     }
-    int nanoseconds = (
+    return
         hour * TimeConstants.nanosecondsPerHour +
             minute * TimeConstants.nanosecondsPerMinute +
             second * TimeConstants.nanosecondsPerSecond +
             millisecond * TimeConstants.nanosecondsPerMillisecond +
-            tickWithinMillisecond * TimeConstants.nanosecondsPerTick);
-    return new LocalTime._fromNanoseconds(nanoseconds);
+            nanosecondWithinMillisecond;
   }
 
 

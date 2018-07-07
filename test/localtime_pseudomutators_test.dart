@@ -83,9 +83,9 @@ void PlusMilliseconds_Simple()
 @Test()
 void PlusTicks_Simple()
 {
-  LocalTime start = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 7500);
-  LocalTime expectedForward = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 301, 1500);
-  LocalTime expectedBackward = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 300, 3500);
+  LocalTime start = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedForward = new LocalTime(12, 15, 8, 301, 1500 * TimeConstants.nanosecondsPerTick);
+  LocalTime expectedBackward = new LocalTime(12, 15, 8, 300, 3500 * TimeConstants.nanosecondsPerTick);
   expect(expectedForward, start.plusTicks(4000));
   expect(expectedBackward, start.plusTicks(-4000));
 }
@@ -104,7 +104,7 @@ void PlusTicks_Long()
 @Test()
 void With()
 {
-  LocalTime start = new LocalTime.fromHourMinuteSecondMillisecondTick(12, 15, 8, 100, 1234);
+  LocalTime start = new LocalTime(12, 15, 8, 100, 1234 * TimeConstants.nanosecondsPerTick);
   LocalTime expected = new LocalTime(12, 15, 8);
   expect(expected, start.adjust(TimeAdjusters.truncateToSecond));
 }
