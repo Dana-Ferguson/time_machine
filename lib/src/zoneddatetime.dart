@@ -33,7 +33,7 @@ abstract class IZonedDateTime {
 /// `ZonedDateTime` does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases. 
 /// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort `ZonedDateTime`
 /// values, you should explicitly choose one of the orderings provided via the static properties in the
-/// [ZonedDateTime.Comparer] nested class (or implement your own comparison).
+/// [ZonedDateTimeComparer] nested class (or implement your own comparison).
 @immutable
 class ZonedDateTime {
   // todo: why isn't this exposed directly?
