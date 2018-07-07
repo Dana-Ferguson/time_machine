@@ -346,7 +346,7 @@ void Construct_FromLocal_ValidUnambiguousOffset()
   SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime.at(2000, 1, 2, 3, 4, seconds: 5);
-  ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.EarlyInterval.wallOffset);
+  ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.EarlyInterval.wallOffset);
   expect(zoned, local.inZoneStrictly(zone));
 }
 
@@ -356,7 +356,7 @@ void Construct_FromLocal_ValidEarlierOffset()
   SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime.at(2011, 6, 13, 1, 30);
-  ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.EarlyInterval.wallOffset);
+  ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.EarlyInterval.wallOffset);
 
   // Map the local time to the earlier of the offsets in a way which is tested elsewhere.
   var resolver = Resolvers.createMappingResolver(Resolvers.returnEarlier, Resolvers.throwWhenSkipped);
@@ -369,7 +369,7 @@ void Construct_FromLocal_ValidLaterOffset()
   SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime.at(2011, 6, 13, 1, 30);
-  ZonedDateTime zoned = new ZonedDateTime.fromLocal(local, zone, zone.LateInterval.wallOffset);
+  ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.LateInterval.wallOffset);
 
   // Map the local time to the later of the offsets in a way which is tested elsewhere.
   var resolver = Resolvers.createMappingResolver(Resolvers.returnLater, Resolvers.throwWhenSkipped);
@@ -383,7 +383,7 @@ void Construct_FromLocal_InvalidOffset()
 
   // Attempt to ask for the later offset in the earlier interval
   LocalDateTime local = new LocalDateTime.at(2000, 1, 1, 0, 0);
-  expect(() => new ZonedDateTime.fromLocal(local, zone, zone.LateInterval.wallOffset), throwsArgumentError);
+  expect(() => new ZonedDateTime.atOffset(local, zone, zone.LateInterval.wallOffset), throwsArgumentError);
 }
 
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar

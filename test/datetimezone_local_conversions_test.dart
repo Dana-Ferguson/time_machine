@@ -389,6 +389,6 @@ void ResolveLocal()
   // Don't need much for this - it only delegates.
   var ambiguous = new LocalDateTime.at(2009, 11, 1, 1, 30);
   var skipped = new LocalDateTime.at(2009, 3, 8, 2, 30);
-  expect(new ZonedDateTime.atLeniently(ambiguous, Pacific), new ZonedDateTime.resolveLocal(ambiguous, Pacific, Resolvers.lenientResolver));
-  expect(new ZonedDateTime.atLeniently(skipped, Pacific), new ZonedDateTime.resolveLocal(skipped, Pacific, Resolvers.lenientResolver));
+  expect(new ZonedDateTime.atLeniently(ambiguous, Pacific), new ZonedDateTime.resolve(ambiguous, Pacific, Resolvers.lenientResolver));
+  expect(new ZonedDateTime.atLeniently(skipped, Pacific), new ZonedDateTime.resolve(skipped, Pacific, Resolvers.lenientResolver));
 }

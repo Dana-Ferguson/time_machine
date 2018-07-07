@@ -229,7 +229,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     // No offset - so just use the resolver
     if ((usedFields & PatternFields.embeddedOffset).value == 0) {
       try {
-        return ParseResult.forValue<ZonedDateTime>(new ZonedDateTime.resolveLocal(localDateTime, _zone, _resolver));
+        return ParseResult.forValue<ZonedDateTime>(new ZonedDateTime.resolve(localDateTime, _zone, _resolver));
       }
       on SkippedTimeError {
         return IParseResult.skippedLocalTime<ZonedDateTime>(text);

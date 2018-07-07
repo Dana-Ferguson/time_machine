@@ -67,7 +67,7 @@ class ZonedDateTime {
   /// [offset]: The offset between UTC and local time at the desired instant.
   /// [ArgumentException]: [offset] is not a valid offset at the given
   /// local date and time.
-  factory ZonedDateTime.fromLocal(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
+  factory ZonedDateTime.atOffset(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
   {
     zone = Preconditions.checkNotNull(zone, 'zone');
     Instant candidateInstant = ILocalDateTime.toLocalInstant(localDateTime).minus(offset);
@@ -128,7 +128,7 @@ class ZonedDateTime {
   /// [localDateTime]: The local date and time to map in this time zone.
   /// [resolver]: The resolver to apply to the mapping.
   /// Returns: The result of resolving the mapping.
-  factory ZonedDateTime.resolveLocal(LocalDateTime localDateTime, DateTimeZone zone, ZoneLocalMappingResolver resolver) {
+  factory ZonedDateTime.resolve(LocalDateTime localDateTime, DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(resolver, 'resolver');
     return resolver(zone.mapLocal(localDateTime));
   }
@@ -147,7 +147,7 @@ class ZonedDateTime {
   /// [AmbiguousTimeException]: The given local date/time is ambiguous in this time zone.
   /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
   factory ZonedDateTime.atStrictly(LocalDateTime localDateTime, DateTimeZone zone) =>
-      new ZonedDateTime.resolveLocal(localDateTime, zone, Resolvers.strictResolver);
+      new ZonedDateTime.resolve(localDateTime, zone, Resolvers.strictResolver);
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
   /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
@@ -165,7 +165,7 @@ class ZonedDateTime {
   /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
   /// or the forward-shifted value if the given local date/time is skipped.
   factory ZonedDateTime.atLeniently(LocalDateTime localDateTime, DateTimeZone zone) =>
-      new ZonedDateTime.resolveLocal(localDateTime, zone, Resolvers.lenientResolver);
+      new ZonedDateTime.resolve(localDateTime, zone, Resolvers.lenientResolver);
 
 
   /// Gets the offset of the local representation of this value from UTC.

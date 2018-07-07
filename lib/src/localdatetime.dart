@@ -584,7 +584,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ZonedDateTime inZone(DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(resolver, 'resolver');
-    return new ZonedDateTime.resolveLocal(this, zone, resolver);
+    return new ZonedDateTime.resolve(this, zone, resolver);
   }
 
 
