@@ -184,7 +184,7 @@ class TimeMachine  {
   }
   
   static bool _isTheSame(DateTime dateTime, ZoneInterval zoneInterval) {
-    return _longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName == zoneInterval.name
+    return (_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) == zoneInterval.name
         && dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.seconds;
   }
 

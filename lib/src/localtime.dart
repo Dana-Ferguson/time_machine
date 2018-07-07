@@ -47,6 +47,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
 
+  // todo: is this okay ... is this too confusing??? Should we drop milliseconds and go full nanoseconds?
   /// Creates a local time at the given hour, minute, second and millisecond,
   /// with a tick-of-millisecond value of zero.
   ///
@@ -54,91 +55,36 @@ class LocalTime implements Comparable<LocalTime> {
   /// [minute]: The minute of the hour.
   /// [second]: The second of the minute.
   /// [millisecond]: The millisecond of the second.
-  /// [nanosecondWithinMillisecond]: The nanosecond within the millisecond in the desired time, in the range [0, 999999].
+  /// [nanosecond]: The nanosecond within the millisecond for the desired time, in the range [0, 999999], or the nanosecond
+  /// within the second for the desired time, in the range [0, 999999999]. [nanosecond] + [millisecond] must be less than 1 second.
+  ///
   /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
   /// Returns: The resulting time.
-  LocalTime(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecondWithinMillisecond = 0]) :
-        _nanoseconds = _getNanosecondsFromHourMinuteSecondMillisecond(hour, minute, second, millisecond, nanosecondWithinMillisecond);
-
-  static int _getNanosecondsFromHourMinuteSecondMillisecond(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecondWithinMillisecond = 0]) {
+  factory LocalTime(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecond = 0]) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
         minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
         second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
-        millisecond < 0 || millisecond > TimeConstants.millisecondsPerSecond - 1 ||
-        nanosecondWithinMillisecond < 0 || nanosecondWithinMillisecond > TimeConstants.nanosecondsPerMillisecond) {
+        millisecond < 0 || nanosecond < 0 ||
+        millisecond * TimeConstants.nanosecondsPerMillisecond + nanosecond > TimeConstants.nanosecondsPerMillisecond - 1) {
       Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
       Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
       Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
       Preconditions.checkArgumentRange('millisecond', millisecond, 0, TimeConstants.millisecondsPerSecond - 1);
-      Preconditions.checkArgumentRange('nanosecond', nanosecondWithinMillisecond, 0, TimeConstants.nanosecondsPerMillisecond - 1);
+      Preconditions.checkArgumentRange('nanosecond', nanosecond, 0, TimeConstants.nanosecondsPerSecond - 1);
+      var totalNanoseconds = millisecond * TimeConstants.nanosecondsPerMillisecond + nanosecond;
+      Preconditions.checkArgumentRange('millisecond + nanosecond', totalNanoseconds, 0, TimeConstants.nanosecondsPerSecond - 1);
     }
-    return
+
+    var nanoseconds =
         hour * TimeConstants.nanosecondsPerHour +
             minute * TimeConstants.nanosecondsPerMinute +
             second * TimeConstants.nanosecondsPerSecond +
             millisecond * TimeConstants.nanosecondsPerMillisecond +
-            nanosecondWithinMillisecond;
+            nanosecond;
+
+    return new LocalTime._fromNanoseconds(nanoseconds);
   }
-
-
-  /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and tick of second.
-  ///
-  /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
-  ///
-  /// [hour]: The hour of day in the desired time, in the range [0, 23].
-  /// [minute]: The minute of hour in the desired time, in the range [0, 59].
-  /// [second]: The second of minute in the desired time, in the range [0, 59].
-  /// [tickWithinSecond]: The tick within the second in the desired time, in the range [0, 9999999].
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
-  /// Returns: The resulting time.
-  factory LocalTime.fromHourMinuteSecondTick(int hour, int minute, int second, int tickWithinSecond) {
-    // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
-        minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
-        second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
-        tickWithinSecond < 0 || tickWithinSecond > TimeConstants.ticksPerSecond - 1) {
-      Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
-      Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
-      Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
-      Preconditions.checkArgumentRange('tickWithinSecond', tickWithinSecond, 0, TimeConstants.ticksPerSecond - 1);
-    }
-    return new LocalTime._fromNanoseconds((
-        hour * TimeConstants.nanosecondsPerHour +
-            minute * TimeConstants.nanosecondsPerMinute +
-            second * TimeConstants.nanosecondsPerSecond +
-            tickWithinSecond * TimeConstants.nanosecondsPerTick));
-  }
-
-
-  /// Factory method for creating a local time from the hour of day, minute of hour, second of minute, and nanosecond of second.
-  ///
-  /// This is not a constructor overload as it would have the same signature as the one taking millisecond of second.
-  ///
-  /// [hour]: The hour of day in the desired time, in the range [0, 23].
-  /// [minute]: The minute of hour in the desired time, in the range [0, 59].
-  /// [second]: The second of minute in the desired time, in the range [0, 59].
-  /// [nanosecondWithinSecond]: The nanosecond within the second in the desired time, in the range [0, 999999999].
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
-  /// Returns: The resulting time.
-  factory LocalTime.fromHourMinuteSecondNanosecond(int hour, int minute, int second, int nanosecondWithinSecond) {
-    // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
-        minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
-        second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
-        nanosecondWithinSecond < 0 || nanosecondWithinSecond > TimeConstants.nanosecondsPerSecond - 1) {
-      Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
-      Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
-      Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
-      Preconditions.checkArgumentRange('nanosecondWithinSecond', nanosecondWithinSecond, 0, TimeConstants.nanosecondsPerSecond - 1);
-    }
-    return new LocalTime._fromNanoseconds((
-        hour * TimeConstants.nanosecondsPerHour +
-            minute * TimeConstants.nanosecondsPerMinute +
-            second * TimeConstants.nanosecondsPerSecond +
-            nanosecondWithinSecond));
-  }
-
 
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
   LocalTime._fromNanoseconds(this._nanoseconds)

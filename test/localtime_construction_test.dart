@@ -62,9 +62,9 @@ void InvalidConstructionToMillisecond(int hour, int minute, int second, int mill
 @TestCase(const [0, 0, 60, 0, 0])
 @TestCase(const [0, 0, -1, 0, 0])
 @TestCase(const [0, 0, 0, -1, 0])
-@TestCase(const [0, 0, 0, 1000, 0])
+// @TestCase(const [0, 0, 0, 1000, 0]) -- removed since we're just merging milliseconds + nanoseconds
 @TestCase(const [0, 0, 0, 0, -1])
-@TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond])
+// @TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond]) -- removed since we're just merging milliseconds + nanoseconds
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
   expect(() => new LocalTime(hour, minute, second, millisecond, tick * TimeConstants.nanosecondsPerTick), throwsRangeError);
@@ -78,34 +78,10 @@ void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int secon
 @TestCase(const [0, 0, 60, 0])
 @TestCase(const [0, 0, -1, 0])
 @TestCase(const [0, 0, 0, -1])
-@TestCase(const [0, 0, 0, TimeConstants.ticksPerSecond])
-void FromHourMinuteSecondTick_Invalid(int hour, int minute, int second, int tick)
-{
-  expect(() => new LocalTime.fromHourMinuteSecondTick(hour, minute, second, tick), throwsRangeError);
-}
-
-@Test()
-void FromHourMinuteSecondTick_Valid()
-{
-  var result = new LocalTime.fromHourMinuteSecondTick(1, 2, 3, (TimeConstants.ticksPerSecond - 1));
-  expect(1, result.hour);
-  expect(2, result.minute);
-  expect(3, result.second);
-  expect((TimeConstants.ticksPerSecond - 1), result.tickOfSecond);
-}
-
-@Test()
-@TestCase(const [-1, 0, 0, 0])
-@TestCase(const [24, 0, 0, 0])
-@TestCase(const [0, -1, 0, 0])
-@TestCase(const [0, 60, 0, 0])
-@TestCase(const [0, 0, 60, 0])
-@TestCase(const [0, 0, -1, 0])
-@TestCase(const [0, 0, 0, -1])
 @TestCase(const [0, 0, 0, TimeConstants.nanosecondsPerSecond])
 void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, int nanosecond)
 {
-  expect(() => new LocalTime.fromHourMinuteSecondNanosecond(hour, minute, second, nanosecond), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, second, 0, nanosecond), throwsRangeError);
 }
 
 @Test()
