@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.5.1
+## 0.6.0
 - Removed the concept of `ticks` and replaced all the functions with `microseconds`;
   Rational: the only place `ticks` shows up as a concept is here `https://api.dartlang.org/stable/1.24.3/dart-core/Stopwatch/elapsedTicks.html`;
   `ticks` from .NET-land is 100 nanosecond unit of time; `ticks` from dart is based on a dynamic `frequency` number,

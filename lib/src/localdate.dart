@@ -279,7 +279,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [lhs]: The first value to compare
   /// [rhs]: The second value to compare
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
-  bool operator ==(dynamic other) => other is LocalDate && equals(other);
+  bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
 // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
 // naive comparisons.
@@ -405,7 +405,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// [other]: The value to compare this date with.
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool equals(LocalDate other) => this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool equals(LocalDate other) => other != null && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.
