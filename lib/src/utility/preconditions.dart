@@ -42,18 +42,16 @@ class Preconditions {
   /// trusting the argument value to be valid, and adding a check just for the sake of documentation - and to help find
   /// internal bugs during development.
   // [Conditional("DEBUG")]
-  static void debugCheckArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
-    // #if DEBUG
+  static bool debugCheckArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
     checkArgumentRange(paramName, value, minInclusive, maxInclusive);
-  // #endif
+    return true;
   }
 
   // [ContractAnnotation("expression:false => halt")]
   // [Conditional("DEBUG")]
-  static void debugCheckArgument(bool expression, String parameter, String message) {
-    // #if DEBUG
+  static bool debugCheckArgument(bool expression, String parameter, String message) {
     checkArgument(expression, parameter, message);
-  // #endif
+    return true;
   }
 
   // [ContractAnnotation("expression:false => halt")]

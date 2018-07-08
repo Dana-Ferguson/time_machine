@@ -28,8 +28,6 @@ class CalendarOrdinal {
     umAlQura, wondrous, size
   ];
 
-// todo: lowercase the members IAW dart-style guidelines (atm of porting this file, it crashed the analyzer, bad ... so, we have to do it later)
-
   /// Value indicating no day of the week; this will never be returned
   /// by any IsoDayOfWeek property, and is not valid as an argument to
   /// any method.

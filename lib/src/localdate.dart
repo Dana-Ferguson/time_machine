@@ -41,42 +41,38 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate._fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
   {
     if (calendar == null) {
-      Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.iso.minDays, CalendarSystem.iso.maxDays);
+      assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.iso.minDays, CalendarSystem.iso.maxDays));
       return new LocalDate._trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     } else {
-      Preconditions.debugCheckNotNull(calendar, 'calendar');
       return new LocalDate._trusted(calendar.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     }
   }
-  
+
   /// Constructs an instance for the given year, month and day in the specified or ISO calendar.
   ///
   /// [year]: The year. This is the "absolute year", so a value of 0 means 1 BC, for example.
   /// [month]: The month of year.
   /// [day]: The day of month.
   /// [calendar]: Calendar system in which to create the date, which defaults to the ISO calendar.
+  /// [era]: The era within which to create a date. Must be a valid era within the specified calendar.
   /// Returns: The resulting date.
   /// [RangeError]: The parameters do not form a valid date.
-  factory LocalDate(int year, int month, int day, [CalendarSystem calendar])
+  factory LocalDate(int year, int month, int day, [CalendarSystem calendar, Era era])
   {
-    GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(year, month, day);
-    return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, calendar?.ordinal ?? CalendarOrdinal.iso));
-  }
+    CalendarOrdinal ordinal;
+    if (calendar == null) {
+      if (era != null) year = CalendarSystem.iso.getAbsoluteYear(year, era);
+      GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(year, month, day);
+      ordinal = CalendarOrdinal.iso;
+    } else {
+      if (era != null) year = calendar.getAbsoluteYear(year, era);
+      calendar.validateYearMonthDay(year, month, day);
+      ordinal = calendar.ordinal;
+    }
 
-  /// Constructs an instance for the given era, year of era, month and day in the specified or ISO calendar.
-  ///
-  /// [era]: The era within which to create a date. Must be a valid era within the specified calendar.
-  /// [yearOfEra]: The year of era.
-  /// [month]: The month of year.
-  /// [day]: The day of month.
-  /// [calendar]: Calendar system in which to create the date.
-  /// Returns: The resulting date.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
-  factory LocalDate.forEra(Era era, int yearOfEra, int month, int day, [CalendarSystem calendar]) {
-    calendar ??= CalendarSystem.iso;
-    return new LocalDate(calendar.getAbsoluteYear(yearOfEra, era), month, day, calendar);
+    return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, ordinal));
   }
-
+  
   /// Gets the calendar system associated with this local date.
   CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
@@ -156,6 +152,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// [weekOfWeekYear]: ISO-8601 week of week year of value to return
   /// [dayOfWeek]: ISO-8601 day of week to return
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
+  ///
+  /// see: https://en.wikipedia.org/wiki/ISO_week_date
   factory LocalDate.fromWeekYearWeekAndDay(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
   => WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 

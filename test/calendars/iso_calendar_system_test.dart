@@ -129,7 +129,7 @@ void BeforeCommonEra()
 void BeforeCommonEra_BySpecifyingEra()
 {
   // Year -1 in absolute terms is 2BCE
-  LocalDate localDate = new LocalDate.forEra(Era.beforeCommon, 2, 1, 1);
+  LocalDate localDate = new LocalDate(2, 1, 1, CalendarSystem.iso, Era.beforeCommon);
   expect(Era.beforeCommon, localDate.era);
   expect(-1, localDate.year);
   expect(2, localDate.yearOfEra);
