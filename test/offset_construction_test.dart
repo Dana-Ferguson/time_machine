@@ -37,38 +37,6 @@ void FromSeconds_Invalid()
 }
 
 @Test()
-void FromMilliseconds_Valid()
-{
-  Offset value = new Offset.fromMilliseconds(-15 * TimeConstants.millisecondsPerMinute);
-  expect(-15 * TimeConstants.secondsPerMinute, value.seconds);
-  expect(-15 * TimeConstants.millisecondsPerMinute, value.milliseconds);
-}
-
-@Test()
-void FromMilliseconds_Invalid()
-{
-  int millis = 18 * TimeConstants.millisecondsPerHour + 1;
-  expect(() => new Offset.fromMilliseconds(millis), throwsRangeError);
-  expect(() => new Offset.fromMilliseconds(-millis), throwsRangeError);
-}
-
-@Test()
-void FromNanoseconds_Valid()
-{
-  Offset value = new Offset.fromNanoseconds(-15 * TimeConstants.nanosecondsPerMinute);
-  expect(-15 * TimeConstants.secondsPerMinute, value.seconds);
-  expect(-15 * TimeConstants.nanosecondsPerMinute, value.nanoseconds);
-}
-
-@Test()
-void FromNanoseconds_Invalid()
-{
-  int nanos = 18 * TimeConstants.nanosecondsPerHour + 1;
-  expect(() => new Offset.fromNanoseconds(nanos), throwsRangeError);
-  expect(() => new Offset.fromNanoseconds(-nanos), throwsRangeError);
-}
-
-@Test()
 void FromHours_Valid()
 {
   Offset value = new Offset.fromHours(-15);

@@ -259,34 +259,6 @@ class Offset implements Comparable<Offset> {
     return new Offset._(seconds);
   }
 
-  /// Returns an offset for the given milliseconds value, which may be negative.
-  ///
-  /// Offsets are only accurate to second precision; the given number of milliseconds is simply divided
-  /// by 1,000 to give the number of seconds - any remainder is truncated.
-  ///
-  /// [milliseconds]: The int milliseconds value.
-  /// Returns: An offset representing the given number of milliseconds, to the (truncated) second.
-  /// [ArgumentOutOfRangeException]: The specified number of milliseconds is outside the range of
-  /// [-18, +18] hours.
-  factory Offset.fromMilliseconds(int milliseconds) {
-    Preconditions.checkArgumentRange('milliseconds', milliseconds, _minMilliseconds, _maxMilliseconds);
-    return new Offset._(milliseconds ~/ TimeConstants.millisecondsPerSecond);
-  }
-  
-  /// Returns an offset for the given number of nanoseconds, which may be negative.
-  ///
-  /// Offsets are only accurate to second precision; the given number of nanoseconds is simply divided
-  /// by 1,000,000,000 to give the number of seconds - any remainder is truncated towards zero.
-  ///
-  /// [nanoseconds]: The number of nanoseconds specifying the length of the new offset.
-  /// Returns: An offset representing the given number of nanoseconds, to the (truncated) second.
-  /// [ArgumentOutOfRangeException]: The specified number of nanoseconds is outside the range of
-  /// [-18, +18] hours.
-  factory Offset.fromNanoseconds(int nanoseconds) {
-    Preconditions.checkArgumentRange('nanoseconds', nanoseconds, _minNanoseconds, _maxNanoseconds);
-    return new Offset._((nanoseconds ~/ TimeConstants.nanosecondsPerSecond));
-  }
-  
   /// Returns an offset for the specified number of hours, which may be negative.
   ///
   /// [hours]: The number of hours to represent in the new offset.
