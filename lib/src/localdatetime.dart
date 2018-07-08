@@ -121,34 +121,32 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   int get microsecondOfDay => time.microsecondOfDay;
 
-  /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
-  /// of [DateTimeKind.Unspecified].
+  /// Constructs a [DateTime] from this value which has a [DateTime.isUtc] == false;
   ///
-  /// * [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
-  /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
-  /// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
-  /// the Time Machine non-system-specific "local" concept as exists in .NET.
+  /// If the date and time is not on a millisecond\microsecond boundary (the unit of granularity of DateTime on web\vm),
+  /// the value will be truncated towards the start of time.
   ///
-  /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
-  /// towards the start of time.
-  ///
-  /// * [InvalidOperationException]: The date/time is outside the range of `DateTime`.
   /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime toDateTimeLocal() {
-    //int ticks = TickArithmetic.BoundedDaysAndTickOfDayToTicks(date.DaysSinceEpoch, time.TickOfDay) + TimeConstants.BclTicksAtUnixEpoch;
-    //if (ticks < 0)
-    //{
-    //throw new StateError("LocalDateTime out of range of DateTime");
-    //}
-    // todo: on VM we should supply the microsecond
-    return new DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.hour,
-        time.minute,
-        time.second,
-        time.millisecond);
+    if (Platform.isWeb) {
+      return new DateTime(
+          date.year,
+          date.month,
+          date.day,
+          time.hour,
+          time.minute,
+          time.second,
+          time.millisecond);
+    } else {
+      return new DateTime(
+          date.year,
+          date.month,
+          date.day,
+          time.hour,
+          time.minute,
+          time.second,
+          time.microsecondOfSecond);
+    }
   }
 
 
@@ -162,14 +160,25 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [calendar]: The calendar system to convert into, defaults to [LocalDateTime] in the ISO calendar.
   /// Returns: A new [LocalDateTime] with the same values as the specified `DateTime`.
   factory LocalDateTime.fromDateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
-    var ms = dateTime.millisecondsSinceEpoch;
-    var days = ms ~/ TimeConstants.millisecondsPerDay; // - 1;
-    ms -= days * TimeConstants.millisecondsPerDay;
+    int ns;
+    int days;
 
-    if (calendar == null) return new LocalDateTime(
-        ILocalDate.fromDaysSinceEpoch(days), ILocalTime.trustedNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
-    return new LocalDateTime(ILocalDate.fromDaysSinceEpoch(days, calendar),
-        ILocalTime.trustedNanoseconds(ms * TimeConstants.nanosecondsPerMillisecond));
+    if (Platform.isWeb) {
+      var ms = dateTime.millisecondsSinceEpoch;
+      days = ms ~/ TimeConstants.millisecondsPerDay;
+      ms -= days * TimeConstants.millisecondsPerDay;
+      ns = ms * TimeConstants.nanosecondsPerMillisecond;
+    }
+    else {
+      var us = dateTime.microsecondsSinceEpoch;
+      days = us ~/ TimeConstants.microsecondsPerDay;
+      us -= days * TimeConstants.microsecondsPerDay;
+      ns = us * TimeConstants.nanosecondsPerMicrosecond;
+    }
+
+    return new LocalDateTime(
+        ILocalDate.fromDaysSinceEpoch(days, calendar),
+        ILocalTime.trustedNanoseconds(ns));
   }
 
   /// Indicates whether the current object is equal to another object of the same type.

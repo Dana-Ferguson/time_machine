@@ -163,7 +163,7 @@ class LocalTime implements Comparable<LocalTime> {
     return secondOfDay % TimeConstants.secondsPerMinute;
   }
 
-
+  // todo: millisecondOfSecond to match the others?
   /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
   int get millisecond {
     int milliSecondOfDay = (_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond);
