@@ -52,83 +52,77 @@ class TimePeriodField
 
   LocalTime addTime(LocalTime localTime, int value)
   {
-    // unchecked
+    // Arithmetic with a LocalTime wraps round, and every unit divides exactly
+    // into a day, so we can make sure we add a value which is less than a day.
+    if (value >= 0)
     {
-      // Arithmetic with a LocalTime wraps round, and every unit divides exactly
-      // into a day, so we can make sure we add a value which is less than a day.
-      if (value >= 0)
+      if (value >= _unitsPerDay)
       {
-        if (value >= _unitsPerDay)
-        {
-          value = value % _unitsPerDay;
-        }
-        int nanosToAdd = value * _unitNanoseconds;
-        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
-        if (newNanos >= TimeConstants.nanosecondsPerDay)
-        {
-          newNanos -= TimeConstants.nanosecondsPerDay;
-        }
-        return ILocalTime.fromNanoseconds(newNanos);
+        value = value % _unitsPerDay;
       }
-      else
+      int nanosToAdd = value * _unitNanoseconds;
+      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      if (newNanos >= TimeConstants.nanosecondsPerDay)
       {
-        if (value <= -_unitsPerDay)
-        {
-          value = -(-value % _unitsPerDay);
-        }
-        int nanosToAdd = value * _unitNanoseconds;
-        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
-        if (newNanos < 0)
-        {
-          newNanos += TimeConstants.nanosecondsPerDay;
-        }
-        return ILocalTime.fromNanoseconds(newNanos);
+        newNanos -= TimeConstants.nanosecondsPerDay;
       }
+      return ILocalTime.fromNanoseconds(newNanos);
+    }
+    else
+    {
+      if (value <= -_unitsPerDay)
+      {
+        value = -(-value % _unitsPerDay);
+      }
+      int nanosToAdd = value * _unitNanoseconds;
+      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      if (newNanos < 0)
+      {
+        newNanos += TimeConstants.nanosecondsPerDay;
+      }
+      return ILocalTime.fromNanoseconds(newNanos);
     }
   }
 
   _AddTimeResult addTimeAndDays(LocalTime localTime, int value, /*ref*/ int extraDays) {
     // if (extraDays == null) return AddTimeSimple(localTime, value);
 
-    // unchecked
-    {
-      if (value == 0) {
-        return new _AddTimeResult(localTime, extraDays);
+    if (value == 0) {
+      return new _AddTimeResult(localTime, extraDays);
+    }
+    int days = 0;
+    // It's possible that there are better ways to do this, but this at least feels simple.
+    if (value >= 0) {
+      if (value >= _unitsPerDay) {
+        int longDays = value ~/ _unitsPerDay;
+        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
+        days = /*checked*/ (longDays);
+        value = value % _unitsPerDay;
       }
-      int days = 0;
-      // It's possible that there are better ways to do this, but this at least feels simple.
-      if (value >= 0) {
-        if (value >= _unitsPerDay) {
-          int longDays = value ~/ _unitsPerDay;
-          // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
-          days = /*checked*/ (longDays);
-          value = value % _unitsPerDay;
-        }
-        int nanosToAdd = value * _unitNanoseconds;
-        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
-        if (newNanos >= TimeConstants.nanosecondsPerDay) {
-          newNanos -= TimeConstants.nanosecondsPerDay;
-          days = /*checked*/(days + 1);
-        }
-        extraDays = /*checked*/(extraDays + days);
-        return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
+      int nanosToAdd = value * _unitNanoseconds;
+      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      if (newNanos >= TimeConstants.nanosecondsPerDay) {
+        newNanos -= TimeConstants.nanosecondsPerDay;
+        days = /*checked*/(days + 1);
       }
-      else {
-        if (value <= -_unitsPerDay) {
-          int longDays = value ~/ _unitsPerDay;
-          // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
-          days = /*checked*/(longDays);
-          value = -(-value % _unitsPerDay);
-        }
-        int nanosToAdd = value * _unitNanoseconds;
-        int newNanos = localTime.nanosecondOfDay + nanosToAdd;
-        if (newNanos < 0) {
-          newNanos += TimeConstants.nanosecondsPerDay;
-          days = /*checked*/(days - 1);
-        }
-        extraDays = /*checked*/(days + extraDays);
-        return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
+      extraDays = /*checked*/(extraDays + days);
+      return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
+    }
+    else {
+      if (value <= -_unitsPerDay) {
+        int longDays = value ~/ _unitsPerDay;
+        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
+        days = /*checked*/(longDays);
+        value = -(-value % _unitsPerDay);
       }
+      int nanosToAdd = value * _unitNanoseconds;
+      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      if (newNanos < 0) {
+        newNanos += TimeConstants.nanosecondsPerDay;
+        days = /*checked*/(days - 1);
+      }
+      extraDays = /*checked*/(days + extraDays);
+      return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
     }
   }
 
