@@ -35,6 +35,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Constructs an instance from values which are assumed to already have been validated.
   LocalDate._trusted(this._yearMonthDayCalendar);
 
+  // todo: I want to expose `daysSinceEpoch` logic, is there a downside to this?
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
   factory LocalDate._fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
@@ -142,8 +143,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
   factory LocalDate.fromDateTime(DateTime dateTime, [CalendarSystem calendar])
   {
-    // todo: we might want to make this so it's microseconds on VM and milliseconds on JS
-    int days = _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
+    int days = Platform.isWeb
+        ? (dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay)
+        : _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
     return new LocalDate._fromDaysSinceEpoch(days, calendar);
   }
 
@@ -279,7 +281,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// [lhs]: The first value to compare
   /// [rhs]: The second value to compare
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
-  bool operator ==(dynamic rhs) => rhs is LocalDate && this._yearMonthDayCalendar == rhs._yearMonthDayCalendar;
+  bool operator ==(dynamic other) => other is LocalDate && equals(other);
 
 // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
 // naive comparisons.
@@ -400,13 +402,12 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: A hash code for this local date.
   @override int get hashCode => _yearMonthDayCalendar.hashCode;
 
-  // todo: consider removing -- does this make since in Dart?
   /// Compares two [LocalDate] values for equality. This requires
   /// that the dates be the same, within the same calendar.
   ///
   /// [other]: The value to compare this date with.
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool equals(LocalDate other) => this == other;
+  bool equals(LocalDate other) => this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.
