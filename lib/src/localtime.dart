@@ -107,8 +107,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
   LocalTime._(this._nanoseconds)
   {
-    // todo: look at farming debug 
-    // Preconditions.debugCheckArgumentRange('nanoseconds', _nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
     assert(_nanoseconds >= 0 && _nanoseconds < TimeConstants.nanosecondsPerDay, 'nanoseconds ($_nanoseconds) must be >= 0 and < ${TimeConstants.nanosecondsPerDay}.');
   }
 

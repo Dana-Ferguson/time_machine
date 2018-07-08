@@ -5,7 +5,7 @@
   Rational: the only place `ticks` shows up as a concept is here `https://api.dartlang.org/stable/1.24.3/dart-core/Stopwatch/elapsedTicks.html`;
   `ticks` from .NET-land is 100 nanosecond unit of time; `ticks` from dart is based on a dynamic `frequency` number,
   on my machines it's 1 us in the browser and 1 ns in the vm.
-- Simplified LocalTime constructors
+- Simplified LocalTime constructors; now one generic + one that takes a [Time] sinceMidnight. (from 7 initial)
 
 ## 0.5.0
 
