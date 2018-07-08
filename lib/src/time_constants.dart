@@ -38,7 +38,6 @@ class TimeConstants {
   static const int millisecondsPerDay = millisecondsPerHour * hoursPerDay;
   static const int millisecondsPerWeek = millisecondsPerDay * daysPerWeek;
 
-  // static const int nanosecondsPerTick = 100;
   static const int nanosecondsPerMicrosecond = 1000;
   static const int nanosecondsPerSecond = nanosecondsPerMillisecond * millisecondsPerSecond;
   static const int nanosecondsPerMillisecond = nanosecondsPerMicrosecond * microsecondsPerMillisecond;
@@ -46,17 +45,6 @@ class TimeConstants {
   static const int nanosecondsPerHour = nanosecondsPerMinute * minutesPerHour;
   static const int nanosecondsPerDay = nanosecondsPerHour * hoursPerDay;
   static const int nanosecondsPerWeek = nanosecondsPerDay * daysPerWeek;
-
-  // the only place `ticks` shows up as a concept is here `https://api.dartlang.org/stable/1.24.3/dart-core/Stopwatch/elapsedTicks.html`
-  // `ticks` is from Windows-land, and is a 100 nanosecond unit of time; `ticks` from dart is based on a dynamic `frequency` number,
-  // which is 1 us in the browser and 1 ns in the vm. I herby, retire the concept of tick.
-  /*static const int ticksPerMicrosecond = ticksPerMillisecond ~/ microsecondsPerMillisecond;
-  static const int ticksPerMillisecond = 10000;
-  static const int ticksPerSecond = ticksPerMillisecond * millisecondsPerSecond;
-  static const int ticksPerMinute = ticksPerSecond * secondsPerMinute;
-  static const int ticksPerHour = ticksPerMinute * minutesPerHour;
-  static const int ticksPerDay = ticksPerHour * hoursPerDay;
-  static const int ticksPerWeek = ticksPerDay * daysPerWeek;*/
 
   /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
   static final Instant unixEpoch = new Instant.fromUnixTimeSeconds(0);
