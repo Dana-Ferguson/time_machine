@@ -7,6 +7,8 @@
   on my machines it's 1 us in the browser and 1 ns in the vm.
 - Simplified LocalTime constructors; now one generic + one that takes a `Time` sinceMidnight. (from 7 initial)
 - Added microsecond/millisecond logic around `DateTime` conversions wrt `Platform`
+- Cleaned up Offset - removed subsecond constructors, since Offset can't be subsecond, and made the fromSeconds constructor
+  the default constructor.
 
 ## 0.5.0
 
