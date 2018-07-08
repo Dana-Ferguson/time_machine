@@ -5,8 +5,7 @@
 import 'package:quiver_hashcode/hashcode.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// todo: YearMonthDay_Calendar packing didn't work on VM (with the masks -- packing actually worked!), I don't think this packing works on JS, we'll need to drop it (or investigate a better solution)
-// todo: #2: yeap -- this didn't work on JS -- I feel like it should thought (get it working now! investigate later)
+// todo: bit packing didn't work on JS -- I feel like it should though (getting the class functional now, will investigate later)
 @internal
 class YearMonthDay implements Comparable<YearMonthDay> {
   final int year;
@@ -25,7 +24,6 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     }
 
     var bits = text.split('-');
-    // todo: , CultureInfo.InvariantCulture))
     return new YearMonthDay(
         int.parse(bits[0]),
         int.parse(bits[1]),
@@ -45,7 +43,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
 
   int compareTo(YearMonthDay other) {
     if (other == null) return 1;
-    
+
     int comparison;
     if ((comparison = year.compareTo(other.year)) != 0) return comparison;
     if ((comparison = month.compareTo(other.month)) != 0) return comparison;
