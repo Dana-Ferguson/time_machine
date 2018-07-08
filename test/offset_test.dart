@@ -22,8 +22,8 @@ Future main() async {
 @Test()
 void Max()
 {
-  Offset x = new Offset.fromSeconds(100);
-  Offset y = new Offset.fromSeconds(200);
+  Offset x = new Offset(100);
+  Offset y = new Offset(200);
   expect(y, Offset.max(x, y));
   expect(y, Offset.max(y, x));
   expect(x, Offset.max(x, Offset.minValue));
@@ -35,8 +35,8 @@ void Max()
 @Test()
 void Min()
 {
-  Offset x = new Offset.fromSeconds(100);
-  Offset y = new Offset.fromSeconds(200);
+  Offset x = new Offset(100);
+  Offset y = new Offset(200);
   expect(x, Offset.min(x, y));
   expect(x, Offset.min(y, x));
   expect(Offset.minValue, Offset.min(x, Offset.minValue));
@@ -78,7 +78,7 @@ void FromTimeSpan_Simple()
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Offset.fromSeconds();
+  var actual = new Offset();
   expect(Offset.zero, actual);
 }
 

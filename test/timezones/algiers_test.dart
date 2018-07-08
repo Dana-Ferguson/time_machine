@@ -43,7 +43,7 @@ void GetPeriod_AfterLastTransition()
 {
   var may1981 = new ZonedDateTime.atStrictly(new LocalDateTime.at(1981, 5, 1, 0, 0, seconds: 1), DateTimeZone.utc).toInstant();
   var actual = Algiers.getZoneInterval(may1981);
-  var expected = IZoneInterval.newZoneInterval("CET", new Instant.fromUnixTimeMicroseconds(357523200000000), null, new Offset.fromSeconds(TimeConstants.secondsPerHour), Offset.zero);
+  var expected = IZoneInterval.newZoneInterval("CET", new Instant.fromUnixTimeMicroseconds(357523200000000), null, new Offset(TimeConstants.secondsPerHour), Offset.zero);
   expect(expected, actual);
 }
 

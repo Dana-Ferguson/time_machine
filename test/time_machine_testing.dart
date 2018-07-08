@@ -55,7 +55,7 @@ abstract class TestObjects {
     Preconditions.checkArgumentRange('seconds', seconds, 0, 59);
     seconds += minutes * TimeConstants.secondsPerMinute;
     seconds += hours * TimeConstants.secondsPerHour;
-    return new Offset.fromSeconds(seconds);
+    return new Offset(seconds);
   }
 
   /// Creates a negative offset from the given values.
@@ -66,6 +66,6 @@ abstract class TestObjects {
   /// Returns: A new [Offset] representing the given values.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   static Offset CreateNegativeOffset(int hours, int minutes, int seconds) {
-    return new Offset.fromSeconds(-CreatePositiveOffset(hours, minutes, seconds).seconds);
+    return new Offset(-CreatePositiveOffset(hours, minutes, seconds).seconds);
   }
 }

@@ -59,7 +59,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   // new FakeDateTimeZoneSourceBuilder([TestZone1, TestZone2, TestZone3]).Build().ToProvider();
   @private static final DateTimeZone FixedPlus1 = new FixedDateTimeZone.forOffset(new Offset.fromHours(1));
   @private static final DateTimeZone FixedWithMinutes = new FixedDateTimeZone.forOffset(new Offset.fromHoursAndMinutes(1, 30));
-  @private static final DateTimeZone FixedWithSeconds = new FixedDateTimeZone.forOffset(new Offset.fromSeconds(5));
+  @private static final DateTimeZone FixedWithSeconds = new FixedDateTimeZone.forOffset(new Offset(5));
   @private static final DateTimeZone FixedMinus1 = new FixedDateTimeZone.forOffset(new Offset.fromHours(-1));
 
 // todo: @SkipMe.unimplemented()

@@ -174,6 +174,6 @@ class _OffsetParseBucket extends ParseBucket<Offset> {
     if (isNegative) {
       totalSeconds = -totalSeconds;
     }
-    return ParseResult.forValue<Offset>(new Offset.fromSeconds(totalSeconds));
+    return ParseResult.forValue<Offset>(new Offset(totalSeconds));
   }
 }

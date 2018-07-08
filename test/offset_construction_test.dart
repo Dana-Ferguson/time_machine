@@ -24,7 +24,7 @@ void Zero()
 @Test()
 void FromSeconds_Valid()
 {
-  var test = new Offset.fromSeconds(12345);
+  var test = new Offset(12345);
   expect(12345, test.seconds);
 }
 
@@ -32,8 +32,8 @@ void FromSeconds_Valid()
 void FromSeconds_Invalid()
 {
   int seconds = 18 * TimeConstants.secondsPerHour + 1;
-  expect(() => new Offset.fromSeconds(seconds), throwsRangeError);
-  expect(() => new Offset.fromSeconds(-seconds), throwsRangeError);
+  expect(() => new Offset(seconds), throwsRangeError);
+  expect(() => new Offset(-seconds), throwsRangeError);
 }
 
 @Test()

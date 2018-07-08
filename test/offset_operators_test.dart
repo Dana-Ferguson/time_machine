@@ -26,9 +26,9 @@ final Offset NegativeTwelveHours = TestObjects.CreateNegativeOffset(12, 0, 0);
 @Test()
 void IEquatableIComparable_Tests()
 {
-  var value = new Offset.fromSeconds(12345);
-  var equalValue = new Offset.fromSeconds(12345);
-  var greaterValue = new Offset.fromSeconds(54321);
+  var value = new Offset(12345);
+  var equalValue = new Offset(12345);
+  var greaterValue = new Offset(54321);
 
   TestHelper.TestEqualsStruct(value, equalValue, [greaterValue]);
   TestHelper.TestCompareToStruct(value, equalValue, [greaterValue]);
@@ -49,16 +49,16 @@ void UnaryPlusOperator()
 void NegateOperator()
 {
   expect(Offset.zero, -Offset.zero, reason: "-0");
-  expect(new Offset.fromSeconds(-1), -new Offset.fromSeconds(1), reason: "-1");
-  expect(new Offset.fromSeconds(7), -new Offset.fromSeconds(-7), reason: "- (-7)");
+  expect(new Offset(-1), -new Offset(1), reason: "-1");
+  expect(new Offset(7), -new Offset(-7), reason: "- (-7)");
 }
 
 @Test()
 void NegateMethod()
 {
   expect(Offset.zero, Offset.negate(Offset.zero), reason: "-0");
-  expect(new Offset.fromSeconds(-1), Offset.negate(new Offset.fromSeconds(1)), reason: "-1");
-  expect(new Offset.fromSeconds(7), Offset.negate(new Offset.fromSeconds(-7)), reason: "- (-7)");
+  expect(new Offset(-1), Offset.negate(new Offset(1)), reason: "-1");
+  expect(new Offset(7), Offset.negate(new Offset(-7)), reason: "- (-7)");
 }
 
 // #region operator +

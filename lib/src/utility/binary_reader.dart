@@ -20,8 +20,8 @@ class BinaryReader {
   // int readInt64() { var i64 = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN); _offset +=8; print('READ ${i64}!!!!'); return i64; }
   int readUint8() => binary.getUint8(_offset++);
   bool readBool() => readUint8() == 1;
-  Offset readOffsetSeconds() => new Offset.fromSeconds(read7BitEncodedInt());
-  Offset readOffsetSeconds2() => new Offset.fromSeconds(readInt32());
+  Offset readOffsetSeconds() => new Offset(read7BitEncodedInt());
+  Offset readOffsetSeconds2() => new Offset(readInt32());
   
   // JS Compatible version of readInt64
   int readInt64() {

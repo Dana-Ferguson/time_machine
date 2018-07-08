@@ -16,9 +16,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 ///
 /// Offsets are always in the range of [-18, +18] hours. (Note that the ends are inclusive,
 /// so an offset of 18 hours can be represented, but an offset of 18 hours and one second cannot.)
-/// This allows all offsets within TZDB to be represented. The BCL [DateTimeOffset] type
-/// only allows offsets up to 14 hours, which means some historical data within TZDB could not be
-/// represented.
+/// This allows all offsets within TZDB to be represented.
 ///
 /// Offsets are represented with a granularity of one second. This allows all offsets within TZDB
 /// to be represented. It is possible that it could present issues to some other time zone data sources,
@@ -27,7 +25,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 class Offset implements Comparable<Offset> {
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.
-  static final Offset zero = new Offset.fromSeconds(0);
+  static final Offset zero = new Offset(0);
 
   /// The minimum permitted offset; 18 hours before UTC.
   static final Offset minValue = new Offset.fromHours(-18);
@@ -39,28 +37,16 @@ class Offset implements Comparable<Offset> {
   static const int _maxHours = 18;
   static const int _minSeconds = -18 * TimeConstants.secondsPerHour;
   static const int _maxSeconds = 18 * TimeConstants.secondsPerHour;
-  static const int _minMilliseconds = -18 * TimeConstants.millisecondsPerHour;
-  static const int _maxMilliseconds = 18 * TimeConstants.millisecondsPerHour;
-  static const int _minNanoseconds = -18 * TimeConstants.nanosecondsPerHour;
-  static const int _maxNanoseconds = 18 * TimeConstants.nanosecondsPerHour;
 
   /// Gets the number of seconds represented by this offset, which may be negative.
   final int seconds;
 
-  // todo: look at combining with fromSeconds()???
   /// Initializes a new instance of the [Offset] struct.
   ///
   /// [seconds]: The number of seconds in the offset.
   Offset._([this.seconds = 0]) {
-    // Preconditions.debugCheckArgumentRange('seconds', _seconds, minSeconds, maxSeconds);
-    assert(seconds >= _minSeconds && seconds <= _maxSeconds, 'seconds ($seconds) should be >= $_minSeconds && <= $_maxSeconds');
+    assert(Preconditions.debugCheckArgumentRange('seconds', seconds, _minSeconds, _maxSeconds));
   }
-
-// Offset.fromHours(int hours) : this(hours * TimeConstants.secondsPerHour);
-
-  // todo: constant?
-  Time toSpan() => new Time(seconds: seconds);
-
 
   /// Gets the number of milliseconds represented by this offset, which may be negative.
   ///
@@ -121,7 +107,7 @@ class Offset implements Comparable<Offset> {
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   /// Returns: A new [Offset] representing the sum of the given values.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-  Offset operator +(Offset right) => new Offset.fromSeconds(seconds + right.seconds);
+  Offset operator +(Offset right) => new Offset(seconds + right.seconds);
 
 
   /// Adds one Offset to another. Friendly alternative to `operator+()`.
@@ -150,7 +136,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] representing the difference of the given values.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   Offset operator -(Offset subtrahend) =>
-      new Offset.fromSeconds(seconds - subtrahend.seconds);
+      new Offset(seconds - subtrahend.seconds);
 
 
   /// Subtracts one Offset from another. Friendly alternative to `operator-()`.
@@ -247,14 +233,13 @@ class Offset implements Comparable<Offset> {
   @override String toString([String patternText, Culture culture]) =>
       OffsetPatterns.format(this, patternText, culture);
 
-  // todo: I still feel like Offset has a ridiculous amount of from[x] constructors
   /// Returns an offset for the given seconds value, which may be negative.
   ///
   /// [seconds]: The int seconds value.
   /// Returns: An offset representing the given number of seconds.
   /// [ArgumentOutOfRangeException]: The specified number of seconds is outside the range of
   /// [-18, +18] hours.
-  factory Offset.fromSeconds([int seconds = 0]) {
+  factory Offset([int seconds = 0]) {
     Preconditions.checkArgumentRange('seconds', seconds, _minSeconds, _maxSeconds);
     return new Offset._(seconds);
   }
@@ -282,20 +267,23 @@ class Offset implements Comparable<Offset> {
   /// Returns: An offset representing the given value.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   factory Offset.fromHoursAndMinutes(int hours, int minutes) =>
-      new Offset.fromSeconds(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
+      new Offset(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
   /// Converts this offset to a [Duration] value.
   Duration toDuration() => new Duration(seconds: seconds);
-  
+
+  /// Converts this offset to a [Time] value.
+  Time toTime() => new Time(seconds: seconds);
+
   /// Converts the given [Duration] to an offset, with fractional seconds truncated.
   ///
   /// [timeSpan]: The [Duration] to convert
   /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
   /// Returns: An offset for the same time as the given time span.
-  factory Offset.fromDuration(Duration timeSpan) {
-    int seconds = timeSpan.inSeconds;
-    Preconditions.checkArgumentRange('timeSpan', seconds, _minMilliseconds, _maxMilliseconds);
-    return new Offset.fromSeconds(seconds);
+  factory Offset.fromDuration(Duration duration) {
+    int seconds = duration.inSeconds;
+    Preconditions.checkArgumentRange('duration', seconds, _minSeconds, _maxSeconds);
+    return new Offset(seconds);
   }
 
   /// Converts the given [Time] to an offset, with fractional seconds truncated.
@@ -303,9 +291,9 @@ class Offset implements Comparable<Offset> {
   /// [timeSpan]: The [Time] to convert
   /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
   /// Returns: An offset for the same time as the given time span.
-  factory Offset.fromSpan(Time timeSpan) {
-    int seconds = timeSpan.totalSeconds.floor();
-    Preconditions.checkArgumentRange('timeSpan', seconds, _minSeconds, _maxSeconds);
-    return new Offset.fromSeconds(seconds);
+  factory Offset.fromTime(Time time) {
+    int seconds = time.totalSeconds.floor();
+    Preconditions.checkArgumentRange('time', seconds, _minSeconds, _maxSeconds);
+    return new Offset(seconds);
   }
 }

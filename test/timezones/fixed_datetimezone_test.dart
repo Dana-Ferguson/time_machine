@@ -148,12 +148,12 @@ void Roundtrip()
 @Test()
 void Equals()
 {
-  TestHelper.TestEqualsClass(new FixedDateTimeZone.forOffset(new Offset.fromSeconds(300)),
-      new FixedDateTimeZone.forOffset(new Offset.fromSeconds(300)),
-      [new FixedDateTimeZone.forOffset(new Offset.fromSeconds(500))]);
+  TestHelper.TestEqualsClass(new FixedDateTimeZone.forOffset(new Offset(300)),
+      new FixedDateTimeZone.forOffset(new Offset(300)),
+      [new FixedDateTimeZone.forOffset(new Offset(500))]);
 
-  TestHelper.TestEqualsClass(new FixedDateTimeZone.forIdOffset("Foo", new Offset.fromSeconds(300)),
-      new FixedDateTimeZone.forIdOffset("Foo", new Offset.fromSeconds(300)),
-      [new FixedDateTimeZone.forIdOffset("Bar", new Offset.fromSeconds(300))]);
+  TestHelper.TestEqualsClass(new FixedDateTimeZone.forIdOffset("Foo", new Offset(300)),
+      new FixedDateTimeZone.forIdOffset("Foo", new Offset(300)),
+      [new FixedDateTimeZone.forIdOffset("Bar", new Offset(300))]);
 }
 

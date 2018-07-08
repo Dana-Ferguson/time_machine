@@ -88,7 +88,7 @@ class Instant implements Comparable<Instant> {
   Instant minus(Time time) => new Instant._untrusted(_epochTime - time);
 
   LocalInstant _plusOffset(Offset offset) {
-    return new LocalInstant(_epochTime + offset.toSpan());
+    return new LocalInstant(_epochTime + offset.toTime());
   }
 
   LocalInstant _safePlus(Offset offset) {
