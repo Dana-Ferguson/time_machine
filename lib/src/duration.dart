@@ -35,7 +35,7 @@ abstract class ITime {
 
   // todo: Convert to BigInt for Dart 2.0
   static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
-  static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1
+  static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1;
 
   // 285420 years worth -- we are good for anything;
   static const int maxMillis = Platform.intMaxValueJS;
