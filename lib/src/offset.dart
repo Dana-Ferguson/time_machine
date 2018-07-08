@@ -41,8 +41,6 @@ class Offset implements Comparable<Offset> {
   static const int _maxSeconds = 18 * TimeConstants.secondsPerHour;
   static const int _minMilliseconds = -18 * TimeConstants.millisecondsPerHour;
   static const int _maxMilliseconds = 18 * TimeConstants.millisecondsPerHour;
-  static const int _minTicks = -18 * TimeConstants.ticksPerHour;
-  static const int _maxTicks = 18 * TimeConstants.ticksPerHour;
   static const int _minNanoseconds = -18 * TimeConstants.nanosecondsPerHour;
   static const int _maxNanoseconds = 18 * TimeConstants.nanosecondsPerHour;
 
@@ -71,11 +69,11 @@ class Offset implements Comparable<Offset> {
   int get milliseconds => (seconds * TimeConstants.millisecondsPerSecond);
 
 
-  /// Gets the number of ticks represented by this offset, which may be negative.
+  /// Gets the number of microseconds represented by this offset, which may be negative.
   ///
   /// Offsets are only accurate to second precision; the number of seconds is simply multiplied
-  /// by 10,000,000 to give the number of ticks.
-  int get ticks => (seconds * TimeConstants.ticksPerSecond);
+  /// by 1,000,000 to give the number of microseconds.
+  int get microseconds => (seconds * TimeConstants.microsecondsPerSecond);
 
 
   /// Gets the number of nanoseconds represented by this offset, which may be negative.
@@ -274,20 +272,6 @@ class Offset implements Comparable<Offset> {
     Preconditions.checkArgumentRange('milliseconds', milliseconds, _minMilliseconds, _maxMilliseconds);
     return new Offset._(milliseconds ~/ TimeConstants.millisecondsPerSecond);
   }
-
-  /// Returns an offset for the given number of ticks, which may be negative.
-  ///
-  /// Offsets are only accurate to second precision; the given number of ticks is simply divided
-  /// by 10,000,000 to give the number of seconds - any remainder is truncated.
-  ///
-  /// [ticks]: The number of ticks specifying the length of the new offset.
-  /// Returns: An offset representing the given number of ticks, to the (truncated) second.
-  /// [ArgumentOutOfRangeException]: The specified number of ticks is outside the range of
-  /// [-18, +18] hours.
-  factory Offset.fromTicks(int ticks) {
-    Preconditions.checkArgumentRange('ticks', ticks, _minTicks, _maxTicks);
-    return new Offset._((ticks ~/ TimeConstants.ticksPerSecond));
-  }
   
   /// Returns an offset for the given number of nanoseconds, which may be negative.
   ///
@@ -349,7 +333,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: An offset for the same time as the given time span.
   factory Offset.fromSpan(Time timeSpan) {
     int seconds = timeSpan.totalSeconds.floor();
-    Preconditions.checkArgumentRange('timeSpan', seconds, _minTicks, _maxTicks);
+    Preconditions.checkArgumentRange('timeSpan', seconds, _minSeconds, _maxSeconds);
     return new Offset.fromSeconds(seconds);
   }
 }

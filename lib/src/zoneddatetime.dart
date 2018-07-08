@@ -238,10 +238,10 @@ class ZonedDateTime {
   int get millisecond => _offsetDateTime.millisecond;
 
   /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => _offsetDateTime.tickOfSecond;
+  int get microsecondOfSecond => _offsetDateTime.microsecondOfSecond;
 
   /// Gets the tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  int get tickOfDay => _offsetDateTime.tickOfDay;
+  int get microsecondOfDay => _offsetDateTime.microsecondOfDay;
 
   /// Gets the nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => _offsetDateTime.nanosecondOfSecond;
@@ -353,7 +353,7 @@ class ZonedDateTime {
   /// [ticks]: The number of ticks to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusTicks(int ticks) => this + new Time(ticks: ticks);
+  ZonedDateTime plusMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///

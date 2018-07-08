@@ -112,7 +112,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..text = "PT5S",
     new Data.builder(new PeriodBuilder()..milliseconds = 5)
       ..text = "PT5s",
-    new Data.builder(new PeriodBuilder()..ticks = 5)
+    new Data.builder(new PeriodBuilder()..microseconds = 5)
       ..text = "PT5t",
     new Data.builder(new PeriodBuilder()..nanoseconds = 5)
       ..text = "PT5n",

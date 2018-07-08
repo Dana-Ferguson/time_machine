@@ -62,7 +62,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting date/time.
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
   LocalDateTime.at(int year, int month, int day, int hour, int minute, {int seconds = 0, int milliseconds = 0, CalendarSystem calendar})
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, milliseconds));
+      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, ms:milliseconds));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
   // todo: I really don't like this one at all: LocalDateTime.at
 
@@ -108,18 +108,18 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
   int get millisecond => time.millisecond;
-
-  /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => time.tickOfSecond;
-
-  /// Gets the tick of this local date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  int get tickOfDay => time.tickOfDay;
-
+  
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => time.nanosecondOfSecond;
 
   /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   int get nanosecondOfDay => time.nanosecondOfDay;
+
+  /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
+  int get microsecondOfSecond => time.microsecondOfSecond;
+
+  /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
+  int get microsecondOfDay => time.microsecondOfDay;
 
   /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
   /// of [DateTimeKind.Unspecified].
@@ -478,7 +478,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [ticks]: The number of ticks to add
   /// Returns: The current value plus the given number of ticks.
-  LocalDateTime plusTicks(int ticks) => TimePeriodField.ticks.addDateTime(this, ticks);
+  LocalDateTime plusMicroseconds(int microseconds) => TimePeriodField.microseconds.addDateTime(this, microseconds);
 
 
   /// Returns a new LocalDateTime representing the current value with the given number of nanoseconds added.

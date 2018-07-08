@@ -58,8 +58,8 @@ void ComponentProperties()
 @Test()
 void Equality()
 {
-  LocalTime time1 = new LocalTime(4, 56, 23, 123);
-  LocalTime time2 = new LocalTime(6, 23, 12, 987);
+  LocalTime time1 = new LocalTime(4, 56, 23, ms: 123);
+  LocalTime time2 = new LocalTime(6, 23, 12, ms: 987);
   Offset offset1 = new Offset.fromHours(1);
   Offset offset2 = new Offset.fromHours(2);
 
@@ -100,14 +100,14 @@ void WithAdjuster()
 {
   var initial = new OffsetTime(new LocalTime(14, 15, 12), new Offset.fromHours(-5));
   var actual = initial.adjust(TimeAdjusters.truncateToHour);
-  var expected = new OffsetTime(new LocalTime(14, 0), new Offset.fromHours(-5));
+  var expected = new OffsetTime(new LocalTime(14, 0, 0), new Offset.fromHours(-5));
   expect(expected, actual);
 }
 
 @Test()
 void ToString_WithFormat()
 {
-  LocalTime time = new LocalTime(14, 15, 12, 123);
+  LocalTime time = new LocalTime(14, 15, 12, ms: 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
   expect(offsetDate.toString("HH:mm:ss.fff o<-HH>", Culture.invariant), "14:15:12.123 01");
@@ -116,7 +116,7 @@ void ToString_WithFormat()
 @Test()
 void ToString_WithNullFormat()
 {
-  LocalTime time = new LocalTime(14, 15, 12, 123);
+  LocalTime time = new LocalTime(14, 15, 12, ms: 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
   expect(offsetDate.toString(null, Culture.invariant), "14:15:12+01");
@@ -124,7 +124,7 @@ void ToString_WithNullFormat()
 
 @Test() @SkipMe("Investigate CultureSaver")
 void ToString_NoFormat() {
-  LocalTime time = new LocalTime(14, 15, 12, 123);
+  LocalTime time = new LocalTime(14, 15, 12, ms: 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
 

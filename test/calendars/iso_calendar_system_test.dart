@@ -14,14 +14,14 @@ Future main() async {
   await runTests();
 }
 
-// DateTime doesn't do Ticks, so we lose some precision
-const int extraTicks = 8760; // 8765;
+// DateTime doesn't do Ticks -- only Microseconds, so we lose some precision (+ we don't either anymore)
+const int extraMicroseconds = 876; // 8765;
 
 DateTime UnixEpochDateTime = new DateTime.utc(1970, 1, 1, 0, 0, 0);
 // This was when I was writing the tests, having finally made everything work - several thousand lines
 // of shockingly untested code.
 DateTime TimeOfGreatAchievement = new DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
-    .add(new Duration(microseconds: extraTicks ~/ TimeConstants.ticksPerMicrosecond)); // + TimeSpan.FromTicks(8765);
+    .add(new Duration(microseconds: extraMicroseconds)); // + TimeSpan.FromTicks(8765);
 
 CalendarSystem Iso = CalendarSystem.iso;
 
@@ -45,17 +45,17 @@ void FieldsOf_UnixEpoch()
   expect(0, epoch.minute);
   expect(0, epoch.second);
   expect(0, epoch.millisecond);
-  expect(0, epoch.tickOfDay);
-  expect(0, epoch.tickOfSecond);
+  expect(0, epoch.microsecondOfDay);
+  expect(0, epoch.microsecondOfSecond);
 }
 
 @Test()
 void FieldsOf_GreatAchievement()
 {
   // LocalDateTime now = new Instant.fromUnixTimeTicks((TimeOfGreatAchievement.difference(UnixEpochDateTime)).Ticks).InUtc().LocalDateTime;
-  LocalDateTime now = new Instant.fromUnixTimeTicks((
+  LocalDateTime now = new Instant.fromUnixTimeMicroseconds((
       TimeOfGreatAchievement.difference(UnixEpochDateTime))
-      .inMicroseconds * TimeConstants.ticksPerMicrosecond).inUtc().localDateTime;
+      .inMicroseconds).inUtc().localDateTime;
 
   expect(2009, now.year);
   expect(2009, now.yearOfEra);
@@ -73,27 +73,27 @@ void FieldsOf_GreatAchievement()
 
   // DartWeb only does millisecond precision in dart:core (which TimeOfGreatAchievement is funnelled through)
   if (Platform.isVM) {
-    expect(3458760, now.tickOfSecond); // 3458765
-    expect(18 * TimeConstants.ticksPerHour +
-        38 * TimeConstants.ticksPerMinute +
-        25 * TimeConstants.ticksPerSecond +
-        3458760, // 3458765
-        now.tickOfDay);
+    expect(345876, now.microsecondOfSecond); // 3458765
+    expect(18 * TimeConstants.microsecondsPerHour +
+        38 * TimeConstants.microsecondsPerMinute +
+        25 * TimeConstants.microsecondsPerSecond +
+        345876, // 3458765
+        now.microsecondOfDay);
   }
 }
 
 @Test()
 void ConstructLocalInstant_WithAllFields()
 {
-  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(new LocalDateTime.at(2009, 11, 27, 18, 38, seconds: 25, milliseconds: 345).plusTicks(extraTicks));
-  int bclTicks = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds * TimeConstants.ticksPerMicrosecond;
-  int bclDays = (bclTicks ~/ TimeConstants.ticksPerDay);
-  int bclTickOfDay = bclTicks % TimeConstants.ticksPerDay;
+  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(new LocalDateTime.at(2009, 11, 27, 18, 38, seconds: 25, milliseconds: 345).plusMicroseconds(extraMicroseconds));
+  int bclMicroseconds = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds;
+  int bclDays = (bclMicroseconds ~/ TimeConstants.microsecondsPerDay);
+  int bclMicrosecondOfDay = bclMicroseconds % TimeConstants.microsecondsPerDay;
   expect(bclDays, localAchievement.daysSinceEpoch);
   if (Platform.isVM) {
-    expect(bclTickOfDay, localAchievement.nanosecondOfDay / TimeConstants.nanosecondsPerTick);
+    expect(bclMicrosecondOfDay, localAchievement.nanosecondOfDay / TimeConstants.nanosecondsPerMicrosecond);
   } else {
-    expect(bclTickOfDay / TimeConstants.ticksPerMillisecond, localAchievement.nanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
+    expect(bclMicrosecondOfDay / TimeConstants.microsecondsPerMillisecond, localAchievement.nanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
   }
 }
 

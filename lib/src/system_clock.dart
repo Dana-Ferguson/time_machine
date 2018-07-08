@@ -20,6 +20,6 @@ class SystemClock extends Clock {
   // note: this is extra allocations -- but this pipes to an external function -- so it's very convenient
   /// Gets the current time as an [Instant].
   ///
-  /// Returns: The current time in ticks as an [Instant].
+  /// Returns: The current time as an [Instant].
   Instant getCurrentInstant() => new Instant.fromDateTime(new DateTime.now());
 }

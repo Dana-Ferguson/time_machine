@@ -124,9 +124,9 @@ void Addition_Subtraction(int leftDays, int leftNanos,
 void Equality()
 {
   var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Time(ticks: TimeConstants.ticksPerHour * 25);
+  var equal2 = new Time(microseconds: TimeConstants.microsecondsPerHour * 25);
   var different1 = new Time(days: 1, nanoseconds: 200);
-  var different2 = new Time(days: 2, nanoseconds: TimeConstants.ticksPerHour);
+  var different2 = new Time(days: 2, nanoseconds: TimeConstants.microsecondsPerHour);
 
   TestHelper.TestEqualsStruct(equal1, equal2, [different1]);
   TestHelper.TestOperatorEquality(equal1, equal2, different1);
@@ -139,7 +139,7 @@ void Equality()
 void Comparison()
 {
   var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Time(ticks: TimeConstants.ticksPerHour * 25);
+  var equal2 = new Time(microseconds: TimeConstants.microsecondsPerHour * 25);
   var greater1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour + 1);
   var greater2 = new Time(days: 2, nanoseconds: 0);
 
@@ -286,7 +286,7 @@ void PositiveComponents()
   expect(56, duration.minutes);
   expect(7, duration.seconds);
   expect(890, duration.milliseconds);
-  expect(8901234, duration.subsecondTicks);
+  expect(890123, duration.subsecondMicroseconds);
   expect(890123456, duration.subsecondNanoseconds);
 }
 
@@ -301,7 +301,7 @@ void NegativeComponents()
   expect(-56, duration.minutes);
   expect(-7, duration.seconds);
   expect(-890, duration.milliseconds);
-  expect(-8901234, duration.subsecondTicks);
+  expect(-890123, duration.subsecondMicroseconds);
   expect(-890123456, duration.subsecondNanoseconds);
 }
 
@@ -315,7 +315,7 @@ void PositiveTotals()
   expect(5942.0187, closeTo(duration.totalMinutes, 0.0001));
   expect(356521.123456789, closeTo(duration.totalSeconds, 0.000000001));
   expect(356521123.456789, closeTo(duration.totalMilliseconds, 0.000001));
-  expect(3565211234567.89/*d*/, closeTo(duration.totalTicks, 0.01));
+  expect(356521123456.789/*d*/, closeTo(duration.totalMicroseconds, 0.01));
   expect(356521123456789/*d*/, closeTo(duration.totalNanoseconds, 1));
 }
 

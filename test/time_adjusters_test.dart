@@ -22,7 +22,7 @@ Future main() async {
 @Test()
 void TruncateToSecond()
 {
-  var start = new LocalTime(7, 4, 30, 123, 4567 * TimeConstants.nanosecondsPerTick);
+  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
   var end = new LocalTime(7, 4, 30);
   expect(end, TimeAdjusters.truncateToSecond(start));
 }
@@ -30,7 +30,7 @@ void TruncateToSecond()
 @Test()
 void TruncateToMinute()
 {
-  var start = new LocalTime(7, 4, 30, 123, 4567 * TimeConstants.nanosecondsPerTick);
+  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
   var end = new LocalTime(7, 4, 0);
   expect(end, TimeAdjusters.truncateToMinute(start));
 }
@@ -38,7 +38,7 @@ void TruncateToMinute()
 @Test()
 void TruncateToHour()
 {
-  var start = new LocalTime(7, 4, 30, 123, 4567 * TimeConstants.nanosecondsPerTick);
+  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
   var end = new LocalTime(7, 0, 0);
   expect(end, TimeAdjusters.truncateToHour(start));
 }

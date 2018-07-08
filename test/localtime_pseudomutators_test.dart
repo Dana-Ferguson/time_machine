@@ -73,38 +73,38 @@ void PlusSeconds_Simple()
 @Test()
 void PlusMilliseconds_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8, 300);
-  LocalTime expectedForward = new LocalTime(12, 15, 8, 700);
-  LocalTime expectedBackward = new LocalTime(12, 15, 7, 900);
+  LocalTime start = new LocalTime(12, 15, 8, ms: 300);
+  LocalTime expectedForward = new LocalTime(12, 15, 8, ms: 700);
+  LocalTime expectedBackward = new LocalTime(12, 15, 7, ms: 900);
   expect(expectedForward, start.plusMilliseconds(400));
   expect(expectedBackward, start.plusMilliseconds(-400));
 }
 
 @Test()
-void PlusTicks_Simple()
+void PlusMicroseconds_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedForward = new LocalTime(12, 15, 8, 301, 1500 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedBackward = new LocalTime(12, 15, 8, 300, 3500 * TimeConstants.nanosecondsPerTick);
-  expect(expectedForward, start.plusTicks(4000));
-  expect(expectedBackward, start.plusTicks(-4000));
+  LocalTime start = new LocalTime(12, 15, 8, us: 300750);
+  LocalTime expectedForward = new LocalTime(12, 15, 8, us: 301150);
+  LocalTime expectedBackward = new LocalTime(12, 15, 8, us: 300350);
+  expect(expectedForward, start.plusMicroseconds(400));
+  expect(expectedBackward, start.plusMicroseconds(-400));
 }
 
 @Test()
 void PlusTicks_Long()
 {
-  expect(TimeConstants.ticksPerDay > Platform.int32MaxValue, isTrue);
+  expect(TimeConstants.microsecondsPerDay > Platform.int32MaxValue, isTrue);
   LocalTime start = new LocalTime(12, 15, 8);
   LocalTime expectedForward = new LocalTime(12, 15, 9);
   LocalTime expectedBackward = new LocalTime(12, 15, 7);
-  expect(start.plusTicks(TimeConstants.ticksPerDay + TimeConstants.ticksPerSecond), expectedForward);
-  expect(start.plusTicks(-TimeConstants.ticksPerDay - TimeConstants.ticksPerSecond),  expectedBackward);
+  expect(start.plusMicroseconds(TimeConstants.microsecondsPerDay + TimeConstants.microsecondsPerSecond), expectedForward);
+  expect(start.plusMicroseconds(-TimeConstants.microsecondsPerDay - TimeConstants.microsecondsPerSecond),  expectedBackward);
 }
 
 @Test()
 void With()
 {
-  LocalTime start = new LocalTime(12, 15, 8, 100, 1234 * TimeConstants.nanosecondsPerTick);
+  LocalTime start = new LocalTime(12, 15, 8, ns: 100 * TimeConstants.nanosecondsPerMillisecond + 1234 * 100);
   LocalTime expected = new LocalTime(12, 15, 8);
   expect(expected, start.adjust(TimeAdjusters.truncateToSecond));
 }

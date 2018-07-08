@@ -97,11 +97,11 @@ void TimeProperties_AfterEpoch()
   expect(48, ldt.minute);
   expect(25, ldt.second);
   expect(123, ldt.millisecond);
-  expect(1234567, ldt.tickOfSecond);
-  expect(15 * TimeConstants.ticksPerHour +
-      48 * TimeConstants.ticksPerMinute +
-      25 * TimeConstants.ticksPerSecond +
-      1234567, ldt.tickOfDay);
+  expect(123456/*7*/, ldt.microsecondOfSecond);
+  expect(15 * TimeConstants.microsecondsPerHour +
+      48 * TimeConstants.microsecondsPerMinute +
+      25 * TimeConstants.microsecondsPerSecond +
+      123456/*7*/, ldt.microsecondOfDay);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
@@ -119,11 +119,11 @@ void TimeProperties_BeforeEpoch()
   expect(48, ldt.minute);
   expect(25, ldt.second);
   expect(123, ldt.millisecond);
-  expect(1234567, ldt.tickOfSecond);
-  expect(15 * TimeConstants.ticksPerHour +
-      48 * TimeConstants.ticksPerMinute +
-      25 * TimeConstants.ticksPerSecond +
-      1234567, ldt.tickOfDay);
+  expect(123456/*7*/, ldt.microsecondOfSecond);
+  expect(15 * TimeConstants.microsecondsPerHour +
+      48 * TimeConstants.microsecondsPerMinute +
+      25 * TimeConstants.microsecondsPerSecond +
+      123456/*7*/, ldt.microsecondOfDay);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
@@ -401,7 +401,7 @@ void InZone()
 void DefaultConstructor()
 {
   // todo: LocalDateTime()
-  var actual = new LocalDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0));
+  var actual = new LocalDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
   expect(new LocalDateTime.at(1, 1, 1, 0, 0), actual);
 }
 

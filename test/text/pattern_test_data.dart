@@ -110,7 +110,7 @@ abstract class PatternTestData<T> {
     }
     on InvalidPatternError catch (e) {
       // Expected... now let's check the message
-      assert(expectedMessage == e.message);
+      assert(expectedMessage == e.message, '$expectedMessage != ${e.message}');
     }
   }
 

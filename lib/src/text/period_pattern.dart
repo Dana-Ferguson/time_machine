@@ -140,7 +140,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
           unit = PeriodUnits.milliseconds;
           break;
         case 't':
-          unit = PeriodUnits.ticks;
+          unit = PeriodUnits.microseconds;
           break;
         case 'n':
           unit = PeriodUnits.nanoseconds;
@@ -184,7 +184,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
       PeriodPattern._appendValue(builder, value.minutes, "M");
       PeriodPattern._appendValue(builder, value.seconds, "S");
       PeriodPattern._appendValue(builder, value.milliseconds, "s");
-      PeriodPattern._appendValue(builder, value.ticks, "t");
+      PeriodPattern._appendValue(builder, value.microseconds, "t");
       PeriodPattern._appendValue(builder, value.nanoseconds, "n");
     }
     return builder;
@@ -296,8 +296,8 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
           totalNanoseconds = -totalNanoseconds;
         }
         builder.milliseconds = arithmeticMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
-        builder.ticks = arithmeticMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerTick, TimeConstants.ticksPerMillisecond);
-        builder.nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerTick);
+        builder.microseconds = arithmeticMod(totalNanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond, TimeConstants.microsecondsPerMillisecond);
+        builder.nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerMicrosecond);
 
         if (valueCursor.current != 'S') {
           return IParseResult.mismatchedCharacter<Period>(valueCursor, 'S');
@@ -337,7 +337,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
       builder.write("T");
       PeriodPattern._appendValue(builder, value.hours, "H");
       PeriodPattern._appendValue(builder, value.minutes, "M");
-      int nanoseconds = value.milliseconds * TimeConstants.nanosecondsPerMillisecond + value.ticks * TimeConstants.nanosecondsPerTick + value.nanoseconds;
+      int nanoseconds = value.milliseconds * TimeConstants.nanosecondsPerMillisecond + value.microseconds * TimeConstants.nanosecondsPerMicrosecond + value.nanoseconds;
       int seconds = value.seconds;
       if (nanoseconds != 0 || seconds != 0) {
         if (nanoseconds < 0 || seconds < 0) {

@@ -163,11 +163,12 @@ class OffsetDateTime {
   }
 
   // TODO(optimization): Rewrite for performance?
-  /// Gets the tick of this offset date and time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => tickOfDay % TimeConstants.ticksPerSecond;
+  // todo: should we have milliSecondOfDay, microSecondOfDay -- or should this all just come from a [Time]???
+  /// Gets the microsecond of this offset date and time within the second, in the range 0 to 999,999 inclusive.
+  int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
 
-  /// Gets the tick of this offset date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  int get tickOfDay => nanosecondOfDay ~/ TimeConstants.nanosecondsPerTick;
+  /// Gets the microsecond of this offset date and time within the day, in the range 0 to 86,399,999,999 inclusive.
+  int get microsecondOfDay => _nanosecondOfDay ~/ TimeConstants.nanosecondsPerMicrosecond;
 
   /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => nanosecondOfDay % TimeConstants.nanosecondsPerSecond;
@@ -374,11 +375,11 @@ class OffsetDateTime {
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
 
-  /// Returns the result of adding an increment of ticks to this zoned date and time
+  /// Returns the result of adding an increment of microseconds to this zoned date and time
   ///
-  /// [ticks]: The number of ticks to add
+  /// [ticks]: The number of microseconds to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime plusTicks(int ticks) => this + new Time(ticks: ticks);
+  OffsetDateTime plusMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///

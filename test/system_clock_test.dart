@@ -34,8 +34,8 @@ void Sanity()
   Instant minimumExpected = new Instant.fromUtc(2011, 8, 1, 0, 0);
   Instant maximumExpected = new Instant.fromUtc(2020, 1, 1, 0, 0);
   Instant now = SystemClock.instance.getCurrentInstant();
-  expect(minimumExpected.toUnixTimeTicks(), lessThan(now.toUnixTimeTicks()));
-  expect(now.toUnixTimeTicks(), lessThan(maximumExpected.toUnixTimeTicks()));
+  expect(minimumExpected.toUnixTimeMicroseconds(), lessThan(now.toUnixTimeMicroseconds()));
+  expect(now.toUnixTimeMicroseconds(), lessThan(maximumExpected.toUnixTimeMicroseconds()));
 }
 
 

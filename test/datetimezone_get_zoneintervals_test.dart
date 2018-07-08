@@ -28,13 +28,13 @@ final SingleTransitionDateTimeZone TestZone = new SingleTransitionDateTimeZone.a
 void GetZoneIntervals_EndBeforeStart()
 {
   // Assert.Throws<ArgumentOutOfRangeException>(() => DateTimeZone.Utc.GetZoneIntervals(new Instant.fromUnixTimeTicks(100L), new Instant.fromUnixTimeTicks(99L)));
-  expect(() => DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(99)), throwsArgumentError);
+  expect(() => DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeMicroseconds(10), new Instant().plus(new Time(nanoseconds: 9900))), throwsArgumentError);
 }
 
 @Test()
 void GetZoneIntervals_EndEqualToStart()
 {
-  expect(DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeTicks(100), new Instant.fromUnixTimeTicks(100)), isEmpty);
+  expect(DateTimeZone.utc.getZoneIntervalsFromTo(new Instant.fromUnixTimeMicroseconds(10), new Instant.fromUnixTimeMicroseconds(10)), isEmpty);
 }
 
 @Test()

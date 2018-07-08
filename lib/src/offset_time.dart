@@ -44,15 +44,7 @@ class OffsetTime {
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
   int get millisecond => _time.millisecond;
-
-  /// Gets the tick of this offset time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => _time.tickOfSecond;
-
-  /// Gets the tick of this offset time within the day, in the range 0 to 863,999,999,999 inclusive.
-  ///
-  /// If the value does not fall on a tick boundary, it will be truncated towards zero.
-  int get tickOfDay => _time.tickOfDay;
-
+  
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => _time.nanosecondOfSecond;
 

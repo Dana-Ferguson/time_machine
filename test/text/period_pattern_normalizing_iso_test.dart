@@ -134,7 +134,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..hours = 25
       ..minutes = 90)
       ..text = "P1DT2H30M",
-    new Data.builder(new PeriodBuilder()..ticks = 12345678)
+    new Data.builder(new PeriodBuilder()..nanoseconds = 1234567800)
     // 'T' was added, see above:
       ..text = "PT1.2345678S",
     new Data.builder(new PeriodBuilder()
@@ -168,8 +168,8 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..text = "PT5S",
     new Data.builder(new PeriodBuilder()..milliseconds = 5)
       ..text = "PT0.005S",
-    new Data.builder(new PeriodBuilder()..ticks = 5)
-      ..text = "PT0.0000005S",
+    new Data.builder(new PeriodBuilder()..microseconds = 5)
+      ..text = "PT0.000005S",
     new Data.builder(new PeriodBuilder()..nanoseconds = 5)
       ..text = "PT0.000000005S",
 

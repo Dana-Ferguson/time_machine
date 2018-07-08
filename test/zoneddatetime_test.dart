@@ -27,7 +27,7 @@ void SimpleProperties()
 {
   var value = new ZonedDateTime.atStrictly(new LocalDateTime.at(2012, 2, 10, 8, 9, seconds: 10).plusNanoseconds(123456789), SampleZone);
   expect(new LocalDate(2012, 2, 10), value.date);
-  expect(new LocalTime(8, 9, 10, 0, 123456789), value.timeOfDay);
+  expect(new LocalTime(8, 9, 10, ns: 123456789), value.timeOfDay);
   expect(Era.common, value.era);
   expect(2012, value.year);
   expect(2012, value.yearOfEra);
@@ -40,12 +40,12 @@ void SimpleProperties()
   expect(9, value.minute);
   expect(10, value.second);
   expect(123, value.millisecond);
-  expect(1234567, value.tickOfSecond);
-  expect(8 * TimeConstants.ticksPerHour +
-      9 * TimeConstants.ticksPerMinute +
-      10 * TimeConstants.ticksPerSecond +
-      1234567,
-      value.tickOfDay);
+  expect(123456/*7*/, value.microsecondOfSecond);
+  expect(8 * TimeConstants.microsecondsPerHour +
+      9 * TimeConstants.microsecondsPerMinute +
+      10 * TimeConstants.microsecondsPerSecond +
+      123456/*7*/,
+      value.microsecondOfDay);
   expect(8 * TimeConstants.nanosecondsPerHour +
       9 * TimeConstants.nanosecondsPerMinute +
       10 * TimeConstants.nanosecondsPerSecond +
@@ -93,8 +93,8 @@ void Add_MethodEquivalents()
   expect(before + new Time(milliseconds: milliseconds), before.plusMilliseconds(milliseconds));
   expect(before + new Time(milliseconds: -milliseconds), before.plusMilliseconds(-milliseconds));
 
-  expect(before + new Time(ticks: ticks), before.plusTicks(ticks));
-  expect(before + new Time(ticks: -ticks), before.plusTicks(-ticks));
+  expect(before + new Time(microseconds: ticks), before.plusMicroseconds(ticks));
+  expect(before + new Time(microseconds: -ticks), before.plusMicroseconds(-ticks));
 
   expect(before + new Time(nanoseconds: nanoseconds), before.plusNanoseconds(nanoseconds));
   expect(before + new Time(nanoseconds: -nanoseconds), before.plusNanoseconds(-nanoseconds));

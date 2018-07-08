@@ -53,22 +53,6 @@ void FromMilliseconds_Invalid()
 }
 
 @Test()
-void FromTicks_Valid()
-{
-  Offset value = new Offset.fromTicks(-15 * TimeConstants.ticksPerMinute);
-  expect(-15 * TimeConstants.secondsPerMinute, value.seconds);
-  expect(-15 * TimeConstants.ticksPerMinute, value.ticks);
-}
-
-@Test()
-void FromTicks_Invalid()
-{
-  int ticks = 18 * TimeConstants.ticksPerHour + 1;
-  expect(() => new Offset.fromTicks(ticks), throwsRangeError);
-  expect(() => new Offset.fromTicks(-ticks), throwsRangeError);
-}
-
-@Test()
 void FromNanoseconds_Valid()
 {
   Offset value = new Offset.fromNanoseconds(-15 * TimeConstants.nanosecondsPerMinute);

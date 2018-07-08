@@ -168,14 +168,14 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void WithCulture() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("HH:mm").withCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.format(new LocalTime(19, 30).withOffset(Offset.zero));
+    var text = pattern.format(new LocalTime(19, 30, 0).withOffset(Offset.zero));
     expect("19.30", text);
   }
 
   @Test()
   void WithPatternText() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("HH:mm:ss").withPatternText("HH:mm");
-    var value = new LocalTime(13, 30).withOffset(new Offset.fromHours(2));
+    var value = new LocalTime(13, 30, 0).withOffset(new Offset.fromHours(2));
     var text = pattern.format(value);
     expect("13:30", text);
   }
@@ -183,12 +183,12 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void WithTemplateValue() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("o<G>")
-        .withTemplateValue(new LocalTime(13, 30).withOffset(Offset.zero));
+        .withTemplateValue(new LocalTime(13, 30, 0).withOffset(Offset.zero));
     var parsed = pattern
         .parse("+02")
         .value;
     // Local time is taken from the template value; offset is from the text
-    expect(new LocalTime(13, 30), parsed.timeOfDay);
+    expect(new LocalTime(13, 30, 0), parsed.timeOfDay);
     expect(new Offset.fromHours(2), parsed.offset);
   }
 
@@ -216,7 +216,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       : this.e(hour, minute, second, millis, Offset.zero);
 
   @internal Data.e(int hour, int minute, int second, int millis, Offset offset)
-      : this(new LocalTime(hour, minute, second, millis).withOffset(offset));
+      : this(new LocalTime(hour, minute, second, ms: millis).withOffset(offset));
 
   @internal
   @override

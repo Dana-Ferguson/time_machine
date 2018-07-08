@@ -34,7 +34,7 @@ class PeriodBuilder {
   int milliseconds;
 
   /// Gets or sets the number of ticks within the period.
-  int ticks;
+  int microseconds;
 
   /// Gets or sets the number of nanoseconds within the period.
   int nanoseconds;
@@ -55,7 +55,7 @@ class PeriodBuilder {
     minutes = period.minutes;
     seconds = period.seconds;
     milliseconds = period.milliseconds;
-    ticks = period.ticks;
+    microseconds = period.microseconds;
     nanoseconds = period.nanoseconds;
   }
 
@@ -68,7 +68,7 @@ class PeriodBuilder {
     PeriodUnits.minutes: (PeriodBuilder p) => p.minutes,
     PeriodUnits.seconds: (PeriodBuilder p) => p.seconds,
     PeriodUnits.milliseconds: (PeriodBuilder p) => p.milliseconds,
-    PeriodUnits.ticks: (PeriodBuilder p) => p.ticks,
+    PeriodUnits.microseconds: (PeriodBuilder p) => p.microseconds,
     PeriodUnits.nanoseconds: (PeriodBuilder p) => p.nanoseconds
   };
 
@@ -81,7 +81,7 @@ class PeriodBuilder {
     PeriodUnits.minutes: (PeriodBuilder p, int v) => p.minutes = v,
     PeriodUnits.seconds: (PeriodBuilder p, int v) => p.seconds = v,
     PeriodUnits.milliseconds: (PeriodBuilder p, int v) => p.milliseconds = v,
-    PeriodUnits.ticks: (PeriodBuilder p, int v) => p.ticks = v,
+    PeriodUnits.microseconds: (PeriodBuilder p, int v) => p.microseconds = v,
     PeriodUnits.nanoseconds: (PeriodBuilder p, int v) => p.nanoseconds = v
   };
 
@@ -126,6 +126,6 @@ class PeriodBuilder {
           minutes: minutes,
           seconds: seconds,
           milliseconds: milliseconds,
-          ticks: ticks,
+          microseconds: microseconds,
           nanoseconds: nanoseconds);
 }

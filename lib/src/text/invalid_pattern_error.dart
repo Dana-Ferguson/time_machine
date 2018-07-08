@@ -21,6 +21,8 @@ class InvalidPatternError extends Error // FormatException
   /// [parameters]: Format string parameters
   InvalidPatternError._format(String formatString, List<dynamic> parameters)
       : this(stringFormat(formatString, parameters));
+  
+  @override String toString() => 'InvalidPatternError: $message';
 }
 
 abstract class IInvalidPatternError {

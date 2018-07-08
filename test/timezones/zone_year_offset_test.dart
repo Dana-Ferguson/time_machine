@@ -111,7 +111,7 @@ void GetOccurrenceForYear_Year_1971()
 @Test()
 void GetOccurrenceForYear_Milliseconds()
 {
-  var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, new LocalTime(0, 0, 0, 1));
+  var offset = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, new LocalTime(0, 0, 0, ms: 1));
   var actual = offset.getOccurrenceForYear(1970);
   var expected = ILocalDateTime.toLocalInstant(new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 0, milliseconds: 1));
   expect(expected, actual);

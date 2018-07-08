@@ -74,7 +74,7 @@ class FakeClock extends Clock {
   ///
   /// [ticks]: The number of ticks to advance the clock by (or if negative, the number to move it back
   /// by).
-  void AdvanceTicks(int ticks) => Advance(new Time(ticks: ticks));
+  void AdvanceTicks(int ticks) => Advance(new Time(microseconds: ticks));
 
   /// Advances the clock by the given number of milliseconds.
   ///

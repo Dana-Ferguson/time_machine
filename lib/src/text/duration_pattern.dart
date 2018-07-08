@@ -67,7 +67,7 @@ class TimePattern implements IPattern<Time> {
   /// Returns: A pattern for parsing and formatting offsets.
   /// [InvalidPatternException]: The pattern text was invalid.
   static TimePattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
-    Preconditions.checkNotNull(patternText, 'patternTex');
+    Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.timePatternParser.parsePattern(patternText);
     return new TimePattern._(patternText, pattern);

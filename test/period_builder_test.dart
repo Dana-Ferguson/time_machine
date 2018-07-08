@@ -29,7 +29,7 @@ void Indexer_Getter_ValidUnits() {
     ..minutes = 5
     ..seconds = 6
     ..milliseconds = 7
-    ..ticks = 8
+    ..microseconds = 8
     ..nanoseconds = 9;
 
   expect(0, builder[PeriodUnits.years]);
@@ -40,7 +40,7 @@ void Indexer_Getter_ValidUnits() {
   expect(5, builder[PeriodUnits.minutes]);
   expect(6, builder[PeriodUnits.seconds]);
   expect(7, builder[PeriodUnits.milliseconds]);
-  expect(8, builder[PeriodUnits.ticks]);
+  expect(8, builder[PeriodUnits.microseconds]);
   expect(9, builder[PeriodUnits.nanoseconds]);
 }
 
@@ -65,7 +65,7 @@ void Indexer_Setter_ValidUnits() {
   builder[PeriodUnits.minutes] = 5;
   builder[PeriodUnits.seconds] = 6;
   builder[PeriodUnits.milliseconds] = 7;
-  builder[PeriodUnits.ticks] = 8;
+  builder[PeriodUnits.microseconds] = 8;
   var expectedBuilder = new PeriodBuilder()
     ..years = 0
     ..months = 1
@@ -75,7 +75,7 @@ void Indexer_Setter_ValidUnits() {
     ..minutes = 5
     ..seconds = 6
     ..milliseconds = 7
-    ..ticks = 8;
+    ..microseconds = 8;
 
   var expected = expectedBuilder.build();
   expect(expected, builder.build());

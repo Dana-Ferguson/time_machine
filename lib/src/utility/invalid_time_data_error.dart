@@ -4,12 +4,6 @@
 
 /// Exception thrown when data read by Time Machine (such as serialized time zone data) is invalid. This includes
 /// data which is truncated, i.e. we expect more data than we can read.
-///
-/// This type only exists as `InvalidDataException` didn't exist in Portable Class Libraries.
-/// That does exist in netstandard1.3, but as we shipped 2.0 without realizing this, we're stuck with the
-/// new exception type.
-/// Unfortunately, `InvalidDataException` itself is sealed, so we can't derive from it for the sake
-/// of backward compatibility.
 class InvalidTimeDataError extends Error
 {
   final String message;

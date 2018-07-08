@@ -41,9 +41,6 @@ abstract class IInstant {
 /// This type is immutable.
 @immutable
 class Instant implements Comparable<Instant> {
-  // todo: Min\MaxTicks tack 62 bits ~ these will not work for the JSVM - check if this is okay?
-  static const int _minTicks = IInstant.minDays * TimeConstants.ticksPerDay;
-  static const int _maxTicks = (IInstant.maxDays + 1) * TimeConstants.ticksPerDay - 1;
   static const int _minMilliseconds = IInstant.minDays * TimeConstants.millisecondsPerDay;
   static const int _maxMilliseconds = (IInstant.maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
   static const int _minSeconds = IInstant.minDays * TimeConstants.secondsPerDay;
@@ -73,7 +70,7 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this._epochTime);
   // todo: to untrusted factories
-  Instant.fromUnixTimeTicks(int ticks) : _epochTime = new Time(ticks: ticks);
+  Instant.fromUnixTimeMicroseconds(int microseconds) : _epochTime = new Time(microseconds: microseconds);
   Instant.fromUnixTimeSeconds(int seconds) : _epochTime = new Time(seconds: seconds);
   Instant.fromUnixTimeMilliseconds(int milliseconds) : _epochTime = new Time(milliseconds: milliseconds);
   // todo: should this mirror functionality more similar to `new DateTime()`?
@@ -183,10 +180,11 @@ class Instant implements Comparable<Instant> {
 
   Time get timeSinceEpoch => _epochTime;
 
+  // todo: I don't think I like this --> timeSinceEpoch??? -- are these useful convenient overloads?
   int toUnixTimeSeconds() => ITime.floorSeconds(_epochTime);
   int toUnixTimeMilliseconds() => _epochTime.floorMilliseconds; //.totalMilliseconds.toInt();
-  int toUnixTimeTicks() => ITime.floorTicks(_epochTime); //.totalTicks.toInt();
-
+  int toUnixTimeMicroseconds() => _epochTime.totalMicroseconds.floor();
+  
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {

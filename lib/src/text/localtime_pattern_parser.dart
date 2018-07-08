@@ -110,7 +110,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   @override
   ParseResult<LocalTime> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedTime)) {
-      return ParseResult.forValue<LocalTime>(new LocalTime(hours24, minutes, seconds, 0, fractionalSeconds));
+      return ParseResult.forValue<LocalTime>(new LocalTime(hours24, minutes, seconds, ns:fractionalSeconds));
     }
     if (amPm == 2) {
       amPm = templateValue.hour ~/ 12;
@@ -123,7 +123,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
     int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minute;
     int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.second;
     int _nanoseconds = usedFields.hasAny(PatternFields.fractionalSeconds) ? fractionalSeconds : templateValue.nanosecondOfSecond;
-    return ParseResult.forValue<LocalTime>(new LocalTime(hour.value, _minutes, _seconds, 0, _nanoseconds));
+    return ParseResult.forValue<LocalTime>(new LocalTime(hour.value, _minutes, _seconds, ns:_nanoseconds));
   }
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);

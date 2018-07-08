@@ -25,7 +25,7 @@ class _AddTimeResult {
 class TimePeriodField
 {
   static final TimePeriodField nanoseconds = new TimePeriodField._(1);
-  static final TimePeriodField ticks = new TimePeriodField._(TimeConstants.nanosecondsPerTick);
+  static final TimePeriodField microseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMicrosecond);
   static final TimePeriodField milliseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
   static final TimePeriodField seconds = new TimePeriodField._(TimeConstants.nanosecondsPerSecond);
   static final TimePeriodField minutes = new TimePeriodField._(TimeConstants.nanosecondsPerMinute);

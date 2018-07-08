@@ -13,8 +13,8 @@ class TimeAdjusters {
   static LocalTime Function(LocalTime) truncateToSecond = (time) => new LocalTime(time.hour, time.minute, time.second);
 
   /// Gets a time adjuster to truncate the time to the minute, discarding fractional minutes.
-  static LocalTime Function(LocalTime) truncateToMinute = (time) => new LocalTime(time.hour, time.minute);
+  static LocalTime Function(LocalTime) truncateToMinute = (time) => new LocalTime(time.hour, time.minute, 0);
 
   /// Get a time adjuster to truncate the time to the hour, discarding fractional hours.
-  static LocalTime Function(LocalTime) truncateToHour = (time) => new LocalTime(time.hour, 0);
+  static LocalTime Function(LocalTime) truncateToHour = (time) => new LocalTime(time.hour, 0, 0);
 }

@@ -25,7 +25,7 @@ Future main() async {
 @TestCase(const [0, 60])
 void InvalidConstructionToMinute(int hour, int minute)
 {
-  expect(() => new LocalTime(hour, minute), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, 0), throwsRangeError);
 }
 
 @Test()
@@ -51,7 +51,7 @@ void InvalidConstructionToSecond(int hour, int minute, int second)
 @TestCase(const [0, 0, 0, 1000])
 void InvalidConstructionToMillisecond(int hour, int minute, int second, int millisecond)
 {
-  expect(() => new LocalTime(hour, minute, second, millisecond), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, second, ms:millisecond), throwsRangeError);
 }
 
 @Test()
@@ -67,7 +67,8 @@ void InvalidConstructionToMillisecond(int hour, int minute, int second, int mill
 // @TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond]) -- removed since we're just merging milliseconds + nanoseconds
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
-  expect(() => new LocalTime(hour, minute, second, millisecond, tick * TimeConstants.nanosecondsPerTick), throwsRangeError);
+  // expect(() => new LocalTime(hour, minute, second, ms:millisecond + tick * TimeConstants.nanosecondsPerTick), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, second, ns:millisecond * TimeConstants.nanosecondsPerMillisecond + tick * 100), throwsRangeError);
 }
 
 @Test()
@@ -81,7 +82,7 @@ void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int secon
 @TestCase(const [0, 0, 0, TimeConstants.nanosecondsPerSecond])
 void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, int nanosecond)
 {
-  expect(() => new LocalTime(hour, minute, second, 0, nanosecond), throwsRangeError);
+  expect(() => new LocalTime(hour, minute, second, ns: nanosecond), throwsRangeError);
 }
 
 @Test()
@@ -96,20 +97,6 @@ void FromNanosecondsSinceMidnight_RangeChecks()
 {
   expect(() => ILocalTime.fromNanosecondsSinceMidnight(-1), throwsRangeError);
   expect(() => ILocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
-}
-
-@Test()
-void FromTicksSinceMidnight_Valid()
-{
-  expect(LocalTime.midnight, new LocalTime.fromTicksSinceMidnight(0));
-  expect(LocalTime.midnight - new Period.fromTicks(1), new LocalTime.fromTicksSinceMidnight(TimeConstants.ticksPerDay - 1));
-}
-
-@Test()
-void FromTicksSinceMidnight_RangeChecks()
-{
-  expect(() => new LocalTime.fromTicksSinceMidnight(-1), throwsRangeError);
-  expect(() => new LocalTime.fromTicksSinceMidnight(TimeConstants.ticksPerDay), throwsRangeError);
 }
 
 @Test()

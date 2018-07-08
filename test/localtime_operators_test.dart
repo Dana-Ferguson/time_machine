@@ -21,7 +21,7 @@ Future main() async {
 @Test()
 void Addition_WithPeriod()
 {
-  LocalTime start = new LocalTime(3, 30);
+  LocalTime start = new LocalTime(3, 30, 0);
   Period period = new Period.fromHours(2) + new Period.fromSeconds(1);
   LocalTime expected = new LocalTime(5, 30, 1);
   expect(expected, start + period);
@@ -30,16 +30,16 @@ void Addition_WithPeriod()
 @Test()
 void Addition_WrapsAtMidnight()
 {
-  LocalTime start = new LocalTime(22, 0);
+  LocalTime start = new LocalTime(22, 0, 0);
   Period period = new Period.fromHours(3);
-  LocalTime expected = new LocalTime(1, 0);
+  LocalTime expected = new LocalTime(1, 0, 0);
   expect(expected, start + period);
 }
 
 @Test()
 void Addition_WithNullPeriod_ThrowsArgumentNullException()
 {
-  LocalTime date = new LocalTime(12, 0);
+  LocalTime date = new LocalTime(12, 0, 0);
   // Call to ToString just to make it a valid statement
   Period period = null;
   expect(() => (date + period).toString(), throwsArgumentError);
@@ -66,7 +66,7 @@ void Subtraction_WrapsAtMidnight()
 @Test()
 void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
 {
-  LocalTime date = new LocalTime(12, 0);
+  LocalTime date = new LocalTime(12, 0, 0);
   // Call to ToString just to make it a valid statement
   Period period = null;
   expect(() => (date - period).toString(), throwsArgumentError);
@@ -75,7 +75,7 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
 @Test()
 void Addition_PeriodWithDate()
 {
-  LocalTime time = new LocalTime(20, 30);
+  LocalTime time = new LocalTime(20, 30, 0);
   Period period = new Period.fromDays(1);
   // Use method not operator here to form a valid statement
   expect(() => LocalTime.add(time, period), throwsArgumentError);
@@ -84,7 +84,7 @@ void Addition_PeriodWithDate()
 @Test()
 void Subtraction_PeriodWithTime()
 {
-  LocalTime time = new LocalTime(20, 30);
+  LocalTime time = new LocalTime(20, 30, 0);
   Period period = new Period.fromDays(1);
   // Use method not operator here to form a valid statement
   expect(() => LocalTime.subtract(time, period), throwsArgumentError);
@@ -93,7 +93,7 @@ void Subtraction_PeriodWithTime()
 @Test()
 void PeriodAddition_MethodEquivalents()
 {
-  LocalTime start = new LocalTime(20, 30);
+  LocalTime start = new LocalTime(20, 30, 0);
   Period period = new Period.fromHours(3) + new Period.fromMinutes(10);
   expect(start + period, LocalTime.add(start, period));
   expect(start + period, start.plus(period));
@@ -102,7 +102,7 @@ void PeriodAddition_MethodEquivalents()
 @Test()
 void PeriodSubtraction_MethodEquivalents()
 {
-  LocalTime start = new LocalTime(20, 30);
+  LocalTime start = new LocalTime(20, 30, 0);
   Period period = new Period.fromHours(3) + new Period.fromMinutes(10);
   LocalTime end = start + period;
   expect(start - period, LocalTime.subtract(start, period));

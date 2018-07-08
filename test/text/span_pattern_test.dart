@@ -56,7 +56,7 @@ class SpanPatternTest extends PatternTestBase<Time> {
     new Data()
       ..pattern = "G"
       ..message = TextErrorMessages.unknownStandardFormat
-      ..parameters.addAll(['G', 'Span'])
+      ..parameters.addAll(['G', 'Time'])
   ];
 
   /// Tests for parsing failures (of values)
@@ -65,32 +65,32 @@ class SpanPatternTest extends PatternTestBase<Time> {
       ..pattern = "H:mm"
       ..text = "1:60"
       ..message = TextErrorMessages.fieldValueOutOfRange
-      ..parameters.addAll([60, 'm', 'Span']),
+      ..parameters.addAll([60, 'm', 'Time']),
     // Total field values out of range
     new Data(Time.minValue)
       ..pattern = "-D:hh:mm:ss.fffffffff"
       ..text = "16777217:00:00:00.000000000"
       ..
       message = TextErrorMessages.fieldValueOutOfRange
-      ..parameters.addAll(["16777217", 'D', 'Span']),
+      ..parameters.addAll(["16777217", 'D', 'Time']),
     new Data(Time.minValue)
       ..pattern = "-H:mm:ss.fffffffff"
       ..text = "402653185:00:00.000000000"
       ..
       message = TextErrorMessages.fieldValueOutOfRange
-      ..parameters.addAll(["402653185", 'H', 'Span']),
+      ..parameters.addAll(["402653185", 'H', 'Time']),
     new Data(Time.minValue)
       ..pattern = "-M:ss.fffffffff"
       ..text = "24159191041:00.000000000"
       ..
       message = TextErrorMessages.fieldValueOutOfRange
-      ..parameters.addAll(["24159191041", 'M', 'Span']),
+      ..parameters.addAll(["24159191041", 'M', 'Time']),
     new Data(Time.minValue)
       ..pattern = "-S.fffffffff"
       ..text = "1449551462401.000000000"
       ..
       message = TextErrorMessages.fieldValueOutOfRange
-      ..parameters.addAll(["1449551462401", 'S', 'Span']),
+      ..parameters.addAll(["1449551462401", 'S', 'Time']),
 
   /* note: In Dart we don't go out of range -- todo: evaluate -- should we?
     // Each field in range, but overall result out of range
@@ -98,42 +98,42 @@ class SpanPatternTest extends PatternTestBase<Time> {
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "-16777216:00:00:00.000000001"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.maxValue)
       ..Pattern = "-D:hh:mm:ss.fffffffff"
       ..Text = "16777216:00:00:00.000000000"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-H:mm:ss.fffffffff"
       ..Text = "-402653184:00:00.000000001"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-H:mm:ss.fffffffff"
       ..Text = "402653184:00:00.000000000"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "-24159191040:00.000000001"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-M:ss.fffffffff"
       ..Text = "24159191040:00.000000000"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-S.fffffffff"
       ..Text = "-1449551462400.000000001"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),
+      ..Parameters.addAll(['Time']),
     new Data(Span.minValue)
       ..Pattern = "-S.fffffffff"
       ..Text = "1449551462400.000000000"
       ..Message = TextErrorMessages.OverallValueOutOfRange
-      ..Parameters.addAll(['Span']),*/
+      ..Parameters.addAll(['Time']),*/
     new Data(Time.minValue)
       ..pattern = "'x'S"
       ..text = "x"

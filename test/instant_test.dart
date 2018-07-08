@@ -115,8 +115,8 @@ void WithOffset_NonIsoCalendar()
 @Test()
 void FromTicksSinceUnixEpoch()
 {
-  Instant instant = new Instant.fromUnixTimeTicks(12345);
-  expect(12345, instant.toUnixTimeTicks());
+  Instant instant = new Instant.fromUnixTimeMicroseconds(12345);
+  expect(12345, instant.toUnixTimeMicroseconds());
 }
 
 
@@ -124,7 +124,7 @@ void FromTicksSinceUnixEpoch()
 void FromUnixTimeMilliseconds_Valid()
 {
   Instant actual = new Instant.fromUnixTimeMilliseconds(12345);
-  Instant expected = new Instant.fromUnixTimeTicks(12345 * TimeConstants.ticksPerMillisecond);
+  Instant expected = new Instant.fromUnixTimeMicroseconds(12345 * TimeConstants.microsecondsPerMillisecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -148,7 +148,7 @@ void FromUnixTimeMilliseconds_TooSmall()
 void FromUnixTimeSeconds_Valid()
 {
   Instant actual = new Instant.fromUnixTimeSeconds(12345);
-  Instant expected = new Instant.fromUnixTimeTicks(12345 * TimeConstants.ticksPerSecond);
+  Instant expected = new Instant.fromUnixTimeMicroseconds(12345 * TimeConstants.microsecondsPerSecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -198,7 +198,8 @@ void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 @TestCase(const [15000, 1])
 void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
-  var instant = new Instant.fromUnixTimeTicks(ticks);
+  // todo: rework this test
+  var instant = new Instant().plus(new Time(nanoseconds: ticks * 100));
   expect(instant.toUnixTimeMilliseconds(), expectedMilliseconds);
 }
 
@@ -207,17 +208,17 @@ void UnixConversions_ExtremeValues()
 {
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
-  var max = Instant.maxValue - new Time(seconds: 1) + Time.epsilon;
-  var x = max.toUnixTimeTicks();
-  var t = new Instant.fromUnixTimeTicks(x);
+  var max = Instant.maxValue.minus(new Time(seconds: 1)).plus(Time.epsilon);
+  var x = max.toUnixTimeMicroseconds();
+  var t = new Instant().plus(new Time(nanoseconds: x * TimeConstants.nanosecondsPerMicrosecond));
   expect(max, new Instant.fromUnixTimeSeconds(max.toUnixTimeSeconds()));
   expect(max, new Instant.fromUnixTimeMilliseconds(max.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(max, new Instant.fromUnixTimeTicks(max.toUnixTimeTicks()));
+  if (Platform.isVM) expect(max, new Instant.fromUnixTimeMicroseconds(max.toUnixTimeMicroseconds()));
 
   var min = Instant.minValue;
   expect(min, new Instant.fromUnixTimeSeconds(min.toUnixTimeSeconds()));
   expect(min, new Instant.fromUnixTimeMilliseconds(min.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(min, new Instant.fromUnixTimeTicks(min.toUnixTimeTicks()));
+  if (Platform.isVM) expect(min, new Instant.fromUnixTimeMicroseconds(min.toUnixTimeMicroseconds()));
 }
 
 @Test() @SkipMe.unimplemented()
@@ -236,8 +237,8 @@ Future InZoneWithCalendar () async
 @Test()
 void Max()
 {
-  Instant x = new Instant.fromUnixTimeTicks(100);
-  Instant y = new Instant.fromUnixTimeTicks(200);
+  Instant x = new Instant.fromUnixTimeMicroseconds(100);
+  Instant y = new Instant.fromUnixTimeMicroseconds(200);
   expect(y, Instant.max(x, y));
   expect(y, Instant.max(y, x));
   expect(x, Instant.max(x, Instant.minValue));
@@ -249,8 +250,8 @@ void Max()
 @Test()
 void Min()
 {
-  Instant x = new Instant.fromUnixTimeTicks(100);
-  Instant y = new Instant.fromUnixTimeTicks(200);
+  Instant x = new Instant.fromUnixTimeMicroseconds(100);
+  Instant y = new Instant.fromUnixTimeMicroseconds(200);
   expect(x, Instant.min(x, y));
   expect(x, Instant.min(y, x));
   expect(Instant.minValue, Instant.min(x, Instant.minValue));
@@ -349,7 +350,8 @@ void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 {
   Time nanos = new Time(nanoseconds: nanoseconds);
   Instant instant = IInstant.untrusted(nanos); //.FromUntrustedDuration(nanos);
-  expect(instant.toUnixTimeTicks(), expectedTicks);
+  // todo: maybe change this test up a bit?
+  expect((instant.timeSinceEpoch.totalNanoseconds / 100).floor() /*.toUnixTimeTicks()*/, expectedTicks);
 }
 
 @Test()
@@ -400,8 +402,8 @@ void PlusOffset_Overflow()
 void FromUnixTimeMilliseconds_Range()
 {
   // todo: I owe you, exception behavior
-  int smallestValid = Instant.minValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerMillisecond;
-  int largestValid = Instant.maxValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerMillisecond;
+  int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
+  int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
 //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
 //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
 //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
@@ -417,8 +419,8 @@ void FromUnixTimeMilliseconds_Range()
 void FromUnixTimeSeconds_Range()
 {
   // todo: I owe you, out of range behavior
-  int smallestValid = Instant.minValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerSecond;
-  int largestValid = Instant.maxValue.toUnixTimeTicks() ~/ TimeConstants.ticksPerSecond;
+  int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
+  int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
 //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
 //TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
 //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
@@ -429,8 +431,8 @@ void FromUnixTimeSeconds_Range()
 void FromTicksSinceUnixEpoch_Range()
 {
   // todo: I owe you, out of range behavior
-  int smallestValid = Instant.minValue.toUnixTimeTicks();
-  int largestValid = Instant.maxValue.toUnixTimeTicks();
+  int smallestValid = Instant.minValue.toUnixTimeMicroseconds();
+  int largestValid = Instant.maxValue.toUnixTimeMicroseconds();
 //TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
 //TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
 //TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);

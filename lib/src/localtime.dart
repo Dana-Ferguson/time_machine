@@ -47,44 +47,63 @@ class LocalTime implements Comparable<LocalTime> {
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
 
-  // todo: is this okay ... is this too confusing??? Should we drop milliseconds and go full nanoseconds?
-  /// Creates a local time at the given hour, minute, second and millisecond,
-  /// with a tick-of-millisecond value of zero.
+  static const String _munArgumentError = 'Only one subsecond argument allowed.';
+
+  /// Creates a local time at the given hour, minute, second and
+  /// millisecond or microseconds or nanoseconds within the second.
   ///
   /// [hour]: The hour of day.
   /// [minute]: The minute of the hour.
   /// [second]: The second of the minute.
-  /// [millisecond]: The millisecond of the second.
-  /// [nanosecond]: The nanosecond within the millisecond for the desired time, in the range [0, 999999], or the nanosecond
-  /// within the second for the desired time, in the range [0, 999999999]. [nanosecond] + [millisecond] must be less than 1 second.
+  /// [ms]: The millisecond of the second.
+  /// [us]: The microsecond within the second.
+  /// [ns]: The nanosecond within the second.
   ///
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid time.
+  /// [RangeError]: The parameters do not form a valid time.
+  /// [ArgumentError]: More than one of ([ms], [us], [ns]) has a value.
   /// Returns: The resulting time.
-  factory LocalTime(int hour, int minute, [int second = 0, int millisecond = 0, int nanosecond = 0]) {
+  ///
+  /// When\if https://github.com/dart-lang/sdk/issues/7056 becomes implemented,
+  /// [second] will become optional, like this: 
+  /// `(int hour, int minute, [int second], {int ms, int us, int ns})`.
+  /// The is a planned backwards compatible public API change.
+  factory LocalTime(int hour, int minute, int second, {int ms, int us, int ns}) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (hour < 0 || hour > TimeConstants.hoursPerDay - 1 ||
-        minute < 0 || minute > TimeConstants.minutesPerHour - 1 ||
-        second < 0 || second > TimeConstants.secondsPerMinute - 1 ||
-        millisecond < 0 || nanosecond < 0 ||
-        millisecond * TimeConstants.nanosecondsPerMillisecond + nanosecond > TimeConstants.nanosecondsPerMillisecond - 1) {
+    if (hour < 0 || hour >= TimeConstants.hoursPerDay ||
+        minute < 0 || minute >= TimeConstants.minutesPerHour ||
+        second < 0 || second >= TimeConstants.secondsPerMinute) {
       Preconditions.checkArgumentRange('hour', hour, 0, TimeConstants.hoursPerDay - 1);
       Preconditions.checkArgumentRange('minute', minute, 0, TimeConstants.minutesPerHour - 1);
       Preconditions.checkArgumentRange('second', second, 0, TimeConstants.secondsPerMinute - 1);
-      Preconditions.checkArgumentRange('millisecond', millisecond, 0, TimeConstants.millisecondsPerSecond - 1);
-      Preconditions.checkArgumentRange('nanosecond', nanosecond, 0, TimeConstants.nanosecondsPerSecond - 1);
-      var totalNanoseconds = millisecond * TimeConstants.nanosecondsPerMillisecond + nanosecond;
-      Preconditions.checkArgumentRange('millisecond + nanosecond', totalNanoseconds, 0, TimeConstants.nanosecondsPerSecond - 1);
     }
 
-    var nanoseconds =
-        hour * TimeConstants.nanosecondsPerHour +
-            minute * TimeConstants.nanosecondsPerMinute +
-            second * TimeConstants.nanosecondsPerSecond +
-            millisecond * TimeConstants.nanosecondsPerMillisecond +
-            nanosecond;
+    var nanoseconds
+        = hour * TimeConstants.nanosecondsPerHour
+        + minute * TimeConstants.nanosecondsPerMinute
+        + second * TimeConstants.nanosecondsPerSecond;
+    ;
+
+    // Only one sub-second variable may be implemented.
+    // todo: is there a more performant check here?
+    if (ms != null) {
+      if (us != null) throw new ArgumentError(_munArgumentError);
+      if (ns != null) throw new ArgumentError(_munArgumentError);
+      if (ms < 0 || ms >= TimeConstants.millisecondsPerSecond) Preconditions.checkArgumentRange('milliseconds', ms, 0, TimeConstants.millisecondsPerSecond - 1);
+      nanoseconds += ms * TimeConstants.nanosecondsPerMillisecond;
+    }
+    else if (us != null) {
+      if (ns != null) throw new ArgumentError(_munArgumentError);
+      if (us < 0 || us >= TimeConstants.microsecondsPerSecond) Preconditions.checkArgumentRange('microseconds', ms, 0, TimeConstants.microsecondsPerSecond - 1);
+      nanoseconds += us * TimeConstants.nanosecondsPerMicrosecond;
+    }
+    else if (ns != null) {
+      if (ns < 0 || ns >= TimeConstants.nanosecondsPerSecond) Preconditions.checkArgumentRange('nanoseconds', ns, 0, TimeConstants.nanosecondsPerSecond - 1);
+      nanoseconds += ns;
+    }
 
     return new LocalTime._fromNanoseconds(nanoseconds);
   }
+
 
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
   LocalTime._fromNanoseconds(this._nanoseconds)
@@ -106,20 +125,6 @@ class LocalTime implements Comparable<LocalTime> {
     }
     return new LocalTime._fromNanoseconds(nanoseconds);
   }
-
-
-  /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
-  ///
-  /// [ticks]: The number of ticks, in the range [0, 863,999,999,999]
-  /// Returns: The resulting time.
-  factory LocalTime.fromTicksSinceMidnight(int ticks) {
-    // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (ticks < 0 || ticks > TimeConstants.ticksPerDay - 1) {
-      Preconditions.checkArgumentRange('ticks', ticks, 0, TimeConstants.ticksPerDay - 1);
-    }
-    return new LocalTime._fromNanoseconds((ticks * TimeConstants.nanosecondsPerTick));
-  }
-
 
   /// Factory method for creating a local time from the number of milliseconds which have elapsed since midnight.
   ///
@@ -181,17 +186,12 @@ class LocalTime implements Comparable<LocalTime> {
   }
 
 // TODO(optimization): Rewrite for performance?
+  /// Gets the microsecond of this local time within the second, in the range 0 to 999,999 inclusive.
+  int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
 
-  /// Gets the tick of this local time within the second, in the range 0 to 9,999,999 inclusive.
-  int get tickOfSecond => ((tickOfDay % TimeConstants.ticksPerSecond));
-
-
-  /// Gets the tick of this local time within the day, in the range 0 to 863,999,999,999 inclusive.
-  ///
-  /// If the value does not fall on a tick boundary, it will be truncated towards zero.
-  int get tickOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerTick;
-
-
+  /// Gets the microsecond of this local time within the day, in the range 0 to 86,399,999,999 inclusive.
+  int get microsecondOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
+  
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
 
@@ -385,11 +385,11 @@ class LocalTime implements Comparable<LocalTime> {
   LocalTime plusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTimeSimple(this, milliseconds);
 
 
-  /// Returns a new LocalTime representing the current value with the given number of ticks added.
+  /// Returns a new LocalTime representing the current value with the given number of microseconds added.
   ///
-  /// [ticks]: The number of ticks to add
-  /// Returns: The current value plus the given number of ticks.
-  LocalTime plusTicks(int ticks) => TimePeriodField.ticks.addTimeSimple(this, ticks);
+  /// [microseconds]: The number of microseconds to add
+  /// Returns: The current value plus the given number of microseconds.
+  LocalTime plusMicroseconds(int microseconds) => TimePeriodField.microseconds.addTimeSimple(this, microseconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.

@@ -281,8 +281,8 @@ void BetweenLocalDateTimes_InvalidUnits()
 @Test()
 void BetweenLocalTimes_InvalidUnits()
 {
-  LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
+  LocalTime t1 = new LocalTime(10, 0, 0);
+  LocalTime t2 = new LocalTime(15, 30, 45, ns: 20 * TimeConstants.nanosecondsPerMillisecond + 5 * 100);
   expect(() => Period.betweenTimes(t1, t2, new PeriodUnits(0)), throwsArgumentError);
   expect(() => Period.betweenTimes(t1, t2, new PeriodUnits(-1)), throwsArgumentError);
   expect(() => Period.betweenTimes(t1, t2, PeriodUnits.yearMonthDay), throwsArgumentError);
@@ -294,8 +294,8 @@ void BetweenLocalTimes_InvalidUnits()
 @TestCase(const ["01:02:03", "03:00:00", PeriodUnits.minutes, 117])
 @TestCase(const ["01:02:03", "01:05:02", PeriodUnits.seconds, 179])
 @TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.milliseconds, 1123])
-@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.ticks, 11234000])
-@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.nanoseconds, 1123400000])
+@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.microseconds, 1123400])
+@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.nanoseconds,  1123400000])
 void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue) {
   var start = LocalTimePattern.extendedIso
       .parse(startText)
@@ -312,36 +312,37 @@ void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits 
 @Test()
 void BetweenLocalTimes_MovingForwards()
 {
-  LocalTime t1 = new LocalTime(10, 0);
-  LocalTime t2 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
+  // todo: this test and the MovingBackwards() test, originally tested Period.fromTicks() -- rewrite it for .fromMicroseconds()?
+  LocalTime t1 = new LocalTime(10, 0, 0);
+  LocalTime t2 = new LocalTime(15, 30, 45, ns: 20 * TimeConstants.nanosecondsPerMillisecond + 5 * 100);
   expect(new Period.fromHours(5) + new Period.fromMinutes(30) + new Period.fromSeconds(45) +
-      new Period.fromMilliseconds(20) + new Period.fromTicks(5),
+      new Period.fromMilliseconds(20) + new Period.fromNanoseconds(500),
       Period.betweenTimes(t1, t2));
 }
 
 @Test()
 void BetweenLocalTimes_MovingBackwards()
 {
-  LocalTime t1 = new LocalTime(15, 30, 45, 20, 5 * TimeConstants.nanosecondsPerTick);
-  LocalTime t2 = new LocalTime(10, 0);
+  LocalTime t1 = new LocalTime(15, 30, 45, ns: 20 * TimeConstants.nanosecondsPerMillisecond + 5 * 100);
+  LocalTime t2 = new LocalTime(10, 0, 0);
   expect(new Period.fromHours(-5) + new Period.fromMinutes(-30) + new Period.fromSeconds(-45) +
-      new Period.fromMilliseconds(-20) + new Period.fromTicks(-5),
+      new Period.fromMilliseconds(-20) + new Period.fromNanoseconds(-500),
       Period.betweenTimes(t1, t2));
 }
 
 @Test()
 void BetweenLocalTimes_MovingForwards_WithJustHours()
 {
-  LocalTime t1 = new LocalTime(11, 30);
-  LocalTime t2 = new LocalTime(17, 15);
+  LocalTime t1 = new LocalTime(11, 30, 0);
+  LocalTime t2 = new LocalTime(17, 15, 0);
   expect(new Period.fromHours(5), Period.betweenTimes(t1, t2, PeriodUnits.hours));
 }
 
 @Test()
 void BetweenLocalTimes_MovingBackwards_WithJustHours()
 {
-  LocalTime t1 = new LocalTime(17, 15);
-  LocalTime t2 = new LocalTime(11, 30);
+  LocalTime t1 = new LocalTime(17, 15, 0);
+  LocalTime t2 = new LocalTime(11, 30, 0);
   expect(new Period.fromHours(-5), Period.betweenTimes(t1, t2, PeriodUnits.hours));
 }
 
@@ -460,7 +461,7 @@ void Equality_WhenUnequal()
 @TestCase(const [PeriodUnits.minutes, true])
 @TestCase(const [PeriodUnits.seconds, true])
 @TestCase(const [PeriodUnits.milliseconds, true])
-@TestCase(const [PeriodUnits.ticks, true])
+@TestCase(const [PeriodUnits.microseconds, true])
 @TestCase(const [PeriodUnits.nanoseconds, true])
 void HasTimeComponent_SingleValued(PeriodUnits unit, bool hasTimeComponent) {
   var period = (new PeriodBuilder()
@@ -477,7 +478,7 @@ void HasTimeComponent_SingleValued(PeriodUnits unit, bool hasTimeComponent) {
 @TestCase(const [PeriodUnits.minutes, false])
 @TestCase(const [PeriodUnits.seconds, false])
 @TestCase(const [PeriodUnits.milliseconds, false])
-@TestCase(const [PeriodUnits.ticks, false])
+@TestCase(const [PeriodUnits.microseconds, false])
 @TestCase(const [PeriodUnits.nanoseconds, false])
 void HasDateComponent_SingleValued(PeriodUnits unit, bool hasDateComponent)
 {
@@ -543,7 +544,7 @@ void ToString_AllUnits()
   //    this.Hours: 0, this.Minutes: 0, this.Seconds: 0,
   //    this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});
   Period period = IPeriod.period(years: 1, months: 2, weeks: 3, days: 4,
-      hours: 5, minutes: 6, seconds: 7, milliseconds: 8, ticks: 9, nanoseconds: 10);
+      hours: 5, minutes: 6, seconds: 7, milliseconds: 8, microseconds: 9, nanoseconds: 10);
   expect("P1Y2M3W4DT5H6M7S8s9t10n", period.toString());
 }
 
@@ -572,7 +573,7 @@ void ToBuilder_SingleUnit()
 {
   var builder = new Period.fromHours(5).toBuilder();
   var expected = (new PeriodBuilder()..hours = 5).build();
-expect(expected, builder.build());
+  expect(expected, builder.build());
 }
 
 @Test()
@@ -580,34 +581,34 @@ void ToBuilder_MultipleUnits()
 {
   var builder = (new Period.fromHours(5) + new Period.fromWeeks(2)).toBuilder();
   var expected = (new PeriodBuilder()..hours = 5..weeks = 2).build();
-expect(expected, builder.build());
+  expect(expected, builder.build());
 }
 
 @Test()
 void Normalize_Weeks()
 {
   var original = (new PeriodBuilder()..weeks = 2..days = 5).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..days = 19).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..days = 19).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_Hours()
 {
   var original = (new PeriodBuilder()..hours = 25..days = 1).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..hours = 1..days = 2).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..hours = 1..days = 2).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_Minutes()
 {
   var original = (new PeriodBuilder()..hours = 1..minutes = 150).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..hours = 3..minutes = 30).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..hours = 3..minutes = 30).build();
+  expect(expected, normalized);
 }
 
 
@@ -615,54 +616,54 @@ expect(expected, normalized);
 void Normalize_Seconds()
 {
   var original = (new PeriodBuilder()..minutes = 1..seconds= 150).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..minutes = 3..seconds= 30).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..minutes = 3..seconds= 30).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_Milliseconds()
 {
   var original = (new PeriodBuilder()..seconds = 1..milliseconds = 1500).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..seconds = 2..milliseconds = 500).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..seconds = 2..milliseconds = 500).build();
+  expect(expected, normalized);
 }
 
 @Test()
-void Normalize_Ticks()
+void Normalize_Microseconds()
 {
-  var original = (new PeriodBuilder()..milliseconds = 1..ticks = 15000).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..milliseconds = 2..ticks = 0..nanoseconds = 500000).build();
-expect(expected, normalized);
+  var original = (new PeriodBuilder()..milliseconds = 1..microseconds = 1500).build();
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..milliseconds = 2..microseconds = 0..nanoseconds = 500000).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_Nanoseconds()
 {
-  var original = (new PeriodBuilder()..ticks = 1..nanoseconds = 150).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..nanoseconds = 250).build();
-expect(expected, normalized);
+  var original = (new PeriodBuilder()..microseconds = 1..nanoseconds = 1500).build();
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..nanoseconds = 2500).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_MultipleFields()
 {
   var original = (new PeriodBuilder()..hours = 1..minutes = 119..seconds= 150).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..hours = 3..minutes = 1..seconds= 30).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..hours = 3..minutes = 1..seconds= 30).build();
+  expect(expected, normalized);
 }
 
 @Test()
 void Normalize_AllNegative()
 {
   var original = (new PeriodBuilder()..hours = -1..minutes = -119..seconds= -150).build();
-var normalized = original.normalize();
-var expected = (new PeriodBuilder()..hours = -3..minutes = -1..seconds= -30).build();
-expect(expected, normalized);
+  var normalized = original.normalize();
+  var expected = (new PeriodBuilder()..hours = -3..minutes = -1..seconds= -30).build();
+  expect(expected, normalized);
 }
 
 @Test()
@@ -736,25 +737,24 @@ void ToDuration_InvalidWithMonths()
 @Test()
 void ToDuration_ValidAllAcceptableUnits() {
   Period period = (new PeriodBuilder()
-
     ..weeks = 1
     ..days = 2
     ..hours = 3
     ..minutes = 4
     ..seconds = 5
     ..milliseconds = 6
-    ..ticks = 7
+    ..microseconds = 7
   ).build();
   expect(
-      1 * TimeConstants.ticksPerWeek +
-          2 * TimeConstants.ticksPerDay +
-          3 * TimeConstants.ticksPerHour +
-          4 * TimeConstants.ticksPerMinute +
-          5 * TimeConstants.ticksPerSecond +
-          6 * TimeConstants.ticksPerMillisecond + 7,
+      1 * TimeConstants.microsecondsPerWeek +
+          2 * TimeConstants.microsecondsPerDay +
+          3 * TimeConstants.microsecondsPerHour +
+          4 * TimeConstants.microsecondsPerMinute +
+          5 * TimeConstants.microsecondsPerSecond +
+          6 * TimeConstants.microsecondsPerMillisecond + 7,
       period
           .toSpan()
-          .totalTicks); //.BclCompatibleTicks);
+          .totalMicroseconds);
 }
 
 @Test()

@@ -201,22 +201,22 @@ void PlusMilliseconds_Simple()
 void PlusTicks_Simple()
 {
   LocalDate date = new LocalDate(2011, 4, 2);
-  LocalTime startTime = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, 301, 1500 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, 300, 3500 * TimeConstants.nanosecondsPerTick);
-  expect(date.at(expectedForwardTime), (date.at(startTime)).plusTicks(4000));
-  expect(date.at(expectedBackwardTime), (date.at(startTime)).plusTicks(-4000));
+  LocalTime startTime = new LocalTime(12, 15, 8, ns:300 * TimeConstants.nanosecondsPerMillisecond + 7500 * 100);
+  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, ns:301 * TimeConstants.nanosecondsPerMillisecond + 1500 * 100);
+  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, ns: 300 * TimeConstants.nanosecondsPerMillisecond + 3500 * 100);
+  expect(date.at(expectedForwardTime), (date.at(startTime)).plusMicroseconds(400));
+  expect(date.at(expectedBackwardTime), (date.at(startTime)).plusMicroseconds(-400));
 }
 
 @Test()
 void PlusTicks_Long()
 {
-  expect(TimeConstants.ticksPerDay > Platform.int32MaxValue, isTrue);
+  expect(TimeConstants.microsecondsPerDay > Platform.int32MaxValue, isTrue);
   LocalDateTime start = new LocalDateTime.at(2011, 4, 2, 12, 15, seconds: 8);
   LocalDateTime expectedForward = new LocalDateTime.at(2011, 4, 3, 12, 15, seconds: 8);
   LocalDateTime expectedBackward = new LocalDateTime.at(2011, 4, 1, 12, 15, seconds: 8);
-  expect(expectedForward, start.plusTicks(TimeConstants.ticksPerDay));
-  expect(expectedBackward, start.plusTicks(-TimeConstants.ticksPerDay));
+  expect(expectedForward, start.plusMicroseconds(TimeConstants.microsecondsPerDay));
+  expect(expectedBackward, start.plusMicroseconds(-TimeConstants.microsecondsPerDay));
 }
 
 @Test()
@@ -224,9 +224,9 @@ void PlusNanoseconds_Simple()
 {
   // Just use the ticks values
   LocalDate date = new LocalDate(2011, 4, 2);
-  LocalTime startTime = new LocalTime(12, 15, 8, 300, 7500 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, 300, 7540 * TimeConstants.nanosecondsPerTick);
-  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, 300, 7460 * TimeConstants.nanosecondsPerTick);
+  LocalTime startTime = new LocalTime(12, 15, 8, ns: 300 * TimeConstants.nanosecondsPerMillisecond + 7500 * 100);
+  LocalTime expectedForwardTime = new LocalTime(12, 15, 8, ns: 300 * TimeConstants.nanosecondsPerMillisecond + 7540 * 100);
+  LocalTime expectedBackwardTime = new LocalTime(12, 15, 8, ns: 300 * TimeConstants.nanosecondsPerMillisecond + 7460 * 100);
   expect(date.at(expectedForwardTime), (date.at(startTime)).plusNanoseconds(4000));
   expect(date.at(expectedBackwardTime), (date.at(startTime)).plusNanoseconds(-4000));
 }
@@ -253,12 +253,12 @@ void Plus_FullPeriod() {
     ..minutes = 6
     ..seconds = 7
     ..milliseconds = 8
-    ..ticks = 9
+    ..microseconds = 9
     ..nanoseconds = 11;
 
   var period = builder.build();
   var actual = start.plus(period);
-  var expected = new LocalDateTime.at(2012, 6, 27, 17, 21, seconds: 15).plusNanoseconds(8000911);
+  var expected = new LocalDateTime.at(2012, 6, 27, 17, 21, seconds: 15).plusNanoseconds(8009011);
 
   expect(expected, actual, reason: "${expected.toString('yyyy-MM-dd HH:mm:ss.fffffffff')} != ${actual.toString('yyyy-MM-dd HH:mm:ss.fffffffff')}");
 }

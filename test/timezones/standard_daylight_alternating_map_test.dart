@@ -20,10 +20,10 @@ Future main() async {
 }
 
 ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.zero,
-new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0)), 2000, Platform.int32MaxValue);
+new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0, 0)), 2000, Platform.int32MaxValue);
 
 ZoneRecurrence Summer = new ZoneRecurrence("Summer", new Offset.fromHours(1),
-new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue);
+new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue);
 
 /// Time zone with the following characteristics:
 /// - Only valid from March 10th 2000
@@ -198,7 +198,7 @@ void Equality() {
   var map3 = new StandardDaylightAlternatingMap(new Offset.fromHours(1), Winter,
       // Summer, but starting from 1900
       new ZoneRecurrence("Summer", new Offset.fromHours(1),
-          new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 1900, Platform.int32MaxValue));
+          new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0, 0)), 1900, Platform.int32MaxValue));
   // Standard offset does matter
   var map4 = new StandardDaylightAlternatingMap(new Offset.fromHours(0), Summer, Winter);
 
@@ -208,22 +208,22 @@ void Equality() {
   // Recurrences like Summer, but different in one aspect each, *except* 
   var unequalMaps = [
     new ZoneRecurrence("Different name", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(2),
-        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.standard, 3, 10, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.standard, 3, 10, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 4, 10, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 4, 10, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 3, 9, 0, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 3, 9, 0, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 3, 10, 1, false, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 3, 10, 1, false, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     // Advance with day-of-week 0 doesn't make any real difference, but they compare non-equal...
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, true, new LocalTime(1, 0)), 2000, Platform.int32MaxValue),
+        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, true, new LocalTime(1, 0, 0)), 2000, Platform.int32MaxValue),
     new ZoneRecurrence("Summer", new Offset.fromHours(1),
-        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(2, 0)), 2000, Platform.int32MaxValue)
+        new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(2, 0, 0)), 2000, Platform.int32MaxValue)
   ].map((recurrence) => new StandardDaylightAlternatingMap(new Offset.fromHours(1), Winter, recurrence)).toList();
   TestHelper.TestEqualsClass(map1, map2, unequalMaps);
 }
@@ -247,10 +247,10 @@ void ReadWrite()
 void Extremes()
 {
   ZoneRecurrence winter = new ZoneRecurrence("Winter", Offset.zero,
-      new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0)), Platform.int32MinValue, Platform.int32MaxValue);
+      new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0, 0)), Platform.int32MinValue, Platform.int32MaxValue);
 
   ZoneRecurrence summer = new ZoneRecurrence("Summer", new Offset.fromHours(1),
-      new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0)), Platform.int32MinValue, Platform.int32MaxValue);
+      new ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, new LocalTime(1, 0, 0)), Platform.int32MinValue, Platform.int32MaxValue);
 
   var zone = new StandardDaylightAlternatingMap(Offset.zero, winter, summer);
 
@@ -285,10 +285,10 @@ void InvalidMap_SimultaneousTransition()
 {
   // Two recurrences with different savings, but which occur at the same instant in time every year.
   ZoneRecurrence r1 = new ZoneRecurrence("Recurrence1", Offset.zero,
-      new ZoneYearOffset(TransitionMode.utc, 10, 5, 0, false, new LocalTime(2, 0)), Platform.int32MinValue, Platform.int32MaxValue);
+      new ZoneYearOffset(TransitionMode.utc, 10, 5, 0, false, new LocalTime(2, 0, 0)), Platform.int32MinValue, Platform.int32MaxValue);
 
   ZoneRecurrence r2 = new ZoneRecurrence("Recurrence2", new Offset.fromHours(1),
-      new ZoneYearOffset(TransitionMode.utc, 10, 5, 0, false, new LocalTime(2, 0)), Platform.int32MinValue, Platform.int32MaxValue);
+      new ZoneYearOffset(TransitionMode.utc, 10, 5, 0, false, new LocalTime(2, 0, 0)), Platform.int32MinValue, Platform.int32MaxValue);
 
   var map = new StandardDaylightAlternatingMap(Offset.zero, r1, r2);
 

@@ -32,10 +32,10 @@ class _TimeComponentsBetweenResult {
   final int minutes;
   final int seconds;
   final int milliseconds;
-  final int ticks;
+  final int microseconds;
   final int nanoseconds;
 
-  _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.ticks, this.nanoseconds);
+  _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
 @internal
@@ -44,9 +44,9 @@ abstract class IPeriod {
 
   static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
     int hours: 0, int minutes: 0, int seconds: 0,
-    int milliseconds: 0, int ticks: 0, int nanoseconds: 0}) => 
+    int milliseconds: 0, int microseconds: 0, int nanoseconds: 0}) => 
       new Period._(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, 
-          milliseconds: milliseconds, ticks: ticks, nanoseconds: nanoseconds);
+          milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds);
 
   static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);  
 
@@ -102,11 +102,11 @@ class Period {
   final int nanoseconds;
 
 
-  /// Gets the number of ticks within this period.
+  /// Gets the number of microseconds within this period.
   ///
   /// This property returns zero both when the property has been explicitly set to zero and when the period does not
   /// contain this property.
-  final int ticks;
+  final int microseconds;
 
 
   /// Gets the number of milliseconds within this period.
@@ -167,7 +167,7 @@ class Period {
   /// Creates a period with the given time values.
   const Period._({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
     this.hours: 0, this.minutes: 0, this.seconds: 0,
-    this.milliseconds: 0, this.ticks: 0, this.nanoseconds: 0});
+    this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});
 
 
   // todo: these are all terrible ... remove them ??? ... do they add extra or does tree shaking shank these?
@@ -232,7 +232,7 @@ class Period {
   ///
   /// [ticks]: The number of ticks in the new period
   /// Returns: A period consisting of the given number of ticks.
-  factory Period.fromTicks(int ticks) => new Period._(ticks: ticks);
+  factory Period.fromMicroseconds(int microseconds) => new Period._(microseconds: microseconds);
 
 
   /// Creates a period representing the specified number of nanooseconds.
@@ -258,7 +258,7 @@ class Period {
         minutes: minutes + right.minutes,
         seconds: seconds + right.seconds,
         milliseconds: milliseconds + right.milliseconds,
-        ticks: ticks + right.ticks,
+        microseconds: microseconds + right.microseconds,
         nanoseconds: nanoseconds + right.nanoseconds);
   }
 
@@ -296,7 +296,7 @@ class Period {
         minutes: minutes - subtrahend.minutes,
         seconds: seconds - subtrahend.seconds,
         milliseconds: milliseconds - subtrahend.milliseconds,
-        ticks: ticks - subtrahend.ticks,
+        microseconds: microseconds - subtrahend.microseconds,
         nanoseconds: nanoseconds - subtrahend.nanoseconds);
   }
   
@@ -351,7 +351,7 @@ class Period {
       PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.minutes.unitsBetween(start, end)),
       PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.seconds.unitsBetween(start, end)),
       PeriodUnits.milliseconds: () => new Period.fromMilliseconds(TimePeriodField.milliseconds.unitsBetween(start, end)),
-      PeriodUnits.ticks: () => new Period.fromTicks(TimePeriodField.ticks.unitsBetween(start, end)),
+      PeriodUnits.microseconds: () => new Period.fromMicroseconds(TimePeriodField.microseconds.unitsBetween(start, end)),
       PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.nanoseconds.unitsBetween(start, end))
     };
     
@@ -407,7 +407,7 @@ class Period {
     // be trying to find the difference between 9998 BC and 9999 CE in nanoseconds...
     // Where we can optimize, do everything with int arithmetic (as we do for Between(LocalTime, LocalTime)).
     // Otherwise (rare case), use duration arithmetic.
-    int hours, minutes, seconds, milliseconds, ticks, nanoseconds;
+    int hours, minutes, seconds, milliseconds, microseconds, nanoseconds;
     var span = ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
         - ILocalDateTime.toLocalInstant(remaining).timeSinceLocalEpoch;
     if (ITime.isInt64Representable(span)) {
@@ -416,7 +416,7 @@ class Period {
       minutes = result.minutes;
       seconds = result.seconds;
       milliseconds = result.milliseconds;
-      ticks = result.ticks;
+      microseconds = result.microseconds;
       nanoseconds = result.nanoseconds;
     // throw new UnimplementedError('this is not done.');
     // TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
@@ -435,8 +435,8 @@ class Period {
       minutes = UnitsBetween(PeriodUnits.minutes, TimePeriodField.minutes);
       seconds = UnitsBetween(PeriodUnits.seconds, TimePeriodField.seconds);
       milliseconds = UnitsBetween(PeriodUnits.milliseconds, TimePeriodField.milliseconds);
-      ticks = UnitsBetween(PeriodUnits.ticks, TimePeriodField.ticks);
-      nanoseconds = UnitsBetween(PeriodUnits.ticks, TimePeriodField.nanoseconds);
+      microseconds = UnitsBetween(PeriodUnits.microseconds, TimePeriodField.microseconds);
+      nanoseconds = UnitsBetween(PeriodUnits.microseconds, TimePeriodField.nanoseconds);
     }
 
     return new Period._(years: years,
@@ -447,7 +447,7 @@ class Period {
         minutes: minutes,
         seconds: seconds,
         milliseconds: milliseconds,
-        ticks: ticks,
+        microseconds: microseconds,
         nanoseconds: nanoseconds);
   }
 
@@ -526,10 +526,10 @@ class Period {
     var minutes = UnitsBetween(PeriodUnits.minutes, TimeConstants.nanosecondsPerMinute);
     var seconds = UnitsBetween(PeriodUnits.seconds, TimeConstants.nanosecondsPerSecond);
     var milliseconds = UnitsBetween(PeriodUnits.milliseconds, TimeConstants.nanosecondsPerMillisecond);
-    var ticks = UnitsBetween(PeriodUnits.ticks, TimeConstants.nanosecondsPerTick);
+    var microseconds = UnitsBetween(PeriodUnits.microseconds, TimeConstants.nanosecondsPerMicrosecond);
     var nanoseconds = UnitsBetween(PeriodUnits.nanoseconds, 1);
 
-    return new _TimeComponentsBetweenResult(hours, minutes, seconds, milliseconds, ticks, nanoseconds);
+    return new _TimeComponentsBetweenResult(hours, minutes, seconds, milliseconds, microseconds, nanoseconds);
   }
 
 // TODO(optimization): These three methods are only ever used with scalar values of 1 or -1. Unlikely that
@@ -544,7 +544,7 @@ class Period {
           .plusMinutes(minutes * scalar)
           .plusSeconds(seconds * scalar)
           .plusMilliseconds(milliseconds * scalar)
-          .plusTicks(ticks * scalar)
+          .plusMicroseconds(microseconds * scalar)
           .plusNanoseconds(nanoseconds * scalar);
 
 
@@ -570,7 +570,7 @@ class Period {
     extraDays = result.extraDays; time = result.time;
     result = TimePeriodField.milliseconds.addTime(time, milliseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.ticks.addTime(time, ticks * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.microseconds.addTime(time, microseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
     result = TimePeriodField.nanoseconds.addTime(time, nanoseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
@@ -625,7 +625,7 @@ class Period {
     PeriodUnits.minutes: (remaining) => new Period.fromMinutes(remaining ~/ TimeConstants.nanosecondsPerMinute),
     PeriodUnits.seconds: (remaining) => new Period.fromSeconds(remaining ~/ TimeConstants.nanosecondsPerSecond),
     PeriodUnits.milliseconds: (remaining) => new Period.fromMilliseconds(remaining ~/ TimeConstants.nanosecondsPerMillisecond),
-    PeriodUnits.ticks: (remaining) => new Period.fromTicks(remaining ~/ TimeConstants.nanosecondsPerTick),
+    PeriodUnits.microseconds: (remaining) => new Period.fromMicroseconds(remaining ~/ TimeConstants.nanosecondsPerMicrosecond),
     PeriodUnits.nanoseconds: (remaining) => new Period.fromNanoseconds(remaining)
   };
 
@@ -663,7 +663,7 @@ class Period {
         minutes: result.minutes,
         seconds: result.seconds,
         milliseconds: result.milliseconds,
-        ticks: result.ticks,
+        microseconds: result.microseconds,
         nanoseconds: result.nanoseconds);
   }
 
@@ -685,7 +685,7 @@ class Period {
 
 
   /// Returns whether or not this period contains any non-zero-valued time-based properties (hours or lower).
-  bool get hasTimeComponent => hours != 0 || minutes != 0 || seconds != 0 || milliseconds != 0 || ticks != 0 || nanoseconds != 0;
+  bool get hasTimeComponent => hours != 0 || minutes != 0 || seconds != 0 || milliseconds != 0 || microseconds != 0 || nanoseconds != 0;
 
 
   /// Returns whether or not this period contains any non-zero date-based properties (days or higher).
@@ -712,7 +712,7 @@ class Period {
   /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
   int get _totalNanoseconds =>
       nanoseconds +
-          ticks * TimeConstants.nanosecondsPerTick +
+          microseconds * TimeConstants.nanosecondsPerMicrosecond +
           milliseconds * TimeConstants.nanosecondsPerMillisecond +
           seconds * TimeConstants.nanosecondsPerSecond +
           minutes * TimeConstants.nanosecondsPerMinute +
@@ -777,7 +777,7 @@ class Period {
         minutes: minutes,
         seconds: seconds,
         milliseconds: milliseconds,
-        ticks: 0 /* ticks */,
+        microseconds: 0 /* ticks */,
         nanoseconds: nanoseconds);
   }
 
@@ -789,7 +789,7 @@ class Period {
   /// Returns the hash code for this period, consistent with [Equals(Period)].
   ///
   /// Returns: The hash code for this period.
-  @override int get hashCode => hashObjects([years, months, weeks, days, hours, minutes, seconds, milliseconds, ticks, nanoseconds]);
+  @override int get hashCode => hashObjects([years, months, weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
 
   /// Compares the given period for equality with this one.
   ///
@@ -808,7 +808,7 @@ class Period {
           minutes == other.minutes &&
           seconds == other.seconds &&
           milliseconds == other.milliseconds &&
-          ticks == other.ticks &&
+          microseconds == other.microseconds &&
           nanoseconds == other.nanoseconds;
 
   bool operator==(dynamic other) => other is Period && equals(other);

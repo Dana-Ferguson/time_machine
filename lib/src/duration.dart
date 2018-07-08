@@ -46,7 +46,6 @@ abstract class ITime {
   static bool isInt64Representable(Time span) => span._isInt64Representable;
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
   
-  static int floorTicks(Time span) => span._floorTicks;
   static int floorSeconds(Time span) => span._floorSeconds;
   
   static int millisecondsOf(Time span) => span._milliseconds;
@@ -151,21 +150,20 @@ class Time implements Comparable<Time> {
   }
 
   factory Time({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
-    int milliseconds = 0, int microseconds = 0, int ticks = 0, int nanoseconds = 0}) {
+    int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) {
     milliseconds += days * TimeConstants.millisecondsPerDay;
     milliseconds += hours * TimeConstants.millisecondsPerHour;
     milliseconds += minutes * TimeConstants.millisecondsPerMinute;
     milliseconds += seconds * TimeConstants.millisecondsPerSecond;
 
     nanoseconds += microseconds * TimeConstants.nanosecondsPerMicrosecond;
-    nanoseconds += ticks * TimeConstants.nanosecondsPerTick;
 
     return new Time._untrusted(milliseconds, nanoseconds);
   }
 
   // todo: should these be the default constructor?
   factory Time.complex({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
-    num milliseconds = 0, num microseconds = 0, num ticks = 0, num nanoseconds = 0}) {
+    num milliseconds = 0, num microseconds = 0, num nanoseconds = 0}) {
     int _days = days.floor();
     int _hours = hours.floor();
     int _minutes = minutes.floor();
@@ -181,7 +179,6 @@ class Time implements Comparable<Time> {
     totalMilliseconds += _seconds * TimeConstants.millisecondsPerSecond;
 
     intervalNanoseconds += (microseconds * TimeConstants.nanosecondsPerMicrosecond).round();
-    intervalNanoseconds += (ticks * TimeConstants.nanosecondsPerTick).round();
 
     intervalNanoseconds += ((days - _days) * TimeConstants.nanosecondsPerDay).round();
     intervalNanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerDay).round();
@@ -221,12 +218,12 @@ class Time implements Comparable<Time> {
 
   int get seconds => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
 
+  // todo: should this be called subsecondMilliseconds??? or shoudl the other's be changed?
   int get milliseconds => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
 
-  // microseconds?
-  int get subsecondTicks =>
-      arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond
-          + arithmeticMod((_nanosecondsInterval ~/ TimeConstants.nanosecondsPerTick), TimeConstants.ticksPerSecond);
+  int get subsecondMicroseconds =>
+      arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.microsecondsPerMillisecond
+      + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
 
   int get subsecondNanoseconds =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
@@ -243,8 +240,6 @@ class Time implements Comparable<Time> {
   double get totalMilliseconds => _milliseconds + _nanosecondsInterval / TimeConstants.nanosecondsPerMillisecond;
 
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
-
-  double get totalTicks => _milliseconds * TimeConstants.ticksPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerTick;
 
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
@@ -263,8 +258,6 @@ class Time implements Comparable<Time> {
         && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
     return days;
   }
-
-  int get _floorTicks => _milliseconds * TimeConstants.ticksPerMillisecond + (_nanosecondsInterval / TimeConstants.nanosecondsPerTick).floor();
 
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();

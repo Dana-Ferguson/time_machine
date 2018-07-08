@@ -32,6 +32,20 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
+    // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing 
+    //    -- and I can't seem to find it backed up in a standard
+    // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
+    if (patternText.length == 1)
+    {
+      switch (patternText[0])
+      {
+        case 'G':
+          return AnnualDatePatterns.isoPatternImpl;
+        default:
+          throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat,[patternText[0], 'AnnualDate']);
+      }
+    }
+
     var patternBuilder = new SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket>(formatInfo,
             () => new AnnualDateParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
