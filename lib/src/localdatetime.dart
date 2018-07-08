@@ -146,6 +146,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
           time.hour,
           time.minute,
           time.second,
+          0,
           time.microsecondOfSecond);
     }
   }

@@ -45,11 +45,22 @@ void ToDateTimeUnspecified()
 @TestCase(const [2900])
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
-  var ldt = new LocalDateTime.at(year, 1, 1, 13, 15, seconds: 55).plusMilliseconds(TimeConstants.millisecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
-  var expected = new DateTime(year, 1, 1, 13, 15, 55/*, DateTimeKind.Unspecified*/)
-      .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
-  var actual = ldt.toDateTimeLocal();
-  expect(actual, expected);
+  if (Platform.isWeb) {
+    var ldt = new LocalDateTime.at(year, 1, 1, 13, 15, seconds: 55).plusNanoseconds(
+        TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
+    var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
+        .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
+    var actual = ldt.toDateTimeLocal();
+    expect(actual, expected);
+  }
+  else {
+    var ldt = new LocalDateTime.at(year, 1, 1, 13, 15, seconds: 55).plusNanoseconds(
+        TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
+    var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
+        .add(new Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
+    var actual = ldt.toDateTimeLocal();
+    expect(actual, expected);
+  }
 }
 
 /* This works in dart:core (vs. BCL)
