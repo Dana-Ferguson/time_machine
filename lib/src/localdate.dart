@@ -127,7 +127,7 @@ class LocalDate implements Comparable<LocalDate> {
   // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
 
   // Helper method used by both FromDateTime overloads.
-  static int _nonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
+  // static int _nonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
   // ((ticks >> 14) ~/ 52734375);
 
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
@@ -140,8 +140,8 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate.fromDateTime(DateTime dateTime, [CalendarSystem calendar])
   {
     int days = Platform.isWeb
-        ? (dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay)
-        : _nonNegativeMicrosecondsToDays(dateTime.microsecondsSinceEpoch);
+        ? dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay
+        : dateTime.microsecondsSinceEpoch ~/ TimeConstants.microsecondsPerDay;
     return new LocalDate._fromDaysSinceEpoch(days, calendar);
   }
 
