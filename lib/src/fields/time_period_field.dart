@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
+// todo: can we refactor out this object?
 class _AddTimeResult {
   final LocalTime time;
   final int extraDays;
@@ -16,7 +17,7 @@ class _AddTimeResult {
 
 /// Period field class representing a field with a fixed duration regardless of when it occurs.
 ///
-/// 2014-06-29: Tried optimizing time period calculations by making these static methods accepting
+/// NodaTime: 2014-06-29: Tried optimizing time period calculations by making these static methods accepting
 /// the number of ticks. I'd expected that to be really significant, given that it would avoid
 /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
 /// of code elegance.
@@ -43,14 +44,13 @@ class TimePeriodField
   LocalDateTime addDateTime(LocalDateTime start, int units)
   {
     // int extraDays = 0;
-    var addTimeResult = addTime(start.time, units, 0);
+    var addTimeResult = addTimeAndDays(start.time, units, 0);
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
     LocalDate date = addTimeResult.extraDays == 0 ? start.date :  start.date.plusDays(addTimeResult.extraDays);
     return new LocalDateTime(date, addTimeResult.time);
   }
 
-  // todo: is this actually used anywhere? rename
-  LocalTime addTimeSimple(LocalTime localTime, int value)
+  LocalTime addTime(LocalTime localTime, int value)
   {
     // unchecked
     {
@@ -87,7 +87,7 @@ class TimePeriodField
     }
   }
 
-  _AddTimeResult addTime(LocalTime localTime, int value, /*ref*/ int extraDays) {
+  _AddTimeResult addTimeAndDays(LocalTime localTime, int value, /*ref*/ int extraDays) {
     // if (extraDays == null) return AddTimeSimple(localTime, value);
 
     // unchecked

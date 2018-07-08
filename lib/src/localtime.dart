@@ -358,7 +358,7 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [hours]: The number of hours to add
   /// Returns: The current value plus the given number of hours.
-  LocalTime plusHours(int hours) => TimePeriodField.hours.addTimeSimple(this, hours);
+  LocalTime plusHours(int hours) => TimePeriodField.hours.addTime(this, hours);
 
   /// Returns a new LocalTime representing the current value with the given number of minutes added.
   ///
@@ -366,7 +366,7 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [minutes]: The number of minutes to add
   /// Returns: The current value plus the given number of minutes.
-  LocalTime plusMinutes(int minutes) => TimePeriodField.minutes.addTimeSimple(this, minutes);
+  LocalTime plusMinutes(int minutes) => TimePeriodField.minutes.addTime(this, minutes);
 
 
   /// Returns a new LocalTime representing the current value with the given number of seconds added.
@@ -375,28 +375,28 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [seconds]: The number of seconds to add
   /// Returns: The current value plus the given number of seconds.
-  LocalTime plusSeconds(int seconds) => TimePeriodField.seconds.addTimeSimple(this, seconds);
+  LocalTime plusSeconds(int seconds) => TimePeriodField.seconds.addTime(this, seconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
   ///
   /// [milliseconds]: The number of milliseconds to add
   /// Returns: The current value plus the given number of milliseconds.
-  LocalTime plusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTimeSimple(this, milliseconds);
+  LocalTime plusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTime(this, milliseconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of microseconds added.
   ///
   /// [microseconds]: The number of microseconds to add
   /// Returns: The current value plus the given number of microseconds.
-  LocalTime plusMicroseconds(int microseconds) => TimePeriodField.microseconds.addTimeSimple(this, microseconds);
+  LocalTime plusMicroseconds(int microseconds) => TimePeriodField.microseconds.addTime(this, microseconds);
 
 
   /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
   ///
   /// [nanoseconds]: The number of nanoseconds to add
   /// Returns: The current value plus the given number of ticks.
-  LocalTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addTimeSimple(this, nanoseconds);
+  LocalTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addTime(this, nanoseconds);
 
 
   /// Returns this time, with the given adjuster applied to it.

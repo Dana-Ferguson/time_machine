@@ -562,17 +562,17 @@ class Period {
     date = _addDateTo(date, scalar);
     // todo: probably a better way here
     int extraDays = 0;
-    var result = TimePeriodField.hours.addTime(time, hours * scalar, /*ref*/ extraDays);
+    var result = TimePeriodField.hours.addTimeAndDays(time, hours * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.minutes.addTime(time, minutes * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.minutes.addTimeAndDays(time, minutes * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.seconds.addTime(time, seconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.seconds.addTimeAndDays(time, seconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.milliseconds.addTime(time, milliseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.milliseconds.addTimeAndDays(time, milliseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.microseconds.addTime(time, microseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.microseconds.addTimeAndDays(time, microseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.nanoseconds.addTime(time, nanoseconds * scalar, /*ref*/ extraDays);
+    result = TimePeriodField.nanoseconds.addTimeAndDays(time, nanoseconds * scalar, /*ref*/ extraDays);
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
