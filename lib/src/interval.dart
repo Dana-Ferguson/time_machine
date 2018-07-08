@@ -9,6 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
+@internal
 abstract class IInterval {
   static Instant rawEnd(Interval interval) => interval._rawEnd;
 }
@@ -45,8 +46,7 @@ class Interval {
   ///
   /// This will never be later than [end], though it may be equal to it.
   ///
-  /// [InvalidOperationException]: The interval extends to the start of time.
-  /// <seealso cref="HasStart"/>
+  /// [StateError]: The interval extends to the start of time.
   Instant get start {
     // todo: IsValid .. replace with a null check???
     Preconditions.checkState(_start.isValid, "Interval extends to start of time");
@@ -55,15 +55,11 @@ class Interval {
 
   /// Returns `true` if this interval has a fixed start point, or `false` if it
   /// extends to the start of time.
-  ///
-  /// <value>`true` if this interval has a fixed start point, or `false` if it
-  /// extends to the start of time.</value>
   bool get hasStart => _start.isValid;
 
   /// Gets the end instant - the exclusive upper bound of the interval.
   ///
-  /// [InvalidOperationException]: The interval extends to the end of time.
-  /// <seealso cref="HasEnd"/>
+  /// [StateError]: The interval extends to the end of time.
   Instant get end {
     Preconditions.checkState(_end.isValid, "Interval extends to end of time");
     return _end;
@@ -75,17 +71,14 @@ class Interval {
 
   /// Returns `true` if this interval has a fixed end point, or `false` if it
   /// extends to the end of time.
-  ///
-  /// <value>`true` if this interval has a fixed end point, or `false` if it
-  /// extends to the end of time.</value>
   bool get hasEnd => _end.isValid;
 
   /// Returns the duration of the interval.
   ///
   /// This will always be a non-negative duration, though it may be zero.
   ///
-  /// [InvalidOperationException]: The interval extends to the start or end of time.
-  Time get span => end - start;
+  /// [StateError]: The interval extends to the start or end of time.
+  Time get time => end - start;
 
   /// Returns whether or not this interval contains the given instant.
   ///
@@ -99,13 +92,9 @@ class Interval {
   ///
   /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
   /// otherwise, false.
-  bool equals(Interval other) => _start == other._start && _end == other._end;
+  bool equals(Interval other) => other != null && _start == other._start && _end == other._end;
 
   /// Returns the hash code for this instance.
-  ///
-  /// A 32-bit signed integer that is the hash code for this instance.
-  ///
-  /// <filterpriority>2</filterpriority>
   @override int get hashCode => hash2(_start, _end);
 
   /// Returns a string representation of this interval, in extended ISO-8601 format: the format
@@ -114,16 +103,12 @@ class Interval {
   /// represent this.
   ///
   /// Returns: A string representation of this interval.
-  @override String toString() // => TextShim.toStringInterval(this);
+  @override String toString()
   {
     var pattern = InstantPattern.extendedIso;
     return pattern.format(_start) + "/" + pattern.format(_end);
   }
 
   /// Implements the operator ==.
-  ///
-  /// [left]: The left.
-  /// [right]: The right.
-  /// Returns: The result of the operator.
-  bool operator ==(dynamic right) => right is Interval && equals(right);
+  bool operator ==(dynamic other) => other is Interval && _start == other._start && _end == other._end;
 }
