@@ -50,7 +50,7 @@ abstract class ITime {
   
   static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
-  static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._trusted(milliseconds, nanosecondsInterval);
+  static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
 }
 
 // Implementation note:
@@ -108,10 +108,17 @@ class Time implements Comparable<Time> {
   // this is only true on the VM....
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
-  static const Time zero = const Time._trusted(0);
-
+  static const Time zero = const Time._(0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static const Time epsilon = const Time._trusted(0, 1);
+  static const Time epsilon = const Time._(0, 1);
+  // oneNanosecond is constant forever -- in theory, epsilon will change if we go beyond nanosecond precision.
+  static const Time oneNanosecond = const Time._(0, 1);
+  static const Time oneMicrosecond = const Time._(0, TimeConstants.nanosecondsPerMicrosecond);
+  static const Time oneMillisecond = const Time._(1, 0);
+  static const Time oneSecond = const Time._(TimeConstants.millisecondsPerSecond, 0);
+  static const Time oneDay = const Time._(TimeConstants.millisecondsPerDay, 0);
+  static const Time oneWeek = const Time._(TimeConstants.millisecondsPerWeek, 0);
+
 
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
   static Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
@@ -119,13 +126,10 @@ class Time implements Comparable<Time> {
   /// Gets the minimum (largest negative) value supported by [Time].
   static Time minValue = new Time(days: ITime.minDays);
 
-  static Time oneDay = new Time(days: 1);
-  static Time oneWeek = new Time(days: 7);
-
-  const Time._trusted(this._milliseconds, [this._nanosecondsInterval = 0]);
+  const Time._(this._milliseconds, [this._nanosecondsInterval = 0]);
 
   factory Time._untrusted(int milliseconds, [int nanoseconds = 0]) {
-    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Time._trusted(milliseconds, nanoseconds);
+    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Time._(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
@@ -143,7 +147,7 @@ class Time implements Comparable<Time> {
       nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
     }
 
-    return new Time._trusted(milliseconds, nanoseconds);
+    return new Time._(milliseconds, nanoseconds);
 
     // todo: custom errors
     // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
@@ -273,9 +277,9 @@ class Time implements Comparable<Time> {
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
-  Time get spanOfDay => new Time._trusted (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  Time get spanOfDay => new Time._ (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
-  Time get spanOfFloorDay => new Time._trusted (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  Time get spanOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;

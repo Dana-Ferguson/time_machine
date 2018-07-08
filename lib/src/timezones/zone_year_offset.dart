@@ -194,7 +194,7 @@ class ZoneYearOffset {
 
     var dayOfMonth = reader.read7BitEncodedInt() * dayOfMonthSign; //.readInt32();
     var monthOfYear = reader.read7BitEncodedInt(); //.readInt32();
-    var timeOfDay = ILocalTime.fromNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
+    var timeOfDay = ILocalTime.trustedNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
 
     return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);//Preconditions.checkNotNull(reader, 'reader');
     //int flags = reader.ReadByte();

@@ -66,7 +66,7 @@ class TimePeriodField
       {
         newNanos -= TimeConstants.nanosecondsPerDay;
       }
-      return ILocalTime.fromNanoseconds(newNanos);
+      return ILocalTime.trustedNanoseconds(newNanos);
     }
     else
     {
@@ -80,7 +80,7 @@ class TimePeriodField
       {
         newNanos += TimeConstants.nanosecondsPerDay;
       }
-      return ILocalTime.fromNanoseconds(newNanos);
+      return ILocalTime.trustedNanoseconds(newNanos);
     }
   }
 
@@ -106,7 +106,7 @@ class TimePeriodField
         days = /*checked*/(days + 1);
       }
       extraDays = /*checked*/(extraDays + days);
-      return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
+      return new _AddTimeResult(ILocalTime.trustedNanoseconds(newNanos), extraDays);
     }
     else {
       if (value <= -_unitsPerDay) {
@@ -122,7 +122,7 @@ class TimePeriodField
         days = /*checked*/(days - 1);
       }
       extraDays = /*checked*/(days + extraDays);
-      return new _AddTimeResult(ILocalTime.fromNanoseconds(newNanos), extraDays);
+      return new _AddTimeResult(ILocalTime.trustedNanoseconds(newNanos), extraDays);
     }
   }
 

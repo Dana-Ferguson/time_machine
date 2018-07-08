@@ -88,43 +88,35 @@ void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, in
 @Test()
 void FromNanosecondsSinceMidnight_Valid()
 {
-  expect(LocalTime.midnight, ILocalTime.fromNanosecondsSinceMidnight(0));
-  expect(LocalTime.midnight.plusNanoseconds(-1), ILocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay - 1));
+  expect(LocalTime.midnight, ILocalTime.untrustedNanoseconds(0));
+  expect(LocalTime.midnight.plusNanoseconds(-1), ILocalTime.untrustedNanoseconds(TimeConstants.nanosecondsPerDay - 1));
 }
 
 @Test()
 void FromNanosecondsSinceMidnight_RangeChecks()
 {
-  expect(() => ILocalTime.fromNanosecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => ILocalTime.fromNanosecondsSinceMidnight(TimeConstants.nanosecondsPerDay), throwsRangeError);
+  expect(() => ILocalTime.untrustedNanoseconds(-1), throwsRangeError);
+  expect(() => ILocalTime.untrustedNanoseconds(TimeConstants.nanosecondsPerDay), throwsRangeError);
 }
 
 @Test()
-void FromMillisecondsSinceMidnight_Valid()
+void SinceMidnight_Valid()
 {
-  expect(LocalTime.midnight, new LocalTime.fromMillisecondsSinceMidnight(0));
-  expect(LocalTime.midnight - new Period.fromMilliseconds(1), new LocalTime.fromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay - 1));
+  expect(LocalTime.midnight, new LocalTime.sinceMidnight(Time.zero));
+  expect(LocalTime.midnight - new Period.fromSeconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneSecond));
+  expect(LocalTime.midnight - new Period.fromMilliseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMillisecond));
+  expect(LocalTime.midnight - new Period.fromMicroseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMicrosecond));
+  expect(LocalTime.midnight - new Period.fromNanoseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneNanosecond));
 }
 
 @Test()
-void FromMillisecondsSinceMidnight_RangeChecks()
+void SinceMidnight_RangeChecks()
 {
-  expect(() => new LocalTime.fromMillisecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => new LocalTime.fromMillisecondsSinceMidnight(TimeConstants.millisecondsPerDay), throwsRangeError);
-}
-
-@Test()
-void FromSecondsSinceMidnight_Valid()
-{
-  expect(LocalTime.midnight, new LocalTime.fromSecondsSinceMidnight(0));
-  expect(LocalTime.midnight - new Period.fromSeconds(1), new LocalTime.fromSecondsSinceMidnight(TimeConstants.secondsPerDay - 1));
-}
-
-@Test()
-void FromSecondsSinceMidnight_RangeChecks()
-{
-  expect(() => new LocalTime.fromSecondsSinceMidnight(-1), throwsRangeError);
-  expect(() => new LocalTime.fromSecondsSinceMidnight(TimeConstants.secondsPerDay), throwsRangeError);
+  expect(() => new LocalTime.sinceMidnight(-Time.oneNanosecond), throwsArgumentError);
+  expect(() => new LocalTime.sinceMidnight(-Time.oneMicrosecond), throwsArgumentError);
+  expect(() => new LocalTime.sinceMidnight(-Time.oneMillisecond), throwsArgumentError);
+  expect(() => new LocalTime.sinceMidnight(-Time.oneSecond), throwsArgumentError);
+  expect(() => new LocalTime.sinceMidnight(Time.oneDay), throwsArgumentError);
 }
 
 

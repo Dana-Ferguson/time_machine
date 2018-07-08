@@ -17,9 +17,9 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 @internal
 abstract class ILocalTime {
-  static LocalTime fromNanoseconds(int nanoseconds) => new LocalTime._fromNanoseconds(nanoseconds);
+  static LocalTime trustedNanoseconds(int nanoseconds) => new LocalTime._(nanoseconds);
 
-  static LocalTime fromNanosecondsSinceMidnight(int nanoseconds) => new LocalTime._fromNanosecondsSinceMidnight(nanoseconds);
+  static LocalTime untrustedNanoseconds(int nanoseconds) => new LocalTime._untrusted(nanoseconds);
 
   static int hourOfHalfDay(LocalTime localTime) => localTime._hourOfHalfDay;
 }
@@ -42,7 +42,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// This is useful if you have to use an inclusive upper bound for some reason.
   /// In general, it's better to use an exclusive upper bound, in which case use midnight of
   /// the following day.
-  static final LocalTime maxValue = new LocalTime._fromNanoseconds(TimeConstants.nanosecondsPerDay - 1);
+  static final LocalTime maxValue = new LocalTime._(TimeConstants.nanosecondsPerDay - 1);
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
@@ -93,7 +93,7 @@ class LocalTime implements Comparable<LocalTime> {
     }
     else if (us != null) {
       if (ns != null) throw new ArgumentError(_munArgumentError);
-      if (us < 0 || us >= TimeConstants.microsecondsPerSecond) Preconditions.checkArgumentRange('microseconds', ms, 0, TimeConstants.microsecondsPerSecond - 1);
+      if (us < 0 || us >= TimeConstants.microsecondsPerSecond) Preconditions.checkArgumentRange('microseconds', us, 0, TimeConstants.microsecondsPerSecond - 1);
       nanoseconds += us * TimeConstants.nanosecondsPerMicrosecond;
     }
     else if (ns != null) {
@@ -101,55 +101,44 @@ class LocalTime implements Comparable<LocalTime> {
       nanoseconds += ns;
     }
 
-    return new LocalTime._fromNanoseconds(nanoseconds);
+    return new LocalTime._(nanoseconds);
   }
 
-
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
-  LocalTime._fromNanoseconds(this._nanoseconds)
+  LocalTime._(this._nanoseconds)
   {
     // todo: look at farming debug 
     // Preconditions.debugCheckArgumentRange('nanoseconds', _nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
     assert(_nanoseconds >= 0 && _nanoseconds < TimeConstants.nanosecondsPerDay, 'nanoseconds ($_nanoseconds) must be >= 0 and < ${TimeConstants.nanosecondsPerDay}.');
   }
 
-
   /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
   ///
   /// [nanoseconds]: The number of ticks, in the range [0, 863,999,999,999]
   /// Returns: The resulting time.
-  factory LocalTime._fromNanosecondsSinceMidnight(int nanoseconds) {
+  factory LocalTime._untrusted(int nanoseconds) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (nanoseconds < 0 || nanoseconds > TimeConstants.nanosecondsPerDay - 1) {
+    if (nanoseconds < 0 || nanoseconds >= TimeConstants.nanosecondsPerDay) {
       Preconditions.checkArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
     }
-    return new LocalTime._fromNanoseconds(nanoseconds);
+    return new LocalTime._(nanoseconds);
   }
 
-  /// Factory method for creating a local time from the number of milliseconds which have elapsed since midnight.
+  /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
   ///
-  /// [milliseconds]: The number of milliseconds, in the range [0, 86,399,999]
-  /// Returns: The resulting time.
-  factory LocalTime.fromMillisecondsSinceMidnight(int milliseconds) {
+  /// [time]: The amount of time, in the range [Time.zero] inclusive, [Time.oneDay] exclusive.  
+  /// Returns: The resulting LocalTime.
+  factory LocalTime.sinceMidnight(Time time) {
+    var nanoseconds = time.totalNanoseconds;
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (milliseconds < 0 || milliseconds > TimeConstants.millisecondsPerDay - 1) {
-      Preconditions.checkArgumentRange('milliseconds', milliseconds, 0, TimeConstants.millisecondsPerDay - 1);
+    if (nanoseconds < 0 || nanoseconds >= TimeConstants.nanosecondsPerDay) {
+      // Range error requires 'num' to be the range bounds, which isn't conceptually true here.
+      // todo: is there a way to make this a Range error?
+      throw new ArgumentError.value('Invalid value: $time was out of range of [${Time.zero}, ${Time.oneDay}).');
     }
-    return new LocalTime._fromNanoseconds((milliseconds * TimeConstants.nanosecondsPerMillisecond));
+    return new LocalTime._(nanoseconds);
   }
-  
-  /// Factory method for creating a local time from the number of seconds which have elapsed since midnight.
-  ///
-  /// [seconds]: The number of seconds, in the range [0, 86,399]
-  /// Returns: The resulting time.
-  factory LocalTime.fromSecondsSinceMidnight(int seconds) {
-    // Avoid the method calls which give a decent exception unless we're actually going to fail.
-    if (seconds < 0 || seconds > TimeConstants.secondsPerDay - 1) {
-      Preconditions.checkArgumentRange('seconds', seconds, 0, TimeConstants.secondsPerDay - 1);
-    }
-    return new LocalTime._fromNanoseconds((seconds * TimeConstants.nanosecondsPerSecond));
-  }
-  
+
   /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
   int get hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
 
@@ -163,14 +152,12 @@ class LocalTime implements Comparable<LocalTime> {
   /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
   int get _hourOfHalfDay => (hour % 12);
 
-
   /// Gets the minute of this local time, in the range 0 to 59 inclusive.
   int get minute {
     // Effectively nanoseconds / TimeConstants.nanosecondsPerMinute, but apparently rather more efficient.
     int minuteOfDay = _nanoseconds ~/ TimeConstants.nanosecondsPerMinute;
     return minuteOfDay % TimeConstants.minutesPerHour;
   }
-
 
   /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
   int get second {
@@ -254,11 +241,10 @@ class LocalTime implements Comparable<LocalTime> {
   /// Returns: The result of subtracting the given period from the time.
   static LocalTime subtract(LocalTime time, Period period) => time.minusPeriod(period);
 
-/// Subtracts the specified period from this time. Fluent alternative to `operator-()`.
-///
-/// [period]: The period to subtract. Must not contain any (non-zero) date units.
-/// Returns: The result of subtracting the given period from this time.
-
+  /// Subtracts the specified period from this time. Fluent alternative to `operator-()`.
+  ///
+  /// [period]: The period to subtract. Must not contain any (non-zero) date units.
+  /// Returns: The result of subtracting the given period from this time.
   LocalTime minusPeriod(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot subtract a period with a date component from a time");

@@ -157,7 +157,7 @@ class LocalInstant {
     }
     var date = ILocalDate.fromDaysSinceEpoch(_span.floorDays);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime(date, ILocalTime.fromNanosecondsSinceMidnight(_span.nanosecondOfFloorDay));
+    var utc = new LocalDateTime(date, ILocalTime.untrustedNanoseconds(_span.nanosecondOfFloorDay));
     return pattern.format(utc);
   // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }

@@ -192,7 +192,7 @@ class OffsetDateTime {
   /// The returned [LocalTime] will
   /// return the same values for each of the time-based properties (Hour, Minute and so on), but
   /// will not have any offset information.
-  LocalTime get timeOfDay => ILocalTime.fromNanoseconds(nanosecondOfDay);
+  LocalTime get timeOfDay => ILocalTime.trustedNanoseconds(nanosecondOfDay);
 
   // Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
