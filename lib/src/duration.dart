@@ -37,8 +37,6 @@ abstract class ITime {
   static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
   static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1
 
-  /*BigInteger.One*/;
-
   // 285420 years worth -- we are good for anything;
   static const int maxMillis = Platform.intMaxValueJS;
   static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
@@ -68,14 +66,6 @@ abstract class ITime {
   // 8 or 12 bytes on VM (slight optimization)
   // 16 bytes on JS (no change)
 */
-
-// TimeSpan / Span -- I think denotes two points in time (and span between two points)
-// Time?
-// ElapsedTime?
-// Elapsed? <-- (intransitive, of time) To pass or move by.
-
-
-
 
 /// Represents a fixed (and calendar-independent) length of time.
 ///
@@ -108,6 +98,7 @@ class Time implements Comparable<Time> {
   // this is only true on the VM....
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
 
+  // todo: Should these technically be under TimeConstants? (since they are 'Time' and 'const'??? ... or should I move TimeConstants to here?)
   static const Time zero = const Time._(0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
   static const Time epsilon = const Time._(0, 1);
