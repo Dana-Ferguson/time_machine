@@ -20,3 +20,4 @@ export 'badi_yearmonthday_calculator.dart';
 export 'coptic_yearmonthday_calculator.dart';
 export 'fixed_month_yearmonthday_calculator.dart';
 export 'hebrew_month_converter.dart';
+export 'hebrew_month_numbering.dart';
