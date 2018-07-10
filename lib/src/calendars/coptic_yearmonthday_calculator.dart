@@ -13,7 +13,7 @@ class CopticYearMonthDayCalculator extends FixedMonthYearMonthDayCalculator {
 
   @protected
   @override
-  int CalculateStartOfYearDays(int year) {
+  int calculateStartOfYearDays(int year) {
     // Unix epoch is 1970-01-01 Gregorian which is 1686-04-23 Coptic.
     // Calculate relative to the nearest leap year and account for the
     // difference later.
@@ -28,7 +28,7 @@ class CopticYearMonthDayCalculator extends FixedMonthYearMonthDayCalculator {
     else {
       leapYears = relativeYear >> 2;
       // For post 1687 an adjustment is needed as jan1st is before leap day
-      if (!IsLeapYear(year)) {
+      if (!isLeapYear(year)) {
         leapYears++;
       }
     }
