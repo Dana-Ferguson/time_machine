@@ -18,7 +18,7 @@ enum HebrewMonthNumbering {
   /// The main disadvantage is that due to leap years effectively "splitting" Adar into Adar I
   /// and Adar II, the months after that (Nisan, Iyyar and so on) have month numberings which depend
   /// on the year.
-  Civil, // = 1,
+  civil, // = 1,
 
   /// The numbering system where month 1 is Nisan. This is the numbering system which matches biblical
   /// custom (such as Leviticus 23:5). This has the advantage that the split of Adar is at the end of the
@@ -26,5 +26,5 @@ enum HebrewMonthNumbering {
   ///
   /// The primary disadvantage of this numbering system is that months 1-6 come after months 7-12 (or 13),
   /// which is counter-intuitive.
-  Scriptural, // = 2,
+  scriptural, // = 2,
 }

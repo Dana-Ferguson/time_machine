@@ -21,16 +21,16 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
       _unixEpochDayAtStartOfYear1);
 
   int _calendarToCivilMonth(int year, int month) =>
-      _monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.scripturalToCivil(year, month);
+      _monthNumbering == HebrewMonthNumbering.civil ? month : HebrewMonthConverter.scripturalToCivil(year, month);
 
   int _calendarToScripturalMonth(int year, int month) =>
-      _monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.civilToScriptural(year, month);
+      _monthNumbering == HebrewMonthNumbering.scriptural ? month : HebrewMonthConverter.civilToScriptural(year, month);
 
   int _civilToCalendarMonth(int year, int month) =>
-      _monthNumbering == HebrewMonthNumbering.Civil ? month : HebrewMonthConverter.civilToScriptural(year, month);
+      _monthNumbering == HebrewMonthNumbering.civil ? month : HebrewMonthConverter.civilToScriptural(year, month);
 
   int _scripturalToCalendarMonth(int year, int month) =>
-      _monthNumbering == HebrewMonthNumbering.Scriptural ? month : HebrewMonthConverter.scripturalToCivil(year, month);
+      _monthNumbering == HebrewMonthNumbering.scriptural ? month : HebrewMonthConverter.scripturalToCivil(year, month);
 
   /// Returns whether or not the given year is a leap year - that is, one with 13 months. This is
   /// not quite the same as a leap year in (say) the Gregorian calendar system...
@@ -54,7 +54,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
 
   @override YearMonthDay getYearMonthDay(int year, int dayOfYear) {
     YearMonthDay scriptural = HebrewScripturalCalculator.getYearMonthDay(year, dayOfYear);
-    return _monthNumbering == HebrewMonthNumbering.Scriptural ? scriptural : new YearMonthDay(
+    return _monthNumbering == HebrewMonthNumbering.scriptural ? scriptural : new YearMonthDay(
         year, HebrewMonthConverter.scripturalToCivil(year, scriptural.month), scriptural.day);
   }
 
@@ -177,7 +177,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
 
   @override int compare(YearMonthDay lhs, YearMonthDay rhs) {
     // The civil month numbering system allows a naive comparison.
-    if (_monthNumbering == HebrewMonthNumbering.Civil) {
+    if (_monthNumbering == HebrewMonthNumbering.civil) {
       return lhs.compareTo(rhs);
     }
     // Otherwise, try one component at a time. (We could benchmark this
