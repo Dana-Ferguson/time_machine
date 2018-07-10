@@ -20,7 +20,10 @@ export 'badi_yearmonthday_calculator.dart';
 export 'coptic_yearmonthday_calculator.dart';
 export 'fixed_month_yearmonthday_calculator.dart';
 export 'hebrew_month_converter.dart';
-// show enum
+// show HebrewMonthNumbering
 export 'hebrew_month_numbering.dart';
 export 'hebrew_scriptural_calculator.dart';
 export 'hebrew_yearmonthday_calculator.dart';
+// show IslamicEpoch
+export 'islamic_epoch.dart';
+
