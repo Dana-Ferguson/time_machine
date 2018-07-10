@@ -26,4 +26,5 @@ export 'hebrew_scriptural_calculator.dart';
 export 'hebrew_yearmonthday_calculator.dart';
 // show IslamicEpoch
 export 'islamic_epoch.dart';
-
+// show IslamicLeapYeapPattern
+export 'islamic_leap_year_pattern.dart';
