@@ -62,7 +62,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
     return patternBuilder.build(_templateValue);
   }
 
-  String _expandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String _expandStandardFormatPattern(String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'd':
         return formatInfo.dateTimeFormat.shortDatePattern;
