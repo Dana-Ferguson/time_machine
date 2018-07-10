@@ -30,7 +30,7 @@ abstract class OffsetDateTimePatterns {
           .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
           .format(offsetDateTime);
 
-  static final OffsetDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0).withOffset(Offset.zero);
+  static final OffsetDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0, 0).withOffset(Offset.zero);
 
   static TimeMachineFormatInfo formatInfo(OffsetDateTimePattern offsetDateTimePattern) => offsetDateTimePattern._formatInfo;
 }

@@ -61,8 +61,10 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [calendar]: The calendar. ISO calendar default.
   /// Returns: The resulting date/time.
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
-  LocalDateTime.at(int year, int month, int day, int hour, int minute, {int seconds = 0, int milliseconds = 0, CalendarSystem calendar})
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, ms:milliseconds));
+  /// 
+  /// see: [LocalTime] for potential future API change
+  LocalDateTime.at(int year, int month, int day, int hour, int minute, int seconds, {int ms, int us, int ns, CalendarSystem calendar})
+      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, ms:ms, us:us, ns:ns));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
   // todo: I really don't like this one at all: LocalDateTime.at
   // todo: update this to fit the LocalTime constructor signature

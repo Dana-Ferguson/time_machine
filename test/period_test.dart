@@ -21,9 +21,9 @@ Future main() async {
 }
 
 // June 19th 2010, 2:30:15am
-final LocalDateTime TestDateTime1 = new LocalDateTime.at(2010, 6, 19, 2, 30, seconds: 15);
+final LocalDateTime TestDateTime1 = new LocalDateTime.at(2010, 6, 19, 2, 30, 15);
 // June 19th 2010, 4:45:10am
-final LocalDateTime TestDateTime2 = new LocalDateTime.at(2010, 6, 19, 4, 45, seconds: 10);
+final LocalDateTime TestDateTime2 = new LocalDateTime.at(2010, 6, 19, 4, 45, 10);
 // June 19th 2010
 final LocalDate TestDate1 = new LocalDate(2010, 6, 19);
 // March 1st 2011
@@ -38,7 +38,7 @@ final List<PeriodUnits> AllPeriodUnits = PeriodUnits.values;
 @Test()
 void BetweenLocalDateTimes_WithoutSpecifyingUnits_OmitsWeeks()
 {
-  Period actual = Period.between(new LocalDateTime.at(2012, 2, 21, 0, 0), new LocalDateTime.at(2012, 2, 28, 0, 0));
+  Period actual = Period.between(new LocalDateTime.at(2012, 2, 21, 0, 0, 0), new LocalDateTime.at(2012, 2, 28, 0, 0, 0));
   Period expected = new Period.fromDays(7);
   expect(expected, actual);
 }
@@ -93,8 +93,8 @@ void BetweenLocalDateTimes_AcrossDays_MinutesAndSeconds()
 
 @Test()
 void BetweenLocalDateTimes_NotInt64Representable() {
-  LocalDateTime start = new LocalDateTime.at(-5000, 1, 1, 0, 1, seconds: 2, milliseconds: 123);
-  LocalDateTime end = new LocalDateTime.at(9000, 1, 1, 1, 2, seconds: 3, milliseconds: 456);
+  LocalDateTime start = new LocalDateTime.at(-5000, 1, 1, 0, 1, 2, ms: 123);
+  LocalDateTime end = new LocalDateTime.at(9000, 1, 1, 1, 2, 3, ms: 456);
   expect(ITime.isInt64Representable(
       ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
           - ILocalDateTime.toLocalInstant(start).timeSinceLocalEpoch), isFalse);
@@ -238,9 +238,9 @@ void BetweenLocalDates_AfterLeapYear()
 @Test()
 void BetweenLocalDateTimes_OnLeapYear()
 {
-  LocalDateTime dt1 = new LocalDateTime.at(2012, 2, 29, 2, 0);
-  LocalDateTime dt2 = new LocalDateTime.at(2012, 2, 29, 4, 0);
-  LocalDateTime dt3 = new LocalDateTime.at(2013, 2, 28, 3, 0);
+  LocalDateTime dt1 = new LocalDateTime.at(2012, 2, 29, 2, 0, 0);
+  LocalDateTime dt2 = new LocalDateTime.at(2012, 2, 29, 4, 0, 0);
+  LocalDateTime dt3 = new LocalDateTime.at(2013, 2, 28, 3, 0, 0);
   expect(Parse("P1YT1H"), Period.between(dt1, dt3));
   expect(Parse("P11M29DT23H"), Period.between(dt2, dt3));
 
@@ -255,9 +255,9 @@ void BetweenLocalDateTimes_OnLeapYearIslamic()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(3), isFalse);
 
-  LocalDateTime dt1 = new LocalDateTime.at(2, 12, 30, 2, 0, calendar: calendar);
-  LocalDateTime dt2 = new LocalDateTime.at(2, 12, 30, 4, 0, calendar: calendar);
-  LocalDateTime dt3 = new LocalDateTime.at(3, 12, 29, 3, 0, calendar: calendar);
+  LocalDateTime dt1 = new LocalDateTime.at(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime dt2 = new LocalDateTime.at(2, 12, 30, 4, 0, 0, calendar: calendar);
+  LocalDateTime dt3 = new LocalDateTime.at(3, 12, 29, 3, 0, 0, calendar: calendar);
 
   // Adding a year truncates to 0003-12-28T02:00:00, then add an hour.
   expect(Parse("P1YT1H"), Period.between(dt1, dt3));
@@ -368,27 +368,27 @@ void Addition_With_IdenticalPeriodTypes()
 @Test()
 void Addition_DayCrossingMonthBoundary()
 {
-  LocalDateTime start = new LocalDateTime.at(2010, 2, 20, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2010, 2, 20, 10, 0, 0);
   LocalDateTime result = start + new Period.fromDays(10);
-  expect(new LocalDateTime.at(2010, 3, 2, 10, 0), result);
+  expect(new LocalDateTime.at(2010, 3, 2, 10, 0, 0), result);
 }
 
 @Test()
 void Addition_OneYearOnLeapDay()
 {
-  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0, 0);
   LocalDateTime result = start + new Period.fromYears(1);
   // Feb 29th becomes Feb 28th
-  expect(new LocalDateTime.at(2013, 2, 28, 10, 0), result);
+  expect(new LocalDateTime.at(2013, 2, 28, 10, 0, 0), result);
 }
 
 @Test()
 void Addition_FourYearsOnLeapDay()
 {
-  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0);
+  LocalDateTime start = new LocalDateTime.at(2012, 2, 29, 10, 0, 0);
   LocalDateTime result = start + new Period.fromYears(4);
   // Feb 29th is still valid in 2016
-  expect(new LocalDateTime.at(2016, 2, 29, 10, 0), result);
+  expect(new LocalDateTime.at(2016, 2, 29, 10, 0, 0), result);
 }
 
 @Test()
@@ -396,14 +396,14 @@ void Addition_YearMonthDay()
 {
   // One year, one month, two days
   Period period = new Period.fromYears(1) + new Period.fromMonths(1) + new Period.fromDays(2);
-  LocalDateTime start = new LocalDateTime.at(2007, 1, 30, 0, 0);
+  LocalDateTime start = new LocalDateTime.at(2007, 1, 30, 0, 0, 0);
   // Periods are added in order, so this becomes...
   // Add one year: Jan 30th 2008
   // Add one month: Feb 29th 2008
   // Add two days: March 2nd 2008
   // If we added the days first, we'd end up with March 1st instead.
   LocalDateTime result = start + period;
-  expect(new LocalDateTime.at(2008, 3, 2, 0, 0), result);
+  expect(new LocalDateTime.at(2008, 3, 2, 0, 0, 0), result);
 }
 
 @Test()
@@ -489,8 +489,8 @@ expect(hasDateComponent, period.hasDateComponent);
 @Test()
 void HasTimeComponent_Compound()
 {
-  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45);
-  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50);
+  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45, 0);
+  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50, 0);
 
   // Case 1: Entire period is date-based (no time units available)
   expect(Period.betweenDates(dt1.date, dt2.date).hasTimeComponent, isFalse);
@@ -511,8 +511,8 @@ void HasTimeComponent_Compound()
 @Test()
 void HasDateComponent_Compound()
 {
-  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45);
-  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50);
+  LocalDateTime dt1 = new LocalDateTime.at(2000, 1, 1, 10, 45, 0);
+  LocalDateTime dt2 = new LocalDateTime.at(2000, 2, 4, 11, 50, 0);
 
   // Case 1: Entire period is time-based (no date units available)
   expect(Period.betweenTimes(dt1.time, dt2.time).hasDateComponent, isFalse);
@@ -836,21 +836,21 @@ void NormalizingEqualityComparer_GetHashCodeAfterNormalization()
 @Test()
 void Comparer_NullWithNull()
 {
-  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
+  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
   expect(0, comparer.compare(null, null));
 }
 
 @Test()
 void Comparer_NullWithNonNull()
 {
-  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
+  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
   expect(comparer.compare(null, Period.zero),  lessThan(0));
 }
 
 @Test()
 void Comparer_NonNullWithNull()
 {
-  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
+  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
   expect(comparer.compare(Period.zero, null),  greaterThan(0));
 }
 
@@ -859,7 +859,7 @@ void Comparer_DurationablePeriods()
 {
   var bigger = new Period.fromHours(25);
   var smaller = new Period.fromDays(1);
-  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
+  var comparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
   expect(comparer.compare(bigger, smaller),  greaterThan(0));
   expect(comparer.compare(smaller, bigger),  lessThan(0));
   expect(0, comparer.compare(bigger, bigger));
@@ -871,13 +871,13 @@ void Comparer_NonDurationablePeriods()
   var month = new Period.fromMonths(1);
   var days = new Period.fromDays(30);
   // At the start of January, a month is longer than 30 days
-  var januaryComparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0));
+  var januaryComparer = Period.createComparer(new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
   expect(januaryComparer.compare(month, days),  greaterThan(0));
   expect(januaryComparer.compare(days, month),  lessThan(0));
   expect(0, januaryComparer.compare(month, month));
 
   // At the start of February, a month is shorter than 30 days
-  var februaryComparer = Period.createComparer(new LocalDateTime.at(2000, 2, 1, 0, 0));
+  var februaryComparer = Period.createComparer(new LocalDateTime.at(2000, 2, 1, 0, 0, 0));
   expect(februaryComparer.compare(month, days),  lessThan(0));
   expect(februaryComparer.compare(days, month),  greaterThan(0));
   expect(0, februaryComparer.compare(month, month));
@@ -924,15 +924,15 @@ void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, Stri
 @Test()
 void Between_LocalDateTime_SameValue()
 {
-  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0);
+  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0, 0);
   expect(Period.zero, Period.between(start, start));
 }
 
 @Test()
 void Between_LocalDateTime_AwkwardTimeOfDayWithMultipleUnits()
 {
-  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0);
-  LocalDateTime end = new LocalDateTime.at(2015, 2, 3, 8, 0);
+  LocalDateTime start = new LocalDateTime.at(2014, 1, 1, 16, 0, 0);
+  LocalDateTime end = new LocalDateTime.at(2015, 2, 3, 8, 0, 0);
   Period actual = Period.between(start, end, PeriodUnits.yearMonthDay | PeriodUnits.allTimeUnits);
   Period expected = (new PeriodBuilder()..years = 1..months = 1..days = 1..hours = 16).build();
 expect(expected, actual);

@@ -37,14 +37,14 @@ final Instant Transition = new Instant.fromUtc(2000, 1, 1, 0, 0);
 final Offset Minus5 = new Offset.fromHours(-5);
 final Offset Plus10 = new Offset.fromHours(10);
 
-final LocalDateTime NearStartOfTime = new LocalDateTime.at(-9998, 1, 5, 0, 0);
-final LocalDateTime NearEndOfTime = new LocalDateTime.at(9999, 12, 25, 0, 0);
+final LocalDateTime NearStartOfTime = new LocalDateTime.at(-9998, 1, 5, 0, 0, 0);
+final LocalDateTime NearEndOfTime = new LocalDateTime.at(9999, 12, 25, 0, 0, 0);
 final LocalDateTime TransitionMinus5 = Transition.withOffset(Minus5).localDateTime;
 final LocalDateTime TransitionPlus10 = Transition.withOffset(Plus10).localDateTime;
 final LocalDateTime MidTransition = Transition.withOffset(Offset.zero).localDateTime;
 
-final LocalDateTime YearBeforeTransition = new LocalDateTime.at(1999, 1, 1, 0, 0);
-final LocalDateTime YearAfterTransition = new LocalDateTime.at(2001, 1, 1, 0, 0);
+final LocalDateTime YearBeforeTransition = new LocalDateTime.at(1999, 1, 1, 0, 0, 0);
+final LocalDateTime YearAfterTransition = new LocalDateTime.at(2001, 1, 1, 0, 0, 0);
 
 final SingleTransitionDateTimeZone ZoneWithGap = new SingleTransitionDateTimeZone(Transition, Minus5, Plus10);
 final ZoneInterval IntervalBeforeGap = ZoneWithGap.EarlyInterval;
@@ -58,7 +58,7 @@ final ZoneInterval IntervalAfterAmbiguity = ZoneWithAmbiguity.LateInterval;
 @Test()
 void ZoneWithAmbiguity_NearStartOfTime()
 {
-  var mapping = ZoneWithAmbiguity.mapLocal(new LocalDateTime.at(-9998, 1, 5, 0, 0));
+  var mapping = ZoneWithAmbiguity.mapLocal(new LocalDateTime.at(-9998, 1, 5, 0, 0, 0));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
@@ -205,7 +205,7 @@ void TrickyCase()
 {
   // 1am occurs unambiguously in the early zone.
   var zone = new SingleTransitionDateTimeZone(Transition, new Offset.fromHours(3), new Offset.fromHours(5));
-  var mapping = zone.mapLocal(new LocalDateTime.at(2000, 1, 1, 1, 0));
+  var mapping = zone.mapLocal(new LocalDateTime.at(2000, 1, 1, 1, 0, 0));
   CheckMapping(mapping, zone.EarlyInterval, zone.EarlyInterval, 1);
 }
 

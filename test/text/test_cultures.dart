@@ -4,18 +4,18 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal abstract class TestLocalDateTimes {
-  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34).plusNanoseconds(123456789);
-  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34).plusNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime.at(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime.at(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456700);
   @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime.at(
       1976,
       6,
       19,
       21,
       13,
-      seconds: 34,
-      milliseconds: 123);
-  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.at(1976, 6, 19, 21, 13, seconds: 34);
-  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.at(1976, 6, 19, 21, 13);
+      34,
+      ms: 123);
+  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime.at(1976, 6, 19, 21, 13, 34);
+  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime.at(1976, 6, 19, 21, 13, 0);
 
 /*@internal static final LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime.fromYMDHMSC(
       1976,
@@ -34,10 +34,10 @@ import 'package:time_machine/src/time_machine_internal.dart';
       15,
       13,
       45,
-      seconds: 30,
-      milliseconds: 90);
-  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.at(2009, 06, 15, 13, 45, seconds: 30);
-  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.at(2009, 06, 15, 13, 45);
+      30,
+      ms: 90);
+  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime.at(2009, 06, 15, 13, 45, 30);
+  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime.at(2009, 06, 15, 13, 45, 0);
 }
 
 /// Cultures to use from various tests.

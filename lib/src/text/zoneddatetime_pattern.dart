@@ -26,7 +26,7 @@ abstract class ZonedDateTimePatterns
           .parsePattern(patternText ?? generalFormatOnlyPatternImpl.patternText)
           .format(zonedDateTime);
 
-  static final ZonedDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0).inUtc();
+  static final ZonedDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0, 0).inUtc();
 }
 
 /// Represents a pattern for parsing and formatting [ZonedDateTime] values.

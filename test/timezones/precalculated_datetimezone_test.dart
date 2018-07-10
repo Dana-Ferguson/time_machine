@@ -104,13 +104,13 @@ void GetZoneIntervalInstant_TailZone()
 @Test()
 void MapLocal_UnambiguousInPrecalculated()
 {
-  CheckMapping(new LocalDateTime.at(2000, 6, 1, 0, 0), SecondInterval, SecondInterval, 1);
+  CheckMapping(new LocalDateTime.at(2000, 6, 1, 0, 0, 0), SecondInterval, SecondInterval, 1);
 }
 
 @Test()
 void MapLocal_UnambiguousInTailZone()
 {
-  CheckMapping(new LocalDateTime.at(2005, 2, 1, 0, 0), ClampedTailZoneInterval, ClampedTailZoneInterval, 1);
+  CheckMapping(new LocalDateTime.at(2005, 2, 1, 0, 0, 0), ClampedTailZoneInterval, ClampedTailZoneInterval, 1);
 }
 
 @Test()

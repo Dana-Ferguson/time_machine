@@ -23,7 +23,7 @@ void JulianEpoch()
 {
   // Compute the Julian epoch using the Julian calendar, instead of the
   // Gregorian version.
-  var localEpoch = new LocalDateTime.at(-4712, 1, 1, 12, 0, calendar: CalendarSystem.julian);
+  var localEpoch = new LocalDateTime.at(-4712, 1, 1, 12, 0, 0, calendar: CalendarSystem.julian);
   var epoch = localEpoch.inZoneStrictly(DateTimeZone.utc).toInstant();
   expect(epoch, TimeConstants.julianEpoch);
 }

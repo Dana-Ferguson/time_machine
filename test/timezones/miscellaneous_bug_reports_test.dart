@@ -34,7 +34,7 @@ Future setup() async {
 Future Niue() async
 {
   DateTimeZone niue = await Tzdb["Pacific/Niue"];
-  var offset = niue.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0), niue).toInstant());
+  var offset = niue.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0, 0), niue).toInstant());
   expect(new Offset.fromHours(-11), offset);
 }
 
@@ -42,7 +42,7 @@ Future Niue() async
 Future Kiritimati() async
 {
   DateTimeZone kiritimati = await Tzdb["Pacific/Kiritimati"];
-  var offset = kiritimati.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0), kiritimati).toInstant());
+  var offset = kiritimati.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0, 0), kiritimati).toInstant());
   expect(new Offset.fromHours(14), offset);
 }
 
@@ -50,7 +50,7 @@ Future Kiritimati() async
 Future Pyongyang() async
 {
   DateTimeZone pyongyang = await Tzdb["Asia/Pyongyang"];
-  var offset = pyongyang.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0), pyongyang).toInstant());
+  var offset = pyongyang.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime.at(2010, 1, 1, 0, 0, 0), pyongyang).toInstant());
   expect(new Offset.fromHours(9), offset);
 }
 
@@ -61,13 +61,13 @@ Future Khartoum() async
   expect(khartoum, isNotNull);
   Instant utc = new Instant.fromUtc(2000, 1, 1, 0, 0, 0);
   ZonedDateTime inKhartoum = new ZonedDateTime(utc, khartoum);
-  LocalDateTime expectedLocal = new LocalDateTime.at(2000, 1, 1, 2, 0);
+  LocalDateTime expectedLocal = new LocalDateTime.at(2000, 1, 1, 2, 0, 0);
   expect(expectedLocal, inKhartoum.localDateTime);
 
   // Khartoum changed from +2 to +3 on January 15th 2000
   utc = new Instant.fromUtc(2000, 1, 16, 0, 0, 0);
   inKhartoum = new ZonedDateTime(utc, khartoum);
-  expectedLocal = new LocalDateTime.at(2000, 1, 16, 3, 0);
+  expectedLocal = new LocalDateTime.at(2000, 1, 16, 3, 0, 0);
   expect(expectedLocal, inKhartoum.localDateTime);
 }
 
@@ -78,7 +78,7 @@ Future Tbilisi() async
   var zone = await Tzdb["Asia/Tbilisi"];
   Instant summer1996 = new Instant.fromUtc(1996, 6, 1, 0, 0);
   var interval = zone.getZoneInterval(summer1996);
-  expect(new LocalDateTime.at(1996, 3, 31, 1, 0), interval.isoLocalStart);
-  expect(new LocalDateTime.at(1997, 10, 26, 0, 0), interval.isoLocalEnd);
+  expect(new LocalDateTime.at(1996, 3, 31, 1, 0, 0), interval.isoLocalStart);
+  expect(new LocalDateTime.at(1997, 10, 26, 0, 0, 0), interval.isoLocalEnd);
 }
 

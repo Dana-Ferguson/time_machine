@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+- Updated `LocalDateTime.at()` to reflect the LocalTime constructor update.
+  - note: I don't like `.at()`, anyone got a better constructor name idea?
+
 ## 0.6.0
 - Removed the concept of `ticks` and replaced all the functions with `microseconds`;
   Rational: the only place `ticks` shows up as a concept is here `https://api.dartlang.org/stable/1.24.3/dart-core/Stopwatch/elapsedTicks.html`;

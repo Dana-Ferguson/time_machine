@@ -31,7 +31,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
   Instant actual = new Instant.fromJulianDate(julianDate);
-  var expected = new LocalDateTime.at(year, month, day, hour, minute, seconds: second, calendar: CalendarSystem.julian).inUtc().toInstant();
+  var expected = new LocalDateTime.at(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
@@ -49,14 +49,14 @@ void BasicSpanTests() {
 @Test()
 void FromUtcNoSeconds()
 {
-  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35), DateTimeZone.utc).toInstant();
+  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, 0), DateTimeZone.utc).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
-  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23), DateTimeZone.utc).toInstant();
+  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, 23), DateTimeZone.utc).toInstant();
   expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35, 23));
 }
 
@@ -65,7 +65,7 @@ void FromUtcWithSeconds()
 void InUtc()
 {
   ZonedDateTime viaInstant = new Instant.fromUtc(2008, 4, 3, 10, 35, 23).inUtc();
-  ZonedDateTime expected = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, seconds: 23), DateTimeZone.utc);
+  ZonedDateTime expected = new ZonedDateTime.atStrictly(new LocalDateTime.at(2008, 4, 3, 10, 35, 23), DateTimeZone.utc);
   expect(expected, viaInstant);
 }
 
@@ -77,7 +77,7 @@ Future InZone () async
   ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
-  LocalDateTime local = new LocalDateTime.at(2008, 6, 10, 14, 16, seconds: 17);
+  LocalDateTime local = new LocalDateTime.at(2008, 6, 10, 14, 16, 17);
   ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
 
   expect(expected, viaInstant);
@@ -91,7 +91,7 @@ void WithOffset()
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.withOffset(offset);
-  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(2013, 10, 12, 13, 15), offset);
+  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(2013, 10, 12, 13, 15, 0), offset);
   expect(expected, actual);
 }
 
@@ -107,7 +107,7 @@ void WithOffset_NonIsoCalendar()
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.withOffset(offset, calendar);
-  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(1434, 12, 7, 13, 15, calendar: calendar), offset);
+  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime.at(1434, 12, 7, 13, 15, 0, calendar: calendar), offset);
   expect(expected, actual);
 }
 
@@ -229,7 +229,7 @@ Future InZoneWithCalendar () async
   ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
-  LocalDateTime local = new LocalDateTime.at(1720, 10, 2, 12, 10, calendar: copticCalendar);
+  LocalDateTime local = new LocalDateTime.at(1720, 10, 2, 12, 10, 0, calendar: copticCalendar);
   ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
   expect(viaInstant, expected);
 }

@@ -32,7 +32,7 @@ void LeapYears()
 void EraProperty()
 {
   CalendarSystem calendar = CalendarSystem.gregorian;
-  LocalDateTime startOfEra = new LocalDateTime.at(1, 1, 1, 0, 0, seconds: 0, calendar: calendar);
+  LocalDateTime startOfEra = new LocalDateTime.at(1, 1, 1, 0, 0, 0, calendar: calendar);
   expect(Era.common, startOfEra.era);
   expect(Era.beforeCommon, startOfEra.plusMicroseconds(-1).era);
 }

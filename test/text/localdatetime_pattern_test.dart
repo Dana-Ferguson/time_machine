@@ -126,12 +126,12 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data()
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2011-10-19 24:00"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 0, seconds: 5)
+      ..template = new LocalDateTime.at(1970, 1, 1, 0, 0, 5)
       ..message = TextErrorMessages.invalidHour24,
     new Data()
       ..pattern = "yyyy-MM-dd HH"
       ..text = "2011-10-19 24"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5)
+      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5, 0)
       ..message = TextErrorMessages.invalidHour24,
   ];
 
@@ -139,11 +139,11 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data.ymd(2011, 10, 19, 16, 05, 20)
       ..pattern = "dd MM yyyy"
       ..text = "19 10 2011"
-      ..template = new LocalDateTime.at(2000, 1, 1, 16, 05, seconds: 20),
+      ..template = new LocalDateTime.at(2000, 1, 1, 16, 05, 20),
     new Data.ymd(2011, 10, 19, 16, 05, 20)
       ..pattern = "HH:mm:ss"
       ..text = "16:05:20"
-      ..template = new LocalDateTime.at(2011, 10, 19, 0, 0),
+      ..template = new LocalDateTime.at(2011, 10, 19, 0, 0, 0),
     // Parsing using the semi-colon "comma dot" specifier
     new Data.ymd(
         2011,
@@ -173,7 +173,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     new Data.ymd(2011, 10, 20)
       ..pattern = "yyyy-MM-dd HH:mm:ss"
       ..text = "2011-10-19 24:00:00"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5),
+      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5, 0),
     new Data.ymd(2011, 10, 20)
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2011-10-19 24:00",
@@ -469,13 +469,13 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
         29,
         12,
         34,
-        seconds: 56,
+        56,
         calendar: CalendarSystem.coptic), value);
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var dateTime = new LocalDateTime.at(2017, 8, 23, 12, 34, seconds: 56);
+    var dateTime = new LocalDateTime.at(2017, 8, 23, 12, 34, 56);
     Culture.current = TestCultures.FrFr;
     {
       var pattern = LocalDateTimePattern.createWithCurrentCulture("g");
@@ -502,7 +502,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   @Test()
   @TestCaseSource(#AllCulturesStandardPatterns)
   void ParseFormattedStandardPattern(Culture culture, String patternText) {
-    var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime.at(2000, 1, 1, 0, 0));
+    var pattern = CreatePatternOrNull(patternText, culture, new LocalDateTime.at(2000, 1, 1, 0, 0, 0));
     if (pattern == null) {
       return;
     }
@@ -517,7 +517,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // AM/PM, so let's make sure that's right. (This happens on Mono for a few cultures.)
     if (culture.dateTimeFormat.amDesignator == "" &&
         culture.dateTimeFormat.pmDesignator == "") {
-      pattern = pattern.withTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0));
+      pattern = pattern.withTemplateValue(new LocalDateTime.at(2000, 1, 1, 12, 0, 0));
     }
 
     String formatted = pattern.format(SampleLocalDateTime);
@@ -609,8 +609,8 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       day,
       hour,
       minute,
-      seconds: second,
-      milliseconds: millis));
+      second,
+      ms: millis));
 
   Data.dt(LocalDate date, LocalTime time) : super(date.at(time));
 
