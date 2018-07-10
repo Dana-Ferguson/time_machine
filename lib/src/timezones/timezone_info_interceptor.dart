@@ -2,13 +2,14 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
+/*
 import 'dart:math' as math;
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/src/time_machine_internal.dart';
-
+*/
 // todo: This seems fairly BCL centric -- so it probably doesn't apply to us here
 /*
 /// Interception for TimeZoneInfo static methods. These are still represented as

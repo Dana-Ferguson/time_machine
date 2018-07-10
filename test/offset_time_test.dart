@@ -3,17 +3,11 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/calendars/time_machine_calendars.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'package:test/test.dart';
-import 'package:matcher/matcher.dart';
+// import 'package:matcher/matcher.dart';
 
 import 'time_machine_testing.dart';
 
