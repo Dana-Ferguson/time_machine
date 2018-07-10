@@ -12,24 +12,24 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// months fall into a thirteenth month.
 @internal
 abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalculator {
-  @private static const int DaysInMonth = 30;
+  static const int _daysInMonth = 30;
 
-  @private static const int AverageDaysPer10Years = 3653; // Ideally 365.25 days per year...
+  static const int _averageDaysPer10Years = 3653; // Ideally 365.25 days per year...
 
   @protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear, int daysAtStartOfYear1)
-      : super(minYear, maxYear, 13, AverageDaysPer10Years, daysAtStartOfYear1) {
+      : super(minYear, maxYear, 13, _averageDaysPer10Years, daysAtStartOfYear1) {
   }
 
   @override
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) =>
   // Just inline the arithmetic that would be done via various methods.
   getStartOfYearInDays(yearMonthDay.year)
-      + (yearMonthDay.month - 1) * DaysInMonth
+      + (yearMonthDay.month - 1) * _daysInMonth
       + (yearMonthDay.day - 1);
 
   @protected
   @override
-  int getDaysFromStartOfYearToStartOfMonth(int year, int month) => (month - 1) * DaysInMonth;
+  int getDaysFromStartOfYearToStartOfMonth(int year, int month) => (month - 1) * _daysInMonth;
 
   @override
   bool isLeapYear(int year) => (year & 3) == 3;
@@ -38,13 +38,13 @@ abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalcu
   int getDaysInYear(int year) => isLeapYear(year) ? 366 : 365;
 
   @override
-  int getDaysInMonth(int year, int month) => month != 13 ? DaysInMonth : isLeapYear(year) ? 6 : 5;
+  int getDaysInMonth(int year, int month) => month != 13 ? _daysInMonth : isLeapYear(year) ? 6 : 5;
 
   @override
   YearMonthDay getYearMonthDay(int year, int dayOfYear) {
     int zeroBasedDayOfYear = dayOfYear - 1;
-    int month = zeroBasedDayOfYear ~/ DaysInMonth + 1;
-    int day = zeroBasedDayOfYear % DaysInMonth + 1;
+    int month = zeroBasedDayOfYear ~/ _daysInMonth + 1;
+    int day = zeroBasedDayOfYear % _daysInMonth + 1;
     return new YearMonthDay(year, month, day);
   }
 }
