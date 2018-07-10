@@ -23,3 +23,4 @@ export 'hebrew_month_converter.dart';
 // show enum
 export 'hebrew_month_numbering.dart';
 export 'hebrew_scriptural_calculator.dart';
+export 'hebrew_yearmonthday_calculator.dart';

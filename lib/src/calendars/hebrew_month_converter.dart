@@ -16,7 +16,7 @@ abstract class HebrewMonthConverter {
   /// [year]: Year during which the month occurs.  
   /// [month]: Civil month number.  
   /// returns: The scriptural month number.
-  static int CivilToScriptural(int year, int month)
+  static int civilToScriptural(int year, int month)
   {
     if (month < 7)
     {
@@ -39,7 +39,7 @@ abstract class HebrewMonthConverter {
   /// [year]: Year during which the month occurs.  
   /// [month]: Scriptural month number.  
   /// returns: The civil month number.
-  static int ScripturalToCivil(int year, int month)
+  static int scripturalToCivil(int year, int month)
   {
     if (month >= 7)
     {

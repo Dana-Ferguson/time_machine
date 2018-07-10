@@ -10,8 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps, using scriptural
 /// month numbering.
 @internal
-abstract class HebrewScripturalCalculator
-{
+abstract class HebrewScripturalCalculator {
   static const int maxYear = 9999;
   static const int minYear = 1;
   // Use the bottom two bits of the day value to indicate Heshvan/Kislev.
