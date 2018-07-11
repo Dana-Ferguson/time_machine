@@ -235,7 +235,7 @@ void Contains_NullInterval_Throws()
   expect(() => value.contains(null), throwsArgumentError);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void Contains_IntervalWithinAnotherCalendar_Throws()
 {
   var value = new DateInterval(
@@ -274,7 +274,7 @@ void Intersection_NullInterval_Throws()
   expect(() => value.intersection(null), throwsArgumentError);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void Intersection_IntervalInDifferentCalendar_Throws()
 {
   var value = new DateInterval(
@@ -314,7 +314,7 @@ void Union_NullInterval_Throws()
   expect(() => value.union(null), throwsArgumentError);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void Union_DifferentCalendar_Throws()
 {
   var value = new DateInterval(

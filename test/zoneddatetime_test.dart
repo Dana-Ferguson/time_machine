@@ -524,7 +524,7 @@ void ZonedDateTime_ToString_WithFormat()
   expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", Culture.invariant));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 Future LocalComparer() async
 {
   var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
@@ -552,7 +552,7 @@ Future LocalComparer() async
   expect(comparer.getHashCode(londonAfternoon), comparer.getHashCode(losAngelesAfternoon));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 Future InstantComparer() async
 {
   var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];

@@ -431,7 +431,6 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   }
 
   @Test()
-  @SkipMe.unimplemented()
   void WithCalendar() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd")
         .withCalendar(CalendarSystem.coptic);

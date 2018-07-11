@@ -457,7 +457,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
-  @Test() @SkipMe.unimplemented()
+  @Test()
   void WithCalendar() {
     var pattern = LocalDateTimePattern.generalIso.withCalendar(CalendarSystem.coptic);
     var value = pattern

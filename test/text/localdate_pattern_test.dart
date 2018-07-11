@@ -521,7 +521,6 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 }*/
 
   @Test()
-  @SkipMe.unimplemented()
   void WithCalendar() {
     var pattern = LocalDatePattern.iso.withCalendar(CalendarSystem.coptic);
     var value = pattern

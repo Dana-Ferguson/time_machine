@@ -128,7 +128,7 @@ void Constructor_WithYearOfEra_AD()
   expect(absolute, withEra);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void Constructor_WithYearOfEra_NonIsoCalendar()
 {
   var calendar = CalendarSystem.coptic;

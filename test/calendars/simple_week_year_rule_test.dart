@@ -178,7 +178,7 @@ void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWe
 }
 
 /// Just a sample test of not using the Gregorian/ISO calendar system.
-@Test() @SkipMe.unimplemented()
+@Test()
 @TestCase(const [5400, DayOfWeek.thursday, 1639, 9, 29, 51, 5400, 1])
 @TestCase(const [5401, DayOfWeek.monday, 1640, 9, 17, 50, 5401, 1])
 @TestCase(const [5402, DayOfWeek.thursday, 1641, 9, 5, 55, 5402, 1])

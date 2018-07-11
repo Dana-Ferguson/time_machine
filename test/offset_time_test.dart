@@ -116,13 +116,14 @@ void ToString_WithNullFormat()
   expect(offsetDate.toString(null, Culture.invariant), "14:15:12+01");
 }
 
-@Test() @SkipMe("Investigate CultureSaver")
+@Test()
 void ToString_NoFormat() {
   LocalTime time = new LocalTime(14, 15, 12, ms: 123);
   Offset offset = new Offset.fromHours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
 
   //using(CultureSaver.SetCultures(CultureInfo.InvariantCulture))
+  ICultures.currentCulture = Cultures.invariantCulture;
   {
     expect(offsetDate.toString(), "14:15:12+01");
   }

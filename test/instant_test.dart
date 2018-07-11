@@ -96,14 +96,11 @@ void WithOffset()
 }
 
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void WithOffset_NonIsoCalendar()
 {
-  dynamic IslamicLeapYearPattern = null;
-  dynamic IslamicEpoch = null;
-
   // October 12th 2013 ISO is 1434-12-07 Islamic
-  CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.civil);
+  CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.withOffset(offset, calendar);
@@ -221,7 +218,7 @@ void UnixConversions_ExtremeValues()
   if (Platform.isVM) expect(min, new Instant.fromUnixTimeMicroseconds(min.toUnixTimeMicroseconds()));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;

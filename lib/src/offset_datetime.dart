@@ -509,7 +509,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   /// For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
   /// the second value represents a later instant in time.
   /// This property will return a reference to the same instance every time it is called.
-  static OffsetDateTimeComparer get local => OffsetDateTimeComparer.local;
+  static OffsetDateTimeComparer get local => _OffsetDateTime_LocalComparer._instance;
 
   /// Returns a comparer which compares [OffsetDateTime] values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
@@ -520,7 +520,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   ///
   /// <value>A comparer which compares values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static OffsetDateTimeComparer get instant => OffsetDateTimeComparer.instant;
+  static OffsetDateTimeComparer get instant => _OffsetDateTime_InstantComparer._instance;
 
   /// internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)

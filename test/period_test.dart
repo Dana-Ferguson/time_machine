@@ -120,7 +120,7 @@ void BetweenLocalDates_InvalidUnits()
   expect(() => Period.betweenDates(TestDate1, TestDate2, PeriodUnits.years | PeriodUnits.hours), throwsArgumentError);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void BetweenLocalDates_DifferentCalendarSystems_Throws()
 {
   LocalDate start = new LocalDate(2017, 11, 1, CalendarSystem.coptic);
@@ -248,10 +248,10 @@ void BetweenLocalDateTimes_OnLeapYear()
   expect(Parse("P-11M-27DT-23H"), Period.between(dt3, dt2));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void BetweenLocalDateTimes_OnLeapYearIslamic()
 {
-  var calendar = CalendarSystem.getIslamicCalendar(null, null/*IslamicLeapYearPattern.Base15, IslamicEpoch.Civil*/);
+  var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(3), isFalse);
 

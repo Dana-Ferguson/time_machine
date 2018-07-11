@@ -48,7 +48,7 @@ void GetDaysInMonth_Invalid(int year, int month)
   TestHelper.AssertOutOfRange2<int, int, int>(Iso.getDaysInMonth, year, month);
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void GetDaysInMonth_Hebrew()
 {
   TestHelper.AssertValid2<int, int, int>(CalendarSystem.hebrewCivil.getDaysInMonth, 5402, 13); // Leap year

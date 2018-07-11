@@ -142,10 +142,10 @@ void TimeProperties_BeforeEpoch()
   expect(123456789, ldt.nanosecondOfSecond);
 }
 
-@Test() @SkipMe.unimplemented()
+/* todo: I don't think this will work here
+@Test()
 void DateTime_Roundtrip_OtherCalendarInBcl()
 {
-  dynamic BclCalendars = null;
   var bcl = BclCalendars.Hijri;
   DateTime original = bcl.ToDateTime(1376, 6, 19, 0, 0, 0, 0);
   LocalDateTime noda = new LocalDateTime.fromDateTime(original);
@@ -154,7 +154,7 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
   expect(CalendarSystem.iso, noda.calendar);
   DateTime _final = noda.toDateTimeLocal();
   expect(original, _final);
-}
+}*/
 
 @Test()
 void WithCalendar()
@@ -265,13 +265,10 @@ void CompareTo_SameCalendar()
   expect(value3.compareTo(value2),  greaterThan(0));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void CompareTo_DifferentCalendars_Throws()
 {
-  dynamic IslamicLeapYearPattern = null;
-  dynamic IslamicEpoch = null;
-
-  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical);
   LocalDateTime value1 = new LocalDateTime.at(2011, 1, 2, 10, 30, 0);
   LocalDateTime value2 = new LocalDateTime.at(1500, 1, 1, 10, 30, 0, calendar: islamic);
 

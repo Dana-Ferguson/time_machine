@@ -62,7 +62,6 @@ class ValueCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_MatchAndMove() {
     var value = new ValueCursor("abcd");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
@@ -71,7 +70,6 @@ class ValueCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_MatchWithoutMoving() {
     var value = new ValueCursor("abcd");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
@@ -81,7 +79,6 @@ class ValueCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_StringNotMatched() {
     var value = new ValueCursor("xabcdef");
     expect(value.moveNext(), isTrue, reason: "GetNext() 1");
@@ -90,7 +87,6 @@ class ValueCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @SkipMe.noCompareInfo()
   void MatchCaseInsensitive_StringOverLongStringToMatch() {
     var value = new ValueCursor("x");
     expect(value.moveNext(), isTrue);

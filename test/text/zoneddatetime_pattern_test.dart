@@ -716,7 +716,6 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   }
 
   @Test()
-  @SkipMe.unimplemented()
   void WithCalendar() {
     var pattern = ZonedDateTimePattern.createWithInvariantCulture("yyyy-MM-dd", TestProvider).withCalendar(CalendarSystem.coptic);
     var parsed = pattern

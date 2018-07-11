@@ -125,13 +125,10 @@ void CompareTo_SameCalendar()
   expect(date3.compareTo(date2), greaterThan(0));
 }
 
-@Test() @SkipMe.unimplemented()
+@Test()
 void CompareTo_DifferentCalendars_Throws()
 {
-  dynamic IslamicLeapYearPattern = null;
-  dynamic IslamicEpoch = null;
-
-  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
+  CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical);
   LocalDate date1 = new LocalDate(2011, 1, 2);
   LocalDate date2 = new LocalDate(1500, 1, 1, islamic);
 
