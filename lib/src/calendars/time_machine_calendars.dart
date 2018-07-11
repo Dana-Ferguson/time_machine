@@ -29,3 +29,5 @@ export 'islamic_epoch.dart';
 // show IslamicLeapYeapPattern
 export 'islamic_leap_year_pattern.dart';
 export 'islamic_yearmonthday_calculator.dart';
+
+export 'um_al_qura_yearmonthday_calculator.dart';
