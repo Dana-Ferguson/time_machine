@@ -38,8 +38,8 @@ class CalendarSystem {
   static const String _copticName = "Coptic";
   static const String _copticId = _copticName;
 
-  static const String _wondrousName = "Wondrous";
-  static const String _wondrousId = _wondrousName;
+  static const String _badiName = "Badi";
+  static const String _badiId = _badiName;
 
   static const String _julianName = "Julian";
   static const String _julianId = _julianName;
@@ -47,11 +47,11 @@ class CalendarSystem {
   static const String _islamicName = "Hijri";
   static const String _islamicIdBase = _islamicName;
 
-//// Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
-//@internal static String GetIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-//{
-//  return '$IslamicIdBase $epoch-$leapYearPattern';
-//}
+  // Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
+  static String getIslamicId(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+  {
+    return '$_islamicIdBase $epoch-$leapYearPattern';
+  }
 
   static const String _persianName = "Persian";
   static const String _persianIdBase = _persianName;
@@ -97,7 +97,8 @@ class CalendarSystem {
   }
 
   /// Fetches a calendar system by its ordinal value, constructing it if necessary.
-  @internal static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
+  @internal
+  static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
     Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.size, 'ordinal',
         "Unknown ordinal value $ordinal");
     // Avoid an array lookup for the overwhelmingly common case.
@@ -122,7 +123,22 @@ class CalendarSystem {
     CalendarOrdinal.iso: iso,
     CalendarOrdinal.gregorian: gregorian,
     CalendarOrdinal.julian: julian,
-  // CalendarOrdinal.Coptic: Coptic
+    CalendarOrdinal.coptic: coptic,
+    CalendarOrdinal.badi: wondrous,
+    CalendarOrdinal.hebrewCivil: hebrewCivil,
+    CalendarOrdinal.hebrewScriptural: hebrewScriptural,
+    CalendarOrdinal.persianSimple: persianSimple,
+    CalendarOrdinal.persianArithmetic: persianArithmetic,
+    CalendarOrdinal.persianAstronomical: persianAstronomical,
+    CalendarOrdinal.islamicAstronomicalBase15: getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical),
+    CalendarOrdinal.islamicAstronomicalBase16: getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical),
+    CalendarOrdinal.islamicAstronomicalIndian: getIslamicCalendar(IslamicLeapYearPattern.indian, IslamicEpoch.astronomical),
+    CalendarOrdinal.islamicAstronomicalHabashAlHasib: getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.astronomical),
+    CalendarOrdinal.islamicCivilBase15: getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil),
+    CalendarOrdinal.islamicCivilBase16: getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.civil),
+    CalendarOrdinal.islamicCivilIndian: getIslamicCalendar(IslamicLeapYearPattern.indian, IslamicEpoch.civil),
+    CalendarOrdinal.islamicCivilHabashAlHasib: getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.civil),
+    CalendarOrdinal.umAlQura: umAlQura
   };
 
   @visibleForTesting
@@ -131,52 +147,6 @@ class CalendarSystem {
     var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
     if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
     return calendarSystem;
-
-    /*
-    switch (ordinal) {
-      // This entry is really just for completeness. We'd never get called with this.
-      case CalendarOrdinal.Iso:
-        return Iso;
-      case CalendarOrdinal.Gregorian:
-        return Gregorian;
-      case CalendarOrdinal.Julian:
-        return Julian;
-      case CalendarOrdinal.Coptic:
-        return Coptic;
-      case CalendarOrdinal.Wondrous:
-      //return Wondrous;
-      case CalendarOrdinal.HebrewCivil:
-      //return HebrewCivil;
-      case CalendarOrdinal.HebrewScriptural:
-      //return HebrewScriptural;
-      case CalendarOrdinal.PersianSimple:
-      //return PersianSimple;
-      case CalendarOrdinal.PersianArithmetic:
-      //return PersianArithmetic;
-      case CalendarOrdinal.PersianAstronomical:
-      //return PersianAstronomical;
-      case CalendarOrdinal.IslamicAstronomicalBase15:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical);
-      case CalendarOrdinal.IslamicAstronomicalBase16:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
-      case CalendarOrdinal.IslamicAstronomicalIndian:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical);
-      case CalendarOrdinal.IslamicAstronomicalHabashAlHasib:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical);
-      case CalendarOrdinal.IslamicCivilBase15:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil);
-      case CalendarOrdinal.IslamicCivilBase16:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil);
-      case CalendarOrdinal.IslamicCivilIndian:
-      //return GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil);
-      case CalendarOrdinal.IslamicCivilHabashAlHasib:
-        //return GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil);
-        throw new UnimplementedError('Selected $ordinal not implemented');
-      case CalendarOrdinal.UmAlQura:
-        return UmAlQura;
-      default:
-        throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
-    }*/
   }
 
 
@@ -187,24 +157,24 @@ class CalendarSystem {
   static final Map<String, CalendarSystem Function()> _idToFactoryMap =
   {
     _isoId: () => iso,
-    //  PersianSimpleId: () => PersianSimple,
-    //  PersianArithmeticId: () => PersianArithmetic,
-    //  PersianAstronomicalId: () => PersianAstronomical,
-    //  HebrewCivilId: () => GetHebrewCalendar(HebrewMonthNumbering.Civil),
-    //  HebrewScripturalId: () => GetHebrewCalendar(HebrewMonthNumbering.Scriptural),
+    _persianSimpleId: () => persianSimple,
+    _persianArithmeticId: () => persianArithmetic,
+    _persianAstronomicalId: () => persianAstronomical,
+    _hebrewCivilId: () => getHebrewCalendar(HebrewMonthNumbering.civil),
+    _hebrewScripturalId: () => getHebrewCalendar(HebrewMonthNumbering.scriptural),
     _gregorianId: () => gregorian,
-    //  CopticId: () => Coptic,
-    //  WondrousId: () => Wondrous,
+    _copticId: () => coptic,
+    _badiId: () => wondrous,
     _julianId: () => julian,
-  //  UmAlQuraId: () => UmAlQura,
-  //  GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil): () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Civil),
-  //  GetIslamicId(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil): () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Civil),
-  //  GetIslamicId(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil): () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Civil),
-  //  GetIslamicId(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil): () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil),
-  //  GetIslamicId(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical): () => GetIslamicCalendar(IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical),
-  //  GetIslamicId(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical): () => GetIslamicCalendar(IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical),
-  //  GetIslamicId(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical): () => GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical),
-  //  GetIslamicId(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical): () => GetIslamicCalendar(IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)
+    _umAlQuraId: () => umAlQura,
+    getIslamicId(IslamicLeapYearPattern.indian, IslamicEpoch.civil): () => getIslamicCalendar(IslamicLeapYearPattern.indian, IslamicEpoch.civil),
+    getIslamicId(IslamicLeapYearPattern.base15, IslamicEpoch.civil): () => getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil),
+    getIslamicId(IslamicLeapYearPattern.base16, IslamicEpoch.civil): () => getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.civil),
+    getIslamicId(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.civil): () => getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.civil),
+    getIslamicId(IslamicLeapYearPattern.indian, IslamicEpoch.astronomical): () => getIslamicCalendar(IslamicLeapYearPattern.indian, IslamicEpoch.astronomical),
+    getIslamicId(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical): () => getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical),
+    getIslamicId(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical): () => getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical),
+    getIslamicId(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.astronomical): () => getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.astronomical)
   };
 
 
@@ -219,43 +189,43 @@ class CalendarSystem {
   static final CalendarSystem iso = _isoCalendarSystem;
 
 
-/// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
-/// purely mathematical calculator, applied proleptically to the period where the real calendar was observational.
-///
-/// Please note that in version 1.3.0 of Time Machine, support for the Hebrew calendar is somewhat experimental,
-/// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
-/// and parsing using month names is not currently supported, due to the challenges of handling leap months.
-/// It is hoped that this will be improved in future versions.
-/// The implementation for this was taken from http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
-/// which is a domain algorithm presumably equivalent to that given in the Calendrical Calculations book
-/// by the same authors (Nachum Dershowitz and Edward Reingold).
-///
-/// [monthNumbering]: The month numbering system to use
-/// Returns: A Hebrew calendar system for the given month numbering.
-//static CalendarSystem GetHebrewCalendar(HebrewMonthNumbering monthNumbering)
-//{
-//Preconditions.checkArgumentRange('monthNumbering', (int) monthNumbering, 1, 2);
-//return HebrewCalendars.ByMonthNumbering[((int) monthNumbering) - 1];
-//}
+  /// Returns a Hebrew calendar, as described at http://en.wikipedia.org/wiki/Hebrew_calendar. This is a
+  /// purely mathematical calculator, applied proleptically to the period where the real calendar was observational.
+  ///
+  /// Please note that in version 1.3.0 of Time Machine, support for the Hebrew calendar is somewhat experimental,
+  /// particularly in terms of calculations involving adding or subtracting years. Additionally, text formatting
+  /// and parsing using month names is not currently supported, due to the challenges of handling leap months.
+  /// It is hoped that this will be improved in future versions.
+  /// The implementation for this was taken from http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps,
+  /// which is a domain algorithm presumably equivalent to that given in the Calendrical Calculations book
+  /// by the same authors (Nachum Dershowitz and Edward Reingold).
+  ///
+  /// [monthNumbering]: The month numbering system to use
+  /// Returns: A Hebrew calendar system for the given month numbering.
+  static CalendarSystem getHebrewCalendar(HebrewMonthNumbering monthNumbering)
+  {
+    Preconditions.checkArgumentRange('monthNumbering', monthNumbering.index, 0, 1); // 1, 2);
+    return _HebrewCalendars.byMonthNumbering[monthNumbering.index];
+  }
 
 
-/// Returns the Wondrous (Badí') calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar.
-/// This is a purely solar calendar with years starting at the vernal equinox.
-///
-/// The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
-/// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.
-/// A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
-/// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).
-/// A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this
-/// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is
-/// a momentary point in time, so the "date" of the equinox is determined by the date (beginning
-/// at sunset) in effect in Tehran, Iran at the moment of the equinox.
-/// In this Time Machine implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
-/// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will
-/// not work as expected for Ayyám-i-Há, such as EndOfMonth.
-///
-/// Returns: The Wondrous calendar system.
-// static CalendarSystem Wondrous => MiscellaneousCalendars.Wondrous;
+  /// Returns the Wondrous (Badí') calendar, as described at https://en.wikipedia.org/wiki/Badi_calendar.
+  /// This is a purely solar calendar with years starting at the vernal equinox.
+  ///
+  /// The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
+  /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.
+  /// A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
+  /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).
+  /// A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this
+  /// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is
+  /// a momentary point in time, so the "date" of the equinox is determined by the date (beginning
+  /// at sunset) in effect in Tehran, Iran at the moment of the equinox.
+  /// In this Time Machine implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
+  /// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will
+  /// not work as expected for Ayyám-i-Há, such as EndOfMonth.
+  ///
+  /// Returns: The Wondrous calendar system.
+  static CalendarSystem get wondrous => _MiscellaneousCalendars.badi;
 
 
   /// Returns an Islamic, or Hijri, calendar system.
@@ -308,15 +278,12 @@ class CalendarSystem {
   /// [epoch]: The kind of epoch to use (astronomical or civil)
   /// A suitable Islamic calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.
-  static CalendarSystem getIslamicCalendar(leapYearPattern, epoch) => throw new UnimplementedError();
-//  static CalendarSystem GetIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
-//  {
-//    Preconditions.checkArgumentRange('leapYearPattern', leapYearPattern.value, 1, 4);
-//    Preconditions.checkArgumentRange('epoch', epoch.value, 1, 2);
-//    return IslamicCalendars.ByLeapYearPatterAndEpoch[leapYearPattern.value - 1, epoch.value - 1];
-//  }
-
-// #endregion
+  static CalendarSystem getIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
+  {
+    Preconditions.checkArgumentRange('leapYearPattern', leapYearPattern.index, 0, 3); //, 1, 4);
+    Preconditions.checkArgumentRange('epoch', epoch.index, 0, 1); //, 1, 2);
+    return _IslamicCalendars.byLeapYearPatternAndEpoch(leapYearPattern, epoch);
+  }
 
   // Other fields back read-only automatic properties.
   final EraCalculator _eraCalculator;
@@ -325,8 +292,7 @@ class CalendarSystem {
       : this._(ordinal, id, name, yearMonthDayCalculator, new SingleEraCalculator(singleEra, yearMonthDayCalculator));
 
   CalendarSystem._(this.ordinal, this.id, this.name, this.yearMonthDayCalculator, this._eraCalculator)
-      :
-        minYear = yearMonthDayCalculator.minYear,
+      : minYear = yearMonthDayCalculator.minYear,
         maxYear = yearMonthDayCalculator.maxYear,
         minDays = yearMonthDayCalculator.getStartOfYearInDays(yearMonthDayCalculator.minYear),
         maxDays = yearMonthDayCalculator.getStartOfYearInDays(yearMonthDayCalculator.maxYear + 1) - 1 {
@@ -396,12 +362,8 @@ class CalendarSystem {
   /// Returns the ordinal value of this calendar.
   @internal final CalendarOrdinal ordinal;
 
-// #region Era-based members
-
-
   /// Gets a read-only list of eras used in this calendar system.
   Iterable<Era> get eras => _eraCalculator.eras;
-
 
   /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
   /// from a year-of-era and an era.
@@ -418,7 +380,6 @@ class CalendarSystem {
   /// [ArgumentException]: [era] is not an era used in this calendar.
   int getAbsoluteYear(int yearOfEra, Era era) => _eraCalculator.getAbsoluteYear(yearOfEra, era);
 
-
   /// Returns the maximum valid year-of-era in the given era.
   ///
   /// Note that depending on the calendar system, it's possible that only
@@ -429,7 +390,6 @@ class CalendarSystem {
   /// Returns: The maximum valid year in the given era.
   /// [ArgumentException]: [era] is not an era used in this calendar.
   int getMaxYearOfEra(Era era) => _eraCalculator.getMaxYearOfEra(era);
-
 
   /// Returns the minimum valid year-of-era in the given era.
   ///
@@ -448,7 +408,7 @@ class CalendarSystem {
     Preconditions.checkArgumentRange('daysSinceEpoch', daysSinceEpoch, minDays, maxDays);
     return yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).withCalendarOrdinal(ordinal);
   }
-  
+
   /// Converts this calendar system to text by simply returning its unique ID.
   ///
   /// Returns: The ID of this calendar system.
@@ -545,8 +505,6 @@ class CalendarSystem {
     return yearMonthDayCalculator.compare(lhs, rhs);
   }
 
-// #region "Getter" methods which used to be DateTimeField
-
   @internal int getDayOfYear(YearMonthDay yearMonthDay) {
     //DebugValidateYearMonthDay(yearMonthDay);
     return yearMonthDayCalculator.getDayOfYear(yearMonthDay);
@@ -573,7 +531,6 @@ class CalendarSystem {
   /// calendar system assumes it did, thus it is proleptic. This implementation also
   /// fixes the start of the year at January 1.
   static final CalendarSystem gregorian = _GregorianJulianCalendars.gregorian;
-
 
   /// Returns a pure proleptic Julian calendar system, which defines every
   /// fourth year as a leap year. This implementation follows the leap year rule
@@ -605,7 +562,7 @@ class CalendarSystem {
   ///
   /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.</value>
-  static CalendarSystem get coptic => throw new UnimplementedError(); // MiscellaneousCalendars.Coptic;
+  static CalendarSystem get coptic => _MiscellaneousCalendars.coptic;
 
 
   /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
@@ -615,7 +572,7 @@ class CalendarSystem {
   /// when the `HijriCalendar.HijriAdjustment` is 0.
   ///
   /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
-  static CalendarSystem get islamicBcl => throw new UnimplementedError(); // GetIslamicCalendar(IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical);
+  static CalendarSystem get islamicBcl => getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical);
 
 
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
@@ -623,9 +580,8 @@ class CalendarSystem {
   ///
   /// This implementation uses a simple 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30
   /// in each cycle are leap years.
-  static CalendarSystem get persianSimple => throw new UnimplementedError(); // PersianCalendars.Simple;
-
-
+  static CalendarSystem get persianSimple => _PersianCalendars.simple;
+  
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
   /// BCL `PersianCalendar` from .NET 4.6 onwards (and Windows 10), and the astronomical
   /// system described in Wikipedia and Calendrical Calculations.
@@ -633,14 +589,13 @@ class CalendarSystem {
   /// This implementation uses data derived from the .NET 4.6 implementation (with the data built into Time Machine, so there's
   /// no BCL dependency) for simplicity; the actual implementation involves computing the time of noon in Iran, and
   /// is complex.
-  static CalendarSystem get persianArithmetic => throw new UnimplementedError(); // PersianCalendars.Arithmetic;
-
+  static CalendarSystem get persianArithmetic => _PersianCalendars.arithmetic;
 
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour
   /// proposed by Ahmad Birashk with nested cycles of years determining which years are leap years.
   ///
   /// This calendar is also known as the algorithmic Solar Hijri calendar.
-  static CalendarSystem get persianAstronomical => throw new UnimplementedError(); // PersianCalendars.Astronomical;
+  static CalendarSystem get persianAstronomical => _PersianCalendars.astronomical;
 
 
   /// Returns a Hebrew calendar system using the civil month numbering,
@@ -649,20 +604,20 @@ class CalendarSystem {
   /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
   /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
   /// BCL.</value>
-  static CalendarSystem get hebrewCivil => throw new UnimplementedError(); // GetHebrewCalendar(HebrewMonthNumbering.Civil);
+  static CalendarSystem get hebrewCivil => getHebrewCalendar(HebrewMonthNumbering.civil);
 
 
   /// Returns a Hebrew calendar system using the scriptural month numbering.
   ///
   /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-  static CalendarSystem get hebrewScriptural => throw new UnimplementedError(); // GetHebrewCalendar(HebrewMonthNumbering.Scriptural);
+  static CalendarSystem get hebrewScriptural => getHebrewCalendar(HebrewMonthNumbering.scriptural);
 
 
   /// Returns an Um Al Qura calendar system - an Islamic calendar system primarily used by
   /// Saudi Arabia.
   ///
   /// This is a tabular calendar, relying on pregenerated data.
-  static CalendarSystem get umAlQura => throw new UnimplementedError(); // MiscellaneousCalendars.UmAlQura;
+  static CalendarSystem get umAlQura => _MiscellaneousCalendars.umAlQura;
 
 }
 
@@ -673,12 +628,12 @@ class CalendarSystem {
 
 class _PersianCalendars
 {
-//  @internal static final CalendarSystem Simple =
-//  new CalendarSystem(CalendarOrdinal.PersianSimple, PersianSimpleId, PersianName, new PersianYearMonthDayCalculator.Simple(), Era.AnnoPersico);
-//  @internal static final CalendarSystem Arithmetic =
-//  new CalendarSystem(CalendarOrdinal.PersianArithmetic, PersianArithmeticId, PersianName, new PersianYearMonthDayCalculator.Arithmetic(), Era.AnnoPersico);
-//  @internal static final CalendarSystem Astronomical =
-//  new CalendarSystem(CalendarOrdinal.PersianAstronomical, PersianAstronomicalId, PersianName, new PersianYearMonthDayCalculator.Astronomical(), Era.AnnoPersico);
+  @internal static final CalendarSystem simple =
+  new CalendarSystem._singleEra(CalendarOrdinal.persianSimple, CalendarSystem._persianSimpleId, CalendarSystem._persianName, new PersianSimple(), Era.annoPersico);
+  @internal static final CalendarSystem arithmetic =
+  new CalendarSystem._singleEra(CalendarOrdinal.persianArithmetic, CalendarSystem._persianArithmeticId, CalendarSystem._persianName, new PersianArithmetic(), Era.annoPersico);
+  @internal static final CalendarSystem astronomical =
+  new CalendarSystem._singleEra(CalendarOrdinal.persianAstronomical, CalendarSystem._persianAstronomicalId, CalendarSystem._persianName, new PersianAstronomical(), Era.annoPersico);
 }
 
 
@@ -686,36 +641,47 @@ class _PersianCalendars
 /// Islam-based calendars (which would include UmAlQura and Persian, for example).
 class _IslamicCalendars
 {
-//  @internal static final CalendarSystem[,] ByLeapYearPatterAndEpoch;
-//
-//// todo: was a static constructor
-//  IslamicCalendars()
-//  {
-//    ByLeapYearPatterAndEpoch = new CalendarSystem[4, 2];
-//    for (int i = 1; i <= 4; i++)
-//    {
-//      for (int j = 1; j <= 2; j++)
-//      {
-//        var leapYearPattern = (IslamicLeapYearPattern) i;
-//        var epoch = (IslamicEpoch) j;
-//        var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
-//        CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
-//        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
-//      }
-//    }
-//  }
+  /*
+  @internal static final CalendarSystem[,] ByLeapYearPatterAndEpoch;
+
+  // todo: was a static constructor
+  IslamicCalendars()
+  {
+    ByLeapYearPatterAndEpoch = new CalendarSystem[4, 2];
+    for (int i = 1; i <= 4; i++)
+    {
+      for (int j = 1; j <= 2; j++)
+      {
+        var leapYearPattern = (IslamicLeapYearPattern) i;
+        var epoch = (IslamicEpoch) j;
+        var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
+        CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
+        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
+      }
+    }
+  }*/
+
+  // todo: create a cache here
+  @internal
+  static CalendarSystem byLeapYearPatternAndEpoch(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch) {
+    int i = leapYearPattern.index;
+    int j = epoch.index;
+    var calculator = new IslamicYearMonthDayCalculator(leapYearPattern, epoch);
+    CalendarOrdinal ordinal = new CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + (i - 1) + (j - 1) * 4);
+    return new CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
+  }
 }
 
 
 /// Odds and ends, with an assumption that it's not *that* painful to initialize UmAlQura if you only
 /// need Coptic, for example.
 class _MiscellaneousCalendars {
-//  @internal static final CalendarSystem Coptic =
-//  new CalendarSystem(CalendarOrdinal.Coptic, CopticId, CopticName, new CopticYearMonthDayCalculator(), Era.AnnoMartyrum);
-//  @internal static final CalendarSystem UmAlQura =
-//  new CalendarSystem(CalendarOrdinal.UmAlQura, UmAlQuraId, UmAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.AnnoHegirae);
-//  @internal static final CalendarSystem Wondrous =
-//  new CalendarSystem(CalendarOrdinal.Wondrous, WondrousId, WondrousName, new WondrousYearMonthDayCalculator(), Era.Bahai);
+  @internal static final CalendarSystem coptic =
+  new CalendarSystem._singleEra(CalendarOrdinal.coptic, CalendarSystem._copticId, CalendarSystem._copticName, new CopticYearMonthDayCalculator(), Era.annoMartyrum);
+  @internal static final CalendarSystem umAlQura =
+  new CalendarSystem._singleEra(CalendarOrdinal.umAlQura, CalendarSystem._umAlQuraId, CalendarSystem._umAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.annoHegirae);
+  @internal static final CalendarSystem badi =
+  new CalendarSystem._singleEra(CalendarOrdinal.badi, CalendarSystem._badiId, CalendarSystem._badiName, new BadiYearMonthDayCalculator(), Era.bahai);
 }
 
 class _GregorianJulianCalendars {
@@ -725,7 +691,7 @@ class _GregorianJulianCalendars {
   @internal static CalendarSystem get gregorian => _gregorian ?? _init()[0];
   @internal static CalendarSystem get julian => _julian ?? _init()[1];
 
-  // todo: was a static constructor .. is this an okay pattern?
+  // todo: was a static constructor .. is this an okay pattern? (todo: this can be simplified)
   static List<CalendarSystem> _init() {
     var julianCalculator = new JulianYearMonthDayCalculator();
     _julian = new CalendarSystem._(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
@@ -738,10 +704,10 @@ class _GregorianJulianCalendars {
 }
 
 class _HebrewCalendars {
-//  @internal static final List<CalendarSystem> ByMonthNumbering =
-//  [
-//    new CalendarSystem(CalendarOrdinal.HebrewCivil, HebrewCivilId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil), Era.AnnoMundi),
-//    new CalendarSystem(
-//        CalendarOrdinal.HebrewScriptural, HebrewScripturalId, HebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural), Era.AnnoMundi)
-//  ];
+  @internal static final List<CalendarSystem> byMonthNumbering =
+  [
+    new CalendarSystem._singleEra(CalendarOrdinal.hebrewCivil, CalendarSystem._hebrewCivilId, CalendarSystem._hebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil), Era.annoMundi),
+    new CalendarSystem._singleEra(
+        CalendarOrdinal.hebrewScriptural, CalendarSystem._hebrewScripturalId, CalendarSystem._hebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural), Era.annoMundi)
+  ];
 }

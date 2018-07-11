@@ -25,7 +25,7 @@ class CalendarOrdinal {
     persianSimple, persianArithmetic, persianAstronomical,
     islamicAstronomicalBase15, islamicAstronomicalBase16, islamicAstronomicalIndian, islamicAstronomicalHabashAlHasib,
     islamicCivilBase15, islamicCivilBase16, islamicCivilIndian, islamicAstronomicalHabashAlHasib,
-    umAlQura, wondrous, size
+    umAlQura, badi, size
   ];
 
   /// Value indicating no day of the week; this will never be returned
@@ -49,7 +49,7 @@ class CalendarOrdinal {
   static const CalendarOrdinal islamicCivilIndian = const CalendarOrdinal(15);
   static const CalendarOrdinal islamicCivilHabashAlHasib = const CalendarOrdinal(16);
   static const CalendarOrdinal umAlQura = const CalendarOrdinal(17);
-  static const CalendarOrdinal wondrous = const CalendarOrdinal(18);
+  static const CalendarOrdinal badi = const CalendarOrdinal(18);
   // Not a real ordinal; just present to keep a count. Increase this as the number increases...
   static const CalendarOrdinal size = const CalendarOrdinal(19);
 
