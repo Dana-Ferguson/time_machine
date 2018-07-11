@@ -3,6 +3,7 @@
 ## 0.6.1
 - Updated `LocalDateTime.at()` to reflect the LocalTime constructor update.
   - note: I don't like `.at()`, anyone got a better constructor name idea?
+- Added Badi, Coptic, Hebrew, Islamic, Persian, and UmAlQura calendars.
 
 ## 0.6.0
 - Removed the concept of `ticks` and replaced all the functions with `microseconds`;
