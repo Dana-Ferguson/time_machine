@@ -14,7 +14,7 @@ Future main() async {
   await runTests();
 }
 
-final Iterable<String> SupportedIds = CalendarSystem.Ids.toList();
+final Iterable<String> SupportedIds = CalendarSystem.ids.toList();
 final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
@@ -52,9 +52,9 @@ void BadId()
 void NoSubstrings()
 {
     // CompareInfo comparison = CultureInfo.InvariantCulture.CompareInfo;
-    for (var firstId in CalendarSystem.Ids)
+    for (var firstId in CalendarSystem.ids)
     {
-        for (var secondId in CalendarSystem.Ids)
+        for (var secondId in CalendarSystem.ids)
         {
             // We're looking for firstId being a substring of secondId, which can only
             // happen if firstId is shorter...

@@ -124,7 +124,7 @@ class CalendarSystem {
     CalendarOrdinal.gregorian: gregorian,
     CalendarOrdinal.julian: julian,
     CalendarOrdinal.coptic: coptic,
-    CalendarOrdinal.badi: wondrous,
+    CalendarOrdinal.badi: badi,
     CalendarOrdinal.hebrewCivil: hebrewCivil,
     CalendarOrdinal.hebrewScriptural: hebrewScriptural,
     CalendarOrdinal.persianSimple: persianSimple,
@@ -151,7 +151,7 @@ class CalendarSystem {
 
 
   /// Returns the IDs of all calendar systems available within Time Machine. The order of the keys is not guaranteed.
-  static Iterable<String> get Ids => _idToFactoryMap.keys;
+  static Iterable<String> get ids => _idToFactoryMap.keys;
 
   // todo: make const
   static final Map<String, CalendarSystem Function()> _idToFactoryMap =
@@ -164,7 +164,7 @@ class CalendarSystem {
     _hebrewScripturalId: () => getHebrewCalendar(HebrewMonthNumbering.scriptural),
     _gregorianId: () => gregorian,
     _copticId: () => coptic,
-    _badiId: () => wondrous,
+    _badiId: () => badi,
     _julianId: () => julian,
     _umAlQuraId: () => umAlQura,
     getIslamicId(IslamicLeapYearPattern.indian, IslamicEpoch.civil): () => getIslamicCalendar(IslamicLeapYearPattern.indian, IslamicEpoch.civil),
@@ -225,7 +225,7 @@ class CalendarSystem {
   /// not work as expected for Ayyám-i-Há, such as EndOfMonth.
   ///
   /// Returns: The Wondrous calendar system.
-  static CalendarSystem get wondrous => _MiscellaneousCalendars.badi;
+  static CalendarSystem get badi => _MiscellaneousCalendars.badi;
 
 
   /// Returns an Islamic, or Hijri, calendar system.
@@ -317,7 +317,7 @@ class CalendarSystem {
   ///   <item><term>ISO</term><description>[CalendarSystem.iso]</description></item>
   ///   <item><term>Gregorian</term><description>[CalendarSystem.gregorian]</description></item>
   ///   <item><term>Coptic</term><description>[CalendarSystem.coptic]</description></item>
-  ///   <item><term>Wondrous</term><description>[CalendarSystem.wondrous]</description></item>
+  ///   <item><term>Wondrous</term><description>[CalendarSystem.badi]</description></item>
   ///   <item><term>Julian</term><description>[CalendarSystem.julian]</description></item>
   ///   <item><term>Hijri Civil-Indian</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
   ///   <item><term>Hijri Civil-Base15</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>

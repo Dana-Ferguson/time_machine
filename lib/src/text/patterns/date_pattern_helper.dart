@@ -160,7 +160,7 @@ abstract class DatePatternHelper {
       builder.addField(PatternFields.calendar, pattern.current);
 
       builder.addParseAction((cursor, bucket) {
-        for (var id in CalendarSystem.Ids) {
+        for (var id in CalendarSystem.ids) {
           if (cursor.matchText(id)) {
             setter(bucket, CalendarSystem.forId(id));
             return null;

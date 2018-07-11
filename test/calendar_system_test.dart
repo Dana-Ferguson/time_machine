@@ -11,7 +11,7 @@ Future main() async {
   await runTests();
 }
 
-final Iterable<String> SupportedIds = CalendarSystem.Ids.toList();
+final Iterable<String> SupportedIds = CalendarSystem.ids.toList();
 final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
