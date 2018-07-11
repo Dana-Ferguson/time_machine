@@ -187,7 +187,7 @@ static BadiYearMonthDayCalculator()
       return new YearMonthDay(year, _month19, dayOfYear - firstOfLoftiness + 1);
     }
 
-    var month = math.min(1 + (dayOfYear - 1) / daysInMonth, month18);
+    var month = math.min(1 + (dayOfYear - 1) / daysInMonth, month18).toInt();
     var day = dayOfYear - (month - 1) * daysInMonth;
 
     return new YearMonthDay(year, month, day);
