@@ -170,6 +170,7 @@ abstract class TestHelper
     {
     //Assert.IsTrue(e.GetType() == typeof(ArgumentException) || e.GetType() == typeof(ArgumentOutOfRangeException),
     //"Exception should not be a subtype of ArgumentException, other than ArgumentOutOfRangeException");
+      print(e);
     }
     catch (InvalidOperationException)
     {

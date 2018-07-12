@@ -3,13 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
-import 'package:time_machine/src/timezones/time_machine_timezones.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
-import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing TimeMachineFormatInfo.InvariantInfo...
