@@ -72,7 +72,7 @@ class LocalDate implements Comparable<LocalDate> {
 
     return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, ordinal));
   }
-  
+
   /// Gets the calendar system associated with this local date.
   CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
@@ -367,6 +367,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// later than [other].
   int compareTo(LocalDate other)
   {
+    // todo: is this the best way? Should I add a check like this everywhere?
+    if (other == null) return 1;
     Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
     return calendar.compare(_yearMonthDay, other._yearMonthDay);
   }

@@ -108,7 +108,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
     int month = _calendarToCivilMonth(year, yearMonthDay.month);
     // This arithmetic works the same both backwards and forwards.
     year += (months ~/ _monthsPerLeapCycle) * _yearsPerLeapCycle;
-    months = months % _monthsPerLeapCycle;
+    months = arithmeticMod(months, _monthsPerLeapCycle);
     if (months > 0) {
       // Add as many months as we need to in order to act as if we'd begun at the start
       // of the year, for simplicity.
