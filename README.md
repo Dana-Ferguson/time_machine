@@ -1,7 +1,7 @@
 # Dart Time Machine
 
 Time Machine is a date and time API for Dart (port of [Noda Time](https://www.nodatime.org)).
-Time Machine is timezone and culture sensitive and runs on [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm).
+Time Machine is timezone aware and culture sensitive and runs on [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm).
 
 Example Code:
 
@@ -75,7 +75,7 @@ Todo (before v1):
    - [X] Synchronous TZDB timezone provider
    - [ ] Review all I/O and associated classes and their structure
    - [ ] Simplify the API and make the best use of named constructors
- - [ ] Non-Gregorian/Julian calendar systems
+ - [X] Non-Gregorian/Julian calendar systems
  - [X] Text formatting and Parsing
  - [X] Remove XML tags from documentation and format them for pub (*human second pass still needed*)
  - [X] Implement Dart4Web features

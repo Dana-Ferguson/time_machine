@@ -161,8 +161,8 @@ void MonthsBetween(String startText, int expectedMonths, String endText)
 void MonthsBetween_TimeOfDay()
 {
   var civil = CalendarSystem.hebrewCivil;
-  var start = new LocalDateTime.at(5774, 5, 10, 15, 0, 0, calendar: civil); // 3pm
-  var end = new LocalDateTime.at(5774, 7, 10, 5, 0, 0, calendar: civil); // 5am
+  var start = new LocalDateTime(5774, 5, 10, 15, 0, 0, calendar: civil); // 3pm
+  var end = new LocalDateTime(5774, 7, 10, 5, 0, 0, calendar: civil); // 5am
   // Would be 2, but the start time is later than the end time.
   expect(1, Period.between(start, end, PeriodUnits.months).months);
 }

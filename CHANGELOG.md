@@ -1,9 +1,11 @@
 # Changelog
 
-## 0.6.1
+## 0.7.0
 - Updated `LocalDateTime.at()` to reflect the LocalTime constructor update.
-  - note: I don't like `.at()`, anyone got a better constructor name idea?
+  - note: renamed `LocalDateTime.at()` to `LocalDateTime()` and then renamed the original `LocalDateTime(LocalDate, LocalTime)` to
+  `LocalDateTime.combine(LocalDate, LocalTime)`
 - Added Badi, Coptic, Hebrew, Islamic, Persian, and UmAlQura calendars.
+  - Tested sat on VM/JS.
 
 ## 0.6.0
 - Removed the concept of `ticks` and replaced all the functions with `microseconds`;

@@ -21,7 +21,7 @@ final CalendarSystem SampleCalendar = CalendarSystem.getIslamicCalendar(IslamicL
 void SampleDate1()
 {
   // Note: field checks removed from the tests.
-  LocalDateTime ldt = new LocalDateTime.at(1945, 11, 12, 0, 0, 0, calendar: CalendarSystem.iso);
+  LocalDateTime ldt = new LocalDateTime(1945, 11, 12, 0, 0, 0, calendar: CalendarSystem.iso);
 
   ldt = ldt.withCalendar(SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
@@ -42,7 +42,7 @@ void SampleDate1()
 @Test()
 void SampleDate2()
 {
-  LocalDateTime ldt = new LocalDateTime.at(2005, 11, 26, 0, 0, 0, calendar: CalendarSystem.iso);
+  LocalDateTime ldt = new LocalDateTime(2005, 11, 26, 0, 0, 0, calendar: CalendarSystem.iso);
   ldt = ldt.withCalendar(SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
   expect(1426, ldt.yearOfEra);
@@ -61,7 +61,7 @@ void SampleDate2()
 @Test()
 void SampleDate3()
 {
-  LocalDateTime ldt = new LocalDateTime.at(1426, 12, 24, 0, 0, 0, calendar: SampleCalendar);
+  LocalDateTime ldt = new LocalDateTime(1426, 12, 24, 0, 0, 0, calendar: SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
 
   expect(1426, ldt.year);
@@ -374,8 +374,8 @@ void GetInstance_ArgumentValidation()
 void PlusYears_Simple()
 {
   var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
-  LocalDateTime start = new LocalDateTime.at(5, 8, 20, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime.at(10, 8, 20, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = new LocalDateTime(5, 8, 20, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = new LocalDateTime(10, 8, 20, 2, 0, 0, calendar: calendar);
   expect(expectedEnd, start.plusYears(5));
 }
 
@@ -386,8 +386,8 @@ void PlusYears_TruncatesAtLeapYear()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(3), isFalse);
 
-  LocalDateTime start = new LocalDateTime.at(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime.at(3, 12, 29, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = new LocalDateTime(3, 12, 29, 2, 0, 0, calendar: calendar);
 
   expect(expectedEnd, start.plusYears(1));
 }
@@ -399,8 +399,8 @@ void PlusYears_DoesNotTruncateFromOneLeapYearToAnother()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(5), isTrue);
 
-  LocalDateTime start = new LocalDateTime.at(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime.at(5, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = new LocalDateTime(5, 12, 30, 2, 0, 0, calendar: calendar);
 
   expect(expectedEnd, start.plusYears(3));
 }
@@ -411,8 +411,8 @@ void PlusMonths_Simple()
   var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   expect(calendar.isLeapYear(2), isTrue);
 
-  LocalDateTime start = new LocalDateTime.at(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime.at(3, 11, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
   expect(11, expectedEnd.month);
   expect(30, expectedEnd.day);
   expect(expectedEnd, start.plusMonths(11));

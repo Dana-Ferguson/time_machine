@@ -63,13 +63,11 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
   /// 
   /// see: [LocalTime] for potential future API change
-  LocalDateTime.at(int year, int month, int day, int hour, int minute, int seconds, {int ms, int us, int ns, CalendarSystem calendar})
-      : this(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, ms:ms, us:us, ns:ns));
+  LocalDateTime(int year, int month, int day, int hour, int minute, int seconds, {int ms, int us, int ns, CalendarSystem calendar})
+      : this.combine(new LocalDate(year, month, day, calendar), new LocalTime(hour, minute, seconds, ms:ms, us:us, ns:ns));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
-  // todo: I really don't like this one at all: LocalDateTime.at
-  // todo: update this to fit the LocalTime constructor signature
 
-  @wasInternal LocalDateTime(this.date, this.time);
+  @wasInternal LocalDateTime.combine(this.date, this.time);
 
   /// Gets the calendar system associated with this local date and time.
   CalendarSystem get calendar => date.calendar;
@@ -180,7 +178,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
       ns = us * TimeConstants.nanosecondsPerMicrosecond;
     }
 
-    return new LocalDateTime(
+    return new LocalDateTime.combine(
         ILocalDate.fromDaysSinceEpoch(days, calendar),
         ILocalTime.trustedNanoseconds(ns));
   }
@@ -412,7 +410,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The converted LocalDateTime.
   LocalDateTime withCalendar(CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new LocalDateTime(date.withCalendar(calendar), time);
+    return new LocalDateTime.combine(date.withCalendar(calendar), time);
   }
 
 
@@ -424,7 +422,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [years]: The number of years to add
   /// Returns: The current value plus the given number of years.
-  LocalDateTime plusYears(int years) => new LocalDateTime(date.plusYears(years), time);
+  LocalDateTime plusYears(int years) => new LocalDateTime.combine(date.plusYears(years), time);
 
 
   /// Returns a new LocalDateTime representing the current value with the given number of months added.
@@ -438,7 +436,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [months]: The number of months to add
   /// Returns: The current value plus the given number of months.
-  LocalDateTime plusMonths(int months) => new LocalDateTime(date.plusMonths(months), time);
+  LocalDateTime plusMonths(int months) => new LocalDateTime.combine(date.plusMonths(months), time);
 
 
   /// Returns a new LocalDateTime representing the current value with the given number of days added.
@@ -448,14 +446,14 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [days]: The number of days to add
   /// Returns: The current value plus the given number of days.
-  LocalDateTime plusDays(int days) => new LocalDateTime(date.plusDays(days), time);
+  LocalDateTime plusDays(int days) => new LocalDateTime.combine(date.plusDays(days), time);
 
 
   /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
   ///
   /// * [weeks]: The number of weeks to add
   /// Returns: The current value plus the given number of weeks.
-  LocalDateTime plusWeeks(int weeks) => new LocalDateTime(date.plusWeeks(weeks), time);
+  LocalDateTime plusWeeks(int weeks) => new LocalDateTime.combine(date.plusWeeks(weeks), time);
 
 
   /// Returns a new LocalDateTime representing the current value with the given number of hours added.
@@ -511,7 +509,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime next(DayOfWeek targetDayOfWeek) => new LocalDateTime(date.next(targetDayOfWeek), time);
+  LocalDateTime next(DayOfWeek targetDayOfWeek) => new LocalDateTime.combine(date.next(targetDayOfWeek), time);
 
 
   /// Returns the previous [LocalDateTime] falling on the specified [DayOfWeek],
@@ -524,7 +522,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime previous(DayOfWeek targetDayOfWeek) => new LocalDateTime(date.previous(targetDayOfWeek), time);
+  LocalDateTime previous(DayOfWeek targetDayOfWeek) => new LocalDateTime.combine(date.previous(targetDayOfWeek), time);
 
 
   /// Returns an [OffsetDateTime] for this local date/time with the given offset.

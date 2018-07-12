@@ -183,12 +183,12 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data()
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2011-10-19 24:00"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 0, 5).inZoneStrictly(TestZone1)
+      ..template = new LocalDateTime(1970, 1, 1, 0, 0, 5).inZoneStrictly(TestZone1)
       ..message = TextErrorMessages.invalidHour24,
     new Data()
       ..pattern = "yyyy-MM-dd HH"
       ..text = "2011-10-19 24"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1)
+      ..template = new LocalDateTime(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1)
       ..message = TextErrorMessages.invalidHour24,
 
     // Redundant specification of fixed zone but not enough digits - we'll parse UTC+01:00:00 and unexpectedly be left with 00
@@ -243,11 +243,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..pattern = "dd MM yyyy"
       ..text = "19 10 2011"
-      ..template = new LocalDateTime.at(2000, 1, 1, 16, 05, 20).inUtc(),
+      ..template = new LocalDateTime(2000, 1, 1, 16, 05, 20).inUtc(),
     new Data.c(2011, 10, 19, 16, 05, 20)
       ..pattern = "HH:mm:ss"
       ..text = "16:05:20"
-      ..template = new LocalDateTime.at(2011, 10, 19, 0, 0, 0).inUtc(),
+      ..template = new LocalDateTime(2011, 10, 19, 0, 0, 0).inUtc(),
 
     // Parsing using the semi-colon "comma dot" specifier
     new Data.d(
@@ -278,7 +278,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     new Data.b(2011, 10, 20, 0, 0, TestZone1)
       ..pattern = "yyyy-MM-dd HH:mm:ss"
       ..text = "2011-10-19 24:00:00"
-      ..template = new LocalDateTime.at(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1),
+      ..template = new LocalDateTime(1970, 1, 1, 0, 5, 0).inZoneStrictly(TestZone1),
     new Data.a(2011, 10, 20)
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2011-10-19 24:00",
@@ -407,11 +407,11 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = "2013-01-13 15:44 UTC+00:00:05",
 
     // Valid offset for an unambiguous time
-    new Data(new LocalDateTime.at(2005, 1, 1, 1, 30, 0).inZoneStrictly(TestZone1))
+    new Data(new LocalDateTime(2005, 1, 1, 1, 30, 0).inZoneStrictly(TestZone1))
       ..pattern = "yyyy-MM-dd HH:mm z o<g>"
       ..text = "2005-01-01 01:30 ab +01",
     // Valid offset (in the middle of the pattern) for an unambiguous time
-    new Data(new LocalDateTime.at(2005, 1, 1, 1, 30, 0).inZoneStrictly(TestZone1))
+    new Data(new LocalDateTime(2005, 1, 1, 1, 30, 0).inZoneStrictly(TestZone1))
       ..pattern = "yyyy-MM-dd o<g> HH:mm z"
       ..text = "2005-01-01 +01 01:30 ab",
 
@@ -711,7 +711,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     expect(identical(TestZone3, parsed.zone), isTrue);
     // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
     // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
-    expect(new LocalDateTime.at(2017, 8, 23, 12, 30, 0), parsed.localDateTime);
+    expect(new LocalDateTime(2017, 8, 23, 12, 30, 0), parsed.localDateTime);
     expect(new Offset.fromHours(2), parsed.offset);
   }
 
@@ -721,7 +721,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     var parsed = pattern
         .parse("0284-08-29")
         .value;
-    expect(new LocalDateTime.at(284, 8, 29, 0, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
+    expect(new LocalDateTime(284, 8, 29, 0, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }
 
   @Test()
@@ -795,18 +795,18 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   }
 
   Data.a(int year, int month, int day)
-      : this(new LocalDateTime.at(year, month, day, 0, 0, 0).inUtc());
+      : this(new LocalDateTime(year, month, day, 0, 0, 0).inUtc());
 
   // Coincidentally, we don't specify time zones in tests other than the
   // ones which just go down to the date and hour/minute.
   Data.b(int year, int month, int day, int hour, int minute, DateTimeZone zone)
-      : this(new LocalDateTime.at(year, month, day, hour, minute, 0).inZoneStrictly(zone));
+      : this(new LocalDateTime(year, month, day, hour, minute, 0).inZoneStrictly(zone));
 
   Data.c(int year, int month, int day, int hour, int minute, int second)
-      : this(new LocalDateTime.at(year, month, day, hour, minute, second).inUtc());
+      : this(new LocalDateTime(year, month, day, hour, minute, second).inUtc());
 
   Data.d(int year, int month, int day, int hour, int minute, int second, int millis)
-      : this(new LocalDateTime.at(
+      : this(new LocalDateTime(
       year,
       month,
       day,
@@ -816,7 +816,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ms: millis).inUtc());
 
   Data.e(int year, int month, int day, int hour, int minute, int second, int millis, DateTimeZone zone)
-      : this(new LocalDateTime.at(
+      : this(new LocalDateTime(
       year,
       month,
       day,

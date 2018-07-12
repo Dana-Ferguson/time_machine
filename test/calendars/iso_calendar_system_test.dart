@@ -85,7 +85,7 @@ void FieldsOf_GreatAchievement()
 @Test()
 void ConstructLocalInstant_WithAllFields()
 {
-  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(new LocalDateTime.at(2009, 11, 27, 18, 38, 25, ms: 345).plusMicroseconds(extraMicroseconds));
+  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(new LocalDateTime(2009, 11, 27, 18, 38, 25, ms: 345).plusMicroseconds(extraMicroseconds));
   int bclMicroseconds = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds;
   int bclDays = (bclMicroseconds ~/ TimeConstants.microsecondsPerDay);
   int bclMicrosecondOfDay = bclMicroseconds % TimeConstants.microsecondsPerDay;

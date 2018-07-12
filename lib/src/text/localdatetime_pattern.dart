@@ -16,7 +16,7 @@ abstract class LocalDateTimePatterns
   static final LocalDateTimePattern fullRoundtripWithoutCalendarImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
   static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 
-  static final LocalDateTime defaultTemplateValue = new LocalDateTime.at(2000, 1, 1, 0, 0, 0);
+  static final LocalDateTime defaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0, 0);
   static String format(LocalDateTime localDateTime, String patternText, Culture culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)

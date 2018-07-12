@@ -22,7 +22,7 @@ SingleTransitionDateTimeZone AmbiguousZone = new SingleTransitionDateTimeZone.ar
 SingleTransitionDateTimeZone GapZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2000, 1, 1, 0, 0), 0, 1);
 
 /// Local time which is either skipped or ambiguous, depending on the zones above.
-LocalDateTime TimeInTransition = new LocalDateTime.at(2000, 1, 1, 0, 20, 0);
+LocalDateTime TimeInTransition = new LocalDateTime(2000, 1, 1, 0, 20, 0);
 
 @Test()
 void ReturnEarlier()
@@ -105,7 +105,7 @@ void CreateResolver_Unambiguous() {
   };
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
-  LocalDateTime localTime = new LocalDateTime.at(1900, 1, 1, 0, 0, 0);
+  LocalDateTime localTime = new LocalDateTime(1900, 1, 1, 0, 0, 0);
   var resolved = resolver(GapZone.mapLocal(localTime));
   expect(IZonedDateTime.trusted(localTime.withOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
 }
