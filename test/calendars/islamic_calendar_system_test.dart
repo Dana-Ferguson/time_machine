@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'dart:collection';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'package:test/test.dart';
