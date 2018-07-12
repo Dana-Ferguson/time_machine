@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'package:test/test.dart';
-import 'package:matcher/matcher.dart';
+// import 'package:matcher/matcher.dart';
 
 import '../time_machine_testing.dart';
 

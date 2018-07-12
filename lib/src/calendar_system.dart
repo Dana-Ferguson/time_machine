@@ -565,6 +565,7 @@ class CalendarSystem {
   static CalendarSystem get coptic => _MiscellaneousCalendars.coptic;
 
 
+  // todo: keep this `Bcl` version?
   /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
   ///
   /// This uses the [IslamicLeapYearPattern.Base16] leap year pattern and the
