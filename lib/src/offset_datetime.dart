@@ -89,7 +89,7 @@ class OffsetDateTime {
     }
     var yearMonthDayCalendar = calendar != null 
         ? calendar.getYearMonthDayCalendarFromDaysSinceEpoch(days)
-        // todo: can we grab the correct calculator based on the default culture?
+        // todo: can we grab the correct calculator based on the default culture? (is that appropriate?)
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
     return new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);

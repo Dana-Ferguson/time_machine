@@ -311,7 +311,11 @@ String _printNewObject(Object obj) {
     sb.write('await tzdb["${obj.id}"]');
   }
   else if (obj is DayOfWeek) {
-    sb.write('IsoDayOfWeek.${obj.toString().toLowerCase()}');
+    sb.write('DayOfWeek.${obj.toString().toLowerCase()}');
+  }
+  else if (obj is HebrewMonthNumbering) {
+    // sb.write('HebrewMonthNumbering.${obj.toString().toLowerCase()}');
+    sb.write(obj);
   }
   else if (obj is CalendarOrdinal) {
     sb.write('new CalendarOrdinal(${obj.value})');

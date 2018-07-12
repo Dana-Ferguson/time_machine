@@ -97,7 +97,7 @@ abstract class YearMonthDayCalculator {
   /// range, but can exceed it to make week-year calculations simple.
   @virtual
   int getStartOfYearInDays(int year) { // todo: tag!
-    Preconditions.debugCheckArgumentRange('year', year, minYear - 1, maxYear + 1);
+    assert(Preconditions.debugCheckArgumentRange('year', year, minYear - 1, maxYear + 1));
     int cacheIndex = YearStartCacheEntry.getCacheIndex(year);
     YearStartCacheEntry cacheEntry = _yearCache[cacheIndex];
     if (!cacheEntry.isValidForYear(year)) {

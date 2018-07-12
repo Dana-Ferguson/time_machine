@@ -94,7 +94,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   @override bool isLeapYear(int year) {
     // Handle negative years in order to make calculations near the start of the calendar work cleanly.
     int yearOfCycle = year >= 0 ? year % _leapYearCycleLength
-        : (year % _leapYearCycleLength) + _leapYearCycleLength;
+        : arithmeticMod(year, _leapYearCycleLength) + _leapYearCycleLength;
     int key = 1 << yearOfCycle;
     return (_leapYearPatternBits & key) > 0;
   }

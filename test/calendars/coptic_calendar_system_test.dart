@@ -33,6 +33,9 @@ void CopticEpoch()
 void UnixEpoch()
 {
   CalendarSystem coptic = CalendarSystem.coptic;
+  // note: printing `unixEpoch` will call YearMonthDayCalculator.getStartOfYearInDays(int year) for -9998 and 10000 for VM, but not on JS -- and it appears to be a redundant call
+  // todo: investigatge
+  // print(TimeConstants.unixEpoch);
   LocalDateTime unixEpochInCopticCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, coptic).localDateTime;
   LocalDateTime expected = new LocalDateTime.at(1686, 4, 23, 0, 0, 0, calendar: coptic);
   expect(expected, unixEpochInCopticCalendar);
