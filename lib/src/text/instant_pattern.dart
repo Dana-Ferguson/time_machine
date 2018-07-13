@@ -37,6 +37,7 @@ class InstantPattern implements IPattern<Instant> {
   /// of sub-second accuracy.</value>
   static InstantPattern get extendedIso => InstantPatterns.extendedIsoPatternImpl;
 
+  // ignore: unused_field
   static const String _defaultFormatPattern = "g";
 
   final IPattern<Instant> _pattern;

@@ -518,6 +518,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   final TBucket Function() _bucketProvider;
   final PatternFields _usedFields;
   // todo: if we're not going to be able to use this... remove it
+  // ignore: unused_field
   final int _expectedLength;
 
   _SteppedPattern._(this._formatActions, this._parseActions, this._bucketProvider, this._usedFields, TResult sample, this._expectedLength);

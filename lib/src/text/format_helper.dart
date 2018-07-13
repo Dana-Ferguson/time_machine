@@ -10,6 +10,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 abstract class FormatHelper {
   // '0': 48; '9': 57
   static const int _zeroCodeUnit = 48;
+  // ignore: unused_field
   static const int _nineCodeUnit = 57;
 
   /// The maximum number of characters allowed for padded values.

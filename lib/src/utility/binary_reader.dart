@@ -86,29 +86,5 @@ class BinaryReader {
     }
     return tokens;
   }
-
-  // note: I just looked here: https://en.wikipedia.org/wiki/UTF-8 and then guessed a routine
-  //    I'm sure there are much more clever and awesome algorithms out there for doing this
-  //    Or even some way to just do this with the [UTF8.decoder]
-  int _getUnicodeCodeSize(int o) {
-    var b = binary.getUint8(o);
-    if (b <= 127) return 1;
-    if (b <= 191) return 0; // This is a tail byte
-    if (b <= 223) return 2;
-    if (b <= 239) return 3;
-    if (b <= 247) return 4;
-    throw new StateError('Impossible UTF-8 byte.');
-  }
-
-  int _getStringByteCount(int o, int charLength) {
-    int byteCount = 0;
-
-    // I'm not proud of this (turns out -- I didn't need this)
-    for (int i = o; i < o+charLength; i++) {
-      byteCount += _getUnicodeCodeSize(o);
-    }
-
-    return byteCount;
-  }
 }
 

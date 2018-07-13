@@ -288,6 +288,7 @@ class NullReturningTestDateTimeZoneSource extends TestDateTimeZoneSource {
 
   @override Future<DateTimeZone> forId(String id) {
     // Still remember what was requested.
+    // ignore: unused_local_variable
     var _id = super.forId(id);
     return new Future(() => null);
   }
@@ -295,6 +296,7 @@ class NullReturningTestDateTimeZoneSource extends TestDateTimeZoneSource {
   @override String get systemDefaultId => null;
 
   @override DateTimeZone forCachedId(String id) {
+    // ignore: unused_local_variable
     var _id = super.forCachedId(id);
     return null;
   }

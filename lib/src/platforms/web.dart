@@ -62,10 +62,15 @@ class TimeMachine {
 
   static String _timeZoneId;
   static String _locale;
+  // ignore: unused_field
   static String _numberingSystem;
+  // ignore: unused_field
   static String _calendar;
+  // ignore: unused_field
   static String _yearFormat;
+  // ignore: unused_field
   static String _monthFormat;
+  // ignore: unused_field
   static String _dayFormat;
 
   // {locale: en-US, numberingSystem: latn, calendar: gregory, timeZone: America/New_York, year: numeric, month: numeric, day: numeric}

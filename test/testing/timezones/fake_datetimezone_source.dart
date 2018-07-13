@@ -11,6 +11,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// Create instances via [FakeDateTimeZoneSource.Builder].
 class FakeDateTimeZoneSource extends DateTimeZoneSource {
   final Map<String, DateTimeZone> _zones;
+  // ignore: unused_field
   final Map<String, String> _bclToZoneIds;
 
   // todo: do we care about bclToZoneIds?

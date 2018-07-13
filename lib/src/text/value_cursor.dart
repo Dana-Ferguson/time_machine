@@ -112,21 +112,22 @@ class ValueCursor extends TextCursor {
   ///
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is non-null.
+  /// todo: update
   /// Returns: null if the digits were parsed, or the appropriate parse failure
-  ParseResult<T> parseInt64<T>(OutBox<int> result, String tType) { ///*out*/ int result) {
-    result.value = 0;
+  ParseResult<int> parseInt64<T>(String tType) { ///*out*/ int result) {
+    int result = 0;
     int startIndex = index;
     bool negative = current == '-';
     if (negative) {
       if (!moveNext()) {
         move(startIndex);
-        return IParseResult.endOfString<T>(this);
+        return IParseResult.endOfString<int>(this);
       }
     }
     int count = 0;
     int digit;
-    while (result.value < 922337203685477580 && (digit = _getDigit()) != -1) {
-      result.value = result.value * 10 + digit;
+    while (result < 922337203685477580 && (digit = _getDigit()) != -1) {
+      result = result * 10 + digit;
       count++;
       if (!moveNext()) {
         break;
@@ -135,34 +136,34 @@ class ValueCursor extends TextCursor {
 
     if (count == 0) {
       move(startIndex);
-      return IParseResult.missingNumber<T>(this);
+      return IParseResult.missingNumber<int>(this);
     }
 
-    if (result.value >= 922337203685477580 && (digit = _getDigit()) != -1) {
-      if (result.value > 922337203685477580) {
-        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
+    if (result >= 922337203685477580 && (digit = _getDigit()) != -1) {
+      if (result > 922337203685477580) {
+        return _buildNumberOutOfRangeResult<int>(startIndex, tType);
       }
       if (negative && digit == 8) {
         moveNext();
-        result.value = Platform.int64MinValue;
-        return null;
+        result = Platform.int64MinValue;
+        return ParseResult.forValue<int>(result);
       }
       if (digit > 7) {
-        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
+        return _buildNumberOutOfRangeResult<int>(startIndex, tType);
       }
       // We know we can cope with this digit...
-      result.value = result.value * 10 + digit;
+      result = result * 10 + digit;
       moveNext();
       if (_getDigit() != -1) {
         // Too many digits. Die.
-        return _buildNumberOutOfRangeResult<T>(startIndex, tType);
+        return _buildNumberOutOfRangeResult<int>(startIndex, tType);
       }
     }
     if (negative) {
-      result.value = -result.value;
+      result = -result;
     }
 
-    return null;
+    return ParseResult.forValue<int>(result);
   }
 
   ParseResult<T> _buildNumberOutOfRangeResult<T>(int startIndex, String tType) {

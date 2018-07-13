@@ -53,46 +53,12 @@ abstract class Platform {
   }
 }
 
-@deprecated
-class KeyValuePair<K, V> {
-  final K key;
-  final V value;
-  KeyValuePair(this.key, this.value);
-
-  static Iterable<KeyValuePair<K, V>> getPairs<K, V>(Map<K, V> map) sync* {
-    var keys = map.keys.iterator;
-    var values = map.values.iterator;
-
-    while(keys.moveNext() && values.moveNext()) {
-      yield new KeyValuePair(keys.current, values.current);
-    }
-  }
-}
-
-class LookUp<K, V> {
-  Map<K, List<V>> _map = {};
-
-  LookUp.fromMap(Map map, Function keySelector, Function valueSelector) {
-    var kvpList = KeyValuePair.getPairs(map);
-    kvpList.forEach((kvp) => _add(keySelector(kvp), valueSelector(kvp)));
-  }
-
-  LookUp.fromList(Iterable<KeyValuePair> kvpList, Function keySelector, Function valueSelector) {
-    kvpList.forEach((kvp) => _add(keySelector(kvp), valueSelector(kvp)));
-  }
-
-  void _add(K k, V v) {
-    var values = _map[k] ?? (_map[k] = new List<V>());
-    values.add(v);
-  }
-
-  Iterable<V> operator[](K key) => _map[key];
-}
-
+// todo: remove me
 abstract class TimeZoneInfo {
 // This is a BCL class
 }
 
+// todo: remove me
 abstract class IDateTimeZoneWriter {
 //
 }

@@ -191,6 +191,7 @@ class TimeMachine  {
   // This is slower (on at least one computer) than guessing the timezone
   // Plus, since this type of solution will have a high number of corner cases
   // for the time, the above method is preferred.
+  // ignore: unused_element
   static Future<String> _getTimeZoneId() async {
     try {
       if (io.Platform.isFuchsia) {
@@ -236,6 +237,7 @@ class TimeMachine  {
     return _windowsZones[id];
   }
 
+  // ignore: unused_field
   static const int _minZoneLongIdLength = 9;
   static const int _maxZoneShortIdLength = 5;
   static const Map<String, String> _zoneIdMap = const {

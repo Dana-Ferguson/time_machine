@@ -93,7 +93,7 @@ class Time implements Comparable<Time> {
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
   final int _nanosecondsInterval;
   static const int _minNano = 0;
-  static const int _maxNano = TimeConstants.nanosecondsPerMillisecond - 1; // 999999;
+  // static const int _maxNano = TimeConstants.nanosecondsPerMillisecond - 1; // 999999;
 
   // this is only true on the VM....
   // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);

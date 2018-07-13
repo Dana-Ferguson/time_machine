@@ -206,8 +206,6 @@ void UnixConversions_ExtremeValues()
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
   var max = Instant.maxValue.minus(new Time(seconds: 1)).plus(Time.epsilon);
-  var x = max.toUnixTimeMicroseconds();
-  var t = new Instant().plus(new Time(nanoseconds: x * TimeConstants.nanosecondsPerMicrosecond));
   expect(max, new Instant.fromUnixTimeSeconds(max.toUnixTimeSeconds()));
   expect(max, new Instant.fromUnixTimeMilliseconds(max.toUnixTimeMilliseconds()));
   if (Platform.isVM) expect(max, new Instant.fromUnixTimeMicroseconds(max.toUnixTimeMicroseconds()));
@@ -399,41 +397,41 @@ void PlusOffset_Overflow()
 void FromUnixTimeMilliseconds_Range()
 {
   // todo: I owe you, exception behavior
-  int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
-  int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
-//expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
-//expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
-//expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
-//expect(() => new Instant.fromUnixTimeMilliseconds(largestValid + 1), throwsException);
-
-//TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
-//TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);
-//TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);
-//TestHelper.AssertOutOfRange(Instant.FromUnixTimeMilliseconds, largestValid + 1);
+  //int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
+  //int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
+  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
+  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
+  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
+  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid + 1), throwsException);
+  
+  //TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
+  //TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);
+  //TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);
+  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeMilliseconds, largestValid + 1);
 }
 
 @Test()
 void FromUnixTimeSeconds_Range()
 {
   // todo: I owe you, out of range behavior
-  int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
-  int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
-//TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
-//TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
-//TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
-//TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, largestValid + 1);
+  //int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
+  //int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerSecond;
+  //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, smallestValid);
+  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, smallestValid - 1);
+  //TestHelper.AssertValid(Instant.FromUnixTimeSeconds, largestValid);
+  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeSeconds, largestValid + 1);
 }
 
 @Test()
 void FromTicksSinceUnixEpoch_Range()
 {
   // todo: I owe you, out of range behavior
-  int smallestValid = Instant.minValue.toUnixTimeMicroseconds();
-  int largestValid = Instant.maxValue.toUnixTimeMicroseconds();
-//TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
-//TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
-//TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
-//TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
+  //int smallestValid = Instant.minValue.toUnixTimeMicroseconds();
+  //int largestValid = Instant.maxValue.toUnixTimeMicroseconds();
+  //TestHelper.AssertValid(Instant.FromUnixTimeTicks, smallestValid);
+  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, smallestValid - 1);
+  //TestHelper.AssertValid(Instant.FromUnixTimeTicks, largestValid);
+  //TestHelper.AssertOutOfRange(Instant.FromUnixTimeTicks, largestValid + 1);
 }
 
 @Test()

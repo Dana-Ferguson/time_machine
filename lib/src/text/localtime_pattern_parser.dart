@@ -3,10 +3,6 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
-import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Pattern parser for [LocalTime] values.
 @internal
@@ -115,51 +111,50 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
     if (amPm == 2) {
       amPm = templateValue.hour ~/ 12;
     }
-    var hour = new OutBox<int>(0);
-    ParseResult<LocalTime> failure = _determineHour(usedFields, text, /*todo:out int*/ hour);
-    if (failure != null) {
-      return failure;
+    var parseResult = _determineHour(usedFields, text);
+    if (!parseResult.success) {
+      return parseResult.convertError();
     }
+    int hour = parseResult.value;
     int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minute;
     int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.second;
     int _nanoseconds = usedFields.hasAny(PatternFields.fractionalSeconds) ? fractionalSeconds : templateValue.nanosecondOfSecond;
-    return ParseResult.forValue<LocalTime>(new LocalTime(hour.value, _minutes, _seconds, ns:_nanoseconds));
+    return ParseResult.forValue<LocalTime>(new LocalTime(hour, _minutes, _seconds, ns:_nanoseconds));
   }
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);
   //static const PatternFields amPm = const PatternFields(1 << 6);
   static const PatternFields _hours12_booleanOR_amPm = const PatternFields(1 << 1 | 1 << 6);
 
-  ParseResult<LocalTime> _determineHour(PatternFields usedFields, String text, /*todo:out*/ OutBox<int> hour) {
-    hour.value = 0;
+  ParseResult<int> _determineHour(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.hours24)) {
       if (usedFields.hasAll(PatternFields.hours12 | PatternFields.hours24)) {
         if (hours12 % 12 != hours24 % 12) {
-          return IParseResult.inconsistentValues<LocalTime>(text, 'H', 'h', 'LocalTime');
+          return IParseResult.inconsistentValues<int>(text, 'H', 'h', 'LocalTime');
         }
       }
       if (usedFields.hasAny(PatternFields.amPm)) {
         if (hours24 ~/ 12 != amPm) {
-          return IParseResult.inconsistentValues<LocalTime>(text, 'H', 't', 'LocalTime');
+          return IParseResult.inconsistentValues<int>(text, 'H', 't', 'LocalTime');
         }
       }
-      hour.value = hours24;
-      return null;
+      return ParseResult.forValue(hours24);
     }
 
     // Okay, it's definitely valid - but we've still got 8 possibilities for what's been specified.
+    int hour = 0;
     var x = usedFields & (PatternFields.hours12 | PatternFields.amPm);
     if (x == _hours12_booleanOR_amPm) {
-      hour.value = (hours12 % 12) + amPm * 12;
+      hour = (hours12 % 12) + amPm * 12;
     }
     else if (x == PatternFields.hours12) {
-      hour.value = (hours12 % 12) + (templateValue.hour ~/ 12) * 12;
+      hour = (hours12 % 12) + (templateValue.hour ~/ 12) * 12;
     }
     else if (x == PatternFields.amPm) {
-      hour.value = (templateValue.hour % 12) + amPm * 12;
+      hour = (templateValue.hour % 12) + amPm * 12;
     }
     else {
-      hour.value = templateValue.hour;
+      hour = templateValue.hour;
     }
 
     /*
@@ -180,6 +175,6 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
         break;
     }*/
 
-    return null;
+    return ParseResult.forValue(hour);
   }
 }

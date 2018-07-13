@@ -79,15 +79,16 @@ void NoSubstrings()
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
   expect(calendar, CalendarSystem.forOrdinal(calendar.ordinal));
-// Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
+  // Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
 }
 
 @Test()
 @TestCaseSource(const Symbol("SupportedCalendars"))
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
-  expect(calendar, CalendarSystem.forOrdinalUncached(calendar.ordinal));
-// Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
+  var target = CalendarSystem.forOrdinalUncached(calendar.ordinal);
+  expect(identical(calendar, target), isTrue);
+  // Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
 }
 
 @Test()

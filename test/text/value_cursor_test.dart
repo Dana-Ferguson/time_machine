@@ -264,9 +264,9 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_Simple() {
     var value = new ValueCursor("56x");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNull);
-    expect(56 /*L*/, result.value);
+    var pr = value.parseInt64<String>('String');
+    expect(pr.success, isTrue);
+    expect(56 /*L*/, pr.value);
     // Cursor ends up post-number
     expect(2, value.index);
   }
@@ -275,8 +275,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_Negative() {
     var value = new ValueCursor("-56x");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isTrue);
     expect(-56 /*L*/, result.value);
   }
 
@@ -284,8 +284,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NonNumber() {
     var value = new ValueCursor("xyz");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -294,8 +294,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_DoubleNegativeSign() {
     var value = new ValueCursor("--10xyz");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -304,8 +304,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NegativeThenNonDigit() {
     var value = new ValueCursor("-x");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -314,8 +314,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NumberOutOfRange_LowLeadingDigits() {
     var value = new ValueCursor("1000000000000000000000000");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -324,8 +324,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NumberOutOfRange_HighLeadingDigits() {
     var value = new ValueCursor("999999999999999999999999");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -334,8 +334,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NumberOutOfRange_MaxValueLeadingDigits() {
     var value = new ValueCursor("9223372036854775808");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -344,8 +344,8 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64_NumberOutOfRange_MinValueLeadingDigits() {
     var value = new ValueCursor("-9223372036854775809");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    expect(value.parseInt64<String>(result, 'String'), isNotNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Cursor has not moved
     expect(0, value.index);
   }
@@ -357,9 +357,8 @@ class ValueCursorTest extends TextCursorTestBase {
 
     var value = new ValueCursor("9223372036854775807");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    var parseResult = value.parseInt64<String>(result, 'String');
-    expect(parseResult, isNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isTrue);
     expect(Platform.int64MaxValue, result.value);
   }
 
@@ -370,9 +369,8 @@ class ValueCursorTest extends TextCursorTestBase {
 
     var value = new ValueCursor("-9223372036854775808");
     expect(value.moveNext(), isTrue);
-    OutBox<int> result = new OutBox<int>(0);
-    var parseResult = value.parseInt64<String>(result, 'String');
-    expect(parseResult, isNull);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isTrue);
     expect(Platform.int64MinValue, result.value);
   }
 
@@ -442,11 +440,10 @@ class ValueCursorTest extends TextCursorTestBase {
     // We can cope as far as 9223372036854775807, but the trailing 1 causes a failure.
     var value = new ValueCursor("92233720368547758071");
     value.move(0);
-    OutBox<int> result = new OutBox<int>(0);
-    var parseResult = value.parseInt64<String>(result, 'String');
-    expect(parseResult.success, isFalse);
+    var result = value.parseInt64<String>('String');
+    expect(result.success, isFalse);
     // Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
-    expect(parseResult.error, new isInstanceOf<UnparsableValueError>());
+    expect(result.error, new isInstanceOf<UnparsableValueError>());
     expect(0, value.index); // Cursor hasn't moved
   }
 }

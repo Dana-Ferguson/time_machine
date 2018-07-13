@@ -35,10 +35,11 @@ abstract class IInstant {
 /// This type is immutable.
 @immutable
 class Instant implements Comparable<Instant> {
-  static const int _minMilliseconds = IInstant.minDays * TimeConstants.millisecondsPerDay;
-  static const int _maxMilliseconds = (IInstant.maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
-  static const int _minSeconds = IInstant.minDays * TimeConstants.secondsPerDay;
-  static const int _maxSeconds = (IInstant.maxDays + 1) * TimeConstants.secondsPerDay - 1;
+  // todo: what to do with these?
+  //static const int _minMilliseconds = IInstant.minDays * TimeConstants.millisecondsPerDay;
+  //static const int _maxMilliseconds = (IInstant.maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
+  //static const int _minSeconds = IInstant.minDays * TimeConstants.secondsPerDay;
+  //static const int _maxSeconds = (IInstant.maxDays + 1) * TimeConstants.secondsPerDay - 1;
 
   // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
   /// Represents the smallest possible [Instant].

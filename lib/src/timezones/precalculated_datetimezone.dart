@@ -10,7 +10,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 // Essentially Func<Offset, Offset, Offset>
 typedef _offsetAggregator = Offset Function(Offset x, Offset y);
-typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
+// typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 
 /// Most time zones have a relatively small set of transitions at their start until they finally 
 /// settle down to either a fixed time zone or a daylight savings time zone. This provides the

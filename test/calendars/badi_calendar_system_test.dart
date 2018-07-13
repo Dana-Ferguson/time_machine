@@ -24,7 +24,6 @@ const int AyyamiHaMonth = 0;
 @Test()
 void BadiEpoch()
 {
-  CalendarSystem badi = CalendarSystem.badi;
   LocalDate badiEpoch = CreateBadiDate(1, 1, 1);
 
   CalendarSystem gregorian = CalendarSystem.gregorian;

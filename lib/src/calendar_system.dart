@@ -640,36 +640,22 @@ class _PersianCalendars
 
 /// Specifically the calendars implemented by IslamicYearMonthDayCalculator, as opposed to all
 /// Islam-based calendars (which would include UmAlQura and Persian, for example).
-class _IslamicCalendars
-{
-  /*
-  @internal static final CalendarSystem[,] ByLeapYearPatterAndEpoch;
+class _IslamicCalendars {
+  static final Map<int, Map<int, CalendarSystem>> _cache = {};
 
-  // todo: was a static constructor
-  IslamicCalendars()
-  {
-    ByLeapYearPatterAndEpoch = new CalendarSystem[4, 2];
-    for (int i = 1; i <= 4; i++)
-    {
-      for (int j = 1; j <= 2; j++)
-      {
-        var leapYearPattern = (IslamicLeapYearPattern) i;
-        var epoch = (IslamicEpoch) j;
-        var calculator = new IslamicYearMonthDayCalculator((IslamicLeapYearPattern) i, (IslamicEpoch) j);
-        CalendarOrdinal ordinal = CalendarOrdinal.IslamicAstronomicalBase15 + (i - 1) + (j - 1) * 4;
-        ByLeapYearPatterAndEpoch[i - 1, j - 1] = new CalendarSystem(ordinal, GetIslamicId(leapYearPattern, epoch), IslamicName, calculator, Era.AnnoHegirae);
-      }
-    }
-  }*/
-
-  // todo: create a cache here
   @internal
   static CalendarSystem byLeapYearPatternAndEpoch(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch) {
     int i = leapYearPattern.index;
     int j = epoch.index;
+
+    if (_cache.containsKey(i) && _cache[i].containsKey(j)) return _cache[i][j];
+
     var calculator = new IslamicYearMonthDayCalculator(leapYearPattern, epoch);
-    CalendarOrdinal ordinal = new CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + (i - 1) + (j - 1) * 4);
-    return new CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
+    CalendarOrdinal ordinal = new CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + i + j * 4);
+    var calendar = new CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
+
+    if (!_cache.containsKey(i)) _cache[i] = {};
+    return _cache[i][j] = calendar;
   }
 }
 

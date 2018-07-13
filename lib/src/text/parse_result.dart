@@ -9,6 +9,8 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 
+// todo: we have some weird type interactions, with seemingly little benefit from having this be type <T> ... reconsider this?
+
 /// The result of a parse operation.
 ///
 /// [T]: The type which was parsed, such as a [LocalDateTime].

@@ -464,7 +464,8 @@ class Period {
   /// The resulting date after adding the result components to [start] (to
   /// allow further computations to be made)
   static _DateComponentsBetweenResult _dateComponentsBetween(LocalDate start, LocalDate end, PeriodUnits units) {
-    var result = new OutBox(start);
+    // var result = new OutBox(start);
+    LocalDate startDate = start;
 
     /*
   int UnitsBetween(PeriodUnits maskedUnits, /*ref*/ LocalDate startDate, LocalDate endDate, IDatePeriodField dateField)
@@ -480,22 +481,22 @@ class Period {
   * */
 
     // this is PeriodUnits maskedUnits in nodatime... but, it's nicer for dart this way
-    int unitsBetween(int maskedUnits, OutBox<LocalDate> startDate, IDatePeriodField dateField) {
+    int unitsBetween(int maskedUnits, /*OutBox<LocalDate> startDate,*/ IDatePeriodField dateField) {
       if (maskedUnits == 0) {
         return 0;
       }
 
-      int value = dateField.unitsBetween(startDate.value, end);
-      startDate.value = dateField.add(startDate.value, value);
+      int value = dateField.unitsBetween(startDate, end);
+      startDate = dateField.add(startDate, value);
       return value;
     }
 
-    var years = unitsBetween(units.value & PeriodUnits.years.value, result, DatePeriodFields.yearsField);
-    var months = unitsBetween(units.value & PeriodUnits.months.value, result, DatePeriodFields.monthsField);
-    var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, result, DatePeriodFields.weeksField);
-    var days = unitsBetween(units.value & PeriodUnits.days.value, result, DatePeriodFields.daysField);
+    var years = unitsBetween(units.value & PeriodUnits.years.value, DatePeriodFields.yearsField);
+    var months = unitsBetween(units.value & PeriodUnits.months.value, DatePeriodFields.monthsField);
+    var weeks = unitsBetween(units.value & PeriodUnits.weeks.value, DatePeriodFields.weeksField);
+    var days = unitsBetween(units.value & PeriodUnits.days.value, DatePeriodFields.daysField);
 
-    return new _DateComponentsBetweenResult(result.value, years, months, weeks, days);
+    return new _DateComponentsBetweenResult(startDate, years, months, weeks, days);
   }
 
 

@@ -96,12 +96,12 @@ void ThrowWhenSkipped()
 void CreateResolver_Unambiguous() {
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
-    return null; /*default(ZonedDateTime);*/
+    /*default(ZonedDateTime);*/
   };
 
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
-    return null; /*default(ZonedDateTime);*/
+    /*default(ZonedDateTime);*/
   };
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
@@ -116,7 +116,7 @@ void CreateResolver_Ambiguous() {
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) => zoned;
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
-    return null; /*default(ZonedDateTime);*/
+    /*default(ZonedDateTime);*/
   };
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
@@ -129,7 +129,7 @@ void CreateResolver_Skipped() {
   ZonedDateTime zoned = IZonedDateTime.trusted(TimeInTransition.plusDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
     /*Assert.Fail*/ throw new StateError("Shouldn't be called");
-    return null; /*default(ZonedDateTime);*/
+    /*default(ZonedDateTime);*/
   };
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) => zoned;
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);

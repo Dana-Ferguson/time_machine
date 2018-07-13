@@ -118,8 +118,8 @@ class PersianSimple extends PersianYearMonthDayCalculator {
   static const int _leapYearPatternBits = (1 << 1) | (1 << 5) | (1 << 9) | (1 << 13)
   | (1 << 17) | (1 << 22) | (1 << 26) | (1 << 30);
   static const int _leapYearCycleLength = 33;
-  static const int _daysPerLeapCycle = PersianYearMonthDayCalculator._daysPerNonLeapYear * 25
-      + PersianYearMonthDayCalculator._daysPerLeapYear * 8;
+  //static const int _daysPerLeapCycle = PersianYearMonthDayCalculator._daysPerNonLeapYear * 25
+  //    + PersianYearMonthDayCalculator._daysPerLeapYear * 8;
 
   /// The ticks for the epoch of March 21st 622CE.
   static const int _daysAtStartOfYear1Constant = -492268;

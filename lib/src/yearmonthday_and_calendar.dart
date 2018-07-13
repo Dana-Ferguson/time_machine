@@ -21,13 +21,13 @@ class YearMonthDayCalendar {
   static const int yearBits = 15; // 32K range; only need -10K to +10K.
 
   // Just handy constants to use for shifting and masking.
-  static const int _calendarDayBits = calendarBits + dayBits;
-  static const int _calendarDayMonthBits = _calendarDayBits + monthBits;
+  //static const int _calendarDayBits = calendarBits + dayBits;
+  //static const int _calendarDayMonthBits = _calendarDayBits + monthBits;
 
-  static const int _calendarMask = (1 << calendarBits) - 1;
-  static const int _dayMask = ((1 << dayBits) - 1) << calendarBits;
-  static const int _monthMask = ((1 << monthBits) - 1) << _calendarDayBits;
-  static const int _yearMask = ((1 << yearBits) - 1) << _calendarDayMonthBits;
+  //static const int _calendarMask = (1 << calendarBits) - 1;
+  //static const int _dayMask = ((1 << dayBits) - 1) << calendarBits;
+  //static const int _monthMask = ((1 << monthBits) - 1) << _calendarDayBits;
+  //static const int _yearMask = ((1 << yearBits) - 1) << _calendarDayMonthBits;
 
   final CalendarOrdinal calendarOrdinal;
   // final int _value;
@@ -40,10 +40,10 @@ class YearMonthDayCalendar {
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
   YearMonthDayCalendar(int year, int month, int day, this.calendarOrdinal) :
       yearMonthDay = new YearMonthDay(year, month, day);
-//      : _value = ((year - 1) << _calendarDayMonthBits) |
-//  ((month - 1) << _calendarDayBits) |
-//  ((day - 1) << calendarBits) |
-//  calendarOrdinal.value;
+  //      : _value = ((year - 1) << _calendarDayMonthBits) |
+  //  ((month - 1) << _calendarDayBits) |
+  //  ((day - 1) << calendarBits) |
+  //  calendarOrdinal.value;
 
   // CalendarOrdinal get calendarOrdinal => new CalendarOrdinal(_value & _calendarMask);
   // int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;

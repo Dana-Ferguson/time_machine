@@ -28,6 +28,7 @@ abstract class AnnualDatePatterns {
 /// Represents a pattern for parsing and formatting [AnnualDate] values.
 @immutable 
 class AnnualDatePattern implements IPattern<AnnualDate> {
+  // ignore: unused_field
   static const String _defaultFormatPattern = "G"; // General, ISO-like
 
   /// Gets an invariant annual date pattern which is compatible with the month/day part of ISO-8601.

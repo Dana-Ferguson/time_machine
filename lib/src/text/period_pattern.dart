@@ -97,14 +97,13 @@ class _RoundtripPatternImpl implements IPattern<Period> {
     PeriodBuilder builder = new PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
     while (valueCursor.moveNext()) {
-      var unitValue = new OutBox(0);
       if (inDate && valueCursor.current == 'T') {
         inDate = false;
         continue;
       }
-      var failure = valueCursor.parseInt64<Period>(unitValue, 'Period');
-      if (failure != null) {
-        return failure;
+      var parseResult = valueCursor.parseInt64<Period>('Period');
+      if (!parseResult.success) {
+        return parseResult.convertError();
       }
       if (valueCursor.length == valueCursor.index) {
         return IParseResult.endOfString<Period>(valueCursor);
@@ -162,7 +161,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
       if (((unit & PeriodUnits.allTimeUnits).value == 0) != inDate) {
         return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
       }
-      builder[unit] = unitValue.value;
+      builder[unit] = parseResult.value;
       unitsSoFar |= unit;
     }
     return ParseResult.forValue<Period>(builder.build());
@@ -211,15 +210,14 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
     PeriodBuilder builder = new PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
     while (valueCursor.moveNext()) {
-      OutBox unitValue = new OutBox(0);
       if (inDate && valueCursor.current == 'T') {
         inDate = false;
         continue;
       }
       bool negative = valueCursor.current == '-';
-      var failure = valueCursor.parseInt64<Period>(unitValue, 'Period');
-      if (failure != null) {
-        return failure;
+      var parseResult = valueCursor.parseInt64<Period>('Period');
+      if (!parseResult.success) {
+        return parseResult.convertError();
       }
       if (valueCursor.length == valueCursor.index) {
         return IParseResult.endOfString<Period>(valueCursor);
@@ -280,7 +278,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         if ((unitsSoFar & PeriodUnits.seconds).value != 0) {
           return PeriodPattern._misplacedUnit(valueCursor, valueCursor.current);
         }
-        builder.seconds = unitValue.value;
+        builder.seconds = parseResult.value;
 
         if (!valueCursor.moveNext()) {
           return IParseResult.missingNumber<Period>(valueCursor);
@@ -308,7 +306,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         return ParseResult.forValue<Period>(builder.build());
       }
 
-      builder[unit] = unitValue.value;
+      builder[unit] = parseResult.value;
       unitsSoFar |= unit;
     }
     if (unitsSoFar.value == 0) {
