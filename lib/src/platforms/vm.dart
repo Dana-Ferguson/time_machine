@@ -28,7 +28,7 @@ class _VirtualMachineIO implements PlatformIO {
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
     var resource = new Resource("package:time_machine/data/$path/$filename");
-    return JSON.decode(await resource.readAsString());
+    return json.decode(await resource.readAsString());
   }
 }
 
@@ -49,7 +49,7 @@ class _FlutterMachineIO implements PlatformIO {
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
     var text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
-    return JSON.decode(text);
+    return json.decode(text);
   }
 }
 
@@ -231,7 +231,7 @@ class TimeMachine  {
   static Future windowsZoneToCldrZone(String id) async {
     if (_windowsZones == null) {
       var file = new io.File('${io.Directory.current.path}/lib/data/zones.json');
-      _windowsZones = JSON.decode(await file.readAsString());
+      _windowsZones = json.decode(await file.readAsString());
     }
 
     return _windowsZones[id];

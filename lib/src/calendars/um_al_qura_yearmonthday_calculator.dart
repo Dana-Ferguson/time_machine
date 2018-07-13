@@ -46,7 +46,7 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   // todo: is this too cheesy?
   static Object _genNumbers() {
     // byte[] data = Convert.FromBase64String(GeneratedData);
-    var data = BASE64.decode(_generatedData);
+    var data = base64.decode(_generatedData);
     _monthLengths = new List<int>(data.length ~/ 2); // new ushort[data.Length / 2];
 
     for (int i = 0; i < _monthLengths.length; i++) {

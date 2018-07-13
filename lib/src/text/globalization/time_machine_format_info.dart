@@ -134,7 +134,7 @@ class TimeMachineFormatInfo {
   /// So again, if we detect that, we'll go back to the non-genitive version.
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
   List<String> _convertGenitiveMonthArray(List<String> nonGenitiveNames, List<String> bclNames, List<String> invariantNames) {
-    var number = int.parse(bclNames[0], onError: (_) => null); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
+    var number = int.tryParse(bclNames[0]); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
 
     if (number != null) {
       return nonGenitiveNames;

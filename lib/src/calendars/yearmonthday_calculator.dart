@@ -23,7 +23,6 @@ abstract class YearMonthDayCalculator {
 
   final int maxYear;
 
-  @visibleForTesting
   final int daysAtStartOfYear1;
 
   // todo: should be private -- but collides with upstream averageDaysPer10Years -- which is differentiated in the code-source by capitalization
@@ -143,7 +142,6 @@ abstract class YearMonthDayCalculator {
     return getYearMonthDay(year, zeroBasedDay + 1);
   }
 
-  @visibleForTesting // Would be protected otherwise.
   /// Work out the year from the number of days since the epoch, as well as the
   /// day of that year (0-based).
   List<int> getYear(int daysSinceEpoch) {

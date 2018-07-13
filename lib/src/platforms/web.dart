@@ -26,7 +26,7 @@ class _WebMachineIO implements PlatformIO {
   @override
   Future/**<Map<String, dynamic>>*/ getJson(String path, String filename) async {
     var resource = new Resource("packages/time_machine/data/$path/$filename");
-    return JSON.decode(await resource.readAsString());
+    return json.decode(await resource.readAsString());
   }
 }
 

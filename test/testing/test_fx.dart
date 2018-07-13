@@ -133,7 +133,7 @@ void _writeTestGenFile() {
   
   
   var file = new File(_testFilePath);
-  file.writeAsString(sb.toString(), mode: FileMode.WRITE_ONLY);
+  file.writeAsString(sb.toString(), mode: FileMode.writeOnly);
   
   print("written '$_testFilePath' to drive.");
 }

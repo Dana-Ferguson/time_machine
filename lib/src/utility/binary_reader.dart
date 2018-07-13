@@ -16,7 +16,7 @@ class BinaryReader {
 
   BinaryReader(this.binary, [this._offset = 0]);
 
-  int readInt32() { var i32 = binary.getInt32(_offset, Endianness.LITTLE_ENDIAN); _offset +=4; return i32; }
+  int readInt32() { var i32 = binary.getInt32(_offset, Endian.little); _offset +=4; return i32; }
   // int readInt64() { var i64 = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN); _offset +=8; print('READ ${i64}!!!!'); return i64; }
   int readUint8() => binary.getUint8(_offset++);
   bool readBool() => readUint8() == 1;
@@ -75,7 +75,7 @@ class BinaryReader {
     // var byteLength = _getStringByteCount(_offset, length);
     var bytes = binary.buffer.asUint8List(_offset, byteLength);
     _offset+=byteLength;
-    return UTF8.decode(bytes);
+    return utf8.decode(bytes);
   }
 
   List<String> readStringList() {

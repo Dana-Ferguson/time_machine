@@ -163,7 +163,7 @@ class PersianArithmetic extends PersianYearMonthDayCalculator {
 @internal
 class PersianAstronomical extends PersianYearMonthDayCalculator {
   // Ugly, but the simplest way of embedding a big chunk of binary data...
-  static final List<int> _astronomicalLeapYearBits = BASE64.decode(
+  static final List<int> _astronomicalLeapYearBits = base64.decode(
       "ICIiIkJERESEiIiICBEREREiIiJCREREhIiIiAgRERERIiIiIkRERISIiIiIEBERESEiIiJEREREiIiI"
           "iBAREREhIiIiQkRERISIiIgIERERESIiIkJERESEiIiICBEREREiIiIiRERERIiIiIgQERERISIiIkJE"
           "RESEiIiICBEREREiIiIiREREhIiIiAgRERERISIiIkRERESIiIiIEBERESEiIiJCREREhIiIiAgRERER"

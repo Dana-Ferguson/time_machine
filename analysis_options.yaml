@@ -1,5 +1,6 @@
 analyzer:
-  strong-mode: true
+#  depreciated in Dart2
+#  strong-mode: true
 #   exclude:
 #     - path/to/excluded/files/**
 
