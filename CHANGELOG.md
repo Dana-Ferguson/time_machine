@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.1
+- No more dart analysis errors on 1.24.3.
+  - Refactored away the port-helper KeyValuePair and OutBox classes.
+  - Fixed (or annotated) all unused variables, fields, elements, and imports issues. 
+
 ## 0.7.0
 - Updated `LocalDateTime.at()` to reflect the LocalTime constructor update.
   - note: renamed `LocalDateTime.at()` to `LocalDateTime()` and then renamed the original `LocalDateTime(LocalDate, LocalTime)` to
