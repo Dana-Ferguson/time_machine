@@ -15,7 +15,7 @@ Future main() async {
     var tzdb = await DateTimeZoneProviders.tzdb;
     var paris = await tzdb["Europe/Paris"];
 
-    var now = new Instant.now();
+    var now = Instant.now();
 
     print('\nBasic');
     print('UTC Time: $now');

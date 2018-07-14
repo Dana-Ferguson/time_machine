@@ -2,6 +2,7 @@
 
 ## 0.8.0
 - Dart 2.0 compatible. TimeMachine 0.7.1 was the last version that will work on Dart 1.24.3.
+  - Added a lot of BigInt code, there is no going back now.
 
 ## 0.7.1
 - No more dart analysis errors on 1.24.3.
