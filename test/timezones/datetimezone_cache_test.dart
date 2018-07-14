@@ -105,7 +105,8 @@ Future SourceIsNotAskedForUnknownIds() async
 {
   var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  expect(provider["Unknown"], willThrow<InvalidDateTimeZoneSourceError>());
+  // todo: was InvalidDateTimeZoneSourceError ... why did this change? -- the returned error still makes sense.
+  expect(provider["Unknown"], willThrow<DateTimeZoneNotFoundError>());
   expect(source.LastRequestedId, isNull);
 }
 

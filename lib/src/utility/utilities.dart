@@ -45,12 +45,10 @@ abstract class Platform {
   static const int64MinValue = -9223372036854775808;
   static const int64MaxValue = 9223372036854775807;
 
-  static int _intMaxValue = null;
-  static int get intMaxValue => _intMaxValue ?? (_intMaxValue = _getIntMaxValue());
-  static int _getIntMaxValue() {
-    if (isVM) return math.pow(2, 63);
-    return intMaxValueJS;
-  }
+  static int _intMaxValue = isVM ? _intMaxValue = int64MaxValue : _intMaxValue = intMaxValueJS;
+  static int _intMinValue = isVM ? _intMinValue = int64MinValue : _intMinValue = intMinValueJS;
+  static int get intMaxValue => _intMaxValue;
+  static int get intMinValue => _intMinValue;
 }
 
 // todo: remove me
@@ -77,6 +75,11 @@ class OutBox<T> {
 int arithmeticMod(num x, int y) {
   if (x >= 0) return x % y;
   return -((-x)%y);
+}
+
+BigInt bigArithmeticMod(BigInt x, BigInt y) {
+  if (x.isNegative) return -((-x)%y);
+  return x % y;
 }
 
 // https://en.wikipedia.org/wiki/Arithmetic_shift#Handling_the_issue_in_programming_languages

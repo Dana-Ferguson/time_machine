@@ -44,6 +44,8 @@ class TimeConstants {
   static const int nanosecondsPerHour = nanosecondsPerMinute * minutesPerHour;
   static const int nanosecondsPerDay = nanosecondsPerHour * hoursPerDay;
   static const int nanosecondsPerWeek = nanosecondsPerDay * daysPerWeek;
+  
+  static final BigInt nanosecondsPerMillisecondBigInt = BigInt.from(nanosecondsPerMillisecond);
 
   /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
   static final Instant unixEpoch = new Instant.fromUnixTimeSeconds(0);

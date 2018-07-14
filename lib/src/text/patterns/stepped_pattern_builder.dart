@@ -9,8 +9,6 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 
-// todo: ******************** REMOVE ALL REF'S \\ OUT'S
-
 // was originally a class inside SteppedPatternBuilder
 // internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
 // @internal typedef ParseAction = ParseResult<TResult> Function<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
@@ -114,9 +112,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
       throw new InvalidPatternError(TextErrorMessages.timeFieldAndEmbeddedTime);
     }
 
-    List<Function/*(TResult, StringBuffer)*/> formatDelegate = [];
+    List<Function(TResult, StringBuffer)> formatDelegate = [];
     for (/*Function(TResult, StringBuffer)*/ dynamic formatAction in _formatActions) {
-      if (formatAction is IPostPatternParseFormatAction) {
+      if (formatAction is IPostPatternParseFormatAction<TResult>) {
         formatDelegate.add(formatAction.buildFormatAction(_usedFields));
       } else {
         formatDelegate.add(formatAction);
@@ -249,7 +247,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// [setter]: Delegate to set the field value into a bucket when parsing
   /// Returns: The pattern parsing failure, or null on success.
   static CharacterHandler<TResult, TBucket> handlePaddedField<TResult, TBucket extends ParseBucket<TResult>>(int maxCount, PatternFields field, int minValue, int maxValue,
-      int Function(TResult) getter, int Function(TBucket, int) setter) {
+      int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern,  SteppedPatternBuilder<TResult, TBucket> builder) {
       int count = pattern.getRepeatCount(maxCount);
       builder.addField(field, pattern.current);
@@ -541,7 +539,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   {
     if (_parseActions == null)
     {
-      return IParseResult.formatOnlyPattern;
+      return IParseResult.formatOnlyPattern.convertError();
     }
     if (text == null)
     {
@@ -549,7 +547,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     }
     if (text.length == 0)
     {
-      return IParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty.convertError();
     }
 
     var valueCursor = new ValueCursor(text);

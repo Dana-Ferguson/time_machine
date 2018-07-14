@@ -84,7 +84,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
       return IParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return IParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty.convertError();
     }
 
     ValueCursor valueCursor = new ValueCursor(text);
@@ -197,7 +197,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
       return IParseResult.argumentNull<Period>("text");
     }
     if (text.length == 0) {
-      return IParseResult.valueStringEmpty;
+      return IParseResult.valueStringEmpty.convertError();
     }
 
     ValueCursor valueCursor = new ValueCursor(text);

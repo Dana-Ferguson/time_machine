@@ -137,7 +137,17 @@ class TimePeriodField
   // todo: inspect the use cases here -- this might need special logic (if Span is always under 100 days, it's fine)
   /// Returns the number of units in the given duration, rounding towards zero.
   int getUnitsInDuration(Time span) {
-    return span.totalNanoseconds ~/ _unitNanoseconds;
+    if (span.canNanosecondsBeInteger) {
+      return span.totalNanoseconds ~/ _unitNanoseconds;
+    }
+    else {
+      var units = span.totalNanosecondsAsBigInt ~/ BigInt.from(_unitNanoseconds);
+      // todo: should these be constants? ... can they be?
+      if (units >= BigInt.from(Platform.intMinValue) && units <= BigInt.from(Platform.intMaxValue)) {
+        return units.toInt();
+      }
+      throw new RangeError('$units out of range of integer: [${Platform.intMinValue}, ${Platform.intMaxValue}]');
+    }
   }
 
   /// Returns a [Time] representing the given number of units.
@@ -145,10 +155,27 @@ class TimePeriodField
       units >= -_maxLongUnits && units <= _maxLongUnits
           ? new Time(nanoseconds: units * _unitNanoseconds)
           : _toSpanSafely(units);
-  
+
   Time _toSpanSafely(int units) {
-    var milliseconds = units * (_unitNanoseconds ~/ 1000000);
-    var nanoseconds = units * (_unitNanoseconds % 1000000);
-    return new Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
+    // todo: can this be less expensive?
+    var ms = units * (_unitNanoseconds / 1000000.0);
+    if (ms >= Platform.intMinValue && ms <= Platform.intMaxValue) {
+      var milliseconds = units * (_unitNanoseconds ~/ 1000000);
+      var nanoseconds = units * (_unitNanoseconds % 1000000);
+      return new Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
+    }
+    else {
+      // todo: verify this code path
+      var bigNanoseconds = BigInt.from(_unitNanoseconds);
+      var bigUnits = BigInt.from(units);
+      var div = BigInt.from(1000000);
+      var milliseconds = bigUnits * (bigNanoseconds ~/ div);
+      var nanoseconds = bigUnits * (bigNanoseconds % div);
+      // todo: can this be simplified... also... this is terrible
+      // return new Time.complex(nanoseconds: (bigNanoseconds * bigUnits).toDouble());
+      print(milliseconds);
+      print(nanoseconds);
+      return new Time(milliseconds: milliseconds.toInt(), nanoseconds: nanoseconds.toInt());
+    }
   }
 }

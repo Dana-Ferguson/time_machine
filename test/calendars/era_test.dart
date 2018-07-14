@@ -20,7 +20,8 @@ Future main() async {
       .values
       .where((v) => v is VariableMirror && v.isStatic)
       .map((v) => eraType.getField(v.simpleName).reflectee)
-      .toList();
+      .toList()
+      .cast();
 
   await runTests();
 }

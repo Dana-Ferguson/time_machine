@@ -116,7 +116,7 @@ class FakeDateTimeZoneSourceBuilder {
   ///
   /// Returns: The newly-built time zone source.
   FakeDateTimeZoneSource Build() {
-    var zoneMap = new Map.fromIterable(_zones, key: (z) => z.id);
+    var zoneMap = new Map<String, DateTimeZone>.fromIterable(_zones, key: (z) => z.id);
     _bclIdsToZoneIds.forEach((key, value) {
       Preconditions.checkNotNull(value, "value");
       if (!zoneMap.containsKey(value)) {

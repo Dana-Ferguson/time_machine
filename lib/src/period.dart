@@ -824,7 +824,6 @@ class Period {
   }
 
   bool equals(Period x, Period y) {
-    // todo: ReferenceEquals?
     if (identical(x, y)) {
       return true;
     }

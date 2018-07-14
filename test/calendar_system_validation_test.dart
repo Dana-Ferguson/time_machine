@@ -18,7 +18,6 @@ final CalendarSystem Iso = CalendarSystem.iso;
 @TestCase(const [9999])
 void GetMonthsInYear_Valid(int year)
 {
-  // note: Dart should be able to infer the types here? But 2.0.0-dev.63.0 is not.
   TestHelper.AssertValid<int, int>(Iso.getMonthsInYear, year);
 }
 
@@ -35,7 +34,7 @@ void GetMonthsInYear_Invalid(int year)
 @TestCase(const [9999, 12])
 void GetDaysInMonth_Valid(int year, int month)
 {
-  TestHelper.AssertValid2<int, int, int>(Iso.getDaysInMonth, year, month);
+  TestHelper.AssertValid2(Iso.getDaysInMonth, year, month);
 }
 
 @Test()

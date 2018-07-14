@@ -51,74 +51,74 @@ abstract class TestHelper
   }
 
   /// Asserts that calling the specified delegate with the specified value throws ArgumentException.
-  static void AssertInvalid<TArg, TOut>(TOut func(TArg), TArg arg)
+  static void AssertInvalid<TArg, TOut>(TOut Function(TArg) func, TArg arg)
   {
     expect(() => func(arg), throwsArgumentError);
   }
 
   /// Asserts that calling the specified delegate with the specified values throws ArgumentException.
-  static void AssertInvalid2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
+  static void AssertInvalid2<TArg1, TArg2, TOut>(TOut Function(TArg1, TArg2) func, TArg1 arg1, TArg2 arg2)
   {
     // Assert.Throws<ArgumentException>(() => func(arg1, arg2));
     expect(() => func(arg1, arg2), throwsArgumentError);
   }
 
   /// Asserts that calling the specified delegate with the specified value throws ArgumentNullException.
-  static void AssertArgumentNull<TArg, TOut>(TOut func(TArg), TArg arg)
+  static void AssertArgumentNull<TArg, TOut>(TOut Function(TArg) func, TArg arg)
   {
     expect(() => func(arg), throwsArgumentError);
   // Assert.Throws<ArgumentNullException>(() => func(arg));
   }
 
   /// Asserts that calling the specified delegate with the specified value throws ArgumentOutOfRangeException.
-  static void AssertOutOfRange<TArg, TOut>(TOut func(TArg), TArg arg)
+  static void AssertOutOfRange<TArg, TOut>(TOut Function(TArg) func, TArg arg)
   {
     expect(() => func(arg), throwsRangeError);
   // Assert.Throws<ArgumentOutOfRangeException>(() => func(arg));
   }
 
   /// Asserts that calling the specified delegate with the specified value doesn't throw an exception.
-  static void AssertValid<TArg, TOut>(TOut func(TArg), TArg arg)
+  static void AssertValid<TArg, TOut>(TOut Function(TArg) func, TArg arg)
   {
     func(arg);
   }
 
   /// Asserts that calling the specified delegate with the specified values throws ArgumentOutOfRangeException.
-  static void AssertOutOfRange2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
+  static void AssertOutOfRange2<TArg1, TArg2, TOut>(TOut Function(TArg1, TArg2) func, TArg1 arg1, TArg2 arg2)
   {
     // Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2));
     expect(() => func(arg1, arg2), throwsRangeError);
   }
 
   /// Asserts that calling the specified delegate with the specified values throws ArgumentNullException.
-  static void AssertArgumentNull2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
+  static void AssertArgumentNull2<TArg1, TArg2, TOut>(TOut Function(TArg1, TArg2) func, TArg1 arg1, TArg2 arg2)
   {
     // Assert.Throws<ArgumentNullException>(() => func(arg1, arg2));
     expect(() => func(arg1, arg2), throwsArgumentError);
   }
 
   /// Asserts that calling the specified delegate with the specified values doesn't throw an exception.
-  static void AssertValid2<TArg1, TArg2, TOut>(TOut func(TArg1, TArg2), TArg1 arg1, TArg2 arg2)
+  static void AssertValid2<TArg1, TArg2, TOut>(TOut Function(TArg1, TArg2) func, TArg1 arg1, TArg2 arg2)
   {
     func(arg1, arg2);
   }
 
   /// Asserts that calling the specified delegate with the specified values throws ArgumentOutOfRangeException.
-  static void AssertOutOfRange3<TArg1, TArg2, TArg3, TOut>(TOut func(TArg1, TArg2, TArg3), TArg1 arg1, TArg2 arg2, TArg3 arg3)
+  static void AssertOutOfRange3<TArg1, TArg2, TArg3, TOut>(TOut Function(TArg1, TArg2, TArg3) func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
   {
     // Assert.Throws<ArgumentOutOfRangeException>(() => func(arg1, arg2, arg3));
     expect(() => func(arg1, arg2, arg3), throwsRangeError);
   }
 
   /// Asserts that calling the specified delegate with the specified values throws ArgumentNullException.
-  static void AssertArgumentNull3<TArg1, TArg2, TArg3, TOut>(TOut func(TArg1, TArg2, TArg3), TArg1 arg1, TArg2 arg2, TArg3 arg3)
+  static void AssertArgumentNull3<TArg1, TArg2, TArg3, TOut>(TOut Function(TArg1, TArg2, TArg3) func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
   {
     // Assert.Throws<ArgumentNullException>(() => func(arg1, arg2, arg3));
     expect(() => func(arg1, arg2, arg3), throwsNullThrownError);
   }
 
   /// Asserts that calling the specified delegate with the specified values doesn't throw an exception.
-  static void AssertValid3<TArg1, TArg2, TArg3, TOut>(TOut func(TArg1, TArg2, TArg3), TArg1 arg1, TArg2 arg2, TArg3 arg3)
+  static void AssertValid3<TArg1, TArg2, TArg3, TOut>(TOut Function(TArg1, TArg2, TArg3) func, TArg1 arg1, TArg2 arg2, TArg3 arg3)
   {
     func(arg1, arg2, arg3);
   }
@@ -126,7 +126,7 @@ abstract class TestHelper
   /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including
   /// ArgumentOutOfRangeException) or OverflowException. (It's hard to always be consistent bearing in mind
   /// one method calling another.)
-  static void AssertOverflow<TArg1, TOut>(TOut func(TArg1), TArg1 arg1)
+  static void AssertOverflow<TArg1, TOut>(TOut Function(TArg1) func, TArg1 arg1)
   {
     AssertOverflow_Action(() => func(arg1));
   }

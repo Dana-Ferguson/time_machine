@@ -52,7 +52,7 @@ void OutOfRange_ValidWeekYearAndWeek_TooEarly()
   // Gregorian 4: Week year 1 starts on Monday December 31st -9999,
   // and is therefore out of range, even though the week-year
   // and week-of-week-year are valid.
-  expect(() => WeekYearRules.iso.getLocalDate(-9998, 1, DayOfWeek.monday, CalendarSystem.iso), willThrow<RangeError>());
+  expect(() => WeekYearRules.iso.getLocalDate(-9998, 1, DayOfWeek.monday, CalendarSystem.iso), willThrow<ArgumentError>());
 
   // Sanity check: no exception for January 1st
   WeekYearRules.iso.getLocalDate(-9998, 1, DayOfWeek.tuesday, CalendarSystem.iso);

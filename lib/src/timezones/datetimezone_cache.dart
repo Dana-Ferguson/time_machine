@@ -57,7 +57,8 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
     }
 
     var idList = new List<String>.from(providerIds);
-    idList.sort((a, b) => a.compareTo(b)); // sort(StringComparer.Ordinal);
+    // todo: a gentler 'null' okay sorter?
+    idList.sort((a, b) => a?.compareTo(b ?? '')); // sort(StringComparer.Ordinal);
     var ids = new List<String>.from(idList);
 
     var cache = new DateTimeZoneCache._(source, ids, VersionId);

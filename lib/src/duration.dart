@@ -151,9 +151,27 @@ class Time implements Comparable<Time> {
     milliseconds += minutes * TimeConstants.millisecondsPerMinute;
     milliseconds += seconds * TimeConstants.millisecondsPerSecond;
 
-    nanoseconds += microseconds * TimeConstants.nanosecondsPerMicrosecond;
+    // todo: can this be simplified?
+    if (microseconds > TimeConstants.microsecondsPerMillisecond) {
+      milliseconds += microseconds ~/ TimeConstants.microsecondsPerMillisecond;
+      nanoseconds += microseconds % TimeConstants.microsecondsPerMillisecond * TimeConstants.nanosecondsPerMicrosecond;;
+    }
+    else if (microseconds < -TimeConstants.microsecondsPerMillisecond) {
+      milliseconds += microseconds ~/ TimeConstants.microsecondsPerMillisecond;
+      nanoseconds += arithmeticMod(microseconds, TimeConstants.microsecondsPerMillisecond) * TimeConstants.nanosecondsPerMicrosecond;
+    }
+    else {
+      nanoseconds += microseconds * TimeConstants.nanosecondsPerMicrosecond;
+    }
 
     return new Time._untrusted(milliseconds, nanoseconds);
+  }
+  
+  factory Time.fromBigIntNanoseconds(BigInt bigNanoseconds) {
+    // todo: this clamps -- should we test for overflow?
+    var milliseconds = (bigNanoseconds ~/ TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
+    var nanoseconds = bigArithmeticMod(bigNanoseconds, TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
+    return Time._untrusted(milliseconds, nanoseconds);
   }
 
   // todo: should these be the default constructor?
@@ -166,7 +184,7 @@ class Time implements Comparable<Time> {
     int _milliseconds = milliseconds.floor();
 
     var totalMilliseconds = _milliseconds;
-    var intervalNanoseconds = nanoseconds;
+    var intervalNanoseconds = nanoseconds.toInt();
 
     totalMilliseconds += _days * TimeConstants.millisecondsPerDay;
     totalMilliseconds += _hours * TimeConstants.millisecondsPerHour;
@@ -238,6 +256,10 @@ class Time implements Comparable<Time> {
 
   int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
+  BigInt get totalNanosecondsAsBigInt => BigInt.from(_milliseconds) * TimeConstants.nanosecondsPerMillisecondBigInt + BigInt.from(_nanosecondsInterval);
+  // this isn't exact (since we don't look at _nanosecondsInterval, we just don't allow `==`
+  bool get canNanosecondsBeInteger => _milliseconds < Platform.intMaxValue /~ TimeConstants.nanosecondsPerMillisecond && _milliseconds > Platform.intMinValue /~ TimeConstants.nanosecondsPerMillisecond;
+
   // totalsFloor* ???
   int get _floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
 
@@ -295,7 +317,13 @@ class Time implements Comparable<Time> {
   // note: this is wrong'ish*
   // Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
   // note: this works on VM (because of BigInt)
-  Time operator /(num factor) => new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
+  Time operator /(num factor) {
+    if (canNanosecondsBeInteger) {
+      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
+    } else {
+      return new Time.fromBigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(factor));
+    }
+  }
 
   // This is what it will look like in JS -- only fails 1 unit test though
   // Span operator/(num factor) => new Span(nanoseconds: ((_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) / factor).toInt());
