@@ -126,7 +126,7 @@ class ValueCursor extends TextCursor {
     }
     int count = 0;
     int digit;
-    while (result < 922337203685477580 && (digit = _getDigit()) != -1) {
+    while (result < Platform.valueCursorPrediction && (digit = _getDigit()) != -1) {
       result = result * 10 + digit;
       count++;
       if (!moveNext()) {
@@ -139,8 +139,8 @@ class ValueCursor extends TextCursor {
       return IParseResult.missingNumber<int>(this);
     }
 
-    if (result >= 922337203685477580 && (digit = _getDigit()) != -1) {
-      if (result > 922337203685477580) {
+    if (result >= Platform.valueCursorPrediction && (digit = _getDigit()) != -1) {
+      if (result > Platform.valueCursorPrediction) {
         return _buildNumberOutOfRangeResult<int>(startIndex, tType);
       }
       if (negative && digit == 8) {

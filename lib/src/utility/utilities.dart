@@ -38,12 +38,16 @@ abstract class Platform {
   static bool get isWeb => _isWeb ?? dirtyCheck() ?? _isWeb;
   static bool get isVM => _isVM ?? dirtyCheck() ?? _isVM;
 
-  static const intMaxValueJS = 9007199254740992; // math.pow(2, 53);
-  static const intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
-  static const int32MinValue = -2147483648;
-  static const int32MaxValue = 2147483647;
-  static const int64MinValue = -9223372036854775808;
-  static const int64MaxValue = 9223372036854775807;
+  static const int intMaxValueJS = 9007199254740992; // math.pow(2, 53);
+  static const int intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
+  static const int int32MinValue = -2147483648;
+  static const int int32MaxValue = 2147483647;
+
+  // representable in JS and VM: +\- 9223372036854775000 (but, constants in JS must be bounded by intMinValueJS and intMaxValueJS)
+  // Fix for: https://github.com/dart-lang/sdk/issues/33282 <-- bizarre
+  static const int valueCursorPrediction = 13860*66546695792603; // vm: 922337203685477580; js: 922337203685477600
+  static const int int64MinValue = 2147483648 * 2147483648 * -2; // vm: -9223372036854775808; js: -9223372036854776000
+  static const int int64MaxValue = 2147483648 * 2147483648 - 1 + 2147483648 * 2147483648; // vm: 9223372036854775807; js: 9223372036854776000
 
   static int _intMaxValue = isVM ? _intMaxValue = int64MaxValue : _intMaxValue = intMaxValueJS;
   static int _intMinValue = isVM ? _intMinValue = int64MinValue : _intMinValue = intMinValueJS;
@@ -59,15 +63,6 @@ abstract class TimeZoneInfo {
 // todo: remove me
 abstract class IDateTimeZoneWriter {
 //
-}
-
-// todo: all of these may affect performance
-
-// todo: only use this for porting... remove all of these later
-@deprecated
-class OutBox<T> {
-  T value;
-  OutBox(this.value);
 }
 
 // https://en.wikipedia.org/wiki/Modulo_operation

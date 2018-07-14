@@ -38,8 +38,10 @@ abstract class ITime {
   static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1;
 
   // 285420 years worth -- we are good for anything;
+  // todo: should this be specific to the Platform?
+  // todo: why was minMillis == -9007199254740993, which is Platform.intMinValueJS-1;
   static const int maxMillis = Platform.intMaxValueJS;
-  static const int minMillis = -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
+  static const int minMillis = Platform.intMinValueJS; // -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
   static bool isInt64Representable(Time span) => span._isInt64Representable;
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
