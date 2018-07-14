@@ -149,6 +149,7 @@ class Instant implements Comparable<Instant> {
   @override String toString([String patternText, Culture culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
+  // On Dart2: this is still required, but I can't reproduce a minimal test case -- I am lost.
   @ddcSupportHack String toStringDDC([String patternText, Culture culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
@@ -213,4 +214,3 @@ class Instant implements Comparable<Instant> {
   //  int get getEpochMilliseconds => _epochMilliseconds;
   //  int get getEpochSeconds => _epochMilliseconds ~/ TimeConstants.millisecondsPerSecond;
 }
-
