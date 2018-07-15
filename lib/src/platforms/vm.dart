@@ -53,27 +53,27 @@ class _FlutterMachineIO implements PlatformIO {
   }
 }
 
-Future initialize(dynamic arg) {
+Future initialize(Map args) {
+  var timeZoneOverride = args['timeZone'];
+
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
-    if (arg == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+    if (args == null || args['rootBundle'] == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
-    PlatformIO.local = new _FlutterMachineIO(arg);
+    PlatformIO.local = new _FlutterMachineIO(args);
   }
   else {
     // Map IO functions
     PlatformIO.local = new _VirtualMachineIO();
   }
 
-  return TimeMachine.initialize();
+  return TimeMachine.initialize(timeZoneOverride);
 }
 
-// todo: extract to interface for VM, Web, Flutter ... (or maybe not, we only care about initialize)?
-// IPlatformProvider ?? I can then expose it for future proofing?
 class TimeMachine  {
   static bool _longIdNames = false;
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
-  static Future initialize() async {
+  static Future initialize(String timeZoneOverride) async {
     Platform.startVM();
 
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
@@ -88,7 +88,7 @@ class TimeMachine  {
     //var localTimezoneId = await _getTimeZoneId();
     //var local = await tzdb[localTimezoneId];
     
-    var local = await _figureOutTimeZone(tzdb);
+    var local = timeZoneOverride != null ? await tzdb.getZoneOrNull(timeZoneOverride) : await _figureOutTimeZone(tzdb);
     // todo: cache local more directly? (this is indirect caching)
     TzdbIndex.localId = local.id;
 

@@ -30,7 +30,7 @@ class _WebMachineIO implements PlatformIO {
   }
 }
 
-Future initialize(dynamic arg) => TimeMachine.initialize();
+Future initialize(Map args) => TimeMachine.initialize();
 
 class TimeMachine {
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?

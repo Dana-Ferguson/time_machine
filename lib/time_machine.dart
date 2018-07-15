@@ -92,9 +92,9 @@ bool _initialized = false;
 
 abstract class TimeMachine {
   TimeMachine() { throw new StateError('TimeMachine can not be instantiated, because no platform has been detected.'); }
-  static Future initialize([dynamic arg]) {
+  static Future initialize([Map args = const {}]) {
     if (_initialized) return null;
     _initialized = true;
-    return timeMachine.initialize(arg);
+    return timeMachine.initialize(args);
   }
 }
