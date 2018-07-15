@@ -2,6 +2,7 @@
 
 ## 0.8.1
 - Instant constructors condensed: `utc`, `epochTime`, `julianDate`, `dateTime`
+- Removed `from` from a lot of constructors, heavily redundant (well, maybe not so redundant with the loss of `new`)
 
 ## 0.8.0
 - Dart 2.0 ready to go. TimeMachine 0.7.1 was the last version that will work on Dart 1.24.3.
