@@ -1,9 +1,21 @@
 # Dart Time Machine
 
-Time Machine is a date and time API for Dart (port of [Noda Time](https://www.nodatime.org)).
-Time Machine is timezone aware and culture sensitive and runs on [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm).
+Time Machine is a date and time library for
+[Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm)
+with support for timezones, calendars, cultures, formatting and parsing.
 
-Example Code:
+Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
+
+###Ready for [Dart 2](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
+
+If you are using TimeMachine for Dart 1.24.3, you'll want to depend directly on `0.7.1` or earlier.
+
+```yaml
+dependencies:
+  time_machine: "0.7.1"
+```
+
+###Example Code:
 
 ```dart
 // Sets up timezone and culture information
@@ -13,7 +25,7 @@ print('Hello, ${DateTimeZone.local} from the Dart Time Machine!\n');
 var tzdb = await DateTimeZoneProviders.tzdb;
 var paris = await tzdb["Europe/Paris"];
 
-var now = new Instant.now();
+var now = Instant.now();
 
 print('Basic');
 print('UTC Time: $now');
@@ -82,8 +94,6 @@ Todo (before v1):
  - [X] Unit tests passing in DartWeb
  - [ ] Fix DartDoc Formatting
  - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
- - [X] Rename `Span` (correlates to `dart:core`'s `Duration` and is `Duration` in Noda Time).
-   - Renamed to `Time` (denotatively correct, and maybe connotatively wrong, vs. all wrong -- it will grow on you)
 
 External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not 
 included in this repository. The goal is to port all this functionality to Dart, the initial tool was created for
@@ -119,10 +129,29 @@ It would look just like the VM example.
 
 ### DDC Specific Notes
 
+**Research in progress**: We don't get a compiler error in DDC 2 (like we do in DDC 1.24.3), but it erases the arguments.
+I've been unable to build a minimal test case for this behavior (other than a large library in aggregate).
+
+```js
+// Instant.toString() via step through debugger
+dart.toString = function(obj) {
+  if (obj == null) return "null";
+  if (typeof obj == 'string') return obj;
+  return obj[$toString](); // <--- HERE. Y U Do Dis, DDC?
+};
+
+// this is what it looks like for Foo.toString();
+dart.notNull = function(x) {
+    if (x == null) dart.throwNullValueError();
+    return x;
+```
+
+This outputs the correct behavior in DDC. But, TimeMachine.toString([]) overloads, do not.
+
 ```dart
 class Foo {
   // Okay in Dart_VM 1.24 -- Okay in DartPad\Dart2JS
-  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev63
+  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev67
   @override String toString([int x = 0, int y = 0, int z = 0]) 
     => '${x + y+ x}';
 }
@@ -134,10 +163,7 @@ void main() {
 }
 ```
 
-Overriding `toString()` with optional arguments doesn't work in DDC. We use this technique to provide 
-optional formatting. `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
-Still investigating potential solutions, but looks like `waiting` might be an okay algorithm, since it works
-in the newer DDC. I'm hoping Dart 2 stable launches [soon](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable).
+`Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
 
 `toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
 [contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today 

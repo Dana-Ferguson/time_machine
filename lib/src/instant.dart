@@ -122,7 +122,7 @@ class Instant implements Comparable<Instant> {
   dynamic operator-(dynamic other) =>
       other is Instant ? timeUntil(other) :
       other is Time ? minus(other) :
-      throw new ArgumentError('Expected Span or Instant.');
+      throw new ArgumentError('Expected Time or Instant.');
 
   // todo: this name is really bad
   // todo: think about this name ... it's not good
