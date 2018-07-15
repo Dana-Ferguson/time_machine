@@ -12,7 +12,6 @@ import 'src/platforms/platform_io.dart'
   if (dart.library.io) 'src/platforms/vm.dart'
 as timeMachine;
 
-// todo: lots of spiders in this one!
 export 'src/calendar_system.dart' show CalendarSystem;
 
 export 'src/isodayofweek.dart' show DayOfWeek;
@@ -59,6 +58,9 @@ export 'src/utility/invalid_time_data_error.dart' show InvalidTimeDataError;
 export 'src/calendars/era.dart' show Era;
 export 'src/calendars/week_rule.dart' show WeekYearRule;
 export 'src/calendars/week_year_rules.dart' show WeekYearRules, CalendarWeekRule;
+export 'src/calendars/hebrew_month_numbering.dart' show HebrewMonthNumbering;
+export 'src/calendars/islamic_epoch.dart' show IslamicEpoch;
+export 'src/calendars/islamic_leap_year_pattern.dart' show IslamicLeapYearPattern;
 
 // Fields (no public classes)
 
