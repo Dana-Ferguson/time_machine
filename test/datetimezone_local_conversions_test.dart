@@ -42,19 +42,19 @@ Future setup() async {
 
 /// Local midnight at the start of the transition (June 1st) becomes 1am.
 final DateTimeZone TransitionForwardAtMidnightZone =
-new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 2, 0), new Offset.fromHours(-2), new Offset.fromHours(-1));
+new SingleTransitionDateTimeZone(new Instant.utc(2000, 6, 1, 2, 0), new Offset.fromHours(-2), new Offset.fromHours(-1));
 
 /// Local 1am at the start of the transition (June 1st) becomes midnight.
 final DateTimeZone TransitionBackwardToMidnightZone =
-new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 3, 0), new Offset.fromHours(-2), new Offset.fromHours(-3));
+new SingleTransitionDateTimeZone(new Instant.utc(2000, 6, 1, 3, 0), new Offset.fromHours(-2), new Offset.fromHours(-3));
 
 /// Local 11.20pm at the start of the transition (May 30th) becomes 12.20am of June 1st.
 final DateTimeZone TransitionForwardBeforeMidnightZone =
-new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 1, 20), new Offset.fromHours(-2), new Offset.fromHours(-1));
+new SingleTransitionDateTimeZone(new Instant.utc(2000, 6, 1, 1, 20), new Offset.fromHours(-2), new Offset.fromHours(-1));
 
 /// Local 12.20am at the start of the transition (June 1st) becomes 11.20pm of the previous day.
 final DateTimeZone TransitionBackwardAfterMidnightZone =
-new SingleTransitionDateTimeZone(new Instant.fromUtc(2000, 6, 1, 2, 20), new Offset.fromHours(-2), new Offset.fromHours(-3));
+new SingleTransitionDateTimeZone(new Instant.utc(2000, 6, 1, 2, 20), new Offset.fromHours(-2), new Offset.fromHours(-3));
 
 final LocalDate TransitionDate = new LocalDate(2000, 6, 1);
 

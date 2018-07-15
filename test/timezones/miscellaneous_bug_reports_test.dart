@@ -59,13 +59,13 @@ Future Khartoum() async
 {
   DateTimeZone khartoum = await Tzdb["Africa/Khartoum"];
   expect(khartoum, isNotNull);
-  Instant utc = new Instant.fromUtc(2000, 1, 1, 0, 0, 0);
+  Instant utc = new Instant.utc(2000, 1, 1, 0, 0, 0);
   ZonedDateTime inKhartoum = new ZonedDateTime(utc, khartoum);
   LocalDateTime expectedLocal = new LocalDateTime(2000, 1, 1, 2, 0, 0);
   expect(expectedLocal, inKhartoum.localDateTime);
 
   // Khartoum changed from +2 to +3 on January 15th 2000
-  utc = new Instant.fromUtc(2000, 1, 16, 0, 0, 0);
+  utc = new Instant.utc(2000, 1, 16, 0, 0, 0);
   inKhartoum = new ZonedDateTime(utc, khartoum);
   expectedLocal = new LocalDateTime(2000, 1, 16, 3, 0, 0);
   expect(expectedLocal, inKhartoum.localDateTime);
@@ -76,7 +76,7 @@ Future Khartoum() async
 Future Tbilisi() async
 {
   var zone = await Tzdb["Asia/Tbilisi"];
-  Instant summer1996 = new Instant.fromUtc(1996, 6, 1, 0, 0);
+  Instant summer1996 = new Instant.utc(1996, 6, 1, 0, 0);
   var interval = zone.getZoneInterval(summer1996);
   expect(new LocalDateTime(1996, 3, 31, 1, 0, 0), interval.isoLocalStart);
   expect(new LocalDateTime(1997, 10, 26, 0, 0, 0), interval.isoLocalEnd);

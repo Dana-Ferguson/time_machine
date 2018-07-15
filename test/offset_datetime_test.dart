@@ -63,7 +63,7 @@ void LocalDateTimeProperty()
 @Test()
 void ToInstant()
 {
-  Instant instant = new Instant.fromUtc(2012, 6, 25, 16, 5, 20);
+  Instant instant = new Instant.utc(2012, 6, 25, 16, 5, 20);
   LocalDateTime local = new LocalDateTime(2012, 6, 25, 21, 35, 20);
   Offset offset = new Offset.fromHoursAndMinutes(5, 30);
 

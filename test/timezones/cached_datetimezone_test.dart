@@ -22,7 +22,7 @@ Future setup() async {
 }
 
 CachedDateTimeZone timeZone; // = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
-Instant summer = new Instant.fromUtc(2010, 6, 1, 0, 0);
+Instant summer = new Instant.utc(2010, 6, 1, 0, 0);
 
 @Test()
 void GetZoneIntervalInstant_NotNull()

@@ -28,15 +28,15 @@ Future setup() async {
 // Using letter is (IMO) slightly more readable than just having an array and using indexes.
 Map<String /*char*/, Instant> Instants =
 {
-  'A': new Instant.fromUtc(2000, 1, 1, 0, 0),
-  'B': new Instant.fromUtc(2001, 1, 1, 0, 0),
-  'C': new Instant.fromUtc(2002, 1, 1, 0, 0),
-  'D': new Instant.fromUtc(2003, 1, 1, 0, 0),
-  'E': new Instant.fromUtc(2004, 1, 1, 0, 0),
-  'F': new Instant.fromUtc(2005, 1, 1, 0, 0),
-  'G': new Instant.fromUtc(2006, 1, 1, 0, 0),
-  'H': new Instant.fromUtc(2007, 1, 1, 0, 0),
-  'I': new Instant.fromUtc(2008, 1, 1, 0, 0),
+  'A': new Instant.utc(2000, 1, 1, 0, 0),
+  'B': new Instant.utc(2001, 1, 1, 0, 0),
+  'C': new Instant.utc(2002, 1, 1, 0, 0),
+  'D': new Instant.utc(2003, 1, 1, 0, 0),
+  'E': new Instant.utc(2004, 1, 1, 0, 0),
+  'F': new Instant.utc(2005, 1, 1, 0, 0),
+  'G': new Instant.utc(2006, 1, 1, 0, 0),
+  'H': new Instant.utc(2007, 1, 1, 0, 0),
+  'I': new Instant.utc(2008, 1, 1, 0, 0),
 };
 
 DateTimeZone ExpectedZone;

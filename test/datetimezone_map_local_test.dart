@@ -30,7 +30,7 @@ Future main() async {
   await runTests();
 }
 
-final Instant Transition = new Instant.fromUtc(2000, 1, 1, 0, 0);
+final Instant Transition = new Instant.utc(2000, 1, 1, 0, 0);
 
 final Offset Minus5 = new Offset.fromHours(-5);
 final Offset Plus10 = new Offset.fromHours(10);

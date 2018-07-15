@@ -19,7 +19,7 @@ Future main() async {
 
 // Sample instants for use in tests. They're on January 1st 2000...2009, midnight UTC.
 List<Instant> Instants = (new Iterable.generate(10, (i) => (i+2000)))
-    .map((year) => new Instant.fromUtc(year, 1, 1, 0, 0))
+    .map((year) => new Instant.utc(year, 1, 1, 0, 0))
     .toList(growable: false);
 
 // Various tests using a pair of zones which can demonstrate a number of

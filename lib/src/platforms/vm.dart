@@ -111,8 +111,8 @@ class TimeMachine  {
     }
 
     var nowDateTime = new DateTime.now();
-    Instant nowInstant = new Instant.fromDateTime(nowDateTime);
-    var interval = new Interval(new Instant.fromUtc(1900, 1, 1, 0, 0), nowInstant);
+    Instant nowInstant = new Instant.dateTime(nowDateTime);
+    var interval = new Interval(new Instant.utc(1900, 1, 1, 0, 0), nowInstant);
     var allZoneIntervals = <ZoneInterval>[];
     var allSpecialInstants = <Instant>[];
     

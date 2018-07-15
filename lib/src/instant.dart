@@ -35,13 +35,6 @@ abstract class IInstant {
 /// This type is immutable.
 @immutable
 class Instant implements Comparable<Instant> {
-  // todo: what to do with these?
-  //static const int _minMilliseconds = IInstant.minDays * TimeConstants.millisecondsPerDay;
-  //static const int _maxMilliseconds = (IInstant.maxDays + 1) * TimeConstants.millisecondsPerDay - 1;
-  //static const int _minSeconds = IInstant.minDays * TimeConstants.secondsPerDay;
-  //static const int _maxSeconds = (IInstant.maxDays + 1) * TimeConstants.secondsPerDay - 1;
-
-  // This maps any integer x --> ~x --> -x - 1 (this might be important knowledge)
   /// Represents the smallest possible [Instant].
   /// This value is equivalent to -9998-01-01T00:00:00Z
   static final Instant minValue = new Instant._trusted(new Time(days: IInstant.minDays));
@@ -64,12 +57,32 @@ class Instant implements Comparable<Instant> {
   }
 
   const Instant._trusted(this._epochTime);
-  // todo: to untrusted factories
-  Instant.fromUnixTimeMicroseconds(int microseconds) : _epochTime = new Time(microseconds: microseconds);
-  Instant.fromUnixTimeSeconds(int seconds) : _epochTime = new Time(seconds: seconds);
-  Instant.fromUnixTimeMilliseconds(int milliseconds) : _epochTime = new Time(milliseconds: milliseconds);
-  // todo: should this mirror functionality more similar to `new DateTime()`?
+
+  // todo: is this okay?
   const Instant() : _epochTime = Time.zero;
+
+  // todo: is this name okay?
+  factory Instant.epochTime({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
+    int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) => 
+      Instant._untrusted(
+          Time(days: days, hours:hours, minutes: minutes, seconds: seconds, 
+              milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds));
+
+  // Convenience methods from NodaTime -- evaluate if I want to keep these
+  factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
+  {
+    var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
+    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
+    return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
+  }
+  
+  factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
+
+  factory Instant.dateTime(DateTime dateTime) {
+    if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
+    return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
+  }
+
 
   int compareTo(Instant other) => _epochTime.compareTo(other._epochTime);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
@@ -116,8 +129,7 @@ class Instant implements Comparable<Instant> {
     return new LocalInstant(asDuration);
   }
 
-// Span operator-(Instant instant) => _span - instant._span;
-
+  // Span operator-(Instant instant) => _span - instant._span;
   // todo: is there any clever way to add type annotations to this?
   dynamic operator-(dynamic other) =>
       other is Instant ? timeUntil(other) :
@@ -133,15 +145,7 @@ class Instant implements Comparable<Instant> {
   bool operator<=(Instant other) => _epochTime <= other._epochTime;
   bool operator>(Instant other) => _epochTime > other._epochTime;
   bool operator>=(Instant other) => _epochTime >= other._epochTime;
-
-  // Convenience methods from Nodatime -- evaluate if I want to keep these
-  factory Instant.fromUtc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
-  {
-    var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
-    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
-    return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
-  }
-
+  
   static Instant max(Instant x, Instant y) => x > y ? x : y;
   static Instant min(Instant x, Instant y) => x < y ? x : y;
 
@@ -163,19 +167,11 @@ class Instant implements Comparable<Instant> {
   // DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
   // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
   DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
-  
-  factory Instant.fromJulianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
-
-  factory Instant.fromDateTime(DateTime dateTime) {
-    if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
-    return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
-  }
-
-  int get daysSinceEpoch => _epochTime.floorDays; //days;
-  int get nanosecondOfDay => _epochTime.nanosecondOfFloorDay; //nanosecondOfDay;
 
   Time get timeSinceEpoch => _epochTime;
 
+  int get daysSinceEpoch => _epochTime.floorDays; //days;
+  int get nanosecondOfDay => _epochTime.nanosecondOfFloorDay; //nanosecondOfDay;
   // todo: I don't think I like this --> timeSinceEpoch??? -- are these useful convenient overloads?
   int toUnixTimeSeconds() => ITime.floorSeconds(_epochTime);
   int toUnixTimeMilliseconds() => _epochTime.floorMilliseconds; //.totalMilliseconds.toInt();
@@ -190,27 +186,14 @@ class Instant implements Comparable<Instant> {
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 
-  // todo: Combine the regular and x_Calendar constructors
   ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem calendar]) =>
       // zone is checked for nullity by the constructor.
       // constructor also checks and corrects for calendar being null
     new ZonedDateTime(this, zone, calendar);
-  
+
   // todo: get the correct calendar for the local timezone / culture
   /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
   ZonedDateTime inLocalZone([CalendarSystem calendar]) => new ZonedDateTime(this, DateTimeZone.local, calendar);
-  
-  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 
-  // Add LocalInstant code
-  
-  //  int _epochMilliseconds;
-  //  /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
-  //  int _nanosecondsInterval;
-  //
-  //  /// This will being to lose precision in JS after 104 epoch days. The precision will be about 200 ns today (is there an exact equation for this?).
-  //  int get getEpochNanoseconds => _epochMilliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
-  //  int get getEpochMicroseconds => _epochMilliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval ~/  TimeConstants.nanosecondsPerMicrosecond;
-  //  int get getEpochMilliseconds => _epochMilliseconds;
-  //  int get getEpochSeconds => _epochMilliseconds ~/ TimeConstants.millisecondsPerSecond;
+  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 }

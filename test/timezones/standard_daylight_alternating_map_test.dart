@@ -29,7 +29,7 @@ new StandardDaylightAlternatingMap(new Offset.fromHours(5), Winter, Summer);
 
 DateTimeZone TestZone = new PrecalculatedDateTimeZone(
   "zone",
-  [ IZoneInterval.newZoneInterval("Before", IInstant.beforeMinValue, new Instant.fromUtc(1999, 12, 1, 0, 0), new Offset.fromHours(5), Summer.savings) ],
+  [ IZoneInterval.newZoneInterval("Before", IInstant.beforeMinValue, new Instant.utc(1999, 12, 1, 0, 0), new Offset.fromHours(5), Summer.savings) ],
   new StandardDaylightAlternatingMap(new Offset.fromHours(5), Winter, Summer));
 
 @Test()
@@ -42,7 +42,7 @@ void MinMaxOffsets()
 @Test()
 void GetZoneInterval_Instant_Summer()
 {
-  var interval = TestMap.getZoneInterval(new Instant.fromUtc(2010, 6, 1, 0, 0));
+  var interval = TestMap.getZoneInterval(new Instant.utc(2010, 6, 1, 0, 0));
   expect("Summer", interval.name);
   expect(new Offset.fromHours(6), interval.wallOffset);
   expect(new Offset.fromHours(5), interval.standardOffset);
@@ -54,7 +54,7 @@ void GetZoneInterval_Instant_Summer()
 @Test()
 void GetZoneInterval_Instant_Winter()
 {
-  var interval = TestMap.getZoneInterval(new Instant.fromUtc(2010, 11, 1, 0, 0));
+  var interval = TestMap.getZoneInterval(new Instant.utc(2010, 11, 1, 0, 0));
   expect("Winter", interval.name);
   expect(new Offset.fromHours(5), interval.wallOffset);
   expect(new Offset.fromHours(5), interval.standardOffset);
@@ -67,7 +67,7 @@ void GetZoneInterval_Instant_Winter()
 void GetZoneInterval_Instant_StartOfFirstSummer()
 {
   // This is only just about valid
-  var firstSummer = new Instant.fromUtc(2000, 3, 9, 20, 0);
+  var firstSummer = new Instant.utc(2000, 3, 9, 20, 0);
   var interval = TestMap.getZoneInterval(firstSummer);
   expect("Summer", interval.name);
 }
@@ -248,11 +248,11 @@ void Extremes()
 
   var zone = new StandardDaylightAlternatingMap(Offset.zero, winter, summer);
 
-  var firstSpring = new Instant.fromUtc(-9998, 3, 10, 1, 0);
-  var firstAutumn = new Instant.fromUtc(-9998, 10, 5, 1, 0); // 1am UTC = 2am wall
+  var firstSpring = new Instant.utc(-9998, 3, 10, 1, 0);
+  var firstAutumn = new Instant.utc(-9998, 10, 5, 1, 0); // 1am UTC = 2am wall
 
-  var lastSpring = new Instant.fromUtc(9999, 3, 10, 1, 0);
-  var lastAutumn = new Instant.fromUtc(9999, 10, 5, 1, 0); // 1am UTC = 2am wall
+  var lastSpring = new Instant.utc(9999, 3, 10, 1, 0);
+  var lastAutumn = new Instant.utc(9999, 10, 5, 1, 0); // 1am UTC = 2am wall
 
   var dstOffset = new Offset.fromHours(1);
 
@@ -263,14 +263,14 @@ void Extremes()
   var lastWinter = IZoneInterval.newZoneInterval("Winter", lastAutumn, IInstant.afterMaxValue, Offset.zero, Offset.zero);
 
   expect(firstWinter, zone.getZoneInterval(Instant.minValue));
-  expect(firstWinter, zone.getZoneInterval(new Instant.fromUtc(-9998, 2, 1, 0, 0)));
+  expect(firstWinter, zone.getZoneInterval(new Instant.utc(-9998, 2, 1, 0, 0)));
   expect(firstSummer, zone.getZoneInterval(firstSpring));
-  expect(firstSummer, zone.getZoneInterval(new Instant.fromUtc(-9998, 5, 1, 0, 0)));
+  expect(firstSummer, zone.getZoneInterval(new Instant.utc(-9998, 5, 1, 0, 0)));
 
   expect(lastSummer, zone.getZoneInterval(lastSpring));
-  expect(lastSummer, zone.getZoneInterval(new Instant.fromUtc(9999, 5, 1, 0, 0)));
+  expect(lastSummer, zone.getZoneInterval(new Instant.utc(9999, 5, 1, 0, 0)));
   expect(lastWinter, zone.getZoneInterval(lastAutumn));
-  expect(lastWinter, zone.getZoneInterval(new Instant.fromUtc(9999, 11, 1, 0, 0)));
+  expect(lastWinter, zone.getZoneInterval(new Instant.utc(9999, 11, 1, 0, 0)));
   expect(lastWinter, zone.getZoneInterval(Instant.maxValue));
 }
 
@@ -286,7 +286,7 @@ void InvalidMap_SimultaneousTransition()
 
   var map = new StandardDaylightAlternatingMap(Offset.zero, r1, r2);
 
-  expect(() => map.getZoneInterval(new Instant.fromUtc(2017, 8, 25, 0, 0, 0)), throwsStateError);
+  expect(() => map.getZoneInterval(new Instant.utc(2017, 8, 25, 0, 0, 0)), throwsStateError);
 }
 
 void CheckMapping(ZoneLocalMapping mapping, String earlyIntervalName, String lateIntervalName, int count)

@@ -75,7 +75,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   @Test()
   void IsoHandlesCommas() {
-    Instant expected = new Instant.fromUtc(2012, 1, 1, 0, 0) + Time.epsilon;
+    Instant expected = new Instant.utc(2012, 1, 1, 0, 0) + Time.epsilon;
     Instant actual = InstantPattern.extendedIso
         .parse("2012-01-01T00:00:00,000000001Z")
         .value;
@@ -88,7 +88,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
     Culture.current = TestCultures.DotTimeSeparator;
     {
       var pattern = InstantPattern.createWithCurrentCulture("HH:mm:ss");
-      var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
+      var text = pattern.format(new Instant.utc(2000, 1, 1, 12, 34, 56));
       expect("12.34.56", text);
     }
   }
@@ -96,7 +96,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @Test()
   void Create() {
     var pattern = InstantPattern.createWithCulture("HH:mm:ss", TestCultures.DotTimeSeparator);
-    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 12, 34, 56));
+    var text = pattern.format(new Instant.utc(2000, 1, 1, 12, 34, 56));
     expect("12.34.56", text);
   }
 
@@ -147,7 +147,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   Data([Instant value = null]) : super(value ?? TimeConstants.unixEpoch);
 
   Data.fromUtc(int year, int month, int day, int hour, int minute, int second)
-      : this(new Instant.fromUtc(year, month, day, hour, minute, second));
+      : this(new Instant.utc(year, month, day, hour, minute, second));
 
   @internal
   @override

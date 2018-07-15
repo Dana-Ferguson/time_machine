@@ -30,7 +30,7 @@ final Instant negativeFiftyMillion = IInstant.untrusted(new Time(nanoseconds: -5
 void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second) {
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
-  Instant actual = new Instant.fromJulianDate(julianDate);
+  Instant actual = new Instant.julianDate(julianDate);
   var expected = new LocalDateTime(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
@@ -50,21 +50,21 @@ void BasicSpanTests() {
 void FromUtcNoSeconds()
 {
   Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 0), DateTimeZone.utc).toInstant();
-  expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35));
+  expect(viaUtc, new Instant.utc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
   Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc).toInstant();
-  expect(viaUtc, new Instant.fromUtc(2008, 4, 3, 10, 35, 23));
+  expect(viaUtc, new Instant.utc(2008, 4, 3, 10, 35, 23));
 }
 
 
 @Test()
 void InUtc()
 {
-  ZonedDateTime viaInstant = new Instant.fromUtc(2008, 4, 3, 10, 35, 23).inUtc();
+  ZonedDateTime viaInstant = new Instant.utc(2008, 4, 3, 10, 35, 23).inUtc();
   ZonedDateTime expected = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc);
   expect(expected, viaInstant);
 }
@@ -74,7 +74,7 @@ Future InZone () async
 {
   // todo: this is absurd
   DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.fromUtc(2008, 6, 10, 13, 16, 17).inZone(london);
+  ZonedDateTime viaInstant = new Instant.utc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
   LocalDateTime local = new LocalDateTime(2008, 6, 10, 14, 16, 17);
@@ -88,7 +88,7 @@ Future InZone () async
 void WithOffset()
 {
   // Jon talks about Noda Time at Leetspeak in Sweden on October 12th 2013, at 13:15 UTC+2
-  Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
+  Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.withOffset(offset);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(2013, 10, 12, 13, 15, 0), offset);
@@ -101,7 +101,7 @@ void WithOffset_NonIsoCalendar()
 {
   // October 12th 2013 ISO is 1434-12-07 Islamic
   CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
-  Instant instant = new Instant.fromUtc(2013, 10, 12, 11, 15);
+  Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
   Offset offset = new Offset.fromHours(2);
   OffsetDateTime actual = instant.withOffset(offset, calendar);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(1434, 12, 7, 13, 15, 0, calendar: calendar), offset);
@@ -112,7 +112,7 @@ void WithOffset_NonIsoCalendar()
 @Test()
 void FromTicksSinceUnixEpoch()
 {
-  Instant instant = new Instant.fromUnixTimeMicroseconds(12345);
+  Instant instant = new Instant.epochTime(microseconds: 12345);
   expect(12345, instant.toUnixTimeMicroseconds());
 }
 
@@ -120,8 +120,8 @@ void FromTicksSinceUnixEpoch()
 @Test()
 void FromUnixTimeMilliseconds_Valid()
 {
-  Instant actual = new Instant.fromUnixTimeMilliseconds(12345);
-  Instant expected = new Instant.fromUnixTimeMicroseconds(12345 * TimeConstants.microsecondsPerMillisecond);
+  Instant actual = Instant.epochTime(milliseconds: 12345);
+  Instant expected = new Instant.epochTime(microseconds: 12345 * TimeConstants.microsecondsPerMillisecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -129,7 +129,7 @@ void FromUnixTimeMilliseconds_Valid()
 // @Test()
 void FromUnixTimeMilliseconds_TooLarge()
 {
-  expect(() => new Instant.fromUnixTimeMilliseconds(Platform.int64MaxValue ~/ 100), throwsException);
+  expect(() => Instant.epochTime(milliseconds: Platform.int64MaxValue ~/ 100), throwsException);
 }
 
 
@@ -137,15 +137,15 @@ void FromUnixTimeMilliseconds_TooLarge()
 void FromUnixTimeMilliseconds_TooSmall()
 {
   // expect(() => throw new Exception('boom'), throwsException);
-  expect(new Instant.fromUnixTimeMilliseconds(Platform.int64MinValue ~/ 100), throwsException);
+  expect(Instant.epochTime(milliseconds: Platform.int64MinValue ~/ 100), throwsException);
 }
 
 
 @Test()
 void FromUnixTimeSeconds_Valid()
 {
-  Instant actual = new Instant.fromUnixTimeSeconds(12345);
-  Instant expected = new Instant.fromUnixTimeMicroseconds(12345 * TimeConstants.microsecondsPerSecond);
+  Instant actual = Instant.epochTime(seconds: 12345);
+  Instant expected = new Instant.epochTime(microseconds: 12345 * TimeConstants.microsecondsPerSecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -153,14 +153,14 @@ void FromUnixTimeSeconds_Valid()
 //@Test()
 void FromUnixTimeSeconds_TooLarge()
 {
-  expect(() => new Instant.fromUnixTimeSeconds(Platform.int64MaxValue ~/ 1000000), throwsException);
+  expect(() => Instant.epochTime(seconds: Platform.int64MaxValue ~/ 1000000), throwsException);
 }
 
 
 //@Test()
 void FromUnixTimeSeconds_TooSmall()
 {
-  expect(() => new Instant.fromUnixTimeSeconds(Platform.int64MinValue ~/ 1000000), throwsException);
+  expect(() => Instant.epochTime(seconds: Platform.int64MinValue ~/ 1000000), throwsException);
 }
 
 @Test()
@@ -177,7 +177,7 @@ void FromUnixTimeSeconds_TooSmall()
 @TestCase(const [1500, 1])
 void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 {
-  var instant = new Instant.fromUnixTimeMilliseconds(milliseconds);
+  var instant = Instant.epochTime(milliseconds: milliseconds);
   expect(instant.toUnixTimeSeconds(), expectedSeconds);
 }
 
@@ -196,7 +196,7 @@ void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
   // todo: rework this test
-  var instant = new Instant().plus(new Time(nanoseconds: ticks * 100));
+  var instant = new Instant.epochTime().plus(new Time(nanoseconds: ticks * 100));
   expect(instant.toUnixTimeMilliseconds(), expectedMilliseconds);
 }
 
@@ -206,14 +206,14 @@ void UnixConversions_ExtremeValues()
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
   var max = Instant.maxValue.minus(new Time(seconds: 1)).plus(Time.epsilon);
-  expect(max, new Instant.fromUnixTimeSeconds(max.toUnixTimeSeconds()));
-  expect(max, new Instant.fromUnixTimeMilliseconds(max.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(max, new Instant.fromUnixTimeMicroseconds(max.toUnixTimeMicroseconds()));
+  expect(max, Instant.epochTime(seconds: max.toUnixTimeSeconds()));
+  expect(max, Instant.epochTime(milliseconds: max.toUnixTimeMilliseconds()));
+  if (Platform.isVM) expect(max, new Instant.epochTime(microseconds: max.toUnixTimeMicroseconds()));
 
   var min = Instant.minValue;
-  expect(min, new Instant.fromUnixTimeSeconds(min.toUnixTimeSeconds()));
-  expect(min, new Instant.fromUnixTimeMilliseconds(min.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(min, new Instant.fromUnixTimeMicroseconds(min.toUnixTimeMicroseconds()));
+  expect(min, Instant.epochTime(seconds: min.toUnixTimeSeconds()));
+  expect(min, Instant.epochTime(milliseconds: min.toUnixTimeMilliseconds()));
+  if (Platform.isVM) expect(min, new Instant.epochTime(microseconds: min.toUnixTimeMicroseconds()));
 }
 
 @Test()
@@ -221,7 +221,7 @@ Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
   DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.fromUtc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
+  ZonedDateTime viaInstant = new Instant.utc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
   LocalDateTime local = new LocalDateTime(1720, 10, 2, 12, 10, 0, calendar: copticCalendar);
@@ -232,8 +232,8 @@ Future InZoneWithCalendar () async
 @Test()
 void Max()
 {
-  Instant x = new Instant.fromUnixTimeMicroseconds(100);
-  Instant y = new Instant.fromUnixTimeMicroseconds(200);
+  Instant x = new Instant.epochTime(microseconds: 100);
+  Instant y = new Instant.epochTime(microseconds: 200);
   expect(y, Instant.max(x, y));
   expect(y, Instant.max(y, x));
   expect(x, Instant.max(x, Instant.minValue));
@@ -245,8 +245,8 @@ void Max()
 @Test()
 void Min()
 {
-  Instant x = new Instant.fromUnixTimeMicroseconds(100);
-  Instant y = new Instant.fromUnixTimeMicroseconds(200);
+  Instant x = new Instant.epochTime(microseconds: 100);
+  Instant y = new Instant.epochTime(microseconds: 200);
   expect(x, Instant.min(x, y));
   expect(x, Instant.min(y, x));
   expect(Instant.minValue, Instant.min(x, Instant.minValue));
@@ -258,7 +258,7 @@ void Min()
 @Test()
 void ToDateTimeUtc()
 {
-  Instant x = new Instant.fromUtc(2011, 08, 18, 20, 53);
+  Instant x = new Instant.utc(2011, 08, 18, 20, 53);
   DateTime expected = new DateTime.utc(2011, 08, 18, 20, 53, 0);
   DateTime actual = x.toDateTimeUtc();
   expect(expected, actual);
@@ -328,7 +328,7 @@ void ToDateTimeUtc()
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Instant();
+  var actual = new Instant.epochTime();
   expect(TimeConstants.unixEpoch, actual);
 }
 
@@ -399,10 +399,10 @@ void FromUnixTimeMilliseconds_Range()
   // todo: I owe you, exception behavior
   //int smallestValid = Instant.minValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
   //int largestValid = Instant.maxValue.toUnixTimeMicroseconds() ~/ TimeConstants.microsecondsPerMillisecond;
-  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid), isNot(throwsException));
-  //expect(() => new Instant.fromUnixTimeMilliseconds(smallestValid - 1), throwsException);
-  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid), isNot(throwsException));
-  //expect(() => new Instant.fromUnixTimeMilliseconds(largestValid + 1), throwsException);
+  //expect(() => Instant(milliseconds: smallestValid), isNot(throwsException));
+  //expect(() => Instant(milliseconds: smallestValid - 1), throwsException);
+  //expect(() => Instant(milliseconds: largestValid), isNot(throwsException));
+  //expect(() => Instant(milliseconds: largestValid + 1), throwsException);
   
   //TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
   //TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);

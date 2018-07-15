@@ -48,9 +48,9 @@ class TimeConstants {
   static final BigInt nanosecondsPerMillisecondBigInt = BigInt.from(nanosecondsPerMillisecond);
 
   /// The instant at the Unix epoch of midnight 1st January 1970 UTC.
-  static final Instant unixEpoch = new Instant.fromUnixTimeSeconds(0);
+  static final Instant unixEpoch = new Instant();
 
   /// The instant at the Julian epoch of noon (UTC) January 1st 4713 BCE in the proleptic
   /// Julian calendar, or November 24th 4714 BCE in the proleptic Gregorian calendar.
-  static final Instant julianEpoch = new Instant.fromUtc(-4713, 11, 24, 12, 0);
+  static final Instant julianEpoch = new Instant.utc(-4713, 11, 24, 12, 0);
 }

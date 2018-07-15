@@ -39,7 +39,7 @@ class FakeClock extends Clock {
   /// [secondOfMinute]: The second.
   /// Returns: A [FakeClock] initialised to the given instant, with no auto-advance.
   static FakeClock FromUtc(int year, int monthOfYear, int dayOfMonth, [int hourOfDay = 0, int minuteOfHour = 0, int secondOfMinute = 0]) {
-    return new FakeClock(new Instant.fromUtc(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute));
+    return new FakeClock(new Instant.utc(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute));
   }
 
   /// Advances the clock by the given duration.

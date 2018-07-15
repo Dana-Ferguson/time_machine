@@ -21,5 +21,5 @@ class SystemClock extends Clock {
   /// Gets the current time as an [Instant].
   ///
   /// Returns: The current time as an [Instant].
-  Instant getCurrentInstant() => new Instant.fromDateTime(new DateTime.now());
+  Instant getCurrentInstant() => new Instant.dateTime(new DateTime.now());
 }

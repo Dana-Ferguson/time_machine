@@ -46,7 +46,7 @@ void Next_FirstYear()
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   Transition actual = recurrence.next(TimeConstants.unixEpoch, Offset.zero, Offset.zero);
-  Transition expected = new Transition(new Instant.fromUtc(1971, 1, 1, 0, 0), Offset.zero);
+  Transition expected = new Transition(new Instant.utc(1971, 1, 1, 0, 0), Offset.zero);
   expect(expected, actual);
 }
 
@@ -57,14 +57,14 @@ void NextTwice_FirstYear()
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   Transition actual = recurrence.next(TimeConstants.unixEpoch, Offset.zero, Offset.zero);
   actual = recurrence.next(actual.instant, Offset.zero, Offset.zero);
-  Transition expected = new Transition(new Instant.fromUtc(1972, 1, 1, 0, 0), Offset.zero);
+  Transition expected = new Transition(new Instant.utc(1972, 1, 1, 0, 0), Offset.zero);
   expect(expected, actual);
 }
 
 @Test()
 void Next_BeyondLastYear_null()
 {
-  var afterRecurrenceEnd = new Instant.fromUtc(1980, 1, 1, 0, 0);
+  var afterRecurrenceEnd = new Instant.utc(1980, 1, 1, 0, 0);
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   Transition actual = recurrence.next(afterRecurrenceEnd, Offset.zero, Offset.zero);
@@ -78,7 +78,7 @@ void PreviousOrSame_AfterLastYear()
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   Transition actual = recurrence.previousOrSame(Instant.maxValue, Offset.zero, Offset.zero);
-  Transition expected = new Transition(new Instant.fromUtc(1972, 1, 1, 0, 0), Offset.zero);
+  Transition expected = new Transition(new Instant.utc(1972, 1, 1, 0, 0), Offset.zero);
   expect(expected, actual);
 }
 
@@ -87,7 +87,7 @@ void PreviousOrSame_LastYear()
 {
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
-  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1971, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
+  Transition actual = recurrence.previousOrSame(new Instant.utc(1971, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(TimeConstants.unixEpoch, Offset.zero);
   expect(expected, actual);
 }
@@ -97,7 +97,7 @@ void PreviousOrSameTwice_LastYear()
 {
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1973);
-  Transition actual = recurrence.previousOrSame(new Instant.fromUtc(1972, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
+  Transition actual = recurrence.previousOrSame(new Instant.utc(1972, 1, 1, 0, 0) - Time.epsilon, Offset.zero, Offset.zero);
   actual = recurrence.previousOrSame(actual.instant - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(TimeConstants.unixEpoch, Offset.zero);
   expect(expected, actual);
@@ -129,7 +129,7 @@ void Next_ExcludesGivenInstant()
 {
   var january10thMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 10, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("x", Offset.zero, january10thMidnight, 2000, 3000);
-  var transition = new Instant.fromUtc(2500, 1, 10, 0, 0);
+  var transition = new Instant.utc(2500, 1, 10, 0, 0);
   var next = recurrence.next(transition, Offset.zero, Offset.zero);
   expect(2501, next.instant.inUtc().year);
 }
@@ -139,7 +139,7 @@ void PreviousOrSame_IncludesGivenInstant()
 {
   var january10thMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 10, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("x", Offset.zero, january10thMidnight, 2000, 3000);
-  var transition = new Instant.fromUtc(2500, 1, 10, 0, 0);
+  var transition = new Instant.utc(2500, 1, 10, 0, 0);
   var next = recurrence.previousOrSame(transition, Offset.zero, Offset.zero);
   expect(transition, next.instant);
 }
@@ -147,7 +147,7 @@ void PreviousOrSame_IncludesGivenInstant()
 @Test()
 void NextOrFail_Fail()
 {
-  var afterRecurrenceEnd = new Instant.fromUtc(1980, 1, 1, 0, 0);
+  var afterRecurrenceEnd = new Instant.utc(1980, 1, 1, 0, 0);
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   expect(() => recurrence.nextOrFail(afterRecurrenceEnd, Offset.zero, Offset.zero), throwsStateError);
@@ -156,7 +156,7 @@ void NextOrFail_Fail()
 @Test()
 void PreviousOrSameOrFail_Fail()
 {
-  var beforeRecurrenceStart = new Instant.fromUtc(1960, 1, 1, 0, 0);
+  var beforeRecurrenceStart = new Instant.utc(1960, 1, 1, 0, 0);
   var januaryFirstMidnight = new ZoneYearOffset(TransitionMode.utc, 1, 1, 0, true, LocalTime.midnight);
   var recurrence = new ZoneRecurrence("bob", Offset.zero, januaryFirstMidnight, 1970, 1972);
   expect(() => recurrence.previousOrSameOrFail(beforeRecurrenceStart, Offset.zero, Offset.zero), throwsStateError);
@@ -201,7 +201,7 @@ void December31st2400_MaxYear_UtcTransition()
   // ... and the recurrence is valid for the whole of time
   var recurrence = new ZoneRecurrence("awkward", new Offset.fromHours(1), yearOffset, GregorianYearMonthDayCalculator.minGregorianYear, GregorianYearMonthDayCalculator.maxGregorianYear);
 
-  var next = recurrence.next(new Instant.fromUtc(9999, 6, 1, 0, 0), Offset.zero, Offset.zero);
+  var next = recurrence.next(new Instant.utc(9999, 6, 1, 0, 0), Offset.zero, Offset.zero);
   expect(IInstant.afterMaxValue, next.instant);
 }
 
@@ -215,7 +215,7 @@ void December31st2400_AskAtNanoBeforeLastTransition()
   var recurrence = new ZoneRecurrence("awkward", new Offset.fromHours(1), yearOffset, 1, 5000);
 
   // We can find the final transition
-  var finalTransition = new Instant.fromUtc(5001, 1, 1, 0, 0);
+  var finalTransition = new Instant.utc(5001, 1, 1, 0, 0);
   var next = recurrence.next(finalTransition - Time.epsilon, Offset.zero, Offset.zero);
   Transition expected = new Transition(finalTransition, new Offset.fromHours(1));
   expect(expected, next);

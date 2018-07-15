@@ -20,13 +20,13 @@ import 'test_cultures.dart';
 // Three zones with a deliberately leading-substring-matching set of names.
 // Transition is at 1am local time, going forward an hour.
 final SingleTransitionDateTimeZone TestZone1 = new SingleTransitionDateTimeZone.withId(
-    new Instant.fromUtc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "ab");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "ab");
 
 // Transition is at 2am local time, going back an hour.
 final SingleTransitionDateTimeZone TestZone2 = new SingleTransitionDateTimeZone.withId(
-    new Instant.fromUtc(2010, 1, 1, 0, 0), new Offset.fromHours(2), new Offset.fromHours(1), "abc");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(2), new Offset.fromHours(1), "abc");
 final SingleTransitionDateTimeZone TestZone3 = new SingleTransitionDateTimeZone.withId(
-    new Instant.fromUtc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "abcd");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "abcd");
 
 
 DateTimeZoneProvider TestProvider;
@@ -704,7 +704,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   void WithTemplateValue() {
     var pattern = ZonedDateTimePattern.createWithInvariantCulture("yyyy-MM-dd", TestProvider)
-        .withTemplateValue(new Instant.fromUtc(1970, 1, 1, 11, 30).inZone(TestZone3));
+        .withTemplateValue(new Instant.utc(1970, 1, 1, 11, 30).inZone(TestZone3));
     var parsed = pattern
         .parse("2017-08-23")
         .value;
@@ -736,7 +736,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     Culture.current = TestCultures.DotTimeSeparator;
     {
       var pattern = ZonedDateTimePattern.createWithCurrentCulture("HH:mm", null);
-      var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
+      var text = pattern.format(new Instant.utc(2000, 1, 1, 19, 30).inUtc());
       expect("19.30", text);
     }
   }
@@ -744,7 +744,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   void WithCulture() {
     var pattern = ZonedDateTimePattern.createWithInvariantCulture("HH:mm", null).withCulture(TestCultures.DotTimeSeparator);
-    var text = pattern.format(new Instant.fromUtc(2000, 1, 1, 19, 30).inUtc());
+    var text = pattern.format(new Instant.utc(2000, 1, 1, 19, 30).inUtc());
     expect("19.30", text);
   }
 

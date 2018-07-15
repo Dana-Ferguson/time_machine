@@ -152,7 +152,7 @@ void Equals_DifferentToOtherType()
   var interval = new DateInterval(start, end);
   // expect(interval.equals(new Instant.fromUnixTimeTicks(0)), isFalse);
   // ignore: unrelated_type_equality_checks
-  expect(interval == new Instant.fromUnixTimeMicroseconds(0), isFalse);
+  expect(interval == new Instant.epochTime(microseconds: 0), isFalse);
 }
 
 @Test()

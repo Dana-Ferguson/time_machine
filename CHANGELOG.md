@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.1
+- Instant constructors condensed: `utc`, `epochTime`, `julianDate`, `dateTime`
+
 ## 0.8.0
 - Dart 2.0 ready to go. TimeMachine 0.7.1 was the last version that will work on Dart 1.24.3.
   - Added a lot of BigInt code, there is no going back now. Added `Time.canNanosecondsBeInteger`, 

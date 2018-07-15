@@ -20,7 +20,7 @@ Future main() async {
 }
 
 /// Changes from UTC+3 to UTC+4 at 1am local time on June 13th 2011.
-final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 3, 4);
+final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 3, 4);
 
 @Test()
 void SimpleProperties()
@@ -139,12 +139,12 @@ void Subtraction_ZonedDateTime()
 @Test()
 void WithZone()
 {
-  Instant instant = new Instant.fromUtc(2012, 2, 4, 12, 35);
+  Instant instant = new Instant.utc(2012, 2, 4, 12, 35);
   ZonedDateTime zoned = new ZonedDateTime(instant, SampleZone);
   expect(new LocalDateTime(2012, 2, 4, 16, 35, 0), zoned.localDateTime);
 
   // Will be UTC-8 for our instant.
-  DateTimeZone newZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2000, 1, 1, 0, 0), -7, -8);
+  DateTimeZone newZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2000, 1, 1, 0, 0), -7, -8);
   ZonedDateTime converted = zoned.withZone(newZone);
   expect(new LocalDateTime(2012, 2, 4, 4, 35, 0), converted.localDateTime);
   expect(converted.toInstant(), instant);
@@ -156,7 +156,7 @@ Future IsDaylightSavings() async
   // Use a real time zone rather than a single-transition zone, so that we can get
   // a savings offset.
   var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  var winterSummerTransition = new Instant.fromUtc(2014, 3, 30, 1, 0);
+  var winterSummerTransition = new Instant.utc(2014, 3, 30, 1, 0);
   var winter = (winterSummerTransition - Time.epsilon).inZone(zone);
   var summer = winterSummerTransition.inZone(zone);
   expect(winter.isDaylightSavingTime(), isFalse);
@@ -306,13 +306,13 @@ void ToOffsetDateTime()
 void Equality()
 {
   // Goes back from 2am to 1am on June 13th
-  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
+  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 4, 3);
   var sample = zone.mapLocal(new LocalDateTime(2011, 6, 13, 1, 30, 0)).first();
-  var fromUtc = new Instant.fromUtc(2011, 6, 12, 21, 30).inZone(zone);
+  var fromUtc = new Instant.utc(2011, 6, 12, 21, 30).inZone(zone);
 
   // Checks all the overloads etc: first check is that the zone matters
-  TestHelper.TestEqualsStruct(sample, fromUtc, [new Instant.fromUtc(2011, 6, 12, 21, 30).inUtc()]);
-  TestHelper.TestOperatorEquality(sample, fromUtc, [new Instant.fromUtc(2011, 6, 12, 21, 30).inUtc()]);
+  TestHelper.TestEqualsStruct(sample, fromUtc, [new Instant.utc(2011, 6, 12, 21, 30).inUtc()]);
+  TestHelper.TestOperatorEquality(sample, fromUtc, [new Instant.utc(2011, 6, 12, 21, 30).inUtc()]);
 
 // Now just use a simple inequality check for other aspects...
 
@@ -343,7 +343,7 @@ void Constructor_ArgumentValidation()
 @Test()
 void Construct_FromLocal_ValidUnambiguousOffset()
 {
-  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
+  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime(2000, 1, 2, 3, 4, 5);
   ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.EarlyInterval.wallOffset);
@@ -353,7 +353,7 @@ void Construct_FromLocal_ValidUnambiguousOffset()
 @Test()
 void Construct_FromLocal_ValidEarlierOffset()
 {
-  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
+  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30, 0);
   ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.EarlyInterval.wallOffset);
@@ -366,7 +366,7 @@ void Construct_FromLocal_ValidEarlierOffset()
 @Test()
 void Construct_FromLocal_ValidLaterOffset()
 {
-  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
+  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 4, 3);
 
   LocalDateTime local = new LocalDateTime(2011, 6, 13, 1, 30, 0);
   ZonedDateTime zoned = new ZonedDateTime.atOffset(local, zone, zone.LateInterval.wallOffset);
@@ -379,7 +379,7 @@ void Construct_FromLocal_ValidLaterOffset()
 @Test()
 void Construct_FromLocal_InvalidOffset()
 {
-  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2011, 6, 12, 22, 0), 4, 3);
+  SingleTransitionDateTimeZone zone = new SingleTransitionDateTimeZone.around(new Instant.utc(2011, 6, 12, 22, 0), 4, 3);
 
   // Attempt to ask for the later offset in the earlier interval
   LocalDateTime local = new LocalDateTime(2000, 1, 1, 0, 0, 0);

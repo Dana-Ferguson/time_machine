@@ -15,14 +15,14 @@ Future main() async {
 }
 
 final ZoneInterval FirstInterval =
-IZoneInterval.newZoneInterval("First", IInstant.beforeMinValue, new Instant.fromUtc(2000, 3, 10, 10, 0), new Offset.fromHours(3), Offset.zero);
+IZoneInterval.newZoneInterval("First", IInstant.beforeMinValue, new Instant.utc(2000, 3, 10, 10, 0), new Offset.fromHours(3), Offset.zero);
 
 // Note that this is effectively UTC +3 + 1 hour DST.
 final ZoneInterval SecondInterval =
-IZoneInterval.newZoneInterval("Second", FirstInterval.end, new Instant.fromUtc(2000, 9, 15, 5, 0), new Offset.fromHours(4), new Offset.fromHours(1));
+IZoneInterval.newZoneInterval("Second", FirstInterval.end, new Instant.utc(2000, 9, 15, 5, 0), new Offset.fromHours(4), new Offset.fromHours(1));
 
 final ZoneInterval ThirdInterval =
-IZoneInterval.newZoneInterval("Third", SecondInterval.end, new Instant.fromUtc(2005, 1, 20, 8, 0), new Offset.fromHours(-5), Offset.zero);
+IZoneInterval.newZoneInterval("Third", SecondInterval.end, new Instant.utc(2005, 1, 20, 8, 0), new Offset.fromHours(-5), Offset.zero);
 
 final ZoneRecurrence Winter = new ZoneRecurrence("Winter", Offset.zero,
 new ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, new LocalTime(2, 0, 0)), 1960, Platform.int32MaxValue);
@@ -204,8 +204,8 @@ void GetZoneIntervals_NullTailZone_Eot()
 {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-  IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2), IInstant.afterMaxValue, Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+  IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2), IInstant.afterMaxValue, Offset.zero, Offset.zero)
 ];
 var zone = new PrecalculatedDateTimeZone("Test", intervals, null);
 expect(intervals[1], zone.getZoneInterval(Instant.maxValue));
@@ -231,8 +231,8 @@ void Validation_EmptyPeriodArray() {
 void Validation_BadFirstStartingPoint() {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(1), new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-    IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2), new Instant.fromUnixTimeMicroseconds(3), Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 1), new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+    IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2), new Instant.epochTime(microseconds: 3), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
@@ -242,8 +242,8 @@ void Validation_BadFirstStartingPoint() {
 void Validation_NonAdjoiningIntervals() {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-    IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2).plus(new Time(nanoseconds: 500)), new Instant.fromUnixTimeMicroseconds(3), Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+    IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2).plus(new Time(nanoseconds: 500)), new Instant.epochTime(microseconds: 3), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
@@ -254,10 +254,10 @@ void Validation_Success()
 {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-  IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2), new Instant.fromUnixTimeMicroseconds(3), Offset.zero, Offset.zero),
-  IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(3), new Instant.fromUnixTimeMicroseconds(10), Offset.zero, Offset.zero),
-  IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(10), new Instant.fromUnixTimeMicroseconds(20), Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+  IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2), new Instant.epochTime(microseconds: 3), Offset.zero, Offset.zero),
+  IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 3), new Instant.epochTime(microseconds: 10), Offset.zero, Offset.zero),
+  IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 10), new Instant.epochTime(microseconds: 20), Offset.zero, Offset.zero)
   ];
   PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc);
 }
@@ -266,8 +266,8 @@ void Validation_Success()
 void Validation_NullTailZoneWithMiddleOfTimeFinalPeriod() {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-    IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2), new Instant.fromUnixTimeMicroseconds(3), Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+    IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2), new Instant.epochTime(microseconds: 3), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, null), throwsArgumentError);
@@ -278,8 +278,8 @@ void Validation_NullTailZoneWithEotPeriodEnd()
 {
   List<ZoneInterval> intervals =
   [
-    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.fromUnixTimeMicroseconds(2), Offset.zero, Offset.zero),
-  IZoneInterval.newZoneInterval("foo", new Instant.fromUnixTimeMicroseconds(2), IInstant.afterMaxValue, Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant.epochTime(microseconds: 2), Offset.zero, Offset.zero),
+  IZoneInterval.newZoneInterval("foo", new Instant.epochTime(microseconds: 2), IInstant.afterMaxValue, Offset.zero, Offset.zero)
 ];
 PrecalculatedDateTimeZone.validatePeriods(intervals, null);
 }

@@ -16,10 +16,10 @@ Future main() async {
 
 
 /// Zone where the clocks go back at 1am at the start of the year 2000, back to midnight.
-SingleTransitionDateTimeZone AmbiguousZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2000, 1, 1, 0, 0), 1, 0);
+SingleTransitionDateTimeZone AmbiguousZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2000, 1, 1, 0, 0), 1, 0);
 
 /// Zone where the clocks go forward at midnight at the start of the year 2000, to 1am.
-SingleTransitionDateTimeZone GapZone = new SingleTransitionDateTimeZone.around(new Instant.fromUtc(2000, 1, 1, 0, 0), 0, 1);
+SingleTransitionDateTimeZone GapZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2000, 1, 1, 0, 0), 0, 1);
 
 /// Local time which is either skipped or ambiguous, depending on the zones above.
 LocalDateTime TimeInTransition = new LocalDateTime(2000, 1, 1, 0, 20, 0);

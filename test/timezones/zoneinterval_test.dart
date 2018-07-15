@@ -14,8 +14,8 @@ Future main() async {
   await runTests();
 }
 
-final Instant SampleStart = new Instant.fromUtc(2011, 6, 3, 10, 15);
-final Instant SampleEnd = new Instant.fromUtc(2011, 8, 2, 13, 45);
+final Instant SampleStart = new Instant.utc(2011, 6, 3, 10, 15);
+final Instant SampleEnd = new Instant.utc(2011, 8, 2, 13, 45);
 
 final ZoneInterval SampleInterval =
 IZoneInterval.newZoneInterval("TestTime", SampleStart, SampleEnd,
