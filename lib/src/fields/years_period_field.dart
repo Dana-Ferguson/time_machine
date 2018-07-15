@@ -16,11 +16,11 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
     }
     YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(localDate);
     var calendar = localDate.calendar;
-    var calculator = calendar.yearMonthDayCalculator;
+    var calculator = ICalendarSystem.yearMonthDayCalculator(calendar);
     int currentYear = yearMonthDay.year;
     // Adjust argument range based on current year
     Preconditions.checkArgumentRange('value', value, calculator.minYear - currentYear, calculator.maxYear - currentYear);
-    return ILocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).withCalendarOrdinal(calendar.ordinal));
+    return ILocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).withCalendarOrdinal(ICalendarSystem.ordinal(calendar)));
   }
 
   int unitsBetween(LocalDate start, LocalDate end) {

@@ -41,10 +41,10 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate._fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
   {
     if (calendar == null) {
-      assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, CalendarSystem.iso.minDays, CalendarSystem.iso.maxDays));
+      assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, ICalendarSystem.minDays(CalendarSystem.iso), ICalendarSystem.maxDays(CalendarSystem.iso)));
       return new LocalDate._trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
     } else {
-      return new LocalDate._trusted(calendar.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+      return new LocalDate._trusted(ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, daysSinceEpoch));
     }
   }
 
@@ -66,15 +66,15 @@ class LocalDate implements Comparable<LocalDate> {
       ordinal = CalendarOrdinal.iso;
     } else {
       if (era != null) year = calendar.getAbsoluteYear(year, era);
-      calendar.validateYearMonthDay(year, month, day);
-      ordinal = calendar.ordinal;
+      ICalendarSystem.validateYearMonthDay(calendar, year, month, day);
+      ordinal = ICalendarSystem.ordinal(calendar);
     }
 
     return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, ordinal));
   }
 
   /// Gets the calendar system associated with this local date.
-  CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this local date.
   /// This returns the "absolute year", so, for the ISO calendar,
@@ -88,19 +88,19 @@ class LocalDate implements Comparable<LocalDate> {
   int get day => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
-  int get _daysSinceEpoch => calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
+  int get _daysSinceEpoch => ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the week day of this local date expressed as an [DayOfWeek] value.
-  DayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  DayOfWeek get dayOfWeek => ICalendarSystem.getDayOfWeek(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this local date within the era.
-  int get yearOfEra => calendar.getYearOfEra(_yearMonthDayCalendar.year);
+  int get yearOfEra => ICalendarSystem.getYearOfEra(calendar, _yearMonthDayCalendar.year);
 
   /// Gets the era of this local date.
-  Era get era => calendar.getEra(_yearMonthDayCalendar.year);
+  Era get era => ICalendarSystem.getEra(calendar, _yearMonthDayCalendar.year);
 
   /// Gets the day of this local date within the year.
-  int get dayOfYear => calendar.getDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
+  int get dayOfYear => ICalendarSystem.getDayOfYear(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
@@ -370,7 +370,7 @@ class LocalDate implements Comparable<LocalDate> {
     // todo: is this the best way? Should I add a check like this everywhere?
     if (other == null) return 1;
     Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
-    return calendar.compare(_yearMonthDay, other._yearMonthDay);
+    return ICalendarSystem.compare(calendar, _yearMonthDay, other._yearMonthDay);
   }
 
   /// Returns the later date of the given two.

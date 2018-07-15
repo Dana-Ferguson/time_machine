@@ -78,7 +78,7 @@ void NoSubstrings()
 @TestCaseSource(const Symbol("SupportedCalendars"))
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
-  expect(calendar, CalendarSystem.forOrdinal(calendar.ordinal));
+  expect(calendar, ICalendarSystem.forOrdinal(ICalendarSystem.ordinal(calendar)));
   // Assert.AreSame(calendar, CalendarSystem.ForOrdinal(calendar.Ordinal));
 }
 
@@ -86,7 +86,7 @@ void ForOrdinal_Roundtrip(CalendarSystem calendar)
 @TestCaseSource(const Symbol("SupportedCalendars"))
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
-  var target = CalendarSystem.forOrdinalUncached(calendar.ordinal);
+  var target = ICalendarSystem.forOrdinalUncached(ICalendarSystem.ordinal(calendar));
   expect(identical(calendar, target), isTrue);
   // Assert.AreSame(calendar, CalendarSystem.ForOrdinalUncached(calendar.Ordinal));
 }
@@ -94,6 +94,6 @@ void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 @Test()
 void ForOrdinalUncached_Invalid()
 {
-  expect(() => CalendarSystem.forOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
+  expect(() => ICalendarSystem.forOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
 // Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
 }

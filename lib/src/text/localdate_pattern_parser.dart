@@ -168,12 +168,12 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
         return IParseResult.fieldValueOutOfRangePostParse<LocalDate>(text, year, 'u', 'LocalDate');
       }
 
-      if (usedFields.hasAny(PatternFields.era) && _era != calendar.getEra(year)) {
+      if (usedFields.hasAny(PatternFields.era) && _era != ICalendarSystem.getEra(calendar, year)) {
         return IParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate');
       }
 
       if (usedFields.hasAny(PatternFields.yearOfEra)) {
-        int yearOfEraFromYear = calendar.getYearOfEra(year);
+        int yearOfEraFromYear = ICalendarSystem.getYearOfEra(calendar, year);
         if (usedFields.hasAny(PatternFields.yearTwoDigits)) {
           // We're only checking the last two digits
           yearOfEraFromYear = yearOfEraFromYear % 100;
@@ -188,7 +188,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
     // Use the year from the template value, possibly checking the era.
     if (!usedFields.hasAny(PatternFields.yearOfEra)) {
       year = templateValue.year;
-      return usedFields.hasAny(PatternFields.era) && _era != calendar.getEra(year)
+      return usedFields.hasAny(PatternFields.era) && _era != ICalendarSystem.getEra(calendar, year)
           ? IParseResult.inconsistentValues<LocalDate>(text, 'g', 'u', 'LocalDate') : null;
     }
 

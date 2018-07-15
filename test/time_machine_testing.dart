@@ -34,9 +34,9 @@ Future<dynamic> runTests() => helpingMachine.runTests();
 
 abstract class TimeMachine {
   TimeMachine() { throw new StateError('TimeMachine can not be instantiated.'); }
-  static Future initialize([dynamic arg]) async {
+  static Future initialize([Map args = const {}]) async {
     helper.setFunctions();
-    await publicMachine.TimeMachine.initialize(arg);
+    await publicMachine.TimeMachine.initialize(args);
   }
 }
 

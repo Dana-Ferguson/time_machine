@@ -61,13 +61,13 @@ class OffsetDateTime {
 
   OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this.offset) // this.nanosecondsAndOffset)
   {
-    calendar.validateYearMonthDay_(_yearMonthDay);
+    ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
 
   OffsetDateTime._lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
       : _nanosecondOfDay = time.nanosecondOfDay, offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
-    calendar.validateYearMonthDay_(_yearMonthDay);
+    ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
   
   // todo: why is this internal? ... this looks like it would help develop good mental models ... is that correct?
@@ -88,7 +88,7 @@ class OffsetDateTime {
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
     var yearMonthDayCalendar = calendar != null 
-        ? calendar.getYearMonthDayCalendarFromDaysSinceEpoch(days)
+        ? ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, days)
         // todo: can we grab the correct calculator based on the default culture? (is that appropriate?)
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
@@ -103,7 +103,7 @@ class OffsetDateTime {
       : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
 
   /// Gets the calendar system associated with this offset date and time.
-  CalendarSystem get calendar => CalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this offset date and time.
   /// This returns the "absolute year", so, for the ISO calendar,
@@ -119,16 +119,16 @@ class OffsetDateTime {
   YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
   /// Gets the week day of this offset date and time expressed as an [DayOfWeek] value.
-  DayOfWeek get dayOfWeek => calendar.getDayOfWeek(_yearMonthDayCalendar.toYearMonthDay());
+  DayOfWeek get dayOfWeek => ICalendarSystem.getDayOfWeek(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the year of this offset date and time within the era.
-  int get yearOfEra => calendar.getYearOfEra(_yearMonthDayCalendar.year);
+  int get yearOfEra => ICalendarSystem.getYearOfEra(calendar, _yearMonthDayCalendar.year);
 
   /// Gets the era of this offset date and time.
-  Era get era => calendar.getEra(_yearMonthDayCalendar.year);
+  Era get era => ICalendarSystem.getEra(calendar, _yearMonthDayCalendar.year);
 
   /// Gets the day of this offset date and time within the year.
-  int get dayOfYear => calendar.getDayOfYear(_yearMonthDayCalendar.toYearMonthDay());
+  int get dayOfYear => ICalendarSystem.getDayOfYear(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
   int get hour => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
@@ -206,7 +206,7 @@ class OffsetDateTime {
 
   Time _toElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
-    int days = calendar.getDaysSinceEpoch(_yearMonthDayCalendar.toYearMonthDay());
+    int days = ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
     Time elapsedTime = new Time(days: days, nanoseconds: nanosecondOfDay - _offsetNanoseconds);
     // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
@@ -477,7 +477,7 @@ class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y',
         "Only values with the same calendar system can be compared");
-    int dateComparison = x.calendar.compare(IOffsetDateTime.yearMonthDay(x), IOffsetDateTime.yearMonthDay(y));
+    int dateComparison = ICalendarSystem.compare(x.calendar, IOffsetDateTime.yearMonthDay(x), IOffsetDateTime.yearMonthDay(y));
     if (dateComparison != 0) {
       return dateComparison;
     }

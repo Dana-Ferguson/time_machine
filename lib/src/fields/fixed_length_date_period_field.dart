@@ -24,14 +24,14 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
     var calendar = localDate.calendar;
     // If we know it will be in this year, next year, or the previous year...
     if (daysToAdd < 300 && daysToAdd > -300) {
-      YearMonthDayCalculator calculator = calendar.yearMonthDayCalculator;
+      YearMonthDayCalculator calculator = ICalendarSystem.yearMonthDayCalculator(calendar);
       YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(localDate);
       int year = yearMonthDay.year;
       int month = yearMonthDay.month;
       int day = yearMonthDay.day;
       int newDayOfMonth = day + daysToAdd;
       if (1 <= newDayOfMonth && newDayOfMonth <= calculator.getDaysInMonth(year, month)) {
-        return ILocalDate.trusted(new YearMonthDayCalendar(year, month, newDayOfMonth, calendar.ordinal));
+        return ILocalDate.trusted(new YearMonthDayCalendar(year, month, newDayOfMonth, ICalendarSystem.ordinal(calendar)));
       }
       int dayOfYear = calculator.getDayOfYear(yearMonthDay);
       int newDayOfYear = dayOfYear + daysToAdd;
@@ -53,7 +53,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
           }
         }
       }
-      return ILocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(calendar.ordinal));
+      return ILocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(ICalendarSystem.ordinal(calendar)));
     }
     // LocalDate constructor will validate.
     int days = ILocalDate.daysSinceEpoch(localDate) + daysToAdd;

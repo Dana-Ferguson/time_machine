@@ -12,12 +12,12 @@ class MonthsPeriodField implements IDatePeriodField {
 
   LocalDate add(LocalDate localDate, int value) {
     var calendar = localDate.calendar;
-    var calculator = calendar.yearMonthDayCalculator;
+    var calculator = ICalendarSystem.yearMonthDayCalculator(calendar);
     var yearMonthDay = calculator.addMonths(ILocalDate.yearMonthDay(localDate), value);
     return ILocalDate.trusted(yearMonthDay.withCalendar(calendar));
   }
 
   int unitsBetween(LocalDate start, LocalDate end) =>
-      start.calendar.yearMonthDayCalculator.monthsBetween(ILocalDate.yearMonthDay(start), ILocalDate.yearMonthDay(end));
+      ICalendarSystem.yearMonthDayCalculator(start.calendar).monthsBetween(ILocalDate.yearMonthDay(start), ILocalDate.yearMonthDay(end));
 }
 

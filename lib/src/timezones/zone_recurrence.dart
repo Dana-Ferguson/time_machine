@@ -114,7 +114,7 @@ class ZoneRecurrence {
     else {
       // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
-      targetYear = CalendarSystem.iso.yearMonthDayCalculator
+      targetYear = ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso)
           .getYear(safeLocal.daysSinceEpoch)
           .first; //.GetYear(safeLocal.DaysSinceEpoch, out ignoredDayOfYear);
     }
@@ -180,7 +180,7 @@ class ZoneRecurrence {
     else {
       // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
-      targetYear = CalendarSystem.iso.yearMonthDayCalculator
+      targetYear = ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso)
           .getYear(safeLocal.daysSinceEpoch)
           .first; //, out ignoredDayOfYear);
     }

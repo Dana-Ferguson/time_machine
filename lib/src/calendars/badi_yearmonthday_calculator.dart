@@ -69,7 +69,7 @@ static BadiYearMonthDayCalculator()
   static int getDaysInAyyamiHa(int year) {
     Preconditions.checkArgumentRange('year', year, _badiMinYear, _badiMaxYear);
     if (year < firstYearOfStandardizedCalendar) {
-      return CalendarSystem.iso.yearMonthDayCalculator.isLeapYear(year + gregorianYearOfFirstBadiYear)
+      return ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso).isLeapYear(year + gregorianYearOfFirstBadiYear)
           ? _daysInAyyamiHaInLeapYear : _daysInAyyamiHaInNormalYear;
     }
     int num = yearInfoRaw[year - firstYearOfStandardizedCalendar];

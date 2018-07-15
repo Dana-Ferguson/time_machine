@@ -60,7 +60,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
   static YearMonthDayCalendar getGregorianYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
     if (daysSinceEpoch < _firstOptimizedDay || daysSinceEpoch > _lastOptimizedDay) {
-      return CalendarSystem.iso.getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
+      return ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(CalendarSystem.iso, daysSinceEpoch);
     }
 
     // Divide by more than we need to, in order to guarantee that we only need to move forward.

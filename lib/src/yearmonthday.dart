@@ -35,7 +35,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
-      new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : calendar.ordinal);
+      new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : ICalendarSystem.ordinal(calendar));
 
   YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       new YearMonthDayCalendar.ymd(this, calendarOrdinal);

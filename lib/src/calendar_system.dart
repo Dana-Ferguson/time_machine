@@ -9,6 +9,66 @@ import 'utility/preconditions.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
+@internal
+abstract class ICalendarSystem {
+  /// Fetches a calendar system by its ordinal value, constructing it if necessary.
+  static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
+    Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.size, 'ordinal',
+        "Unknown ordinal value $ordinal");
+    // Avoid an array lookup for the overwhelmingly common case.
+    if (ordinal == CalendarOrdinal.iso) {
+      return CalendarSystem._isoCalendarSystem;
+    }
+    CalendarSystem calendar = CalendarSystem._calendarByOrdinal[ordinal.value];
+    if (calendar != null) {
+      return calendar;
+    }
+    // Not found it in the array. This can happen if the calendar system was initialized in
+    // a different thread, and the write to the array isn't visible in this thread yet.
+    // A simple switch will do the right thing. This is separated out (directly below) to allow
+    // it to be tested separately. (It may also help this method be inlined...) The return
+    // statement below is unlikely to ever be hit by code coverage, as it's handling a very
+    // unusual and hard-to-provoke situation.
+    return forOrdinalUncached(ordinal);
+  }
+
+  static CalendarSystem forOrdinalUncached(CalendarOrdinal ordinal) {
+    var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
+    if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
+    return calendarSystem;
+  }
+
+  /// Returns the minimum day number this calendar can handle.
+  static int minDays(CalendarSystem calendarSystem) => calendarSystem._minDays;
+
+  /// Returns the maximum day number (inclusive) this calendar can handle.
+  static int maxDays(CalendarSystem calendarSystem) => calendarSystem._maxDays;
+
+  /// Returns the ordinal value of this calendar.
+  static CalendarOrdinal ordinal(CalendarSystem calendarSystem) => calendarSystem._ordinal;
+
+  static YearMonthDayCalculator yearMonthDayCalculator(CalendarSystem calendarSystem) => calendarSystem._yearMonthDayCalculator;
+
+  static YearMonthDayCalendar getYearMonthDayCalendarFromDaysSinceEpoch(CalendarSystem calendarSystem, int daysSinceEpoch) => 
+      calendarSystem._getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
+
+  static int getDaysSinceEpoch(CalendarSystem calendarSystem, YearMonthDay yearMonthDay) => calendarSystem._getDaysSinceEpoch(yearMonthDay);
+
+  static void validateYearMonthDay(CalendarSystem calendar, int year, int month, int day) => calendar._validateYearMonthDay(year, month, day);
+
+  // todo: name
+  static void validateYearMonthDay_(CalendarSystem calendar, YearMonthDay ymd) => calendar._validateYearMonthDay_(ymd);
+
+  static int compare(CalendarSystem calendar, YearMonthDay lhs, YearMonthDay rhs) => calendar._compare(lhs, rhs);
+
+  static int getDayOfYear(CalendarSystem calendar, YearMonthDay yearMonthDay) => calendar._getDayOfYear(yearMonthDay);
+
+  static int getYearOfEra(CalendarSystem calendar, int absoluteYear) => calendar._getYearOfEra(absoluteYear);
+
+  static Era getEra(CalendarSystem calendar, int absoluteYear) => calendar._getEra(absoluteYear);
+
+  static DayOfWeek getDayOfWeek(CalendarSystem calendar, YearMonthDay yearMonthDay) => calendar._getDayOfWeek(yearMonthDay); 
+}
 
 /// A calendar system maps the non-calendar-specific "local time line" to human concepts
 /// such as years, months and days.
@@ -84,7 +144,7 @@ class CalendarSystem {
   ///
   /// [id]: The ID of the calendar system. This is case-sensitive.
   /// Returns: The calendar system with the given [id].
-  /// 
+  ///
   /// [KeyNotFoundException]: No calendar system for the specified ID can be found.
   /// [NotSupportedException]: The calendar system with the specified ID is known, but not supported on this platform.
   static CalendarSystem forId(String id) {
@@ -94,28 +154,6 @@ class CalendarSystem {
       throw new ArgumentError("No calendar system for ID {id} exists");
     }
     return factory();
-  }
-
-  /// Fetches a calendar system by its ordinal value, constructing it if necessary.
-  @internal
-  static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
-    Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.size, 'ordinal',
-        "Unknown ordinal value $ordinal");
-    // Avoid an array lookup for the overwhelmingly common case.
-    if (ordinal == CalendarOrdinal.iso) {
-      return _isoCalendarSystem;
-    }
-    CalendarSystem calendar = _calendarByOrdinal[ordinal.value];
-    if (calendar != null) {
-      return calendar;
-    }
-    // Not found it in the array. This can happen if the calendar system was initialized in
-    // a different thread, and the write to the array isn't visible in this thread yet.
-    // A simple switch will do the right thing. This is separated out (directly below) to allow
-    // it to be tested separately. (It may also help this method be inlined...) The return
-    // statement below is unlikely to ever be hit by code coverage, as it's handling a very
-    // unusual and hard-to-provoke situation.
-    return forOrdinalUncached(ordinal);
   }
 
   // todo: how would caching work if this was inside the function body?
@@ -140,15 +178,6 @@ class CalendarSystem {
     CalendarOrdinal.islamicCivilHabashAlHasib: getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.civil),
     CalendarOrdinal.umAlQura: umAlQura
   };
-
-  @visibleForTesting
-  @internal
-  static CalendarSystem forOrdinalUncached(CalendarOrdinal ordinal) {
-    var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
-    if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
-    return calendarSystem;
-  }
-
 
   /// Returns the IDs of all calendar systems available within Time Machine. The order of the keys is not guaranteed.
   static Iterable<String> get ids => _idToFactoryMap.keys;
@@ -291,13 +320,13 @@ class CalendarSystem {
   CalendarSystem._singleEra(CalendarOrdinal ordinal, String id, String name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
       : this._(ordinal, id, name, yearMonthDayCalculator, new SingleEraCalculator(singleEra, yearMonthDayCalculator));
 
-  CalendarSystem._(this.ordinal, this.id, this.name, this.yearMonthDayCalculator, this._eraCalculator)
-      : minYear = yearMonthDayCalculator.minYear,
-        maxYear = yearMonthDayCalculator.maxYear,
-        minDays = yearMonthDayCalculator.getStartOfYearInDays(yearMonthDayCalculator.minYear),
-        maxDays = yearMonthDayCalculator.getStartOfYearInDays(yearMonthDayCalculator.maxYear + 1) - 1 {
+  CalendarSystem._(this._ordinal, this.id, this.name, this._yearMonthDayCalculator, this._eraCalculator)
+      : minYear = _yearMonthDayCalculator.minYear,
+        maxYear = _yearMonthDayCalculator.maxYear,
+        _minDays = _yearMonthDayCalculator.getStartOfYearInDays(_yearMonthDayCalculator.minYear),
+        _maxDays = _yearMonthDayCalculator.getStartOfYearInDays(_yearMonthDayCalculator.maxYear + 1) - 1 {
     // We trust the construction code not to mutate the array...
-    _calendarByOrdinal[ordinal.value] = this;
+    _calendarByOrdinal[_ordinal.value] = this;
   }
 
 
@@ -352,15 +381,15 @@ class CalendarSystem {
 
 
   /// Returns the minimum day number this calendar can handle.
-  @internal final int minDays;
+  final int _minDays;
 
 
   /// Returns the maximum day number (inclusive) this calendar can handle.
-  @internal final int maxDays;
+  final int _maxDays;
 
 
   /// Returns the ordinal value of this calendar.
-  @internal final CalendarOrdinal ordinal;
+  final CalendarOrdinal _ordinal;
 
   /// Gets a read-only list of eras used in this calendar system.
   Iterable<Era> get eras => _eraCalculator.eras;
@@ -402,11 +431,11 @@ class CalendarSystem {
   /// [ArgumentException]: [era] is not an era used in this calendar.
   int getMinYearOfEra(Era era) => _eraCalculator.getMinYearOfEra(era);
 
-  @internal final YearMonthDayCalculator yearMonthDayCalculator;
+  final YearMonthDayCalculator _yearMonthDayCalculator;
 
-  @internal YearMonthDayCalendar getYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
-    Preconditions.checkArgumentRange('daysSinceEpoch', daysSinceEpoch, minDays, maxDays);
-    return yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).withCalendarOrdinal(ordinal);
+  YearMonthDayCalendar _getYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
+    Preconditions.checkArgumentRange('daysSinceEpoch', daysSinceEpoch, _minDays, _maxDays);
+    return _yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch).withCalendarOrdinal(_ordinal);
   }
 
   /// Converts this calendar system to text by simply returning its unique ID.
@@ -415,19 +444,18 @@ class CalendarSystem {
   @override String toString() => id;
 
   /// Returns the number of days since the Unix epoch (1970-01-01 ISO) for the given date.
-  @internal int getDaysSinceEpoch(YearMonthDay yearMonthDay) {
+  int _getDaysSinceEpoch(YearMonthDay yearMonthDay) {
     // DebugValidateYearMonthDay(yearMonthDay);
-    return yearMonthDayCalculator.getDaysSinceEpoch(yearMonthDay);
+    return _yearMonthDayCalculator.getDaysSinceEpoch(yearMonthDay);
   }
-
 
   /// Returns the IsoDayOfWeek corresponding to the day of week for the given year, month and day.
   ///
   /// [yearMonthDay]: The year, month and day to use to find the day of the week
   /// Returns: The day of the week as an IsoDayOfWeek
-  @internal DayOfWeek getDayOfWeek(YearMonthDay yearMonthDay) {
+  DayOfWeek _getDayOfWeek(YearMonthDay yearMonthDay) {
     // DebugValidateYearMonthDay(yearMonthDay);
-    int daysSinceEpoch = yearMonthDayCalculator.getDaysSinceEpoch(yearMonthDay);
+    int daysSinceEpoch = _yearMonthDayCalculator.getDaysSinceEpoch(yearMonthDay);
     // % operations in C# retain their sign, in Dart they are always positive
     int numericDayOfWeek = daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
         : 7 + -(-(daysSinceEpoch + 4) % 7);
@@ -442,7 +470,7 @@ class CalendarSystem {
   /// Returns: The number of days in the given year.
   int getDaysInYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
-    return yearMonthDayCalculator.getDaysInYear(year);
+    return _yearMonthDayCalculator.getDaysInYear(year);
   }
 
 
@@ -455,8 +483,8 @@ class CalendarSystem {
   /// Returns: The number of days in the given month and year.
   int getDaysInMonth(int year, int month) {
     // Simplest way to validate the year and month. Assume it's quick enough to validate the day...
-    validateYearMonthDay(year, month, 1);
-    return yearMonthDayCalculator.getDaysInMonth(year, month);
+    _validateYearMonthDay(year, month, 1);
+    return _yearMonthDayCalculator.getDaysInMonth(year, month);
   }
 
 
@@ -469,7 +497,7 @@ class CalendarSystem {
   /// Returns: True if the given year is a leap year; false otherwise.
   bool isLeapYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
-    return yearMonthDayCalculator.isLeapYear(year);
+    return _yearMonthDayCalculator.isLeapYear(year);
   }
 
 
@@ -487,39 +515,38 @@ class CalendarSystem {
   /// Returns: The maximum month number within the given year.
   int getMonthsInYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
-    return yearMonthDayCalculator.getMonthsInYear(year);
+    return _yearMonthDayCalculator.getMonthsInYear(year);
   }
 
-  @internal void validateYearMonthDay(int year, int month, int day) {
-    yearMonthDayCalculator.validateYearMonthDay(year, month, day);
+  void _validateYearMonthDay(int year, int month, int day) {
+    _yearMonthDayCalculator.validateYearMonthDay(year, month, day);
   }
 
   // todo: name
-  @internal void validateYearMonthDay_(YearMonthDay ymd) {
-    yearMonthDayCalculator.validateYearMonthDay(ymd.year, ymd.month, ymd.day);
+  void _validateYearMonthDay_(YearMonthDay ymd) {
+    _yearMonthDayCalculator.validateYearMonthDay(ymd.year, ymd.month, ymd.day);
   }
 
-  @internal int compare(YearMonthDay lhs, YearMonthDay rhs) {
+  int _compare(YearMonthDay lhs, YearMonthDay rhs) {
     //DebugValidateYearMonthDay(lhs);
     //DebugValidateYearMonthDay(rhs);
-    return yearMonthDayCalculator.compare(lhs, rhs);
+    return _yearMonthDayCalculator.compare(lhs, rhs);
   }
 
-  @internal int getDayOfYear(YearMonthDay yearMonthDay) {
+  int _getDayOfYear(YearMonthDay yearMonthDay) {
     //DebugValidateYearMonthDay(yearMonthDay);
-    return yearMonthDayCalculator.getDayOfYear(yearMonthDay);
+    return _yearMonthDayCalculator.getDayOfYear(yearMonthDay);
   }
 
-  @internal int getYearOfEra(int absoluteYear) {
+  int _getYearOfEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
     return _eraCalculator.getYearOfEra(absoluteYear);
   }
 
-  @internal Era getEra(int absoluteYear) {
+  Era _getEra(int absoluteYear) {
     Preconditions.debugCheckArgumentRange('absoluteYear', absoluteYear, minYear, maxYear);
     return _eraCalculator.getEra(absoluteYear);
   }
-
 
   /// Returns a Gregorian calendar system.
   ///
@@ -629,11 +656,11 @@ class CalendarSystem {
 
 class _PersianCalendars
 {
-  @internal static final CalendarSystem simple =
+  static final CalendarSystem simple =
   new CalendarSystem._singleEra(CalendarOrdinal.persianSimple, CalendarSystem._persianSimpleId, CalendarSystem._persianName, new PersianSimple(), Era.annoPersico);
-  @internal static final CalendarSystem arithmetic =
+  static final CalendarSystem arithmetic =
   new CalendarSystem._singleEra(CalendarOrdinal.persianArithmetic, CalendarSystem._persianArithmeticId, CalendarSystem._persianName, new PersianArithmetic(), Era.annoPersico);
-  @internal static final CalendarSystem astronomical =
+  static final CalendarSystem astronomical =
   new CalendarSystem._singleEra(CalendarOrdinal.persianAstronomical, CalendarSystem._persianAstronomicalId, CalendarSystem._persianName, new PersianAstronomical(), Era.annoPersico);
 }
 
@@ -643,7 +670,6 @@ class _PersianCalendars
 class _IslamicCalendars {
   static final Map<int, Map<int, CalendarSystem>> _cache = {};
 
-  @internal
   static CalendarSystem byLeapYearPatternAndEpoch(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch) {
     int i = leapYearPattern.index;
     int j = epoch.index;
@@ -663,11 +689,11 @@ class _IslamicCalendars {
 /// Odds and ends, with an assumption that it's not *that* painful to initialize UmAlQura if you only
 /// need Coptic, for example.
 class _MiscellaneousCalendars {
-  @internal static final CalendarSystem coptic =
+  static final CalendarSystem coptic =
   new CalendarSystem._singleEra(CalendarOrdinal.coptic, CalendarSystem._copticId, CalendarSystem._copticName, new CopticYearMonthDayCalculator(), Era.annoMartyrum);
-  @internal static final CalendarSystem umAlQura =
+  static final CalendarSystem umAlQura =
   new CalendarSystem._singleEra(CalendarOrdinal.umAlQura, CalendarSystem._umAlQuraId, CalendarSystem._umAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.annoHegirae);
-  @internal static final CalendarSystem badi =
+  static final CalendarSystem badi =
   new CalendarSystem._singleEra(CalendarOrdinal.badi, CalendarSystem._badiId, CalendarSystem._badiName, new BadiYearMonthDayCalculator(), Era.bahai);
 }
 
@@ -675,8 +701,8 @@ class _GregorianJulianCalendars {
   static CalendarSystem _gregorian;
   static CalendarSystem _julian;
 
-  @internal static CalendarSystem get gregorian => _gregorian ?? _init()[0];
-  @internal static CalendarSystem get julian => _julian ?? _init()[1];
+  static CalendarSystem get gregorian => _gregorian ?? _init()[0];
+  static CalendarSystem get julian => _julian ?? _init()[1];
 
   // todo: was a static constructor .. is this an okay pattern? (todo: this can be simplified)
   static List<CalendarSystem> _init() {
@@ -684,14 +710,14 @@ class _GregorianJulianCalendars {
     _julian = new CalendarSystem._(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
         julianCalculator, new GJEraCalculator(julianCalculator));
     _gregorian = new CalendarSystem._(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
-        CalendarSystem._isoCalendarSystem.yearMonthDayCalculator, CalendarSystem._isoCalendarSystem._eraCalculator);
+        CalendarSystem._isoCalendarSystem._yearMonthDayCalculator, CalendarSystem._isoCalendarSystem._eraCalculator);
 
     return [_gregorian, _julian];
   }
 }
 
 class _HebrewCalendars {
-  @internal static final List<CalendarSystem> byMonthNumbering =
+  static final List<CalendarSystem> byMonthNumbering =
   [
     new CalendarSystem._singleEra(CalendarOrdinal.hebrewCivil, CalendarSystem._hebrewCivilId, CalendarSystem._hebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil), Era.annoMundi),
     new CalendarSystem._singleEra(

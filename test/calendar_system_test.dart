@@ -20,7 +20,7 @@ void MaxDate(CalendarSystem calendar)
 {
   // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
   // issues.
-  ValidateProperties(calendar, calendar.maxDays, calendar.maxYear);
+  ValidateProperties(calendar, ICalendarSystem.maxDays(calendar), calendar.maxYear);
 }
 
 @Test()
@@ -29,7 +29,7 @@ void MinDate(CalendarSystem calendar)
 {
   // Construct the smallest LocalDate we can, and validate that all the properties can be fetched without
   // issues.
-  ValidateProperties(calendar, calendar.minDays, calendar.minYear);
+  ValidateProperties(calendar, ICalendarSystem.minDays(calendar), calendar.minYear);
 }
 
 void ValidateProperties(CalendarSystem calendar, int daysSinceEpoch, int expectedYear)
