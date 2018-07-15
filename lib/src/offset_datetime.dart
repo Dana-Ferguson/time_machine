@@ -468,10 +468,10 @@ class OffsetDateTime {
 // todo: very unsure about what to do with these
 
 /// Implementation for [Comparer.Local]
-class _OffsetDateTime_LocalComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = new _OffsetDateTime_LocalComparer._();
+class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
+  static final OffsetDateTimeComparer _instance = new _OffsetDateTimeLocalComparer._();
 
-  _OffsetDateTime_LocalComparer._() : super._();
+  _OffsetDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
@@ -509,7 +509,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   /// For example, this comparer considers 2013-03-04T20:21:00+0100 to be later than 2013-03-04T19:21:00-0700 even though
   /// the second value represents a later instant in time.
   /// This property will return a reference to the same instance every time it is called.
-  static OffsetDateTimeComparer get local => _OffsetDateTime_LocalComparer._instance;
+  static OffsetDateTimeComparer get local => _OffsetDateTimeLocalComparer._instance;
 
   /// Returns a comparer which compares [OffsetDateTime] values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
@@ -520,7 +520,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   ///
   /// <value>A comparer which compares values by the instant values obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static OffsetDateTimeComparer get instant => _OffsetDateTime_InstantComparer._instance;
+  static OffsetDateTimeComparer get instant => _OffsetDateTimeInstantComparer._instance;
 
   /// internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
@@ -567,10 +567,10 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 }
 
 /// Implementation for [Comparer.Instant].
-class _OffsetDateTime_InstantComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = new _OffsetDateTime_InstantComparer._();
+class _OffsetDateTimeInstantComparer extends OffsetDateTimeComparer {
+  static final OffsetDateTimeComparer _instance = new _OffsetDateTimeInstantComparer._();
 
-  _OffsetDateTime_InstantComparer._() : super._();
+  _OffsetDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) =>

@@ -15,7 +15,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 @internal
 typedef ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
 
-class _findLongestMatchCursor {
+class _FindLongestMatchCursor {
   int bestIndex = -1;
   int longestMatch = 0;
 }
@@ -272,7 +272,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   void addParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo compareInfo, Iterable<String> textValues1,
       [Iterable<String> textValues2 = null]) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      var matchCursor = new _findLongestMatchCursor();
+      var matchCursor = new _FindLongestMatchCursor();
 
       _findLongestMatch(compareInfo, str, textValues1, matchCursor);
       if (textValues2 != null) _findLongestMatch(compareInfo, str, textValues2, matchCursor);
@@ -306,7 +306,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// Find the longest match from a given set of candidate strings, updating the index/length of the best value
   /// accordingly.
   ///  // todo: _findLongestMatchCursor should be a return value
-  static void _findLongestMatch(CompareInfo compareInfo, ValueCursor cursor, List<String> values, _findLongestMatchCursor matchCursor) {
+  static void _findLongestMatch(CompareInfo compareInfo, ValueCursor cursor, List<String> values, _FindLongestMatchCursor matchCursor) {
     for (int i = 0; i < values.length; i++) {
       String candidate = values[i];
       if (candidate == null || candidate.length <= matchCursor.longestMatch) {

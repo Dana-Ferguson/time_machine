@@ -517,7 +517,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
   /// For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be later than
   /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value represents a later instant in time.
   /// This property will return a reference to the same instance every time it is called.
-  static ZonedDateTimeComparer get local => _ZonedDateTime_LocalComparer.instance;
+  static ZonedDateTimeComparer get local => _ZonedDateTimeLocalComparer.instance;
 
   /// Gets a comparer which compares [ZonedDateTime] values by the instants obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.
@@ -529,7 +529,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
   ///
   /// <value>A comparer which compares values by the instants obtained by applying the offset to
   /// the local date/time, ignoring the calendar system.</value>
-  static ZonedDateTimeComparer get instant => _ZonedDateTime_InstantComparer.instance;
+  static ZonedDateTimeComparer get instant => _ZonedDateTimeInstantComparer.instance;
 
   /// Internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
@@ -575,10 +575,10 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 }
 
 /// Implementation for [Comparer.Local].
-class _ZonedDateTime_LocalComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = new _ZonedDateTime_LocalComparer._();
+class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
+  static final ZonedDateTimeComparer instance = new _ZonedDateTimeLocalComparer._();
 
-  _ZonedDateTime_LocalComparer._() : super._();
+  _ZonedDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>
@@ -593,12 +593,11 @@ class _ZonedDateTime_LocalComparer extends ZonedDateTimeComparer {
       OffsetDateTimeComparer.local.getHashCode(obj._offsetDateTime);
 }
 
-
 /// Implementation for [Comparer.Instant].
-class _ZonedDateTime_InstantComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = new _ZonedDateTime_InstantComparer._();
+class _ZonedDateTimeInstantComparer extends ZonedDateTimeComparer {
+  static final ZonedDateTimeComparer instance = new _ZonedDateTimeInstantComparer._();
 
-  _ZonedDateTime_InstantComparer._() : super._();
+  _ZonedDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>
