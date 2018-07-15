@@ -6,7 +6,7 @@ with support for timezones, calendars, cultures, formatting and parsing.
 
 Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
-###Ready for [Dart 2](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
+### Ready for [Dart 2](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
 
 If you are using TimeMachine for Dart 1.24.3, you'll want to depend directly on `0.7.1` or earlier.
 
@@ -15,7 +15,7 @@ dependencies:
   time_machine: "0.7.1"
 ```
 
-###Example Code:
+### Example Code:
 
 ```dart
 // Sets up timezone and culture information
