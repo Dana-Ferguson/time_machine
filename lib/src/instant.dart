@@ -58,7 +58,7 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this._epochTime);
 
-  // todo: is this okay?
+  // todo: is this okay?, should this be a constant -- and then `epochTime` is the default?
   const Instant() : _epochTime = Time.zero;
 
   // todo: is this name okay?
@@ -68,7 +68,7 @@ class Instant implements Comparable<Instant> {
           Time(days: days, hours:hours, minutes: minutes, seconds: seconds, 
               milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds));
 
-  // Convenience methods from NodaTime -- evaluate if I want to keep these
+  // Convenience methods from NodaTime -- evaluate if I want to keep these, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
   {
     var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
