@@ -199,7 +199,7 @@ void December31st2400_MaxYear_UtcTransition()
   // Each year, the transition is at the midnight at the *end* of December 31st...
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 12, 31, 0, true, LocalTime.midnight, true);
   // ... and the recurrence is valid for the whole of time
-  var recurrence = new ZoneRecurrence("awkward", new Offset.fromHours(1), yearOffset, GregorianYearMonthDayCalculator.minGregorianYear, GregorianYearMonthDayCalculator.maxGregorianYear);
+  var recurrence = new ZoneRecurrence("awkward", new Offset.hours(1), yearOffset, GregorianYearMonthDayCalculator.minGregorianYear, GregorianYearMonthDayCalculator.maxGregorianYear);
 
   var next = recurrence.next(new Instant.utc(9999, 6, 1, 0, 0), Offset.zero, Offset.zero);
   expect(IInstant.afterMaxValue, next.instant);
@@ -212,12 +212,12 @@ void December31st2400_AskAtNanoBeforeLastTransition()
   // Each year, the transition is at the midnight at the *end* of December 31st...
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 12, 31, 0, true, LocalTime.midnight, true);
   // ... and the recurrence is valid for the whole of time
-  var recurrence = new ZoneRecurrence("awkward", new Offset.fromHours(1), yearOffset, 1, 5000);
+  var recurrence = new ZoneRecurrence("awkward", new Offset.hours(1), yearOffset, 1, 5000);
 
   // We can find the final transition
   var finalTransition = new Instant.utc(5001, 1, 1, 0, 0);
   var next = recurrence.next(finalTransition - Time.epsilon, Offset.zero, Offset.zero);
-  Transition expected = new Transition(finalTransition, new Offset.fromHours(1));
+  Transition expected = new Transition(finalTransition, new Offset.hours(1));
   expect(expected, next);
 
   // But we correctly reject anything after that
@@ -228,7 +228,7 @@ void December31st2400_AskAtNanoBeforeLastTransition()
 void WithName()
 {
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
-  var original = new ZoneRecurrence("original", new Offset.fromHours(1), yearOffset, 1900, 2000);
+  var original = new ZoneRecurrence("original", new Offset.hours(1), yearOffset, 1900, 2000);
   var renamed = original.withName("renamed");
   expect("renamed", renamed.name);
   expect(original.savings, renamed.savings);
@@ -241,7 +241,7 @@ void WithName()
 void ForSingleYear()
 {
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
-  var original = new ZoneRecurrence("original", new Offset.fromHours(1), yearOffset, 1900, 2000);
+  var original = new ZoneRecurrence("original", new Offset.hours(1), yearOffset, 1900, 2000);
   var singleYear = original.forSingleYear(2017);
   expect(original.name, singleYear.name);
   expect(original.savings, singleYear.savings);
@@ -254,7 +254,7 @@ void ForSingleYear()
 void ZoneRecurrenceToString()
 {
   var yearOffset = new ZoneYearOffset(TransitionMode.utc, 10, 31, DayOfWeek.wednesday.value, true, LocalTime.midnight);
-  var recurrence = new ZoneRecurrence("name", new Offset.fromHours(1), yearOffset, 1900, 2000);
+  var recurrence = new ZoneRecurrence("name", new Offset.hours(1), yearOffset, 1900, 2000);
   print(recurrence.toString());
   expect(recurrence.toString(),
       "name +01 ZoneYearOffset[mode:Utc monthOfYear:10 dayOfMonth:31 dayOfWeek:3 advance:true timeOfDay:00:00:00 addDay:false] [1900-2000]");

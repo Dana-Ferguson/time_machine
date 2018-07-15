@@ -16,10 +16,10 @@ Future main() async {
 
 @Test()
 void Equality() {
-  var equal1 = new Transition(Instant.epochTime(seconds: 100), new Offset.fromHours(1));
-  var equal2 = new Transition(Instant.epochTime(seconds: 100), new Offset.fromHours(1));
-  var unequal1 = new Transition(Instant.epochTime(seconds: 101), new Offset.fromHours(1));
-  var unequal2 = new Transition(Instant.epochTime(seconds: 100), new Offset.fromHours(2));
+  var equal1 = new Transition(Instant.epochTime(seconds: 100), new Offset.hours(1));
+  var equal2 = new Transition(Instant.epochTime(seconds: 100), new Offset.hours(1));
+  var unequal1 = new Transition(Instant.epochTime(seconds: 101), new Offset.hours(1));
+  var unequal2 = new Transition(Instant.epochTime(seconds: 100), new Offset.hours(2));
   TestHelper.TestEqualsStruct(equal1, equal2, [unequal1]);
   TestHelper.TestEqualsStruct(equal1, equal2, [unequal2]);
   TestHelper.TestOperatorEquality(equal1, equal2, unequal1);
@@ -28,7 +28,7 @@ void Equality() {
 
 @Test()
 void TransitionToString() {
-  var transition = new Transition(new Instant.utc(2017, 8, 25, 15, 26, 30), new Offset.fromHours(1));
+  var transition = new Transition(new Instant.utc(2017, 8, 25, 15, 26, 30), new Offset.hours(1));
   print(transition.toString());
   expect(transition.toString(), "Transition to +01 at 2017-08-25T15:26:30Z");
 }

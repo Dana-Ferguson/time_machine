@@ -35,7 +35,7 @@ void WithCalendar()
 void WithOffset()
 {
   var date = new LocalDate(2011, 6, 29);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
   var expected = new OffsetDate(date, offset);
   expect(expected, date.withOffset(offset));
 }

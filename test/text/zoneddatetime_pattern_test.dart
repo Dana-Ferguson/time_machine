@@ -20,13 +20,13 @@ import 'test_cultures.dart';
 // Three zones with a deliberately leading-substring-matching set of names.
 // Transition is at 1am local time, going forward an hour.
 final SingleTransitionDateTimeZone TestZone1 = new SingleTransitionDateTimeZone.withId(
-    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "ab");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.hours(1), new Offset.hours(2), "ab");
 
 // Transition is at 2am local time, going back an hour.
 final SingleTransitionDateTimeZone TestZone2 = new SingleTransitionDateTimeZone.withId(
-    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(2), new Offset.fromHours(1), "abc");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.hours(2), new Offset.hours(1), "abc");
 final SingleTransitionDateTimeZone TestZone3 = new SingleTransitionDateTimeZone.withId(
-    new Instant.utc(2010, 1, 1, 0, 0), new Offset.fromHours(1), new Offset.fromHours(2), "abcd");
+    new Instant.utc(2010, 1, 1, 0, 0), new Offset.hours(1), new Offset.hours(2), "abcd");
 
 
 DateTimeZoneProvider TestProvider;
@@ -50,17 +50,17 @@ Future setup() async {
   TestProvider = await new FakeDateTimeZoneSourceBuilder([TestZone1, TestZone2, TestZone3]).Build().ToProvider();
 
   // todo: implement CanonicalIdMap
-  etcGMT_12 = new FixedDateTimeZone('Etc/GMT-12', new Offset.fromHours(12), '+12');
+  etcGMT_12 = new FixedDateTimeZone('Etc/GMT-12', new Offset.hours(12), '+12');
 }
 
 @Test()
 class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   // @private static final IDateTimeZoneProvider TestProvider =
   // new FakeDateTimeZoneSourceBuilder([TestZone1, TestZone2, TestZone3]).Build().ToProvider();
-  @private static final DateTimeZone FixedPlus1 = new FixedDateTimeZone.forOffset(new Offset.fromHours(1));
-  @private static final DateTimeZone FixedWithMinutes = new FixedDateTimeZone.forOffset(new Offset.fromHoursAndMinutes(1, 30));
+  @private static final DateTimeZone FixedPlus1 = new FixedDateTimeZone.forOffset(new Offset.hours(1));
+  @private static final DateTimeZone FixedWithMinutes = new FixedDateTimeZone.forOffset(new Offset.hoursAndMinutes(1, 30));
   @private static final DateTimeZone FixedWithSeconds = new FixedDateTimeZone.forOffset(new Offset(5));
-  @private static final DateTimeZone FixedMinus1 = new FixedDateTimeZone.forOffset(new Offset.fromHours(-1));
+  @private static final DateTimeZone FixedMinus1 = new FixedDateTimeZone.forOffset(new Offset.hours(-1));
 
 // todo: @SkipMe.unimplemented()
 // @private static final ZonedDateTime SampleZonedDateTimeCoptic = TestLocalDateTimes.SampleLocalDateTimeCoptic.InUtc();
@@ -712,7 +712,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     // TestZone3 is at UTC+1 in 1970, so the template value's *local* time is 12pm.
     // Even though we're parsing a date in 2017, it's the local time from the template value that's used.
     expect(new LocalDateTime(2017, 8, 23, 12, 30, 0), parsed.localDateTime);
-    expect(new Offset.fromHours(2), parsed.offset);
+    expect(new Offset.hours(2), parsed.offset);
   }
 
   @Test()
@@ -752,7 +752,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @Test()
   Future FindLongestZoneId() async {
     DateTimeZone CreateZone(String id) =>
-        new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch - new Time(days: 1), new Offset.fromHours(-1), new Offset.fromHours(0), id);
+        new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch - new Time(days: 1), new Offset.hours(-1), new Offset.hours(0), id);
 
     var source = (new FakeDateTimeZoneSourceBuilder(
         [CreateZone("ABC"),

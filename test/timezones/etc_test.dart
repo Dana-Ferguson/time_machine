@@ -33,7 +33,7 @@ Future FixedEasternZone() async
   expect(id, zone.id);
   expect(zone, new TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
-  expect(new Offset.fromHours(-5), fixedZone.offset);
+  expect(new Offset.hours(-5), fixedZone.offset);
 }
 
 @Test() @SkipMe("Aliases not yet available?")
@@ -44,6 +44,6 @@ Future FixedWesternZone() async
   expect(id, zone.id);
   expect(zone, new TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
-  expect(new Offset.fromHours(4), fixedZone.offset);
+  expect(new Offset.hours(4), fixedZone.offset);
 }
 

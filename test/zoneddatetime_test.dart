@@ -270,7 +270,7 @@ void ToDateTimeUtc()
 @Test()
 void ToDateTimeUtc_InRangeAfterUtcAdjustment()
 {
-  var zone = new DateTimeZone.forOffset(new Offset.fromHours(-1));
+  var zone = new DateTimeZone.forOffset(new Offset.hours(-1));
   var zdt = new LocalDateTime(0, 12, 31, 23, 30, 0).inZoneStrictly(zone);
   // Sanity check: without reversing the offset, we're out of range
   // ToDateTimeUnspecified() works in dart:core

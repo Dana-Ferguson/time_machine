@@ -41,7 +41,7 @@ void LocalDateProperties()
 void ComponentProperties()
 {
   var date = new LocalDate(2012, 1, 2);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
 
   var offsetDate = new OffsetDate(date, offset);
   expect(offset, offsetDate.offset);
@@ -53,8 +53,8 @@ void Equality()
 {
   LocalDate date1 = new LocalDate(2012, 10, 6);
   LocalDate date2 = new LocalDate(2012, 9, 5);
-  Offset offset1 = new Offset.fromHours(1);
-  Offset offset2 = new Offset.fromHours(2);
+  Offset offset1 = new Offset.hours(1);
+  Offset offset2 = new Offset.hours(2);
 
   OffsetDate equal1 = new OffsetDate(date1, offset1);
   OffsetDate equal2 = new OffsetDate(date1, offset1);
@@ -72,7 +72,7 @@ void Equality()
 void At()
 {
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
   var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
 
   expect(new OffsetDate(date, offset).at(time), date.at(time).withOffset(offset));
@@ -82,9 +82,9 @@ void At()
 void WithOffset()
 {
   var date = new LocalDate(2012, 6, 19);
-  var initial = new OffsetDate(date, new Offset.fromHours(2));
-  var actual = initial.withOffset(new Offset.fromHours(5));
-  var expected = new OffsetDate(date, new Offset.fromHours(5));
+  var initial = new OffsetDate(date, new Offset.hours(2));
+  var actual = initial.withOffset(new Offset.hours(5));
+  var expected = new OffsetDate(date, new Offset.hours(5));
   expect(expected, actual);
 }
 
@@ -93,7 +93,7 @@ void WithCalendar()
 {
   var julianDate = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var isoDate = julianDate.withCalendar(CalendarSystem.iso);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
   var actual = new OffsetDate(julianDate, offset).withCalendar(CalendarSystem.iso);
   var expected = new OffsetDate(isoDate, offset);
   expect(expected, actual);
@@ -102,9 +102,9 @@ void WithCalendar()
 @Test()
 void WithAdjuster()
 {
-  var initial = new OffsetDate(new LocalDate(2016, 6, 19), new Offset.fromHours(-5));
+  var initial = new OffsetDate(new LocalDate(2016, 6, 19), new Offset.hours(-5));
   var actual = initial.adjust(DateAdjusters.startOfMonth);
-  var expected = new OffsetDate(new LocalDate(2016, 6, 1), new Offset.fromHours(-5));
+  var expected = new OffsetDate(new LocalDate(2016, 6, 1), new Offset.hours(-5));
   expect(expected, actual);
 }
 

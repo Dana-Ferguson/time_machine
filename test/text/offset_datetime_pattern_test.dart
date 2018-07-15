@@ -22,13 +22,13 @@ Future main() async {
 class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
-  @private static final OffsetDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.withOffset(new Offset.fromHours(1));
-  @private static final OffsetDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.withOffset(new Offset.fromHours(1));
+  @private static final OffsetDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.withOffset(new Offset.hours(1));
+  @private static final OffsetDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.withOffset(new Offset.hours(1));
 
 // todo: @SkipMe().unimplemented
 // @private static final OffsetDateTime SampleOffsetDateTimeCoptic = LocalDateTimePatternTest.SampleLocalDateTimeCoptic.WithOffset(Offset.zero);
 
-  @private static final Offset AthensOffset = new Offset.fromHours(3);
+  @private static final Offset AthensOffset = new Offset.hours(3);
 
   @internal final List<Data> InvalidPatternData = [
     new Data()
@@ -170,10 +170,10 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     new Data.a(2011, 10, 20)
       ..pattern = "yyyy-MM-dd HH:mm:ss"
       ..text = "2011-10-19 24:00:00",
-    new Data.b(2011, 10, 20, 0, 0, new Offset.fromHours(1))
+    new Data.b(2011, 10, 20, 0, 0, new Offset.hours(1))
       ..pattern = "yyyy-MM-dd HH:mm:ss o<+HH>"
       ..text = "2011-10-19 24:00:00 +01"
-      ..template = new LocalDateTime(1970, 1, 1, 0, 5, 0).withOffset(new Offset.fromHours(-5)),
+      ..template = new LocalDateTime(1970, 1, 1, 0, 5, 0).withOffset(new Offset.hours(-5)),
     new Data.a(2011, 10, 20)
       ..pattern = "yyyy-MM-dd HH:mm"
       ..text = "2011-10-19 24:00",
@@ -382,13 +382,13 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd'T'HH:mm:sso<g>");
     expect(identical(TimeMachineFormatInfo.invariantInfo, OffsetDateTimePatterns.formatInfo(pattern)), isTrue);
-    var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).withOffset(new Offset.fromHours(2));
+    var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).withOffset(new Offset.hours(2));
     expect("2017-08-23T12:34:56+02", pattern.format(odt));
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).withOffset(new Offset.fromHours(2));
+    var odt = new LocalDateTime(2017, 8, 23, 12, 34, 56).withOffset(new Offset.hours(2));
     Culture.current = TestCultures.FrFr;
     {
       var pattern = OffsetDateTimePattern.createWithCurrentCulture("l<g> o<g>");
@@ -413,7 +413,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void WithPatternText() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd").withPatternText("HH:mm");
-    var value = new Instant.utc(1970, 1, 1, 11, 30).withOffset(new Offset.fromHours(2));
+    var value = new Instant.utc(1970, 1, 1, 11, 30).withOffset(new Offset.hours(2));
     var text = pattern.format(value);
     expect("13:30", text);
   }
@@ -421,13 +421,13 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   @Test()
   void WithTemplateValue() {
     var pattern = OffsetDateTimePattern.createWithInvariantCulture("yyyy-MM-dd")
-        .withTemplateValue(new Instant.utc(1970, 1, 1, 11, 30).withOffset(new Offset.fromHours(2)));
+        .withTemplateValue(new Instant.utc(1970, 1, 1, 11, 30).withOffset(new Offset.hours(2)));
     var parsed = pattern
         .parse("2017-08-23")
         .value;
     // Local time of template value was 13:30
     expect(new LocalDateTime(2017, 8, 23, 13, 30, 0), parsed.localDateTime);
-    expect(new Offset.fromHours(2), parsed.offset);
+    expect(new Offset.hours(2), parsed.offset);
   }
 
   @Test()

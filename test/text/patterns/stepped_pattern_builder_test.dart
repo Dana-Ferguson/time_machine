@@ -29,7 +29,7 @@ void ParsePartial_ValidInMiddle()
   // Start already looking at the value to parse
   expect('1', value.current);
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.fromHoursAndMinutes(17, 30), result.value);
+  expect(new Offset.hoursAndMinutes(17, 30), result.value);
   // Finish just after the value
   expect('y', value.current);
 }
@@ -41,7 +41,7 @@ void ParsePartial_ValidAtEnd()
   value.moveNext();
   value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.fromHoursAndMinutes(17, 30), result.value);
+  expect(new Offset.hoursAndMinutes(17, 30), result.value);
   // Finish just after the value, which in this case is at the end.
   expect(TextCursor.nul, value.current);
 }
@@ -60,7 +60,7 @@ void Parse_Partial_Invalid()
 void AppendFormat()
 {
   var builder = new StringBuffer("x");
-  var offset = new Offset.fromHoursAndMinutes(17, 30);
+  var offset = new Offset.hoursAndMinutes(17, 30);
   SimpleOffsetPattern.appendFormat(offset, builder);
   expect("x17:30", builder.toString());
 }

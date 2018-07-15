@@ -25,7 +25,7 @@ void GetCurrent()
   expect(new ZonedDateTime(underlyingClock.getCurrentInstant(), SampleZone, julian),
       zonedClock.getCurrentZonedDateTime());
   expect(new LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian), zonedClock.getCurrentLocalDateTime());
-  expect(new LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian).withOffset(new Offset.fromHours(2)),
+  expect(new LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian).withOffset(new Offset.hours(2)),
       zonedClock.getCurrentOffsetDateTime());
   expect(new LocalDate(1969, 12, 19, julian), zonedClock.getCurrentDate());
   expect(new LocalTime(2, 0, 0), zonedClock.getCurrentTimeOfDay());

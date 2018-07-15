@@ -64,7 +64,7 @@ void MinMaxOffsets()
 @Test()
 void ForZone_Fixed()
 {
-  var zone = new DateTimeZone.forOffset(new Offset.fromHours(1));
+  var zone = new DateTimeZone.forOffset(new Offset.hours(1));
   expect(identical(zone, CachedDateTimeZone.forZone(zone)), isTrue);
 }
 

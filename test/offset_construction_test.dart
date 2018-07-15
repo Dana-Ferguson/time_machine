@@ -39,21 +39,21 @@ void FromSeconds_Invalid()
 @Test()
 void FromHours_Valid()
 {
-  Offset value = new Offset.fromHours(-15);
+  Offset value = new Offset.hours(-15);
   expect(-15 * TimeConstants.secondsPerHour, value.seconds);
 }
 
 @Test()
 void FromHours_Invalid()
 {
-  expect(() => new Offset.fromHours(19), throwsRangeError);
-  expect(() => new Offset.fromHours(-19), throwsRangeError);
+  expect(() => new Offset.hours(19), throwsRangeError);
+  expect(() => new Offset.hours(-19), throwsRangeError);
 }
 
 @Test()
 void FromHoursAndMinutes_Valid()
 {
-  Offset value = new Offset.fromHoursAndMinutes(5, 30);
+  Offset value = new Offset.hoursAndMinutes(5, 30);
   expect(5 * TimeConstants.secondsPerHour + 30 * TimeConstants.secondsPerMinute, value.seconds);
 }
 

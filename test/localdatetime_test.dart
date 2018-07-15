@@ -317,7 +317,7 @@ void IComparableCompareTo_WrongType_ArgumentException()
 @Test()
 void WithOffset()
 {
-  var offset = new Offset.fromHoursAndMinutes(5, 10);
+  var offset = new Offset.hoursAndMinutes(5, 10);
   var localDateTime = new LocalDateTime(2009, 12, 22, 21, 39, 30);
   var offsetDateTime = localDateTime.withOffset(offset);
   expect(localDateTime, offsetDateTime.localDateTime);
@@ -341,7 +341,7 @@ void InZoneStrictly_InWinter()
   var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);
   var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.fromHours(-8), zoned.offset);
+  expect(new Offset.hours(-8), zoned.offset);
 }
 
 @Test()
@@ -350,7 +350,7 @@ void InZoneStrictly_InSummer()
   var local = new LocalDateTime(2009, 6, 22, 21, 39, 30);
   var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.fromHours(-7), zoned.offset);
+  expect(new Offset.hours(-7), zoned.offset);
 }
 
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
@@ -379,7 +379,7 @@ void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
   var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
   var zoned = local.inZoneLeniently(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.fromHours(-7), zoned.offset);
+  expect(new Offset.hours(-7), zoned.offset);
 }
 
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
@@ -391,7 +391,7 @@ void InZoneLeniently_ReturnsStartOfSecondInterval()
   var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
   var zoned = local.inZoneLeniently(Pacific);
   expect(new LocalDateTime(2009, 3, 8, 3, 30, 0), zoned.localDateTime);
-  expect(new Offset.fromHours(-7), zoned.offset);
+  expect(new Offset.hours(-7), zoned.offset);
 }
 
 @Test()

@@ -133,7 +133,7 @@ Future FixedOffsetSucceedsWhenNotAdvertised() async
   var provider = await DateTimeZoneCache.getCache(source);
   String id = "UTC+05:30";
   DateTimeZone zone = await provider[id];
-  expect(new DateTimeZone.forOffset(new Offset.fromHoursAndMinutes(5, 30)), zone);
+  expect(new DateTimeZone.forOffset(new Offset.hoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
   expect(source.LastRequestedId, isNull);
 }
@@ -274,7 +274,7 @@ class TestDateTimeZoneSource extends DateTimeZoneSource {
 
   DateTimeZone forCachedId(String id) {
     LastRequestedId = id;
-    return new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.fromHours(id.hashCode % 18), id);
+    return new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.hours(id.hashCode % 18), id);
   }
 
   Future<String> versionId;

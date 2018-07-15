@@ -22,11 +22,11 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
   @private static final OffsetTime MsdnStandardExample =
-  TestLocalDateTimes.MsdnStandardExample.time.withOffset(new Offset.fromHours(1));
+  TestLocalDateTimes.MsdnStandardExample.time.withOffset(new Offset.hours(1));
   @private static final OffsetTime MsdnStandardExampleNoMillis =
-  TestLocalDateTimes.MsdnStandardExampleNoMillis.time.withOffset(new Offset.fromHours(1));
+  TestLocalDateTimes.MsdnStandardExampleNoMillis.time.withOffset(new Offset.hours(1));
 
-  @private static final Offset AthensOffset = new Offset.fromHours(3);
+  @private static final Offset AthensOffset = new Offset.hours(3);
 
   @internal final List<Data> InvalidPatternData = [
     new Data()
@@ -146,13 +146,13 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   void CreateWithInvariantCulture() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("HH:mm:sso<g>");
     expect(identical(TimeMachineFormatInfo.invariantInfo, OffsetTimePatterns.formatInfo(pattern)), isTrue);
-    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
+    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.hours(2));
     expect("12:34:56+02", pattern.format(ot));
   }
 
   @Test()
   void CreateWithCurrentCulture() {
-    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.fromHours(2));
+    var ot = new LocalTime(12, 34, 56).withOffset(new Offset.hours(2));
     Culture.current = TestCultures.FrFr;
     {
       var pattern = OffsetTimePattern.createWithCurrentCulture("l<t> o<g>");
@@ -175,7 +175,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   @Test()
   void WithPatternText() {
     var pattern = OffsetTimePattern.createWithInvariantCulture("HH:mm:ss").withPatternText("HH:mm");
-    var value = new LocalTime(13, 30, 0).withOffset(new Offset.fromHours(2));
+    var value = new LocalTime(13, 30, 0).withOffset(new Offset.hours(2));
     var text = pattern.format(value);
     expect("13:30", text);
   }
@@ -189,7 +189,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
         .value;
     // Local time is taken from the template value; offset is from the text
     expect(new LocalTime(13, 30, 0), parsed.timeOfDay);
-    expect(new Offset.fromHours(2), parsed.offset);
+    expect(new Offset.hours(2), parsed.offset);
   }
 
   @Test()

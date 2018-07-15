@@ -42,7 +42,7 @@ void LocalTimeProperties() {
 void ComponentProperties()
 {
   var time = new LocalTime(12, 34, 15);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
 
   var offsetDate = new OffsetTime(time, offset);
   expect(offset, offsetDate.offset);
@@ -54,8 +54,8 @@ void Equality()
 {
   LocalTime time1 = new LocalTime(4, 56, 23, ms: 123);
   LocalTime time2 = new LocalTime(6, 23, 12, ms: 987);
-  Offset offset1 = new Offset.fromHours(1);
-  Offset offset2 = new Offset.fromHours(2);
+  Offset offset1 = new Offset.hours(1);
+  Offset offset2 = new Offset.hours(2);
 
   OffsetTime equal1 = new OffsetTime(time1, offset1);
   OffsetTime equal2 = new OffsetTime(time1, offset1);
@@ -74,7 +74,7 @@ void On()
 {
   var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
 
   expect(new OffsetTime(time, offset).atDate(date), time.atDate(date).withOffset(offset));
 }
@@ -83,18 +83,18 @@ void On()
 void WithOffset()
 {
   var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
-  var initial = new OffsetTime(time, new Offset.fromHours(2));
-  var actual = initial.withOffset(new Offset.fromHours(5));
-  var expected = new OffsetTime(time, new Offset.fromHours(5));
+  var initial = new OffsetTime(time, new Offset.hours(2));
+  var actual = initial.withOffset(new Offset.hours(5));
+  var expected = new OffsetTime(time, new Offset.hours(5));
   expect(expected, actual);
 }
 
 @Test()
 void WithAdjuster()
 {
-  var initial = new OffsetTime(new LocalTime(14, 15, 12), new Offset.fromHours(-5));
+  var initial = new OffsetTime(new LocalTime(14, 15, 12), new Offset.hours(-5));
   var actual = initial.adjust(TimeAdjusters.truncateToHour);
-  var expected = new OffsetTime(new LocalTime(14, 0, 0), new Offset.fromHours(-5));
+  var expected = new OffsetTime(new LocalTime(14, 0, 0), new Offset.hours(-5));
   expect(expected, actual);
 }
 
@@ -102,7 +102,7 @@ void WithAdjuster()
 void ToString_WithFormat()
 {
   LocalTime time = new LocalTime(14, 15, 12, ms: 123);
-  Offset offset = new Offset.fromHours(1);
+  Offset offset = new Offset.hours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
   expect(offsetDate.toString("HH:mm:ss.fff o<-HH>", Culture.invariant), "14:15:12.123 01");
 }
@@ -111,7 +111,7 @@ void ToString_WithFormat()
 void ToString_WithNullFormat()
 {
   LocalTime time = new LocalTime(14, 15, 12, ms: 123);
-  Offset offset = new Offset.fromHours(1);
+  Offset offset = new Offset.hours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
   expect(offsetDate.toString(null, Culture.invariant), "14:15:12+01");
 }
@@ -119,7 +119,7 @@ void ToString_WithNullFormat()
 @Test()
 void ToString_NoFormat() {
   LocalTime time = new LocalTime(14, 15, 12, ms: 123);
-  Offset offset = new Offset.fromHours(1);
+  Offset offset = new Offset.hours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
 
   //using(CultureSaver.SetCultures(CultureInfo.InvariantCulture))

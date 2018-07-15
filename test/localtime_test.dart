@@ -76,7 +76,7 @@ void Min()
 void WithOffset()
 {
   var time = new LocalTime(3, 45, 12, ms: 34);
-  var offset = new Offset.fromHours(5);
+  var offset = new Offset.hours(5);
   var expected = new OffsetTime(time, offset);
   expect(expected, time.withOffset(offset));
 }

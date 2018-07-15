@@ -49,7 +49,7 @@ void GetZoneIntervals_InvalidOptions()
 @Test()
 void GetZoneIntervals_FixedZone()
 {
-  var zone = new DateTimeZone.forOffset(new Offset.fromHours(3));
+  var zone = new DateTimeZone.forOffset(new Offset.hours(3));
   var expected = [ zone.getZoneInterval(Instant.minValue) ];
   // Give a reasonably wide interval...
   var actual = zone.getZoneIntervalsFromTo(new Instant.utc(1900, 1, 1, 0, 0), new Instant.utc(2100, 1, 1, 0, 0));

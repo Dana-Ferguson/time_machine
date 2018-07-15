@@ -32,8 +32,8 @@ Future main() async {
 
 final Instant Transition = new Instant.utc(2000, 1, 1, 0, 0);
 
-final Offset Minus5 = new Offset.fromHours(-5);
-final Offset Plus10 = new Offset.fromHours(10);
+final Offset Minus5 = new Offset.hours(-5);
+final Offset Plus10 = new Offset.hours(10);
 
 final LocalDateTime NearStartOfTime = new LocalDateTime(-9998, 1, 5, 0, 0, 0);
 final LocalDateTime NearEndOfTime = new LocalDateTime(9999, 12, 25, 0, 0, 0);
@@ -202,7 +202,7 @@ void ZoneWithGap_FirstTickAfterTransition()
 void TrickyCase()
 {
   // 1am occurs unambiguously in the early zone.
-  var zone = new SingleTransitionDateTimeZone(Transition, new Offset.fromHours(3), new Offset.fromHours(5));
+  var zone = new SingleTransitionDateTimeZone(Transition, new Offset.hours(3), new Offset.hours(5));
   var mapping = zone.mapLocal(new LocalDateTime(2000, 1, 1, 1, 0, 0));
   CheckMapping(mapping, zone.EarlyInterval, zone.EarlyInterval, 1);
 }

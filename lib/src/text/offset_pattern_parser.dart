@@ -102,7 +102,7 @@ class OffsetPatternParser implements IPatternParser<Offset> {
     patternBuilder.parseCustomPattern(zPrefix ? patternText.substring(1) : patternText, _patternCharacterHandlers);
     // No need to validate field combinations here, but we do need to do something a bit special
     // for Z-handling.
-    IPartialPattern<Offset> pattern = patternBuilder.build(new Offset.fromHoursAndMinutes(5, 30));
+    IPartialPattern<Offset> pattern = patternBuilder.build(new Offset.hoursAndMinutes(5, 30));
     return zPrefix ? new _ZPrefixPattern(pattern) : pattern;
   }
 

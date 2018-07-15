@@ -89,7 +89,7 @@ void WithOffset()
 {
   // Jon talks about Noda Time at Leetspeak in Sweden on October 12th 2013, at 13:15 UTC+2
   Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
-  Offset offset = new Offset.fromHours(2);
+  Offset offset = new Offset.hours(2);
   OffsetDateTime actual = instant.withOffset(offset);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(2013, 10, 12, 13, 15, 0), offset);
   expect(expected, actual);
@@ -102,7 +102,7 @@ void WithOffset_NonIsoCalendar()
   // October 12th 2013 ISO is 1434-12-07 Islamic
   CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
-  Offset offset = new Offset.fromHours(2);
+  Offset offset = new Offset.hours(2);
   OffsetDateTime actual = instant.withOffset(offset, calendar);
   OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(1434, 12, 7, 13, 15, 0, calendar: calendar), offset);
   expect(expected, actual);
@@ -437,14 +437,14 @@ void FromTicksSinceUnixEpoch_Range()
 @Test()
 void PlusOffset()
 {
-  var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, new Offset.fromHours(1));
+  var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, new Offset.hours(1));
   expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
 void SafePlus_NormalTime()
 {
-  var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, new Offset.fromHours(1));
+  var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, new Offset.hours(1));
   expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
@@ -461,8 +461,8 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
       : Instant.minValue + new Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.beforeMinValue
-      : IInstant.plusOffset(Instant.minValue, new Offset.fromHours(finalOffset));
-  var actual = IInstant.safePlus(start, new Offset.fromHours(offsetToAdd));
+      : IInstant.plusOffset(Instant.minValue, new Offset.hours(finalOffset));
+  var actual = IInstant.safePlus(start, new Offset.hours(offsetToAdd));
   expect(actual, expected);
 }
 
@@ -480,8 +480,8 @@ void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset)
       : Instant.maxValue + new Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.afterMaxValue
-      : IInstant.plusOffset( Instant.maxValue, new Offset.fromHours(finalOffset));
-  var actual = IInstant.safePlus(start,new Offset.fromHours(offsetToAdd));
+      : IInstant.plusOffset( Instant.maxValue, new Offset.hours(finalOffset));
+  var actual = IInstant.safePlus(start,new Offset.hours(offsetToAdd));
 
   expect(actual, expected);
 }

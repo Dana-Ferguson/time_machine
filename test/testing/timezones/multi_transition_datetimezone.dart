@@ -90,8 +90,8 @@ class MtdtzBuilder {
   MtdtzBuilder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0, String firstName = "First"]) {
     id = "MultiZone";
     currentName = firstName;
-    currentStandardOffset = new Offset.fromHours(firstStandardOffsetHours);
-    currentSavings = new Offset.fromHours(firstSavingOffsetHours);
+    currentStandardOffset = new Offset.hours(firstStandardOffsetHours);
+    currentSavings = new Offset.hours(firstSavingOffsetHours);
   }
 
   /// Adds a transition at the given instant, to the specified new standard offset,
@@ -109,8 +109,8 @@ class MtdtzBuilder {
     // The ZoneInterval constructor will perform validation.
     intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
     currentName = newName;
-    currentStandardOffset = new Offset.fromHours(newStandardOffsetHours);
-    currentSavings = new Offset.fromHours(newSavingOffsetHours);
+    currentStandardOffset = new Offset.hours(newStandardOffsetHours);
+    currentSavings = new Offset.hours(newSavingOffsetHours);
   }
 
   /// Builds a [MultiTransitionDateTimeZone] from this builder, invalidating it in the process.

@@ -35,7 +35,7 @@ Future Niue() async
 {
   DateTimeZone niue = await Tzdb["Pacific/Niue"];
   var offset = niue.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0), niue).toInstant());
-  expect(new Offset.fromHours(-11), offset);
+  expect(new Offset.hours(-11), offset);
 }
 
 @Test()
@@ -43,7 +43,7 @@ Future Kiritimati() async
 {
   DateTimeZone kiritimati = await Tzdb["Pacific/Kiritimati"];
   var offset = kiritimati.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0), kiritimati).toInstant());
-  expect(new Offset.fromHours(14), offset);
+  expect(new Offset.hours(14), offset);
 }
 
 @Test()
@@ -51,7 +51,7 @@ Future Pyongyang() async
 {
   DateTimeZone pyongyang = await Tzdb["Asia/Pyongyang"];
   var offset = pyongyang.getUtcOffset(new ZonedDateTime.atStrictly(new LocalDateTime(2010, 1, 1, 0, 0, 0), pyongyang).toInstant());
-  expect(new Offset.fromHours(9), offset);
+  expect(new Offset.hours(9), offset);
 }
 
 @Test()
