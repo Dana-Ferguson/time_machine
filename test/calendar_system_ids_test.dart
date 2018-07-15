@@ -21,7 +21,7 @@ final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.
 @TestCaseSource(const Symbol("SupportedIds"))
 void ValidId(String id)
 {
-  expect(CalendarSystem.forId(id), new isInstanceOf<CalendarSystem>());
+  expect(CalendarSystem.forId(id), new TypeMatcher<CalendarSystem>());
 // Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
 }
 

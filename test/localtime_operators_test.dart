@@ -205,7 +205,7 @@ void IComparableCompareTo_WrongType_ArgumentException()
   try {
     expect(() => i_instance.compareTo(arg), throwsA(TestFailure)); // throwsArgumentError);
   } catch (e) {
-    expect(e, new isInstanceOf<TestFailure>());
+    expect(e, new TypeMatcher<TestFailure>());
   }
 }
 

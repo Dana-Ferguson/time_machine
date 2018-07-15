@@ -443,7 +443,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var result = value.parseInt64<String>('String');
     expect(result.success, isFalse);
     // Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
-    expect(result.error, new isInstanceOf<UnparsableValueError>());
+    expect(result.error, new TypeMatcher<UnparsableValueError>());
     expect(0, value.index); // Cursor hasn't moved
   }
 }

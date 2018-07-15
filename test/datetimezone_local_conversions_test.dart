@@ -140,17 +140,17 @@ void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
   expect(0, mapping.count);
 
   SkippedTimeError e; // = Assert.Throws<SkippedTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.single()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.single()), new TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.First());
-  expect(e = capture(() => mapping.first()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.first()), new TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.Last());
-  expect(e = capture(() => mapping.last()), new isInstanceOf<SkippedTimeError>());
+  expect(e = capture(() => mapping.last()), new TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 }
@@ -166,7 +166,7 @@ void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
   var mapping = zone.mapLocal(localTime);
   expect(2, mapping.count);
   AmbiguousTimeError e; // = Assert.Throws<AmbiguousTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.single()), new isInstanceOf<AmbiguousTimeError>());
+  expect(e = capture(() => mapping.single()), new TypeMatcher<AmbiguousTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.Zone);
   expect(earlier, e.earlierMapping);
@@ -309,7 +309,7 @@ Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
   LocalDate badDate = LocalDatePattern.iso.parse(localDate).value;
   DateTimeZone zone = await (await DateTimeZoneProviders.tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
-  expect(exception = capture(() => new ZonedDateTime.atStartOfDay(badDate, zone)), new isInstanceOf<SkippedTimeError>());
+  expect(exception = capture(() => new ZonedDateTime.atStartOfDay(badDate, zone)), new TypeMatcher<SkippedTimeError>());
   expect(badDate.at(LocalTime.midnight), exception.localDateTime);
 }
 

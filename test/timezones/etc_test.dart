@@ -31,7 +31,7 @@ Future FixedEasternZone() async
   String id = "Etc/GMT+5";
   var zone = await Tzdb[id];
   expect(id, zone.id);
-  expect(zone, new isInstanceOf<FixedDateTimeZone>());
+  expect(zone, new TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
   expect(new Offset.fromHours(-5), fixedZone.offset);
 }
@@ -42,7 +42,7 @@ Future FixedWesternZone() async
   String id = "Etc/GMT-4";
   var zone = await Tzdb[id];
   expect(id, zone.id);
-  expect(zone, new isInstanceOf<FixedDateTimeZone>());
+  expect(zone, new TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
   expect(new Offset.fromHours(4), fixedZone.offset);
 }

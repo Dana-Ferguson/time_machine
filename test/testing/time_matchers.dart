@@ -20,7 +20,7 @@ DateTimeZone Uncached(DateTimeZone zone)
 }
 
 // Matcher throwsAsync<T>() => new Throws(wrapMatcher(new isInstanceOf<T>()));
-Matcher willThrow<T>() => throwsA(new isInstanceOf<T>());
+Matcher willThrow<T>() => throwsA(new TypeMatcher<T>());
 // Matcher throws<T>() => throwsA(new isInstanceOf<T>());
 
 // throwsA(new isInstanceOf<ArgumentError>()));
