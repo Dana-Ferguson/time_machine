@@ -65,7 +65,7 @@ void Equals_DifferentToOtherType()
 {
   LocalDate date = new LocalDate(2011, 1, 2);
   // ignore: unrelated_type_equality_checks
-  expect(date == new Instant.epochTime(microseconds: 0), isFalse);
+  expect(date == new Instant(microseconds: 0), isFalse);
 }
 
 @Test()

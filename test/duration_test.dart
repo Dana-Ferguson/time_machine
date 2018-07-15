@@ -67,12 +67,12 @@ void Int64Conversions(int int64Nanos)
 void BigIntegerConversions(int int64Nanos)
 {
   var bigIntegerNanos = BigInt.from(int64Nanos);
-  var nanoseconds = new Time.fromBigIntNanoseconds(bigIntegerNanos);
+  var nanoseconds = new Time.bigIntNanoseconds(bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.totalNanosecondsAsBigInt);
 
   // And multiply it by 100, which proves we still work for values out of the range of Int64
   bigIntegerNanos *= BigInt.from(100);
-  nanoseconds = new Time.fromBigIntNanoseconds(bigIntegerNanos);
+  nanoseconds = new Time.bigIntNanoseconds(bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.totalNanosecondsAsBigInt);
 }
 
@@ -95,7 +95,7 @@ void ConstituentParts_Negative()
 @Test()
 void ConstituentParts_Large() {
   // And outside the normal range of long...
-  var nanos = new Time.fromBigIntNanoseconds(BigInt.from(TimeConstants.nanosecondsPerDay) * BigInt.from(365000) + BigInt.from(500));
+  var nanos = new Time.bigIntNanoseconds(BigInt.from(TimeConstants.nanosecondsPerDay) * BigInt.from(365000) + BigInt.from(500));
   expect(365000, nanos.floorDays);
   if (Platform.isVM) expect(500, nanos.nanosecondOfFloorDay);
 }

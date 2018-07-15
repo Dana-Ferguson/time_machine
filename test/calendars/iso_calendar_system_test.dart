@@ -53,7 +53,7 @@ void FieldsOf_UnixEpoch()
 void FieldsOf_GreatAchievement()
 {
   // LocalDateTime now = new Instant.fromUnixTimeTicks((TimeOfGreatAchievement.difference(UnixEpochDateTime)).Ticks).InUtc().LocalDateTime;
-  LocalDateTime now = new Instant.epochTime(microseconds: (
+  LocalDateTime now = new Instant(microseconds: (
       TimeOfGreatAchievement.difference(UnixEpochDateTime))
       .inMicroseconds).inUtc().localDateTime;
 

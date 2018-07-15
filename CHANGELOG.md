@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.8.1
-- Instant constructors condensed: `utc`, `epochTime`, `julianDate`, `dateTime`
+- Instant constructors condensed: `Instant.utc`, `Instant`, `Instant.julianDate`, `Instant.dateTime`
 - Removed `from` from a lot of constructors, heavily redundant (well, maybe not so redundant with the loss of `new`)
 
 ## 0.8.0

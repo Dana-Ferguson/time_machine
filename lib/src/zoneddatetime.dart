@@ -50,7 +50,7 @@ class ZonedDateTime {
   /// [instant]: The instant.
   /// [zone]: The time zone.
   /// [calendar]: The calendar system, defaulting to ISO.
-  factory ZonedDateTime([Instant instant = const Instant(), DateTimeZone zone, CalendarSystem calendar]) {
+  factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone zone, CalendarSystem calendar]) {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);

@@ -121,8 +121,8 @@ class DateTimeZoneReader extends BinaryReader {
       else endSeconds = /*stream.*/readInt32();
     }
 
-    Instant start = startSeconds == null ? IInstant.beforeMinValue : Instant.epochTime(seconds: startSeconds);
-    Instant end = endSeconds == null ? IInstant.afterMaxValue : Instant.epochTime(seconds: endSeconds);
+    Instant start = startSeconds == null ? IInstant.beforeMinValue : Instant(seconds: startSeconds);
+    Instant end = endSeconds == null ? IInstant.afterMaxValue : Instant(seconds: endSeconds);
 
     var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());

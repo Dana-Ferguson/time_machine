@@ -169,14 +169,14 @@ class Time implements Comparable<Time> {
     return new Time._untrusted(milliseconds, nanoseconds);
   }
   
-  factory Time.fromBigIntNanoseconds(BigInt bigNanoseconds) {
+  factory Time.bigIntNanoseconds(BigInt bigNanoseconds) {
     // todo: this clamps -- should we test for overflow?
     var milliseconds = (bigNanoseconds ~/ TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
     var nanoseconds = bigArithmeticMod(bigNanoseconds, TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
     return Time._untrusted(milliseconds, nanoseconds);
   }
 
-  // todo: should these be the default constructor?
+  // todo: I don't like this name at all
   factory Time.complex({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
     num milliseconds = 0, num microseconds = 0, num nanoseconds = 0}) {
     int _days = days.floor();
@@ -201,12 +201,10 @@ class Time implements Comparable<Time> {
     intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
     intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
 
-// print("***$milliseconds***$nanoseconds***_days=$_days***days=$days***delta=${days-_days}***");
-
     return new Time._untrusted(totalMilliseconds, intervalNanoseconds);
   }
 
-  Time.fromDuration(Duration duration)
+  Time.duration(Duration duration)
       :
         _milliseconds = duration.inMilliseconds,
         _nanosecondsInterval = TimeConstants.nanosecondsPerMicrosecond
@@ -323,7 +321,7 @@ class Time implements Comparable<Time> {
     if (canNanosecondsBeInteger) {
       return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
     } else {
-      return new Time.fromBigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(factor));
+      return new Time.bigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(factor));
     }
   }
 

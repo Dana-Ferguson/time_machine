@@ -41,6 +41,8 @@ class Instant implements Comparable<Instant> {
   /// Represents the largest possible [Instant].
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
   static final Instant maxValue = new Instant._trusted(new Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
+  
+  static const Instant unixEpoch = const Instant._trusted(Time.zero);
 
   final Time _epochTime;
 
@@ -58,19 +60,15 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this._epochTime);
 
-  // todo: is this okay?, should this be a constant -- and then `epochTime` is the default?
-  const Instant() : _epochTime = Time.zero;
-
-  // todo: is this name okay?
-  factory Instant.epochTime({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
+  /// Time since the [unixEpoch]
+  factory Instant({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
     int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) => 
       Instant._untrusted(
           Time(days: days, hours:hours, minutes: minutes, seconds: seconds, 
               milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds));
 
   // Convenience methods from NodaTime -- evaluate if I want to keep these, todo: convert to be like LocalDateTime?
-  factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0])
-  {
+  factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
     var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
