@@ -178,7 +178,7 @@ class OffsetDateTime {
 
   /// Returns the local date and time represented within this offset date and time.
   // todo: should this be a const? or cached -- or???
-  LocalDateTime get localDateTime => new LocalDateTime.combine(date, timeOfDay);
+  LocalDateTime get localDateTime => new LocalDateTime.localDateTime(date, timeOfDay);
 
   /// Gets the local date represented by this offset date and time.
   ///

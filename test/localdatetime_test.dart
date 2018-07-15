@@ -78,7 +78,7 @@ void FromDateTime()
   LocalDateTime expected = new LocalDateTime(2011, 08, 18, 20, 53, 0);
   // for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = new LocalDateTime.fromDateTime(x);
+  LocalDateTime actual = new LocalDateTime.dateTime(x);
   expect(actual, expected);
 }
 
@@ -93,7 +93,7 @@ void FromDateTime_WithCalendar()
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   {
   DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = new LocalDateTime.fromDateTime(x, CalendarSystem.julian);
+  LocalDateTime actual = new LocalDateTime.dateTime(x, CalendarSystem.julian);
   expect(actual, expected);
   }
 }
@@ -409,7 +409,7 @@ void InZone()
 void DefaultConstructor()
 {
   // todo: LocalDateTime()
-  var actual = new LocalDateTime.combine(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
+  var actual = new LocalDateTime.localDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
   expect(new LocalDateTime(1, 1, 1, 0, 0, 0), actual);
 }
 

@@ -409,7 +409,7 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// [date]: The date to combine with this time
   /// Returns: The [LocalDateTime] representation of the given time on this date
-  LocalDateTime atDate(LocalDate date) => new LocalDateTime.combine(date, this);
+  LocalDateTime atDate(LocalDate date) => new LocalDateTime.localDateTime(date, this);
 
 
   /// Returns the later time of the given two.

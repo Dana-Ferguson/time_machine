@@ -396,7 +396,7 @@ class Period {
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime.combine(remainingDate, start.time);
+      remaining = new LocalDateTime.localDateTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period._(years: years, months: months, weeks: weeks, days: days);
@@ -577,7 +577,7 @@ class Period {
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
-    return new LocalDateTime.combine(date.plusDays(extraDays), time);
+    return new LocalDateTime.localDateTime(date.plusDays(extraDays), time);
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
