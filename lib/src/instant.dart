@@ -13,7 +13,7 @@ abstract class IInstant {
   static const int maxDays = 2932896; // 104249991
 
   static Instant trusted(Time time) => new Instant._trusted(time);
-  static Instant untrusted(Time time) => new Instant._untrusted(time);
+  static Instant untrusted(Time time) => new Instant.epochTime(time);
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
   /// This must never be exposed.
@@ -47,7 +47,7 @@ class Instant implements Comparable<Instant> {
   final Time _epochTime;
 
   // todo: investigate if this is okay ... see Instant.cs#115
-  factory Instant._untrusted(Time time) {
+  factory Instant.epochTime(Time time) {
     if (time < minValue._epochTime) return IInstant.beforeMinValue;
     if (time > maxValue._epochTime) return IInstant.afterMaxValue;
     return new Instant._trusted(time);
@@ -63,7 +63,7 @@ class Instant implements Comparable<Instant> {
   /// Time since the [unixEpoch]
   factory Instant({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
     int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) => 
-      Instant._untrusted(
+      Instant.epochTime(
           Time(days: days, hours:hours, minutes: minutes, seconds: seconds, 
               milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds));
 
@@ -73,7 +73,9 @@ class Instant implements Comparable<Instant> {
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
+
   
+
   factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
 
   factory Instant.dateTime(DateTime dateTime) {
@@ -90,8 +92,8 @@ class Instant implements Comparable<Instant> {
 
   Instant operator+(Time time) => this.plus(time);
   // Instant operator-(Span span) => this.minus(span);
-  Instant plus(Time time) => new Instant._untrusted(_epochTime + time);
-  Instant minus(Time time) => new Instant._untrusted(_epochTime - time);
+  Instant plus(Time time) => new Instant.epochTime(_epochTime + time);
+  Instant minus(Time time) => new Instant.epochTime(_epochTime - time);
 
   LocalInstant _plusOffset(Offset offset) {
     return new LocalInstant(_epochTime + offset.toTime());

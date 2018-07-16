@@ -1,7 +1,7 @@
 # Changelog
 
-## 0.8.1
-- Instant constructors condensed: `Instant.utc`, `Instant`, `Instant.julianDate`, `Instant.dateTime`
+## 0.8.2
+- Instant constructors condensed: `Instant.utc`, `Instant`, `Instant.julianDate`, `Instant.dateTime`, `Instant.epochTime`
 - Removed `from` from a lot of constructors, heavily redundant (well, maybe not so redundant with the loss of `new`)
 - Added a `timeZone` override to TimeMachine.init() so you can supply a local `DateTimeZone` to Flutter if you something
   like `flutter_native_timezone` loaded as well.
