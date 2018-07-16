@@ -99,6 +99,7 @@ class TimeMachine  {
     // todo: remove CultureInfo.currentCulture
   }
 
+  // todo: the issue here is, Dart fails to compute the correct ZoneIntervalID where the offset isn't a whole hour -- CORRECT FOR THIS
   /// [DateTimeZone] provides the zone interval id for a given instant. We can correlate the (zone interval id, instant) pairs
   /// with known timezones and narrow down which timezone the local computer is in.
   ///
@@ -115,7 +116,7 @@ class TimeMachine  {
     var interval = new Interval(new Instant.utc(1900, 1, 1, 0, 0), nowInstant);
     var allZoneIntervals = <ZoneInterval>[];
     var allSpecialInstants = <Instant>[];
-    
+
     if (nowDateTime.timeZoneName.length > _maxZoneShortIdLength) {
       _longIdNames = true;
     }
@@ -124,7 +125,9 @@ class TimeMachine  {
     for (var zone in zones) {
       // first pass; todo: identify special instants with a high amount of diversity among timezones so we can get a better first pass
       if (_isTheSame(nowDateTime, zone.getZoneInterval(nowInstant))) {
-        allZoneIntervals.addAll(zone.getZoneIntervals(interval));
+        // todo: test me? ********************************************************************************************************************
+        // also: find and link the relevant issue to this!
+        allZoneIntervals.addAll(zone.getZoneIntervals(interval).where((z) => z.wallOffset.seconds.abs() % TimeConstants.secondsPerHour == 0));
         lessZones.add(zone);
       }
     }

@@ -14,7 +14,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 @internal
 abstract class IZonedDateTime {
-  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._trusted(offsetDateTime, zone); 
+  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._(offsetDateTime, zone); 
 }
 
 
@@ -42,7 +42,7 @@ class ZonedDateTime {
   final DateTimeZone zone;
 
   /// Internal constructor from pre-validated values.
-  ZonedDateTime._trusted(this._offsetDateTime, this.zone);
+  ZonedDateTime._(this._offsetDateTime, this.zone);
   
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
@@ -54,7 +54,7 @@ class ZonedDateTime {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
-    return new ZonedDateTime._trusted(_offsetDateTime, _zone);
+    return new ZonedDateTime._(_offsetDateTime, _zone);
   }
 
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
@@ -77,7 +77,7 @@ class ZonedDateTime {
       throw new ArgumentError("Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset");
     }
     var offsetDateTime = new OffsetDateTime(localDateTime, offset);
-    return new ZonedDateTime._trusted(offsetDateTime, zone);
+    return new ZonedDateTime._(offsetDateTime, zone);
   }
 
   /// Returns the earliest valid [ZonedDateTime] with the given local date.
@@ -277,7 +277,7 @@ class ZonedDateTime {
   /// Returns: The converted ZonedDateTime.
 
   ZonedDateTime withCalendar(CalendarSystem calendar) {
-    return new ZonedDateTime._trusted(_offsetDateTime.withCalendar(calendar), zone);
+    return new ZonedDateTime._(_offsetDateTime.withCalendar(calendar), zone);
   }
 
   /// Indicates whether the current object is equal to another object of the same type.

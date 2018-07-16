@@ -74,8 +74,6 @@ class Instant implements Comparable<Instant> {
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
 
-  
-
   factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
 
   factory Instant.dateTime(DateTime dateTime) {

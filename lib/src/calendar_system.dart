@@ -528,13 +528,13 @@ class CalendarSystem {
   }
 
   int _compare(YearMonthDay lhs, YearMonthDay rhs) {
-    //DebugValidateYearMonthDay(lhs);
-    //DebugValidateYearMonthDay(rhs);
+    assert(_validateYearMonthDay_(lhs));
+    assert(_validateYearMonthDay_(rhs));
     return _yearMonthDayCalculator.compare(lhs, rhs);
   }
 
   int _getDayOfYear(YearMonthDay yearMonthDay) {
-    //DebugValidateYearMonthDay(yearMonthDay);
+    assert(_validateYearMonthDay_(yearMonthDay));
     return _yearMonthDayCalculator.getDayOfYear(yearMonthDay);
   }
 
@@ -572,7 +572,6 @@ class CalendarSystem {
   /// calls as the object is immutable and thread-safe.<
   static final CalendarSystem julian = _GregorianJulianCalendars.julian;
 
-
   /// Returns a Coptic calendar system, which defines every fourth year as
   /// leap, much like the Julian calendar. The year is broken down into 12 months,
   /// each 30 days in length. An extra period at the end of the year is either 5
@@ -591,7 +590,6 @@ class CalendarSystem {
   /// calls as the object is immutable and thread-safe.</value>
   static CalendarSystem get coptic => _MiscellaneousCalendars.coptic;
 
-
   // todo: keep this `Bcl` version?
   /// Returns an Islamic calendar system equivalent to the one used by the BCL HijriCalendar.
   ///
@@ -601,7 +599,6 @@ class CalendarSystem {
   ///
   /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
   static CalendarSystem get islamicBcl => getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical);
-
 
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
   /// BCL `PersianCalendar` before .NET 4.6, and the sole Persian calendar in Time Machine 1.3.

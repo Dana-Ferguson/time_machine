@@ -132,41 +132,11 @@ It would look just like the VM example.
 
 ### DDC Specific Notes
 
-**Research in progress**: We don't get a compiler error in DDC 2 (like we do in DDC 1.24.3), but it erases the arguments.
-I've been unable to build a minimal test case for this behavior (other than a large library in aggregate).
+`toString` on many of the classes will not propagate `patternText` and `culture` parameters.
+`Instant` and `ZonedDateTime` currently have `toStringDDC` functions available to remedy this.
 
-```js
-// Instant.toString() via step through debugger
-dart.toString = function(obj) {
-  if (obj == null) return "null";
-  if (typeof obj == 'string') return obj;
-  return obj[$toString](); // <--- HERE. Y U Do Dis, DDC?
-};
+See [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) for more information.
 
-// this is what it looks like for Foo.toString();
-dart.notNull = function(x) {
-    if (x == null) dart.throwNullValueError();
-    return x;
-```
-
-This outputs the correct behavior in DDC. But, TimeMachine.toString([]) overloads, do not.
-
-```dart
-class Foo {
-  // Okay in Dart_VM 1.24 -- Okay in DartPad\Dart2JS
-  // not Okay in DDC 1.24 -- Okay in DDC 2.0.0-dev67
-  @override String toString([int x = 0, int y = 0, int z = 0]) 
-    => '${x + y+ x}';
-}
-
-void main() {
-  var foo = new Foo();
-  print(foo.toString());
-  print(foo.toString(1, 2, 3));
-}
-```
-
-`Instant` and `ZonedDateTime` currently have `toStringDDC` functions available. 
 
 `toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
 [contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today 
