@@ -33,16 +33,18 @@ abstract class Clock
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// a time zone, and a calendar system.
   ///
-  /// [clock]: Clock to use in the returned object.
-  /// [zone]: Time zone to use in the returned object.
-  /// [calendar]: Calendar to use in the returned object.
+  /// * [clock]: Clock to use in the returned object.
+  /// * [zone]: Time zone to use in the returned object.
+  /// * [calendar]: Calendar to use in the returned object.
+  ///
   /// Returns: A [ZonedClock] with the given clock, time zone and calendar system.
   ZonedClock inZone(DateTimeZone zone, [CalendarSystem calendar = null]) => new ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
 
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// using the UTC time zone and ISO calendar system.
   ///
-  /// [clock]: Clock to use in the returned object.
+  /// * [clock]: Clock to use in the returned object.
+  ///
   /// Returns: A [ZonedClock] with the given clock, in the UTC time zone and ISO calendar system.
   ZonedClock inUtc() => new ZonedClock(this, DateTimeZone.utc, CalendarSystem.iso);
 
@@ -50,12 +52,14 @@ abstract class Clock
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// in the TZDB mapping for the system default time zone time zone and the ISO calendar system.
   ///
-  /// [clock]: Clock to use in the returned object.
+  /// * [clock]: Clock to use in the returned object.
+  ///
   /// A `ZonedClock` in the system default time zone (using TZDB) and the ISO calendar system,
   /// using the system clock.
-  /// [DateTimeZoneNotFoundException]: The system default time zone is not mapped by
-  /// TZDB.
-  /// <seealso cref="DateTimeZoneProviders.Tzdb"/>
+  ///
+  /// * [DateTimeZoneNotFoundException]: The system default time zone is not mapped by
+  ///
+  /// see: [DateTimeZoneProviders.Tzdb]
   Future<ZonedClock> inTzdbSystemDefaultZone() async
   {
     var zone = await (await DateTimeZoneProviders.tzdb).getSystemDefault();
