@@ -49,7 +49,7 @@ abstract class ICalendarSystem {
 
   static YearMonthDayCalculator yearMonthDayCalculator(CalendarSystem calendarSystem) => calendarSystem._yearMonthDayCalculator;
 
-  static YearMonthDayCalendar getYearMonthDayCalendarFromDaysSinceEpoch(CalendarSystem calendarSystem, int daysSinceEpoch) => 
+  static YearMonthDayCalendar getYearMonthDayCalendarFromDaysSinceEpoch(CalendarSystem calendarSystem, int daysSinceEpoch) =>
       calendarSystem._getYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch);
 
   static int getDaysSinceEpoch(CalendarSystem calendarSystem, YearMonthDay yearMonthDay) => calendarSystem._getDaysSinceEpoch(yearMonthDay);
@@ -67,7 +67,7 @@ abstract class ICalendarSystem {
 
   static Era getEra(CalendarSystem calendar, int absoluteYear) => calendar._getEra(absoluteYear);
 
-  static DayOfWeek getDayOfWeek(CalendarSystem calendar, YearMonthDay yearMonthDay) => calendar._getDayOfWeek(yearMonthDay); 
+  static DayOfWeek getDayOfWeek(CalendarSystem calendar, YearMonthDay yearMonthDay) => calendar._getDayOfWeek(yearMonthDay);
 }
 
 /// A calendar system maps the non-calendar-specific "local time line" to human concepts
@@ -142,11 +142,12 @@ class CalendarSystem {
   /// system. It is not guaranteed that calling this method twice with the same identifier will return
   /// identical references, but the references objects will be equal.
   ///
-  /// [id]: The ID of the calendar system. This is case-sensitive.
+  /// * [id]: The ID of the calendar system. This is case-sensitive.
+  ///
   /// Returns: The calendar system with the given [id].
   ///
-  /// [KeyNotFoundException]: No calendar system for the specified ID can be found.
-  /// [NotSupportedException]: The calendar system with the specified ID is known, but not supported on this platform.
+  /// * [KeyNotFoundException]: No calendar system for the specified ID can be found.
+  /// * [NotSupportedException]: The calendar system with the specified ID is known, but not supported on this platform.
   static CalendarSystem forId(String id) {
     Preconditions.checkNotNull(id, 'id');
     CalendarSystem Function() factory = _idToFactoryMap[id];
@@ -206,13 +207,14 @@ class CalendarSystem {
     getIslamicId(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.astronomical): () => getIslamicCalendar(IslamicLeapYearPattern.habashAlHasib, IslamicEpoch.astronomical)
   };
 
+  // todo: is TimeMachine a good opportunity to drop this?
 
   /// Returns a calendar system that follows the rules of the ISO-8601 standard,
   /// which is compatible with Gregorian for all modern dates.
   ///
-  /// As of NoTime Machine 2.0, this calendar system is equivalent to [gregorian].
+  /// This calendar system is equivalent to [gregorian].
   /// The only areas in which the calendars differed were around centuries, and the members
-  /// relating to those differences were removed in Time Machine 2.0.
+  /// relating to those differences were removed.
   /// The distinction between Gregorian and ISO has been maintained for the sake of simplicity, compatibility
   /// and consistency.
   static final CalendarSystem iso = _isoCalendarSystem;
@@ -229,7 +231,8 @@ class CalendarSystem {
   /// which is a domain algorithm presumably equivalent to that given in the Calendrical Calculations book
   /// by the same authors (Nachum Dershowitz and Edward Reingold).
   ///
-  /// [monthNumbering]: The month numbering system to use
+  /// * [monthNumbering]: The month numbering system to use
+  ///
   /// Returns: A Hebrew calendar system for the given month numbering.
   static CalendarSystem getHebrewCalendar(HebrewMonthNumbering monthNumbering)
   {
@@ -287,13 +290,12 @@ class CalendarSystem {
   /// Leap years occur according to a 30 year cycle. There are four recognised
   /// patterns of leap years in the 30 year cycle:
   ///
-  /// <list type="table">
-  ///    <listheader><term>Origin</term><description>Leap years</description></listheader>
-  ///    <item><term>Kūshyār ibn Labbān</term><description>2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29</description></item>
-  ///    <item><term>al-Fazārī</term><description>2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29</description></item>
-  ///    <item><term>Fātimid (also known as Misri or Bohra)</term><description>2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29</description></item>
-  ///    <item><term>Habash al-Hasib</term><description>2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30</description></item>
-  /// </list>
+  /// Origin | Leap years
+  /// -|-
+  /// Kūshyār ibn Labbān | 2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29
+  /// al-Fazārī | 2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29
+  /// Fātimid (also known as Misri or Bohra) | 2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29
+  /// Habash al-Hasib | 2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30
   ///
   /// The leap year pattern to use is determined from the first parameter to this factory method.
   /// The second parameter determines which epoch is used - the "astronomical" or "Thursday" epoch
@@ -303,8 +305,9 @@ class CalendarSystem {
   /// the ISO calendar. This correct start of day is at sunset on the previous
   /// day, however this cannot readily be modelled and has been ignored.
   ///
-  /// [leapYearPattern]: The pattern of years in the 30-year cycle to consider as leap years
-  /// [epoch]: The kind of epoch to use (astronomical or civil)
+  /// * [leapYearPattern]: The pattern of years in the 30-year cycle to consider as leap years
+  /// * [epoch]: The kind of epoch to use (astronomical or civil)
+  ///
   /// A suitable Islamic calendar reference; the same reference may be returned by several
   /// calls as the object is immutable and thread-safe.
   static CalendarSystem getIslamicCalendar(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch)
@@ -338,31 +341,27 @@ class CalendarSystem {
   /// the identifiers provided here are specific to Time Machine, and are not guaranteed to interoperate with any other
   /// date and time API.
   ///
-  /// <list type="table">
-  ///   <listheader>
-  ///     <term>Calendar ID</term>
-  ///     <description>Equivalent factory method or property</description>
-  ///   </listheader>
-  ///   <item><term>ISO</term><description>[CalendarSystem.iso]</description></item>
-  ///   <item><term>Gregorian</term><description>[CalendarSystem.gregorian]</description></item>
-  ///   <item><term>Coptic</term><description>[CalendarSystem.coptic]</description></item>
-  ///   <item><term>Wondrous</term><description>[CalendarSystem.badi]</description></item>
-  ///   <item><term>Julian</term><description>[CalendarSystem.julian]</description></item>
-  ///   <item><term>Hijri Civil-Indian</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)</description></item>
-  ///   <item><term>Hijri Civil-Base15</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)</description></item>
-  ///   <item><term>Hijri Civil-Base16</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)</description></item>
-  ///   <item><term>Hijri Civil-HabashAlHasib</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil)</description></item>
-  ///   <item><term>Hijri Astronomical-Indian</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical)</description></item>
-  ///   <item><term>Hijri Astronomical-Base15</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)</description></item>
-  ///   <item><term>Hijri Astronomical-Base16</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)</description></item>
-  ///   <item><term>Hijri Astronomical-HabashAlHasib</term><description>[CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)</description></item>
-  ///   <item><term>Persian Simple</term><description>[CalendarSystem.persianSimple]</description></item>
-  ///   <item><term>Persian Arithmetic</term><description>[CalendarSystem.persianArithmetic]</description></item>
-  ///   <item><term>Persian Astronomical</term><description>[CalendarSystem.persianAstronomical]</description></item>
-  ///   <item><term>Um Al Qura</term><description>[CalendarSystem.UmAlQura]()</description></item>
-  ///   <item><term>Hebrew Civil</term><description>[CalendarSystem.hebrewCivil]</description></item>
-  ///   <item><term>Hebrew Scriptural</term><description>[CalendarSystem.hebrewScriptural]</description></item>
-  /// </list>
+  /// Calendar ID | Equivalent factory method or property
+  /// -|-
+  /// ISO | [CalendarSystem.iso]
+  /// Gregorian | [CalendarSystem.gregorian]
+  /// Coptic | [CalendarSystem.coptic]
+  /// Wondrous | [CalendarSystem.badi]
+  /// Julian | [CalendarSystem.julian]
+  /// Hijri Civil-Indian | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Indian, IslamicEpoch.Civil)
+  /// Hijri Civil-Base15 | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base15, IslamicEpoch.Civil)
+  /// Hijri Civil-Base16 | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base16, IslamicEpoch.Civil)
+  /// Hijri Civil-HabashAlHasib | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Civil)
+  /// Hijri Astronomical-Indian | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Indian, IslamicEpoch.Astronomical)
+  /// Hijri Astronomical-Base15 | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base15, IslamicEpoch.Astronomical)
+  /// Hijri Astronomical-Base16 | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.Base16, IslamicEpoch.Astronomical)
+  /// Hijri Astronomical-HabashAlHasib | [CalendarSystem.GetIslamicCalendar](IslamicLeapYearPattern.HabashAlHasib, IslamicEpoch.Astronomical)
+  /// Persian Simple | [CalendarSystem.persianSimple]
+  /// Persian Arithmetic | [CalendarSystem.persianArithmetic]
+  /// Persian Astronomical | [CalendarSystem.persianAstronomical]
+  /// Um Al Qura | [CalendarSystem.UmAlQura]()
+  /// Hebrew Civil | [CalendarSystem.hebrewCivil]
+  /// Hebrew Scriptural | [CalendarSystem.hebrewScriptural]
   final String id;
 
 
@@ -402,11 +401,13 @@ class CalendarSystem {
   /// year is the year that is used throughout the API; year-of-era is typically used primarily when formatting
   /// and parsing date values to and from text.
   ///
-  /// [yearOfEra]: The year within the era.
-  /// [era]: The era in which to consider the year
+  /// * [yearOfEra]: The year within the era.
+  /// * [era]: The era in which to consider the year
+  ///
   /// Returns: The absolute year represented by the specified year of era.
-  /// [ArgumentOutOfRangeException]: [yearOfEra] is out of the range of years for the given era.
-  /// [ArgumentException]: [era] is not an era used in this calendar.
+  ///
+  /// * [ArgumentOutOfRangeException]: [yearOfEra] is out of the range of years for the given era.
+  /// * [ArgumentException]: [era] is not an era used in this calendar.
   int getAbsoluteYear(int yearOfEra, Era era) => _eraCalculator.getAbsoluteYear(yearOfEra, era);
 
   /// Returns the maximum valid year-of-era in the given era.
@@ -415,9 +416,12 @@ class CalendarSystem {
   /// part of the returned year falls within the given era. It is also possible that
   /// the returned value represents the earliest year of the era rather than the latest
   /// year. (See the BC era in the Gregorian calendar, for example.)
-  /// [era]: The era in which to find the greatest year
+  ///
+  /// * [era]: The era in which to find the greatest year
+  ///
   /// Returns: The maximum valid year in the given era.
-  /// [ArgumentException]: [era] is not an era used in this calendar.
+  ///
+  /// * [ArgumentException]: [era] is not an era used in this calendar.
   int getMaxYearOfEra(Era era) => _eraCalculator.getMaxYearOfEra(era);
 
   /// Returns the minimum valid year-of-era in the given era.
@@ -426,9 +430,12 @@ class CalendarSystem {
   /// part of the returned year falls within the given era. It is also possible that
   /// the returned value represents the latest year of the era rather than the earliest
   /// year. (See the BC era in the Gregorian calendar, for example.)
-  /// [era]: The era in which to find the greatest year
+  ///
+  /// * [era]: The era in which to find the greatest year
+  ///
   /// Returns: The minimum valid year in the given eraera.
-  /// [ArgumentException]: [era] is not an era used in this calendar.
+  ///
+  /// * [ArgumentException]: [era] is not an era used in this calendar.
   int getMinYearOfEra(Era era) => _eraCalculator.getMinYearOfEra(era);
 
   final YearMonthDayCalculator _yearMonthDayCalculator;
@@ -439,8 +446,6 @@ class CalendarSystem {
   }
 
   /// Converts this calendar system to text by simply returning its unique ID.
-  ///
-  /// Returns: The ID of this calendar system.
   @override String toString() => id;
 
   /// Returns the number of days since the Unix epoch (1970-01-01 ISO) for the given date.
@@ -451,7 +456,8 @@ class CalendarSystem {
 
   /// Returns the IsoDayOfWeek corresponding to the day of week for the given year, month and day.
   ///
-  /// [yearMonthDay]: The year, month and day to use to find the day of the week
+  /// * [yearMonthDay]: The year, month and day to use to find the day of the week
+  ///
   /// Returns: The day of the week as an IsoDayOfWeek
   DayOfWeek _getDayOfWeek(YearMonthDay yearMonthDay) {
     // DebugValidateYearMonthDay(yearMonthDay);
@@ -465,9 +471,11 @@ class CalendarSystem {
 
   /// Returns the number of days in the given year.
   ///
-  /// [year]: The year to determine the number of days in
-  /// [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
+  /// * [year]: The year to determine the number of days in
+  ///
   /// Returns: The number of days in the given year.
+  ///
+  /// * [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
   int getDaysInYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
     return _yearMonthDayCalculator.getDaysInYear(year);
@@ -476,11 +484,13 @@ class CalendarSystem {
 
   /// Returns the number of days in the given month within the given year.
   ///
-  /// [year]: The year in which to consider the month
-  /// [month]: The month to determine the number of days in
-  /// [ArgumentOutOfRangeException]: The given year / month combination
-  /// is invalid for this calendar.
+  /// * [year]: The year in which to consider the month
+  /// * [month]: The month to determine the number of days in
+  ///
   /// Returns: The number of days in the given month and year.
+  ///
+  /// * [ArgumentOutOfRangeException]: The given year / month combination
+  /// is invalid for this calendar.
   int getDaysInMonth(int year, int month) {
     // Simplest way to validate the year and month. Assume it's quick enough to validate the day...
     _validateYearMonthDay(year, month, 1);
@@ -490,11 +500,14 @@ class CalendarSystem {
 
   /// Returns whether or not the given year is a leap year in this calendar.
   ///
-  /// [year]: The year to consider.
-  /// [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
+  /// * [year]: The year to consider.
+  ///
+  /// Returns: True if the given year is a leap year; false otherwise.
+  ///
+  /// * [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
+  ///
   /// Note that some implementations may return a value rather than throw this exception. Failure to throw an
   /// exception should not be treated as an indication that the year is valid.
-  /// Returns: True if the given year is a leap year; false otherwise.
   bool isLeapYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
     return _yearMonthDayCalculator.isLeapYear(year);
@@ -507,12 +520,15 @@ class CalendarSystem {
   /// number is valid for the given year. This does not necessarily mean that the first month of the year
   /// is 1, however. (See the Hebrew calendar system using the scriptural month numbering system for example.)
   ///
-  /// [year]: The year to consider.
-  /// [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
+  /// * [year]: The year to consider.
+  ///
+  /// Returns: The maximum month number within the given year.
+  ///
+  /// * [ArgumentOutOfRangeException]: The given year is invalid for this calendar.
+  ///
   /// Note that some implementations may return a month rather than throw this exception (for example, if all
   /// years have the same number of months in this calendar system). Failure to throw an exception should not be
   /// treated as an indication that the year is valid.
-  /// Returns: The maximum month number within the given year.
   int getMonthsInYear(int year) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
     return _yearMonthDayCalculator.getMonthsInYear(year);
@@ -587,9 +603,6 @@ class CalendarSystem {
   /// the ISO calendar. Some references indicate that a Coptic day starts at
   /// sunset on the previous ISO day, but this has not been confirmed and is not
   /// implemented.
-  ///
-  /// <value>A suitable Coptic calendar reference; the same reference may be returned by several
-  /// calls as the object is immutable and thread-safe.</value>
   static CalendarSystem get coptic => _MiscellaneousCalendars.coptic;
 
   // todo: keep this `Bcl` version?
@@ -599,16 +612,18 @@ class CalendarSystem {
   /// [IslamicEpoch.Astronomical] epoch. This is equivalent to HijriCalendar
   /// when the `HijriCalendar.HijriAdjustment` is 0.
   ///
-  /// <seealso cref="CalendarSystem.GetIslamicCalendar"/>
+  /// see: [CalendarSystem.GetIslamicCalendar]
   static CalendarSystem get islamicBcl => getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.astronomical);
 
+  // todo: keep?
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
   /// BCL `PersianCalendar` before .NET 4.6, and the sole Persian calendar in Time Machine 1.3.
   ///
   /// This implementation uses a simple 33-year leap cycle, where years  1, 5, 9, 13, 17, 22, 26, and 30
   /// in each cycle are leap years.
   static CalendarSystem get persianSimple => _PersianCalendars.simple;
-  
+
+  // todo: keep?
   /// Returns a Persian (also known as Solar Hijri) calendar system implementing the behaviour of the
   /// BCL `PersianCalendar` from .NET 4.6 onwards (and Windows 10), and the astronomical
   /// system described in Wikipedia and Calendrical Calculations.
@@ -628,15 +643,13 @@ class CalendarSystem {
   /// Returns a Hebrew calendar system using the civil month numbering,
   /// equivalent to the one used by the BCL HebrewCalendar.
   ///
-  /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
-  /// <value>A Hebrew calendar system using the civil month numbering, equivalent to the one used by the
-  /// BCL.</value>
+  /// see: [CalendarSystem.GetHebrewCalendar]
   static CalendarSystem get hebrewCivil => getHebrewCalendar(HebrewMonthNumbering.civil);
 
 
   /// Returns a Hebrew calendar system using the scriptural month numbering.
   ///
-  /// <seealso cref="CalendarSystem.GetHebrewCalendar"/>
+  /// see: [CalendarSystem.GetHebrewCalendar]
   static CalendarSystem get hebrewScriptural => getHebrewCalendar(HebrewMonthNumbering.scriptural);
 
 
@@ -645,7 +658,6 @@ class CalendarSystem {
   ///
   /// This is a tabular calendar, relying on pregenerated data.
   static CalendarSystem get umAlQura => _MiscellaneousCalendars.umAlQura;
-
 }
 
 // "Holder" classes for lazy initialization of calendar systems
