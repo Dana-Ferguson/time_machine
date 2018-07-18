@@ -26,9 +26,10 @@ class AnnualDate implements Comparable<AnnualDate> {
 
   /// Constructs an instance for the given month and day in the ISO calendar.
   ///
-  /// [month]: The month of year.
-  /// [day]: The day of month.
-  /// [ArgumentOutOfRangeException]: The parameters do not form a valid date.
+  /// * [month]: The month of year.
+  /// * [day]: The day of month.
+  ///
+  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date.
   /// (February 29th is considered valid.)
   AnnualDate([int month = 1, int day = 1])
     // See comment below for why this is using year 1, and why that's okay even for February 29th.
@@ -51,7 +52,8 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// original month and day is valid without truncation in a particular year,
   /// use [IsValidYear]
   ///
-  /// [year]: The year component of the required date.
+  /// * [year]: The year component of the required date.
+  ///
   /// Returns: A date in the given year, suitable for this annual date.
   LocalDate inYear(int year) {
     Preconditions.checkArgumentRange('year', year,
@@ -65,16 +67,15 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// value, without any truncation. This will always return `true` except
   /// for values representing February 29th, where the specified year is a non leap year.
   ///
-  /// [year]: The year to test for validity
-  /// `true` if the current value occurs within the given year;
+  /// * [year]: The year to test for validity
+  ///
+  /// Returns: `true` if the current value occurs within the given year;
   /// `false` otherwise.
   bool isValidYear(int year) {
     return month != 2 || day != 29 || CalendarSystem.iso.isLeapYear(year);
   }
 
   /// Returns a hash code for this annual date.
-  ///
-  /// Returns: A hash code for this annual date.
   @override int get hashCode => _value.hashCode;
 
   /// Returns a [String] that represents this instance.
@@ -87,7 +88,8 @@ class AnnualDate implements Comparable<AnnualDate> {
 
   /// Indicates whether this annual date is earlier, later or the same as another one.
   ///
-  /// [other]: The other annual date to compare this one with
+  /// * [other]: The other annual date to compare this one with
+  ///
   /// A value less than zero if this annual date is earlier than [other];
   /// zero if this time is the same as [other]; a value greater than zero if this annual date is
   /// later than [other].
@@ -98,19 +100,22 @@ class AnnualDate implements Comparable<AnnualDate> {
 
   /// Compares two [AnnualDate] values for equality.
   ///
-  /// [lhs]: The first value to compare
-  /// [rhs]: The second value to compare
+  /// * [this]: The first value to compare
+  /// * [rhs]: The second value to compare
+  ///
   /// Returns: True if the two dates are the same; false otherwise
   bool operator ==(dynamic rhs) => rhs is AnnualDate && _value == rhs._value;
 
   /// Compares two annual dates to see if the left one is strictly earlier than the right
   /// one.
   ///
-  /// [lhs]: First operand of the comparison
-  /// [rhs]: Second operand of the comparison
-  /// [ArgumentException]: The calendar system of [rhs] is not the same
-  /// as the calendar of [lhs].
-  /// Returns: true if the [lhs] is strictly earlier than [rhs], false otherwise.
+  /// * [this]: First operand of the comparison
+  /// * [rhs]: Second operand of the comparison
+  ///
+  /// Returns: true if the [this] is strictly earlier than [this], false otherwise.
+  ///
+  /// * [ArgumentException]: The calendar system of [this] is not the same
+  /// as the calendar of [this].
   bool operator <(AnnualDate rhs) {
     return compareTo(rhs) < 0;
   }
@@ -118,9 +123,10 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// Compares two annual dates to see if the left one is earlier than or equal to the right
   /// one.
   ///
-  /// [lhs]: First operand of the comparison
-  /// [rhs]: Second operand of the comparison
-  /// Returns: true if the [lhs] is earlier than or equal to [rhs], false otherwise.
+  /// * [lhs]: First operand of the comparison
+  /// * [rhs]: Second operand of the comparison
+  ///
+  /// Returns: true if the [this] is earlier than or equal to [this], false otherwise.
   bool operator <=(AnnualDate rhs) {
     return compareTo(rhs) <= 0;
   }
@@ -128,9 +134,10 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// Compares two annual dates to see if the left one is strictly later than the right
   /// one.
   ///
-  /// [lhs]: First operand of the comparison
-  /// [rhs]: Second operand of the comparison
-  /// Returns: true if the [lhs] is strictly later than [rhs], false otherwise.
+  /// * [this]: First operand of the comparison
+  /// * [rhs]: Second operand of the comparison
+  ///
+  /// Returns: true if the [this] is strictly later than [rhs], false otherwise.
   bool operator >(AnnualDate rhs) {
     return compareTo(rhs) > 0;
   }
@@ -138,9 +145,10 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// Compares two annual dates to see if the left one is later than or equal to the right
   /// one.
   ///
-  /// [lhs]: First operand of the comparison
-  /// [rhs]: Second operand of the comparison
-  /// Returns: true if the [lhs] is later than or equal to [rhs], false otherwise.
+  /// * [this]: First operand of the comparison
+  /// * [rhs]: Second operand of the comparison
+  ///
+  /// Returns: true if the [this] is later than or equal to [rhs], false otherwise.
   bool operator >=(AnnualDate rhs) {
     return compareTo(rhs) >= 0;
   }
