@@ -10,7 +10,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 abstract class IDateTimeZone {
   static bool isFixed(DateTimeZone dateTimeZone) => dateTimeZone._isFixed;
-  
+
   // todo: should this just be a TimeConstant?
   /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
   /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.getZoneOrNull], but otherwise
@@ -69,7 +69,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   static const int _fixedZoneCacheMinimumSeconds = -_fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
   static const int _fixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
   static final List<DateTimeZone> _fixedZoneCache = _buildFixedZoneCache();
-  
+
   /// Gets the local [DateTimeZone] of the local machine if the [DateTimeZoneProviders.defaultProvider] is defined, or [utc].
   static DateTimeZone get local => DateTimeZoneProviders.defaultProvider?.getCachedSystemDefault() ?? utc;
 
@@ -82,7 +82,8 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// successive requests for the same offset; however, all instances returned for a given offset will compare
   /// as equal.
   ///
-  /// [offset]: The offset for the returned time zone
+  /// * [offset]: The offset for the returned time zone
+  ///
   /// Returns: A fixed time zone with the given offset.
   factory DateTimeZone.forOffset(Offset offset) {
     int seconds = offset.seconds;
@@ -99,10 +100,10 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
 
   /// Initializes a new instance of the [DateTimeZone] class.
   ///
-  /// [id]: The unique id of this time zone.
-  /// [isFixed]: Set to `true` if this time zone has no transitions.
-  /// [minOffset]: Minimum offset applied within this zone
-  /// [maxOffset]: Maximum offset applied within this zone
+  /// * [id]: The unique id of this time zone.
+  /// * [isFixed]: Set to `true` if this time zone has no transitions.
+  /// * [minOffset]: Minimum offset applied within this zone
+  /// * [maxOffset]: Maximum offset applied within this zone
   @protected DateTimeZone(String id, bool isFixed, Offset minOffset, Offset maxOffset)
       : this.id = Preconditions.checkNotNull(id, 'id'),
         this._isFixed = isFixed,
@@ -131,15 +132,13 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Gets the greatest (most positive) offset within this time zone, over all time.
   final Offset maxOffset;
 
-// #region Core abstract/virtual methods
-
   /// Returns the offset from UTC, where a positive duration indicates that local time is
   /// later than UTC. In other words, local time = UTC + offset.
   ///
   /// This is mostly a convenience method for calling `GetZoneInterval(instant).WallOffset`,
   /// although it can also be overridden for more efficiency.
   ///
-  /// [instant]: The instant for which to calculate the offset.
+  /// * [instant]: The instant for which to calculate the offset.
   ///
   /// The offset from UTC at the specified instant.
   @virtual Offset getUtcOffset(Instant instant) => getZoneInterval(instant).wallOffset;
@@ -150,9 +149,11 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   ///
   /// This will always return a valid zone interval, as time zones cover the whole of time.
   ///
-  /// [instant]: The [Instant] to query.
+  /// * [instant]: The [Instant] to query.
+  ///
   /// Returns: The defined [TimeZones.ZoneInterval].
-  /// <seealso cref="GetZoneIntervals(Interval)"/>
+  ///
+  /// see:[getZoneIntervals]
   ZoneInterval getZoneInterval(Instant instant);
 
 
@@ -165,7 +166,8 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// As an alternative, consider [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)], which uses a caller-provided strategy to
   /// convert the [ZoneLocalMapping] returned here to a [ZonedDateTime].
   ///
-  /// [localDateTime]: The local date and time to map in this time zone.
+  /// * [localDateTime]: The local date and time to map in this time zone.
+  ///
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
   @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
     LocalInstant localInstant = ILocalDateTime.toLocalInstant(localDateTime);
@@ -270,8 +272,6 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   }
 
   /// Returns the ID of this time zone.
-  ///
-  /// The ID of this time zone.
   @override String toString() => id;
 
   /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
@@ -292,10 +292,13 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// This method is simply a convenience method for calling [GetZoneIntervals(Interval)] without
   /// explicitly static constructing the interval beforehand.
   ///
-  /// [start]: Inclusive start point of the interval for which to retrieve zone intervals.
-  /// [end]: Exclusive end point of the interval for which to retrieve zone intervals.
-  /// [ArgumentOutOfRangeException]: [end] is earlier than [start].
+  /// * [start]: Inclusive start point of the interval for which to retrieve zone intervals.
+  /// * [end]: Exclusive end point of the interval for which to retrieve zone intervals.
+  ///
   /// Returns: A sequence of zone intervals covering the given interval.
+  ///
+  /// * [ArgumentOutOfRangeException]: [end] is earlier than [start].
+  ///
   /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervalsFromTo(Instant start, Instant end) =>
   //    // The static constructor performs all the validation we need.
@@ -310,9 +313,11 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// The first and last zone intervals are likely to also cover instants outside the given interval;
   /// the zone intervals returned are not truncated to match the start and end points.
   ///
-  /// [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
+  /// * [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
   /// infinite in both directions).
+  ///
   /// Returns: A sequence of zone intervals covering the given interval.
+  ///
   /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervals(Interval interval) sync* {
     var current = interval.hasStart ? interval.start : Instant.minValue;
@@ -339,10 +344,9 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// [ZoneEqualityComparer.Options.MatchStartAndEndTransitions] option does not affect
   /// the intervals returned.
   ///
-  /// [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
+  /// * [interval]: Interval to find zone intervals for. This is allowed to be unbounded (i.e.
   /// infinite in both directions).
-  /// [options]: 
-  /// Returns: 
+  /// * [options]:
   // todo: merge with regular getZoneIntervals as a custom parameter
   Iterable<ZoneInterval> getZoneIntervalsOptions(Interval interval, ZoneEqualityComparerOptions options) {
     if ((options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
