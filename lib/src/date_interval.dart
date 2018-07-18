@@ -21,19 +21,20 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 class DateInterval {
   /// Gets the start date of the interval.
   final LocalDate start;
-  
+
   /// Gets the end date of the interval.
   final LocalDate end;
-  
+
   /// Constructs a date interval from a start date and an end date, both of which are included
   /// in the interval.
   ///
-  /// [start]: Start date of the interval
-  /// [end]: End date of the interval
-  /// [ArgumentError]: [end] is earlier than [start]
-  /// or the two dates are in different calendars.
+  /// * [start]: Start date of the interval
+  /// * [end]: End date of the interval
   ///
   /// Returns: A date interval between the specified dates.
+  ///
+  /// * [ArgumentError]: [end] is earlier than [start]
+  /// or the two dates are in different calendars.
   DateInterval(this.start, this.end) {
     // todo: will this equivalence work out?
     Preconditions.checkArgument(start.calendar == end.calendar, 'end', "Calendars of start and end dates must be the same.");
@@ -42,16 +43,15 @@ class DateInterval {
 
 
   /// Returns the hash code for this interval, consistent with [Equals(DateInterval)].
-  ///
-  /// Returns: The hash code for this interval.
   @override int get hashCode => hash2(start, end);
 
   /// Compares two [DateInterval] values for equality.
   ///
   /// Date intervals are equal if they have the same start and end dates.
   ///
-  /// [lhs]: The first value to compare
-  /// [rhs]: The second value to compare
+  /// * [this]: The first value to compare
+  /// * [rhs]: The second value to compare
+  ///
   /// Returns: True if the two date intervals have the same properties; false otherwise.
   bool operator ==(dynamic rhs) => rhs is DateInterval && start == rhs.start && end == rhs.end;
 
@@ -60,7 +60,8 @@ class DateInterval {
   ///
   /// Date intervals are equal if they have the same start and end dates.
   ///
-  /// [other]: The date interval to compare this one with.
+  /// * [other]: The date interval to compare this one with.
+  ///
   /// Returns: True if this date interval has the same same start and end date as the one specified.
   bool equals(DateInterval other) => this == other;
 
@@ -68,10 +69,12 @@ class DateInterval {
   /// that the date is not earlier than the start date, and not later than the end
   /// date.
   ///
-  /// [date]: The date to check for containment within this interval.
-  /// [ArgumentException]: [date] is not in the same
-  /// calendar as the start and end date of this interval.
+  /// * [date]: The date to check for containment within this interval.
+  ///
   /// Returns: `true` if [date] is within this interval; `false` otherwise.
+  ///
+  /// * [ArgumentException]: [date] is not in the same
+  /// calendar as the start and end date of this interval.
   bool contains(LocalDate date) {
     if (date == null) throw new ArgumentError.notNull('date');
     Preconditions.checkArgument(date.calendar == start.calendar, 'date', "The date to check must be in the same calendar as the start and end dates");
@@ -84,10 +87,12 @@ class DateInterval {
   ///
   /// An interval contains another interval with same start and end dates, or itself.
   ///
-  /// [interval]: The interval to check for containment within this interval.
-  /// [ArgumentException]: <paramref name="interval" /> uses a different
-  /// calendar to this date interval.
+  /// * [interval]: The interval to check for containment within this interval.
+  ///
   /// Returns: `true` if [interval] is within this interval; `false` otherwise.
+  ///
+  /// [ArgumentException]: [interval] uses a different
+  /// calendar to this date interval.
   bool containsInterval(DateInterval interval) {
     _validateInterval(interval);
     return contains(interval.start) && contains(interval.end);
@@ -99,10 +104,10 @@ class DateInterval {
     // Period.DaysBetween will give us the exclusive result, so we need to add 1
     // to include the end date.
     IPeriod.daysBetween(start, end) + 1;
-  
+
   /// Gets the calendar system of the dates in this interval.
   CalendarSystem get calendar => start.calendar;
-  
+
   /// Returns a string representation of this interval.
   ///
   /// A string representation of this interval, as `[start, end]`,
@@ -115,13 +120,12 @@ class DateInterval {
 
   /// Returns the intersection between the given interval and this interval.
   ///
-  /// [interval]: 
-  /// The specified interval to intersect with this one.
+  /// * [interval]: The specified interval to intersect with this one.
   ///
   /// A [DateInterval] corresponding to the intersection between the given interval and the current
   /// instance. If there is no intersection, a null reference is returned.
   ///
-  /// [ArgumentException]: <paramref name="interval" /> uses a different
+  /// * [ArgumentException]: [interval] uses a different
   /// calendar to this date interval.
   DateInterval intersection(DateInterval interval) {
     return containsInterval(interval) ? interval
@@ -134,12 +138,12 @@ class DateInterval {
 
   /// Returns the union between the given interval and this interval, as long as they're overlapping or contiguous.
   ///
-  /// [interval]: The specified interval from which to generate the union interval.
+  /// * [interval]: The specified interval from which to generate the union interval.
   ///
   /// A [DateInterval] corresponding to the union between the given interval and the current
   /// instance, in the case the intervals overlap or are contiguous; a null reference otherwise.
   ///
-  /// [ArgumentException]: <paramref name="interval" /> uses a different calendar to this date interval.
+  /// * [ArgumentException]: [interval] uses a different calendar to this date interval.
   DateInterval union(DateInterval interval) {
     _validateInterval(interval);
 

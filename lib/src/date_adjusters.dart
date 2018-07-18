@@ -102,7 +102,7 @@ class DateAdjusters {
   /// This is the adjuster equivalent of [LocalDate.previous].
   ///
   /// * [dayOfWeek]: The day-of-week to adjust dates to.
-  /// 
+  ///
   /// An adjuster which advances a date to the previous occurrence of the
   /// specified day-of-week.
   static LocalDate Function(LocalDate) previous(DayOfWeek dayOfWeek) {
