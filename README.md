@@ -135,7 +135,8 @@ It would look just like the VM example.
 `toString` on many of the classes will not propagate `patternText` and `culture` parameters.
 `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available to remedy this.
 
-See [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) for more information.
+See [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) for more information. The [fix](https://dart-review.googlesource.com/c/sdk/+/65282)
+exists, now we just wait for it to hit a live build.
 
 
 `toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
