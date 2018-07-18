@@ -90,7 +90,7 @@ void Index_Setter_InvalidUnits()
 void Build_SingleUnit() {
   Period period = (new PeriodBuilder()
     ..hours = 10).build();
-  Period expected = new Period.fromHours(10);
+  Period expected = new Period(hours: 10);
   expect(expected, period);
 }
 
@@ -99,7 +99,7 @@ void Build_MultipleUnits() {
   Period period = (new PeriodBuilder()
     ..days = 5
     ..minutes = -10).build();
-  Period expected = new Period.fromDays(5) + new Period.fromMinutes(-10);
+  Period expected = new Period(days: 5) + new Period(minutes: -10);
   expect(expected, period);
 }
 

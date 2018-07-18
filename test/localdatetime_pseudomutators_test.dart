@@ -328,7 +328,7 @@ void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 void Operator_MethodEquivalents()
 {
   LocalDateTime start = new LocalDateTime(2011, 1, 1, 15, 25, 30).plusNanoseconds(123456789);
-  Period period = new Period.fromHours(1) + new Period.fromDays(1);
+  Period period = new Period(hours: 1) + new Period(days: 1);
   LocalDateTime end = start + period;
   expect(start + period, LocalDateTime.add(start, period));
   expect(start + period, start.plus(period));

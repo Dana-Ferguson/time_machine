@@ -43,7 +43,6 @@ abstract class ITime {
   static const int maxMillis = Platform.intMaxValueJS;
   static const int minMillis = Platform.intMinValueJS; // -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
-  static bool isInt64Representable(Time span) => span._isInt64Representable;
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
   
   static int floorSeconds(Time span) => span._floorSeconds;
@@ -363,13 +362,5 @@ class Time implements Comparable<Time> {
     if (other == null) return 1;
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
-  }
-
-  bool get _isInt64Representable {
-    if (Platform.intMaxValue / TimeConstants.nanosecondsPerMillisecond < _milliseconds) {
-      return false;
-    }
-
-    return true;
   }
 }

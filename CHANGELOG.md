@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.3
+- Removed all the `Period.from*` constructors, added a named constructor, constructor 
+`const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
+this.hours: 0, this.minutes: 0, this.seconds: 0,
+this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});` instead of `Period.fromYears(int years)`.
+
 ## 0.8.2
 - Instant constructors condensed: `Instant.utc`, `Instant`, `Instant.julianDate`, `Instant.dateTime`, `Instant.epochTime`
 - Removed `from` from a lot of constructors, heavily redundant (well, maybe not so redundant with the loss of `new`)

@@ -518,13 +518,15 @@ class CalendarSystem {
     return _yearMonthDayCalculator.getMonthsInYear(year);
   }
 
-  void _validateYearMonthDay(int year, int month, int day) {
+  bool _validateYearMonthDay(int year, int month, int day) {
     _yearMonthDayCalculator.validateYearMonthDay(year, month, day);
+    return true;
   }
 
   // todo: name
-  void _validateYearMonthDay_(YearMonthDay ymd) {
+  bool _validateYearMonthDay_(YearMonthDay ymd) {
     _yearMonthDayCalculator.validateYearMonthDay(ymd.year, ymd.month, ymd.day);
+    return true;
   }
 
   int _compare(YearMonthDay lhs, YearMonthDay rhs) {

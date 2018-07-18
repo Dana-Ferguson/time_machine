@@ -100,10 +100,10 @@ void FromNanosecondsSinceMidnight_RangeChecks()
 void SinceMidnight_Valid()
 {
   expect(LocalTime.midnight, new LocalTime.sinceMidnight(Time.zero));
-  expect(LocalTime.midnight - new Period.fromSeconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneSecond));
-  expect(LocalTime.midnight - new Period.fromMilliseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMillisecond));
-  expect(LocalTime.midnight - new Period.fromMicroseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMicrosecond));
-  expect(LocalTime.midnight - new Period.fromNanoseconds(1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneNanosecond));
+  expect(LocalTime.midnight - new Period(seconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneSecond));
+  expect(LocalTime.midnight - new Period(milliseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMillisecond));
+  expect(LocalTime.midnight - new Period(microseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMicrosecond));
+  expect(LocalTime.midnight - new Period(nanoseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneNanosecond));
 }
 
 @Test()

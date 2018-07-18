@@ -45,7 +45,7 @@ abstract class IPeriod {
   static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
     int hours: 0, int minutes: 0, int seconds: 0,
     int milliseconds: 0, int microseconds: 0, int nanoseconds: 0}) => 
-      new Period._(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, 
+      new Period(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, 
           milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds);
 
   static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);  
@@ -83,7 +83,7 @@ class Period {
 
 
   /// A period containing only zero-valued properties.
-  static const Period zero = const Period._();
+  static const Period zero = const Period();
 
 
   /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -165,81 +165,9 @@ class Period {
   final int years;
 
   /// Creates a period with the given time values.
-  const Period._({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
+  const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
     this.hours: 0, this.minutes: 0, this.seconds: 0,
     this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});
-
-
-  // todo: these are all terrible ... remove them ??? ... do they add extra or does tree shaking shank these?
-
-  /// Creates a period representing the specified number of years.
-  ///
-  /// [years]: The number of years in the new period
-  /// Returns: A period consisting of the given number of years.
-  factory Period.fromYears(int years) => new Period._(years: years);
-
-
-  /// Creates a period representing the specified number of months.
-  ///
-  /// [months]: The number of months in the new period
-  /// Returns: A period consisting of the given number of months.
-  factory Period.fromMonths(int months) => new Period._(months: months);
-
-
-  /// Creates a period representing the specified number of weeks.
-  ///
-  /// [weeks]: The number of weeks in the new period
-  /// Returns: A period consisting of the given number of weeks.
-  factory Period.fromWeeks(int weeks) => new Period._(weeks: weeks);
-
-
-  /// Creates a period representing the specified number of days.
-  ///
-  /// [days]: The number of days in the new period
-  /// Returns: A period consisting of the given number of days.
-  factory Period.fromDays(int days) => new Period._(days: days);
-
-
-  /// Creates a period representing the specified number of hours.
-  ///
-  /// [hours]: The number of hours in the new period
-  /// Returns: A period consisting of the given number of hours.
-  factory Period.fromHours(int hours) => new Period._(hours: hours);
-
-
-  /// Creates a period representing the specified number of minutes.
-  ///
-  /// [minutes]: The number of minutes in the new period
-  /// Returns: A period consisting of the given number of minutes.
-  factory Period.fromMinutes(int minutes) => new Period._(minutes: minutes);
-
-
-  /// Creates a period representing the specified number of seconds.
-  ///
-  /// [seconds]: The number of seconds in the new period
-  /// Returns: A period consisting of the given number of seconds.
-  factory Period.fromSeconds(int seconds) => new Period._(seconds: seconds);
-
-
-  /// Creates a period representing the specified number of milliseconds.
-  ///
-  /// [milliseconds]: The number of milliseconds in the new period
-  /// Returns: A period consisting of the given number of milliseconds.
-  factory Period.fromMilliseconds(int milliseconds) => new Period._(milliseconds: milliseconds);
-
-
-  /// Creates a period representing the specified number of ticks.
-  ///
-  /// [ticks]: The number of ticks in the new period
-  /// Returns: A period consisting of the given number of ticks.
-  factory Period.fromMicroseconds(int microseconds) => new Period._(microseconds: microseconds);
-
-
-  /// Creates a period representing the specified number of nanooseconds.
-  ///
-  /// [nanoseconds]: The number of nanoseconds in the new period
-  /// Returns: A period consisting of the given number of nanoseconds.
-  factory Period.fromNanoseconds(int nanoseconds) => new Period._(nanoseconds: nanoseconds);
 
 
   /// Adds two periods together, by simply adding the values for each property.
@@ -250,7 +178,7 @@ class Period {
   /// periods.
   Period operator +(Period right) {
     Preconditions.checkNotNull(right, 'right');
-    return new Period._(years: years + right.years,
+    return new Period(years: years + right.years,
         months: months + right.months,
         weeks: weeks + right.weeks,
         days: days + right.days,
@@ -287,7 +215,7 @@ class Period {
   /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").
   Period operator -(Period subtrahend) {
     Preconditions.checkNotNull(subtrahend, 'subtrahend');
-    return new Period._(
+    return new Period(
         years: years - subtrahend.years,
         months: months - subtrahend.months,
         weeks: weeks - subtrahend.weeks,
@@ -343,16 +271,16 @@ class Period {
     // Optimization for single field
     // todo: optimize me?
     Map _betweenFunctionMap = {
-      PeriodUnits.years:  () => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start.date, endDate)),
-      PeriodUnits.months: () => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start.date, endDate)),
-      PeriodUnits.weeks: () => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start.date, endDate)),
-      PeriodUnits.days: () => new Period.fromDays(_daysBetween(start.date, endDate)),
-      PeriodUnits.hours: () => new Period.fromHours(TimePeriodField.hours.unitsBetween(start, end)),
-      PeriodUnits.minutes: () => new Period.fromMinutes(TimePeriodField.minutes.unitsBetween(start, end)),
-      PeriodUnits.seconds: () => new Period.fromSeconds(TimePeriodField.seconds.unitsBetween(start, end)),
-      PeriodUnits.milliseconds: () => new Period.fromMilliseconds(TimePeriodField.milliseconds.unitsBetween(start, end)),
-      PeriodUnits.microseconds: () => new Period.fromMicroseconds(TimePeriodField.microseconds.unitsBetween(start, end)),
-      PeriodUnits.nanoseconds: () => new Period.fromNanoseconds(TimePeriodField.nanoseconds.unitsBetween(start, end))
+      PeriodUnits.years:  () => new Period(years: DatePeriodFields.yearsField.unitsBetween(start.date, endDate)),
+      PeriodUnits.months: () => new Period(months: DatePeriodFields.monthsField.unitsBetween(start.date, endDate)),
+      PeriodUnits.weeks: () => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start.date, endDate)),
+      PeriodUnits.days: () => new Period(days: _daysBetween(start.date, endDate)),
+      PeriodUnits.hours: () => new Period(hours: TimePeriodField.hours.unitsBetween(start, end)),
+      PeriodUnits.minutes: () => new Period(minutes: TimePeriodField.minutes.unitsBetween(start, end)),
+      PeriodUnits.seconds: () => new Period(seconds: TimePeriodField.seconds.unitsBetween(start, end)),
+      PeriodUnits.milliseconds: () => new Period(milliseconds: TimePeriodField.milliseconds.unitsBetween(start, end)),
+      PeriodUnits.microseconds: () => new Period(microseconds: TimePeriodField.microseconds.unitsBetween(start, end)),
+      PeriodUnits.nanoseconds: () => new Period(nanoseconds: TimePeriodField.nanoseconds.unitsBetween(start, end))
     };
     
     if (_betweenFunctionMap.containsKey(units)) return _betweenFunctionMap[units]();
@@ -399,7 +327,7 @@ class Period {
       remaining = new LocalDateTime.localDateTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
-      return new Period._(years: years, months: months, weeks: weeks, days: days);
+      return new Period(years: years, months: months, weeks: weeks, days: days);
     }
 
     // The remainder of the computation is with fixed-length units, so we can do it all with
@@ -410,7 +338,7 @@ class Period {
     int hours, minutes, seconds, milliseconds, microseconds, nanoseconds;
     var span = ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
         - ILocalDateTime.toLocalInstant(remaining).timeSinceLocalEpoch;
-    if (ITime.isInt64Representable(span)) {
+    if (span.canNanosecondsBeInteger) {
       var result = _timeComponentsBetween(span.totalNanoseconds, units);
       hours = result.hours;
       minutes = result.minutes;
@@ -418,8 +346,8 @@ class Period {
       milliseconds = result.milliseconds;
       microseconds = result.microseconds;
       nanoseconds = result.nanoseconds;
-    // throw new UnimplementedError('this is not done.');
-    // TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
+
+      // TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
     }
     else {
       int UnitsBetween(PeriodUnits mask, TimePeriodField timeField) {
@@ -439,7 +367,7 @@ class Period {
       nanoseconds = UnitsBetween(PeriodUnits.microseconds, TimePeriodField.nanoseconds);
     }
 
-    return new Period._(years: years,
+    return new Period(years: years,
         months: months,
         weeks: weeks,
         days: days,
@@ -581,10 +509,10 @@ class Period {
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
-    PeriodUnits.years: (start, end) => new Period.fromYears(DatePeriodFields.yearsField.unitsBetween(start, end)),
-    PeriodUnits.months: (start, end) => new Period.fromMonths(DatePeriodFields.monthsField.unitsBetween(start, end)),
-    PeriodUnits.weeks: (start, end) => new Period.fromWeeks(DatePeriodFields.weeksField.unitsBetween(start, end)),
-    PeriodUnits.days: (start, end) => new Period.fromDays(_daysBetween(start, end))
+    PeriodUnits.years: (start, end) => new Period(years: DatePeriodFields.yearsField.unitsBetween(start, end)),
+    PeriodUnits.months: (start, end) => new Period(months: DatePeriodFields.monthsField.unitsBetween(start, end)),
+    PeriodUnits.weeks: (start, end) => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start, end)),
+    PeriodUnits.days: (start, end) => new Period(days: _daysBetween(start, end))
   };
 
   /// Returns the exact difference between two dates or returns the period between a start and an end date, using only the given units.
@@ -618,16 +546,16 @@ class Period {
 
     // Multiple fields todo: if these result_type functions are just used to make periods, we can simply them
     var result = _dateComponentsBetween(start, end, units);
-    return new Period._(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
+    return new Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
   static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
-    PeriodUnits.hours: (remaining) => new Period.fromHours(remaining ~/ TimeConstants.nanosecondsPerHour),
-    PeriodUnits.minutes: (remaining) => new Period.fromMinutes(remaining ~/ TimeConstants.nanosecondsPerMinute),
-    PeriodUnits.seconds: (remaining) => new Period.fromSeconds(remaining ~/ TimeConstants.nanosecondsPerSecond),
-    PeriodUnits.milliseconds: (remaining) => new Period.fromMilliseconds(remaining ~/ TimeConstants.nanosecondsPerMillisecond),
-    PeriodUnits.microseconds: (remaining) => new Period.fromMicroseconds(remaining ~/ TimeConstants.nanosecondsPerMicrosecond),
-    PeriodUnits.nanoseconds: (remaining) => new Period.fromNanoseconds(remaining)
+    PeriodUnits.hours: (remaining) => new Period(hours: remaining ~/ TimeConstants.nanosecondsPerHour),
+    PeriodUnits.minutes: (remaining) => new Period(minutes: remaining ~/ TimeConstants.nanosecondsPerMinute),
+    PeriodUnits.seconds: (remaining) => new Period(seconds: remaining ~/ TimeConstants.nanosecondsPerSecond),
+    PeriodUnits.milliseconds: (remaining) => new Period(milliseconds: remaining ~/ TimeConstants.nanosecondsPerMillisecond),
+    PeriodUnits.microseconds: (remaining) => new Period(microseconds: remaining ~/ TimeConstants.nanosecondsPerMicrosecond),
+    PeriodUnits.nanoseconds: (remaining) => new Period(nanoseconds: remaining)
   };
 
   /// Returns the exact difference between two times or returns the period between a start and an end time, using only the given units.
@@ -649,9 +577,9 @@ class Period {
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
 
-// We know that the difference is in the range of +/- 1 day, which is a relatively small
-// number of nanoseconds. All the operations can be done with simple int division/remainder ops,
-// so we don't need to delegate to TimePeriodField.
+    // We know that the difference is in the range of +/- 1 day, which is a relatively small
+    // number of nanoseconds. All the operations can be done with simple int division/remainder ops,
+    // so we don't need to delegate to TimePeriodField.
 
     int remaining = (end.nanosecondOfDay - start.nanosecondOfDay);
 
@@ -660,7 +588,7 @@ class Period {
     if (singleFieldFunction != null) return singleFieldFunction(remaining);
 
     var result = _timeComponentsBetween(remaining, units);
-    return new Period._(hours: result.hours,
+    return new Period(hours: result.hours,
         minutes: result.minutes,
         seconds: result.seconds,
         milliseconds: result.milliseconds,
@@ -770,7 +698,7 @@ class Period {
       nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
-    return new Period._(years: this.years,
+    return new Period(years: this.years,
         months: this.months,
         weeks: 0 /* weeks */,
         days: days,
