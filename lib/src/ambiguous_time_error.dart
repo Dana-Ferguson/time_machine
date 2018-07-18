@@ -30,8 +30,8 @@ class AmbiguousTimeError extends Error {
   ///
   /// The two mappings must have the same local time and time zone.
   ///
-  /// [earlierMapping]: The earlier possible mapping
-  /// [laterMapping]: The later possible mapping
+  /// * [earlierMapping]: The earlier possible mapping
+  /// * [laterMapping]: The later possible mapping
   AmbiguousTimeError(this.earlierMapping, this.laterMapping)
       : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.zone.id}" {
     Preconditions.checkArgument(earlierMapping.zone == laterMapping.zone, 'laterMapping',
