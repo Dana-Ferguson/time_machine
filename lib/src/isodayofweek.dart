@@ -4,7 +4,6 @@
 
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
-// todo: Should this be caled IsoDayOfWeek .. or just DayOfWeek? (It's called IsoDayOfWeek normally)
 /// Equates the days of the week with their numerical value according to
 /// ISO-8601.
 class DayOfWeek {
