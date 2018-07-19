@@ -197,11 +197,11 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   /// Implements the operator == (equality).
   ///
-  /// * [left]: The left hand side of the operator.
-  /// * [right]: The right hand side of the operator.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is LocalDateTime && equals(right);
+  bool operator ==(dynamic other) => other is LocalDateTime && equals(other);
 
 
   /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
@@ -210,17 +210,17 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Only values with the same calendar system can be compared. See the top-level type
   /// documentation for more information about comparisons.
   ///
-  /// * [lhs]: First operand of the comparison
-  /// * [rhs]: Second operand of the comparison
+  /// * [this]: First operand of the comparison
+  /// * [other]: Second operand of the comparison
   ///
-  /// Returns: true if the [lhs] is strictly earlier than [rhs], false otherwise.
+  /// Returns: true if the [this] is strictly earlier than [other], false otherwise.
   ///
-  /// * [ArgumentException]: The calendar system of [rhs] is not the same
-  /// as the calendar of [lhs].
-  bool operator <(LocalDateTime rhs) {
-    if (rhs == null) return false;
-    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return compareTo(rhs) < 0;
+  /// * [ArgumentException]: The calendar system of [other] is not the same
+  /// as the calendar of [this].
+  bool operator <(LocalDateTime other) {
+    if (other == null) return false;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) < 0;
   }
 
 
@@ -230,17 +230,17 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Only values with the same calendar system can be compared. See the top-level type
   /// documentation for more information about comparisons.
   ///
-  /// * [lhs]: First operand of the comparison
+  /// * [this]: First operand of the comparison
   /// * [rhs]: Second operand of the comparison
   ///
-  /// Returns: true if the [lhs] is earlier than or equal to [rhs], false otherwise.
+  /// Returns: true if the [this] is earlier than or equal to [other], false otherwise.
   ///
-  /// * [ArgumentException]: The calendar system of [rhs] is not the same
-  /// as the calendar of [lhs].
-  bool operator <=(LocalDateTime rhs) {
-    if (rhs == null) return false;
-    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return compareTo(rhs) <= 0;
+  /// * [ArgumentException]: The calendar system of [other] is not the same
+  /// as the calendar of [this].
+  bool operator <=(LocalDateTime other) {
+    if (other == null) return false;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) <= 0;
   }
 
 
@@ -250,17 +250,17 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Only values with the same calendar system can be compared. See the top-level type
   /// documentation for more information about comparisons.
   ///
-  /// * [lhs]: First operand of the comparison
-  /// * [rhs]: Second operand of the comparison
+  /// * [this]: First operand of the comparison
+  /// * [other]: Second operand of the comparison
   ///
-  /// Returns: true if the [lhs] is strictly later than [rhs], false otherwise.
+  /// Returns: true if the [this] is strictly later than [other], false otherwise.
   ///
-  /// * [ArgumentException]: The calendar system of [rhs] is not the same
-  /// as the calendar of [lhs].
-  bool operator >(LocalDateTime rhs) {
-    if (rhs == null) return true;
-    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return compareTo(rhs) > 0;
+  /// * [ArgumentException]: The calendar system of [other] is not the same
+  /// as the calendar of [this].
+  bool operator >(LocalDateTime other) {
+    if (other == null) return true;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) > 0;
   }
 
 
@@ -270,17 +270,18 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Only values with the same calendar system can be compared. See the top-level type
   /// documentation for more information about comparisons.
   ///
-  /// * [lhs]: First operand of the comparison
-  /// * [rhs]: Second operand of the comparison
+  /// * [this]: First operand of the comparison
+  /// * [other]: Second operand of the comparison
   ///
-  /// Returns: true if the [lhs] is later than or equal to [rhs], false otherwise.
+  /// Returns: true if the [this] is later than or equal to [other], false otherwise.
   ///
-  /// * [ArgumentException]: The calendar system of [rhs] is not the same
-  /// as the calendar of [lhs].
-  bool operator >=(LocalDateTime rhs) {
-    if (rhs == null) return true;
-    Preconditions.checkArgument(calendar == rhs.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return compareTo(rhs) >= 0;
+  /// * [ArgumentException]: The calendar system of [other] is not the same
+  /// as the calendar of [this].
+  bool operator >=(LocalDateTime other) {
+    if (other == null) return true;
+    // todo: what variable should these checkArgument's give?
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) >= 0;
   }
 
 
@@ -350,14 +351,14 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// This is simply a convenience operator for calling [Period.Between(LocalDateTime,LocalDateTime)].
   /// The calendar systems of the two date/times must be the same.
   ///
-  /// * [lhs]: The date/time to subtract from
-  /// * [rhs]: The date/time to subtract
+  /// * [this]: The date/time to subtract from
+  /// * [other]: The date/time to subtract
   ///
   /// Returns: The result of subtracting one date/time from another.
   // LocalDateTime operator -(Period period) => MinusPeriod(period);
   // Period operator -(LocalDateTime rhs) => Period.Between(rhs, this);
   // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic value) => value is Period ? minusPeriod(value) : value is LocalDateTime ? MinusLocalDateTime(value) : throw new TypeError();
+  dynamic operator -(dynamic other) => other is Period ? minusPeriod(other) : other is LocalDateTime ? MinusLocalDateTime(other) : throw new TypeError();
 
   /// Subtracts the specified period from the date and time. Friendly alternative to `operator-()`.
   ///
@@ -402,9 +403,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   Period MinusLocalDateTime(LocalDateTime localDateTime) => Period.between(localDateTime, this);
 
   /// Returns a hash code for this instance.
-  ///
-  /// A hash code for this instance, suitable for use in hashing algorithms and data
-  /// structures like a hash table.
   @override int get hashCode => hash3(date, time, calendar);
 
   /// Returns this date/time, with the given date adjuster applied to it, maintaining the existing time of day.
@@ -500,6 +498,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns a new LocalDateTime representing the current value with the given number of minutes added.
   ///
   /// * [minutes]: The number of minutes to add
+  ///
   /// Returns: The current value plus the given number of minutes.
   LocalDateTime plusMinutes(int minutes) => TimePeriodField.minutes.addDateTime(this, minutes);
 
@@ -515,6 +514,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns a new LocalDateTime representing the current value with the given number of milliseconds added.
   ///
   /// * [milliseconds]: The number of milliseconds to add
+  ///
   /// Returns: The current value plus the given number of milliseconds.
   LocalDateTime plusMilliseconds(int milliseconds) =>
       TimePeriodField.milliseconds.addDateTime(this, milliseconds);
@@ -593,14 +593,14 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// See [inZoneLeniently] and [inZone] for alternative ways to map a local time to a
   /// specific instant.
-  /// This is solely a convenience method for calling [DateTimeZone.atStrictly].
+  /// This is solely a convenience method for calling [ZonedDateTime.atStrictly].
   ///
   /// * [zone]: The time zone in which to map this local date/time.
   ///
+  /// Returns: The result of mapping this local date/time in the given time zone.
+  ///
   /// * [SkippedTimeException]: This local date/time is skipped in the given time zone.
   /// * [AmbiguousTimeException]: This local date/time is ambiguous in the given time zone.
-  ///
-  /// Returns: The result of mapping this local date/time in the given time zone.
   ZonedDateTime inZoneStrictly(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
     return new ZonedDateTime.atStrictly(this, zone);
@@ -613,7 +613,9 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// See [inZoneStrictly] and [inZone] for alternative ways to map a local time to a
   /// specific instant.
-  /// This is solely a convenience method for calling [DateTimeZone.atLeniently].
+  ///
+  /// This is solely a convenience method for calling [ZonedDateTime.atLeniently].
+  ///
   /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
   /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
   /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
@@ -634,7 +636,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// See [inZoneStrictly] and [inZoneLeniently] for alternative ways to map a local time
   /// to a specific instant.
-  /// This is a convenience method for calling [DateTimeZone.ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)].
+  ///
+  /// This is a convenience method for calling [ZonedDateTime.resolve].
   ///
   /// * [zone]: The time zone to map this local date and time into
   /// * [resolver]: The resolver to apply to the mapping.
@@ -652,9 +655,9 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [x]: The first date/time to compare.
   /// * [y]: The second date/time to compare.
   ///
-  /// * [ArgumentException]: The two date/times have different calendar systems.
-  ///
   /// Returns: The later date/time of [x] or [y].
+  ///
+  /// * [ArgumentException]: The two date/times have different calendar systems.
   static LocalDateTime max(LocalDateTime x, LocalDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x > y ? x : y;
@@ -666,17 +669,18 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [x]: The first date/time to compare.
   /// * [y]: The second date/time to compare.
   ///
-  /// * [ArgumentException]: The two date/times have different calendar systems.
-  ///
   /// Returns: The earlier date/time of [x] or [y].
+  ///
+  /// * [ArgumentException]: The two date/times have different calendar systems.
   static LocalDateTime min(LocalDateTime x, LocalDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y', "Only values with the same calendar system can be compared");
     return x < y ? x : y;
   }
 
+  // todo: verify default format pattern ("G"), using the current isolate
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("G"), using the current thread's
+  /// The value of the current instance in the default format pattern ("G"), using the current isolate's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       LocalDateTimePatterns.format(this, patternText, culture);
