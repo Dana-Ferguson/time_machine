@@ -33,9 +33,10 @@ class Interval {
   /// The interval includes the [start] instant and excludes the
   /// [end] instant. The end may equal the start (resulting in an empty interval), but must not be before the start.
   ///
-  /// [ArgumentOutOfRangeException]: [end] is earlier than [start].
-  /// [start]: The start [Instant].
-  /// [end]: The end [Instant].
+  /// * [start]: The start [Instant].
+  /// * [end]: The end [Instant].
+  ///
+  /// * [ArgumentOutOfRangeException]: [end] is earlier than [start].
   Interval(this._start, this._end) {
     if (_end < _start) {
       throw new ArgumentError("The end parameter must be equal to or later than the start parameter");
@@ -46,7 +47,7 @@ class Interval {
   ///
   /// This will never be later than [end], though it may be equal to it.
   ///
-  /// [StateError]: The interval extends to the start of time.
+  /// * [StateError]: The interval extends to the start of time.
   Instant get start {
     // todo: IsValid .. replace with a null check???
     Preconditions.checkState(_start.isValid, "Interval extends to start of time");
@@ -59,7 +60,7 @@ class Interval {
 
   /// Gets the end instant - the exclusive upper bound of the interval.
   ///
-  /// [StateError]: The interval extends to the end of time.
+  /// * [StateError]: The interval extends to the end of time.
   Instant get end {
     Preconditions.checkState(_end.isValid, "Interval extends to end of time");
     return _end;
@@ -77,18 +78,19 @@ class Interval {
   ///
   /// This will always be a non-negative duration, though it may be zero.
   ///
-  /// [StateError]: The interval extends to the start or end of time.
+  /// * [StateError]: The interval extends to the start or end of time.
   Time get time => end - start;
 
   /// Returns whether or not this interval contains the given instant.
   ///
-  /// [instant]: Instant to test.
+  /// * [instant]: Instant to test.
+  ///
   /// Returns: True if this interval contains the given instant; false otherwise.
   bool contains(Instant instant) => instant >= _start && instant < _end;
 
   /// Indicates whether the value of this interval is equal to the value of the specified interval.
   ///
-  /// [other]: The value to compare with this instance.
+  /// * [other]: The value to compare with this instance.
   ///
   /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
   /// otherwise, false.
