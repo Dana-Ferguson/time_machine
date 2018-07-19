@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Provides stable, performant time zone data.
 ///
-/// Consumers should be able to treat an [DateTimeZoneProvider] like a cache: 
+/// Consumers should be able to treat an [DateTimeZoneProvider] like a cache:
 /// lookups should be quick (after at most one lookup of a given ID), and multiple calls for a given ID must
 /// always return references to equal instances, even if they are not references to a single instance.
 /// Consumers should not feel the need to cache data accessed through this interface.
@@ -61,8 +61,6 @@ abstract class DateTimeZoneProvider {
   /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
   ///
   /// [id]: The time zone ID to find.
-  /// The [DateTimeZone] for the given ID or null if the provider does not support
-  /// the given ID.
   Future<DateTimeZone> getZoneOrNull(String id);
 
   /// Returns the time zone for the given ID.
@@ -79,9 +77,9 @@ abstract class DateTimeZoneProvider {
   ///
   /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
   ///
-  /// [id]: The time zone id to find.
+  /// * [id]: The time zone id to find.
   ///
-  /// [DateTimeZoneNotFoundException]: This provider does not support the given ID.
+  /// * [DateTimeZoneNotFoundException]: This provider does not support the given ID.
   // todo: drop the operator [] support if we're going to have async an sync support?
   Future<DateTimeZone> operator [](String id);
 
