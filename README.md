@@ -140,6 +140,7 @@ This also works:
 ```dart
 dynamic foo = new Foo();
 var foo = new Foo() as dynamic;
+(foo as dynamic).toString(patternText, culture);
 ```
 
 We learned in [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) that `dynamic` code uses a different flow path.
