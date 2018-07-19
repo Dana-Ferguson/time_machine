@@ -121,7 +121,7 @@ Your initialization function will look like this:
 import 'package:flutter/services.dart';
 
 // you can get Timezone information directly from the native interface or TimeMachine will heuristically
-// figure out the Timezone for you if you don't supply it with a timezone (native interface = cheaper)
+// figure out the Timezone for you if you don't supply it with a timezone (native interface _should_ equal cheaper)
 // see: https://pub.dartlang.org/packages/flutter_native_timezone
 await TimeMachine.initialize({rootBundle: rootBundle, timeZone: await Timezone.getLocalTimezone()});
 ```
@@ -135,9 +135,18 @@ It would look just like the VM example.
 `toString` on many of the classes will not propagate `patternText` and `culture` parameters.
 `Instant` and `ZonedDateTime` currently have `toStringDDC` functions available to remedy this.
 
+This also works:
+
+```dart
+dynamic foo = new Foo();
+var foo = new Foo() as dynamic;
+```
+
+We learned in [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) that `dynamic` code uses a different flow path.
+Wrapping your code as dynamic will allow `toString()` to work normally. It will unfortunately ruin your intellisense.
+
 See [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) for more information. The [fix](https://dart-review.googlesource.com/c/sdk/+/65282)
 exists, now we just wait for it to hit a live build.
-
 
 `toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
 [contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today 
