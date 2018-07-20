@@ -107,7 +107,7 @@ void Subtract_AroundTimeZoneTransition()
   ZonedDateTime after = new ZonedDateTime.atStrictly(new LocalDateTime(2011, 6, 13, 16, 0, 0), SampleZone);
   // 24 hours earlier, and it's 3pm
   ZonedDateTime beforeExpected = new ZonedDateTime.atStrictly(new LocalDateTime(2011, 6, 12, 15, 0, 0), SampleZone);
-  ZonedDateTime beforeSubtract = ZonedDateTime.subtractTime(after, Time.oneDay);
+  ZonedDateTime beforeSubtract = ZonedDateTime.subtractTimeFrom(after, Time.oneDay);
   ZonedDateTime beforeOperator = after - Time.oneDay;
 
   expect(beforeExpected, beforeSubtract);
@@ -118,8 +118,8 @@ void Subtract_AroundTimeZoneTransition()
 void SubtractDuration_MethodEquivalents()
 {
   ZonedDateTime after = new ZonedDateTime.atStrictly(new LocalDateTime(2011, 6, 13, 16, 0, 0), SampleZone);
-  expect(after - Time.oneDay, ZonedDateTime.subtractTime(after, Time.oneDay));
-  expect(after - Time.oneDay, after.minusTime(Time.oneDay));
+  expect(after - Time.oneDay, ZonedDateTime.subtractTimeFrom(after, Time.oneDay));
+  expect(after - Time.oneDay, after.subtractTime(Time.oneDay));
 }
 
 @Test()
@@ -131,9 +131,9 @@ void Subtraction_ZonedDateTime()
   // Sample zone is UTC+4 at this point, so this is 14:00Z.
   ZonedDateTime end = new ZonedDateTime.atStrictly(new LocalDateTime(2014, 08, 14, 18, 0, 0), SampleZone);
   Time expected = new Time(hours: 8) + new Time(minutes: 9);
-  expect(expected, end - start);
-  expect(expected, end.minus(start));
-  expect(expected, ZonedDateTime.subtract(end, start));
+  // expect(expected, end - start);
+  expect(expected, end.timeSince(start));
+  expect(expected, ZonedDateTime.timeBetween(end, start));
 }
 
 @Test()

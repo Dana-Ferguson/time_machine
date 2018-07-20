@@ -1,10 +1,6 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-// todo: investigate: https://github.com/pinkfish/flutter_native_timezone
-
-// https://github.com/dart-lang/sdk/issues/24581
-
 // Text and Parsing
 export 'src/text/composite_pattern_builder.dart' show CompositePatternBuilder;
 export 'src/text/i_pattern.dart' show IPattern;

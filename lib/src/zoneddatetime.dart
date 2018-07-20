@@ -14,7 +14,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 @internal
 abstract class IZonedDateTime {
-  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._(offsetDateTime, zone); 
+  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._(offsetDateTime, zone);
 }
 
 
@@ -30,7 +30,7 @@ abstract class IZonedDateTime {
 /// and skipped date/time values becoming a problem within a series of calculations; instead,
 /// these can be considered just once, at the point of conversion to a [ZonedDateTime].
 ///
-/// `ZonedDateTime` does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases. 
+/// `ZonedDateTime` does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases.
 /// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort `ZonedDateTime`
 /// values, you should explicitly choose one of the orderings provided via the static properties in the
 /// [ZonedDateTimeComparer] nested class (or implement your own comparison).
@@ -43,7 +43,7 @@ class ZonedDateTime {
 
   /// Internal constructor from pre-validated values.
   ZonedDateTime._(this._offsetDateTime, this.zone);
-  
+
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
   ///
@@ -132,8 +132,7 @@ class ZonedDateTime {
     Preconditions.checkNotNull(resolver, 'resolver');
     return resolver(zone.mapLocal(localDateTime));
   }
-  
-  // todo: should these be factory methods for constructing ZonedDateTime's?
+
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime], if and only if
   /// that mapping is unambiguous in this time zone.  Otherwise, [SkippedTimeError] or
   /// [AmbiguousTimeException] is thrown, depending on whether the mapping is ambiguous or the local
@@ -380,57 +379,52 @@ class ZonedDateTime {
   /// [zonedDateTime]: The value to subtract the duration from.
   /// [time]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime subtractTime(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.minusTime(time);
+  static ZonedDateTime subtractTimeFrom(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtractTime(time);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
-  /// [op_Subtraction(ZonedDateTime, Duration)]
+  /// [-].
   ///
   /// [time]: The duration to subtract
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
-  ZonedDateTime minusTime(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
+  ZonedDateTime subtractTime(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
-  ///
-  /// This is an alternative way of calling [op_Subtraction(ZonedDateTime, ZonedDateTime)].
-  ///
-  /// [end]: The zoned date and time value to subtract from; if this is later than [start]
-  /// then the result will be positive.
-  /// [start]: The zoned date and time to subtract from [end].
-  /// Returns: The elapsed duration from [start] to [end].
-  static Time subtract(ZonedDateTime end, ZonedDateTime start) => end.minus(start);
-
-  /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
-  /// between the two instants represented in the values.
-  ///
-  /// This is an alternative way of calling [op_Subtraction(ZonedDateTime, ZonedDateTime)].
-  ///
-  /// [other]: The zoned date and time to subtract from this one.
-  /// Returns: The elapsed duration from [other] to this value.
-
-  Time minus(ZonedDateTime other) => toInstant() - other.toInstant();
-
-  /// Subtracts one [ZonedDateTime] from another, resulting in the elapsed time between
-  /// the two values.
   ///
   /// This is equivalent to `end.ToInstant() - start.ToInstant()`; in particular:
   ///  * The two values can use different calendar systems
   ///  * The two values can be in different time zones
   ///  * The two values can have different UTC offsets
   ///
-  /// [end]: The zoned date and time value to subtract from; if this is later than [start]
+  /// * [end]: The zoned date and time value to subtract from; if this is later than [start]
   /// then the result will be positive.
-  /// [start]: The zoned date and time to subtract from [end].
+  /// * [start]: The zoned date and time to subtract from [end].
+  ///
   /// Returns: The elapsed duration from [start] to [end].
+  static Time timeBetween(ZonedDateTime end, ZonedDateTime start) => end.timeSince(start);
+
+  /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
+  /// between the two instants represented in the values.
+  ///
+  /// * [other]: The zoned date and time to subtract from this one.
+  ///
+  /// Returns: The elapsed duration from [other] to this value.
+  Time timeSince(ZonedDateTime other) => toInstant() - other.toInstant();
+
   /// Returns a new [ZonedDateTime] with the duration subtracted. Note that
   /// due to daylight saving time changes this may not change the local time by the same amount.
   ///
   /// The returned value retains the calendar system and time zone of [zonedDateTime].
+  /// This is equivalent to [subtractTime].
   ///
-  /// [zonedDateTime]: The value to subtract the duration from.
-  /// [time]: The duration to subtract.
+  /// * [zonedDateTime]: The value to subtract the duration from.
+  /// * [time]: The duration to subtract.
+  ///
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-// todo: I really do not like this pattern
-  dynamic operator -(dynamic start) => start is Time ? minusTime(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
+  ZonedDateTime operator -(Time time) => subtractTime(time);
+
+  // If we ever get compile-time dispatch, re-enable this use-case
+  // Time operator -(ZonedDateTime start) => minus(start); // Subtraction_ZonedDateTime() contains a commented out unit test
+  // dynamic operator -(dynamic start) => start is Time ? minusTime(start) : start is ZonedDateTime ? minus(start) : throw new TypeError();
 
   /// Returns the [ZoneInterval] containing this value, in the time zone this
   /// value refers to.
