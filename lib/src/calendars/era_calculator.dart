@@ -14,7 +14,6 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 @internal
 abstract class EraCalculator
 {
-  // todo: technically it's the efficient iterable
   final Iterable<Era> eras;
 
   @protected EraCalculator(Iterable<Era> eras) : eras = eras; // new ReadOnlyCollection<Era>(eras);

@@ -5,28 +5,14 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
-class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
-  static const int minGregorianYear = -9998;
-  static const int maxGregorianYear = 9999;
-
-  // We precompute useful values for each month between these years, as we anticipate most
-  // dates will be in this range.
-  static const int _firstOptimizedYear = 1900;
-  static const int _lastOptimizedYear = 2100;
-  static const int _firstOptimizedDay = -25567;
-  static const int _lastOptimizedDay = 47846;
-
+class _Constructor {
   // The 0-based days-since-unix-epoch for the start of each month
-  static final List<int> _monthStartDays = _gregorianYearMonthDayCalculator_Init()[0]; //new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
+  static final List<int> _monthStartDays = _gregorianYearMonthDayCalculator_Init()[0];
 
   // The 1-based days-since-unix-epoch for the start of each year
-  static final List<int> _yearStartDays = _gregorianYearMonthDayCalculator_Init()[1]; // new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
+  static final List<int> _yearStartDays = _gregorianYearMonthDayCalculator_Init()[1];
 
-  static const int _daysFrom0000To1970 = 719527;
-  static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...
-
-  // this was a static constructor, todo: this is a little hacky, needs cleanup
+  // this was a static constructor
   static List<List<int>> _gregorianYearMonthDayCalculator_Initialized = null;
   static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
     if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized;
@@ -56,6 +42,28 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     _gregorianYearMonthDayCalculator_Initialized = [_monthStartDays, _yearStartDays];
     return _gregorianYearMonthDayCalculator_Initialized;
   }
+}
+
+// We precompute useful values for each month between these years, as we anticipate most
+// dates will be in this range.
+const int _firstOptimizedYear = 1900;
+const int _lastOptimizedYear = 2100;
+const int _firstOptimizedDay = -25567;
+const int _lastOptimizedDay = 47846;
+
+@internal
+class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
+  static const int minGregorianYear = -9998;
+  static const int maxGregorianYear = 9999;
+
+  // The 0-based days-since-unix-epoch for the start of each month
+  static final List<int> _monthStartDays = _Constructor._monthStartDays; //new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
+
+  // The 1-based days-since-unix-epoch for the start of each year
+  static final List<int> _yearStartDays = _Constructor._yearStartDays; // new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
+
+  static const int _daysFrom0000To1970 = 719527;
+  static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...
 
   /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
   static YearMonthDayCalendar getGregorianYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
