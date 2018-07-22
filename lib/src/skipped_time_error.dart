@@ -13,16 +13,12 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// local times such as 02:30:00 never occur.
 ///
 /// This exception is used to indicate such problems, as they're usually
-/// not the same as other [ArgumentOutOfRangeException] causes,
+/// not the same as other [RangeError] causes,
 /// such as entering "15" for a month number.
 ///
 /// Note that it is possible (though extremely rare) for a whole day to be skipped due to a time zone transition,
 /// so this exception may also be thrown in cases where no local time is valid for a particular local date. (For
 /// example, Samoa skipped December 30th 2011 entirely, transitioning from UTC-10 to UTC+14 at midnight.)
-///
-/// <threadsafety>Any static members of this type are thread safe. Any instance members are not guaranteed to be thread safe.
-/// See the thread safety section of the user guide for more information.
-/// </threadsafety>
 class SkippedTimeError extends Error {
   /// Gets the local date/time which is invalid in the time zone, prompting this exception.
   final LocalDateTime localDateTime;
@@ -37,8 +33,8 @@ class SkippedTimeError extends Error {
   /// User code is unlikely to need to deliberately call this constructor except
   /// possibly for testing.
   ///
-  /// [localDateTime]: The local date/time which is skipped in the specified time zone.
-  /// [zone]: The time zone in which the local date/time does not exist.
+  /// * [localDateTime]: The local date/time which is skipped in the specified time zone.
+  /// * [zone]: The time zone in which the local date/time does not exist.
   SkippedTimeError(this.localDateTime, this.zone)
       : message = "Local time $localDateTime is invalid in time zone ${zone?.id ?? 'null'}";
 }
