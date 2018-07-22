@@ -717,14 +717,14 @@ expect("PT5H30M", period.toString());
 void ToDuration_InvalidWithYears()
 {
   Period period = new Period(years: 1);
-  expect(() => period.toSpan(), throwsStateError);
+  expect(() => period.toTime(), throwsStateError);
 }
 
 @Test()
 void ToDuration_InvalidWithMonths()
 {
   Period period = new Period(months: 1);
-  expect(() => period.toSpan(), throwsStateError);
+  expect(() => period.toTime(), throwsStateError);
 }
 
 @Test()
@@ -746,7 +746,7 @@ void ToDuration_ValidAllAcceptableUnits() {
           5 * TimeConstants.microsecondsPerSecond +
           6 * TimeConstants.microsecondsPerMillisecond + 7,
       period
-          .toSpan()
+          .toTime()
           .totalMicroseconds);
 }
 
@@ -756,7 +756,7 @@ void ToDuration_ValidWithZeroValuesInMonthYearUnits()
   Period period = new Period(months: 1) + new Period(years: 1);
   period = period - period + new Period(days: 1);
   expect(period.hasTimeComponent, isFalse);
-  expect(Time.oneDay, period.toSpan());
+  expect(Time.oneDay, period.toTime());
 }
 
 /* We don't overflow
