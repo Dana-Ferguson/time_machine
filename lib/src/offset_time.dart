@@ -4,66 +4,62 @@
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
 
 // todo: Comparable
 @immutable
 class OffsetTime {
-  final LocalTime _time;
+  /// Gets the time-of-day represented by this value.
+  final LocalTime timeOfDay;
   /// Gets the offset from UTC of this value.
   final Offset offset;
 
   /// Constructs an instance of the specified time and offset.
   ///
-  /// [time]: The time part of the value.
-  /// [offset]: The offset part of the value.
-  OffsetTime(this._time, this.offset);
+  /// * [time]: The time part of the value.
+  /// * [offset]: The offset part of the value.
+  OffsetTime(this.timeOfDay, this.offset);
 
-  // todo: consider combining this with _time -- Why does is this, 'timeOfDay' ???
-  /// Gets the time-of-day represented by this value.
-  LocalTime get timeOfDay => _time;
-  
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
-  int get hour => _time.hour;
+  int get hour => timeOfDay.hour;
 
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => _time.clockHourOfHalfDay;
+  int get clockHourOfHalfDay => timeOfDay.clockHourOfHalfDay;
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
   // ignore: unused_element
-  /*@internal*/ int get _hourOfHalfDay => ILocalTime.hourOfHalfDay(_time);
+  /*@internal*/ int get _hourOfHalfDay => ILocalTime.hourOfHalfDay(timeOfDay);
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
-  int get minute => _time.minute;
+  int get minute => timeOfDay.minute;
 
   /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
-  int get second => _time.second;
+  int get second => timeOfDay.second;
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => _time.millisecond;
-  
+  int get millisecond => timeOfDay.millisecond;
+
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => _time.nanosecondOfSecond;
+  int get nanosecondOfSecond => timeOfDay.nanosecondOfSecond;
 
   /// Gets the nanosecond of this offset time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => _time.nanosecondOfDay;
+  int get nanosecondOfDay => timeOfDay.nanosecondOfDay;
 
   /// Creates a new [OffsetTime] for the same time-of-day, but with the specified UTC offset.
   ///
-  /// [offset]: The new UTC offset.
+  /// * [offset]: The new UTC offset.
+  ///
   /// Returns: A new `OffsetTime` for the same date, but with the specified UTC offset.
-  OffsetTime withOffset(Offset offset) => new OffsetTime(this._time, offset);
+  OffsetTime withOffset(Offset offset) => new OffsetTime(this.timeOfDay, offset);
 
   /// Returns this offset time-of-day, with the given date adjuster applied to it, maintaining the existing offset.
   ///
   /// If the adjuster attempts to construct an invalid time-of-day, any exception thrown by
   /// that construction attempt will be propagated through this method.
   ///
-  /// [adjuster]: The adjuster to apply.
+  /// * [adjuster]: The adjuster to apply.
+  ///
   /// Returns: The adjusted offset date.
   OffsetTime adjust(LocalTime Function(LocalTime) adjuster) =>
       new OffsetTime(timeOfDay.adjust(adjuster), offset);
@@ -71,26 +67,27 @@ class OffsetTime {
   /// Combines this [OffsetTime] with the given [LocalDate]
   /// into an [OffsetDateTime].
   ///
-  /// [date]: The date to combine with this time-of-day.
+  /// * [date]: The date to combine with this time-of-day.
+  ///
   /// Returns: The [OffsetDateTime] representation of this time-of-day on the given date.
-  OffsetDateTime atDate(LocalDate date) => new OffsetDateTime(date.at(_time), offset);
+  OffsetDateTime atDate(LocalDate date) => new OffsetDateTime(date.at(timeOfDay), offset);
 
   /// Returns a hash code for this offset time.
-  ///
-  /// Returns: A hash code for this offset time.
-  @override int get hashCode => hash2(_time, offset);
+  @override int get hashCode => hash2(timeOfDay, offset);
 
   /// Compares two [OffsetTime] values for equality. This requires
   /// that the date values be the same and the offsets.
   ///
-  /// [other]: The value to compare this offset time with.
+  /// * [other]: The value to compare this offset time with.
+  ///
   /// Returns: True if the given value is another offset time equal to this one; false otherwise.
   bool equals(OffsetTime other) => timeOfDay == other.timeOfDay && offset == other.offset;
 
   /// Implements the operator == (equality).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// * [left]: The left hand side of the operator.
+  /// * [right]: The right hand side of the operator.
+  ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   bool operator ==(dynamic right) => right is OffsetTime && equals(right);
 
@@ -98,11 +95,11 @@ class OffsetTime {
   ///
   /// A [String] containing the value of the current instance in the specified format.
   ///
-  /// [patternText]: The [String] specifying the pattern to use,
+  /// * [patternText]: The [String] specifying the pattern to use,
   /// or null to use the default format pattern ("G").
   ///
-  /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-  /// or null to use the current thread's culture to obtain a format provider.
+  /// * [culture]: The [Culture] to use when formatting the value,
+  /// or null to use the current isolate's culture.
   @override String toString([String patternText, Culture culture]) =>
       OffsetTimePatterns.format(this, patternText, culture);
 }
