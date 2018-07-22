@@ -120,11 +120,19 @@ Your initialization function will look like this:
 ```dart
 import 'package:flutter/services.dart';
 
-// you can get Timezone information directly from the native interface or TimeMachine will heuristically
-// figure out the Timezone for you if you don't supply it with a timezone (native interface _should_ equal cheaper)
-// see: https://pub.dartlang.org/packages/flutter_native_timezone
+// TimeMachine discovers your TimeZone heuristically (it's actually pretty fast).
+await TimeMachine.initialize({rootBundle: rootBundle});
+```
+
+Or with: https://pub.dartlang.org/packages/flutter_native_timezone
+
+```dart
+import 'package:flutter/services.dart';
+
+// you can get Timezone information directly from the native interface with flutter_native_timezone
 await TimeMachine.initialize({rootBundle: rootBundle, timeZone: await Timezone.getLocalTimezone()});
 ```
+
 
 Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
 we'll be able to merge VM and the Flutter code paths and no asset entry and no special import will be required.
