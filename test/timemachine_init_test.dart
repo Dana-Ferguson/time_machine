@@ -24,3 +24,5 @@ Future timezoneCanBeOverridden() async
   await TimeMachine.initialize({'timeZone': await getTimeZone()});
   expect(DateTimeZone.local.id, 'Europe/Paris');
 }
+
+// todo: can I add a test for loading Flutter's rootBundle? (via a mock?)

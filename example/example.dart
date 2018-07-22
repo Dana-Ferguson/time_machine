@@ -10,36 +10,38 @@ Future main() async {
   try {
     // Sets up timezone and culture information
     await TimeMachine.initialize();
-    print('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
-    
+    print('Hello, ${DateTimeZone.local} from the Dart Time Machine!\n');
+
     var tzdb = await DateTimeZoneProviders.tzdb;
     var paris = await tzdb["Europe/Paris"];
 
     var now = Instant.now();
 
-    print('\nBasic');
+    print('Basic');
     print('UTC Time: $now');
     print('Local Time: ${now.inLocalZone()}');
-    print('Paris Time: ${now.inZone(paris)}');
+    print('Paris Time: ${now.inZone(paris)}\n');
 
-    print('\nFormatted');
+    print('Formatted');
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
-    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}');
+    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}\n');
 
-    var culture = await Cultures.getCulture('fr-FR');
-    print('\nFormatted and French ($culture)');
-    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', culture)}');
-    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', culture)}');
+    var french = await Cultures.getCulture('fr-FR');
+    print('Formatted and French ($french)');
+    print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', french)}');
+    print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', french)}\n');
 
-    print('\nParse French Formatted DateTimeZone');
+    print('Parse French Formatted ZonedDateTime');
+
     // without the 'z' parsing will be forced to interpret the timezone as UTC
     var localText = now
         .inLocalZone()
-        .toString('dddd yyyy-MM-dd HH:mm z', culture);
+        .toString('dddd yyyy-MM-dd HH:mm z', french);
 
     var localClone = ZonedDateTimePattern
-        .createWithCulture('dddd yyyy-MM-dd HH:mm z', culture)
+        .createWithCulture('dddd yyyy-MM-dd HH:mm z', french)
         .parse(localText);
+
     print(localClone.value);
   }
   catch (error, stack) {
