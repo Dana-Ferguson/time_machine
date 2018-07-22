@@ -21,7 +21,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// Offsets are represented with a granularity of one second. This allows all offsets within TZDB
 /// to be represented. It is possible that it could present issues to some other time zone data sources,
 /// but only in very rare historical cases (or fictional ones).
-@immutable 
+@immutable
 class Offset implements Comparable<Offset> {
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.
@@ -43,7 +43,7 @@ class Offset implements Comparable<Offset> {
 
   /// Initializes a new instance of the [Offset] struct.
   ///
-  /// [seconds]: The number of seconds in the offset.
+  /// * [seconds]: The number of seconds in the offset.
   Offset._([this.seconds = 0]) {
     assert(Preconditions.debugCheckArgumentRange('seconds', seconds, _minSeconds, _maxSeconds));
   }
@@ -72,8 +72,9 @@ class Offset implements Comparable<Offset> {
   /// Returns the greater offset of the given two, i.e. the one which will give a later local
   /// time when added to an instant.
   ///
-  /// [x]: The first offset
-  /// [y]: The second offset
+  /// * [x]: The first offset
+  /// * [y]: The second offset
+  ///
   /// Returns: The greater offset of [x] and [y].
   static Offset max(Offset x, Offset y) => x > y ? x : y;
 
@@ -81,14 +82,16 @@ class Offset implements Comparable<Offset> {
   /// Returns the lower offset of the given two, i.e. the one which will give an earlier local
   /// time when added to an instant.
   ///
-  /// [x]: The first offset
-  /// [y]: The second offset
+  /// * [x]: The first offset
+  /// * [y]: The second offset
+  ///
   /// Returns: The lower offset of [x] and [y].
   static Offset min(Offset x, Offset y) => x < y ? x : y;
 
-  ///   Implements the unary operator - (negation).
+  /// Implements the unary operator - (negation).
   ///
-  /// [offset]: The offset to negate.
+  /// * [offset]: The offset to negate.
+  ///
   /// Returns: A new [Offset] instance with a negated value.
   Offset operator -() =>
   // Guaranteed to still be in range.
@@ -96,105 +99,119 @@ class Offset implements Comparable<Offset> {
 
   /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
   ///
-  /// [offset]: The offset to negate.
+  /// * [offset]: The offset to negate.
+  ///
   /// Returns: The negation of the specified offset.
   static Offset negate(Offset offset) => -offset;
 
   /// Implements the operator + (addition).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
+  ///
   /// Returns: A new [Offset] representing the sum of the given values.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-  Offset operator +(Offset right) => new Offset(seconds + right.seconds);
+  ///
+  /// * [RangeError]: The result of the operation is outside the range of Offset.
+  Offset operator +(Offset other) => new Offset(seconds + other.seconds);
 
 
   /// Adds one Offset to another. Friendly alternative to `operator+()`.
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [left]: The left hand side of the operator.
+  /// * [right]: The right hand side of the operator.
+  ///
   /// Returns: A new [Offset] representing the sum of the given values.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  ///
+  /// * [RangeError]: The result of the operation is outside the range of Offset.
   static Offset add(Offset left, Offset right) => left + right;
 
 
   /// Returns the result of adding another Offset to this one, for a fluent alternative to `operator+()`.
   ///
-  /// [other]: The offset to add
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [other]: The offset to add
+  ///
   /// Returns: The result of adding the other offset to this one.
+  ///
+  /// * [RangeError]: The result of the operation is outside the range of Offset.
   Offset plus(Offset other) => this + other;
 
 
   /// Implements the operator - (subtraction).
   ///
-  /// [minuend]: The left hand side of the operator.
-  /// [subtrahend]: The right hand side of the operator.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
+  ///
   /// Returns: A new [Offset] representing the difference of the given values.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-  Offset operator -(Offset subtrahend) =>
-      new Offset(seconds - subtrahend.seconds);
+  ///
+  /// * [RangeError]: The result of the operation is outside the range of Offset.
+  Offset operator -(Offset other) =>
+      new Offset(seconds - other.seconds);
 
 
   /// Subtracts one Offset from another. Friendly alternative to `operator-()`.
   ///
-  /// [minuend]: The left hand side of the operator.
-  /// [subtrahend]: The right hand side of the operator.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [left]: The left hand side of the operator.
+  /// * [right]: The right hand side of the operator.
+  ///
   /// Returns: A new [Offset] representing the difference of the given values.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
-  static Offset subtract(Offset minuend, Offset subtrahend) => minuend - subtrahend;
+  ///
+  /// [RangeError]: The result of the operation is outside the range of Offset.
+  static Offset subtract(Offset left, Offset right) => left - right;
 
 
   /// Returns the result of subtracting another Offset from this one, for a fluent alternative to `operator-()`.
   ///
-  /// [other]: The offset to subtract
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  /// * [other]: The offset to subtract
+  ///
   /// Returns: The result of subtracting the other offset from this one.
+  ///
+  /// [RangeError]: The result of the operation is outside the range of Offset.
   Offset minus(Offset other) => this - other;
 
 
   /// Implements the operator == (equality).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
+  ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is Offset && equals(right);
+  bool operator ==(dynamic other) => other is Offset && equals(other);
 
 
   /// Implements the operator &lt; (less than).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
+  ///
   /// Returns: `true` if the left value is less than the right value, otherwise `false`.
-  bool operator <(Offset right) => compareTo(right) < 0;
+  bool operator <(Offset other) => compareTo(other) < 0;
 
 
   /// Implements the operator &lt;= (less than or equal).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// * [this]: The left hand side of the operator.
+  /// * [other]: The right hand side of the operator.
+  ///
   /// Returns: `true` if the left value is less than or equal to the right value, otherwise `false`.
-  bool operator <=(Offset right) => compareTo(right) <= 0;
+  bool operator <=(Offset other) => compareTo(other) <= 0;
 
 
   /// Implements the operator &gt; (greater than).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// [this]: The left hand side of the operator.
+  /// [other]: The right hand side of the operator.
+  ///
   /// Returns: `true` if the left value is greater than the right value, otherwise `false`.
-  bool operator >(Offset right) => compareTo(right) > 0;
+  bool operator >(Offset other) => compareTo(other) > 0;
 
 
   ///   Implements the operator &gt;= (greater than or equal).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// [this]: The left hand side of the operator.
+  /// [other]: The right hand side of the operator.
+  ///
   /// Returns: `true` if the left value is greater than or equal to the right value, otherwise `false`.
-  bool operator >=(Offset right) => compareTo(right) >= 0;
+  bool operator >=(Offset other) => compareTo(other) >= 0;
 
 // Operators
 
@@ -211,33 +228,31 @@ class Offset implements Comparable<Offset> {
   ///   | > 0 | This object is greater than [other].      |
   int compareTo(Offset other) => other == null ? 1 : seconds.compareTo(other.seconds);
 
-  ///   Indicates whether the current object is equal to another object of the same type.
+  /// Indicates whether the current object is equal to another object of the same type.
   ///
-  /// [other]: An object to compare with this object.
+  /// * [other]: An object to compare with this object.
   ///
-  ///   true if the current object is equal to the <paramref name = "other" /> parameter;
-  ///   otherwise, false.
+  /// Returns: `true` if the current object is equal to the [other]
+  /// otherwise, false.
   bool equals(Offset other) => seconds == other.seconds;
 
-  ///   Returns a hash code for this instance.
-  ///
-  ///   A hash code for this instance, suitable for use in hashing algorithms and data
-  ///   structures like a hash table.
+  /// Returns a hash code for this instance.
   @override int get hashCode => seconds.hashCode;
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("g"), using the current thread's
+  /// The value of the current instance in the default format pattern ("g"), using the current isolate's
   /// culture to obtain a format provider.
-  // @override String toString() => TextShim.toStringOffset(this); // OffsetPattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText, Culture culture]) =>
       OffsetPatterns.format(this, patternText, culture);
 
   /// Returns an offset for the given seconds value, which may be negative.
   ///
-  /// [seconds]: The int seconds value.
+  /// * [seconds]: The int seconds value.
+  ///
   /// Returns: An offset representing the given number of seconds.
-  /// [ArgumentOutOfRangeException]: The specified number of seconds is outside the range of
+  ///
+  /// * [RangeError]: The specified number of seconds is outside the range of
   /// [-18, +18] hours.
   factory Offset([int seconds = 0]) {
     Preconditions.checkArgumentRange('seconds', seconds, _minSeconds, _maxSeconds);
@@ -246,9 +261,11 @@ class Offset implements Comparable<Offset> {
 
   /// Returns an offset for the specified number of hours, which may be negative.
   ///
-  /// [hours]: The number of hours to represent in the new offset.
+  /// * [hours]: The number of hours to represent in the new offset.
+  ///
   /// Returns: An offset representing the given value.
-  /// [ArgumentOutOfRangeException]: The specified number of hours is outside the range of
+  ///
+  /// * [RangeError]: The specified number of hours is outside the range of
   /// [-18, +18].
   factory Offset.hours(int hours) {
     Preconditions.checkArgumentRange('hours', hours, _minHours, _maxHours);
@@ -260,12 +277,14 @@ class Offset implements Comparable<Offset> {
   /// The result simply takes the hours and minutes and converts each component into milliseconds
   /// separately. As a result, a negative offset should usually be obtained by making both arguments
   /// negative. For example, to obtain "three hours and ten minutes behind UTC" you might call
-  /// `Offset.FromHoursAndMinutes(-3, -10)`.
+  /// `Offset.hoursAndMinutes(-3, -10)`.
   ///
-  /// [hours]: The number of hours to represent in the new offset.
-  /// [minutes]: The number of minutes to represent in the new offset.
+  /// * [hours]: The number of hours to represent in the new offset.
+  /// * [minutes]: The number of minutes to represent in the new offset.
+  ///
   /// Returns: An offset representing the given value.
-  /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
+  ///
+  /// [RangeError]: The result of the operation is outside the range of Offset.
   factory Offset.hoursAndMinutes(int hours, int minutes) =>
       new Offset(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
@@ -277,9 +296,11 @@ class Offset implements Comparable<Offset> {
 
   /// Converts the given [Duration] to an offset, with fractional seconds truncated.
   ///
-  /// [timeSpan]: The [Duration] to convert
-  /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
+  /// * [duration]: The [Duration] to convert
+  ///
   /// Returns: An offset for the same time as the given time span.
+  ///
+  /// * [RangeError]: The given time span falls outside the range of +/- 18 hours.
   factory Offset.duration(Duration duration) {
     int seconds = duration.inSeconds;
     Preconditions.checkArgumentRange('duration', seconds, _minSeconds, _maxSeconds);
@@ -288,9 +309,11 @@ class Offset implements Comparable<Offset> {
 
   /// Converts the given [Time] to an offset, with fractional seconds truncated.
   ///
-  /// [timeSpan]: The [Time] to convert
-  /// [ArgumentOutOfRangeException]: The given time span falls outside the range of +/- 18 hours.
+  /// [time]: The [Time] to convert
+  ///
   /// Returns: An offset for the same time as the given time span.
+  ///
+  /// [RangeError]: The given time span falls outside the range of +/- 18 hours.
   factory Offset.time(Time time) {
     int seconds = time.totalSeconds.floor();
     Preconditions.checkArgumentRange('time', seconds, _minSeconds, _maxSeconds);
