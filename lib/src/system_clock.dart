@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-/// Singleton implementation of [IClock] which reads the current system time.
+/// Singleton implementation of [Clock] which reads the current system time.
 /// It is recommended that for anything other than throwaway code, this is only referenced
 /// in a single place in your code: where you provide a value to inject into the rest of
 /// your application, which should only depend on the interface.
@@ -17,9 +17,6 @@ class SystemClock extends Clock {
   /// Constructor present to prevent external construction.
   SystemClock._();
 
-  // note: this is extra allocations -- but this pipes to an external function -- so it's very convenient
   /// Gets the current time as an [Instant].
-  ///
-  /// Returns: The current time as an [Instant].
   Instant getCurrentInstant() => new Instant.dateTime(new DateTime.now());
 }
