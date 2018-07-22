@@ -5,6 +5,10 @@
 `const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
 this.hours: 0, this.minutes: 0, this.seconds: 0,
 this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});` instead of `Period.fromYears(int years)`.
+- Moved collection: "^1.14.10" to collection: "^1.14.6" in order to satisfy Flutter unit testing requirements.
+  time_machine can not be unit tested directly in flutter because of a breaking change between
+  matcher: ^0.12.2+1 and matcher: 0.12.3 with regards to `TypeMatcher` going from an abstract non-instanced class to a 
+  regular instanced class. See [flutter_test/pubspec.yaml](https://github.com/flutter/flutter/blob/master/packages/flutter_test/pubspecz.yaml).
 
 ## 0.8.2
 - Instant constructors condensed: `Instant.utc`, `Instant`, `Instant.julianDate`, `Instant.dateTime`, `Instant.epochTime`
