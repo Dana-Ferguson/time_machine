@@ -44,7 +44,7 @@ class PeriodBuilder {
   /// period. Calling this constructor instead of [Period.toBuilder]
   /// allows object initializers to be used.
   ///
-  /// [period]: An existing period to copy values from.
+  /// * [period]: An existing period to copy values from.
   PeriodBuilder([Period period = Period.zero]) {
     Preconditions.checkNotNull(period, 'period');
     years = period.years;
@@ -94,14 +94,15 @@ class PeriodBuilder {
   /// fail if the value is out of range (around 250 years). To access the values of very large numbers of nanoseconds, use the [nanoseconds]
   /// property directly.
   ///
-  /// [unit]: A single value within the [PeriodUnits] enumeration.
+  /// * [unit]: A single value within the [PeriodUnits] enumeration.
   ///
-  /// [ArgumentOutOfRangeException]: [unit] is not a single unit, or a value is provided for a date unit which is outside the range of [System.Int32].
+  /// [ArgumentError]: [unit] is not a single unit, or a value is provided for a date unit which is outside the range of `System.Int32`.
   int operator [](PeriodUnits unit) {
     if (_indexGetterFunctionMap.containsKey(unit)) return _indexGetterFunctionMap[unit](this);
     throw new ArgumentError("Indexer for PeriodBuilder only takes a single unit");
   }
 
+  // todo: I.O.U. some documentation
   void operator []=(PeriodUnits unit, int value) {
 //  if ((unit.value & PeriodUnits.allDateUnits.value) != 0)
 //  {
