@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:time_machine/time_machine.dart';
-import 'package:time_machine/time_machine_globalization.dart';
-import 'package:time_machine/time_machine_text.dart';
-import 'package:time_machine/time_machine_timezones.dart';
+import 'package:time_machine/time_machine_text_patterns.dart';
 
 import 'dart:io';
 
@@ -22,7 +20,7 @@ Future example() async {
 
   try {
     // Sets up timezone and culture information
-    await TimeMachine.initialize(rootBundle);
+    await TimeMachine.initialize({rootBundle: rootBundle});
     sb.writeln('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 
     var tzdb = await DateTimeZoneProviders.tzdb;
