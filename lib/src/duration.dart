@@ -6,10 +6,7 @@
 //import 'dart:core' hide Duration;
 
 import 'package:meta/meta.dart';
-
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
 
 // Todo: should I rename Duration? I kind of don't want to cause issues with dart.core collisions?
 // Can I do the core.Duration trick as a standard?
@@ -44,9 +41,9 @@ abstract class ITime {
   static const int minMillis = Platform.intMinValueJS; // -9007199254740993; // Utility.intMinValueJS; // was -maxMillis; very shortly was ~maxMillis (which I guess doesn't work well in JS)
 
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
-  
+
   static int floorSeconds(Time span) => span._floorSeconds;
-  
+
   static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
@@ -167,7 +164,7 @@ class Time implements Comparable<Time> {
 
     return new Time._untrusted(milliseconds, nanoseconds);
   }
-  
+
   factory Time.bigIntNanoseconds(BigInt bigNanoseconds) {
     // todo: this clamps -- should we test for overflow?
     var milliseconds = (bigNanoseconds ~/ TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
@@ -350,7 +347,7 @@ class Time implements Comparable<Time> {
 
   bool operator <(Time other) => other == null ? false : (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
-  
+
 
   static Time max(Time x, Time y) => x > y ? x : y;
 

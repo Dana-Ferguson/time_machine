@@ -3,10 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
-import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
 /// Represents an annual date (month and day) in the ISO calendar but without a specific year,
 /// typically for recurrent events such as birthdays, anniversaries, and deadlines.
