@@ -12,14 +12,13 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
+// Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
+// reference to avoid being resolved to the LocalDateTime property instead.
+
 @internal
 abstract class IZonedDateTime {
   static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._(offsetDateTime, zone);
 }
-
-
-// Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
-// reference to avoid being resolved to the LocalDateTime property instead.
 
 /// A [LocalDateTime] in a specific time zone and with a particular offset to distinguish
 /// between otherwise-ambiguous instants. A [ZonedDateTime] is global, in that it maps to a single
@@ -30,10 +29,10 @@ abstract class IZonedDateTime {
 /// and skipped date/time values becoming a problem within a series of calculations; instead,
 /// these can be considered just once, at the point of conversion to a [ZonedDateTime].
 ///
-/// `ZonedDateTime` does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases.
-/// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort `ZonedDateTime`
+/// [ZonedDateTime] does not implement ordered comparison operators, as there is no obvious natural ordering that works in all cases.
+/// Equality is supported however, requiring equality of zone, calendar and date/time. If you want to sort [ZonedDateTime]
 /// values, you should explicitly choose one of the orderings provided via the static properties in the
-/// [ZonedDateTimeComparer] nested class (or implement your own comparison).
+/// [ZonedDateTimeComparer] class (or implement your own comparison).
 @immutable
 class ZonedDateTime {
   // todo: why isn't this exposed directly?
@@ -47,9 +46,9 @@ class ZonedDateTime {
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
   ///
-  /// [instant]: The instant.
-  /// [zone]: The time zone.
-  /// [calendar]: The calendar system, defaulting to ISO.
+  /// * [instant]: The instant.
+  /// * [zone]: The time zone.
+  /// * [calendar]: The calendar system, defaulting to ISO.
   factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone zone, CalendarSystem calendar]) {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
@@ -62,10 +61,11 @@ class ZonedDateTime {
   /// In most cases a local time can only map to a single instant anyway, but the offset is included here for cases
   /// where the local time is ambiguous, usually due to daylight saving transitions.
   ///
-  /// [localDateTime]: The local date and time.
-  /// [zone]: The time zone.
-  /// [offset]: The offset between UTC and local time at the desired instant.
-  /// [ArgumentException]: [offset] is not a valid offset at the given
+  /// * [localDateTime]: The local date and time.
+  /// * [zone]: The time zone.
+  /// * [offset]: The offset between UTC and local time at the desired instant.
+  ///
+  /// * [ArgumentError]: [offset] is not a valid offset at the given
   /// local date and time.
   factory ZonedDateTime.atOffset(LocalDateTime localDateTime, DateTimeZone zone, Offset offset)
   {
@@ -88,15 +88,18 @@ class ZonedDateTime {
   /// go forward from midnight to 1am) then the earliest valid value is returned; this will be the instant
   /// of the transition.
   ///
-  /// [date]: The local date to map in this time zone.
-  /// [SkippedTimeError]: The entire day was skipped due to a very large time zone transition.
-  /// (This is extremely rare.)
+  /// * [date]: The local date to map in this time zone.
+  /// * [zone]: The date time zone to map this local date into.
+  ///
   /// Returns: The [ZonedDateTime] representing the earliest time in the given date, in this time zone.
+  ///
+  /// * [SkippedTimeError]: The entire day was skipped due to a very large time zone transition.
+  /// (This is extremely rare.)
   factory ZonedDateTime.atStartOfDay(LocalDate date, DateTimeZone zone) {
     LocalDateTime midnight = date.atMidnight();
     var mapping = zone.mapLocal(midnight);
     switch (mapping.count) {
-    // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
+      // Midnight doesn't exist. Maybe we just skip to 1am (or whatever), or maybe the whole day is missed.
       case 0:
         var interval = mapping.lateInterval;
         // Safe to use Start, as it can't extend to the start of time.
@@ -107,7 +110,7 @@ class ZonedDateTime {
           throw new SkippedTimeError(midnight, zone);
         }
         return IZonedDateTime.trusted(offsetDateTime, zone);
-    // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
+      // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
       case 1:
       case 2:
         return IZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), zone);
@@ -125,8 +128,9 @@ class ZonedDateTime {
   /// See [atStrictly] and [atLeniently] for alternative ways to map a local time to a
   /// specific instant.
   ///
-  /// [localDateTime]: The local date and time to map in this time zone.
-  /// [resolver]: The resolver to apply to the mapping.
+  /// * [localDateTime]: The local date and time to map in this time zone.
+  /// * [resolver]: The resolver to apply to the mapping.
+  ///
   /// Returns: The result of resolving the mapping.
   factory ZonedDateTime.resolve(LocalDateTime localDateTime, DateTimeZone zone, ZoneLocalMappingResolver resolver) {
     Preconditions.checkNotNull(resolver, 'resolver');
@@ -141,9 +145,10 @@ class ZonedDateTime {
   /// See [atLeniently] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
   /// specific instant.
   ///
-  /// [localDateTime]: The local date and time to map into this time zone.
-  /// [SkippedTimeError]: The given local date/time is skipped in this time zone.
-  /// [AmbiguousTimeException]: The given local date/time is ambiguous in this time zone.
+  /// * [localDateTime]: The local date and time to map into this time zone.
+  ///
+  /// * [SkippedTimeError]: The given local date/time is skipped in this time zone.
+  /// * [AmbiguousTimeError]: The given local date/time is ambiguous in this time zone.
   /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
   factory ZonedDateTime.atStrictly(LocalDateTime localDateTime, DateTimeZone zone) =>
       new ZonedDateTime.resolve(localDateTime, zone, Resolvers.strictResolver);
@@ -154,13 +159,15 @@ class ZonedDateTime {
   ///
   /// See [atStrictly] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
   /// specific instant.
+  ///
   /// Note: The behavior of this method was changed in version 2.0 to fit the most commonly seen real-world
   /// usage pattern.  Previous versions returned the later instance of ambiguous values, and returned the start of
   /// the zone interval after the gap for skipped value.  The previous functionality can still be used if desired,
   /// by using [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)], passing in a resolver
   /// created from [Resolvers.returnLater] and [Resolvers.returnStartOfIntervalAfter].
   ///
-  /// [localDateTime]: The local date/time to map.
+  /// * [localDateTime]: The local date/time to map.
+  ///
   /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
   /// or the forward-shifted value if the given local date/time is skipped.
   factory ZonedDateTime.atLeniently(LocalDateTime localDateTime, DateTimeZone zone) =>
@@ -175,8 +182,7 @@ class ZonedDateTime {
 
   /// Gets the local date and time represented by this zoned date and time.
   ///
-  /// The returned
-  /// [LocalDateTime] will have the same calendar system and return the same values for
+  /// The returned [LocalDateTime] will have the same calendar system and return the same values for
   /// each of the calendar properties (Year, MonthOfYear and so on), but will not be associated with any
   /// particular time zone.
   LocalDateTime get localDateTime => _offsetDateTime.localDateTime;
@@ -261,7 +267,8 @@ class ZonedDateTime {
   /// Creates a new [ZonedDateTime] representing the same instant in time, in the
   /// same calendar but a different time zone.
   ///
-  /// [targetZone]: The target time zone to convert to.
+  /// * [targetZone]: The target time zone to convert to.
+  ///
   /// Returns: A new value in the target time zone.
   ZonedDateTime withZone(DateTimeZone targetZone) {
     Preconditions.checkNotNull(targetZone, 'targetZone');
@@ -272,9 +279,9 @@ class ZonedDateTime {
   /// The returned ZonedDateTime is likely to have different date field values to this one.
   /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
   ///
-  /// [calendar]: The calendar system to convert this zoned date and time to.
+  /// * [calendar]: The calendar system to convert this zoned date and time to.
+  ///
   /// Returns: The converted ZonedDateTime.
-
   ZonedDateTime withCalendar(CalendarSystem calendar) {
     return new ZonedDateTime._(_offsetDateTime.withCalendar(calendar), zone);
   }
@@ -283,80 +290,84 @@ class ZonedDateTime {
   ///
   /// true if the current object is equal to the [other] parameter; otherwise, false.
   ///
-  /// [other]: An object to compare with this object.
+  /// * [other]: An object to compare with this object.
+  ///
   /// Returns: True if the specified value is the same instant in the same time zone; false otherwise.
   bool equals(ZonedDateTime other) => _offsetDateTime == other._offsetDateTime && zone == other.zone;
 
   /// Computes the hash code for this instance.
   ///
   /// A 32-bit signed integer that is the hash code for this instance.
-  ///
-  /// <filterpriority>2</filterpriority>
   @override int get hashCode => hash2(_offsetDateTime, zone);
 
   /// Implements the operator ==.
   ///
-  /// [left]: The first value to compare
-  /// [right]: The second value to compare
+  /// * [this]: The first value to compare
+  /// * [other]: The second value to compare
+  ///
   /// Returns: True if the two operands are equal according to [Equals(ZonedDateTime)]; false otherwise
-  @override bool operator ==(dynamic right) => right is ZonedDateTime && equals(right);
+  @override bool operator ==(dynamic other) => other is ZonedDateTime && equals(other);
 
   /// Adds a duration to a zoned date and time.
   ///
-  /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
+  /// * [zonedDateTime]: The value to add the duration to.
+  /// * [time]: The duration to add
   ///
-  /// [zonedDateTime]: The value to add the duration to.
-  /// [time]: The duration to add
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
   static ZonedDateTime addTime(ZonedDateTime zonedDateTime, Time time) => zonedDateTime + time;
 
   /// Returns the result of adding a duration to this zoned date and time.
   ///
-  /// This is an alternative way of calling [op_Addition(ZonedDateTime, Duration)].
+  /// * [time]: The duration to add
   ///
-  /// [time]: The duration to add
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusTime(Time time) => this + time;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
-  /// [hours]: The number of hours to add
+  /// * [hours]: The number of hours to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusHours(int hours) => this + new Time(hours: hours);
 
   /// Returns the result of adding an increment of minutes to this zoned date and time
   ///
-  /// [minutes]: The number of minutes to add
+  /// * [minutes]: The number of minutes to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusMinutes(int minutes) => this + new Time(minutes: minutes);
 
   /// Returns the result of adding an increment of seconds to this zoned date and time
   ///
-  /// [seconds]: The number of seconds to add
+  /// * [seconds]: The number of seconds to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusSeconds(int seconds) => this + new Time(seconds: seconds);
 
   /// Returns the result of adding an increment of milliseconds to this zoned date and time
   ///
-  /// [milliseconds]: The number of milliseconds to add
+  /// * [milliseconds]: The number of milliseconds to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
 
   /// Returns the result of adding an increment of ticks to this zoned date and time
   ///
-  /// [ticks]: The number of ticks to add
+  /// * [ticks]: The number of ticks to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///
-  /// [nanoseconds]: The number of nanoseconds to add
+  /// * [nanoseconds]: The number of nanoseconds to add
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
   ZonedDateTime plusNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
@@ -366,31 +377,33 @@ class ZonedDateTime {
   ///
   /// The returned value retains the calendar system and time zone of [zonedDateTime].
   ///
-  /// [zonedDateTime]: The [ZonedDateTime] to add the duration to.
-  /// [time]: The duration to add.
+  /// * [this]: The [ZonedDateTime] to add the duration to.
+  /// * [time]: The duration to add.
+  ///
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
   ZonedDateTime operator +(Time time) =>
       new ZonedDateTime(toInstant() + time, zone, calendar);
 
   /// Subtracts a duration from a zoned date and time.
   ///
-  /// This is an alternative way of calling [op_Subtraction(ZonedDateTime, Duration)].
+  /// * [zonedDateTime]: The value to subtract the duration from.
+  /// * [time]: The duration to subtract.
   ///
-  /// [zonedDateTime]: The value to subtract the duration from.
-  /// [time]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
   static ZonedDateTime subtractTimeFrom(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtractTime(time);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
   /// [-].
   ///
-  /// [time]: The duration to subtract
+  /// * [time]: The duration to subtract
+  ///
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
   ZonedDateTime subtractTime(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
   /// This is equivalent to `end.ToInstant() - start.ToInstant()`; in particular:
+  ///
   ///  * The two values can use different calendar systems
   ///  * The two values can be in different time zones
   ///  * The two values can have different UTC offsets
@@ -431,16 +444,17 @@ class ZonedDateTime {
   ///
   /// This is simply a convenience method - it is logically equivalent to converting this
   /// value to an [Instant] and then asking the appropriate [DateTimeZone]
-  /// for the `ZoneInterval` containing that instant.
+  /// for the [ZoneInterval] containing that instant.
   ///
-  /// Returns: The `ZoneInterval` containing this value.
+  /// Returns: The [ZoneInterval] containing this value.
   ZoneInterval getZoneInterval() => zone.getZoneInterval(toInstant());
 
   /// Indicates whether or not this [ZonedDateTime] is in daylight saving time
   /// for its time zone. This is determined by checking the [ZoneInterval.Savings] property
   /// of the zone interval containing this value.
   ///
-  /// <seealso cref="GetZoneInterval()"/>
+  /// see: [getZoneInterval]
+  ///
   /// `true` if the zone interval containing this value has a non-zero savings
   /// component; `false` otherwise.
   bool isDaylightSavingTime() => getZoneInterval().savings != Offset.zero;
@@ -449,11 +463,10 @@ class ZonedDateTime {
   ///
   /// A [String] containing the value of the current instance in the specified format.
   ///
-  /// [patternText]: The [String] specifying the pattern to use,
+  /// * [patternText]: The [String] specifying the pattern to use,
   /// or null to use the default format pattern ("G").
-  ///
-  /// [formatProvider]: The [IIFormatProvider] to use when formatting the value,
-  /// or null to use the current thread's culture to obtain a format provider.
+  /// * [culture]: The [Culture] to use when formatting the value,
+  /// or null to use the current isolate's culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       ZonedDateTimePatterns.format(this, patternText, culture);
 
@@ -462,29 +475,23 @@ class ZonedDateTime {
       ZonedDateTimePatterns.format(this, patternText, culture);
 
   /// Constructs a [DateTime] from this [ZonedDateTime] which has a
-  /// [DateTime.Kind] of [DateTimeKind.utc] and represents the same instant of time as
+  /// [DateTime.isUtc] set to `true` and represents the same instant of time as
   /// this value rather than the same local time.
   ///
-  /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+  /// If the date and time is not on a millisecond (Web) or microsecond (VM) ( boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
-  /// [InvalidOperationException]: The final date/time is outside the range of `DateTime`.
   /// A [DateTime] representation of this value with a "universal" kind, with the same
   /// instant of time as this value.
   DateTime toDateTimeUtc() => toInstant().toDateTimeUtc();
 
   /// Constructs a [DateTime] from this [ZonedDateTime] which has a
-  /// [DateTime.Kind] of [DateTimeKind.Unspecified] and represents the same local time as
+  /// [DateTime.isUtc] set to `false` and represents the same local time as
   /// this value rather than the same instant in time.
   ///
-  /// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
-  /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
-  /// you to construct a [DateTimeOffset] with an arbitrary offset.
-  ///
-  /// If the date and time is not on a tick boundary (the unit of granularity of DateTime) the value will be truncated
+  /// If the date and time is not on a millisecond (Web) or microsecond (VM) ( boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
-  /// [InvalidOperationException]: The date/time is outside the range of `DateTime`.
   /// A [DateTime] representation of this value with an "unspecified" kind, with the same
   /// local date and time as this value.
   DateTime toDateTimeLocal() => localDateTime.toDateTimeLocal();
@@ -506,7 +513,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
   // TODO(feature): A comparer which compares instants, but in a calendar-sensitive manner?
 
   /// Gets a comparer which compares [ZonedDateTime] values by their local date/time, without reference to
-  /// the time zone or offset. Comparisons between two values of different calendar systems will fail with [ArgumentException].
+  /// the time zone or offset. Comparisons between two values of different calendar systems will fail with [ArgumentError].
   ///
   /// For example, this comparer considers 2013-03-04T20:21:00 (Europe/London) to be later than
   /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value represents a later instant in time.
@@ -520,9 +527,6 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
   /// 2013-03-04T19:21:00 (America/Los_Angeles) even though the second value has a local time which is earlier; the time zones
   /// mean that the first value occurred earlier in the universal time line.
   /// This property will return a reference to the same instance every time it is called.
-  ///
-  /// <value>A comparer which compares values by the instants obtained by applying the offset to
-  /// the local date/time, ignoring the calendar system.</value>
   static ZonedDateTimeComparer get instant => _ZonedDateTimeInstantComparer.instance;
 
   /// Internal constructor to prevent external classes from deriving from this.
@@ -531,41 +535,30 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
   /// Compares two [ZonedDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
-  /// [x]: The first value to compare.
-  /// [y]: The second value to compare.
+  /// * [x]: The first value to compare.
+  /// * [y]: The second value to compare.
+  ///
   /// A signed integer that indicates the relative values of [x] and [y], as shown in the following table.
-  ///   <list type = "table">
-  ///     <listheader>
-  ///       <term>Value</term>
-  ///       <description>Meaning</description>
-  ///     </listheader>
-  ///     <item>
-  ///       <term>Less than zero</term>
-  ///       <description>[x] is less than [y].</description>
-  ///     </item>
-  ///     <item>
-  ///       <term>Zero</term>
-  ///       <description>[x] is equals to [y].</description>
-  ///     </item>
-  ///     <item>
-  ///       <term>Greater than zero</term>
-  ///       <description>[x] is greater than [y].</description>
-  ///     </item>
-  ///   </list>
+  ///
+  /// Value | Meaning
+  /// --|--
+  /// Less than zero | [x] is less than [y].
+  /// Zero | [x] is equals to [y]
+  /// Greater than zero | [x] is greater than [y].
   int compare(ZonedDateTime x, ZonedDateTime y);
 
-  /// Determines whether the specified `ZonedDateTime` values are equal.
+  /// Determines whether the specified [ZonedDateTime] values are equal.
   ///
-  /// [x]: The first `ZonedDateTime` to compare.
-  /// [y]: The second `ZonedDateTime` to compare.
+  /// * [x]: The first [ZonedDateTime] to compare.
+  /// * [y]: The second [ZonedDateTime] to compare.
+  ///
   /// Returns: `true` if the specified objects are equal; otherwise, `false`.
   bool equals(ZonedDateTime x, ZonedDateTime y);
 
-  /// Returns a hash code for the specified `ZonedDateTime`.
+  /// Returns a hash code for the specified [ZonedDateTime].
   ///
-  /// [obj]: The `ZonedDateTime` for which a hash code is to be returned.
-  /// Returns: A hash code for the specified value.
-  int getHashCode(ZonedDateTime obj);
+  /// * [zonedDateTime]: The [ZonedDateTime] for which a hash code is to be returned.
+  int getHashCode(ZonedDateTime zonedDateTime);
 }
 
 /// Implementation for [Comparer.Local].

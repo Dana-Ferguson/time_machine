@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-/// Factory class for time adjusters: functions from [LocalTime] to `LocalTime`,
+/// Factory class for time adjusters: functions from [LocalTime] to [LocalTime],
 /// which can be applied to [LocalTime], [LocalDateTime], and [OffsetDateTime].
 @immutable
 class TimeAdjusters {

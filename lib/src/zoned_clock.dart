@@ -16,9 +16,9 @@ class ZonedClock extends Clock {
 
   /// Creates a new [ZonedClock] with the given clock, time zone and calendar system.
   ///
-  /// [clock]: Clock to use to obtain instants.
-  /// [zone]: Time zone to adjust instants into.
-  /// [calendar]: Calendar system to use.
+  /// * [clock]: Clock to use to obtain instants.
+  /// * [zone]: Time zone to adjust instants into.
+  /// * [calendar]: Calendar system to use.
   ZonedClock(this._clock, this._zone, this._calendar) {
     Preconditions.checkNotNull(_clock, 'clock');
     Preconditions.checkNotNull(_zone, 'zone');
@@ -26,8 +26,6 @@ class ZonedClock extends Clock {
   }
 
   /// Returns the current instant provided by the underlying clock.
-  ///
-  /// Returns: The current instant provided by the underlying clock.
   Instant getCurrentInstant() => _clock.getCurrentInstant();
 
   /// Returns the current instant provided by the underlying clock, adjusted
