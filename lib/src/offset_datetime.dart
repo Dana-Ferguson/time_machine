@@ -4,18 +4,13 @@
 
 import 'package:meta/meta.dart';
 import 'package:quiver_hashcode/hashcode.dart';
-
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/text/time_machine_text.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
-import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
 @internal
 abstract class IOffsetDateTime {
   static OffsetDateTime fullTrust(YearMonthDayCalendar yearMonthDayCalendar, int nanosecondOfDay, Offset offset) =>
       new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanosecondOfDay, offset);
-  
+
   static OffsetDateTime lessTrust(YearMonthDayCalendar yearMonthDayCalendar, LocalTime time, Offset offset) =>
       new OffsetDateTime._lessTrust(yearMonthDayCalendar, time, offset);
 
@@ -45,7 +40,7 @@ class OffsetDateTime {
   //static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
 
   // todo: verify this for Dart
-  /// These are effectively the fields of a LocalDateTime and an Offset, but by keeping them directly here,
+  /// These are effectively the fields of a [LocalDateTime] and an [Offset], but by keeping them directly here,
   /// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
   /// should allow us to optimize memory usage too.
   final YearMonthDayCalendar _yearMonthDayCalendar;
@@ -69,9 +64,9 @@ class OffsetDateTime {
   {
     ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
-  
+
   // todo: why is this internal? ... this looks like it would help develop good mental models ... is that correct?
-  
+
   /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
   /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)`
   /// but with less overhead.
@@ -87,7 +82,7 @@ class OffsetDateTime {
       days--;
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
-    var yearMonthDayCalendar = calendar != null 
+    var yearMonthDayCalendar = calendar != null
         ? ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, days)
         // todo: can we grab the correct calculator based on the default culture? (is that appropriate?)
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
@@ -97,8 +92,8 @@ class OffsetDateTime {
 
   /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
   ///
-  /// [localDateTime]: Local date and time to represent
-  /// [offset]: Offset from UTC
+  /// * [localDateTime]: Local date and time to represent
+  /// * [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
       : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
 
@@ -178,7 +173,7 @@ class OffsetDateTime {
 
   /// Returns the local date and time represented within this offset date and time.
   // todo: should this be a const? or cached -- or???
-  LocalDateTime get localDateTime => new LocalDateTime.localDateTime(date, timeOfDay);
+  LocalDateTime get localDateTime => new LocalDateTime.localDateAtTime(date, timeOfDay);
 
   /// Gets the local date represented by this offset date and time.
   ///
@@ -228,7 +223,8 @@ class OffsetDateTime {
   /// this value into an [Instant] and finds the [ZonedDateTime]
   /// for that instant in the specified zone.
   ///
-  /// [zone]: The time zone of the new value.
+  /// * [zone]: The time zone of the new value.
+  ///
   /// Returns: The instant represented by this value, in the specified time zone.
   ZonedDateTime inZone(DateTimeZone zone) {
     Preconditions.checkNotNull(zone, 'zone');
@@ -239,7 +235,8 @@ class OffsetDateTime {
   /// The returned OffsetDateTime is likely to have different date field values to this one.
   /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
   ///
-  /// [calendar]: The calendar system to convert this offset date and time to.
+  /// * [calendar]: The calendar system to convert this offset date and time to.
+  ///
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
     LocalDate newDate = date.withCalendar(calendar);
@@ -252,7 +249,8 @@ class OffsetDateTime {
   /// invalid date (such as by trying to set a day-of-month of 30 in February), any exception thrown by
   /// that construction attempt will be propagated through this method.
   ///
-  /// [adjuster]: The adjuster to apply.
+  /// * [adjuster]: The adjuster to apply.
+  ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
     LocalDate newDate = date.adjust(adjuster);
@@ -264,7 +262,8 @@ class OffsetDateTime {
   /// If the adjuster attempts to construct an invalid time, any exception thrown by
   /// that construction attempt will be propagated through this method.
   ///
-  /// [adjuster]: The adjuster to apply.
+  /// * [adjuster]: The adjuster to apply.
+  ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = timeOfDay.adjust(adjuster);
@@ -274,7 +273,8 @@ class OffsetDateTime {
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
   /// but with a different offset. The local date and time is adjusted accordingly.
   ///
-  /// [offset]: The new offset to use.
+  /// * [offset]: The new offset to use.
+  ///
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withOffset(Offset offset) {
     // Slight change to the normal operation, as it's *just* about plausible that we change day
@@ -321,146 +321,140 @@ class OffsetDateTime {
   /// Compares two [OffsetDateTime] values for equality. This requires
   /// that the local date/time values be the same (in the same calendar) and the offsets.
   ///
-  /// [other]: The value to compare this offset date/time with.
+  /// * [other]: The value to compare this offset date/time with.
+  ///
   /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
       this._yearMonthDayCalendar == other._yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this.offset == other.offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("G"), using the current thread's
+  /// The value of the current instance in the default format pattern ("G"), using the current isolate's
   /// culture to obtain a format provider.
-  // @override String toString() => TextShim.toStringOffsetDateTime(this); // OffsetDateTimePattern.Patterns.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
   @override String toString([String patternText, Culture culture]) =>
       OffsetDateTimePatterns.format(this, patternText, culture);
 
   /// Adds a duration to an offset date and time.
   ///
-  /// This is an alternative way of calling [op_Addition(OffsetDateTime, Duration)].
+  /// * [offsetDateTime]: The value to add the duration to.
+  /// * [time]: The duration to add
   ///
-  /// [offsetDateTime]: The value to add the duration to.
-  /// [duration]: The duration to add
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
-  static OffsetDateTime add(OffsetDateTime offsetDateTime, Time span) => offsetDateTime + span;
+  static OffsetDateTime add(OffsetDateTime offsetDateTime, Time time) => offsetDateTime + time;
 
   /// Returns the result of adding a duration to this offset date and time.
   ///
-  /// This is an alternative way of calling [op_Addition(OffsetDateTime, Duration)].
+  /// * [duration]: The duration to add
   ///
-  /// [duration]: The duration to add
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plus(Time span) => this + span;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
-  /// [hours]: The number of hours to add
+  /// * [hours]: The number of hours to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusHours(int hours) => this + new Time(hours: hours);
 
   /// Returns the result of adding an increment of minutes to this zoned date and time
   ///
-  /// [minutes]: The number of minutes to add
+  /// * [minutes]: The number of minutes to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusMinutes(int minutes) => this + new Time(minutes: minutes);
 
   /// Returns the result of adding an increment of seconds to this zoned date and time
   ///
-  /// [seconds]: The number of seconds to add
+  /// * [seconds]: The number of seconds to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusSeconds(int seconds) => this + new Time(seconds: seconds);
 
   /// Returns the result of adding an increment of milliseconds to this zoned date and time
   ///
-  /// [milliseconds]: The number of milliseconds to add
+  /// * [milliseconds]: The number of milliseconds to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
 
   /// Returns the result of adding an increment of microseconds to this zoned date and time
   ///
-  /// [ticks]: The number of microseconds to add
+  /// * [ticks]: The number of microseconds to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
 
   /// Returns the result of adding an increment of nanoseconds to this zoned date and time
   ///
-  /// [nanoseconds]: The number of nanoseconds to add
+  /// * [nanoseconds]: The number of nanoseconds to add
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
   OffsetDateTime plusNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
 
   /// Returns a new [OffsetDateTime] with the time advanced by the given duration.
   ///
-  /// The returned value retains the calendar system and offset of the [_offsetDateTime].
+  /// The returned value retains the calendar system and offset of [this].
   ///
-  /// [offsetDateTime]: The [OffsetDateTime] to add the duration to.
-  /// [duration]: The duration to add.
+  /// * [this]: The [OffsetDateTime] to add the duration to.
+  /// * [time]: The duration to add.
+  ///
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
-  OffsetDateTime operator +(Time span) =>
-      new OffsetDateTime._fromInstant(toInstant() + span, offset);
+  OffsetDateTime operator +(Time time) =>
+      new OffsetDateTime._fromInstant(toInstant() + time, offset);
 
   /// Subtracts a duration from an offset date and time.
   ///
-  /// This is an alternative way of calling [op_Subtraction(OffsetDateTime, Duration)].
+  /// * [offsetDateTime]: The value to subtract the duration from.
+  /// * [duration]: The duration to subtract.
   ///
-  /// [offsetDateTime]: The value to subtract the duration from.
-  /// [duration]: The duration to subtract.
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
-  static OffsetDateTime subtract(OffsetDateTime offsetDateTime, Time span) => offsetDateTime - span;
+  static OffsetDateTime subtract(OffsetDateTime offsetDateTime, Time time) => offsetDateTime - time;
 
-  /// Returns the result of subtracting a duration from this offset date and time, for a fluent alternative to
-  /// [op_Subtraction(OffsetDateTime, Duration)]
+  /// Returns the result of subtracting a duration from this offset date and time.
   ///
-  /// [span]: The duration to subtract
+  /// * [time]: The duration to subtract
+  ///
   /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
-  OffsetDateTime minusSpan(Time span) => new OffsetDateTime._fromInstant(toInstant() - span, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+  OffsetDateTime subtractTime(Time time) => new OffsetDateTime._fromInstant(toInstant() - time, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
-  /// Returns a new [OffsetDateTime] with the duration subtracted.
+  /// Returns a new [OffsetDateTime] with the [time] subtracted.
   ///
   /// The returned value retains the calendar system and offset of the [_offsetDateTime].
   ///
-  /// [offsetDateTime]: The value to subtract the duration from.
-  /// [duration]: The duration to subtract.
+  /// * [offsetDateTime]: The value to subtract the duration from.
+  /// * [duration]: The duration to subtract.
+  ///
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
-  /// Subtracts one [OffsetDateTime] from another, resulting in the elapsed time between
-  /// the two values.
-  ///
-  /// This is equivalent to `end.ToInstant() - start.ToInstant()`; in particular:
-  /// * The two values can use different calendar systems
-  /// * The two values can have different UTC offsets
-  ///
-  /// [end]: The offset date and time value to subtract from; if this is later than [start]
-  /// then the result will be positive.
-  /// [start]: The offset date and time to subtract from [end].
-  /// Returns: The elapsed duration from [start] to [end].
-  dynamic operator -(dynamic value) =>
-  // todo: dynamic dispatch... still complaining... change API to prevent dynamic dispatch?
-  value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
+  OffsetDateTime operator -(Time time) => subtractTime(time);
 
-// static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
+  // dynamic operator -(dynamic value) => value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
+  // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
+
+  // todo: look for parallel construction here .. name feels off
 
   /// Subtracts one offset date and time from another, returning an elapsed duration.
   ///
-  /// This is an alternative way of calling [op_Subtraction(OffsetDateTime, OffsetDateTime)].
-  ///
-  /// [end]: The offset date and time value to subtract from; if this is later than [start]
+  /// * [end]: The offset date and time value to subtract from; if this is later than [start]
   /// then the result will be positive.
-  /// [start]: The offset date and time to subtract from [end].
+  /// * [start]: The offset date and time to subtract from [end].
+  ///
   /// Returns: The elapsed duration from [start] to [end].
   static Time subtractOffsetDateTimes(OffsetDateTime end, OffsetDateTime start) => end.minusOffsetDateTime(start);
 
   /// Returns the result of subtracting another offset date and time from this one, resulting in the elapsed duration
   /// between the two instants represented in the values.
   ///
-  /// This is an alternative way of calling [op_Subtraction(OffsetDateTime, OffsetDateTime)].
+  /// * [other]: The offset date and time to subtract from this one.
   ///
-  /// [other]: The offset date and time to subtract from this one.
   /// Returns: The elapsed duration from [other] to this value.
   Time minusOffsetDateTime(OffsetDateTime other) => toInstant() - other.toInstant();
 
 
   /// Implements the operator == (equality).
   ///
-  /// [left]: The left hand side of the operator.
-  /// [right]: The right hand side of the operator.
+  /// * [left]: The left hand side of the operator.
+  /// * [right]: The right hand side of the operator.
+  ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
 }

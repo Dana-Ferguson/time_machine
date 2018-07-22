@@ -328,7 +328,7 @@ void InstantComparer()
 void DefaultConstructor()
 {
   // todo: I owe you a default constructor
-  var actual = new OffsetDateTime(new LocalDateTime.localDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0)), new Offset(0));
+  var actual = new OffsetDateTime(new LocalDateTime.localDateAtTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0)), new Offset(0));
   expect(new LocalDateTime(1, 1, 1, 0, 0, 0), actual.localDateTime);
   expect(Offset.zero, actual.offset);
 }
@@ -342,7 +342,7 @@ void Subtraction_Duration()
   Time duration = new Time(hours: 8) + new Time(minutes: 9);
   OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
   expect(expected, end - duration);
-  expect(expected, end.minusSpan(duration));
+  expect(expected, end.subtractTime(duration));
   expect(expected, OffsetDateTime.subtract(end, duration));
 }
 
@@ -392,7 +392,7 @@ void Subtraction_OffsetDateTime()
   OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
   OffsetDateTime end = new LocalDateTime(2014, 08, 14, 18, 0, 0).withOffset(new Offset.hours(4));
   Time expected = new Time(hours: 8) + new Time(minutes: 9);
-  expect(expected, end - start);
+  // expect(expected, end - start);
   expect(expected, end.minusOffsetDateTime(start));
   expect(expected, OffsetDateTime.subtractOffsetDateTimes(end, start));
 }

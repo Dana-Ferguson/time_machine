@@ -409,7 +409,7 @@ void InZone()
 void DefaultConstructor()
 {
   // todo: LocalDateTime()
-  var actual = new LocalDateTime.localDateTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
+  var actual = new LocalDateTime.localDateAtTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
   expect(new LocalDateTime(1, 1, 1, 0, 0, 0), actual);
 }
 

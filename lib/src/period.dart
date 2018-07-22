@@ -44,11 +44,11 @@ abstract class IPeriod {
 
   static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
     int hours: 0, int minutes: 0, int seconds: 0,
-    int milliseconds: 0, int microseconds: 0, int nanoseconds: 0}) => 
-      new Period(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds, 
+    int milliseconds: 0, int microseconds: 0, int nanoseconds: 0}) =>
+      new Period(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds,
           milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds);
 
-  static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);  
+  static LocalTime addTimeTo(Period period, LocalTime time, int scalar) => period._addTimeTo(time, scalar);
 
   static LocalDate addDateTo(Period period, LocalDate date, int scalar) => period._addDateTo(date, scalar);
 
@@ -91,7 +91,7 @@ class Period {
   /// equal 1 year.
   // todo: what to do about this?
   // static IEqualityComparer<Period> NormalizingEqualityComparer => NormalizingPeriodEqualityComparer.Instance;
-  
+
   // The fields that make up this period.
 
 
@@ -227,7 +227,7 @@ class Period {
         microseconds: microseconds - subtrahend.microseconds,
         nanoseconds: nanoseconds - subtrahend.nanoseconds);
   }
-  
+
   /// Returns the exact difference between two date/times or
   /// returns the period between a start and an end date/time, using only the given units.
   ///
@@ -282,9 +282,9 @@ class Period {
       PeriodUnits.microseconds: () => new Period(microseconds: TimePeriodField.microseconds.unitsBetween(start, end)),
       PeriodUnits.nanoseconds: () => new Period(nanoseconds: TimePeriodField.nanoseconds.unitsBetween(start, end))
     };
-    
+
     if (_betweenFunctionMap.containsKey(units)) return _betweenFunctionMap[units]();
-    
+
 //    switch (units) {
 //      case PeriodUnits.years:
 //        return new Period.fromYears(DatePeriodFields.YearsField.UnitsBetween(start.Date, endDate));
@@ -324,7 +324,7 @@ class Period {
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime.localDateTime(remainingDate, start.time);
+      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.time);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(years: years, months: months, weeks: weeks, days: days);
@@ -505,7 +505,7 @@ class Period {
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
-    return new LocalDateTime.localDateTime(date.plusDays(extraDays), time);
+    return new LocalDateTime.localDateAtTime(date.plusDays(extraDays), time);
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
@@ -637,7 +637,7 @@ class Period {
     }
     return new Time(nanoseconds: _totalNanoseconds);
   }
-  
+
   /// Gets the total number of nanoseconds duration for the 'standard' properties (all bar years and months).
   int get _totalNanoseconds =>
       nanoseconds +
@@ -648,7 +648,7 @@ class Period {
           hours * TimeConstants.nanosecondsPerHour +
           days * TimeConstants.nanosecondsPerDay +
           weeks * TimeConstants.nanosecondsPerWeek;
-  
+
   /// Creates a [PeriodBuilder] from this instance. The new builder
   /// is populated with the values from this period, but is then detached from it:
   /// changes made to the builder are not reflected in this period.
