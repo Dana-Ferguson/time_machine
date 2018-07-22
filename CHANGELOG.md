@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.4
+- Bugfix for Flutter.
+
 ## 0.8.3
 - Removed all the `Period.from*` constructors, added a named constructor, constructor 
 `const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,

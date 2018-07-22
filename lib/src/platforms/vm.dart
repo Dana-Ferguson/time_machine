@@ -59,7 +59,7 @@ Future initialize(Map args) {
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
     if (args == null || args['rootBundle'] == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
-    PlatformIO.local = new _FlutterMachineIO(args);
+    PlatformIO.local = new _FlutterMachineIO(args['rootBundle']);
   }
   else {
     // Map IO functions
@@ -87,7 +87,7 @@ class TimeMachine  {
     // Default TimeZone
     //var localTimezoneId = await _getTimeZoneId();
     //var local = await tzdb[localTimezoneId];
-    
+
     var local = timeZoneOverride != null ? await tzdb.getZoneOrNull(timeZoneOverride) : await _figureOutTimeZone(tzdb);
     // todo: cache local more directly? (this is indirect caching)
     TzdbIndex.localId = local.id;
@@ -103,7 +103,7 @@ class TimeMachine  {
   /// [DateTimeZone] provides the zone interval id for a given instant. We can correlate the (zone interval id, instant) pairs
   /// with known timezones and narrow down which timezone the local computer is in.
   ///
-  /// note: during testing, bugs were found with dart's zone interval id -- it sometimes does daylight savings when it didn't exist 
+  /// note: during testing, bugs were found with dart's zone interval id -- it sometimes does daylight savings when it didn't exist
   static Future<DateTimeZone> _figureOutTimeZone(DateTimeZoneProvider provider, [bool strict = false]) async {
     var zones = <DateTimeZone>[];
     // load all the timezones; todo: fast_cache method
@@ -131,7 +131,7 @@ class TimeMachine  {
         lessZones.add(zone);
       }
     }
-    
+
     allSpecialInstants = allZoneIntervals.map((z) => IZoneInterval.rawStart(z)).toList();
     var badZones = new HashSet<String>();
 
@@ -148,7 +148,7 @@ class TimeMachine  {
 
         for (var zone in zones) {
           var zoneInterval = zone.getZoneInterval(instant);
-          if ((_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) != zoneInterval.name 
+          if ((_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) != zoneInterval.name
               || dateTime.timeZoneOffset.inSeconds != zoneInterval.wallOffset.seconds) {
             // print('${instant}: ${dateTime}: ${zone.id}: dart: ${dateTime.timeZoneName}@${dateTime.timeZoneOffset.inSeconds} vs tzdb: ${zoneInterval.name}@${zoneInterval.wallOffset.seconds};');
             badZones.add(zone.id);
@@ -158,11 +158,11 @@ class TimeMachine  {
         // i++;
         if (badZones.length != 0) {
           var lastZone = zones.last;
-          
+
           // print('$i :: $badZones');
           zones.removeWhere((z) => badZones.contains(z.id));
           badZones.clear();
-          
+
           // There are mistakes in Dart
           // e.g. see: Pacific/Auckland which Dart (on Linux VM) gives `NZDT@46800` in 1868 and `NZDT` didn't start till `1974-11-03`.... so... dat's not good.
           // But the first pass returns, Antartica/McMurdo & Pacific/Auckland, and they are the same timezone and both technically correct.
@@ -185,7 +185,7 @@ class TimeMachine  {
     // Ambiguous -- just picking the first result
     return zones.first;
   }
-  
+
   static bool _isTheSame(DateTime dateTime, ZoneInterval zoneInterval) {
     return (_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) == zoneInterval.name
         && dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.seconds;
@@ -311,7 +311,7 @@ class TimeMachine  {
     "Christmas Island Time": "CXT",
     "Davis Time": "DAVT",
     "Dumont d'Urville Time": "DDUT",
-    // AIX-specific equivalent of 
+    // AIX-specific equivalent of
     //"Central European Time": "DFT",
     "Easter Island Summer Time": "EASST",
     "Easter Island Standard Time": "EAST",
