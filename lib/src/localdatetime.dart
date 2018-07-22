@@ -334,23 +334,14 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Subtracts a period from a local date/time. Fields are subtracted in the order provided by the period.
   /// This is a convenience operator over the [Minus(Period)] method.
   ///
-  /// * [localDateTime]: Initial local date and time
+  /// * [this]: Initial local date and time
   /// * [period]: Period to subtract
   ///
   /// Returns: The resulting local date and time
-  /// Subtracts one date/time from another, returning the result as a [Period].
-  ///
-  /// This is simply a convenience operator for calling [Period.Between(LocalDateTime,LocalDateTime)].
-  /// The calendar systems of the two date/times must be the same.
-  ///
-  /// * [this]: The date/time to subtract from
-  /// * [other]: The date/time to subtract
-  ///
-  /// Returns: The result of subtracting one date/time from another.
-  // LocalDateTime operator -(Period period) => MinusPeriod(period);
+  LocalDateTime operator -(Period period) => minusPeriod(period);
+
+  // dynamic operator -(dynamic other) => other is Period ? minusPeriod(other) : other is LocalDateTime ? minusLocalDateTime(other) : throw new TypeError();
   // Period operator -(LocalDateTime rhs) => Period.Between(rhs, this);
-  // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic other) => other is Period ? minusPeriod(other) : other is LocalDateTime ? MinusLocalDateTime(other) : throw new TypeError();
 
   /// Subtracts the specified period from the date and time. Friendly alternative to `operator-()`.
   ///
@@ -381,7 +372,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [rhs]: The date/time to subtract
   ///
   /// Returns: The result of subtracting one date/time from another.
-  static Period subtractLocalDateTime(LocalDateTime lhs, LocalDateTime rhs) => lhs.MinusLocalDateTime(rhs);
+  static Period subtractLocalDateTime(LocalDateTime lhs, LocalDateTime rhs) => lhs.minusLocalDateTime(rhs);
 
 
   /// Subtracts the specified date/time from this date/time, returning the result as a [Period].
@@ -392,7 +383,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [localDateTime]: The date/time to subtract from this
   ///
   /// Returns: The difference between the specified date/time and this one
-  Period MinusLocalDateTime(LocalDateTime localDateTime) => Period.between(localDateTime, this);
+  Period minusLocalDateTime(LocalDateTime localDateTime) => Period.between(localDateTime, this);
 
   /// Returns a hash code for this instance.
   @override int get hashCode => hash3(date, time, calendar);

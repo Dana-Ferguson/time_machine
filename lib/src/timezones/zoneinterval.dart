@@ -12,7 +12,7 @@ abstract class IZoneInterval {
   static Instant rawStart(ZoneInterval zoneInterval) => zoneInterval._rawStart;
   static Instant rawEnd(ZoneInterval zoneInterval) => zoneInterval._rawEnd;
 
-  static ZoneInterval newZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) => 
+  static ZoneInterval newZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) =>
       new ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
 
   static ZoneInterval withStart(ZoneInterval zoneInterval, Instant newStart) => zoneInterval?._withStart(newStart);
@@ -52,7 +52,7 @@ class ZoneInterval {
   /// This is effectively `End - Start`.
   ///
   /// [InvalidOperationException]: This zone extends to the start or end of time.
-  Time get totalTime => end - start;
+  Time get totalTime => start.timeUntil(end);
 
   /// Returns `true` if this zone interval has a fixed start point, or `false` if it
   /// extends to the beginning of time.
@@ -115,7 +115,7 @@ class ZoneInterval {
   final Offset savings;
 
   ///// Initializes a new instance of the [ZoneInterval] class.
-  ///// 
+  /////
   ///// [name]: The name of this offset period (e.g. PST or PDT).
   ///// [start]: The first [Instant] that the <paramref name = "wallOffset" /> applies,
   ///// or `null` to make the zone interval extend to the start of time.

@@ -367,18 +367,18 @@ class TimeMachineFormatInfo {
   /// [provider]: The [IIFormatProvider].
   /// [ArgumentException]: The format provider cannot be used for Time Machine.
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
-  static TimeMachineFormatInfo getInstance(/*IFormatProvider*/ dynamic formatProvider) {
-    if (formatProvider == null) {
+  static TimeMachineFormatInfo getInstance(Culture culture) {
+    if (culture == null) {
       return getFormatInfo(currentInfo.cultureInfo);
-    } else if (formatProvider is Culture) {
-      return getFormatInfo(formatProvider);
-    } else if (formatProvider is DateTimeFormat) {
-      return new TimeMachineFormatInfo.withDateTimeFormat(Culture.invariant, formatProvider);
     }
+    return getFormatInfo(culture);
 
-    throw new ArgumentError("Cannot use provider of type ${formatProvider
-        .GetType()
-        .FullName} in Time Machine");
+    //else if (culture is Culture) {
+    //  return getFormatInfo(culture);
+    //} else if (culture is DateTimeFormat) {
+    //  return new TimeMachineFormatInfo.withDateTimeFormat(Culture.invariant, culture);
+    //}
+    // throw new ArgumentError("Cannot use provider of type ${culture.runtimeType} in Time Machine");
   }
 
   /// Returns a [String] that represents this instance.

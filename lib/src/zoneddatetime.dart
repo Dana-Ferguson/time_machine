@@ -421,7 +421,7 @@ class ZonedDateTime {
   /// * [other]: The zoned date and time to subtract from this one.
   ///
   /// Returns: The elapsed duration from [other] to this value.
-  Time timeSince(ZonedDateTime other) => toInstant() - other.toInstant();
+  Time timeSince(ZonedDateTime other) => other.toInstant().timeUntil(toInstant());
 
   /// Returns a new [ZonedDateTime] with the duration subtracted. Note that
   /// due to daylight saving time changes this may not change the local time by the same amount.
@@ -450,7 +450,7 @@ class ZonedDateTime {
   ZoneInterval getZoneInterval() => zone.getZoneInterval(toInstant());
 
   /// Indicates whether or not this [ZonedDateTime] is in daylight saving time
-  /// for its time zone. This is determined by checking the [ZoneInterval.Savings] property
+  /// for its time zone. This is determined by checking the [ZoneInterval.savings] property
   /// of the zone interval containing this value.
   ///
   /// see: [getZoneInterval]

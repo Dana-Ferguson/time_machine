@@ -225,11 +225,11 @@ class LocalDate implements Comparable<LocalDate> {
   /// This is simply a convenience method for calling [Period.Between(LocalDate,LocalDate)].
   /// The calendar systems of the two dates must be the same.
   ///
-  /// * [lhs]: The date to subtract from
-  /// * [rhs]: The date to subtract
+  /// * [end]: The date to subtract from
+  /// * [start]: The date to subtract
   ///
   /// Returns: The result of subtracting one date from another.
-  static Period between(LocalDate lhs, LocalDate rhs) => lhs - rhs;
+  static Period between(LocalDate end, LocalDate start) => Period.betweenDates(start, end); // rhs.minusDate(lhs);
 
   /// Subtracts the specified period from this date. Fluent alternative to `operator-()`.
   ///
@@ -252,27 +252,17 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The difference between the specified date and this one
   Period minusDate(LocalDate date) => Period.betweenDates(date, this); // this - date;
 
-  /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
-  ///
-  /// This is simply a convenience operator for calling [Period.Between(LocalDate,LocalDate)].
-  /// The calendar systems of the two dates must be the same; an exception will be thrown otherwise.
-  ///
-  /// * [this]: The date to subtract from
-  /// * [other]: The date to subtract
-  ///
-  /// Returns: The result of subtracting one date from another.
-  ///
-  /// * [ArgumentException]: [this] and [other] are not in the same calendar system.
-  ///
   /// Subtracts the specified period from the date.
   /// This is a convenience operator over the [Minus(Period)] method.
   ///
-  /// * [date]: The date to subtract the period from
+  /// * [this]: The date to subtract the period from
   /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
   ///
   /// Returns: The result of subtracting the given period from the date
-  // todo: still hate dynamic dispatch
-  dynamic operator -(dynamic other) => other is LocalDate ? minusDate(other) : other is Period ? minusPeriod(other) : throw new TypeError();
+  LocalDate operator -(Period period) => minusPeriod(period);
+
+  // dynamic operator -(dynamic other) => other is LocalDate ? minusDate(other) : other is Period ? minusPeriod(other) : throw new TypeError();
+
 
   /// Compares two [LocalDate] values for equality. This requires
   /// that the dates be the same, within the same calendar.

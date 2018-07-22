@@ -66,7 +66,7 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
   Period p = null;
-  expect(() => (date - p).toString(), willThrow<TypeError>());
+  expect(() => (date - p).toString(), willThrow<ArgumentError>());
 }
 
 @Test()
@@ -106,7 +106,7 @@ void PeriodSubtraction_MethodEquivalents()
   LocalDate end = start + period;
   expect(start - period, LocalDate.subtract(start, period));
   expect(start - period, start.minusPeriod(period));
-  expect(period, end - start);
+  // expect(period, end - start);
   expect(period, LocalDate.between(end, start)); // LocalDate.Minus(end, start)
   expect(period, end.minusDate(start));
 }

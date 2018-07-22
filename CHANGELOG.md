@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.5
+- Constructor is now `LocalDateTime.localDateAtTime(LocalDate, LocalTime)`
+- Formatted much API Documentation.
+- Removed operator based dynamic dispatch from all `operator -` methods. Many times it makes sense to for example,
+  subtract to do this, `end_date - start_date = delta_time` and to do this, `end_date - delta_time = start_date`
+  but only makes sense for addition to do this, `start_date + delta_time = end_date`, you'd never do this,
+  `start_date + end_date = delta_time` (doesn't really make sense) -- so, the `operator -` methods have been
+  defaulted to do the same operation as the `operator +` methods. If Dart 3 gets compile time dispatch, these
+  other methods will be re-enabled.
+
 ## 0.8.4
 - Bugfix for Flutter.
 

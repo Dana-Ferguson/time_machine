@@ -376,8 +376,8 @@ void PlusDuration_Overflow()
 @Test()
 void ExtremeArithmetic()
 {
-  Time hugeAndPositive = Instant.maxValue - Instant.minValue;
-  Time hugeAndNegative = Instant.minValue - Instant.maxValue;
+  Time hugeAndPositive = Instant.minValue.timeUntil(Instant.maxValue);
+  Time hugeAndNegative = Instant.maxValue.timeUntil(Instant.minValue);
   expect(hugeAndNegative, -hugeAndPositive);
   expect(Instant.maxValue, Instant.minValue - hugeAndNegative);
   expect(Instant.maxValue, Instant.minValue + hugeAndPositive);
@@ -403,7 +403,7 @@ void FromUnixTimeMilliseconds_Range()
   //expect(() => Instant(milliseconds: smallestValid - 1), throwsException);
   //expect(() => Instant(milliseconds: largestValid), isNot(throwsException));
   //expect(() => Instant(milliseconds: largestValid + 1), throwsException);
-  
+
   //TestHelper.AssertValid(Instant.fromUnixTimeMilliseconds, smallestValid);
   //TestHelper.AssertOutOfRange(Instant.fromUnixTimeMilliseconds, smallestValid - 1);
   //TestHelper.AssertValid(Instant.FromUnixTimeMilliseconds, largestValid);

@@ -447,7 +447,7 @@ class OffsetDateTime {
   /// * [other]: The offset date and time to subtract from this one.
   ///
   /// Returns: The elapsed duration from [other] to this value.
-  Time minusOffsetDateTime(OffsetDateTime other) => toInstant() - other.toInstant();
+  Time minusOffsetDateTime(OffsetDateTime other) => other.toInstant().timeUntil(toInstant());
 
 
   /// Implements the operator == (equality).

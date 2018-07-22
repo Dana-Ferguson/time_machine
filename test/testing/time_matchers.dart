@@ -33,7 +33,7 @@ class InstantIsCloseTo extends Matcher {
 
   bool matches(item, Map matchState) {
     if (item is Instant) {
-      var diff = (item > _value) ? item - _value : _value - item;
+      var diff = (item > _value) ? _value.timeUntil(item) : item.timeUntil(_value);
       // if (diff < 0) diff = -diff;
       return (diff <= _delta);
     } else {
@@ -50,7 +50,7 @@ class InstantIsCloseTo extends Matcher {
   Description describeMismatch(
       item, Description mismatchDescription, Map matchState, bool verbose) {
     if (item is Instant) {
-      var diff = (item > _value) ? item - _value : _value - item;
+      var diff = (item > _value) ? _value.timeUntil(item) : item.timeUntil(_value);
       // if (diff < Span.zero) diff = -diff;
       return mismatchDescription.add(' differs by ').addDescriptionOf(diff);
     } else {

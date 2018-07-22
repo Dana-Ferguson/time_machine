@@ -76,7 +76,7 @@ class Interval {
   /// This will always be a non-negative duration, though it may be zero.
   ///
   /// * [StateError]: The interval extends to the start or end of time.
-  Time get time => end - start;
+  Time get time => start.timeUntil(end);
 
   /// Returns whether or not this interval contains the given instant.
   ///
