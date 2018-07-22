@@ -10,6 +10,8 @@ import 'dart:io';
 
 String timeMachineText = '';
 
+// todo: make this a proper Flutter example
+// note: this only is `main._dart` (vs. `main.dart` to prevent dart_analysis from scanning this file)
 Future main() async {
   await example();
   runApp(new MyApp());

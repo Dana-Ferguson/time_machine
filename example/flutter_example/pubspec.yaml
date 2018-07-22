@@ -4,8 +4,7 @@ description: A new Flutter application.
 dependencies:
   flutter:
     sdk: flutter
-  time_machine:
-    path: ../../WebstormProjects/time_machine
+  time_machine: "^0.8.2"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
