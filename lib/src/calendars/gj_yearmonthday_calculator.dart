@@ -41,8 +41,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static final List<int> _maxTotalDaysByMonth = const [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
 
   GJYearMonthDayCalculator(int minYear, int maxYear, int averageDaysPer10Years, int daysAtStartOfYear1)
-      : super(minYear, maxYear, 12, averageDaysPer10Years, daysAtStartOfYear1) {
-  }
+      : super(minYear, maxYear, 12, averageDaysPer10Years, daysAtStartOfYear1);
 
   // Note: parameter is renamed to d for brevity. It's still the 1-based day-of-year
   @override

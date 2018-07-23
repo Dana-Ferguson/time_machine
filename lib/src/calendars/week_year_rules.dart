@@ -5,8 +5,8 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
+// todo: I.O.U. better API Documentation
 // https://msdn.microsoft.com/en-us/library/system.globalization.calendarweekrule(v=vs.110).aspx
-// todo: if this has no advanced usage anywhere, we can leave it as this.
 enum CalendarWeekRule {
   firstDay,
   firstFullWeek,
@@ -14,8 +14,7 @@ enum CalendarWeekRule {
 }
 
 /// Factory methods to construct week-year rules supported by Time Machine.
-abstract class WeekYearRules
-{
+abstract class WeekYearRules {
   /// Returns an [WeekYearRule] consistent with ISO-8601.
   ///
   /// In the standard ISO-8601 week algorithm, the first week of the year
@@ -42,18 +41,20 @@ abstract class WeekYearRules
   /// deemed to be the first week of week-year X. Otherwise, the week is deemed to be the last week of
   /// week-year X-1, and the first week of week-year X starts on the following [firstDayOfWeek].
   ///
-  /// [minDaysInFirstWeek]: The minimum number of days in the first week (starting on
-  /// <paramref name="firstDayOfWeek" />) which have to be in the new calendar year for that week
+  /// * [minDaysInFirstWeek]: The minimum number of days in the first week (starting on
+  /// [firstDayOfWeek]) which have to be in the new calendar year for that week
   /// to count as being in that week-year. Must be in the range 1 to 7 inclusive.
+  /// * [firstDayOfWeek]: The first day of the week.
   ///
-  /// [firstDayOfWeek]: The first day of the week.
   /// A [SimpleWeekYearRule] with the specified minimum number of days in the first
   /// week and first day of the week.
   static WeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [DayOfWeek firstDayOfWeek = DayOfWeek.monday])
   => new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
+  // todo: BCL references... investigate?
+
   /// Creates a rule which behaves the same way as the BCL
-  /// [Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)]
+  /// [Calendar.getWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)]
   /// method.
   ///
   /// The BCL week year rules are subtly different to the ISO rules.
@@ -63,8 +64,8 @@ abstract class WeekYearRules
   /// week-year in both kinds of rule.) This means that in the BCL rules, some weeks
   /// are incomplete, whereas ISO weeks are always exactly 7 days long.
   ///
-  /// [calendarWeekRule]: The BCL rule to emulate.
-  /// [firstDayOfWeek]: The first day of the week to use in the rule.
+  /// * [calendarWeekRule]: The BCL rule to emulate.
+  /// * [firstDayOfWeek]: The first day of the week to use in the rule.
   /// A rule which behaves the same way as the BCL
   /// [Calendar.GetWeekOfYear(DateTime, CalendarWeekRule, DayOfWeek)]
   /// method.

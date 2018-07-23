@@ -43,9 +43,6 @@ class Era {
 
   const Era._(this.name, this._resourceIdentifier);
 
-  
   /// Returns the name of this era.
-  ///
-  /// Returns: The name of this era.
   @override String toString() => name;
 }
