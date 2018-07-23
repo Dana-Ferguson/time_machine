@@ -402,7 +402,7 @@ class ZonedDateTime {
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
-  /// This is equivalent to `end.ToInstant() - start.ToInstant()`; in particular:
+  /// This is equivalent to `start.ToInstant().timeUntil(end.ToInstant())`; in particular:
   ///
   ///  * The two values can use different calendar systems
   ///  * The two values can be in different time zones
@@ -415,13 +415,23 @@ class ZonedDateTime {
   /// Returns: The elapsed duration from [start] to [end].
   static Time timeBetween(ZonedDateTime end, ZonedDateTime start) => end.timeSince(start);
 
+  // todo: timeSince vs. timeUntil ... interesting
+
   /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
-  /// between the two instants represented in the values.
+  /// between the two instants represented by the values.
   ///
-  /// * [other]: The zoned date and time to subtract from this one.
+  /// * [other]: The zoned date and time to subtract from [this] one.
   ///
   /// Returns: The elapsed duration from [other] to this value.
   Time timeSince(ZonedDateTime other) => other.toInstant().timeUntil(toInstant());
+
+  /// Returns the result of subtracting [this] from a zoned date and time, resulting in the elapsed duration
+  /// between the two instants represented by the values.
+  ///
+  /// * [other]: The zoned date and time to subtract [this] from.
+  ///
+  /// Returns: The elapsed duration from [other] to this value.
+  Time timeUntil(ZonedDateTime other) => toInstant().timeUntil(other.toInstant());
 
   /// Returns a new [ZonedDateTime] with the duration subtracted. Note that
   /// due to daylight saving time changes this may not change the local time by the same amount.
@@ -478,7 +488,7 @@ class ZonedDateTime {
   /// [DateTime.isUtc] set to `true` and represents the same instant of time as
   /// this value rather than the same local time.
   ///
-  /// If the date and time is not on a millisecond (Web) or microsecond (VM) ( boundary (the unit of granularity of DateTime) the value will be truncated
+  /// If the date and time is not on a millisecond (Web) or microsecond (VM) boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
   /// A [DateTime] representation of this value with a "universal" kind, with the same
@@ -489,7 +499,7 @@ class ZonedDateTime {
   /// [DateTime.isUtc] set to `false` and represents the same local time as
   /// this value rather than the same instant in time.
   ///
-  /// If the date and time is not on a millisecond (Web) or microsecond (VM) ( boundary (the unit of granularity of DateTime) the value will be truncated
+  /// If the date and time is not on a millisecond (Web) or microsecond (VM) boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
   /// A [DateTime] representation of this value with an "unspecified" kind, with the same
