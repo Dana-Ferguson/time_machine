@@ -13,12 +13,12 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
 
 // todo: look at the name for this, with-respect-to, Culture && DateTimeFormatInfo
-/// A [IIFormatProvider] for Time Machine types, usually initialised from a [System.Globalization.CultureInfo].
+/// A [IIFormatProvider] for Time Machine types, usually initialised from a [Culture].
 /// This provides a single place defining how Time Machine values are formatted and displayed, depending on the culture.
 ///
 /// Currently this is "shallow-immutable" - although none of these properties can be changed, the
-/// CultureInfo itself may be mutable. If the CultureInfo is mutated after initialization, results are not
-/// guaranteed: some aspects of the CultureInfo may be extracted at initialization time, others may be
+/// [Culture] itself may be mutable. If the [Culture] is mutated after initialization, results are not
+/// guaranteed: some aspects of the [Culture] may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
 @internal
 class TimeMachineFormatInfo {
@@ -46,12 +46,12 @@ class TimeMachineFormatInfo {
   // Note: this must occur below the pattern parsers, to make type initialization work...
   static final TimeMachineFormatInfo invariantInfo = new TimeMachineFormatInfo(Culture.invariant);
 
-  // Justification for max size: CultureInfo.GetCultures(CultureTypes.AllCultures) returns 378 cultures
+  // Justification for max size: [Cultures.getCultures(CultureTypes.AllCultures)] returns 378 cultures
   // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
   // used by any particular application.
   // 500 should be ample for almost all cases, without being enormous.
   static final Cache<Culture, TimeMachineFormatInfo> _cache = new Cache<Culture, TimeMachineFormatInfo>
-    (500, (culture) => new TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<CultureInfo>()*/);
+    (500, (culture) => new TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<Culture>()*/);
 
   List<String> _longMonthNames;
   List<String> _longMonthGenitiveNames;
@@ -63,23 +63,23 @@ class TimeMachineFormatInfo {
   final Map<Era, _EraDescription> _eraDescriptions;
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based solely
-  /// on a [System.Globalization.CultureInfo].
+  /// on a [Culture].
   ///
-  /// [cultureInfo]: The culture info to use.
+  /// [culture]: The culture info to use.
   @visibleForTesting
-  TimeMachineFormatInfo(Culture cultureInfo)
-      : this.withDateTimeFormat(cultureInfo, cultureInfo?.dateTimeFormat);
+  TimeMachineFormatInfo(Culture culture)
+      : this.withDateTimeFormat(culture, culture?.dateTimeFormat);
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based on
-  /// potentially disparate [System.Globalization.CultureInfo] and
+  /// potentially disparate [Culture] and
   /// [DateTimeFormat] instances.
   ///
-  /// [cultureInfo]: The culture info to use for text comparisons and resource lookups.
+  /// [culture]: The culture info to use for text comparisons and resource lookups.
   /// [dateTimeFormat]: The date/time format to use for format strings etc.
   @visibleForTesting
-  TimeMachineFormatInfo.withDateTimeFormat(this.cultureInfo, this.dateTimeFormat)
+  TimeMachineFormatInfo.withDateTimeFormat(this.culture, this.dateTimeFormat)
       : _eraDescriptions = new Map<Era, _EraDescription>() {
-    Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
+    Preconditions.checkNotNull(culture, 'culture');
     Preconditions.checkNotNull(dateTimeFormat, 'dateTimeFormat');
   }
 
@@ -134,7 +134,7 @@ class TimeMachineFormatInfo {
   /// So again, if we detect that, we'll go back to the non-genitive version.
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
   List<String> _convertGenitiveMonthArray(List<String> nonGenitiveNames, List<String> bclNames, List<String> invariantNames) {
-    var number = int.tryParse(bclNames[0]); //, NumberStyles.Integer, CultureInfo.InvariantCulture, out var _)
+    var number = int.tryParse(bclNames[0]); //, NumberStyles.Integer, Culture.invariantCulture, out var _)
 
     if (number != null) {
       return nonGenitiveNames;
@@ -149,10 +149,10 @@ class TimeMachineFormatInfo {
 
   /// Gets the culture info associated with this format provider. This is used
   /// for resource lookups and text comparisons.
-  final Culture cultureInfo;
+  final Culture culture;
 
   /// Gets the text comparison information associated with this format provider.
-  CompareInfo get compareInfo => cultureInfo.compareInfo;
+  CompareInfo get compareInfo => culture.compareInfo;
 
   FixedFormatInfoPatternParser<Time> get timePatternParser =>
       _timePatternParser = _ensureFixedFormatInitialized(_timePatternParser, () => new TimePatternParser());
@@ -264,9 +264,9 @@ class TimeMachineFormatInfo {
   /// Gets the date time format associated with this formatting information.
   ///
   /// This is usually the [DateTimeFormat] from [Culture],
-  /// but in some cases they're different: if a DateTimeFormatInfo is provided with no
-  /// CultureInfo, that's used for format strings but the invariant culture is used for
-  /// text comparisons and culture lookups for non-BCL formats (such as Offset) and for error messages.
+  /// but in some cases they're different: if a [DateTimeFormat] is provided with no
+  /// [Culture], that's used for format strings but the invariant culture is used for
+  /// text comparisons and culture lookups for formats (such as [Offset]) and for error messages.
   final DateTimeFormat dateTimeFormat;
 
   /// Gets the time separator.
@@ -305,7 +305,7 @@ class TimeMachineFormatInfo {
     {
       _EraDescription ret = _eraDescriptions[era];
       if (ret == null) {
-        ret = new _EraDescription.forEra(era, cultureInfo);
+        ret = new _EraDescription.forEra(era, culture);
         _eraDescriptions[era] = ret;
       }
       return ret;
@@ -316,25 +316,25 @@ class TimeMachineFormatInfo {
   static TimeMachineFormatInfo get currentInfo => getInstance(Culture.current);
 
   /// Gets the [Offset] "l" pattern.
-  String get offsetPatternLong => PatternResources.getString("OffsetPatternLong", cultureInfo);
+  String get offsetPatternLong => PatternResources.getString("OffsetPatternLong", culture);
 
   /// Gets the [Offset] "m" pattern.
-  String get offsetPatternMedium => PatternResources.getString("OffsetPatternMedium", cultureInfo);
+  String get offsetPatternMedium => PatternResources.getString("OffsetPatternMedium", culture);
 
   /// Gets the [Offset] "s" pattern.
-  String get offsetPatternShort => PatternResources.getString("OffsetPatternShort", cultureInfo);
+  String get offsetPatternShort => PatternResources.getString("OffsetPatternShort", culture);
 
   /// Gets the [Offset] "L" pattern.
   String get offsetPatternLongNoPunctuation =>
-      PatternResources.getString("OffsetPatternLongNoPunctuation", cultureInfo);
+      PatternResources.getString("OffsetPatternLongNoPunctuation", culture);
 
   /// Gets the [Offset] "M" pattern.
   String get offsetPatternMediumNoPunctuation =>
-      PatternResources.getString("OffsetPatternMediumNoPunctuation", cultureInfo);
+      PatternResources.getString("OffsetPatternMediumNoPunctuation", culture);
 
   /// Gets the [Offset] "S" pattern.
   String get offsetPatternShortNoPunctuation =>
-      PatternResources.getString("OffsetPatternShortNoPunctuation", cultureInfo);
+      PatternResources.getString("OffsetPatternShortNoPunctuation", culture);
 
   /// Clears the cache. Only used for test purposes.
  static void clearCache() => _cache.clear();
@@ -343,24 +343,24 @@ class TimeMachineFormatInfo {
   ///
   /// This method maintains a cache of results for read-only cultures.
   ///
-  /// [cultureInfo]: The culture info.
+  /// [culture]: The culture info.
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
- static TimeMachineFormatInfo getFormatInfo(Culture cultureInfo) {
-    Preconditions.checkNotNull(cultureInfo, 'cultureInfo');
-    if (cultureInfo == Culture.invariant) {
+ static TimeMachineFormatInfo getFormatInfo(Culture culture) {
+    Preconditions.checkNotNull(culture, 'culture');
+    if (culture == Culture.invariant) {
       return invariantInfo;
     }
     // Never cache (or consult the cache) for non-read-only cultures.
-    if (!cultureInfo.isReadOnly) {
-      return new TimeMachineFormatInfo(cultureInfo);
+    if (!culture.isReadOnly) {
+      return new TimeMachineFormatInfo(culture);
     }
-    return _cache.getOrAdd(cultureInfo);
+    return _cache.getOrAdd(culture);
   }
 
   // todo: remove the [DateTimeFormat] pathway, we're going Culture first.
   /// Gets the [TimeMachineFormatInfo] for the given [IIFormatProvider]. If the
   /// format provider is null then the format object for the current thread is returned. If it's
-  /// a CultureInfo, that's used for everything. If it's a DateTimeFormatInfo, that's used for
+  /// a Culture, that's used for everything. If it's a DateTimeFormat, that's used for
   /// format strings, day names etc but the invariant culture is used for text comparisons and
   /// resource lookups. Otherwise, [ArgumentException] is thrown.
   ///
@@ -369,7 +369,7 @@ class TimeMachineFormatInfo {
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
   static TimeMachineFormatInfo getInstance(Culture culture) {
     if (culture == null) {
-      return getFormatInfo(currentInfo.cultureInfo);
+      return getFormatInfo(currentInfo.culture);
     }
     return getFormatInfo(culture);
 
@@ -382,7 +382,7 @@ class TimeMachineFormatInfo {
   }
 
   /// Returns a [String] that represents this instance.
-  @override String toString() => "TimeMachineInfo[${cultureInfo.name}]";
+  @override String toString() => "TimeMachineInfo[${culture.name}]";
 }
 
 /// The description for an era: the primary name and all possible names.
@@ -392,8 +392,8 @@ class _EraDescription {
 
  _EraDescription._(this.primaryName, this.allNames);
 
- factory _EraDescription.forEra(Era era, Culture cultureInfo) {
-    String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), cultureInfo);
+ factory _EraDescription.forEra(Era era, Culture culture) {
+    String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), culture);
     String primaryName;
     List<String> allNames;
     if (pipeDelimited == null)
@@ -403,7 +403,7 @@ class _EraDescription {
     }
     else
     {
-      String eraNameFromCulture = _getEraNameFromBcl(era, cultureInfo);
+      String eraNameFromCulture = _getEraNameFromBcl(era, culture);
       if (eraNameFromCulture != null && !pipeDelimited.startsWith(eraNameFromCulture + "|"))
       {
         pipeDelimited = eraNameFromCulture + "|" + pipeDelimited;

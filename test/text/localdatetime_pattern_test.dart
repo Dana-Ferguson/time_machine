@@ -18,7 +18,7 @@ import 'test_cultures.dart';
 
 Future main() async {
   await TimeMachine.initialize();
-  
+
   var sw = new Stopwatch()..start();
   var ids = await Cultures.ids;
   var allCultures = new List<Culture>();
@@ -482,7 +482,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       expect("23/08/2017 12:34", pattern.format(dateTime));
     }
     /* todo: This test fails under .Net Core
-    CultureInfo.currentCulture = TestCultures.FrCa;
+    Culture.currentCulture = TestCultures.FrCa;
     {
       var pattern = LocalDateTimePattern.CreateWithCurrentCulture("g");
       expect("2017-08-23 12:34", pattern.Format(dateTime));
@@ -495,7 +495,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   /*
   @Test()
   @TestCaseSource(#AllCulturesStandardPatterns)
-  void BclStandardPatternComparison(CultureInfo culture, String pattern) {
+  void BclStandardPatternComparison(Culture culture, String pattern) {
     AssertBclNodaEquality(culture, pattern);
   }*/
 
@@ -534,7 +534,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   }
 
   /*
-  @private void AssertBclNodaEquality(CultureInfo culture, String patternText) {
+  @private void AssertBclNodaEquality(Culture culture, String patternText) {
     // On Mono, some general patterns include an offset at the end. For the moment, ignore them.
     // TODO(V1.2): Work out what to do in such cases...
     if ((patternText == "f" && culture.dateTimeFormat.shortTimePattern.endsWith("z")) ||
@@ -563,7 +563,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     // calendar in .NET (which is reasonable, as there's no associated calendar).
     // We should use the Gregorian calendar for those tests.
     bool alwaysInvariantPattern = "Oos".Contains(patternText);
-    Calendar calendar = alwaysInvariantPattern ? CultureInfo.invariantCulture.Calendar : culture.Calendar;
+    Calendar calendar = alwaysInvariantPattern ? Culture.invariantCulture.Calendar : culture.Calendar;
 
     var calendarSystem = BclCalendars.CalendarSystemForCalendar(calendar);
     if (calendarSystem == null) {

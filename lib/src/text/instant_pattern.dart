@@ -32,9 +32,6 @@ class InstantPattern implements IPattern<Instant> {
   /// Gets an invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
   /// of sub-second accuracy. (These digits are omitted when unnecessary.)
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
-  ///
-  /// <value>An invariant instant pattern which is ISO-8601 compatible, providing up to 9 decimal places
-  /// of sub-second accuracy.</value>
   static InstantPattern get extendedIso => InstantPatterns.extendedIsoPatternImpl;
 
   // ignore: unused_field
@@ -52,30 +49,35 @@ class InstantPattern implements IPattern<Instant> {
   /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
-  /// [text]: The text value to parse.
+  /// * [text]: The text value to parse.
+  ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<Instant> parse(String text) => _pattern.parse(text);
 
   /// Formats the given instant as text according to the rules of this pattern.
   ///
-  /// [value]: The instant to format.
+  /// * [value]: The instant to format.
+  ///
   /// Returns: The instant formatted according to this pattern.
   String format(Instant value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
   ///
-  /// [value]: The value to format.
-  /// [builder]: The `StringBuilder` to append to.
+  /// * [value]: The value to format.
+  /// * [builder]: The `StringBuffer` to append to.
+  ///
   /// Returns: The builder passed in as [builder].
   StringBuffer appendFormat(Instant value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [formatInfo]: The format info to use in the pattern
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [formatInfo]: The format info to use in the pattern
+  ///
   /// Returns: A pattern for parsing and formatting instants.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static InstantPattern _create(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
@@ -85,50 +87,61 @@ class InstantPattern implements IPattern<Instant> {
 
   /// Creates a pattern for the given pattern text and culture.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [cultureInfo]: The culture to use in the pattern
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [culture]: The culture to use in the pattern
+  ///
   /// Returns: A pattern for parsing and formatting instants.
-  /// [InvalidPatternException]: The pattern text was invalid.
-  static InstantPattern createWithCulture(String patternText, Culture cultureInfo) =>
-      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
+  static InstantPattern createWithCulture(String patternText, Culture culture) =>
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture));
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options. Note that the current culture
   /// is captured at the time this method is called - it is not captured at the point of parsing
   /// or formatting values.
   ///
-  /// [patternText]: Pattern text to create the pattern for
+  /// * [patternText]: Pattern text to create the pattern for
+  ///
   /// Returns: A pattern for parsing and formatting instants.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static InstantPattern createWithCurrentCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.currentInfo);
 
   /// Creates a pattern for the given pattern text in the invariant culture.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options.
   ///
-  /// [patternText]: Pattern text to create the pattern for
+  /// * [patternText]: Pattern text to create the pattern for
+  ///
   /// Returns: A pattern for parsing and formatting instants.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static InstantPattern createWithInvariantCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.invariantInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
-  /// [formatInfo]: The localization information to use in the new pattern.
+  /// * [formatInfo]: The localization information to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given localization information.
   InstantPattern _withFormatInfo(TimeMachineFormatInfo formatInfo) => _create(patternText, formatInfo);
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
-  /// [cultureInfo]: The culture to use in the new pattern.
+  /// * [culture] :The culture to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given culture.
-  InstantPattern withCulture(Culture cultureInfo) =>
-      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  InstantPattern withCulture(Culture culture) =>
+      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(culture));
 }
 

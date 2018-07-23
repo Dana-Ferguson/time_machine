@@ -17,13 +17,13 @@ abstract class ICompositePatternBuilder {
 /// in the order in which they are added to the builder with the [add]
 /// method, by trying to parse and seeing if the result is a successful one. When formatting,
 /// the patterns are checked in the reverse order, using the predicate provided along with the pattern
-/// when calling `Add`. The intention is that patterns are added in "most precise first" order,
+/// when calling [add]. The intention is that patterns are added in "most precise first" order,
 /// and the predicate should indicate whether it can fully represent the given value - so the "less precise"
 /// (and therefore usually shorter) pattern can be used first.
 ///
-/// [T]: The type of value to be parsed or formatted by the resulting pattern.
+/// * [T]: The type of value to be parsed or formatted by the resulting pattern.
 ///
-/// This type is mutable, and should not be used between multiple threads. The patterns created
+/// This type is mutable, and should not be used between multiple isolates. The patterns created
 /// by the [build] method are immutable.
 class CompositePatternBuilder<T> {
   final List<IPattern<T>> _patterns = new List<IPattern<T>>();
@@ -43,8 +43,8 @@ class CompositePatternBuilder<T> {
 
   /// Adds a component pattern to this builder.
   ///
-  /// [pattern]: The component pattern to use as part of the eventual composite pattern.
-  /// [formatPredicate]: A predicate to determine whether or not this pattern is suitable for
+  /// * [pattern]: The component pattern to use as part of the eventual composite pattern.
+  /// * [formatPredicate]: A predicate to determine whether or not this pattern is suitable for
   /// formatting the given value.
   void add(IPattern<T> pattern, bool Function(dynamic arg) formatPredicate) {
     _patterns.add(Preconditions.checkNotNull(pattern, 'pattern'));
@@ -54,8 +54,9 @@ class CompositePatternBuilder<T> {
   /// Builds a composite pattern from this builder. Further changes to this builder
   /// will have no impact on the returned pattern.
   ///
-  /// [InvalidOperationException]: No component patterns have been added.
   /// Returns: A pattern using the patterns added to this builder.
+  ///
+  /// * [StateError]: No component patterns have been added.
   IPattern<T> build() {
     Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
     return new _CompositePattern<T>._(_patterns, _formatPredicates);

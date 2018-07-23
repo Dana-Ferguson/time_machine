@@ -144,7 +144,7 @@ class YearMonthDayVM implements Comparable<YearMonthDay> {
     }
 
     var bits = text.split('-');
-    // todo: , CultureInfo.InvariantCulture))
+    // todo: , Culture.invariantCulture))
     return new YearMonthDay(
         int.parse(bits[0]),
         int.parse(bits[1]),

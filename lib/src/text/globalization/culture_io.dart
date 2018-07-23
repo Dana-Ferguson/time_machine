@@ -28,7 +28,7 @@ class CultureLoader {
     var reader = new CultureReader(binary);
 
     while (reader.isMore) {
-      var zone = reader.readCultureInfo();
+      var zone = reader.readCulture();
       cache[zone.name] = zone;
       cultureIds.add(zone.name);
     }
@@ -42,7 +42,7 @@ class CultureLoader {
   }
 
   CultureLoader._(this._cultureIds);
-  
+
   static Future<List<String>> _loadCultureMapping() async {
     var json = await PlatformIO.local.getJson('cultures', 'cultures.json');
     // todo: replace with .cast<String> in Dart 2.0
@@ -61,9 +61,9 @@ class CultureLoader {
 
   Iterable<String> get cultureIds => _cultureIds;
   bool zoneIdExists(String zoneId) => _cultureIds.contains(zoneId);
-  
+
   Culture _cultureFromBinary(ByteData binary) {
-    return new CultureReader(binary).readCultureInfo();
+    return new CultureReader(binary).readCulture();
   }
 
   Future<Culture> getCulture(String cultureId) async {
@@ -77,7 +77,7 @@ class CultureLoader {
 class CultureReader extends BinaryReader {
   CultureReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 
-  Culture readCultureInfo() {
+  Culture readCulture() {
     var name = readString();
     var datetimeFormat = readDateTimeFormatInfo();
     return new Culture(name, datetimeFormat);

@@ -36,7 +36,7 @@ class YearMonthDayCalendar {
   YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
 // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
-  
+
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
   YearMonthDayCalendar(int year, int month, int day, this.calendarOrdinal) :
       yearMonthDay = new YearMonthDay(year, month, day);
@@ -49,13 +49,13 @@ class YearMonthDayCalendar {
   // int get year => ((_value & _yearMask) >> _calendarDayMonthBits) + 1;
   // int get month => ((_value & _monthMask) >> _calendarDayBits) + 1;
   // int get day => ((_value & _dayMask) >> calendarBits) + 1;
-  
+
   int get year => yearMonthDay.year;
 
-  
+
   int get month => yearMonthDay.month;
 
-  
+
   int get day => yearMonthDay.day;
 
 
@@ -70,9 +70,9 @@ class YearMonthDayCalendar {
 
     List<String> bits = text.split('-');
     return new YearMonthDayCalendar(
-        int.parse(bits[0]), // CultureInfo.InvariantCulture),
-        int.parse(bits[1]), // CultureInfo.InvariantCulture),
-        int.parse(bits[2]), // CultureInfo.InvariantCulture),
+        int.parse(bits[0]), // Culture.invariantCulture),
+        int.parse(bits[1]), // Culture.invariantCulture),
+        int.parse(bits[2]), // Culture.invariantCulture),
         // bits[3]));
         CalendarOrdinal.parse(bits[3]));
   }
@@ -81,7 +81,7 @@ class YearMonthDayCalendar {
 
   @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
-// string.Format(CultureInfo.InvariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
+// string.Format(Culture.invariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
 
   @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;

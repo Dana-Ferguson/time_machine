@@ -229,7 +229,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..text = "2009-06-15T13:45:30.09+01 (ISO)"
       ..culture = TestCultures.FrFr,
 
-    // Property-only patterns            
+    // Property-only patterns
     new Data(MsdnStandardExample)
       ..standardPattern = OffsetDateTimePattern.rfc3339
       ..standardPatternCode = 'OffsetDateTimePattern.rfc3339'
@@ -396,7 +396,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     }
 
   // todo: @SkipMe() -- This is the same FrCA we've been seeing (.netCore ICU culture is different than windows culture)
-  //    CultureInfo.currentCulture = TestCultures.FrCa;
+  //    Cultures.currentCulture = TestCultures.FrCa;
   //    {
   //      var pattern = OffsetDateTimePattern.CreateWithCurrentCulture("l<g> o<g>");
   //      expect("2017-08-23 12:34 +02", pattern.Format(odt));

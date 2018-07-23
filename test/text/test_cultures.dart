@@ -44,12 +44,12 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal abstract class TestCultures {
   /*
   // Force the cultures to be read-only for tests, to take advantage of caching. Note that on .NET Core,
-  // CultureInfo.GetCultures doesn't exist, so we have a big long list of cultures, generated against
+  // Culture.getCultures doesn't exist, so we have a big long list of cultures, generated against
   // .NET 4.6.
-  @internal static final Iterable<CultureInfo> AllCultures = CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+  @internal static final Iterable<Culture> AllCultures = Culture.getCultures(CultureTypes.SpecificCultures)
       .Where((culture) => !RuntimeFailsToLookupResourcesForCulture(culture))
       .Where((culture) => !MonthNamesCompareEqual(culture))
-      .Select(CultureInfo.ReadOnly)
+      .Select(Culture.ReadOnly)
       .ToList();*/
 
   @internal static final Culture Invariant = Culture.invariant;

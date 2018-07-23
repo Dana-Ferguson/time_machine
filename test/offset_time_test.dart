@@ -122,7 +122,7 @@ void ToString_NoFormat() {
   Offset offset = new Offset.hours(1);
   OffsetTime offsetDate = new OffsetTime(time, offset);
 
-  //using(CultureSaver.SetCultures(CultureInfo.InvariantCulture))
+  //using(CultureSaver.SetCultures(Culture.invariantCulture))
   ICultures.currentCulture = Cultures.invariantCulture;
   {
     expect(offsetDate.toString(), "14:15:12+01");

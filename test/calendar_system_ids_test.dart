@@ -51,7 +51,7 @@ void BadId()
 @Test()
 void NoSubstrings()
 {
-    // CompareInfo comparison = CultureInfo.InvariantCulture.CompareInfo;
+    // CompareInfo comparison = Culture.invariantCulture.CompareInfo;
     for (var firstId in CalendarSystem.ids)
     {
         for (var secondId in CalendarSystem.ids)

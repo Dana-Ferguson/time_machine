@@ -508,14 +508,14 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
   /*
 @Test()
 [TestCaseSource(typeof(Cultures), nameof(TestCultures.AllCultures))]
-void BclLongDatePatternGivesSameResultsInNoda(CultureInfo culture)
+void BclLongDatePatternGivesSameResultsInNoda(Culture culture)
 {
 AssertBclNodaEquality(culture, culture.DateTimeFormat.LongDatePattern);
 }
 
 @Test()
 [TestCaseSource(typeof(Cultures), nameof(TestCultures.AllCultures))]
-void BclShortDatePatternGivesSameResultsInNoda(CultureInfo culture)
+void BclShortDatePatternGivesSameResultsInNoda(Culture culture)
 {
 AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 }*/
@@ -545,7 +545,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
   void ParseNull() => AssertParseNull(LocalDatePattern.iso);
 
   /* ~ No BCL ~ todo: equivalent?
-  @private void AssertBclNodaEquality(CultureInfo culture, String patternText) {
+  @private void AssertBclNodaEquality(Culture culture, String patternText) {
     // The BCL never seems to use abbreviated month genitive names.
     // I think it's reasonable that we do. Hmm.
     // See https://github.com/nodatime/nodatime/issues/377

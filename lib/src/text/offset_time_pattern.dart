@@ -55,9 +55,6 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// Note that parsing is case-sensitive (so 'T' and 'Z' must be upper case).
   /// This pattern corresponds to a custom pattern of
   /// "HH':'mm':'ss;FFFFFFFFFo&lt;Z+HH:mm&gt;".
-  ///
-  /// <value>An invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
-  /// as hours and minutes only.</value>
   static OffsetTimePattern get rfc3339 => OffsetTimePatterns.rfc3339PatternImpl;
 
   final IPattern<OffsetTime> _pattern;
@@ -79,31 +76,36 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
-  /// [text]: The text value to parse.
+  /// * [text]: The text value to parse.
+  ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<OffsetTime> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned time as text according to the rules of this pattern.
   ///
-  /// [value]: The zoned time to format.
+  /// * [value]: The zoned time to format.
+  ///
   /// Returns: The zoned time formatted according to this pattern.
   String format(OffsetTime value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
   ///
-  /// [value]: The value to format.
-  /// [builder]: The `StringBuilder` to append to.
+  /// * [value]: The value to format.
+  /// * [builder]: The `StringBuffer` to append to.
+  ///
   /// Returns: The builder passed in as [builder].
   StringBuffer appendFormat(OffsetTime value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [formatInfo]: The format info to use in the pattern
-  /// [templateValue]: Template value to use for unspecified fields
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [formatInfo]: The format info to use in the pattern
+  /// * [templateValue]: Template value to use for unspecified fields
+  ///
   /// Returns: A pattern for parsing and formatting zoned times.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static OffsetTimePattern _create(String patternText, TimeMachineFormatInfo formatInfo,
       OffsetTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
@@ -114,44 +116,54 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
 
   /// Creates a pattern for the given pattern text, culture, and template value.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [cultureInfo]: The culture to use in the pattern
-  /// [templateValue]: Template value to use for unspecified fields
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [culture]: The culture to use in the pattern
+  /// * [templateValue]: Template value to use for unspecified fields
+  ///
   /// Returns: A pattern for parsing and formatting local times.
-  /// [InvalidPatternException]: The pattern text was invalid.
-  static OffsetTimePattern createWithCulture(String patternText, Culture cultureInfo, OffsetTime templateValue) =>
-      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), templateValue);
+  ///
+  /// [InvalidPatternError]: The pattern text was invalid.
+  static OffsetTimePattern createWithCulture(String patternText, Culture culture, OffsetTime templateValue) =>
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), templateValue);
 
   /// Creates a pattern for the given pattern text in the invariant culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options.
   ///
-  /// [patternText]: Pattern text to create the pattern for
+  /// * [patternText]: Pattern text to create the pattern for
+  ///
   /// Returns: A pattern for parsing and formatting local times.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static OffsetTimePattern createWithInvariantCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.invariantInfo, OffsetTimePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current culture, using the default
   /// template value of midnight January 1st 2000 at an offset of 0.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options. Note that the current culture
   /// is captured at the time this method is called - it is not captured at the point of parsing
   /// or formatting values.
   ///
-  /// [patternText]: Pattern text to create the pattern for
+  /// * [patternText]: Pattern text to create the pattern for
+  ///
   /// Returns: A pattern for parsing and formatting local times.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static OffsetTimePattern createWithCurrentCulture(String patternText) =>
       _create(patternText, TimeMachineFormatInfo.currentInfo, OffsetTimePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
   ///
-  /// [patternText]: The pattern text to use in the new pattern.
+  /// * [patternText]: The pattern text to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given pattern text.
   OffsetTimePattern withPatternText(String patternText) =>
       _create(patternText, _formatInfo, templateValue);
@@ -159,7 +171,8 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
-  /// [formatInfo]: The localization information to use in the new pattern.
+  /// * [formatInfo]: The localization information to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given localization information.
   OffsetTimePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
       _create(patternText, formatInfo, templateValue);
@@ -167,15 +180,17 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
-  /// [cultureInfo]: The culture to use in the new pattern.
+  /// * [culture]: The culture to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given culture.
-  OffsetTimePattern withCulture(Culture cultureInfo) =>
-      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  OffsetTimePattern withCulture(Culture culture) =>
+      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(culture));
 
   /// Creates a pattern for the same original pattern text and culture as this pattern, but with
   /// the specified template value.
   ///
-  /// [newTemplateValue]: The template value to use in the new pattern.
+  /// * [newTemplateValue]: The template value to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given template value.
   OffsetTimePattern withTemplateValue(OffsetTime newTemplateValue) =>
       _create(patternText, _formatInfo, newTemplateValue);

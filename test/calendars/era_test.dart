@@ -37,7 +37,7 @@ List<Era> Eras = []; /*typeof(Era).GetTypeInfo()
 void ResourcePresence(Era era)
 {
   // todo: get us resources?
-  var valueByName = null; // PatternResources.ResourceManager.GetString(era.ResourceIdentifier, CultureInfo.InvariantCulture);
+  var valueByName = null; // PatternResources.ResourceManager.GetString(era.ResourceIdentifier, Culture.invariantCulture);
   expect(valueByName, isNotNull, reason: "Missing resource for " + (era != null ? IEra.resourceIdentifier(era) : 'null'));
 }
 

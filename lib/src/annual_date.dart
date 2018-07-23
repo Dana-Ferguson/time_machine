@@ -79,7 +79,7 @@ class AnnualDate implements Comparable<AnnualDate> {
   ///
   /// The value of the current instance, in the form MM-dd.
   @override String toString() {
-    // AnnualDatePattern.BclSupport.Format(this, null, CultureInfo.CurrentCulture);
+    // AnnualDatePattern.BclSupport.Format(this, null, Culture.currentCulture);
     return '${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
   }
 

@@ -10,7 +10,7 @@ class UnparsableValueError extends Error { // extends FormatException {
 
   /// Creates a new [UnparsableValueError] with the given message.
   ///
-  /// [message]: The failure message
+  /// * [message]: The failure message
   UnparsableValueError(this.message);
 
   @override String toString() => message;

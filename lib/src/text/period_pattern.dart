@@ -26,7 +26,8 @@ class PeriodPattern implements IPattern<Period> {
   /// (extending into days where necessary), and fractions of seconds are represented within the
   /// seconds part. Unlike ISO-8601, which pattern allows for negative values within a period.
   ///
-  /// Note that normalizing the period when formatting will cause an [System.OverflowException]
+  /// todo: investigate this:
+  /// Note that normalizing the period when formatting will cause an [OverflowError]
   /// if the period contains more than [System.Int64.MaxValue] ticks when the
   /// combined weeks/days/time portions are considered. Such a period could never
   /// be useful anyway, however.
@@ -41,21 +42,24 @@ class PeriodPattern implements IPattern<Period> {
   /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
-  /// [text]: The text value to parse.
+  /// * [text]: The text value to parse.
+  ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<Period> parse(String text) => _pattern.parse(text);
 
   /// Formats the given period as text according to the rules of this pattern.
   ///
-  /// [value]: The period to format.
+  /// * [value]: The period to format.
+  ///
   /// Returns: The period formatted according to this pattern.
   String format(Period value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuffer].
   ///
-  /// [value]: The value to format.
-  /// [builder]: The `StringBuffer` to append to.
+  /// * [value]: The value to format.
+  /// * [builder]: The `StringBuffer` to append to.
+  ///
   /// Returns: The builder passed in as [builder].
   StringBuffer appendFormat(Period value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 

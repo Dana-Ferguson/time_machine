@@ -96,7 +96,7 @@ class TimeMachine  {
     var cultureId = io.Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
     var culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture;
-    // todo: remove CultureInfo.currentCulture
+    // todo: remove Culture.currentCulture
   }
 
   // todo: the issue here is, Dart fails to compute the correct ZoneIntervalID where the offset isn't a whole hour -- CORRECT FOR THIS

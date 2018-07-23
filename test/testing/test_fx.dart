@@ -115,10 +115,10 @@ void _writeTestGenFile() {
     sb.writeln("import '../text/test_cultures.dart';");
   }
   sb.writeln();
-  
+
   sb.write(_gen_sb_imports);
   sb.writeln();
-  
+
   sb.writeln('Future main() async {');
   sb.writeln('  await TimeMachine.initialize();');
   if (_getTzdb) {
@@ -130,37 +130,37 @@ void _writeTestGenFile() {
   sb.writeln();
   sb.write(_gen_sb_methodCalls);
   sb.writeln('}');
-  
-  
+
+
   var file = new File(_testFilePath);
   file.writeAsString(sb.toString(), mode: FileMode.writeOnly);
-  
+
   print("written '$_testFilePath' to drive.");
 }
 
 void _printImport(Uri uri) {
   var sb = _gen_sb_imports..write("import '.."); // test/");
   var path = uri.pathSegments;
-  
+
   for (var p in path.skipWhile((p) => p != 'test').skip(1)) {
     sb..write('/')..write(p);
   }
   sb..write("';")..writeln();
-  
+
   _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test/test_gen/' + path.last;
 }
 
 void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
   var sb = _gen_sb_methodCalls..write("  test('$testName', () ");
-  
+
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
   isFuture = true; // note: this is an override
   if (isFuture) sb.write('async => await '); else sb.write('=> ');
 
   if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
-  
+
   sb.write(_nameOf(method));
-  
+
   sb.write ('(');
   if (testCase != null) {
     var first = true;
@@ -171,13 +171,13 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
       else {
         first = false;
       }
-      
+
       sb.write(_printNewObject(arg));
     }
   }
   // ${testCase.arguments.join(', ')});
   sb.write ('));');
-  
+
   sb.writeln();
 }
 
@@ -243,7 +243,7 @@ String _printNewObject(Object obj) {
     }
     // see: LocaltimePatternTests.CreateCustomAmPmCulture
     else if (name == 'ampmDesignators') {
-      sb.write("new CultureInfo('ampmDesignators'/*CultureInfo.invariantCultureId*/, (new DateTimeFormatInfoBuilder.invariantCulture()..amDesignator = '${obj
+      sb.write("new Culture('ampmDesignators'/*Culture.invariantCultureId*/, (new DateTimeFormatInfoBuilder.invariantCulture()..amDesignator = '${obj
           .dateTimeFormat.amDesignator}'..pmDesignator = '${obj.dateTimeFormat.pmDesignator}').Build())");
     }
     else sb.write('await Cultures.getCulture("${name}")');
@@ -448,7 +448,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   var futures = new List<Future>();
 
   var instance = classMirror.newInstance(new Symbol(''), []);
-  if (testGenTest) 
+  if (testGenTest)
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
     _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
@@ -481,7 +481,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
       futures.addAll(_runTest(instance, declaration, testName));
     }
   }
-  
+
   if (testGenTest) {
     _classVarName = null;
   }

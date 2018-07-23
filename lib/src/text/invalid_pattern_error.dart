@@ -11,17 +11,17 @@ class InvalidPatternError extends Error // FormatException
 
   /// Creates a new InvalidPatternException with the given message.
   ///
-  /// [message]: A message describing the nature of the failure
+  /// * [message]: A message describing the nature of the failure
   InvalidPatternError(this.message);
 
   /// Creates a new InvalidPatternException by formatting the given format string with
   /// the specified parameters, in the current culture.
   ///
-  /// [formatString]: Format string to use in order to create the final message
-  /// [parameters]: Format string parameters
+  /// * [formatString]: Format string to use in order to create the final message
+  /// * [parameters]: Format string parameters
   InvalidPatternError._format(String formatString, List<dynamic> parameters)
       : this(stringFormat(formatString, parameters));
-  
+
   @override String toString() => 'InvalidPatternError: $message';
 }
 

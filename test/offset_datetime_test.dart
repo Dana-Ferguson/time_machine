@@ -231,7 +231,7 @@ void ToString_Utc()
 //  LocalDateTime local = new LocalDateTime.fromYMDHMS(2012, 10, 6, 1, 2, 3);
 //  Offset offset = new Offset.fromHours(1);
 //  OffsetDateTime odt = new OffsetDateTime(local, offset);
-//  expect("2012/10/06 01:02:03 01", odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", CultureInfo.InvariantCulture));
+//  expect("2012/10/06 01:02:03 01", odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", Culture.invariantCulture));
 //}
 
 @Test()

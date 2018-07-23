@@ -24,9 +24,8 @@ abstract class ZonedDateTimePatterns
 }
 
 /// Represents a pattern for parsing and formatting [ZonedDateTime] values.
-@immutable 
+@immutable
 class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
-
   /// Gets an zoned local date/time pattern based on ISO-8601 (down to the second) including offset from UTC and zone ID.
   /// It corresponds to a custom pattern of "uuuu'-'MM'-'dd'T'HH':'mm':'ss z '('o&lt;g&gt;')'" and is available
   /// as the 'G' standard pattern.
@@ -75,33 +74,38 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// This method never throws an exception (barring a bug in Time Machine itself). Even errors such as
   /// the argument being null are wrapped in a parse result.
   ///
-  /// [text]: The text value to parse.
+  /// * [text]: The text value to parse.
+  ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
   ParseResult<ZonedDateTime> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned date/time as text according to the rules of this pattern.
   ///
-  /// [value]: The zoned date/time to format.
+  /// * [value]: The zoned date/time to format.
+  ///
   /// Returns: The zoned date/time formatted according to this pattern.
   String format(ZonedDateTime value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
   /// appending to the given [StringBuilder].
   ///
-  /// [value]: The value to format.
-  /// [builder]: The `StringBuilder` to append to.
+  /// * [value]: The value to format.
+  /// * [builder]: The [StringBuffer] to append to.
+  ///
   /// Returns: The builder passed in as [builder].
   StringBuffer appendFormat(ZonedDateTime value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, template value, mapping resolver and time zone provider.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [formatInfo]: The format info to use in the pattern
-  /// [templateValue]: Template value to use for unspecified fields
-  /// [resolver]: Resolver to apply when mapping local date/time values into the zone.
-  /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [formatInfo]: The format info to use in the pattern
+  /// * [templateValue]: Template value to use for unspecified fields
+  /// * [resolver]: Resolver to apply when mapping local date/time values into the zone.
+  /// * [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
+  ///
   /// Returns: A pattern for parsing and formatting zoned date/times.
-  /// [InvalidPatternException]: The pattern text was invalid.
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
   static ZonedDateTimePattern _create(String patternText, TimeMachineFormatInfo formatInfo,
       ZoneLocalMappingResolver resolver, DateTimeZoneProvider zoneProvider, ZonedDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
@@ -111,24 +115,26 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   }
 
   // todo: This needs to be a factory
-  /// Creates a pattern for the given pattern text, culture, resolver, specified or default time zone provider, 
+  /// Creates a pattern for the given pattern text, culture, resolver, specified or default time zone provider,
   /// and the specified or default template value.
   ///
+  /// todo: we need one
   /// See the user guide for the available pattern text options.
   /// If the resulting [zoneProvider] is null, the resulting pattern can be used for formatting
   /// but not parsing.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [cultureInfo]: The culture to use in the pattern
-  /// [resolver]: Resolver to apply when mapping local date/time values into the zone.
-  /// [zoneProvider]: Time zone provider or default zone provider, used when parsing text which contains a time zone identifier.
-  /// If null, defaults to [DateTimeZoneProvider.zoneProvider], which may also be null.
-  /// [templateValue]: Template value to use for unspecified fields
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [culture]: The culture to use in the pattern
+  /// * [resolver]: Resolver to apply when mapping local date/time values into the zone.
+  /// * [zoneProvider]: Time zone provider or default zone provider, used when parsing text which contains a time zone identifier.
+  /// If null, defaults to [DateTimeZoneProviders.defaultProvider], which may also be null.
+  /// * [templateValue]: Template value to use for unspecified fields
   /// Returns: A pattern for parsing and formatting zoned date/times.
-  /// [InvalidPatternException]: The pattern text was invalid.
-  static ZonedDateTimePattern createWithCulture(String patternText, Culture cultureInfo,
+  ///
+  /// * [InvalidPatternError]: The pattern text was invalid.
+  static ZonedDateTimePattern createWithCulture(String patternText, Culture culture,
       [ZoneLocalMappingResolver resolver, DateTimeZoneProvider zoneProvider, ZonedDateTime templateValue]) =>
-      _create(patternText, TimeMachineFormatInfo.getFormatInfo(cultureInfo), resolver ?? Resolvers.strictResolver, 
+      _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), resolver ?? Resolvers.strictResolver,
           zoneProvider ?? DateTimeZoneProviders.defaultProvider, templateValue ?? ZonedDateTimePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text and the specified or default time zone provider, using a strict resolver, the invariant
@@ -138,9 +144,10 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// If the resulting [zoneProvider] is null, the resulting pattern can be used for formatting
   /// but not parsing.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
-  /// If null, defaults to [DateTimeZoneProvider.zoneProvider], which may also be null.
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
+  /// If null, defaults to [DateTimeZoneProviders.defaultProvider], which may also be null.
+  ///
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern createWithInvariantCulture(String patternText, [DateTimeZoneProvider zoneProvider]) =>
       _create(patternText, TimeMachineFormatInfo.invariantInfo, Resolvers.strictResolver, zoneProvider ?? DateTimeZoneProviders.defaultProvider, ZonedDateTimePatterns.defaultTemplateValue);
@@ -153,9 +160,10 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// but not parsing. Note that the current culture is captured at the time this method is called
   /// - it is not captured at the point of parsing or formatting values.
   ///
-  /// [patternText]: Pattern text to create the pattern for
-  /// [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
-  /// If null, defaults to [DateTimeZoneProvider.zoneProvider], which may also be null.
+  /// * [patternText]: Pattern text to create the pattern for
+  /// * [zoneProvider]: Time zone provider, used when parsing text which contains a time zone identifier.
+  /// If null, defaults to [DateTimeZoneProviders.defaultProvider], which may also be null.
+  ///
   /// Returns: A pattern for parsing and formatting zoned date/times.
   static ZonedDateTimePattern createWithCurrentCulture(String patternText, [DateTimeZoneProvider zoneProvider]) =>
       _create(patternText, TimeMachineFormatInfo.currentInfo, Resolvers.strictResolver, zoneProvider ?? DateTimeZoneProviders.defaultProvider, ZonedDateTimePatterns.defaultTemplateValue);
@@ -163,7 +171,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// Creates a pattern for the same original localization information as this pattern, but with the specified
   /// pattern text.
   ///
-  /// [patternText]: The pattern text to use in the new pattern.
+  /// * [patternText]: The pattern text to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given pattern text.
   ZonedDateTimePattern withPatternText(String patternText) =>
       _create(patternText, _formatInfo, resolver, zoneProvider, templateValue);
@@ -171,7 +180,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// localization information.
   ///
-  /// [formatInfo]: The localization information to use in the new pattern.
+  /// * [formatInfo]: The localization information to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given localization information.
   ZonedDateTimePattern _withFormatInfo(TimeMachineFormatInfo formatInfo) =>
       _create(patternText, formatInfo, resolver, zoneProvider, templateValue);
@@ -179,15 +189,17 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// culture.
   ///
-  /// [cultureInfo]: The culture to use in the new pattern.
+  /// * [culture]: The culture to use in the new pattern.
+  ///
   /// Returns: A new pattern with the given culture.
-  ZonedDateTimePattern withCulture(Culture cultureInfo) =>
-      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(cultureInfo));
+  ZonedDateTimePattern withCulture(Culture culture) =>
+      _withFormatInfo(TimeMachineFormatInfo.getFormatInfo(culture));
 
   /// Creates a pattern for the same original pattern text as this pattern, but with the specified
   /// resolver.
   ///
-  /// [resolver]: The new local mapping resolver to use.
+  /// * [resolver]: The new local mapping resolver to use.
+  ///
   /// Returns: A new pattern with the given resolver.
   ZonedDateTimePattern withResolver(ZoneLocalMappingResolver resolver) =>
       this.resolver == resolver ? this : _create(patternText, _formatInfo, resolver, zoneProvider, templateValue);
@@ -198,7 +210,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// If [newZoneProvider] is null, the resulting pattern can be used for formatting
   /// but not parsing.
   ///
-  /// [newZoneProvider]: The new time zone provider to use.
+  /// * [newZoneProvider]: The new time zone provider to use.
+  ///
   /// Returns: A new pattern with the given time zone provider.
   ZonedDateTimePattern withZoneProvider(DateTimeZoneProvider newZoneProvider) =>
       newZoneProvider == zoneProvider ? this : _create(patternText, _formatInfo, resolver, newZoneProvider, templateValue);
@@ -214,7 +227,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
 
   /// Creates a pattern like this one, but with the specified template value.
   ///
-  /// [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
+  /// * [newTemplateValue]: The template value for the new pattern, used to fill in unspecified fields.
+  ///
   /// Returns: A new pattern with the given template value.
   ZonedDateTimePattern withTemplateValue(ZonedDateTime newTemplateValue) =>
       newTemplateValue == templateValue ? this : _create(patternText, _formatInfo, resolver, zoneProvider, newTemplateValue);
@@ -228,7 +242,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// date, an exception will be thrown. Additionally, if the pattern only specifies some date fields,
   /// it's possible that the new template value will not be suitable for all values.
   ///
-  /// [calendar]: The calendar system to convert the template value into.
+  /// * [calendar]: The calendar system to convert the template value into.
+  ///
   /// Returns: A new pattern with a template value in the specified calendar system.
   ZonedDateTimePattern withCalendar(CalendarSystem calendar) =>
       withTemplateValue(templateValue.withCalendar(calendar));

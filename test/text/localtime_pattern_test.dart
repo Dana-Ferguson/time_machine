@@ -951,7 +951,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @private static Culture CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
-    return new Culture('ampmDesignators'/*CultureInfo.invariantCultureId*/, (
+    return new Culture('ampmDesignators'/*Culture.invariantCultureId*/, (
         new DateTimeFormatBuilder.invariant()
           ..amDesignator = amDesignator
           ..pmDesignator = pmDesignator).Build());
@@ -963,7 +963,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   /*
   @Test()
   @TestCaseSource(#Cultures, 'AllCultures')
-  void BclLongTimePatternIsValidNodaPattern(CultureInfo culture) {
+  void BclLongTimePatternIsValidNodaPattern(Culture culture) {
     if (culture == null) {
       return;
     }
@@ -972,21 +972,21 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
   @Test()
   @TestCaseSource(#Cultures, 'AllCultures')
-  void BclShortTimePatternIsValidNodaPattern(CultureInfo culture) {
+  void BclShortTimePatternIsValidNodaPattern(Culture culture) {
     AssertValidNodaPattern(culture, culture.dateTimeFormat.shortTimePattern);
   }*/
 
 /*
 @Test()
 @TestCaseSource(#Cultures, 'AllCultures')
-void BclLongTimePatternGivesSameResultsInNoda(CultureInfo culture)
+void BclLongTimePatternGivesSameResultsInNoda(Culture culture)
 {
 AssertBclNodaEquality(culture, culture.DateTimeFormat.LongTimePattern);
 }
 
 @Test()
 @TestCaseSource(#Cultures, 'AllCultures')
-void BclShortTimePatternGivesSameResultsInNoda(CultureInfo culture)
+void BclShortTimePatternGivesSameResultsInNoda(Culture culture)
 {
 AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 }*/
@@ -1026,7 +1026,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
   }
 
 /*
-@private void AssertBclNodaEquality(CultureInfo culture, String patternText)
+@private void AssertBclNodaEquality(Culture culture, String patternText)
 {
 // On Mono, some general patterns include an offset at the end.
 // https://github.com/nodatime/nodatime/issues/98
@@ -1042,7 +1042,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
 }*/
 
 /*
-  @private static void AssertValidNodaPattern(CultureInfo culture, String pattern) {
+  @private static void AssertValidNodaPattern(Culture culture, String pattern) {
     PatternCursor cursor = new PatternCursor(pattern);
     while (cursor.MoveNext()) {
       if (cursor.Current == '\'') {

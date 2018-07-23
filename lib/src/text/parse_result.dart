@@ -37,7 +37,7 @@ class ParseResult<T> {
   ///
   /// This property is typically used to wrap parse failures in higher level exceptions.
   ///
-  /// [StateError]: The parse operation succeeded.
+  /// * [StateError]: The parse operation succeeded.
   Error get error {
     if (_errorProvider == null) {
       // InvalidOperationException
@@ -63,8 +63,9 @@ class ParseResult<T> {
   /// Returns the success value, and sets the out parameter to either
   /// the specified failure value of T or the successful parse result value.
   ///
-  /// [failureValue]: The "default" value to set in [result] if parsing failed.
-  /// [result]: The parameter to store the parsed value in on success.
+  /// * [failureValue]: The "default" value to set in [result] if parsing failed.
+  /// * [result]: The parameter to store the parsed value in on success.
+  ///
   /// Returns: True if this parse result was successful, or false otherwise.
   T TryGetValue(T failureValue) {
     // todo: This did the true/false return _value ... this might alter how it's used (no longer doing that)
@@ -73,15 +74,16 @@ class ParseResult<T> {
 
   /// Indicates whether the parse operation was successful.
   ///
-  /// This returns True if and only if fetching the value with the [value] property will return with no exception.
+  /// This returns `true` if and only if fetching the value with the [value] property will return with no exception.
   bool get success => _errorProvider == null;
 
   /// Converts this result to a new target type, either by executing the given projection
   /// for a success result, or propagating the exception provider for failure.
   ///
-  /// [projection]: The projection to apply for the value of this result,
+  /// * [projection]: The projection to apply for the value of this result,
   /// if it's a success result.
-  /// A ParseResult for the target type, either with a value obtained by applying the specified
+  ///
+  /// Returns: A ParseResult for the target type, either with a value obtained by applying the specified
   /// projection to the value in this result, or with the same error as this result.
   ParseResult<TTarget> convert<TTarget>(TTarget Function(T) projection) {
     Preconditions.checkNotNull(projection, 'projection');
@@ -106,9 +108,11 @@ class ParseResult<T> {
 
   /// Produces a ParseResult which represents a successful parse operation.
   ///
-  /// When T is a reference type, [value] should not be null,
+  /// When [T] is a reference type, [value] should not be null,
   /// but this isn't currently checked.
-  /// [value]: The successfully parsed value.
+  ///
+  /// * [value]: The successfully parsed value.
+  ///
   /// Returns: A ParseResult representing a successful parsing operation.
   static ParseResult<T> forValue<T>(T value) => new ParseResult<T>._(value);
 
@@ -117,8 +121,10 @@ class ParseResult<T> {
   /// This method accepts a delegate rather than the exception itself, as creating an
   /// exception can be relatively slow: if the client doesn't need the actual exception, just the information
   /// that the parse failed, there's no point in creating the exception.
-  /// [exceptionProvider]: A delegate that produces the exception representing the error that
+  ///
+  /// * [errorProvider]: A delegate that produces the exception representing the error that
   /// caused the parse to fail.
+  ///
   /// Returns: A ParseResult representing a failed parsing operation.
   static ParseResult<T> forError<T>(Error Function() errorProvider) =>
       new ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
@@ -127,7 +133,7 @@ class ParseResult<T> {
 @internal
 abstract class IParseResult {
   static bool continueAfterErrorWithMultipleFormats(ParseResult result) => result._continueAfterErrorWithMultipleFormats;
-  
+
   static ParseResult<T> forInvalidValue<T>(ValueCursor cursor, String formatString, [List<dynamic> parameters = const []]) =>
       _forInvalidValueError(() {
         // Format the message which is specific to the kind of parse error.
