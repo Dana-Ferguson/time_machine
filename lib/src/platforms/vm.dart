@@ -41,20 +41,20 @@ class _FlutterMachineIO implements PlatformIO {
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return new ByteData(0);
 
-    var byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
+    ByteData byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
     return byteData;
   }
 
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    var text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
+    String text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
     return json.decode(text);
   }
 }
 
 Future initialize(Map args) {
-  var timeZoneOverride = args['timeZone'];
+  String timeZoneOverride = args['timeZone'];
 
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
     if (args == null || args['rootBundle'] == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
