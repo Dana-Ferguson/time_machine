@@ -5,8 +5,6 @@ import 'dart:async';
 
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
-import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
-import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 @internal
 abstract class ICultures {
