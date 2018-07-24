@@ -43,27 +43,6 @@ Future main() async {
         .parse(localText);
 
     print(localClone.value);
-
-    var ld = LocalDate.today();
-    ld = ld.plus(Period(years: 1));
-
-    var ld2 = LocalDate.today();
-    ld2 = ld2.plusYears(1);
-
-    print(ld);
-    print(ld2);
-
-    print('');
-    print(LocalDate.today());
-
-    print(DateTime.now());
-    print(LocalDate.dateTime(DateTime.now()));
-
-    print(DateTime.now().toUtc());
-    print(LocalDate.dateTime(DateTime.now().toUtc()));
-
-    // print(3.14 / 0.0);
-    print(Time(days: 1) / (5e-4)); // 5e-324
   }
   catch (error, stack) {
     print(error);
