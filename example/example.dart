@@ -61,6 +61,9 @@ Future main() async {
 
     print(DateTime.now().toUtc());
     print(LocalDate.dateTime(DateTime.now().toUtc()));
+
+    // print(3.14 / 0.0);
+    print(Time(days: 1) / (5e-4)); // 5e-324
   }
   catch (error, stack) {
     print(error);

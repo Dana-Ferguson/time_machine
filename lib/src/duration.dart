@@ -108,7 +108,6 @@ class Time implements Comparable<Time> {
   static const Time oneDay = const Time._(TimeConstants.millisecondsPerDay, 0);
   static const Time oneWeek = const Time._(TimeConstants.millisecondsPerWeek, 0);
 
-
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
   static Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
@@ -306,18 +305,20 @@ class Time implements Comparable<Time> {
 
   Time minus(Time other) => this - other;
 
-  Time operator *(num factor) => new Time._untrusted(_milliseconds * factor, _nanosecondsInterval * factor);
+  Time operator *(num factor) => new Time._untrusted((_milliseconds * factor).floor(), (_nanosecondsInterval * factor).floor());
 
   // Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
 
   // note: this is wrong'ish*
   // Span operator/(num factor) => new Span._untrusted(_milliseconds ~/ factor, _nanosecondsInterval ~/ factor);
   // note: this works on VM (because of BigInt)
-  Time operator /(num factor) {
+  Time operator /(num quotient) {
+    if (quotient.abs() < 1) return this * (1.0/quotient);
+
     if (canNanosecondsBeInteger) {
-      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ factor);
+      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval ~/ quotient));
     } else {
-      return new Time.bigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(factor));
+      return new Time.bigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(quotient));
     }
   }
 
