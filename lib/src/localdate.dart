@@ -67,20 +67,18 @@ class LocalDate implements Comparable<LocalDate> {
     return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, ordinal));
   }
 
-  /// Converts  in the specified or ISO calendar, ignoring the time of day.
-  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
-  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
+  // todo: this could probably be cheaper with a DateTime based method ~ but would still need to be based on [Clock.current] to be useful
+
+  /// Produces a [LocalDate] based on your [Clock.current] and your [DateTimeZone.local].
   ///
-  /// * [dateTime]: Value to convert into a Time Machine local date
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
   ///
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
   factory LocalDate.today([CalendarSystem calendar]) => Instant.now().inLocalZone().date;
 
-  // todo: looks like this is ALWAYS utc
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
-  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
-  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
+  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.isUtc] of
+  /// `true` will still represent the same year/month/day as it does in UTC - it won't be converted into the local system time.
   ///
   /// * [dateTime]: Value to convert into a Time Machine local date
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
@@ -89,8 +87,8 @@ class LocalDate implements Comparable<LocalDate> {
   factory LocalDate.dateTime(DateTime dateTime, [CalendarSystem calendar])
   {
     int days = Platform.isWeb
-        ? dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay
-        : dateTime.microsecondsSinceEpoch ~/ TimeConstants.microsecondsPerDay;
+        ? (dateTime.millisecondsSinceEpoch + dateTime.timeZoneOffset.inMilliseconds) ~/ TimeConstants.millisecondsPerDay
+        : (dateTime.microsecondsSinceEpoch + dateTime.timeZoneOffset.inMicroseconds) ~/ TimeConstants.microsecondsPerDay;
     return new LocalDate._fromDaysSinceEpoch(days, calendar);
   }
 
