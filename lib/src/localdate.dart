@@ -67,6 +67,33 @@ class LocalDate implements Comparable<LocalDate> {
     return new LocalDate._trusted(new YearMonthDayCalendar(year, month, day, ordinal));
   }
 
+  /// Converts  in the specified or ISO calendar, ignoring the time of day.
+  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
+  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
+  ///
+  /// * [dateTime]: Value to convert into a Time Machine local date
+  /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
+  ///
+  /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
+  factory LocalDate.today([CalendarSystem calendar]) => Instant.now().inLocalZone().date;
+
+  // todo: looks like this is ALWAYS utc
+  /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
+  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
+  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
+  ///
+  /// * [dateTime]: Value to convert into a Time Machine local date
+  /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
+  ///
+  /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
+  factory LocalDate.dateTime(DateTime dateTime, [CalendarSystem calendar])
+  {
+    int days = Platform.isWeb
+        ? dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay
+        : dateTime.microsecondsSinceEpoch ~/ TimeConstants.microsecondsPerDay;
+    return new LocalDate._fromDaysSinceEpoch(days, calendar);
+  }
+
   /// Gets the calendar system associated with this local date.
   CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
@@ -118,22 +145,6 @@ class LocalDate implements Comparable<LocalDate> {
   // Helper method used by both FromDateTime overloads.
   // static int _nonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
   // ((ticks >> 14) ~/ 52734375);
-
-  /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
-  /// This does not perform any time zone conversions, so a DateTime with a [DateTime.Kind] of
-  /// [DateTimeKind.utc] will still represent the same year/month/day - it won't be converted into the local system time.
-  ///
-  /// * [dateTime]: Value to convert into a Time Machine local date
-  /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
-  ///
-  /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
-  factory LocalDate.dateTime(DateTime dateTime, [CalendarSystem calendar])
-  {
-    int days = Platform.isWeb
-        ? dateTime.millisecondsSinceEpoch ~/ TimeConstants.millisecondsPerDay
-        : dateTime.microsecondsSinceEpoch ~/ TimeConstants.microsecondsPerDay;
-    return new LocalDate._fromDaysSinceEpoch(days, calendar);
-  }
 
   /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
   /// in the ISO calendar system, using the ISO week-year rules.
@@ -273,8 +284,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
   bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
-// Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
-// naive comparisons.
+  // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
+  // naive comparisons.
 
   /// Compares two dates to see if the left one is strictly earlier than the right
   /// one.
@@ -562,7 +573,6 @@ class LocalDate implements Comparable<LocalDate> {
 
   LocalDate adjust(LocalDate Function(LocalDate) adjuster) => adjuster(this);
 
-  // todo: verify current isolates's culture to obtain a format provider.
   /// Returns a [String] that represents this instance.
   ///
   /// The value of the current instance in the default format pattern ("D"), using the current isolates's

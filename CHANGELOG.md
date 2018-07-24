@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.6
+- Added a `LocalDate.today()` constructor.
+
 ## 0.8.5
 - Constructor is now `LocalDateTime.localDateAtTime(LocalDate, LocalTime)`
 - Formatted much API Documentation.
