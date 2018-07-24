@@ -128,14 +128,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// Gets a [LocalDateTime] at midnight on the date represented by this local date.
   LocalDateTime atMidnight() => new LocalDateTime.localDateAtTime(this, LocalTime.midnight);
 
-  /// Constructs a [DateTime] from this value which has a [DateTime.Kind]
-  /// of [DateTimeKind.Unspecified]. The result is midnight on the day represented
+  /// Constructs a [DateTime] with [DateTime.isUtc] == `false`. The result is midnight on the day represented
   /// by this value.
-  ///
-  /// [DateTimeKind.Unspecified] is slightly odd - it can be treated as UTC if you use [DateTime.ToLocalTime]
-  /// or as system local time if you use [DateTime.ToUniversalTime], but it's the only kind which allows
-  /// you to construct a [DateTimeOffset] with an arbitrary offset, which makes it as close to
-  /// the Time Machine non-system-specific "local" concept as exists in .NET.
   DateTime toDateTimeUnspecified() => new DateTime(year, month, day);
   // new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
   // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
