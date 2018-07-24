@@ -6,14 +6,9 @@ with support for timezones, calendars, cultures, formatting and parsing.
 
 Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
-### Ready for [Dart 2](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
-
-If you are using TimeMachine for Dart 1.24.3, you'll want to depend directly on `0.7.1` or earlier.
-
-```yaml
-dependencies:
-  time_machine: "0.7.1"
-```
+Time Machine is ready for [Dart 2](https://www.dartlang.org/dart-2), which should be entering 
+[stable](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
+[soon](https://www.reddit.com/r/dartlang/comments/90n4he/dart_sends_mixed_signals_regarding_whether_to_use/e2smi6a/).
 
 ### Example Code:
 
@@ -96,7 +91,7 @@ Todo (before v1):
  - [ ] Fix DartDoc Formatting
  - [ ] Create simple website with examples (at minimal a good set of examples under the examples directory)
 
-External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not 
+External data: Timezones (TZDB via Noda Time) and Culture (ICU via BCL) are produced by a C# tool that is not
 included in this repository. The goal is to port all this functionality to Dart, the initial tool was created for
 bootstrapping -- and guaranteeing that our data is exactly the same thing that Noda Time would see (to ease porting).
 
@@ -134,7 +129,6 @@ import 'package:flutter/services.dart';
 await TimeMachine.initialize({rootBundle: rootBundle, timeZone: await Timezone.getLocalTimezone()});
 ```
 
-
 Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
 we'll be able to merge VM and the Flutter code paths and no asset entry and no special import will be required.
 It would look just like the VM example.
@@ -158,6 +152,16 @@ Wrapping your code as dynamic will allow `toString()` to work normally. It will 
 See [Issue:33876](https://github.com/dart-lang/sdk/issues/33876) for more information. The [fix](https://dart-review.googlesource.com/c/sdk/+/65282)
 exists, now we just wait for it to hit a live build.
 
-`toStringDDC` instead of `toStringFormatted` to attempt to get a negative 
-[contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today 
+`toStringDDC` instead of `toStringFormatted` to attempt to get a negative
+[contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today
 and you need some extra string support because of this bug, let me know.
+
+### Using with Dart 1.24.3
+
+If you are using TimeMachine for Dart 1.24.3, you'll want to depend directly on `0.7.1` or earlier.
+
+```yaml
+dependencies:
+  time_machine: "0.7.1"
+```
+
