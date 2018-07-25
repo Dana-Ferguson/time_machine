@@ -7,7 +7,7 @@ export 'yearmonthday_and_calendar.dart';
 export 'calendar_ordinal.dart';
 export 'calendar_system.dart';
 
-export 'isodayofweek.dart';
+export 'dayofweek.dart';
 
 export 'datetimezone_provider.dart';
 export 'datetimezone.dart';

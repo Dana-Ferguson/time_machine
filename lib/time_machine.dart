@@ -14,7 +14,7 @@ as timeMachine;
 
 export 'src/calendar_system.dart' show CalendarSystem;
 
-export 'src/isodayofweek.dart' show DayOfWeek;
+export 'src/dayofweek.dart' show DayOfWeek;
 
 export 'src/datetimezone_provider.dart' show DateTimeZoneProvider;
 export 'src/datetimezone.dart' show DateTimeZone;
