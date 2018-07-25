@@ -1,9 +1,10 @@
 # Changelog
 
-## 0.8.6
+## 0.9.0
 - Added a `LocalDate.today()`, `LocalDateTime.now()`, `LocalTime.timeOfToday()`
  constructors.
 - Refined `Local*` api's to be more like `dart:core.DateTime`
+  - Did the same with `Instant`, `ZonedDateTime`, `OffsetDateTime`, `Offset`, `Period`
 
 ## 0.8.5
 - Constructor is now `LocalDateTime.localDateAtTime(LocalDate, LocalTime)`
