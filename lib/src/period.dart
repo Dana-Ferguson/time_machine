@@ -350,7 +350,7 @@ class Period {
       // TimeComponentsBetween(duration.ToInt64Nanoseconds(), units, out hours, out minutes, out seconds, out milliseconds, out ticks, out nanoseconds);
     }
     else {
-      int UnitsBetween(PeriodUnits mask, TimePeriodField timeField) {
+      int unitsBetween(PeriodUnits mask, TimePeriodField timeField) {
         if ((mask.value & units.value) == 0) {
           return 0;
         }
@@ -359,12 +359,12 @@ class Period {
         return value;
       }
 
-      hours = UnitsBetween(PeriodUnits.hours, TimePeriodField.hours);
-      minutes = UnitsBetween(PeriodUnits.minutes, TimePeriodField.minutes);
-      seconds = UnitsBetween(PeriodUnits.seconds, TimePeriodField.seconds);
-      milliseconds = UnitsBetween(PeriodUnits.milliseconds, TimePeriodField.milliseconds);
-      microseconds = UnitsBetween(PeriodUnits.microseconds, TimePeriodField.microseconds);
-      nanoseconds = UnitsBetween(PeriodUnits.microseconds, TimePeriodField.nanoseconds);
+      hours = unitsBetween(PeriodUnits.hours, TimePeriodField.hours);
+      minutes = unitsBetween(PeriodUnits.minutes, TimePeriodField.minutes);
+      seconds = unitsBetween(PeriodUnits.seconds, TimePeriodField.seconds);
+      milliseconds = unitsBetween(PeriodUnits.milliseconds, TimePeriodField.milliseconds);
+      microseconds = unitsBetween(PeriodUnits.microseconds, TimePeriodField.microseconds);
+      nanoseconds = unitsBetween(PeriodUnits.microseconds, TimePeriodField.nanoseconds);
     }
 
     return new Period(years: years,
@@ -634,7 +634,7 @@ class Period {
   /// no attempt to work around this - in realistic periods, it shouldn't be a problem.
   Time toTime() {
     if (months != 0 || years != 0) {
-      // todo: does this apply to us?
+      // we can't do this because months and years have undefined amounts of times.
       throw new StateError("Cannot construct span of period with non-zero months or years.");
     }
     return new Time(nanoseconds: _totalNanoseconds);

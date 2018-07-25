@@ -88,10 +88,10 @@ class Instant implements Comparable<Instant> {
   @override int get hashCode => timeSinceEpoch.hashCode;
   @override bool operator==(dynamic other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
 
-  Instant operator+(Time time) => this.plus(time);
-  Instant operator-(Time time) => this.minus(time);
-  Instant plus(Time time) => new Instant.epochTime(timeSinceEpoch + time);
-  Instant minus(Time time) => new Instant.epochTime(timeSinceEpoch - time);
+  Instant operator+(Time time) => this.add(time);
+  Instant operator-(Time time) => this.subtract(time);
+  Instant add(Time time) => new Instant.epochTime(timeSinceEpoch + time);
+  Instant subtract(Time time) => new Instant.epochTime(timeSinceEpoch - time);
 
   LocalInstant _plusOffset(Offset offset) {
     return new LocalInstant(timeSinceEpoch + offset.toTime());

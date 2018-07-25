@@ -196,7 +196,7 @@ void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
   // todo: rework this test
-  var instant = new Instant().plus(new Time(nanoseconds: ticks * 100));
+  var instant = new Instant().add(new Time(nanoseconds: ticks * 100));
   expect(instant.toUnixTimeMilliseconds(), expectedMilliseconds);
 }
 
@@ -205,7 +205,7 @@ void UnixConversions_ExtremeValues()
 {
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
-  var max = Instant.maxValue.minus(new Time(seconds: 1)).plus(Time.epsilon);
+  var max = Instant.maxValue.subtract(new Time(seconds: 1)).add(Time.epsilon);
   expect(max, Instant(seconds: max.toUnixTimeSeconds()));
   expect(max, Instant(milliseconds: max.toUnixTimeMilliseconds()));
   if (Platform.isVM) expect(max, new Instant(microseconds: max.toUnixTimeMicroseconds()));

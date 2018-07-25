@@ -125,8 +125,8 @@ void Equality()
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.hours(1), new Offset.hours(2)),
       // Unequal values
       [IZoneInterval.newZoneInterval("name2", SampleStart, SampleEnd, new Offset.hours(1), new Offset.hours(2)),
-      IZoneInterval.newZoneInterval("name", SampleStart.plus(Time.epsilon), SampleEnd, new Offset.hours(1), new Offset.hours(2)),
-      IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd.plus(Time.epsilon), new Offset.hours(1), new Offset.hours(2)),
+      IZoneInterval.newZoneInterval("name", SampleStart.add(Time.epsilon), SampleEnd, new Offset.hours(1), new Offset.hours(2)),
+      IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd.add(Time.epsilon), new Offset.hours(1), new Offset.hours(2)),
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.hours(2), new Offset.hours(2)),
       IZoneInterval.newZoneInterval("name", SampleStart, SampleEnd, new Offset.hours(1), new Offset.hours(3))]);
 }

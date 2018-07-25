@@ -243,7 +243,7 @@ void Validation_NonAdjoiningIntervals() {
   List<ZoneInterval> intervals =
   [
     IZoneInterval.newZoneInterval("foo", IInstant.beforeMinValue, new Instant(microseconds: 2), Offset.zero, Offset.zero),
-    IZoneInterval.newZoneInterval("foo", new Instant(microseconds: 2).plus(new Time(nanoseconds: 500)), new Instant(microseconds: 3), Offset.zero, Offset.zero)
+    IZoneInterval.newZoneInterval("foo", new Instant(microseconds: 2).add(new Time(nanoseconds: 500)), new Instant(microseconds: 3), Offset.zero, Offset.zero)
   ];
   // Assert.Throws<ArgumentException>
   expect(() => PrecalculatedDateTimeZone.validatePeriods(intervals, DateTimeZone.utc), throwsArgumentError);
