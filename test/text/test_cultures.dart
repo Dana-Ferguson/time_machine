@@ -4,8 +4,8 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal abstract class TestLocalDateTimes {
-  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456789);
-  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34).plusNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456700);
   @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime(
       1976,
       6,

@@ -243,7 +243,7 @@ class Period {
   ///
   /// * [ArgumentError]: [units] is empty or contained unknown values.
   /// * [ArgumentError]: [start] and [end] use different calendars.
-  static Period between(LocalDateTime start, LocalDateTime end, [PeriodUnits units = PeriodUnits.dateAndTime]) {
+  static Period differenceBetweenDateTime(LocalDateTime start, LocalDateTime end, [PeriodUnits units = PeriodUnits.dateAndTime]) {
     Preconditions.checkArgument(units != PeriodUnits.none, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
     CalendarSystem calendar = start.calendar;
@@ -261,11 +261,11 @@ class Period {
     LocalDate endDate = end.date;
     if (start < end) {
       if (start.time > end.time) {
-        endDate = endDate.plusDays(-1);
+        endDate = endDate.addDays(-1);
       }
     }
     else if (start > end && start.time < end.time) {
-      endDate = endDate.plusDays(1);
+      endDate = endDate.addDays(1);
     }
 
     // Optimization for single field
@@ -469,20 +469,20 @@ class Period {
 
   /// Adds the time components of this period to the given time, scaled accordingly.
   LocalTime _addTimeTo(LocalTime time, int scalar) =>
-      time.plusHours(hours * scalar)
-          .plusMinutes(minutes * scalar)
-          .plusSeconds(seconds * scalar)
-          .plusMilliseconds(milliseconds * scalar)
-          .plusMicroseconds(microseconds * scalar)
-          .plusNanoseconds(nanoseconds * scalar);
+      time.addHours(hours * scalar)
+          .addMinutes(minutes * scalar)
+          .addSeconds(seconds * scalar)
+          .addMilliseconds(milliseconds * scalar)
+          .addMicroseconds(microseconds * scalar)
+          .addNanoseconds(nanoseconds * scalar);
 
 
   /// Adds the date components of this period to the given time, scaled accordingly.
   LocalDate _addDateTo(LocalDate date, int scalar) =>
-      date.plusYears(years * scalar)
-          .plusMonths(months * scalar)
-          .plusWeeks(weeks * scalar)
-          .plusDays(days * scalar);
+      date.addYears(years * scalar)
+          .addMonths(months * scalar)
+          .addWeeks(weeks * scalar)
+          .addDays(days * scalar);
 
 
   /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
@@ -504,7 +504,7 @@ class Period {
     extraDays = result.extraDays; time = result.time;
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
-    return new LocalDateTime.localDateAtTime(date.plusDays(extraDays), time);
+    return new LocalDateTime.localDateAtTime(date.addDays(extraDays), time);
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
@@ -530,7 +530,7 @@ class Period {
   ///
   /// * [ArgumentError]: [units] contains time units, is empty or contains unknown values.
   /// * [ArgumentError]: [start] and [end] use different calendars.
-  static Period betweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
+  static Period differenceBetweenDates(LocalDate start, LocalDate end, [PeriodUnits units = PeriodUnits.yearMonthDay]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allTimeUnits.value) == 0, 'units', "Units contains time units: $units");
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
@@ -575,7 +575,7 @@ class Period {
   ///
   /// * [ArgumentError]: [units] contains date units, is empty or contains unknown values.
   /// * [ArgumentError]: [start] and [end] use different calendars.
-  static Period betweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
+  static Period differenceBetweenTimes(LocalTime start, LocalTime end, [PeriodUnits units = PeriodUnits.allTimeUnits]) {
     Preconditions.checkArgument((units.value & PeriodUnits.allDateUnits.value) == 0, 'units', "Units contains date units: $units");
     Preconditions.checkArgument(units.value != 0, 'units', "Units must not be empty");
     Preconditions.checkArgument((units.value & ~PeriodUnits.allUnits.value) == 0, 'units', "Units contains an unknown value: $units");
@@ -791,6 +791,6 @@ class _PeriodComparer // implements Comparer<Period>
       // wouldn't, but it's highly unlikely
       return x.toTime().compareTo(y.toTime());
     }
-    return (_baseDateTime.plus(x)).compareTo(_baseDateTime.plus(y));
+    return (_baseDateTime.add(x)).compareTo(_baseDateTime.add(y));
   }
 }

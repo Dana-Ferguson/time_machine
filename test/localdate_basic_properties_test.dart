@@ -53,6 +53,6 @@ void DayOfWeek_AroundEpoch()
         date.dayOfWeek.value,
         date.atMidnight().toDateTimeLocal().weekday
         );
-    date = date.plusDays(1);
+    date = date.addDays(1);
   }
 }

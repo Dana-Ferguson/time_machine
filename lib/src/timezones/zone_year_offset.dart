@@ -51,7 +51,7 @@ class ZoneYearOffset {
   /// [dayOfWeek]: The day of week. 0 means not set.
   /// [advance]: if set to `true` [advance].
   /// [timeOfDay]: The time of day at which the transition occurs.
-  /// [addDay]: Whether to add an extra day (for 24:00 handling). Default is false. 
+  /// [addDay]: Whether to add an extra day (for 24:00 handling). Default is false.
   ZoneYearOffset(this.mode, this._monthOfYear, this._dayOfMonth, this._dayOfWeek, this.advanceDayOfWeek, this.timeOfDay, [this._addDay = false]) {
     _verifyFieldValue(1, 12, "monthOfYear", _monthOfYear, false);
     _verifyFieldValue(1, 31, "dayOfMonth", _dayOfMonth, true);
@@ -144,7 +144,7 @@ class ZoneYearOffset {
         else if (advanceDayOfWeek) {
           diff += 7;
         }
-        date = date.plusDays(diff);
+        date = date.addDays(diff);
       }
     }
     if (_addDay) {
@@ -152,7 +152,7 @@ class ZoneYearOffset {
       if (year == 9999 && date.month == 12 && date.day == 31) {
         return LocalInstant.afterMaxValue;
       }
-      date = date.plusDays(1);
+      date = date.addDays(1);
     }
     return ILocalDateTime.toLocalInstant(date.at(timeOfDay));
   }

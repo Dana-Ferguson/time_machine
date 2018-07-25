@@ -25,7 +25,7 @@ final SingleTransitionDateTimeZone SampleZone = new SingleTransitionDateTimeZone
 @Test()
 void SimpleProperties()
 {
-  var value = new ZonedDateTime.atStrictly(new LocalDateTime(2012, 2, 10, 8, 9, 10).plusNanoseconds(123456789), SampleZone);
+  var value = new ZonedDateTime.atStrictly(new LocalDateTime(2012, 2, 10, 8, 9, 10).addNanoseconds(123456789), SampleZone);
   expect(new LocalDate(2012, 2, 10), value.date);
   expect(new LocalTime(8, 9, 10, ns: 123456789), value.timeOfDay);
   expect(Era.common, value.era);

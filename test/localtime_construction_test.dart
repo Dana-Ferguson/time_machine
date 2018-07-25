@@ -86,7 +86,7 @@ void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, in
 void FromNanosecondsSinceMidnight_Valid()
 {
   expect(LocalTime.midnight, ILocalTime.untrustedNanoseconds(0));
-  expect(LocalTime.midnight.plusNanoseconds(-1), ILocalTime.untrustedNanoseconds(TimeConstants.nanosecondsPerDay - 1));
+  expect(LocalTime.midnight.addNanoseconds(-1), ILocalTime.untrustedNanoseconds(TimeConstants.nanosecondsPerDay - 1));
 }
 
 @Test()

@@ -73,7 +73,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
   ///
-  /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
+  /// Returns: A new [LocalDate] with the same values as the local clock.
   factory LocalDate.today([CalendarSystem calendar]) => Instant.now().inLocalZone().date;
 
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
@@ -193,14 +193,26 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [period]: The period to add. Must not contain any (non-zero) time units.
   ///
   /// Returns: The sum of the given date and period
-  static LocalDate add(LocalDate date, Period period) => date + period;
+  static LocalDate plus(LocalDate date, Period period) => date + period;
 
-  /// Adds the specified period to this date. Fluent alternative to `operator+()`.
+  /// Subtracts the specified period from the date. Friendly alternative to `operator-()`.
   ///
-  /// * [period]: The period to add. Must not contain any (non-zero) time units.
+  /// * [date]: The date to subtract the period from
+  /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
   ///
-  /// Returns: The sum of this date and the given period
-  LocalDate plus(Period period) => this + period;
+  /// Returns: The result of subtracting the given period from the date.
+  static LocalDate minus(LocalDate date, Period period) => date - period;
+
+  /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
+  ///
+  /// This is simply a convenience method for calling [Period.Between(LocalDate,LocalDate)].
+  /// The calendar systems of the two dates must be the same.
+  ///
+  /// * [end]: The date to subtract from
+  /// * [start]: The date to subtract
+  ///
+  /// Returns: The result of subtracting one date from another.
+  static Period differenceBetween(LocalDate end, LocalDate start) => Period.differenceBetweenDates(start, end); // rhs.minusDate(lhs);
 
   /// Adds the specified period to the date.
   ///
@@ -215,31 +227,40 @@ class LocalDate implements Comparable<LocalDate> {
     return IPeriod.addDateTo(period, this, 1);
   }
 
-  /// Subtracts the specified period from the date. Friendly alternative to `operator-()`.
+  /// Subtracts the specified period from the date.
+  /// This is a convenience operator over the [Minus(Period)] method.
   ///
-  /// * [date]: The date to subtract the period from
+  /// * [this]: The date to subtract the period from
   /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
   ///
-  /// Returns: The result of subtracting the given period from the date.
-  static LocalDate subtract(LocalDate date, Period period) => date - period;
+  /// Returns: The result of subtracting the given period from the date
+  LocalDate operator -(Period period) => subtract(period);
 
-  /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
+  // dynamic operator -(dynamic other) => other is LocalDate ? minusDate(other) : other is Period ? minusPeriod(other) : throw new TypeError();
+
+
+  /// Compares two [LocalDate] values for equality. This requires
+  /// that the dates be the same, within the same calendar.
   ///
-  /// This is simply a convenience method for calling [Period.Between(LocalDate,LocalDate)].
-  /// The calendar systems of the two dates must be the same.
+  /// * [this]: The first value to compare
+  /// * [other]: The second value to compare
   ///
-  /// * [end]: The date to subtract from
-  /// * [start]: The date to subtract
+  /// Returns: True if the two dates are the same and in the same calendar; false otherwise
+  bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+
+  /// Adds the specified period to this date. Fluent alternative to `operator+()`.
   ///
-  /// Returns: The result of subtracting one date from another.
-  static Period between(LocalDate end, LocalDate start) => Period.betweenDates(start, end); // rhs.minusDate(lhs);
+  /// * [period]: The period to add. Must not contain any (non-zero) time units.
+  ///
+  /// Returns: The sum of this date and the given period
+  LocalDate add(Period period) => this + period;
 
   /// Subtracts the specified period from this date. Fluent alternative to `operator-()`.
   ///
   /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
   ///
   /// Returns: The result of subtracting the given period from this date.
-  LocalDate minusPeriod(Period period) {
+  LocalDate subtract(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.hasTimeComponent, 'period', "Cannot subtract a period with a time component from a date");
     return IPeriod.addDateTo(period, this, -1);
@@ -253,28 +274,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [date]: The date to subtract from this
   ///
   /// Returns: The difference between the specified date and this one
-  Period minusDate(LocalDate date) => Period.betweenDates(date, this); // this - date;
-
-  /// Subtracts the specified period from the date.
-  /// This is a convenience operator over the [Minus(Period)] method.
-  ///
-  /// * [this]: The date to subtract the period from
-  /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
-  ///
-  /// Returns: The result of subtracting the given period from the date
-  LocalDate operator -(Period period) => minusPeriod(period);
-
-  // dynamic operator -(dynamic other) => other is LocalDate ? minusDate(other) : other is Period ? minusPeriod(other) : throw new TypeError();
-
-
-  /// Compares two [LocalDate] values for equality. This requires
-  /// that the dates be the same, within the same calendar.
-  ///
-  /// * [this]: The first value to compare
-  /// * [other]: The second value to compare
-  ///
-  /// Returns: True if the two dates are the same and in the same calendar; false otherwise
-  bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  Period difference(LocalDate date) => Period.differenceBetweenDates(date, this); // this - date;
 
   // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
   // naive comparisons.
@@ -313,7 +313,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// as the calendar of [this].
   bool operator <=(LocalDate other)
   {
-    Preconditions.checkArgument(this.calendar== other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    Preconditions.checkArgument(this.calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
     return this.compareTo(other) <= 0;
   }
 
@@ -456,7 +456,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [years]: The number of years to add
   ///
   /// Returns: The current value plus the given number of years.
-  LocalDate plusYears(int years) => DatePeriodFields.yearsField.add(this, years);
+  LocalDate addYears(int years) => DatePeriodFields.yearsField.add(this, years);
+
+  LocalDate subtractYears(int years) => addYears(-years);
 
   /// Returns a new LocalDate representing the current value with the given number of months added.
   ///
@@ -470,7 +472,9 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [months]: The number of months to add
   ///
   /// Returns: The current date plus the given number of months
-  LocalDate plusMonths(int months) => DatePeriodFields.monthsField.add(this, months);
+  LocalDate addMonths(int months) => DatePeriodFields.monthsField.add(this, months);
+
+  LocalDate subtractMonths(int months) => addMonths(-months);
 
   /// Returns a new LocalDate representing the current value with the given number of days added.
   ///
@@ -480,14 +484,18 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [days]: The number of days to add
   ///
   /// Returns: The current value plus the given number of days.
-  LocalDate plusDays(int days) => DatePeriodFields.daysField.add(this, days);
+  LocalDate addDays(int days) => DatePeriodFields.daysField.add(this, days);
+
+  LocalDate subtractDays(int days) => addDays(-days);
 
   /// Returns a new LocalDate representing the current value with the given number of weeks added.
   ///
   /// * [weeks]: The number of weeks to add
   ///
   /// Returns: The current value plus the given number of weeks.
-  LocalDate plusWeeks(int weeks) => DatePeriodFields.weeksField.add(this, weeks);
+  LocalDate addWeeks(int weeks) => DatePeriodFields.weeksField.add(this, weeks);
+
+  LocalDate subtractWeeks(int weeks) => addWeeks(-weeks);
 
   /// Returns the next [LocalDate] falling on the specified [DayOfWeek].
   /// This is a strict "next" - if this date on already falls on the target
@@ -514,7 +522,7 @@ class LocalDate implements Comparable<LocalDate> {
     {
       difference += 7;
     }
-    return plusDays(difference);
+    return addDays(difference);
   }
 
   /// Returns the previous [LocalDate] falling on the specified [DayOfWeek].
@@ -542,7 +550,7 @@ class LocalDate implements Comparable<LocalDate> {
     {
       difference -= 7;
     }
-    return plusDays(difference);
+    return addDays(difference);
   }
 
   /// Returns an [OffsetDate] for this local date with the given offset.

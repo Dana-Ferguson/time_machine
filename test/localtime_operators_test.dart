@@ -75,7 +75,7 @@ void Addition_PeriodWithDate()
   LocalTime time = new LocalTime(20, 30, 0);
   Period period = new Period(days: 1);
   // Use method not operator here to form a valid statement
-  expect(() => LocalTime.add(time, period), throwsArgumentError);
+  expect(() => LocalTime.plus(time, period), throwsArgumentError);
 }
 
 @Test()
@@ -84,7 +84,7 @@ void Subtraction_PeriodWithTime()
   LocalTime time = new LocalTime(20, 30, 0);
   Period period = new Period(days: 1);
   // Use method not operator here to form a valid statement
-  expect(() => LocalTime.subtract(time, period), throwsArgumentError);
+  expect(() => LocalTime.minus(time, period), throwsArgumentError);
 }
 
 @Test()
@@ -92,8 +92,8 @@ void PeriodAddition_MethodEquivalents()
 {
   LocalTime start = new LocalTime(20, 30, 0);
   Period period = new Period(hours: 3) + new Period(minutes: 10);
-  expect(start + period, LocalTime.add(start, period));
-  expect(start + period, start.plus(period));
+  expect(start + period, LocalTime.plus(start, period));
+  expect(start + period, start.add(period));
 }
 
 @Test()
@@ -102,13 +102,13 @@ void PeriodSubtraction_MethodEquivalents()
   LocalTime start = new LocalTime(20, 30, 0);
   Period period = new Period(hours: 3) + new Period(minutes: 10);
   LocalTime end = start + period;
-  expect(start - period, LocalTime.subtract(start, period));
-  expect(start - period, start.minusPeriod(period));
+  expect(start - period, LocalTime.minus(start, period));
+  expect(start - period, start.subtract(period));
 
   // expect(period, end - start);
   // todo: does not exist
   // expect(period, LocalTime.Subtract(end, start));
-  expect(period, end.between(start));
+  expect(period, end.difference(start));
 }
 
 @Test()

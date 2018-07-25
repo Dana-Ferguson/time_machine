@@ -73,7 +73,7 @@ void At()
 {
   var date = new LocalDate(2012, 6, 19, CalendarSystem.julian);
   var offset = new Offset.hours(5);
-  var time = new LocalTime(14, 15, 12).plusNanoseconds(123456789);
+  var time = new LocalTime(14, 15, 12).addNanoseconds(123456789);
 
   expect(new OffsetDate(date, offset).at(time), date.at(time).withOffset(offset));
 }

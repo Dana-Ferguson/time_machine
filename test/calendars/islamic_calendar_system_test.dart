@@ -376,7 +376,7 @@ void PlusYears_Simple()
   var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   LocalDateTime start = new LocalDateTime(5, 8, 20, 2, 0, 0, calendar: calendar);
   LocalDateTime expectedEnd = new LocalDateTime(10, 8, 20, 2, 0, 0, calendar: calendar);
-  expect(expectedEnd, start.plusYears(5));
+  expect(expectedEnd, start.addYears(5));
 }
 
 @Test()
@@ -389,7 +389,7 @@ void PlusYears_TruncatesAtLeapYear()
   LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
   LocalDateTime expectedEnd = new LocalDateTime(3, 12, 29, 2, 0, 0, calendar: calendar);
 
-  expect(expectedEnd, start.plusYears(1));
+  expect(expectedEnd, start.addYears(1));
 }
 
 @Test()
@@ -402,7 +402,7 @@ void PlusYears_DoesNotTruncateFromOneLeapYearToAnother()
   LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
   LocalDateTime expectedEnd = new LocalDateTime(5, 12, 30, 2, 0, 0, calendar: calendar);
 
-  expect(expectedEnd, start.plusYears(3));
+  expect(expectedEnd, start.addYears(3));
 }
 
 @Test()
@@ -415,7 +415,7 @@ void PlusMonths_Simple()
   LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
   expect(11, expectedEnd.month);
   expect(30, expectedEnd.day);
-  expect(expectedEnd, start.plusMonths(11));
+  expect(expectedEnd, start.addMonths(11));
 }
 
 @Test()  @SkipMe("Doesn't make sense in Dart")

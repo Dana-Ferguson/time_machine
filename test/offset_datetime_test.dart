@@ -53,7 +53,7 @@ void OffsetProperty()
 @Test()
 void LocalDateTimeProperty()
 {
-  LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, calendar: CalendarSystem.julian).plusNanoseconds(123456789);
+  LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, calendar: CalendarSystem.julian).addNanoseconds(123456789);
   Offset offset = new Offset.hours(5);
 
   OffsetDateTime odt = new OffsetDateTime(local, offset);
@@ -243,11 +243,11 @@ void LocalComparer()
   var positiveOffset = control.localDateTime.withOffset(new Offset.hours(1));
   var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(new Offset.hours(5));
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.plusHours(-2).withOffset(new Offset.hours(-10));
+  var earlierLocal = control.localDateTime.addHours(-2).withOffset(new Offset.hours(-10));
   // Same offset, previous day
   var muchEarlierLocal = control.plusHours(-24);
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.hours(10));
+  var laterLocal = control.localDateTime.addHours(2).withOffset(new Offset.hours(10));
   // Same offset, next day
   var muchLaterLocal = control.plusHours(24);
 
@@ -286,7 +286,7 @@ void InstantComparer()
 {
   var localControl = new LocalDateTime(2013, 4, 2, 19, 54, 0);
   var control = new OffsetDateTime(localControl, Offset.zero);
-  var equalAndOppositeChanges = control.localDateTime.plusHours(1).withOffset(new Offset.hours(1));
+  var equalAndOppositeChanges = control.localDateTime.addHours(1).withOffset(new Offset.hours(1));
   var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(Offset.zero);
 
   // Negative offset means later instant
@@ -295,9 +295,9 @@ void InstantComparer()
   var positiveOffset = control.localDateTime.withOffset(new Offset.hours(1));
 
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.plusHours(-2).withOffset(new Offset.hours(-10));
+  var earlierLocal = control.localDateTime.addHours(-2).withOffset(new Offset.hours(-10));
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.plusHours(2).withOffset(new Offset.hours(10));
+  var laterLocal = control.localDateTime.addHours(2).withOffset(new Offset.hours(10));
 
   var comparer = OffsetDateTimeComparer.instant;
 
@@ -444,7 +444,7 @@ void WithCalendar()
 void With_TimeAdjuster()
 {
   Offset offset = new Offset.hoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
   OffsetDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8).withOffset(offset);
   expect(expected, start.withTime(TimeAdjusters.truncateToSecond));
 }
@@ -453,8 +453,8 @@ void With_TimeAdjuster()
 void With_DateAdjuster()
 {
   Offset offset = new Offset.hoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8).plusNanoseconds(123456789).withOffset(offset);
-  OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).plusNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
   expect(expected, start.withDate(DateAdjusters.endOfMonth));
 }
 
@@ -477,7 +477,7 @@ Future InZone() async
 void ToOffsetDate()
 {
   var offset = new Offset.hoursAndMinutes(2, 30);
-  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
+  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
   var expected = new OffsetDate(new LocalDate(2014, 6, 27), offset);
   expect(expected, odt.toOffsetDate());
 }
@@ -486,8 +486,8 @@ void ToOffsetDate()
 void ToOffsetTime()
 {
   var offset = new Offset.hoursAndMinutes(2, 30);
-  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).plusNanoseconds(123456789).withOffset(offset);
-  var expected = new OffsetTime(new LocalTime(12, 15, 8).plusNanoseconds(123456789), offset);
+  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
+  var expected = new OffsetTime(new LocalTime(12, 15, 8).addNanoseconds(123456789), offset);
   expect(expected, odt.toOffsetTime());
 }
 

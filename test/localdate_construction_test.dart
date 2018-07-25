@@ -24,7 +24,7 @@ void Constructor_WithDays(int year)
   int startDays = ILocalDate.daysSinceEpoch(start);
   for (int i = 0; i < 366; i++)
   {
-    expect(start.plusDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i));
+    expect(start.addDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i));
   }
 }
 
@@ -39,7 +39,7 @@ void Constructor_WithDaysAndCalendar(int year)
   int startDays = ILocalDate.daysSinceEpoch(start);
   for (int i = 0; i < 366; i++)
   {
-    expect(start.plusDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
+    expect(start.addDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
   }
 }
 

@@ -400,10 +400,10 @@ final LocalDate TestDate3_168_Ayyam_5 = CreateBadiDate(168, AyyamiHaMonth, 5);
 @Test()
 void BetweenLocalDates_InvalidUnits()
 {
-  expect(() => Period.betweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.none), throwsArgumentError);
-  expect(() => Period.betweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, new PeriodUnits(-1)), throwsArgumentError);
-  expect(() => Period.betweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.allTimeUnits), throwsArgumentError);
-  expect(() => Period.betweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.years | PeriodUnits.hours), throwsArgumentError);
+  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.none), throwsArgumentError);
+  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, new PeriodUnits(-1)), throwsArgumentError);
+  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.allTimeUnits), throwsArgumentError);
+  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.years | PeriodUnits.hours), throwsArgumentError);
 }
 
 @Test()
@@ -418,7 +418,7 @@ void SetYear()
 @Test()
 void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults()
 {
-  Period actual = Period.betweenDates(TestDate1_167_5_15, TestDate1_167_6_7);
+  Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate1_167_6_7);
   Period expected = new Period(days: 11);
   expect(expected, actual);
 }
@@ -426,7 +426,7 @@ void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults()
 @Test()
 void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults_2()
 {
-  Period actual = Period.betweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4);
+  Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4);
   Period expected = new Period(months: 13) + new Period(days: 8);
   expect(expected, actual);
 }
@@ -434,7 +434,7 @@ void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults_2()
 @Test()
 void BetweenLocalDates_MovingForwardInLeapYear_WithExactResults()
 {
-  Period actual = Period.betweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5);
+  Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5);
   Period expected = new Period(years: 1) + new Period(months: 13) + new Period(days: 9);
   expect(expected, actual);
 }
@@ -442,7 +442,7 @@ void BetweenLocalDates_MovingForwardInLeapYear_WithExactResults()
 @Test()
 void BetweenLocalDates_MovingBackwardNoLeapYears_WithExactResults()
 {
-  Period actual = Period.betweenDates(TestDate2_167_Ayyam_4, TestDate1_167_5_15);
+  Period actual = Period.differenceBetweenDates(TestDate2_167_Ayyam_4, TestDate1_167_5_15);
   Period expected = new Period(months: -13) + new Period(days: -8);
   expect(expected, actual);
 }
@@ -455,14 +455,14 @@ void BetweenLocalDates_MovingBackward_WithExactResults()
   // from there, it is -13m -8d
 
   Period expected = new Period(years: -1) + new Period(months: -13) + new Period(days: -8);
-  Period actual = Period.betweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15);
+  Period actual = Period.differenceBetweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15);
   expect(expected, actual);
 }
 
 @Test()
 void BetweenLocalDates_MovingForward_WithJustMonths()
 {
-  Period actual = Period.betweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5, PeriodUnits.months);
+  Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5, PeriodUnits.months);
   Period expected = new Period(months: 32);
   expect(expected, actual);
 }
@@ -470,7 +470,7 @@ void BetweenLocalDates_MovingForward_WithJustMonths()
 @Test()
 void BetweenLocalDates_MovingBackward_WithJustMonths()
 {
-  Period actual = Period.betweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15, PeriodUnits.months);
+  Period actual = Period.differenceBetweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15, PeriodUnits.months);
   Period expected = new Period(months: -32);
   expect(expected, actual);
 }
@@ -482,8 +482,8 @@ void BetweenLocalDates_AsymmetricForwardAndBackward()
   LocalDate d2 = CreateBadiDate(167, 1, 10);
 
   // spanning Ayyam-i-Ha - not counted as a month
-  expect(new Period(months: 2) + new Period(days: 6), Period.betweenDates(d1, d2));
-  expect(new Period(months: -2) + new Period(days: -6), Period.betweenDates(d2, d1));
+  expect(new Period(months: 2) + new Period(days: 6), Period.differenceBetweenDates(d1, d2));
+  expect(new Period(months: -2) + new Period(days: -6), Period.differenceBetweenDates(d2, d1));
 }
 
 @Test()
@@ -491,8 +491,8 @@ void BetweenLocalDates_EndOfMonth()
 {
   LocalDate d1 = CreateBadiDate(171, 5, 19);
   LocalDate d2 = CreateBadiDate(171, 6, 19);
-  expect(new Period(months: 1), Period.betweenDates(d1, d2));
-  expect(new Period(months: -1), Period.betweenDates(d2, d1));
+  expect(new Period(months: 1), Period.differenceBetweenDates(d1, d2));
+  expect(new Period(months: -1), Period.differenceBetweenDates(d2, d1));
 }
 
 @Test()
@@ -504,7 +504,7 @@ void BetweenLocalDates_OnLeapYear()
   expect("168-0-4", AsBadiString(d1));
   expect("169-0-3", AsBadiString(d2));
 
-  expect(new Period(months: 19) + new Period(days: 18), Period.betweenDates(d1, d2));
+  expect(new Period(months: 19) + new Period(days: 18), Period.differenceBetweenDates(d1, d2));
 }
 
 @Test()
@@ -512,8 +512,8 @@ void BetweenLocalDates_AfterLeapYear()
 {
   LocalDate d1 = CreateBadiDate(180, 19, 5);
   LocalDate d2 = CreateBadiDate(181, 19, 5);
-  expect(new Period(years: 1), Period.betweenDates(d1, d2));
-  expect(new Period(years: -1), Period.betweenDates(d2, d1));
+  expect(new Period(years: 1), Period.differenceBetweenDates(d1, d2));
+  expect(new Period(years: -1), Period.differenceBetweenDates(d2, d1));
 }
 
 

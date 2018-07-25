@@ -299,7 +299,7 @@ class OffsetDateTime {
     }
     return new OffsetDateTime._fullTrust(
         days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(date
-            .plusDays(days)), nanos, offset);
+            .addDays(days)), nanos, offset);
     // _combineNanoOfDayAndOffset(nanos, offset));
   }
 

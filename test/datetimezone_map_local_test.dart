@@ -84,14 +84,14 @@ void ZoneWithAmbiguity_WellAfterTransition()
 @Test()
 void ZoneWithAmbiguity_JustBeforeAmbiguity()
 {
-  var mapping = ZoneWithAmbiguity.mapLocal(TransitionMinus5.plusNanoseconds(-1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionMinus5.addNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
 @Test()
 void ZoneWithAmbiguity_JustAfterTransition()
 {
-  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.plusNanoseconds(1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.addNanoseconds(1));
   CheckMapping(mapping, IntervalAfterAmbiguity, IntervalAfterAmbiguity, 1);
 }
 
@@ -112,7 +112,7 @@ void ZoneWithAmbiguity_MidTransition()
 @Test()
 void ZoneWithAmbiguity_LastTickOfTransition()
 {
-  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.plusNanoseconds(-1));
+  var mapping = ZoneWithAmbiguity.mapLocal(TransitionPlus10.addNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalAfterAmbiguity, 2);
 }
 
@@ -155,14 +155,14 @@ void ZoneWithGap_WellAfterTransition()
 @Test()
 void ZoneWithGap_JustBeforeGap()
 {
-  var mapping = ZoneWithGap.mapLocal(TransitionMinus5.plusNanoseconds(-1));
+  var mapping = ZoneWithGap.mapLocal(TransitionMinus5.addNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeGap, IntervalBeforeGap, 1);
 }
 
 @Test()
 void ZoneWithGap_JustAfterTransition()
 {
-  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.plusNanoseconds(1));
+  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.addNanoseconds(1));
   CheckMapping(mapping, IntervalAfterGap, IntervalAfterGap, 1);
 }
 
@@ -183,7 +183,7 @@ void ZoneWithGap_MidTransition()
 @Test()
 void ZoneWithGap_LastTickOfTransition()
 {
-  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.plusNanoseconds(-1));
+  var mapping = ZoneWithGap.mapLocal(TransitionPlus10.addNanoseconds(-1));
   CheckMapping(mapping, IntervalBeforeGap, IntervalAfterGap, 0);
 }
 

@@ -50,7 +50,7 @@ void MaxIsoValue()
 {
   var value = LocalDate.maxIsoValue;
   expect(CalendarSystem.iso, value.calendar);
-  expect(() => value.plusDays(1), throwsRangeError);
+  expect(() => value.addDays(1), throwsRangeError);
 }
 
 @Test()
@@ -58,5 +58,5 @@ void MinIsoValue()
 {
   var value = LocalDate.minIsoValue;
   expect(CalendarSystem.iso, value.calendar);
-  expect(() => value.plusDays(-1), throwsRangeError);
+  expect(() => value.addDays(-1), throwsRangeError);
 }

@@ -46,7 +46,7 @@ void ToDateTimeUnspecified()
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
   if (Platform.isWeb) {
-    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).plusNanoseconds(
+    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
     var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
         .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
@@ -54,7 +54,7 @@ void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
     expect(actual, expected);
   }
   else {
-    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).plusNanoseconds(
+    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
     var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
         .add(new Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
@@ -102,7 +102,7 @@ void FromDateTime_WithCalendar()
 void TimeProperties_AfterEpoch()
 {
   // Use the largest valid year as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).plusNanoseconds(123456789);
+  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
   expect(15, ldt.hour);
   expect(3, ldt.clockHourOfHalfDay);
   expect(48, ldt.minute);
@@ -124,7 +124,7 @@ void TimeProperties_AfterEpoch()
 void TimeProperties_BeforeEpoch()
 {
   // Use the smallest valid year number as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).plusNanoseconds(123456789);
+  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
   expect(15, ldt.hour);
   expect(3, ldt.clockHourOfHalfDay);
   expect(48, ldt.minute);
@@ -214,7 +214,7 @@ void DayOfWeek_AroundEpoch()
     for (int hour = 0; hour < 24; hour++)
     {
       expect(new DayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
-      dateTime = dateTime.plusHours(1);
+      dateTime = dateTime.addHours(1);
     }
   }
 }

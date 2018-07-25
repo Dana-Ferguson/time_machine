@@ -133,6 +133,16 @@ class LocalTime implements Comparable<LocalTime> {
     return new LocalTime._(nanoseconds);
   }
 
+  /// Produces a [LocalTime] based on your [Clock.current] and your [DateTimeZone.local].
+  factory LocalTime.timeOfToday() {
+    var now = Instant.now();
+    var nanoOfDay = now.nanosecondOfDay + DateTimeZone.local.getUtcOffset(now).nanoseconds;
+    if (nanoOfDay >= TimeConstants.nanosecondsPerDay) nanoOfDay -= TimeConstants.nanosecondsPerDay;
+    else if (nanoOfDay < 0) nanoOfDay += TimeConstants.nanosecondsPerDay;
+
+    return LocalTime._(nanoOfDay);
+  }
+
   /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
   int get hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
 
@@ -166,7 +176,8 @@ class LocalTime implements Comparable<LocalTime> {
     return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
   }
 
-// TODO(optimization): Rewrite for performance?
+  // TODO(optimization): Rewrite for performance?
+
   /// Gets the microsecond of this local time within the second, in the range 0 to 999,999 inclusive.
   int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
 
@@ -176,10 +187,32 @@ class LocalTime implements Comparable<LocalTime> {
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
 
-
   /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   int get nanosecondOfDay => _nanoseconds;
 
+  /// Adds the specified period to the time. Friendly alternative to `operator+()`.
+  ///
+  /// * [time]: The time to add the period to
+  /// * [period]: The period to add. Must not contain any (non-zero) date units.
+  ///
+  /// Returns: The sum of the given time and period
+  static LocalTime plus(LocalTime time, Period period) => time + period;
+
+  /// Subtracts the specified period from the time. Friendly alternative to `operator-()`.
+  ///
+  /// * [time]: The time to subtract the period from
+  /// * [period]: The period to subtract. Must not contain any (non-zero) date units.
+  ///
+  /// Returns: The result of subtracting the given period from the time.
+  static LocalTime minus(LocalTime time, Period period) => time.subtract(period);
+
+  /// Subtracts the specified time from this time, returning the result as a [Period].
+  /// Fluent alternative to `operator-()`.
+  ///
+  /// * [time]: The time to subtract from this
+  ///
+  /// Returns: The difference between the specified time and this one
+  static Period differenceBetween(LocalTime end, LocalTime start) => Period.differenceBetweenTimes(start, end);
 
   /// Creates a new local time by adding a period to an existing time. The period must not contain
   /// any date-related units (days etc) with non-zero values.
@@ -194,24 +227,6 @@ class LocalTime implements Comparable<LocalTime> {
     return IPeriod.addTimeTo(period, this, 1);
   }
 
-
-  /// Adds the specified period to the time. Friendly alternative to `operator+()`.
-  ///
-  /// * [time]: The time to add the period to
-  /// * [period]: The period to add. Must not contain any (non-zero) date units.
-  ///
-  /// Returns: The sum of the given time and period
-  static LocalTime add(LocalTime time, Period period) => time + period;
-
-
-  /// Adds the specified period to this time. Fluent alternative to `operator+()`.
-  ///
-  /// * [period]: The period to add. Must not contain any (non-zero) date units.
-  ///
-  /// Returns: The sum of this time and the given period
-  LocalTime plus(Period period) => this + period;
-
-
   /// Creates a new local time by subtracting a period from an existing time. The period must not contain
   /// any date-related units (days etc) with non-zero values.
   /// This is a convenience operator over the [Minus(Period)] method.
@@ -220,23 +235,22 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [period]: The [Period] to subtract
   ///
   /// Returns: The result of subtract the period from the time, wrapping via midnight if necessary
-  LocalTime operator -(Period period) => minusPeriod(period);
+  LocalTime operator -(Period period) => subtract(period);
   // dynamic operator -(dynamic rhs) => rhs is Period ? minusPeriod(rhs) : rhs is LocalTime ? between(rhs) : throw new ArgumentError();
 
-  /// Subtracts the specified period from the time. Friendly alternative to `operator-()`.
+  /// Adds the specified period to this time. Fluent alternative to `operator+()`.
   ///
-  /// * [time]: The time to subtract the period from
-  /// * [period]: The period to subtract. Must not contain any (non-zero) date units.
+  /// * [period]: The period to add. Must not contain any (non-zero) date units.
   ///
-  /// Returns: The result of subtracting the given period from the time.
-  static LocalTime subtract(LocalTime time, Period period) => time.minusPeriod(period);
+  /// Returns: The sum of this time and the given period
+  LocalTime add(Period period) => this + period;
 
   /// Subtracts the specified period from this time. Fluent alternative to `operator-()`.
   ///
   /// * [period]: The period to subtract. Must not contain any (non-zero) date units.
   ///
   /// Returns: The result of subtracting the given period from this time.
-  LocalTime minusPeriod(Period period) {
+  LocalTime subtract(Period period) {
     Preconditions.checkNotNull(period, 'period');
     Preconditions.checkArgument(!period.hasDateComponent, 'period', "Cannot subtract a period with a date component from a time");
     return IPeriod.addTimeTo(period, this, -1);
@@ -244,25 +258,13 @@ class LocalTime implements Comparable<LocalTime> {
 
 // todo: this is a mess here ~ I feel like I didn't get the operators and collaries correct here
 
-//  /// Subtracts one time from another, returning the result as a <see cref="Period"/> with units of years, months and days.
-//  ///
-//  /// <remarks>
-//  /// This is simply a convenience method for calling <see cref="Period.Between(LocalTime,LocalTime)"/>.
-//  /// </remarks>
-//  /// <param name="lhs">The time to subtract from</param>
-//  /// <param name="rhs">The time to subtract</param>
-//  /// <returns>The result of subtracting one time from another.</returns>
-//  Period Subtract(LocalTime rhs) => this - rhs;
-
-
   /// Subtracts the specified time from this time, returning the result as a [Period].
   /// Fluent alternative to `operator-()`.
   ///
   /// * [time]: The time to subtract from this
   ///
   /// Returns: The difference between the specified time and this one
-  Period between(LocalTime time) => Period.betweenTimes(time, this);
-
+  Period difference(LocalTime time) => Period.differenceBetweenTimes(time, this);
 
   /// Compares two local times for equality, by checking whether they represent
   /// the exact same local time, down to the tick.
@@ -282,7 +284,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// Returns: true if the [this] is strictly earlier than [other], false otherwise.
   bool operator <(LocalTime other) => this._nanoseconds < other._nanoseconds;
 
-
   /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
   /// one.
   ///
@@ -291,7 +292,6 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// Returns: true if the [this] is earlier than or equal to [other], false otherwise.
   bool operator <=(LocalTime other) => this._nanoseconds <= other._nanoseconds;
-
 
   /// Compares two LocalTime values to see if the left one is strictly later than the right
   /// one.
@@ -302,7 +302,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// Returns: true if the [this] is strictly later than [other], false otherwise.
   bool operator >(LocalTime other) => this._nanoseconds > other._nanoseconds;
 
-
   /// Compares two LocalTime values to see if the left one is later than or equal to the right
   /// one.
   ///
@@ -311,7 +310,6 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// Returns: true if the [this] is later than or equal to [other], false otherwise.
   bool operator >=(LocalTime other) => this._nanoseconds >= other._nanoseconds;
-
 
   /// Indicates whether this time is earlier, later or the same as another one.
   ///
@@ -322,10 +320,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// later than [other].
   int compareTo(LocalTime other) => _nanoseconds.compareTo(other?._nanoseconds ?? 0);
 
-
   /// Returns a hash code for this local time.
   @override int get hashCode => _nanoseconds.hashCode;
-
 
   /// Compares this local time with the specified one for equality,
   /// by checking whether the two values represent the exact same local time, down to the tick.
@@ -342,7 +338,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [hours]: The number of hours to add
   ///
   /// Returns: The current value plus the given number of hours.
-  LocalTime plusHours(int hours) => TimePeriodField.hours.addTime(this, hours);
+  LocalTime addHours(int hours) => TimePeriodField.hours.addTime(this, hours);
+  LocalTime subtractHours(int hours) => addHours(-hours);
 
   /// Returns a new LocalTime representing the current value with the given number of minutes added.
   ///
@@ -351,8 +348,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [minutes]: The number of minutes to add
   ///
   /// Returns: The current value plus the given number of minutes.
-  LocalTime plusMinutes(int minutes) => TimePeriodField.minutes.addTime(this, minutes);
-
+  LocalTime addMinutes(int minutes) => TimePeriodField.minutes.addTime(this, minutes);
+  LocalTime subtractMinutes(int minutes) => addMinutes(-minutes);
 
   /// Returns a new LocalTime representing the current value with the given number of seconds added.
   ///
@@ -361,32 +358,32 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [seconds]: The number of seconds to add
   ///
   /// Returns: The current value plus the given number of seconds.
-  LocalTime plusSeconds(int seconds) => TimePeriodField.seconds.addTime(this, seconds);
-
+  LocalTime addSeconds(int seconds) => TimePeriodField.seconds.addTime(this, seconds);
+  LocalTime subtractSeconds(int seconds) => addSeconds(-seconds);
 
   /// Returns a new LocalTime representing the current value with the given number of milliseconds added.
   ///
   /// * [milliseconds]: The number of milliseconds to add
   ///
   /// Returns: The current value plus the given number of milliseconds.
-  LocalTime plusMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTime(this, milliseconds);
-
+  LocalTime addMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addTime(this, milliseconds);
+  LocalTime subtractMilliseconds(int milliseconds) => addMilliseconds(-milliseconds);
 
   /// Returns a new LocalTime representing the current value with the given number of microseconds added.
   ///
   /// * [microseconds]: The number of microseconds to add
   ///
   /// Returns: The current value plus the given number of microseconds.
-  LocalTime plusMicroseconds(int microseconds) => TimePeriodField.microseconds.addTime(this, microseconds);
-
+  LocalTime addMicroseconds(int microseconds) => TimePeriodField.microseconds.addTime(this, microseconds);
+  LocalTime subtractMicroseconds(int microseconds) => addMicroseconds(-microseconds);
 
   /// Returns a new LocalTime representing the current value with the given number of nanoseconds added.
   ///
   /// * [nanoseconds]: The number of nanoseconds to add
   ///
   /// Returns: The current value plus the given number of ticks.
-  LocalTime plusNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addTime(this, nanoseconds);
-
+  LocalTime addNanoseconds(int nanoseconds) => TimePeriodField.nanoseconds.addTime(this, nanoseconds);
+  LocalTime subtractNanoseconds(int nanoseconds) => addNanoseconds(-nanoseconds);
 
   /// Returns this time, with the given adjuster applied to it.
   ///
@@ -399,7 +396,6 @@ class LocalTime implements Comparable<LocalTime> {
   LocalTime adjust(LocalTime Function(LocalTime) adjuster) =>
       Preconditions.checkNotNull(adjuster, 'adjuster')(this);
 
-
   /// Returns an [OffsetTime] for this time-of-day with the given offset.
   ///
   /// This method is purely a convenient alternative to calling the [OffsetTime] constructor directly.
@@ -408,7 +404,6 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// Returns: The result of this time-of-day offset by the given amount.
   OffsetTime withOffset(Offset offset) => new OffsetTime(this, offset);
-
 
   /// Combines this [LocalTime] with the given [LocalDate]
   /// into a single [LocalDateTime].
@@ -419,7 +414,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// Returns: The [LocalDateTime] representation of the given time on this date
   LocalDateTime atDate(LocalDate date) => new LocalDateTime.localDateAtTime(date, this);
 
-
   /// Returns the later time of the given two.
   ///
   /// * [x]: The first time to compare.
@@ -429,7 +423,6 @@ class LocalTime implements Comparable<LocalTime> {
   static LocalTime max(LocalTime x, LocalTime y) {
     return x > y ? x : y;
   }
-
 
   /// Returns the earlier time of the given two.
   ///

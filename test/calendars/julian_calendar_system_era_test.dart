@@ -55,6 +55,6 @@ void EraProperty()
   CalendarSystem calendar = CalendarSystem.julian;
   LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar: calendar);
   expect(Era.common, startOfEra.era);
-  expect(Era.beforeCommon, startOfEra.plusMicroseconds(-1).era);
+  expect(Era.beforeCommon, startOfEra.addMicroseconds(-1).era);
 }
 

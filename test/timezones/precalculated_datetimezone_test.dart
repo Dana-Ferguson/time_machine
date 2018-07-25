@@ -121,7 +121,7 @@ void MapLocal_AmbiguousAroundTailZoneTransition()
 {
   // Transition from -5 to -6 has a 1 hour ambiguity
   // CheckMapping(ThirdInterval.IsoLocalEnd.PlusNanoseconds(-1L), ThirdInterval, ClampedTailZoneInterval, 2);
-  CheckMapping(ThirdInterval.isoLocalEnd.plusNanoseconds(-1), ThirdInterval, ClampedTailZoneInterval, 2);
+  CheckMapping(ThirdInterval.isoLocalEnd.addNanoseconds(-1), ThirdInterval, ClampedTailZoneInterval, 2);
 }
 
 @Test()
@@ -135,7 +135,7 @@ void MapLocal_AmbiguousButTooEarlyInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Time(hours: 1), 10, 8);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(-1));
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(-1));
   expect(ThirdInterval, mapping.earlyInterval);
   expect(ThirdInterval, mapping.lateInterval);
   expect(1, mapping.count);
@@ -159,7 +159,7 @@ void MapLocal_SingleIntervalAroundTailZoneTransition()
   var tailZone = new FixedDateTimeZone.forOffset(new Offset.hours(5));
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(-1));
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(-1));
   expect(ThirdInterval, mapping.earlyInterval);
   expect(ThirdInterval, mapping.lateInterval);
   expect(1, mapping.count);
@@ -192,7 +192,7 @@ void MapLocal_GapAroundAndInTailZoneTransition()
   var tailZone = new SingleTransitionDateTimeZone.around(ThirdInterval.end + new Time(hours: 1), -10, 5);
   var gapZone = new PrecalculatedDateTimeZone("Test",
       [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.plusHours(1));
+  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(1));
   expect(ThirdInterval, mapping.earlyInterval);
   expect(IZoneInterval.newZoneInterval("Single-Early", ThirdInterval.end, tailZone.Transition, new Offset.hours(-10), Offset.zero),
       mapping.lateInterval);

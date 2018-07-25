@@ -76,7 +76,7 @@ void Addition_PeriodWithTime()
   Period period = new Period(hours: 1);
   // Use method not operator here to form a valid statement
   // Assert.Throws<ArgumentException>
-  expect(() => LocalDate.add(date, period), throwsArgumentError);
+  expect(() => LocalDate.plus(date, period), throwsArgumentError);
 }
 
 @Test()
@@ -86,7 +86,7 @@ void Subtraction_PeriodWithTime()
   Period period = new Period(hours: 1);
   // Use method not operator here to form a valid statement
   // Assert.Throws<ArgumentException>
-  expect(() => LocalDate.subtract(date, period), throwsArgumentError);
+  expect(() => LocalDate.minus(date, period), throwsArgumentError);
 }
 
 @Test()
@@ -94,8 +94,8 @@ void PeriodAddition_MethodEquivalents()
 {
   LocalDate start = new LocalDate(2010, 6, 19);
   Period period = new Period(months: 3) + new Period(days: 10);
-  expect(start + period, LocalDate.add(start, period));
-  expect(start + period, start.plus(period));
+  expect(start + period, LocalDate.plus(start, period));
+  expect(start + period, start.add(period));
 }
 
 @Test()
@@ -104,9 +104,9 @@ void PeriodSubtraction_MethodEquivalents()
   LocalDate start = new LocalDate(2010, 6, 19);
   Period period = new Period(months: 3) + new Period(days: 10);
   LocalDate end = start + period;
-  expect(start - period, LocalDate.subtract(start, period));
-  expect(start - period, start.minusPeriod(period));
+  expect(start - period, LocalDate.minus(start, period));
+  expect(start - period, start.subtract(period));
   // expect(period, end - start);
-  expect(period, LocalDate.between(end, start)); // LocalDate.Minus(end, start)
-  expect(period, end.minusDate(start));
+  expect(period, LocalDate.differenceBetween(end, start)); // LocalDate.Minus(end, start)
+  expect(period, end.difference(start));
 }

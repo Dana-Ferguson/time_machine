@@ -1074,7 +1074,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
       : super(new LocalTime(hours, minutes, seconds, ns: milliseconds * TimeConstants.nanosecondsPerMillisecond + ticksWithinMillisecond * 100));
 
   Data.nano(int hours, int minutes, int seconds, int /*long*/ nanoOfSecond)
-      : super(new LocalTime(hours, minutes, seconds).plusNanoseconds(nanoOfSecond))
+      : super(new LocalTime(hours, minutes, seconds).addNanoseconds(nanoOfSecond))
   {
   }
 

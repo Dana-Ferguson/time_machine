@@ -123,11 +123,11 @@ void SetYear(String startText, int years, String expectedEndText)
 
   var start = pattern.parse(startText).value;
   var expectedEnd = pattern.parse(expectedEndText).value;
-  expect(expectedEnd, start.plusYears(years));
+  expect(expectedEnd, start.addYears(years));
 
   // Check civil as well... the date should be the same (year, month, day) even though
   // the numbering is different.
-  expect(expectedEnd.withCalendar(civil), start.withCalendar(civil).plusYears(years));
+  expect(expectedEnd.withCalendar(civil), start.withCalendar(civil).addYears(years));
 }
 
 @Test()
@@ -140,7 +140,7 @@ void AddMonths_MonthsBetween(String startText, int months, String expectedEndTex
 
   var start = pattern.parse(startText).value;
   var expectedEnd = pattern.parse(expectedEndText).value;
-  expect(expectedEnd, start.plusMonths(months));
+  expect(expectedEnd, start.addMonths(months));
 }
 
 @Test()
@@ -154,7 +154,7 @@ void MonthsBetween(String startText, int expectedMonths, String endText)
 
   var start = pattern.parse(startText).value;
   var end = pattern.parse(endText).value;
-  expect(expectedMonths, Period.betweenDates(start, end, PeriodUnits.months).months);
+  expect(expectedMonths, Period.differenceBetweenDates(start, end, PeriodUnits.months).months);
 }
 
 @Test()
@@ -164,7 +164,7 @@ void MonthsBetween_TimeOfDay()
   var start = new LocalDateTime(5774, 5, 10, 15, 0, 0, calendar: civil); // 3pm
   var end = new LocalDateTime(5774, 7, 10, 5, 0, 0, calendar: civil); // 5am
   // Would be 2, but the start time is later than the end time.
-  expect(1, Period.between(start, end, PeriodUnits.months).months);
+  expect(1, Period.differenceBetweenDateTime(start, end, PeriodUnits.months).months);
 }
 
 @Test()

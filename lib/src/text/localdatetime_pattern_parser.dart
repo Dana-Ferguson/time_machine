@@ -153,7 +153,7 @@ class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
       if (time != LocalTime.midnight) {
         return IParseResult.invalidHour24<LocalDateTime>(text);
       }
-      date = date.plusDays(1);
+      date = date.addDays(1);
     }
     return ParseResult.forValue<LocalDateTime>(date.at(time));
   }
