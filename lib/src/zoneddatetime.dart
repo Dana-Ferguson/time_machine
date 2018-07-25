@@ -322,7 +322,7 @@ class ZonedDateTime {
   ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
 
-  ZonedDateTime plusTime(Time time) => this + time;
+  ZonedDateTime add(Time time) => this + time;
 
   /// Returns the result of adding a increment of hours to this zoned date and time
   ///
@@ -390,7 +390,7 @@ class ZonedDateTime {
   /// * [time]: The duration to subtract.
   ///
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime subtractTimeFrom(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtractTime(time);
+  static ZonedDateTime subtractTimeFrom(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtract(time);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
   /// [-].
@@ -398,7 +398,7 @@ class ZonedDateTime {
   /// * [time]: The duration to subtract
   ///
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
-  ZonedDateTime subtractTime(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
+  ZonedDateTime subtract(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
@@ -437,13 +437,13 @@ class ZonedDateTime {
   /// due to daylight saving time changes this may not change the local time by the same amount.
   ///
   /// The returned value retains the calendar system and time zone of [zonedDateTime].
-  /// This is equivalent to [subtractTime].
+  /// This is equivalent to [subtract].
   ///
   /// * [zonedDateTime]: The value to subtract the duration from.
   /// * [time]: The duration to subtract.
   ///
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  ZonedDateTime operator -(Time time) => subtractTime(time);
+  ZonedDateTime operator -(Time time) => subtract(time);
 
   // If we ever get compile-time dispatch, re-enable this use-case
   // Time operator -(ZonedDateTime start) => minus(start); // Subtraction_ZonedDateTime() contains a commented out unit test

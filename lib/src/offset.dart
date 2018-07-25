@@ -118,7 +118,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] representing the sum of the given values.
   ///
   /// * [RangeError]: The result of the operation is outside the range of Offset.
-  static Offset add(Offset left, Offset right) => left + right;
+  static Offset plus(Offset left, Offset right) => left + right;
 
 
   /// Returns the result of adding another Offset to this one, for a fluent alternative to `operator+()`.
@@ -128,7 +128,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: The result of adding the other offset to this one.
   ///
   /// * [RangeError]: The result of the operation is outside the range of Offset.
-  Offset plus(Offset other) => this + other;
+  Offset add(Offset other) => this + other;
 
 
   /// Implements the operator - (subtraction).
@@ -151,7 +151,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] representing the difference of the given values.
   ///
   /// [RangeError]: The result of the operation is outside the range of Offset.
-  static Offset subtract(Offset left, Offset right) => left - right;
+  static Offset minus(Offset left, Offset right) => left - right;
 
 
   /// Returns the result of subtracting another Offset from this one, for a fluent alternative to `operator-()`.
@@ -161,7 +161,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: The result of subtracting the other offset from this one.
   ///
   /// [RangeError]: The result of the operation is outside the range of Offset.
-  Offset minus(Offset other) => this - other;
+  Offset subtract(Offset other) => this - other;
 
 
   /// Implements the operator == (equality).

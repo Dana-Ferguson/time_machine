@@ -245,11 +245,11 @@ void LocalComparer()
   // Later instant, earlier local
   var earlierLocal = control.localDateTime.addHours(-2).withOffset(new Offset.hours(-10));
   // Same offset, previous day
-  var muchEarlierLocal = control.plusHours(-24);
+  var muchEarlierLocal = control.addHours(-24);
   // Earlier instant, later local
   var laterLocal = control.localDateTime.addHours(2).withOffset(new Offset.hours(10));
   // Same offset, next day
-  var muchLaterLocal = control.plusHours(24);
+  var muchLaterLocal = control.addHours(24);
 
   var comparer = OffsetDateTimeComparer.local;
 
@@ -342,8 +342,8 @@ void Subtraction_Duration()
   Time duration = new Time(hours: 8) + new Time(minutes: 9);
   OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
   expect(expected, end - duration);
-  expect(expected, end.subtractTime(duration));
-  expect(expected, OffsetDateTime.subtract(end, duration));
+  expect(expected, end.subtract(duration));
+  expect(expected, OffsetDateTime.minus(end, duration));
 }
 
 @Test()
@@ -362,26 +362,26 @@ void Addition_Duration()
   Time duration = new Time(hours: 8) + new Time(minutes: 9);
   OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 15, 0, 0).withOffset(new Offset.hours(1));
   expect(expected, start + duration);
-  expect(expected, start.plus(duration));
-  expect(expected, OffsetDateTime.add(start, duration));
+  expect(expected, start.add(duration));
+  expect(expected, OffsetDateTime.plus(start, duration));
 
-  expect(start + new Time(hours: hours), start.plusHours(hours));
-  expect(start + new Time(hours: -hours), start.plusHours(-hours));
+  expect(start + new Time(hours: hours), start.addHours(hours));
+  expect(start + new Time(hours: -hours), start.addHours(-hours));
 
-  expect(start + new Time(minutes: minutes), start.plusMinutes(minutes));
-  expect(start + new Time(minutes: -minutes), start.plusMinutes(-minutes));
+  expect(start + new Time(minutes: minutes), start.addMinutes(minutes));
+  expect(start + new Time(minutes: -minutes), start.addMinutes(-minutes));
 
-  expect(start + new Time(seconds: seconds), start.plusSeconds(seconds));
-  expect(start + new Time(seconds: -seconds), start.plusSeconds(-seconds));
+  expect(start + new Time(seconds: seconds), start.addSeconds(seconds));
+  expect(start + new Time(seconds: -seconds), start.addSeconds(-seconds));
 
-  expect(start + new Time(milliseconds: milliseconds), start.plusMilliseconds(milliseconds));
-  expect(start + new Time(milliseconds: -milliseconds), start.plusMilliseconds(-milliseconds));
+  expect(start + new Time(milliseconds: milliseconds), start.addMilliseconds(milliseconds));
+  expect(start + new Time(milliseconds: -milliseconds), start.addMilliseconds(-milliseconds));
 
-  expect(start + new Time(microseconds: ticks), start.plusMicroseconds(ticks));
-  expect(start + new Time(microseconds: -ticks), start.plusMicroseconds(-ticks));
+  expect(start + new Time(microseconds: ticks), start.addMicroseconds(ticks));
+  expect(start + new Time(microseconds: -ticks), start.addMicroseconds(-ticks));
 
-  expect(start + new Time(nanoseconds: nanoseconds), start.plusNanoseconds(nanoseconds));
-  expect(start + new Time(nanoseconds: -nanoseconds), start.plusNanoseconds(-nanoseconds));
+  expect(start + new Time(nanoseconds: nanoseconds), start.addNanoseconds(nanoseconds));
+  expect(start + new Time(nanoseconds: -nanoseconds), start.addNanoseconds(-nanoseconds));
 }
 
 @Test()
@@ -393,8 +393,8 @@ void Subtraction_OffsetDateTime()
   OffsetDateTime end = new LocalDateTime(2014, 08, 14, 18, 0, 0).withOffset(new Offset.hours(4));
   Time expected = new Time(hours: 8) + new Time(minutes: 9);
   // expect(expected, end - start);
-  expect(expected, end.minusOffsetDateTime(start));
-  expect(expected, OffsetDateTime.subtractOffsetDateTimes(end, start));
+  expect(expected, end.difference(start));
+  expect(expected, OffsetDateTime.differenceBetween(end, start));
 }
 
 @Test()

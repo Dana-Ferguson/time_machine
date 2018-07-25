@@ -79,7 +79,7 @@ void Add_MethodEquivalents()
 
   ZonedDateTime before = new ZonedDateTime.atStrictly(new LocalDateTime(2011, 6, 12, 15, 0, 0), SampleZone);
   expect(before + Time.oneDay, ZonedDateTime.addTime(before, Time.oneDay));
-  expect(before + Time.oneDay, before.plusTime(Time.oneDay));
+  expect(before + Time.oneDay, before.add(Time.oneDay));
 
   expect(before + new Time(hours: hours), before.plusHours(hours));
   expect(before + new Time(hours: -hours), before.plusHours(-hours));
@@ -119,7 +119,7 @@ void SubtractDuration_MethodEquivalents()
 {
   ZonedDateTime after = new ZonedDateTime.atStrictly(new LocalDateTime(2011, 6, 13, 16, 0, 0), SampleZone);
   expect(after - Time.oneDay, ZonedDateTime.subtractTimeFrom(after, Time.oneDay));
-  expect(after - Time.oneDay, after.subtractTime(Time.oneDay));
+  expect(after - Time.oneDay, after.subtract(Time.oneDay));
 }
 
 @Test()

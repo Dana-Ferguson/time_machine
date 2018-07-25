@@ -78,34 +78,34 @@ void OperatorPlus_NonZero()
 @Test()
 void MethodAdd_Zero_IsNeutralElement()
 {
-  expect(0, Offset.add(Offset.zero, Offset.zero).milliseconds, reason: "0 + 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.add(ThreeHours, Offset.zero), reason: "ThreeHours + 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.add(Offset.zero, ThreeHours), reason: "0 + ThreeHours");
+  expect(0, Offset.plus(Offset.zero, Offset.zero).milliseconds, reason: "0 + 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.plus(ThreeHours, Offset.zero), reason: "ThreeHours + 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.plus(Offset.zero, ThreeHours), reason: "0 + ThreeHours");
 }
 
 @Test()
 void MethodAdd_NonZero()
 {
-  expect(TestObjects.CreatePositiveOffset(6, 0, 0), Offset.add(ThreeHours, ThreeHours), reason: "ThreeHours + ThreeHours");
-  expect(Offset.zero, Offset.add(ThreeHours, NegativeThreeHours), reason: "ThreeHours + (-ThreeHours)");
-  expect(TestObjects.CreateNegativeOffset(9, 0, 0), Offset.add(NegativeTwelveHours, ThreeHours), reason: "-TwelveHours + ThreeHours");
+  expect(TestObjects.CreatePositiveOffset(6, 0, 0), Offset.plus(ThreeHours, ThreeHours), reason: "ThreeHours + ThreeHours");
+  expect(Offset.zero, Offset.plus(ThreeHours, NegativeThreeHours), reason: "ThreeHours + (-ThreeHours)");
+  expect(TestObjects.CreateNegativeOffset(9, 0, 0), Offset.plus(NegativeTwelveHours, ThreeHours), reason: "-TwelveHours + ThreeHours");
 }
 
 // Instance method equivalents
 @Test()
 void MethodPlus_Zero_IsNeutralElement()
 {
-  expect(0, Offset.zero.plus(Offset.zero).milliseconds, reason: "0 + 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours.plus(Offset.zero), reason: "ThreeHours + 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.zero.plus(ThreeHours), reason: "0 + ThreeHours");
+  expect(0, Offset.zero.add(Offset.zero).milliseconds, reason: "0 + 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours.add(Offset.zero), reason: "ThreeHours + 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.zero.add(ThreeHours), reason: "0 + ThreeHours");
 }
 
 @Test()
 void MethodPlus_NonZero()
 {
-  expect(TestObjects.CreatePositiveOffset(6, 0, 0), ThreeHours.plus(ThreeHours), reason: "ThreeHours + ThreeHours");
-  expect(Offset.zero, ThreeHours.plus(NegativeThreeHours), reason: "ThreeHours + (-ThreeHours)");
-  expect(TestObjects.CreateNegativeOffset(9, 0, 0), NegativeTwelveHours.plus(ThreeHours), reason: "-TwelveHours + ThreeHours");
+  expect(TestObjects.CreatePositiveOffset(6, 0, 0), ThreeHours.add(ThreeHours), reason: "ThreeHours + ThreeHours");
+  expect(Offset.zero, ThreeHours.add(NegativeThreeHours), reason: "ThreeHours + (-ThreeHours)");
+  expect(TestObjects.CreateNegativeOffset(9, 0, 0), NegativeTwelveHours.add(ThreeHours), reason: "-TwelveHours + ThreeHours");
 }
 // #endregion
 
@@ -130,34 +130,34 @@ void OperatorMinus_NonZero()
 @Test()
 void Subtract_Zero_IsNeutralElement()
 {
-  expect(Offset.zero, Offset.subtract(Offset.zero, Offset.zero), reason: "0 - 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.subtract(ThreeHours, Offset.zero), reason: "ThreeHours - 0");
-  expect(TestObjects.CreateNegativeOffset(3, 0, 0), Offset.subtract(Offset.zero, ThreeHours), reason: "0 - ThreeHours");
+  expect(Offset.zero, Offset.minus(Offset.zero, Offset.zero), reason: "0 - 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.minus(ThreeHours, Offset.zero), reason: "ThreeHours - 0");
+  expect(TestObjects.CreateNegativeOffset(3, 0, 0), Offset.minus(Offset.zero, ThreeHours), reason: "0 - ThreeHours");
 }
 
 @Test()
 void Subtract_NonZero()
 {
-  expect(Offset.zero, Offset.subtract(ThreeHours, ThreeHours), reason: "ThreeHours - ThreeHours");
-  expect(TestObjects.CreatePositiveOffset(6, 0, 0), Offset.subtract(ThreeHours, NegativeThreeHours), reason: "ThreeHours - (-ThreeHours)");
-  expect(TestObjects.CreateNegativeOffset(15, 0, 0), Offset.subtract(NegativeTwelveHours, ThreeHours), reason: "-TwelveHours - ThreeHours");
+  expect(Offset.zero, Offset.minus(ThreeHours, ThreeHours), reason: "ThreeHours - ThreeHours");
+  expect(TestObjects.CreatePositiveOffset(6, 0, 0), Offset.minus(ThreeHours, NegativeThreeHours), reason: "ThreeHours - (-ThreeHours)");
+  expect(TestObjects.CreateNegativeOffset(15, 0, 0), Offset.minus(NegativeTwelveHours, ThreeHours), reason: "-TwelveHours - ThreeHours");
 }
 
 // Instance method equivalents
 @Test()
 void Minus_Zero_IsNeutralElement()
 {
-  expect(Offset.zero, Offset.zero.minus(Offset.zero), reason: "0 - 0");
-  expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours.minus(Offset.zero), reason: "ThreeHours - 0");
-  expect(TestObjects.CreateNegativeOffset(3, 0, 0), Offset.zero.minus(ThreeHours), reason: "0 - ThreeHours");
+  expect(Offset.zero, Offset.zero.subtract(Offset.zero), reason: "0 - 0");
+  expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours.subtract(Offset.zero), reason: "ThreeHours - 0");
+  expect(TestObjects.CreateNegativeOffset(3, 0, 0), Offset.zero.subtract(ThreeHours), reason: "0 - ThreeHours");
 }
 
 @Test()
 void Minus_NonZero()
 {
-  expect(Offset.zero, ThreeHours.minus(ThreeHours), reason: "ThreeHours - ThreeHours");
-  expect(TestObjects.CreatePositiveOffset(6, 0, 0), ThreeHours.minus(NegativeThreeHours), reason: "ThreeHours - (-ThreeHours)");
-  expect(TestObjects.CreateNegativeOffset(15, 0, 0), NegativeTwelveHours.minus(ThreeHours), reason: "-TwelveHours - ThreeHours");
+  expect(Offset.zero, ThreeHours.subtract(ThreeHours), reason: "ThreeHours - ThreeHours");
+  expect(TestObjects.CreatePositiveOffset(6, 0, 0), ThreeHours.subtract(NegativeThreeHours), reason: "ThreeHours - (-ThreeHours)");
+  expect(TestObjects.CreateNegativeOffset(15, 0, 0), NegativeTwelveHours.subtract(ThreeHours), reason: "-TwelveHours - ThreeHours");
 }
 // #endregion
 
