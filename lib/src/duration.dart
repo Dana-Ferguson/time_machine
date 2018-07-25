@@ -209,7 +209,7 @@ class Time implements Comparable<Time> {
   // https://www.dartlang.org/guides/language/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
   Duration get toDuration =>
       new Duration(
-          microseconds: milliseconds * TimeConstants.microsecondsPerMillisecond
+          microseconds: millisecondsOfSecond * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
   // todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
@@ -220,20 +220,20 @@ class Time implements Comparable<Time> {
 
   int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
 
-  int get hours => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
+  int get hoursOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
 
-  int get minutes => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
+  int get minutesOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
 
-  int get seconds => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
+  int get secondsOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
 
   // todo: should this be called subsecondMilliseconds??? or shoudl the other's be changed?
-  int get milliseconds => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
+  int get millisecondsOfSecond => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
 
-  int get subsecondMicroseconds =>
+  int get microsecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.microsecondsPerMillisecond
       + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
 
-  int get subsecondNanoseconds =>
+  int get nanosecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
@@ -285,8 +285,10 @@ class Time implements Comparable<Time> {
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
+  // todo: Any reason for these? --- a bit disingenuously if you think about Offsets
+  @deprecated
   Time get spanOfDay => new Time._ (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
-
+  @deprecated
   Time get spanOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
