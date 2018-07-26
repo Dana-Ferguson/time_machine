@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.1
+- Continued the API normalization work; removed add*, minus* where it did not
+ add any performance gains. `Time` `plus`\\`minus` --> `add`\\`subtract`, added an `abs` method. 
+- `LocalDateTime`\\`LocalDate`\\`LocalTime` added `periodUntil`\\`periodSince`, removed `difference`, made static
+ method `difference` from `differenceBetween`
+  - same with `OffsetDateTime` except `time` vs `period`
+
 ## 0.9.0
 - Added a `LocalDate.today()`, `LocalDateTime.now()`, `LocalTime.timeOfToday()`
  constructors.
