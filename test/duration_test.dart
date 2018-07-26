@@ -113,11 +113,11 @@ void Addition_Subtraction(int leftDays, int leftNanos,
   var result = new Time(days: resultDays, nanoseconds: resultNanos);
 
   expect(result, left + right);
-  expect(result, left.plus(right));
+  expect(result, left.add(right));
 // expect(result, Span.add(left, right));
 
   expect(left, result - right);
-  expect(left, result.minus(right));
+  expect(left, result.subtract(right));
 // expect(left, Span.subtract(result, right));
 }
 

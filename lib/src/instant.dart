@@ -141,10 +141,10 @@ class Instant implements Comparable<Instant> {
 
   /// Calculates the time until [this] would become [instant].
   /// [this] + [Time] = [instant] or `start + Time = end`
-  Time timeUntil(Instant instant) => instant.timeSinceEpoch.minus(timeSinceEpoch);
+  Time timeUntil(Instant instant) => instant.timeSinceEpoch.subtract(timeSinceEpoch);
 
   /// The fluent opposite of [timeUntil]
-  Time timeSince(Instant instant) => timeSinceEpoch.minus(instant.timeSinceEpoch);
+  Time timeSince(Instant instant) => timeSinceEpoch.subtract(instant.timeSinceEpoch);
 
   bool operator<(Instant other) => timeSinceEpoch < other.timeSinceEpoch;
   bool operator<=(Instant other) => timeSinceEpoch <= other.timeSinceEpoch;

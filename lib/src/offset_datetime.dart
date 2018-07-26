@@ -342,62 +342,13 @@ class OffsetDateTime {
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
   static OffsetDateTime plus(OffsetDateTime offsetDateTime, Time time) => offsetDateTime + time;
 
-  /// Returns the result of adding a duration to this offset date and time.
+  /// Subtracts a duration from an offset date and time.
   ///
-  /// * [duration]: The duration to add
+  /// * [offsetDateTime]: The value to subtract the duration from.
+  /// * [duration]: The duration to subtract.
   ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime add(Time span) => this + span;
-
-  // todo: I don't think these add anything
-
-  /// Returns the result of adding a increment of hours to this zoned date and time
-  ///
-  /// * [hours]: The number of hours to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addHours(int hours) => this + new Time(hours: hours);
-  @deprecated OffsetDateTime subtractHours(int hours) => addHours(-hours);
-
-  /// Returns the result of adding an increment of minutes to this zoned date and time
-  ///
-  /// * [minutes]: The number of minutes to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addMinutes(int minutes) => this + new Time(minutes: minutes);
-  @deprecated OffsetDateTime subtractMinutes(int minutes) => addMinutes(-minutes);
-
-  /// Returns the result of adding an increment of seconds to this zoned date and time
-  ///
-  /// * [seconds]: The number of seconds to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addSeconds(int seconds) => this + new Time(seconds: seconds);
-  @deprecated OffsetDateTime subtractSeconds(int seconds) => addSeconds(-seconds);
-
-  /// Returns the result of adding an increment of milliseconds to this zoned date and time
-  ///
-  /// * [milliseconds]: The number of milliseconds to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
-  @deprecated OffsetDateTime subtractMilliseconds(int milliseconds) => addMilliseconds(-milliseconds);
-
-  /// Returns the result of adding an increment of microseconds to this zoned date and time
-  ///
-  /// * [ticks]: The number of microseconds to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
-  @deprecated OffsetDateTime subtractMicroseconds(int microseconds) => addMicroseconds(-microseconds);
-
-  /// Returns the result of adding an increment of nanoseconds to this zoned date and time
-  ///
-  /// * [nanoseconds]: The number of nanoseconds to add
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  @deprecated OffsetDateTime addNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
-  @deprecated OffsetDateTime subtractNanoseconds(int nanoseconds) => addNanoseconds(-nanoseconds);
+  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
+  static OffsetDateTime minus(OffsetDateTime offsetDateTime, Time time) => offsetDateTime - time;
 
   /// Returns a new [OffsetDateTime] with the time advanced by the given duration.
   ///
@@ -407,23 +358,7 @@ class OffsetDateTime {
   /// * [time]: The duration to add.
   ///
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and with the same offset.
-  OffsetDateTime operator +(Time time) =>
-      new OffsetDateTime._fromInstant(toInstant() + time, offset);
-
-  /// Subtracts a duration from an offset date and time.
-  ///
-  /// * [offsetDateTime]: The value to subtract the duration from.
-  /// * [duration]: The duration to subtract.
-  ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
-  static OffsetDateTime minus(OffsetDateTime offsetDateTime, Time time) => offsetDateTime - time;
-
-  /// Returns the result of subtracting a duration from this offset date and time.
-  ///
-  /// * [time]: The duration to subtract
-  ///
-  /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
-  OffsetDateTime subtract(Time time) => new OffsetDateTime._fromInstant(toInstant() - time, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+  OffsetDateTime operator +(Time time) => add(time);
 
   /// Returns a new [OffsetDateTime] with the [time] subtracted.
   ///
@@ -435,6 +370,20 @@ class OffsetDateTime {
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
   OffsetDateTime operator -(Time time) => subtract(time);
 
+  /// Returns the result of adding a duration to this offset date and time.
+  ///
+  /// * [duration]: The duration to add
+  ///
+  /// Returns: A new [OffsetDateTime] representing the result of the addition.
+  OffsetDateTime add(Time time) => new OffsetDateTime._fromInstant(toInstant() + time, offset);
+
+  /// Returns the result of subtracting a duration from this offset date and time.
+  ///
+  /// * [time]: The duration to subtract
+  ///
+  /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
+  OffsetDateTime subtract(Time time) => new OffsetDateTime._fromInstant(toInstant() - time, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+
   // dynamic operator -(dynamic value) => value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
   // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
 
@@ -445,7 +394,7 @@ class OffsetDateTime {
   /// * [start]: The offset date and time to subtract from [end].
   ///
   /// Returns: The elapsed duration from [start] to [end].
-  static Time differenceBetween(OffsetDateTime end, OffsetDateTime start) => end.difference(start);
+  static Time difference(OffsetDateTime end, OffsetDateTime start) => end.timeSince(start);
 
   /// Returns the result of subtracting another offset date and time from this one, resulting in the elapsed duration
   /// between the two instants represented in the values.
@@ -453,7 +402,15 @@ class OffsetDateTime {
   /// * [other]: The offset date and time to subtract from this one.
   ///
   /// Returns: The elapsed duration from [other] to this value.
-  Time difference(OffsetDateTime other) => other.toInstant().timeUntil(toInstant());
+  Time timeUntil(OffsetDateTime other) => other.toInstant().timeUntil(toInstant());
+
+  /// Returns the result of subtracting this offset date and time from another one, resulting in the elapsed duration
+  /// between the two instants represented in the values.
+  ///
+  /// * [other]: The offset date and time to subtract this one from.
+  ///
+  /// Returns: The elapsed duration from [other] to this value.
+  Time timeSince(OffsetDateTime other) => other.toInstant().timeSince(toInstant());
 
   /// Implements the operator == (equality).
   ///

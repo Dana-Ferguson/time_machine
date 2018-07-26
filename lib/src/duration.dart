@@ -297,15 +297,18 @@ class Time implements Comparable<Time> {
   @override String toString([String patternText, Culture culture]) =>
       TimePatterns.format(this, patternText, culture);
 
-  Time operator +(Time other) => new Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
+  Time operator +(Time other) => add(other);
 
-  Time operator -(Time other) => new Time._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
+  Time operator -(Time other) => subtract(other);
 
   Time operator -() => new Time._untrusted(-_milliseconds, -_nanosecondsInterval);
 
-  Time plus(Time other) => this + other;
+  // todo: test
+  Time abs(Time other) => new Time._untrusted(_milliseconds.abs(), _nanosecondsInterval.abs());
 
-  Time minus(Time other) => this - other;
+  Time add(Time other) => new Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
+
+  Time subtract(Time other) => new Time._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
 
   Time operator *(num factor) => new Time._untrusted((_milliseconds * factor).floor(), (_nanosecondsInterval * factor).floor());
 
