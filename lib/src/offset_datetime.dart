@@ -402,7 +402,7 @@ class OffsetDateTime {
   /// * [other]: The offset date and time to subtract from this one.
   ///
   /// Returns: The elapsed duration from [other] to this value.
-  Time timeUntil(OffsetDateTime other) => other.toInstant().timeUntil(toInstant());
+  Time timeUntil(OffsetDateTime other) => toInstant().timeUntil(other.toInstant());
 
   /// Returns the result of subtracting this offset date and time from another one, resulting in the elapsed duration
   /// between the two instants represented in the values.
@@ -410,7 +410,7 @@ class OffsetDateTime {
   /// * [other]: The offset date and time to subtract this one from.
   ///
   /// Returns: The elapsed duration from [other] to this value.
-  Time timeSince(OffsetDateTime other) => other.toInstant().timeSince(toInstant());
+  Time timeSince(OffsetDateTime other) => toInstant().timeSince(other.toInstant());
 
   /// Implements the operator == (equality).
   ///

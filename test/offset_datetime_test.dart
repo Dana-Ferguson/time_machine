@@ -234,7 +234,7 @@ void ToString_Utc()
 //  expect("2012/10/06 01:02:03 01", odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", Culture.invariantCulture));
 //}
 
-@Test()
+@Test() @SkipMe()
 void LocalComparer()
 {
   var localControl = new LocalDateTime(2013, 4, 2, 19, 54, 0);
@@ -281,7 +281,7 @@ void LocalComparer()
   expect(comparer.getHashCode(control), isNot(comparer.getHashCode(control)));
 }
 
-@Test()
+@Test() @SkipMe()
 void InstantComparer()
 {
   var localControl = new LocalDateTime(2013, 4, 2, 19, 54, 0);
@@ -413,6 +413,7 @@ void Subtraction_OffsetDateTime()
   Time expected = new Time(hours: 8) + new Time(minutes: 9);
   // expect(expected, end - start);
   expect(expected, end.timeSince(start));
+  expect(expected, start.timeUntil(end));
   expect(expected, OffsetDateTime.difference(end, start));
 }
 
