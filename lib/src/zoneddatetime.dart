@@ -314,75 +314,7 @@ class ZonedDateTime {
   /// * [time]: The duration to add
   ///
   /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime addTime(ZonedDateTime zonedDateTime, Time time) => zonedDateTime + time;
-
-  /// Returns the result of adding a duration to this zoned date and time.
-  ///
-  /// * [time]: The duration to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime add(Time time) => this + time;
-
-  /// Returns the result of adding a increment of hours to this zoned date and time
-  ///
-  /// * [hours]: The number of hours to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusHours(int hours) => this + new Time(hours: hours);
-
-  /// Returns the result of adding an increment of minutes to this zoned date and time
-  ///
-  /// * [minutes]: The number of minutes to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusMinutes(int minutes) => this + new Time(minutes: minutes);
-
-  /// Returns the result of adding an increment of seconds to this zoned date and time
-  ///
-  /// * [seconds]: The number of seconds to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusSeconds(int seconds) => this + new Time(seconds: seconds);
-
-  /// Returns the result of adding an increment of milliseconds to this zoned date and time
-  ///
-  /// * [milliseconds]: The number of milliseconds to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusMilliseconds(int milliseconds) => this + new Time(milliseconds: milliseconds);
-
-  /// Returns the result of adding an increment of ticks to this zoned date and time
-  ///
-  /// * [ticks]: The number of ticks to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusMicroseconds(int microseconds) => this + new Time(microseconds: microseconds);
-
-  /// Returns the result of adding an increment of nanoseconds to this zoned date and time
-  ///
-  /// * [nanoseconds]: The number of nanoseconds to add
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the addition.
-
-  ZonedDateTime plusNanoseconds(int nanoseconds) => this + new Time(nanoseconds: nanoseconds);
-
-  /// Returns a new [ZonedDateTime] with the time advanced by the given duration. Note that
-  /// due to daylight saving time changes this may not advance the local time by the same amount.
-  ///
-  /// The returned value retains the calendar system and time zone of [zonedDateTime].
-  ///
-  /// * [this]: The [ZonedDateTime] to add the duration to.
-  /// * [time]: The duration to add.
-  ///
-  /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
-  ZonedDateTime operator +(Time time) =>
-      new ZonedDateTime(toInstant() + time, zone, calendar);
+  static ZonedDateTime plus(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.add(time);
 
   /// Subtracts a duration from a zoned date and time.
   ///
@@ -390,15 +322,7 @@ class ZonedDateTime {
   /// * [time]: The duration to subtract.
   ///
   /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  static ZonedDateTime subtractTimeFrom(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtract(time);
-
-  /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
-  /// [-].
-  ///
-  /// * [time]: The duration to subtract
-  ///
-  /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
-  ZonedDateTime subtract(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
+  static ZonedDateTime minus(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtract(time);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
   ///
@@ -413,9 +337,45 @@ class ZonedDateTime {
   /// * [start]: The zoned date and time to subtract from [end].
   ///
   /// Returns: The elapsed duration from [start] to [end].
-  static Time timeBetween(ZonedDateTime end, ZonedDateTime start) => end.timeSince(start);
+  static Time difference(ZonedDateTime end, ZonedDateTime start) => end.timeSince(start);
 
-  // todo: timeSince vs. timeUntil ... interesting
+  /// Returns a new [ZonedDateTime] with the time advanced by the given duration. Note that
+  /// due to daylight saving time changes this may not advance the local time by the same amount.
+  ///
+  /// The returned value retains the calendar system and time zone of [zonedDateTime].
+  ///
+  /// * [this]: The [ZonedDateTime] to add the duration to.
+  /// * [time]: The duration to add.
+  ///
+  /// Returns: A new value with the time advanced by the given duration, in the same calendar system and time zone.
+  ZonedDateTime operator +(Time time) => add(time);
+
+  /// Returns a new [ZonedDateTime] with the duration subtracted. Note that
+  /// due to daylight saving time changes this may not change the local time by the same amount.
+  ///
+  /// The returned value retains the calendar system and time zone of [zonedDateTime].
+  /// This is equivalent to [subtract].
+  ///
+  /// * [zonedDateTime]: The value to subtract the duration from.
+  /// * [time]: The duration to subtract.
+  ///
+  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
+  ZonedDateTime operator -(Time time) => subtract(time);
+
+  /// Returns the result of adding a duration to this zoned date and time.
+  ///
+  /// * [time]: The duration to add
+  ///
+  /// Returns: A new [ZonedDateTime] representing the result of the addition.
+  ZonedDateTime add(Time time) => new ZonedDateTime(toInstant() + time, zone, calendar);
+
+  /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
+  /// [-].
+  ///
+  /// * [time]: The duration to subtract
+  ///
+  /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
+  ZonedDateTime subtract(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
   /// between the two instants represented by the values.
@@ -432,18 +392,6 @@ class ZonedDateTime {
   ///
   /// Returns: The elapsed duration from [other] to this value.
   Time timeUntil(ZonedDateTime other) => toInstant().timeUntil(other.toInstant());
-
-  /// Returns a new [ZonedDateTime] with the duration subtracted. Note that
-  /// due to daylight saving time changes this may not change the local time by the same amount.
-  ///
-  /// The returned value retains the calendar system and time zone of [zonedDateTime].
-  /// This is equivalent to [subtract].
-  ///
-  /// * [zonedDateTime]: The value to subtract the duration from.
-  /// * [time]: The duration to subtract.
-  ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
-  ZonedDateTime operator -(Time time) => subtract(time);
 
   // If we ever get compile-time dispatch, re-enable this use-case
   // Time operator -(ZonedDateTime start) => minus(start); // Subtraction_ZonedDateTime() contains a commented out unit test
