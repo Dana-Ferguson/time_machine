@@ -193,7 +193,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [period]: The period to add. Must not contain any (non-zero) time units.
   ///
   /// Returns: The sum of the given date and period
-  static LocalDate plus(LocalDate date, Period period) => date + period;
+  static LocalDate plus(LocalDate date, Period period) => date.add(period);
 
   /// Subtracts the specified period from the date. Friendly alternative to `operator-()`.
   ///
@@ -201,7 +201,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [period]: The period to subtract. Must not contain any (non-zero) time units.
   ///
   /// Returns: The result of subtracting the given period from the date.
-  static LocalDate minus(LocalDate date, Period period) => date - period;
+  static LocalDate minus(LocalDate date, Period period) => date.subtract(period);
 
   /// Subtracts one date from another, returning the result as a [Period] with units of years, months and days.
   ///
@@ -220,12 +220,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [period]: The period to add. Must not contain any (non-zero) time units.
   ///
   /// Returns: The sum of the given date and period
-  LocalDate operator +(Period period)
-  {
-    Preconditions.checkNotNull(period, 'period');
-    Preconditions.checkArgument(!period.hasTimeComponent, 'period', "Cannot add a period with a time component to a date");
-    return IPeriod.addDateTo(period, this, 1);
-  }
+  LocalDate operator +(Period period) => add(period);
 
   /// Subtracts the specified period from the date.
   /// This is a convenience operator over the [Minus(Period)] method.
@@ -237,7 +232,6 @@ class LocalDate implements Comparable<LocalDate> {
   LocalDate operator -(Period period) => subtract(period);
 
   // dynamic operator -(dynamic other) => other is LocalDate ? minusDate(other) : other is Period ? minusPeriod(other) : throw new TypeError();
-
 
   /// Compares two [LocalDate] values for equality. This requires
   /// that the dates be the same, within the same calendar.
@@ -253,7 +247,11 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [period]: The period to add. Must not contain any (non-zero) time units.
   ///
   /// Returns: The sum of this date and the given period
-  LocalDate add(Period period) => this + period;
+  LocalDate add(Period period) {
+    Preconditions.checkNotNull(period, 'period');
+    Preconditions.checkArgument(!period.hasTimeComponent, 'period', "Cannot add a period with a time component to a date");
+    return IPeriod.addDateTo(period, this, 1);
+  }
 
   /// Subtracts the specified period from this date. Fluent alternative to `operator-()`.
   ///
