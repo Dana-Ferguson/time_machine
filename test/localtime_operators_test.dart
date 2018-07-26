@@ -108,7 +108,7 @@ void PeriodSubtraction_MethodEquivalents()
   // expect(period, end - start);
   // todo: does not exist
   // expect(period, LocalTime.Subtract(end, start));
-  expect(period, end.difference(start));
+  expect(period, end.periodSince(start));
 }
 
 @Test()

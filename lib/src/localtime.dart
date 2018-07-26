@@ -212,7 +212,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [time]: The time to subtract from this
   ///
   /// Returns: The difference between the specified time and this one
-  static Period differenceBetween(LocalTime end, LocalTime start) => Period.differenceBetweenTimes(start, end);
+  static Period difference(LocalTime end, LocalTime start) => Period.differenceBetweenTimes(start, end);
 
   /// Creates a new local time by adding a period to an existing time. The period must not contain
   /// any date-related units (days etc) with non-zero values.
@@ -256,15 +256,25 @@ class LocalTime implements Comparable<LocalTime> {
     return IPeriod.addTimeTo(period, this, -1);
   }
 
-// todo: this is a mess here ~ I feel like I didn't get the operators and collaries correct here
-
   /// Subtracts the specified time from this time, returning the result as a [Period].
-  /// Fluent alternative to `operator-()`.
+  /// Cognitively similar to: `this - time`.
+  ///
+  /// The specified time must be in the same calendar system as this.
   ///
   /// * [time]: The time to subtract from this
   ///
   /// Returns: The difference between the specified time and this one
-  Period difference(LocalTime time) => Period.differenceBetweenTimes(time, this);
+  Period periodSince(LocalTime time) => Period.differenceBetweenTimes(time, this);
+
+  /// Subtracts the specified time from this time, returning the result as a [Period].
+  /// Cognitively similar to: `time - this`.
+  ///
+  /// The specified time must be in the same calendar system as this.
+  ///
+  /// * [time]: The time to subtract this from
+  ///
+  /// Returns: The difference between the specified time and this one
+  Period periodUntil(LocalTime time) => Period.differenceBetweenTimes(this, time);
 
   /// Compares two local times for equality, by checking whether they represent
   /// the exact same local time, down to the tick.

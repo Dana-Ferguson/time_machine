@@ -107,6 +107,6 @@ void PeriodSubtraction_MethodEquivalents()
   expect(start - period, LocalDate.minus(start, period));
   expect(start - period, start.subtract(period));
   // expect(period, end - start);
-  expect(period, LocalDate.differenceBetween(end, start)); // LocalDate.Minus(end, start)
-  expect(period, end.difference(start));
+  expect(period, LocalDate.difference(end, start)); // LocalDate.Minus(end, start)
+  expect(period, end.periodSince(start));
 }

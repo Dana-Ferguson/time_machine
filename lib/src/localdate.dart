@@ -212,7 +212,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [start]: The date to subtract
   ///
   /// Returns: The result of subtracting one date from another.
-  static Period differenceBetween(LocalDate end, LocalDate start) => Period.differenceBetweenDates(start, end); // rhs.minusDate(lhs);
+  static Period difference(LocalDate end, LocalDate start) => Period.differenceBetweenDates(start, end); // rhs.minusDate(lhs);
 
   /// Adds the specified period to the date.
   ///
@@ -266,15 +266,25 @@ class LocalDate implements Comparable<LocalDate> {
     return IPeriod.addDateTo(period, this, -1);
   }
 
-  /// Subtracts the specified date from this date, returning the result as a [Period] with units of years, months and days.
-  /// Fluent alternative to `operator-()`.
+  /// Subtracts the specified time from this date, returning the result as a [Period].
+  /// Cognitively similar to: `this - date`.
   ///
-  /// The specified date must be in the same calendar system as this.
+  /// The specified time must be in the same calendar system as this.
   ///
   /// * [date]: The date to subtract from this
   ///
   /// Returns: The difference between the specified date and this one
-  Period difference(LocalDate date) => Period.differenceBetweenDates(date, this); // this - date;
+  Period periodSince(LocalDate date) => Period.differenceBetweenDates(date, this);
+
+  /// Subtracts the specified time from this time, returning the result as a [Period].
+  /// Cognitively similar to: `date - this`.
+  ///
+  /// The specified date must be in the same calendar system as this.
+  ///
+  /// * [date]: The date to subtract this from
+  ///
+  /// Returns: The difference between the specified date and this one
+  Period periodUntil(LocalDate date) => Period.differenceBetweenDates(this, date);
 
   // Comparison operators: note that we can't use YearMonthDayCalendar.Compare, as only the calendar knows whether it can use
   // naive comparisons.
