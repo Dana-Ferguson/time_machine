@@ -335,8 +335,8 @@ void Operator_MethodEquivalents()
   expect(start - period, LocalDateTime.minus(start, period));
   expect(start - period, start.subtract(period));
   // expect(period, end - start);
-  expect(period, LocalDateTime.differenceBetween(end, start));
-  expect(period, end.difference(start));
+  expect(period, LocalDateTime.difference(end, start));
+  expect(period, end.periodSince(start));
 }
 
 @Test()

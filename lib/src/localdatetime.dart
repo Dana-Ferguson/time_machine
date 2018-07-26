@@ -346,7 +346,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [start]: The date/time to subtract
   ///
   /// Returns: The result of subtracting one date/time from another.
-  static Period differenceBetween(LocalDateTime end, LocalDateTime start) => end.difference(start);
+  static Period difference(LocalDateTime end, LocalDateTime start) => end.periodSince(start);
 
   /// Adds a period to this local date/time. Fields are added in the order provided by the period.
   ///
@@ -372,14 +372,24 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
   /// Subtracts the specified date/time from this date/time, returning the result as a [Period].
-  /// Fluent alternative to `operator-()`.
+  /// Cognitively similar to: `this - localDateTime`.
   ///
   /// The specified date/time must be in the same calendar system as this.
   ///
   /// * [localDateTime]: The date/time to subtract from this
   ///
   /// Returns: The difference between the specified date/time and this one
-  Period difference(LocalDateTime localDateTime) => Period.differenceBetweenDateTime(localDateTime, this);
+  Period periodSince(LocalDateTime localDateTime) => Period.differenceBetweenDateTime(localDateTime, this);
+
+  /// Subtracts the specified date/time from this date/time, returning the result as a [Period].
+  /// Cognitively similar to: `localDateTime - this`.
+  ///
+  /// The specified date/time must be in the same calendar system as this.
+  ///
+  /// * [localDateTime]: The date/time to subtract this from
+  ///
+  /// Returns: The difference between the specified date/time and this one
+  Period periodUntil(LocalDateTime localDateTime) => Period.differenceBetweenDateTime(this, localDateTime);
 
   /// Returns a hash code for this instance.
   @override int get hashCode => hash3(date, time, calendar);
@@ -405,7 +415,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The adjusted date/time.
   LocalDateTime adjustTime(LocalTime Function(LocalTime) adjuster) => date.at(time.adjust(adjuster));
 
-
   /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
   /// The returned LocalDateTime is likely to have different date field values to this one.
   /// For example, January 1st 1970 in the Gregorian calendar was December 19th 1969 in the Julian calendar.
@@ -417,7 +426,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     Preconditions.checkNotNull(calendar, 'calendar');
     return new LocalDateTime.localDateAtTime(date.withCalendar(calendar), time);
   }
-
 
   /// Returns a new LocalDateTime representing the current value with the given number of years added.
   ///
@@ -494,13 +502,12 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [milliseconds]: The number of milliseconds to add
   ///
   /// Returns: The current value plus the given number of milliseconds.
-  LocalDateTime addMilliseconds(int milliseconds) =>
-      TimePeriodField.milliseconds.addDateTime(this, milliseconds);
+  LocalDateTime addMilliseconds(int milliseconds) => TimePeriodField.milliseconds.addDateTime(this, milliseconds);
   LocalDateTime subtractMilliseconds(int milliseconds) => addMilliseconds(-milliseconds);
 
   /// Returns a new LocalDateTime representing the current value with the given number of ticks added.
   ///
-  /// * [ticks]: The number of ticks to add
+  /// * [microseconds]: The number of ticks to add
   ///
   /// Returns: The current value plus the given number of ticks.
   LocalDateTime addMicroseconds(int microseconds) => TimePeriodField.microseconds.addDateTime(this, microseconds);

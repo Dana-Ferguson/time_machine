@@ -40,6 +40,18 @@ void ToDateTimeUnspecified()
 }
 
 @Test()
+void PeriodUntilSince() {
+  var start = LocalDateTime(2011, 3, 5, 1, 0, 0);
+  var end = LocalDateTime(2012, 2, 4, 5, 1, 1);
+  var delta = Period(months: 10, days: 30, hours: 4, minutes: 1, seconds: 1);
+
+  expect(LocalDateTime.difference(end, start), delta);
+  expect(end.periodSince(start), delta);
+  expect(end.periodSince(start), delta);
+  expect(start.periodUntil(end), delta);
+}
+
+@Test()
 @TestCase(const [100])
 @TestCase(const [1900])
 @TestCase(const [2900])

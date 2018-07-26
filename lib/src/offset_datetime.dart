@@ -387,7 +387,7 @@ class OffsetDateTime {
   // dynamic operator -(dynamic value) => value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
   // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
 
-  /// Subtracts one offset date and time from another, returning an elapsed duration.
+  /// Subtracts one offset date and time from another, returning an elapsed duration. Equivalent to: `end - start`.
   ///
   /// * [end]: The offset date and time value to subtract from; if this is later than [start]
   /// then the result will be positive.
