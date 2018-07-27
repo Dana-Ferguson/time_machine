@@ -42,9 +42,6 @@ abstract class ITime {
 
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
 
-  static int floorSeconds(Time span) => span._floorSeconds;
-
-  static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
 }
@@ -238,26 +235,31 @@ class Time implements Comparable<Time> {
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
   double get totalDays => _milliseconds / TimeConstants.millisecondsPerDay + _nanosecondsInterval / TimeConstants.nanosecondsPerDay;
-
   double get totalHours => _milliseconds / TimeConstants.millisecondsPerHour + _nanosecondsInterval / TimeConstants.nanosecondsPerHour;
-
   double get totalMinutes => _milliseconds / TimeConstants.millisecondsPerMinute + _nanosecondsInterval / TimeConstants.nanosecondsPerMinute;
-
   double get totalSeconds => _milliseconds / TimeConstants.millisecondsPerSecond + _nanosecondsInterval / TimeConstants.nanosecondsPerSecond;
-
   double get totalMilliseconds => _milliseconds + _nanosecondsInterval / TimeConstants.nanosecondsPerMillisecond;
-
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
+  double get totalNanoseconds => inNanoseconds.toDouble();
 
-  int get totalNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  // todo: I think these can be calculated more cheaply .. but, we're just not doing it right
+  int get inDays => totalDays.floor(); // (_milliseconds / TimeConstants.millisecondsPerDay).floor();
+  int get inHours => totalHours.floor(); // (_milliseconds / TimeConstants.millisecondsPerHour).floor();
+  int get inMinutes => totalMinutes.floor(); // (_milliseconds / TimeConstants.millisecondsPerMinute).floor();
+  int get inSeconds => totalSeconds.floor(); // (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
+  int get inMilliseconds => totalMilliseconds.floor();
+  int get inMicroseconds => totalMicroseconds.floor();
+  int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  BigInt get inNanosecondsAsBigInt => BigInt.from(_milliseconds) * TimeConstants.nanosecondsPerMillisecondBigInt + BigInt.from(_nanosecondsInterval);
 
-  BigInt get totalNanosecondsAsBigInt => BigInt.from(_milliseconds) * TimeConstants.nanosecondsPerMillisecondBigInt + BigInt.from(_nanosecondsInterval);
   // this isn't exact (since we don't look at _nanosecondsInterval, we just don't allow `==`
   bool get canNanosecondsBeInteger => _milliseconds < Platform.intMaxValue /~ TimeConstants.nanosecondsPerMillisecond && _milliseconds > Platform.intMinValue /~ TimeConstants.nanosecondsPerMillisecond;
 
   // totalsFloor* ???
-  int get _floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
+  // int get _floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
 
+  // int get inDays => inDays;
+  /*
   @wasInternal
   // todo: make more like floorDays?
   int get floorMilliseconds => totalMilliseconds.floor();
@@ -269,7 +271,7 @@ class Time implements Comparable<Time> {
     if ((_milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0))
         && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
     return days;
-  }
+  }*/
 
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
@@ -279,23 +281,22 @@ class Time implements Comparable<Time> {
   int get millisecondsOfDay => _milliseconds - (days * TimeConstants.millisecondsPerDay);
 
   int get nanosecondOfFloorDay =>
-      (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+      (_milliseconds - (inDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // todo: this is not obvious enough that, this is probably not the method the average person wants to be calling
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // todo: Any reason for these? --- a bit disingenuously if you think about Offsets
-  @deprecated
-  Time get spanOfDay => new Time._ (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
-  @deprecated
-  Time get spanOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  //@deprecated
+  //Time get timeOfDay => new Time._ (_milliseconds - (days * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
+  //@deprecated
+  //Time get timeOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
   @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
 
-  @override String toString([String patternText, Culture culture]) =>
-      TimePatterns.format(this, patternText, culture);
+  @override String toString([String patternText, Culture culture]) => TimePatterns.format(this, patternText, culture);
 
   Time operator +(Time other) => add(other);
 
@@ -323,7 +324,7 @@ class Time implements Comparable<Time> {
     if (canNanosecondsBeInteger) {
       return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval ~/ quotient));
     } else {
-      return new Time.bigIntNanoseconds(totalNanosecondsAsBigInt ~/ BigInt.from(quotient));
+      return new Time.bigIntNanoseconds(inNanosecondsAsBigInt ~/ BigInt.from(quotient));
     }
   }
 

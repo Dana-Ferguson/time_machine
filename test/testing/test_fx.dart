@@ -296,13 +296,13 @@ String _printNewObject(Object obj) {
   }
   else if (obj is Instant) {
     var span = obj.timeSinceEpoch;
-    var ms = ITime.millisecondsOf(span);
+    var ms = span.inMilliseconds;
     var ns = ITime.nanosecondsIntervalOf(span);
     sb.write('IInstant.trusted(ISpan.trusted($ms, $ns))');
   }
   else if (obj is Time) {
     var span = obj;
-    var ms = ITime.millisecondsOf(span);
+    var ms = span.inMilliseconds;
     var ns = ITime.nanosecondsIntervalOf(span);
     sb.write('ISpan.trusted($ms, $ns)');
   }

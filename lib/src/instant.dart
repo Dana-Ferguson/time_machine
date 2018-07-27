@@ -98,7 +98,7 @@ class Instant implements Comparable<Instant> {
   }
 
   LocalInstant _safePlus(Offset offset) {
-    var days = timeSinceEpoch.floorDays;
+    var days = timeSinceEpoch.inDays;
     // plusOffset(offset);
     // If we can do the arithmetic safely, do so.
     if (days > IInstant.minDays && days < IInstant.maxDays)
@@ -116,11 +116,11 @@ class Instant implements Comparable<Instant> {
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
     var asDuration = ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds);
-    if (asDuration.floorDays < IInstant.minDays)
+    if (asDuration.inDays < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
     }
-    if (asDuration.floorDays > IInstant.maxDays)
+    if (asDuration.inDays > IInstant.maxDays)
     {
       return LocalInstant.afterMaxValue;
     }
@@ -179,18 +179,19 @@ class Instant implements Comparable<Instant> {
   // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
   DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
 
-  int get daysSinceEpoch => timeSinceEpoch.floorDays; //days;
+  int get daysSinceEpoch => timeSinceEpoch.inDays; //days;
   int get nanosecondOfDay => timeSinceEpoch.nanosecondOfFloorDay; //nanosecondOfDay;
+
   // todo: I don't think I like this --> timeSinceEpoch??? -- are these useful convenient overloads?
-  int toUnixTimeSeconds() => ITime.floorSeconds(timeSinceEpoch);
-  int toUnixTimeMilliseconds() => timeSinceEpoch.floorMilliseconds; //.totalMilliseconds.toInt();
+  int toUnixTimeSeconds() => timeSinceEpoch.inSeconds;
+  int toUnixTimeMilliseconds() => timeSinceEpoch.inMilliseconds; //.totalMilliseconds.toInt();
   int toUnixTimeMicroseconds() => timeSinceEpoch.totalMicroseconds.floor();
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(timeSinceEpoch.floorDays);
+    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(timeSinceEpoch.inDays);
     var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, timeSinceEpoch.nanosecondOfFloorDay, Offset.zero);
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }

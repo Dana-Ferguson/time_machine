@@ -123,7 +123,7 @@ class LocalTime implements Comparable<LocalTime> {
   ///
   /// Returns: The resulting LocalTime.
   factory LocalTime.sinceMidnight(Time time) {
-    var nanoseconds = time.totalNanoseconds;
+    var nanoseconds = time.inNanoseconds;
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (nanoseconds < 0 || nanoseconds >= TimeConstants.nanosecondsPerDay) {
       // Range error requires 'num' to be the range bounds, which isn't conceptually true here.

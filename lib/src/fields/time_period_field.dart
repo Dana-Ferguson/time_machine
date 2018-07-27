@@ -141,7 +141,7 @@ class TimePeriodField
       return span.totalNanoseconds ~/ _unitNanoseconds;
     }
     else {
-      var units = span.totalNanosecondsAsBigInt ~/ BigInt.from(_unitNanoseconds);
+      var units = span.inNanosecondsAsBigInt ~/ BigInt.from(_unitNanoseconds);
       // todo: should these be constants? ... can they be?
       if (units >= BigInt.from(Platform.intMinValue) && units <= BigInt.from(Platform.intMaxValue)) {
         return units.toInt();

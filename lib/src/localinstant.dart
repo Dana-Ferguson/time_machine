@@ -56,7 +56,7 @@ class LocalInstant {
   Time get timeSinceLocalEpoch => _span;
 
   /// Number of days since the local unix epoch.
-  int get daysSinceEpoch => _span.floorDays;
+  int get daysSinceEpoch => _span.inDays;
 
   /// Nanosecond within the day.
   int get nanosecondOfDay => _span.nanosecondOfFloorDay;
@@ -154,7 +154,7 @@ class LocalInstant {
     if (this == afterMaxValue) {
       return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
     }
-    var date = ILocalDate.fromDaysSinceEpoch(_span.floorDays);
+    var date = ILocalDate.fromDaysSinceEpoch(_span.inDays);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
     var utc = new LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(_span.nanosecondOfFloorDay));
     return pattern.format(utc);

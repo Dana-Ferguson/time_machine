@@ -339,7 +339,7 @@ class Period {
     var span = ILocalDateTime.toLocalInstant(end).timeSinceLocalEpoch
         - ILocalDateTime.toLocalInstant(remaining).timeSinceLocalEpoch;
     if (span.canNanosecondsBeInteger) {
-      var result = _timeComponentsBetween(span.totalNanoseconds, units);
+      var result = _timeComponentsBetween(span.inNanoseconds, units);
       hours = result.hours;
       minutes = result.minutes;
       seconds = result.seconds;

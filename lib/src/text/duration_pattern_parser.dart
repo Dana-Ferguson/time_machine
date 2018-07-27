@@ -38,7 +38,7 @@ class TimePatternParser implements IPatternParser<Time> {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
-    // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing 
+    // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing
     //    -- and I can't seem to find it backed up in a standard
     // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
     if (patternText.length == 1)
@@ -92,7 +92,7 @@ class TimePatternParser implements IPatternParser<Time> {
       builder.addField(PatternFields.totalTime, pattern.current);
       builder.addParseValueAction(count, 8, pattern.current, 0, 16777216, (bucket, value) => bucket.addDays(value));
       builder.addFormatLeftPad(count, (span) {
-        int days = span.floorDays;
+        int days = span.inDays;
         if (days >= 0) {
           return days;
         }
@@ -121,17 +121,17 @@ class TimePatternParser implements IPatternParser<Time> {
 
   static void _handlePlus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (time) => time.floorDays >= 0);
+    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (time) => time.inDays >= 0);
   }
 
   static void _handleMinus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (time) => time.floorDays >= 0);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (time) => time.inDays >= 0);
   }
 
   static int _getPositiveNanosecondUnits(Time time, int nanosecondsPerUnit, int unitsPerDay) {
     // The property is declared as an int, but we it as a long to force 64-bit arithmetic when multiplying.
-    int floorDays = time.floorDays;
+    int floorDays = time.inDays;
     if (floorDays >= 0) {
       return floorDays * unitsPerDay + time.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
     }
