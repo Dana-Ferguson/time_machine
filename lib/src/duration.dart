@@ -243,7 +243,8 @@ class Time implements Comparable<Time> {
   double get totalNanoseconds => inNanoseconds.toDouble();
 
   // todo: I think these can be calculated more cheaply .. but, we're just not doing it right
-  int get inDays => totalDays.floor(); // (_milliseconds / TimeConstants.millisecondsPerDay).floor();
+  // todo: in reality .. these shouldn't be floors
+  int get inDays => floorDays; // totalDays.floor(); // (_milliseconds / TimeConstants.millisecondsPerDay).floor();
   int get inHours => totalHours.floor(); // (_milliseconds / TimeConstants.millisecondsPerHour).floor();
   int get inMinutes => totalMinutes.floor(); // (_milliseconds / TimeConstants.millisecondsPerMinute).floor();
   int get inSeconds => totalSeconds.floor(); // (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
@@ -263,15 +264,24 @@ class Time implements Comparable<Time> {
   @wasInternal
   // todo: make more like floorDays?
   int get floorMilliseconds => totalMilliseconds.floor();
-
+  */
+  // todo: this isn't what I thought I was.
+  // --> this is the 'day' at the beginning of a day, as if it was on a 'calendar', not a length of time that can be positive or negative
   @wasInternal
   int get floorDays {
-    var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
+    //var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
     // todo: determine if there are other corner-cases here
-    if ((_milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0))
-        && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
+    //if ((_milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0))
+    //    && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
+
+    if (_milliseconds == 0 && _nanosecondsInterval < 0) return -1;
+    var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
+    if (_milliseconds < 0 && _milliseconds % TimeConstants.millisecondsPerDay != 0) return days - 1;
+
     return days;
-  }*/
+  }
+
+  bool get isNegative => _milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0);
 
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();

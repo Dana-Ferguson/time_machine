@@ -43,6 +43,10 @@ Future main() async {
         .parse(localText);
 
     print(localClone.value);
+
+    var t = Time(days: -1, microseconds: -1);
+    print(t.floorDays);
+    print(t.totalDays.floor());
   }
   catch (error, stack) {
     print(error);
