@@ -151,8 +151,14 @@ class Instant implements Comparable<Instant> {
   bool operator>(Instant other) => timeSinceEpoch > other.timeSinceEpoch;
   bool operator>=(Instant other) => timeSinceEpoch >= other.timeSinceEpoch;
 
+  bool isAfter(Instant other) => timeSinceEpoch > other.timeSinceEpoch;
+  bool isBefore(Instant other) => timeSinceEpoch < other.timeSinceEpoch;
+
   static Instant max(Instant x, Instant y) => x > y ? x : y;
   static Instant min(Instant x, Instant y) => x < y ? x : y;
+  static Instant plus(Instant x, Time y) => x.add(y);
+  static Instant minus(Instant x, Time y) => x.subtract(y);
+  static Time difference(Instant start, Instant end) => start.timeSince(end);
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
   @override String toString([String patternText, Culture culture]) =>

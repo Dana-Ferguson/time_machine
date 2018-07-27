@@ -359,6 +359,10 @@ class Time implements Comparable<Time> {
 
   static Time min(Time x, Time y) => x < y ? x : y;
 
+  static Time minus(Time x, Time y) => x - y;
+
+  static Time plus(Time x, Time y) => x + y;
+
   bool equals(Time other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 
   int compareTo(Time other) {
