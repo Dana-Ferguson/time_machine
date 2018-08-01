@@ -72,8 +72,8 @@ class OffsetDateTime {
   /// but with less overhead.
   factory OffsetDateTime._fromInstant(Instant instant, Offset offset, [CalendarSystem calendar])
   {
-    int days = instant.daysSinceEpoch;
-    int nanoOfDay = instant.nanosecondOfDay + offset.nanoseconds;
+    int days = instant.epochDay;
+    int nanoOfDay = instant.epochDayTime.inNanoseconds + offset.nanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) {
       days++;
       nanoOfDay -= TimeConstants.nanosecondsPerDay;

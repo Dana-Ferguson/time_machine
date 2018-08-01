@@ -14,13 +14,13 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @immutable
 @internal
 class LocalInstant {
-  static final LocalInstant beforeMinValue = new LocalInstant._trusted(IInstant.beforeMinValue.daysSinceEpoch, deliberatelyInvalid: true);
-  static final LocalInstant afterMaxValue = new LocalInstant._trusted(IInstant.afterMaxValue.daysSinceEpoch, deliberatelyInvalid: true);
+  static final LocalInstant beforeMinValue = new LocalInstant._trusted(IInstant.beforeMinValue.epochDay, deliberatelyInvalid: true);
+  static final LocalInstant afterMaxValue = new LocalInstant._trusted(IInstant.afterMaxValue.epochDay, deliberatelyInvalid: true);
 
   /// Elapsed time since the local 1970-01-01T00:00:00.
-  final Time _span;
+  final Time _time;
 
-  LocalInstant._ (this._span);
+  LocalInstant._ (this._time);
 
   /// Constructor which should *only* be used to construct the invalid instances.
   factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
@@ -53,18 +53,21 @@ class LocalInstant {
   bool get isValid => daysSinceEpoch >= IInstant.minDays && daysSinceEpoch <= IInstant.maxDays;
 
   /// Number of nanoseconds since the local unix epoch.
-  Time get timeSinceLocalEpoch => _span;
+  Time get timeSinceLocalEpoch => _time;
 
+  // todo: rename
   /// Number of days since the local unix epoch.
-  int get daysSinceEpoch => _span.inDays;
+  int get daysSinceEpoch => IInstant.trusted(_time).epochDay; // Instant.epochTime(_time).epochDay;
 
+  @deprecated
+  // todo: -- make more efficent?
   /// Nanosecond within the day.
-  int get nanosecondOfDay => _span.nanosecondOfFloorDay;
+  int get nanosecondOfDay => IInstant.trusted(_time).epochDayTime.inNanoseconds;
 
   /// Returns a new instant based on this local instant, as if we'd applied a zero offset.
   /// This is just a slight optimization over calling `localInstant.Minus(Offset.Zero)`.
   // todo: this is an API pickle
-  Instant minusZeroOffset() => IInstant.trusted(_span);
+  Instant minusZeroOffset() => IInstant.trusted(_time);
 
   /// Subtracts the given time zone offset from this local instant, to give an [Instant].
   ///
@@ -74,18 +77,18 @@ class LocalInstant {
   ///
   /// [offset]: The offset between UTC and a time zone for this local instant
   /// Returns: A new [Instant] representing the difference of the given values.
-  Instant minus(Offset offset) => IInstant.untrusted(ITime.plusSmallNanoseconds(_span, -offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
+  Instant minus(Offset offset) => IInstant.untrusted(ITime.plusSmallNanoseconds(_time, -offset.nanoseconds)); // _span.MinusSmallNanoseconds(offset.Nanoseconds));
 
   /// Implements the operator == (equality).
   ///
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is LocalInstant && _span == right._span;
+  bool operator ==(dynamic right) => right is LocalInstant && _time == right._time;
 
   /// Equivalent to [Instant.safePlus], but in the opposite direction.
   Instant safeMinus(Offset offset) {
-    int days = _span.days;
+    int days = IInstant.trusted(_time).epochDay;
     // If we can do the arithmetic safely, do so.
     if (days > IInstant.minDays && days < IInstant.maxDays) {
       return minus(offset);
@@ -98,15 +101,15 @@ class LocalInstant {
       return IInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = ITime.plusSmallNanoseconds(_span, -offset.nanoseconds);
-    if (asDuration.days < IInstant.minDays) { // FloorDays
+    var asDuration = IInstant.trusted(ITime.plusSmallNanoseconds(_time, -offset.nanoseconds));
+    if (asDuration.epochDay < IInstant.minDays) { // FloorDays
       return IInstant.beforeMinValue;
     }
-    if (asDuration.days > IInstant.maxDays) { // FloorDays
+    if (asDuration.epochDay > IInstant.maxDays) { // FloorDays
       return IInstant.afterMaxValue;
     }
     // And now we don't need any more checks.
-    return IInstant.trusted(asDuration);
+    return IInstant.trusted(asDuration.timeSinceEpoch);
   }
 
   /// Implements the operator &lt; (less than).
@@ -114,34 +117,34 @@ class LocalInstant {
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if the left value is less than the right value, otherwise `false`.
-  bool operator <(LocalInstant right) => _span < right._span;
+  bool operator <(LocalInstant right) => _time < right._time;
 
   /// Implements the operator &lt;= (less than or equal).
   ///
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if the left value is less than or equal to the right value, otherwise `false`.
-  bool operator <=(LocalInstant right) => _span <= right._span;
+  bool operator <=(LocalInstant right) => _time <= right._time;
 
   /// Implements the operator &gt; (greater than).
   ///
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if the left value is greater than the right value, otherwise `false`.
-  bool operator >(LocalInstant right) => _span > right._span;
+  bool operator >(LocalInstant right) => _time > right._time;
 
   /// Implements the operator &gt;= (greater than or equal).
   ///
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if the left value is greater than or equal to the right value, otherwise `false`.
-  bool operator >=(LocalInstant right) => _span >= right._span;
+  bool operator >=(LocalInstant right) => _time >= right._time;
 
   /// Returns a hash code for this instance.
   ///
   /// A hash code for this instance, suitable for use in hashing algorithms and data
   /// structures like a hash table.
-  @override int get hashCode => _span.hashCode;
+  @override int get hashCode => _time.hashCode;
 
   /// Returns a [String] that represents this instance.
   ///
@@ -154,9 +157,9 @@ class LocalInstant {
     if (this == afterMaxValue) {
       return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
     }
-    var date = ILocalDate.fromDaysSinceEpoch(_span.inDays);
+    var date = ILocalDate.fromDaysSinceEpoch(IInstant.trusted(_time).epochDay);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(_span.nanosecondOfFloorDay));
+    var utc = new LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(nanosecondOfDay));
     return pattern.format(utc);
   // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }

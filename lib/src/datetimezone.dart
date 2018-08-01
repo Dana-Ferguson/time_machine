@@ -207,7 +207,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     Instant intervalStart = IZoneInterval.rawStart(interval);
     // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
-    if (localInstant.daysSinceEpoch <= intervalStart.daysSinceEpoch + 1) {
+    if (localInstant.daysSinceEpoch <= intervalStart.epochDay + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalStart - Time.epsilon);
@@ -229,7 +229,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     // Crude but cheap first check to see whether there *might* be a later interval.
     // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
     // nature of the Days property.
-    if (localInstant.daysSinceEpoch >= intervalEnd.daysSinceEpoch - 1) {
+    if (localInstant.daysSinceEpoch >= intervalEnd.epochDay - 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
       // not worth it.
       ZoneInterval candidate = getZoneInterval(intervalEnd);

@@ -42,8 +42,23 @@ abstract class ITime {
 
   static Time plusSmallNanoseconds(Time span, int nanoseconds) => span._plusSmallNanoseconds(nanoseconds);
 
+  static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
+  static Time untrusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._untrusted(milliseconds, nanosecondsInterval);
+
+  // Instant.epochTime(nanos).timeOfEpochDay.inNanoseconds
+  @deprecated
+  static int nanosecondOfFloorDay(Time time) {
+    return Instant.epochTime(time).epochDayTime.inNanoseconds;
+    // return (time._milliseconds - (Instant.epochTime(time).daysSinceEpoch * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + time._nanosecondsInterval;
+  }
+
+  @deprecated
+  // this is probably not the method the average person wants to be calling
+  static int nanosecondOfDay(Time time) {
+    return (time._milliseconds - (time.inDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + time._nanosecondsInterval;
+  }
 }
 
 // Implementation note:
@@ -209,27 +224,14 @@ class Time implements Comparable<Time> {
           microseconds: millisecondsOfSecond * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
-  // todo: I feel like the naming here is not consistent enough (but this is consistent with NodaTime)
-  // todo: yeah -- look at this stuff, days are so different, I don't think it's obvious (maybe, hours --> hourOfDay or something like that ~ which is really weird to be in [Span] anyway?)
-  // todo: I put in days as FloorDays a lot ~ which is fine until you go negative ~ then all of this acts wrong (I think for all of it - I want to do a check
-  //  where I use floor() if it's negative) .. or does the VM basically already cover that.
-  // int get days2 => floorDays;
-
-  int get days => (_milliseconds ~/ TimeConstants.millisecondsPerDay);
-
+  // todo: I feel like these should have a common prefix ... but, I am unsure
   int get hoursOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
-
   int get minutesOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
-
   int get secondsOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
-
-  // todo: should this be called subsecondMilliseconds??? or shoudl the other's be changed?
   int get millisecondsOfSecond => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
-
   int get microsecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.microsecondsPerMillisecond
       + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
-
   int get nanosecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
@@ -242,6 +244,7 @@ class Time implements Comparable<Time> {
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
   double get totalNanoseconds => inNanoseconds.toDouble();
 
+  /*
   // todo: I think these can be calculated more cheaply .. but, we're just not doing it right
   // todo: in reality .. these shouldn't be floors
   int get inDays => floorDays; // totalDays.floor(); // (_milliseconds / TimeConstants.millisecondsPerDay).floor();
@@ -250,39 +253,23 @@ class Time implements Comparable<Time> {
   int get inSeconds => totalSeconds.floor(); // (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
   int get inMilliseconds => totalMilliseconds.floor();
   int get inMicroseconds => totalMicroseconds.floor();
-  int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;*/
   BigInt get inNanosecondsAsBigInt => BigInt.from(_milliseconds) * TimeConstants.nanosecondsPerMillisecondBigInt + BigInt.from(_nanosecondsInterval);
+
+  int get inDays => _milliseconds ~/ TimeConstants.millisecondsPerDay;
+  int get inHours => _milliseconds ~/ TimeConstants.millisecondsPerHour;
+  int get inMinutes => _milliseconds ~/ TimeConstants.millisecondsPerMinute;
+  int get inSeconds => _milliseconds ~/ TimeConstants.millisecondsPerSecond;
+  int get inMilliseconds => _milliseconds;
+  int get inMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
+  int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // this isn't exact (since we don't look at _nanosecondsInterval, we just don't allow `==`
   bool get canNanosecondsBeInteger => _milliseconds < Platform.intMaxValue /~ TimeConstants.nanosecondsPerMillisecond && _milliseconds > Platform.intMinValue /~ TimeConstants.nanosecondsPerMillisecond;
 
-  // totalsFloor* ???
-  // int get _floorSeconds => (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
-
-  // int get inDays => inDays;
-  /*
-  @wasInternal
-  // todo: make more like floorDays?
-  int get floorMilliseconds => totalMilliseconds.floor();
-  */
-  // todo: this isn't what I thought I was.
-  // --> this is the 'day' at the beginning of a day, as if it was on a 'calendar', not a length of time that can be positive or negative
-  @wasInternal
-  int get floorDays {
-    //var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
-    // todo: determine if there are other corner-cases here
-    //if ((_milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0))
-    //    && (_milliseconds % TimeConstants.millisecondsPerDay != 0 || _milliseconds == 0)) return days - 1;
-
-    if (_milliseconds == 0 && _nanosecondsInterval < 0) return -1;
-    var days = _milliseconds ~/ TimeConstants.millisecondsPerDay;
-    if (_milliseconds < 0 && _milliseconds % TimeConstants.millisecondsPerDay != 0) return days - 1;
-
-    return days;
-  }
-
   bool get isNegative => _milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0);
 
+  /*
   // original version shown here, very bad, rounding errors much bad -- be better than this
   // int get nanosecondOfDay => ((totalDays - days.toDouble()) * TimeConstants.nanosecondsPerDay).toInt();
   // todo: here to ease porting, unsure if this is wanted -- but it's not hurting me?
@@ -296,6 +283,7 @@ class Time implements Comparable<Time> {
   // todo: this is not obvious enough that, this is probably not the method the average person wants to be calling
   int get nanosecondOfDay =>
       (_milliseconds - (days * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+  */
 
   // todo: Any reason for these? --- a bit disingenuously if you think about Offsets
   //@deprecated

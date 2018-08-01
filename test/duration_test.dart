@@ -80,24 +80,30 @@ void BigIntegerConversions(int int64Nanos)
 void ConstituentParts_Positive()
 {
   var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
-  expect(5, nanos.inDays);
-  expect(100, nanos.nanosecondOfFloorDay);
+  expect(5, Instant.epochTime(nanos).epochDay);
+  expect(100, ITime.nanosecondOfFloorDay(nanos));
+  expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
 }
 
 @Test()
 void ConstituentParts_Negative()
 {
   var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
-  expect(-5, nanos.inDays);
-  expect(100, nanos.nanosecondOfFloorDay);
+  expect(-5, Instant.epochTime(nanos).epochDay);
+  expect(100, ITime.nanosecondOfFloorDay(nanos));
+  expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
 }
 
 @Test()
 void ConstituentParts_Large() {
   // And outside the normal range of long...
   var nanos = new Time.bigIntNanoseconds(BigInt.from(TimeConstants.nanosecondsPerDay) * BigInt.from(365000) + BigInt.from(500));
-  expect(365000, nanos.inDays);
-  if (Platform.isVM) expect(500, nanos.nanosecondOfFloorDay);
+  expect(365000, Instant.epochTime(nanos).epochDay);
+
+  if (Platform.isVM) {
+    expect(500, ITime.nanosecondOfFloorDay(nanos));
+    expect(500, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
+  }
 }
 
 @Test()
@@ -281,8 +287,8 @@ void PositiveComponents()
 {
   // Worked out with a calculator :)
   Time duration = new Time(nanoseconds: 1234567890123456);
-  expect(14, duration.days);
-  expect(24967890123456, duration.nanosecondOfDay);
+  expect(14, duration.inDays);
+  expect(24967890123456, ITime.nanosecondOfDay(duration));
   expect(6, duration.hoursOfDay);
   expect(56, duration.minutesOfHour);
   expect(7, duration.secondsOfMinute);
@@ -296,8 +302,8 @@ void NegativeComponents()
 {
   // Worked out with a calculator :) // -1234567 890123456
   Time duration = new Time(nanoseconds: -1234567890123456);
-  expect(-14, duration.days);
-  expect(-24967890123456, duration.nanosecondOfDay);
+  expect(-14, duration.inDays);
+  expect(-24967890123456, ITime.nanosecondOfDay(duration));
   expect(-6, duration.hoursOfDay);
   expect(-56, duration.minutesOfHour);
   expect(-7, duration.secondsOfMinute);

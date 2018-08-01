@@ -61,7 +61,7 @@ class TimePatternParser implements IPatternParser<Time> {
   }
 
   static int _getPositiveNanosecondOfSecond(Time time) {
-    return time.nanosecondOfDay.abs() % TimeConstants.nanosecondsPerSecond;
+    return ITime.nanosecondOfDay(time).abs() % TimeConstants.nanosecondsPerSecond;
   }
 
   static CharacterHandler<Time, _TimeParseBucket> _createTotalHandler
@@ -91,13 +91,13 @@ class TimePatternParser implements IPatternParser<Time> {
       builder.addField(PatternFields.dayOfMonth, pattern.current);
       builder.addField(PatternFields.totalTime, pattern.current);
       builder.addParseValueAction(count, 8, pattern.current, 0, 16777216, (bucket, value) => bucket.addDays(value));
-      builder.addFormatLeftPad(count, (span) {
-        int days = span.inDays;
+      builder.addFormatLeftPad(count, (time) {
+        int days = IInstant.trusted(time).epochDay; //time.inDays;
         if (days >= 0) {
           return days;
         }
         // Round towards 0.
-        return span.nanosecondOfFloorDay == 0 ? -days : -(days + 1);
+        return ITime.nanosecondOfFloorDay(time) == 0 ? -days : -(days + 1);
       },
           assumeNonNegative: true,
           assumeFitsInCount: false);
@@ -113,7 +113,7 @@ class TimePatternParser implements IPatternParser<Time> {
               (bucket, value) => bucket.addUnits(value, nanosecondsPerUnit));
       // This is never used for anything larger than a day, so the day part is irrelevant.
       builder.addFormatLeftPad(count,
-              (span) => (((span.nanosecondOfDay.abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
+              (time) => (((ITime.nanosecondOfDay(time).abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
           assumeNonNegative: true,
           assumeFitsInCount: count == 2);
     };
@@ -121,22 +121,22 @@ class TimePatternParser implements IPatternParser<Time> {
 
   static void _handlePlus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (time) => time.inDays >= 0);
+    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (time) => IInstant.trusted(time).epochDay >= 0);
   }
 
   static void _handleMinus(PatternCursor pattern, SteppedPatternBuilder<Time, _TimeParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (time) => time.inDays >= 0);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (time) => IInstant.trusted(time).epochDay >= 0);
   }
 
   static int _getPositiveNanosecondUnits(Time time, int nanosecondsPerUnit, int unitsPerDay) {
     // The property is declared as an int, but we it as a long to force 64-bit arithmetic when multiplying.
-    int floorDays = time.inDays;
+    int floorDays = IInstant.trusted(time).epochDay;
     if (floorDays >= 0) {
-      return floorDays * unitsPerDay + time.nanosecondOfFloorDay ~/ nanosecondsPerUnit;
+      return floorDays * unitsPerDay + ITime.nanosecondOfFloorDay(time) ~/ nanosecondsPerUnit;
     }
     else {
-      int nanosecondOfDay = time.nanosecondOfDay;
+      int nanosecondOfDay = ITime.nanosecondOfDay(time);
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay

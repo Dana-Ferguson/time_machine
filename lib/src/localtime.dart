@@ -136,7 +136,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// Produces a [LocalTime] based on your [Clock.current] and your [DateTimeZone.local].
   factory LocalTime.timeOfToday() {
     var now = Instant.now();
-    var nanoOfDay = now.nanosecondOfDay + DateTimeZone.local.getUtcOffset(now).nanoseconds;
+    var nanoOfDay = now.epochDayTime.inNanoseconds + DateTimeZone.local.getUtcOffset(now).nanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) nanoOfDay -= TimeConstants.nanosecondsPerDay;
     else if (nanoOfDay < 0) nanoOfDay += TimeConstants.nanosecondsPerDay;
 

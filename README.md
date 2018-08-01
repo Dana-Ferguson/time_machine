@@ -2,18 +2,18 @@
 
 Time Machine is a date and time library for
 [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm)
-with support for timezones, calendars, cultures, formatting and parsing. Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
+with support for timezones, calendars, cultures, formatting and parsing.
 
-**Goals**
+**TimeMachine Goals**
 * Clarity - clear, concise, and intuitive
 * Flexibility - multiple representations of time to fit different use cases
 * Consistency - works the same across all platforms
 * Testable - it should be easy to test your date and time dependent code
 * Easy - the library should do the hard things for you
 
-**Core API**
+**Dart Core API**
 * Duration - an amount of time with microsecond precision
-* DateTime - a unique point in time or a point in localtime with microsecond or millisecond precision
+* DateTime - a unique point on the utc_timeline or a point in localtime with microsecond or millisecond precision
 
 **TimeMachine API**
 * Time - an amount of time with nanosecond precision
@@ -26,6 +26,8 @@ with support for timezones, calendars, cultures, formatting and parsing. Time Ma
 * DateTimeZone - a mapping between the utc_timeline, and clock and calendar locations
 * ZonedDateTime - a unique point on the utc_timeline and a location on the clock and calendar
 * Culture - formatting and parsing rules specific to a locale
+
+Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
 ### Example Code:
 

@@ -34,7 +34,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   var expected = new LocalDateTime(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
-  expect(expected.toUnixTimeMilliseconds(), closeTo(actual.toUnixTimeMilliseconds(), 50), reason: "Expected $expected, was $actual");
+  expect(expected.epochMilliseconds, closeTo(actual.epochMilliseconds, 50), reason: "Expected $expected, was $actual");
   expect(julianDate, closeTo(expected.toJulianDate(), 0.000001));
 }
 
@@ -113,7 +113,7 @@ void WithOffset_NonIsoCalendar()
 void FromTicksSinceUnixEpoch()
 {
   Instant instant = new Instant(microseconds: 12345);
-  expect(12345, instant.toUnixTimeMicroseconds());
+  expect(12345, instant.epochMicroseconds);
 }
 
 
@@ -178,7 +178,7 @@ void FromUnixTimeSeconds_TooSmall()
 void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 {
   var instant = Instant(milliseconds: milliseconds);
-  expect(instant.toUnixTimeSeconds(), expectedSeconds);
+  expect(instant.epochSeconds, expectedSeconds);
 }
 
 @Test()
@@ -197,7 +197,7 @@ void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
   // todo: rework this test
   var instant = new Instant().add(new Time(nanoseconds: ticks * 100));
-  expect(instant.toUnixTimeMilliseconds(), expectedMilliseconds);
+  expect(instant.epochMilliseconds, expectedMilliseconds);
 }
 
 @Test()
@@ -206,14 +206,14 @@ void UnixConversions_ExtremeValues()
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
   var max = Instant.maxValue.subtract(new Time(seconds: 1)).add(Time.epsilon);
-  expect(max, Instant(seconds: max.toUnixTimeSeconds()));
-  expect(max, Instant(milliseconds: max.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(max, new Instant(microseconds: max.toUnixTimeMicroseconds()));
+  expect(max, Instant(seconds: max.epochSeconds));
+  expect(max, Instant(milliseconds: max.epochMilliseconds));
+  if (Platform.isVM) expect(max, new Instant(microseconds: max.epochMicroseconds));
 
   var min = Instant.minValue;
-  expect(min, Instant(seconds: min.toUnixTimeSeconds()));
-  expect(min, Instant(milliseconds: min.toUnixTimeMilliseconds()));
-  if (Platform.isVM) expect(min, new Instant(microseconds: min.toUnixTimeMicroseconds()));
+  expect(min, Instant(seconds: min.epochSeconds));
+  expect(min, Instant(milliseconds: min.epochMilliseconds));
+  if (Platform.isVM) expect(min, new Instant(microseconds: min.epochMicroseconds));
 }
 
 @Test()

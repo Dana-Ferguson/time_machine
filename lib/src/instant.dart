@@ -98,7 +98,7 @@ class Instant implements Comparable<Instant> {
   }
 
   LocalInstant _safePlus(Offset offset) {
-    var days = timeSinceEpoch.inDays;
+    var days = epochDay;
     // plusOffset(offset);
     // If we can do the arithmetic safely, do so.
     if (days > IInstant.minDays && days < IInstant.maxDays)
@@ -115,16 +115,19 @@ class Instant implements Comparable<Instant> {
       return LocalInstant.afterMaxValue;
     }
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
-    var asDuration = ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds);
-    if (asDuration.inDays < IInstant.minDays)
+    // var asDuration = ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds);
+    // todo: much simplify
+    var asDuration = Instant._trusted(ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds));
+    days = asDuration.epochDay;
+    if (days < IInstant.minDays)
     {
       return LocalInstant.beforeMinValue;
     }
-    if (asDuration.inDays > IInstant.maxDays)
+    if (days > IInstant.maxDays)
     {
       return LocalInstant.afterMaxValue;
     }
-    return new LocalInstant(asDuration);
+    return new LocalInstant(asDuration.timeSinceEpoch);
   }
 
   /*
@@ -179,20 +182,85 @@ class Instant implements Comparable<Instant> {
   // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
   DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
 
-  int get daysSinceEpoch => timeSinceEpoch.inDays; //days;
-  int get nanosecondOfDay => timeSinceEpoch.nanosecondOfFloorDay; //nanosecondOfDay;
+  // int get daysSinceEpoch => timeSinceEpoch.inDays; //days;
+  // int get nanosecondOfDay => epochDayTime.inNanoseconds; // timeSinceEpoch.nanosecondOfFloorDay; //nanosecondOfDay;
 
-  // todo: I don't think I like this --> timeSinceEpoch??? -- are these useful convenient overloads?
-  int toUnixTimeSeconds() => timeSinceEpoch.inSeconds;
-  int toUnixTimeMilliseconds() => timeSinceEpoch.inMilliseconds; //.totalMilliseconds.toInt();
-  int toUnixTimeMicroseconds() => timeSinceEpoch.totalMicroseconds.floor();
+  int get epochSeconds => timeSinceEpoch.totalSeconds.floor(); // epochDay*TimeConstants.secondsPerDay + timeOfEpochDay.inSeconds;
+  int get epochMilliseconds => timeSinceEpoch.totalMilliseconds.floor(); // epochDay*TimeConstants.millisecondsPerDay + timeOfEpochDay.inMilliseconds;
+  int get epochMicroseconds => timeSinceEpoch.totalMicroseconds.floor();
+  //int epochNanoseconds() => timeSinceEpoch.inNanoseconds;
+  //bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
+  //BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
+
+  // epochDay
+  // epochTimeOfDay
+  // timeSinceEpoch
+
+  // epochDay
+  // epochTimeOfDay
+  // epochTime <-- technically correct, but, I can see a lot of problems with this
+
+  // daysSinceEpoch <-- I really like this (I also like epochDay)
+  // timeOfEpochDay <-- but, I don't like this, so, it pushes me back to the first set;
+  // timeSinceEpoch
+
+  // epochDay
+  // timeOfEpochDay
+  // timeSinceEpoch
+
+  // epochDay
+  // epochDayTime
+  // timeSinceEpoch <-- this is the format used by core:Duration
+
+  // epochDay
+  // epochDayTime
+  // epochTime
+
+  // timeSinceEpoch <-- this is the format used by core:Duration
+  // daysSinceEpoch <-- but these aren't really the same thing daysSinceEpoch != timeSinceEpoch.inDays()
+  //    <--- I think cognitively, this breaks down in the negatives, since, `-1` ends at 1 moment before the epoch.
+  // secondsSinceEpoch
+  // millisecondsSinceEpoch
+  // microsecondsSinceEpoch
+  // timeOfDaySinceEpoch ????????????
+
+  // timeSinceEpoch <-- this is the format used by core:Duration
+  // epochDay
+  // epochDayTime or epochTimeOfDay or timeOfEpochDay or epochDayClockTime or epochDayTimeSinceMidnight
+  // epochSeconds
+  // epochMilliseconds
+  // epochMicroseconds
+
+  // todo: we do this a lot just to get Time.epochDay --> should we have a shortcut for this?
+  int get epochDay {
+    var ms = ITime.millisecondsOf(timeSinceEpoch);
+    var ns = ITime.nanosecondsIntervalOf(timeSinceEpoch);
+
+    // todo: determine if there are other corner-cases here
+    if (ms == 0 && ns < 0) return -1;
+    var days = ms ~/ TimeConstants.millisecondsPerDay;
+    if (ms < 0 && ms % TimeConstants.millisecondsPerDay != 0) return days - 1;
+
+    return days;
+  }
+
+  LocalTime get epochDayLocalTime => LocalTime.sinceMidnight(epochDayTime);
+
+  Time get epochDayTime {
+    // todo: much simplify
+    // return timeSinceEpoch.subtract(Time(days: epochDay));
+    var ms = ITime.millisecondsOf(timeSinceEpoch);
+    var ns = ITime.nanosecondsIntervalOf(timeSinceEpoch);
+
+    return ITime.untrusted(ms - epochDay * TimeConstants.millisecondsPerDay, ns);
+  }
 
   // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
   //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(timeSinceEpoch.inDays);
-    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, timeSinceEpoch.nanosecondOfFloorDay, Offset.zero);
+    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(epochDay);
+    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, epochDayTime.inNanoseconds, Offset.zero);
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 

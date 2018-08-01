@@ -63,7 +63,7 @@ class _HashArrayCache implements ZoneIntervalMap {
   /// [instant]: The Instant to test.
   /// Returns: The defined ZoneOffsetPeriod or null.
   ZoneInterval getZoneInterval(Instant instant) {
-    int period = safeRightShift(instant.daysSinceEpoch, _periodShift);
+    int period = safeRightShift(instant.epochDay, _periodShift);
     int index = period & _cachePeriodMask;
     var node = _instantCache[index];
     if (node == null || node.period != period) {
@@ -111,7 +111,7 @@ class _HashCacheNode {
     // day boundary.)
     // If the raw end is the end of time, the condition will definitely
     // evaluate to false.
-    while (IZoneInterval.rawEnd(interval).daysSinceEpoch < nextPeriodStartDays) {
+    while (IZoneInterval.rawEnd(interval).epochDay < nextPeriodStartDays) {
       interval = map.getZoneInterval(interval.end);
       node = new _HashCacheNode(interval, period, node);
     }
@@ -122,7 +122,7 @@ class _HashCacheNode {
   /// Initializes a new instance of the [_HashCacheNode] class.
   ///
   /// [interval]: The zone interval.
-  /// [period]: 
+  /// [period]:
   /// [previous]: The previous [_HashCacheNode] node.
   _HashCacheNode(this.interval, this.period, this.previous);
 }
