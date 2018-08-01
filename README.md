@@ -6,9 +6,29 @@ with support for timezones, calendars, cultures, formatting and parsing.
 
 Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
-Time Machine is ready for [Dart 2](https://www.dartlang.org/dart-2), which should be entering 
-[stable](https://github.com/dart-lang/sdk/issues?q=is%3Aopen+is%3Aissue+milestone%3ADart2Stable) 
-[soon](https://www.reddit.com/r/dartlang/comments/90n4he/dart_sends_mixed_signals_regarding_whether_to_use/e2smi6a/).
+**Goals**
+* Clarity - clear, concise, and intuitive
+* Flexibility - multiple representations of time to fit different use cases
+* Consistency - works the same across all platforms
+* Testable - it should be easy to test your date and time dependent code
+* Easy - the library should do the hard things for you
+
+**Core API**
+* Duration - an amount of time with microsecond precision
+* DateTime - represents a unique point in time or a point in localtime with microsecond or millisecond precision
+
+**TimeMachine API**
+* Time - an amount of time with nanosecond precision
+* Instant - represents a unique point in time
+* Period - amount of time represented with calendar compatible semantics
+* LocalTime - the time of day
+* LocalDate - the date on the calendar
+* LocalDateTime - a complete calendar datetime
+* Offset - the timezone offset from UTC
+* OffsetTime, OffsetDate, OffsetDateTime - Local variants combined with Offset information
+* DateTimeZone - a mapping between Instants and LocalDateTimes
+* ZonedDateTime - OffsetDateTime with Timezone information; correlates Instants with moments on the Calendar
+* Culture - formatting and parsing rules specific to a locale
 
 ### Example Code:
 
@@ -120,6 +140,10 @@ import 'package:flutter/services.dart';
 await TimeMachine.initialize({rootBundle: rootBundle});
 ```
 
+Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
+we'll be able to merge VM and the Flutter code paths and no asset entry and no special import will be required.
+It would look just like the VM example.
+
 Or with: https://pub.dartlang.org/packages/flutter_native_timezone
 
 ```dart
@@ -128,10 +152,6 @@ import 'package:flutter/services.dart';
 // you can get Timezone information directly from the native interface with flutter_native_timezone
 await TimeMachine.initialize({rootBundle: rootBundle, timeZone: await Timezone.getLocalTimezone()});
 ```
-
-Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
-we'll be able to merge VM and the Flutter code paths and no asset entry and no special import will be required.
-It would look just like the VM example.
 
 ### DDC Specific Notes
 
