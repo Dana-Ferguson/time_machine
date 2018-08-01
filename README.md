@@ -13,19 +13,18 @@ with support for timezones, calendars, cultures, formatting and parsing. Time Ma
 
 **Core API**
 * Duration - an amount of time with microsecond precision
-* DateTime - represents a unique point in time or a point in localtime with microsecond or millisecond precision
+* DateTime - a unique point in time or a point in localtime with microsecond or millisecond precision
 
 **TimeMachine API**
 * Time - an amount of time with nanosecond precision
-* Instant - represents a unique point in time
-* Period - amount of time represented with calendar compatible semantics
-* LocalTime - the time of day
+* Instant - a unique point on the utc_timeline
+* LocalTime - the time on the clock
 * LocalDate - the date on the calendar
-* LocalDateTime - a complete calendar datetime
-* Offset - the timezone offset from UTC
-* OffsetTime, OffsetDate, OffsetDateTime - Local variants combined with Offset information
-* DateTimeZone - a mapping between Instants and LocalDateTimes
-* ZonedDateTime - OffsetDateTime with Timezone information; correlates Instants with moments on the Calendar
+* LocalDateTime - a location on the clock and calendar
+* Period - amount of time on the clock and calendar
+* Offset - the timezone offset from the utc_timeline
+* DateTimeZone - a mapping between the utc_timeline, and clock and calendar locations
+* ZonedDateTime - a unique point on the utc_timeline and a location on the clock and calendar
 * Culture - formatting and parsing rules specific to a locale
 
 ### Example Code:
