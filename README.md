@@ -2,9 +2,7 @@
 
 Time Machine is a date and time library for
 [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm)
-with support for timezones, calendars, cultures, formatting and parsing.
-
-Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
+with support for timezones, calendars, cultures, formatting and parsing. Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
 **Goals**
 * Clarity - clear, concise, and intuitive
