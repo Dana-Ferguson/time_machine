@@ -203,9 +203,9 @@ class Time implements Comparable<Time> {
     intervalNanoseconds += (microseconds * TimeConstants.nanosecondsPerMicrosecond).round();
 
     intervalNanoseconds += ((days - _days) * TimeConstants.nanosecondsPerDay).round();
-    intervalNanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerDay).round();
-    intervalNanoseconds += ((minutes - _minutes) * TimeConstants.nanosecondsPerDay).round();
-    intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerDay).round();
+    intervalNanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerHour).round();
+    intervalNanoseconds += ((minutes - _minutes) * TimeConstants.nanosecondsPerMinute).round();
+    intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerSecond).round();
     intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
 
     return new Time._untrusted(totalMilliseconds, intervalNanoseconds);
