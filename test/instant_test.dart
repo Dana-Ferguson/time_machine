@@ -40,7 +40,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
 
 @Test()
 void BasicSpanTests() {
-  var aSpan = new Time.complex(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
+  var aSpan = new Time(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
 // print('aSpan.totalDays = ${aSpan.totalDays}');
 
   expect(aSpan.totalDays, 11+2);

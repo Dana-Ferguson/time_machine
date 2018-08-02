@@ -153,29 +153,6 @@ class Time implements Comparable<Time> {
     // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
   }
 
-  factory Time({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
-    int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) {
-    milliseconds += days * TimeConstants.millisecondsPerDay;
-    milliseconds += hours * TimeConstants.millisecondsPerHour;
-    milliseconds += minutes * TimeConstants.millisecondsPerMinute;
-    milliseconds += seconds * TimeConstants.millisecondsPerSecond;
-
-    // todo: can this be simplified?
-    if (microseconds > TimeConstants.microsecondsPerMillisecond) {
-      milliseconds += microseconds ~/ TimeConstants.microsecondsPerMillisecond;
-      nanoseconds += microseconds % TimeConstants.microsecondsPerMillisecond * TimeConstants.nanosecondsPerMicrosecond;;
-    }
-    else if (microseconds < -TimeConstants.microsecondsPerMillisecond) {
-      milliseconds += microseconds ~/ TimeConstants.microsecondsPerMillisecond;
-      nanoseconds += arithmeticMod(microseconds, TimeConstants.microsecondsPerMillisecond) * TimeConstants.nanosecondsPerMicrosecond;
-    }
-    else {
-      nanoseconds += microseconds * TimeConstants.nanosecondsPerMicrosecond;
-    }
-
-    return new Time._untrusted(milliseconds, nanoseconds);
-  }
-
   factory Time.bigIntNanoseconds(BigInt bigNanoseconds) {
     // todo: this clamps -- should we test for overflow?
     var milliseconds = (bigNanoseconds ~/ TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
@@ -183,32 +160,26 @@ class Time implements Comparable<Time> {
     return Time._untrusted(milliseconds, nanoseconds);
   }
 
-  // todo: I don't like this name at all
-  factory Time.complex({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
+  // todo: more optimization likely possible
+  factory Time({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
     num milliseconds = 0, num microseconds = 0, num nanoseconds = 0}) {
-    int _days = days.floor();
-    int _hours = hours.floor();
-    int _minutes = minutes.floor();
-    int _seconds = seconds.floor();
-    int _milliseconds = milliseconds.floor();
+    var _hours = days * TimeConstants.hoursPerDay;
+    var _minutes = (_hours + hours) * TimeConstants.minutesPerHour;
+    var _seconds = (_minutes + minutes) * TimeConstants.secondsPerMinute;
+    var _milliseconds = (_seconds + seconds) * TimeConstants.millisecondsPerSecond + milliseconds;
 
-    var totalMilliseconds = _milliseconds;
-    var intervalNanoseconds = nanoseconds.toInt();
+    var _microseconds = (_milliseconds - _milliseconds.toInt()) * TimeConstants.microsecondsPerMillisecond;
 
-    totalMilliseconds += _days * TimeConstants.millisecondsPerDay;
-    totalMilliseconds += _hours * TimeConstants.millisecondsPerHour;
-    totalMilliseconds += _minutes * TimeConstants.millisecondsPerMinute;
-    totalMilliseconds += _seconds * TimeConstants.millisecondsPerSecond;
+    // note: this is here to deal with extreme values
+    if (microseconds.abs() > Platform.maxMicrosecondsToNanoseconds) {
+      var millisecondsToAdd = microseconds ~/ TimeConstants.microsecondsPerMillisecond;
+      _milliseconds += millisecondsToAdd;
+      microseconds -= millisecondsToAdd * TimeConstants.microsecondsPerMillisecond;
+    }
 
-    intervalNanoseconds += (microseconds * TimeConstants.nanosecondsPerMicrosecond).round();
+    var _nanoseconds = (_microseconds + microseconds) * TimeConstants.nanosecondsPerMicrosecond + nanoseconds;
 
-    intervalNanoseconds += ((days - _days) * TimeConstants.nanosecondsPerDay).round();
-    intervalNanoseconds += ((hours - _hours) * TimeConstants.nanosecondsPerHour).round();
-    intervalNanoseconds += ((minutes - _minutes) * TimeConstants.nanosecondsPerMinute).round();
-    intervalNanoseconds += ((seconds - _seconds) * TimeConstants.nanosecondsPerSecond).round();
-    intervalNanoseconds += ((milliseconds - _milliseconds) * TimeConstants.nanosecondsPerMillisecond).round();
-
-    return new Time._untrusted(totalMilliseconds, intervalNanoseconds);
+    return new Time._untrusted(_milliseconds.toInt(), _nanoseconds.toInt());
   }
 
   Time.duration(Duration duration)
@@ -242,7 +213,7 @@ class Time implements Comparable<Time> {
   double get totalSeconds => _milliseconds / TimeConstants.millisecondsPerSecond + _nanosecondsInterval / TimeConstants.nanosecondsPerSecond;
   double get totalMilliseconds => _milliseconds + _nanosecondsInterval / TimeConstants.nanosecondsPerMillisecond;
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
-  double get totalNanoseconds => inNanoseconds.toDouble();
+  double get totalNanoseconds => canNanosecondsBeInteger ? inNanoseconds.toDouble() : inNanosecondsAsBigInt.toDouble();
 
   /*
   // todo: I think these can be calculated more cheaply .. but, we're just not doing it right

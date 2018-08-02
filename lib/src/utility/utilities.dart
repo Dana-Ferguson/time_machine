@@ -2,6 +2,8 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
+import 'package:time_machine/src/time_machine_internal.dart';
+
 abstract class Platform {
   static bool _checkForDartVM() {
     double n = 1.0;
@@ -40,6 +42,8 @@ abstract class Platform {
   static const int intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
   static const int int32MinValue = -2147483648;
   static const int int32MaxValue = 2147483647;
+
+  static const int maxMicrosecondsToNanoseconds = Platform.intMaxValueJS ~/ TimeConstants.microsecondsPerMillisecond;
 
   // representable in JS and VM: +\- 9223372036854775000 (but, constants in JS must be bounded by intMinValueJS and intMaxValueJS)
   // Fix for: https://github.com/dart-lang/sdk/issues/33282 <-- bizarre
@@ -87,5 +91,5 @@ int negLeftShift(int x, int y) {
   return -~(x << y) -1;
 }
 
-int safeRightShift(int x, int y) => x >= 0 ? x >> y : -(~x >> y) -1; 
+int safeRightShift(int x, int y) => x >= 0 ? x >> y : -(~x >> y) -1;
 int safeLeftShift(int x, int y) => x >= 0 ? x << y : -~(x << y) -1;

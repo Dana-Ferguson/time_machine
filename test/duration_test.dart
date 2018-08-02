@@ -375,11 +375,11 @@ void Min()
 
 @Test()
 void ComplexConstructor() {
-  expect(Time.complex(days: 1.5).totalDays, 1.5);
-  expect(Time.complex(hours: 1.5).totalHours, 1.5);
-  expect(Time.complex(minutes: 1.5).totalMinutes, 1.5);
-  expect(Time.complex(seconds: 1.5).totalSeconds, 1.5);
-  expect(Time.complex(milliseconds: 1.5).totalMilliseconds, 1.5);
-  expect(Time.complex(microseconds: 1.5).totalMicroseconds, 1.5);
-  expect(Time.complex(nanoseconds: 1.5).inNanoseconds, 1);
+  expect(Time(days: 1.5).totalDays, 1.5);
+  expect(Time(hours: 1.5).totalHours, 1.5);
+  expect(Time(minutes: 1.5).totalMinutes, 1.5);
+  expect(Time(seconds: 1.5).totalSeconds, 1.5);
+  expect(Time(milliseconds: 1.5).totalMilliseconds, 1.5);
+  expect(Time(microseconds: 1.5).totalMicroseconds, 1.5);
+  expect(Time(nanoseconds: 1.5).totalNanoseconds, 1);
 }

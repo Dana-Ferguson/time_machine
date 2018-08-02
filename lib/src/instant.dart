@@ -60,6 +60,7 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this.timeSinceEpoch);
 
+  // todo: this is dumb.
   /// Time since the [unixEpoch]
   factory Instant({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
     int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) =>
@@ -74,7 +75,7 @@ class Instant implements Comparable<Instant> {
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
 
-  factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time.complex(days: julianDate);
+  factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time(days: julianDate);
 
   factory Instant.dateTime(DateTime dateTime) {
     if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
