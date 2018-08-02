@@ -138,7 +138,7 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 {
   // Week year 2005 only has 52 weeks
   // Assert.Throws<ArgumentOutOfRangeException>
-  expect(() => new LocalDate.weekYearWeekAndDay(2005, 53, DayOfWeek.sunday), throwsRangeError);
+  expect(() => new LocalDate.isoWeekDate(2005, 53, DayOfWeek.sunday), throwsRangeError);
 }
 
 @Test()
@@ -151,7 +151,7 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 @TestCase(const [2014, 8, 5, DayOfWeek.monday, 25])
 void FromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek, int expectedDay)
 {
-  var date = new LocalDate.yearMonthWeekAndDay(year, month, occurrence, dayOfWeek);
+  var date = new LocalDate.onDayOfWeek(year, month, occurrence, dayOfWeek);
   expect(year, date.year);
   expect(month, date.month);
   expect(expectedDay, date.day);

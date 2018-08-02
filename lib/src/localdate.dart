@@ -148,7 +148,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The date corresponding to the given week year / week of week year / day of week.
   ///
   /// see: https://en.wikipedia.org/wiki/ISO_week_date
-  factory LocalDate.weekYearWeekAndDay(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek) =>
+  factory LocalDate.isoWeekDate(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek) =>
       WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
@@ -166,7 +166,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [dayOfWeek]: The day-of-week of the value to return.
   /// The date corresponding to the given year and month, on the given occurrence of the
   /// given day of week.
-  factory LocalDate.yearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek)
+  factory LocalDate.onDayOfWeek(int year, int month, int occurrence, DayOfWeek dayOfWeek)
   {
     // This validates year and month as well as getting us a useful date.
     LocalDate startOfMonth = new LocalDate(year, month, 1);
