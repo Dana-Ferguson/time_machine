@@ -60,16 +60,10 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this.timeSinceEpoch);
 
-  // todo: this is dumb. ... this was really just for FromUnixTimeSeconds, etc... and got out of control
-  /// Time since the [unixEpoch]
-//  factory Instant({int seconds = 0, int milliseconds = 0, int microseconds = 0, /*int nanoseconds = 0*/}) =>
-//      Instant.epochTime(
-//          Time(/*days: days, hours:hours, minutes: minutes, */seconds: seconds,
-//              milliseconds: milliseconds, microseconds: microseconds, /*nanoseconds: nanoseconds*/));
-
   // todo: something else?
   factory Instant() => Instant.fromEpochSeconds(0);
 
+  /// note: these are much faster than calling [Instant.epochTime]
   factory Instant.fromEpochSeconds(int seconds) => Instant.epochTime(ITime.trusted(seconds * TimeConstants.millisecondsPerSecond));
   factory Instant.fromEpochMilliseconds(int milliseconds) => Instant.epochTime(ITime.trusted(milliseconds));
   factory Instant.fromEpochMicroseconds(int microseconds) {
@@ -88,7 +82,7 @@ class Instant implements Comparable<Instant> {
   factory Instant.fromEpochNanoseconds(int nanoseconds) => Instant.epochTime(ITime.trusted(0, nanoseconds));
   factory Instant.fromEpochBigIntNanoseconds(BigInt nanoseconds) => Instant.epochTime(Time.bigIntNanoseconds(nanoseconds));
 
-  // Convenience methods from NodaTime -- evaluate if I want to keep these, todo: convert to be like LocalDateTime?
+  // Convenience methods, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
     var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
@@ -151,18 +145,6 @@ class Instant implements Comparable<Instant> {
     return new LocalInstant(asDuration.timeSinceEpoch);
   }
 
-  /*
-  // Span operator-(Instant instant) => _span - instant._span;
-  // todo: is there any clever way to add type annotations to this?
-  dynamic operator-(dynamic other) =>
-      other is Instant ? timeUntil(other) :
-      other is Time ? minus(other) :
-      throw new ArgumentError('Expected Time or Instant.');*/
-
-  // todo: this name is really bad
-  // todo: think about this name ... it's not good
-  // Instant minusSpan(Span span) => new Instant._trusted(_span - span);
-
   /// Calculates the time until [this] would become [instant].
   /// [this] + [Time] = [instant] or `start + Time = end`
   Time timeUntil(Instant instant) => instant.timeSinceEpoch.subtract(timeSinceEpoch);
@@ -213,44 +195,6 @@ class Instant implements Comparable<Instant> {
   bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
   BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
 
-  // epochDay
-  // epochTimeOfDay
-  // timeSinceEpoch
-
-  // epochDay
-  // epochTimeOfDay
-  // epochTime <-- technically correct, but, I can see a lot of problems with this
-
-  // daysSinceEpoch <-- I really like this (I also like epochDay)
-  // timeOfEpochDay <-- but, I don't like this, so, it pushes me back to the first set;
-  // timeSinceEpoch
-
-  // epochDay
-  // timeOfEpochDay
-  // timeSinceEpoch
-
-  // epochDay
-  // epochDayTime
-  // timeSinceEpoch <-- this is the format used by core:Duration
-
-  // epochDay
-  // epochDayTime
-  // epochTime
-
-  // timeSinceEpoch <-- this is the format used by core:Duration
-  // daysSinceEpoch <-- but these aren't really the same thing daysSinceEpoch != timeSinceEpoch.inDays()
-  //    <--- I think cognitively, this breaks down in the negatives, since, `-1` ends at 1 moment before the epoch.
-  // secondsSinceEpoch
-  // millisecondsSinceEpoch
-  // microsecondsSinceEpoch
-  // timeOfDaySinceEpoch ????????????
-
-  // timeSinceEpoch <-- this is the format used by core:Duration
-  // epochDay
-  // epochDayTime or epochTimeOfDay or timeOfEpochDay or epochDayClockTime or epochDayTimeSinceMidnight
-  // epochSeconds
-  // epochMilliseconds
-  // epochMicroseconds
 
   // todo: we do this a lot just to get Time.epochDay --> should we have a shortcut for this?
   int get epochDay {
@@ -276,8 +220,6 @@ class Instant implements Comparable<Instant> {
     return ITime.untrusted(ms - epochDay * TimeConstants.millisecondsPerDay, ns);
   }
 
-  // todo: should be toUtc iaw Dart Style Guide ~ leaving like it is in Nodatime for ease of porting
-  //  ?? maybe the same for the 'WithOffset' ??? --< toOffsetDateTime
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
     var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(epochDay);
