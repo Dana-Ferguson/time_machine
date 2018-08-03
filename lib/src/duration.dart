@@ -102,13 +102,9 @@ class Time implements Comparable<Time> {
 
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
   final int _nanosecondsInterval;
+
   static const int _minNano = 0;
-  // static const int _maxNano = TimeConstants.nanosecondsPerMillisecond - 1; // 999999;
 
-  // this is only true on the VM....
-  // static final Duration maxValue = new Duration._trusted(9007199254740992, 999999);
-
-  // todo: Should these technically be under TimeConstants? (since they are 'Time' and 'const'??? ... or should I move TimeConstants to here?)
   static const Time zero = const Time._(0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
   static const Time epsilon = const Time._(0, 1);
@@ -122,10 +118,10 @@ class Time implements Comparable<Time> {
 
   // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
-  static Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+  static final Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
   /// Gets the minimum (largest negative) value supported by [Time].
-  static Time minValue = new Time(days: ITime.minDays);
+  static final Time minValue = new Time(days: ITime.minDays);
 
   const Time._(this._milliseconds, [this._nanosecondsInterval = 0]);
 
@@ -196,7 +192,6 @@ class Time implements Comparable<Time> {
           microseconds: millisecondsOfSecond * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
-  // todo: I feel like these should have a common prefix ... but, I am unsure
   int get hoursOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
   int get minutesOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
   int get secondsOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
