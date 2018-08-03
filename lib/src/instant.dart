@@ -46,7 +46,8 @@ class Instant implements Comparable<Instant> {
 
   final Time timeSinceEpoch;
 
-  // todo: investigate if this is okay ... see Instant.cs#115
+  // todo: investigate if this is okay ... see Instant.cs#115 (reprinted below)
+  // if (epochDays < MinDays || epochDays > MaxDays) throw new OverflowException("Operation would overflow range of Instant");
   factory Instant.epochTime(Time time) {
     if (time < minValue.timeSinceEpoch) return IInstant.beforeMinValue;
     if (time > maxValue.timeSinceEpoch) return IInstant.afterMaxValue;
@@ -181,8 +182,7 @@ class Instant implements Comparable<Instant> {
     return new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt(), isUtc: true);
   }
 
-  // DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
-  // todo: verify this is equivalent to above? ... detect platform and do microseconds where appropriate
+  // These are the same: DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
   DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
 
   // int get daysSinceEpoch => timeSinceEpoch.inDays; //days;

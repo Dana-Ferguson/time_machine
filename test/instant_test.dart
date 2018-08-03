@@ -267,6 +267,17 @@ void ToDateTimeUtc()
   expect(true, actual.isUtc);
 }
 
+@Test()
+void ToDateTimeLocal()
+{
+  Instant x = new Instant.utc(2011, 08, 18, 20, 53);
+  DateTime expected = x.inLocalZone().toDateTimeLocal(); //new DateTime.utc(2011, 08, 18, 20, 53, 0);
+  DateTime actual = x.toDateTimeLocal();
+  expect(expected, actual);
+
+  // Kind isn't checked by Equals...
+  expect(false, actual.isUtc);
+}
 // See issue 269, but now we throw a nicer exception.
 //@Test()
 //void ToBclTypes_DateOutOfRange()
