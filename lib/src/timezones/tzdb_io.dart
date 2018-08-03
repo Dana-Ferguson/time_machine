@@ -15,13 +15,13 @@ import 'package:time_machine/src/platforms/platform_io.dart';
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var _jsonMap = await _loadIdMapping();
-    
+
     // todo: Dart2.0: seek a more elegant mapping of <String, dynamic> to <String, String>
     var map = <String, String>{IDateTimeZone.utcId: ''};
     _jsonMap.forEach((key, value){
       map[key] = value;
     });
-    
+
     return new TzdbIndex._(map);
   }
 
@@ -34,14 +34,14 @@ class TzdbIndex {
 
     var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
     var reader = new DateTimeZoneReader(binary);
-    
+
     while (reader.isMore) {
       var id = reader.readString();
       var zone = PrecalculatedDateTimeZone.read(reader, id);
       cache[id] = zone;
       jsonMap[id] = '';
     }
-    
+
     // todo: this is a good thing to log? (todo: research whether it's ok for libraries in Dart to log)
     // print('Total ${cache.length} zones loaded');
 
@@ -65,7 +65,7 @@ class TzdbIndex {
 
   Iterable<String> get zoneIds => _zoneFilenames.keys;
   bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);
-  
+
   DateTimeZone _zoneFromBinary(ByteData binary) {
     var reader = new DateTimeZoneReader(binary);
     // this should be the same as the index id
@@ -77,20 +77,20 @@ class TzdbIndex {
   Future<DateTimeZone> getTimeZone(String zoneId) async {
     var zone = getTimeZoneSync(zoneId);
     if (zone != null) return zone;
-    
+
     var filename = _zoneFilenames[zoneId];
     if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had no associated filename.');
-    
+
     return _cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin'));
   }
 
   DateTimeZone getTimeZoneSync(String zoneId) {
     var zone = _cache[zoneId];
     if (zone != null) return zone;
-    
+
     var binaryData = _binaryCache.remove(zoneId);
     if (binaryData == null) return null;
-    
+
     return _cache[zoneId] = _zoneFromBinary(binaryData);
   }
 
@@ -121,8 +121,8 @@ class DateTimeZoneReader extends BinaryReader {
       else endSeconds = /*stream.*/readInt32();
     }
 
-    Instant start = startSeconds == null ? IInstant.beforeMinValue : Instant(seconds: startSeconds);
-    Instant end = endSeconds == null ? IInstant.afterMaxValue : Instant(seconds: endSeconds);
+    Instant start = startSeconds == null ? IInstant.beforeMinValue : Instant.fromEpochSeconds(startSeconds);
+    Instant end = endSeconds == null ? IInstant.afterMaxValue : Instant.fromEpochSeconds(endSeconds);
 
     var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());

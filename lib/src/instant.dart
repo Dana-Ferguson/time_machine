@@ -60,13 +60,33 @@ class Instant implements Comparable<Instant> {
 
   const Instant._trusted(this.timeSinceEpoch);
 
-  // todo: this is dumb.
+  // todo: this is dumb. ... this was really just for FromUnixTimeSeconds, etc... and got out of control
   /// Time since the [unixEpoch]
-  factory Instant({int days = 0, int hours = 0, int minutes = 0, int seconds = 0,
-    int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) =>
-      Instant.epochTime(
-          Time(days: days, hours:hours, minutes: minutes, seconds: seconds,
-              milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds));
+//  factory Instant({int seconds = 0, int milliseconds = 0, int microseconds = 0, /*int nanoseconds = 0*/}) =>
+//      Instant.epochTime(
+//          Time(/*days: days, hours:hours, minutes: minutes, */seconds: seconds,
+//              milliseconds: milliseconds, microseconds: microseconds, /*nanoseconds: nanoseconds*/));
+
+  // todo: something else?
+  factory Instant() => Instant.fromEpochSeconds(0);
+
+  factory Instant.fromEpochSeconds(int seconds) => Instant.epochTime(ITime.trusted(seconds * TimeConstants.millisecondsPerSecond));
+  factory Instant.fromEpochMilliseconds(int milliseconds) => Instant.epochTime(ITime.trusted(milliseconds));
+  factory Instant.fromEpochMicroseconds(int microseconds) {
+    var milliseconds = 0;
+
+    // todo: this is copied from Time constructor, can probably combine code paths
+    // note: this is here to deal with extreme values
+    if (microseconds.abs() > Platform.maxMicrosecondsToNanoseconds) {
+      milliseconds = microseconds ~/ TimeConstants.microsecondsPerMillisecond;
+      microseconds -= milliseconds * TimeConstants.microsecondsPerMillisecond;
+    }
+
+    var nanoseconds = microseconds * TimeConstants.nanosecondsPerMicrosecond;
+    return Instant.epochTime(ITime.untrusted(milliseconds, nanoseconds));
+  }
+  factory Instant.fromEpochNanoseconds(int nanoseconds) => Instant.epochTime(ITime.trusted(0, nanoseconds));
+  factory Instant.fromEpochBigIntNanoseconds(BigInt nanoseconds) => Instant.epochTime(Time.bigIntNanoseconds(nanoseconds));
 
   // Convenience methods from NodaTime -- evaluate if I want to keep these, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
@@ -189,9 +209,9 @@ class Instant implements Comparable<Instant> {
   int get epochSeconds => timeSinceEpoch.totalSeconds.floor(); // epochDay*TimeConstants.secondsPerDay + timeOfEpochDay.inSeconds;
   int get epochMilliseconds => timeSinceEpoch.totalMilliseconds.floor(); // epochDay*TimeConstants.millisecondsPerDay + timeOfEpochDay.inMilliseconds;
   int get epochMicroseconds => timeSinceEpoch.totalMicroseconds.floor();
-  //int epochNanoseconds() => timeSinceEpoch.inNanoseconds;
-  //bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
-  //BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
+  int get epochNanoseconds => timeSinceEpoch.inNanoseconds;
+  bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
+  BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
 
   // epochDay
   // epochTimeOfDay

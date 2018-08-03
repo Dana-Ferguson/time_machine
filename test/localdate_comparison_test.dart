@@ -65,7 +65,7 @@ void Equals_DifferentToOtherType()
 {
   LocalDate date = new LocalDate(2011, 1, 2);
   // ignore: unrelated_type_equality_checks
-  expect(date == new Instant(microseconds: 0), isFalse);
+  expect(date == new Instant.fromEpochMicroseconds(0), isFalse);
 }
 
 @Test()
@@ -152,7 +152,7 @@ void IComparableCompareTo_SameCalendar()
 }
 
 ///// IComparable.CompareTo returns a positive number for a null input.
-///// 
+/////
 //@Test()
 //void IComparableCompareTo_Null_Positive()
 //{
@@ -165,7 +165,7 @@ void IComparableCompareTo_SameCalendar()
 
 ///// IComparable.CompareTo throws an ArgumentException for non-null arguments
 ///// that are not a LocalDate.
-///// 
+/////
 //@Test()
 //void IComparableCompareTo_WrongType_ArgumentException()
 //{

@@ -16,10 +16,10 @@ Future main() async {
 
 @Test()
 void Equality() {
-  var equal1 = new Transition(Instant(seconds: 100), new Offset.hours(1));
-  var equal2 = new Transition(Instant(seconds: 100), new Offset.hours(1));
-  var unequal1 = new Transition(Instant(seconds: 101), new Offset.hours(1));
-  var unequal2 = new Transition(Instant(seconds: 100), new Offset.hours(2));
+  var equal1 = new Transition(Instant.fromEpochSeconds(100), new Offset.hours(1));
+  var equal2 = new Transition(Instant.fromEpochSeconds(100), new Offset.hours(1));
+  var unequal1 = new Transition(Instant.fromEpochSeconds(101), new Offset.hours(1));
+  var unequal2 = new Transition(Instant.fromEpochSeconds(100), new Offset.hours(2));
   TestHelper.TestEqualsStruct(equal1, equal2, [unequal1]);
   TestHelper.TestEqualsStruct(equal1, equal2, [unequal2]);
   TestHelper.TestOperatorEquality(equal1, equal2, unequal1);

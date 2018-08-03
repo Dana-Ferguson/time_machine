@@ -120,6 +120,7 @@ class Time implements Comparable<Time> {
   static const Time oneDay = const Time._(TimeConstants.millisecondsPerDay, 0);
   static const Time oneWeek = const Time._(TimeConstants.millisecondsPerWeek, 0);
 
+  // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
   static Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
