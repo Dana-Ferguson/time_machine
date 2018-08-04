@@ -39,7 +39,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// Returns: The resulting date/time.
   LocalDateTime._localInstant(LocalInstant localInstant)
-      : date = ILocalDate.fromDaysSinceEpoch(localInstant.daysSinceEpoch),
+      : date = LocalDate.fromEpochDay(localInstant.daysSinceEpoch),
         time = ILocalTime.trustedNanoseconds(localInstant.nanosecondOfDay);
 
   /// Initializes a new instance of [LocalDateTime].
@@ -98,7 +98,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     }
 
     return new LocalDateTime.localDateAtTime(
-        ILocalDate.fromDaysSinceEpoch(days, calendar),
+        LocalDate.fromEpochDay(days, calendar),
         ILocalTime.trustedNanoseconds(ns));
   }
 
@@ -185,7 +185,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
 
-  LocalInstant _toLocalInstant() => new LocalInstant.daysNanos(ILocalDate.daysSinceEpoch(date), time.nanosecondOfDay);
+  LocalInstant _toLocalInstant() => new LocalInstant.daysNanos(date.epochDay, time.nanosecondOfDay);
 
   /// Indicates whether the current object is equal to another object of the same type.
   ///

@@ -85,7 +85,7 @@ class Instant implements Comparable<Instant> {
 
   // Convenience methods, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
-    var days = ILocalDate.daysSinceEpoch(new LocalDate(year, monthOfYear, dayOfMonth));
+    var days = LocalDate(year, monthOfYear, dayOfMonth).epochDay;
     var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
@@ -96,7 +96,6 @@ class Instant implements Comparable<Instant> {
     if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
     return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
-
 
   int compareTo(Instant other) => timeSinceEpoch.compareTo(other.timeSinceEpoch);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
@@ -194,7 +193,6 @@ class Instant implements Comparable<Instant> {
   int get epochNanoseconds => timeSinceEpoch.inNanoseconds;
   bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
   BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
-
 
   // todo: we do this a lot just to get Time.epochDay --> should we have a shortcut for this?
   int get epochDay {

@@ -181,14 +181,18 @@ class LocalTime implements Comparable<LocalTime> {
   /// Gets the microsecond of this local time within the second, in the range 0 to 999,999 inclusive.
   int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
 
-  /// Gets the microsecond of this local time within the day, in the range 0 to 86,399,999,999 inclusive.
-  int get microsecondOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
-
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
 
   /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   int get nanosecondOfDay => _nanoseconds;
+
+  /// Gets the microsecond of this local time within the day, in the range 0 to 86,399,999,999 inclusive.
+  int get microsecondOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
+
+  // Time get timeOfDay => ITime.short(_nanoseconds); <-- a nanosecond only instance?
+  Time get timeOfDay => ITime.untrusted(0, _nanoseconds);
+  // int get nanosecondOfDay2 => timeOfDay.inNanoseconds;
 
   /// Adds the specified period to the time. Friendly alternative to `operator+()`.
   ///

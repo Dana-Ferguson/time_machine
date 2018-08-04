@@ -21,10 +21,10 @@ Future main() async {
 void Constructor_WithDays(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = ILocalDate.daysSinceEpoch(start);
+  int startDays = start.epochDay;
   for (int i = 0; i < 366; i++)
   {
-    expect(start.addDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i));
+    expect(start.addDays(i), LocalDate.fromEpochDay(startDays + i));
   }
 }
 
@@ -36,10 +36,10 @@ void Constructor_WithDays(int year)
 void Constructor_WithDaysAndCalendar(int year)
 {
   LocalDate start = new LocalDate(year, 1, 1);
-  int startDays = ILocalDate.daysSinceEpoch(start);
+  int startDays = start.epochDay;
   for (int i = 0; i < 366; i++)
   {
-    expect(start.addDays(i), ILocalDate.fromDaysSinceEpoch(startDays + i, CalendarSystem.iso));
+    expect(start.addDays(i), LocalDate.fromEpochDay(startDays + i, CalendarSystem.iso));
   }
 }
 
@@ -151,7 +151,7 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 @TestCase(const [2014, 8, 5, DayOfWeek.monday, 25])
 void FromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek, int expectedDay)
 {
-  var date = new LocalDate.onDayOfWeek(year, month, occurrence, dayOfWeek);
+  var date = new LocalDate.onDayOfWeekInMonth(year, month, occurrence, dayOfWeek);
   expect(year, date.year);
   expect(month, date.month);
   expect(expectedDay, date.day);

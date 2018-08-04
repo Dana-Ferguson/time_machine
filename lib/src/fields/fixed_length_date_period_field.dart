@@ -56,8 +56,8 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
       return ILocalDate.trusted(calculator.getYearMonthDay(year, newDayOfYear).withCalendarOrdinal(ICalendarSystem.ordinal(calendar)));
     }
     // LocalDate constructor will validate.
-    int days = ILocalDate.daysSinceEpoch(localDate) + daysToAdd;
-    return ILocalDate.fromDaysSinceEpoch(days, calendar);
+    int days = localDate.epochDay + daysToAdd;
+    return LocalDate.fromEpochDay(days, calendar);
   }
 
   int unitsBetween(LocalDate start, LocalDate end) =>

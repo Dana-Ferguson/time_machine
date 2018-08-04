@@ -95,7 +95,7 @@ static BadiYearMonthDayCalculator()
     // date's days-since-epoch value.
     var gregorianYear = year + gregorianYearOfFirstBadiYear - 1;
     var nawRuz = new LocalDate(gregorianYear, 3, _getNawRuzDayInMarch(year));
-    return ILocalDate.daysSinceEpoch(nawRuz);
+    return nawRuz.epochDay;
   }
 
   @protected

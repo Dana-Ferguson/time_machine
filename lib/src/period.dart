@@ -609,8 +609,8 @@ class Period {
     // It helps a little if they're in the same month, but just that test has a cost for other situations.
     // Being able to find the day of year if they're in the same year but different months doesn't help,
     // somewhat surprisingly.
-    int startDays = ILocalDate.daysSinceEpoch(start);
-    int endDays = ILocalDate.daysSinceEpoch(end);
+    int startDays = start.epochDay;
+    int endDays = end.epochDay;
     return endDays - startDays;
   }
 

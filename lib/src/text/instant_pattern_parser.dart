@@ -24,7 +24,7 @@ class InstantPatternParser implements IPatternParser<Instant> {
       throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
-    // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing 
+    // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing
     //    -- and I can't seem to find it backed up in a standard
     // https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
     if (patternText.length == 1)
@@ -67,7 +67,7 @@ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
   ParseResult<Instant> parse(String text) =>
       _pattern
           .parse(text)
-          .convert((local) => IInstant.trusted(new Time(days: ILocalDate.daysSinceEpoch(local.date), nanoseconds: local.nanosecondOfDay)));
+          .convert((local) => IInstant.trusted(new Time(days: local.date.epochDay, nanoseconds: local.nanosecondOfDay)));
 }
 
 

@@ -60,7 +60,7 @@ class LocalInstant {
   int get daysSinceEpoch => IInstant.trusted(_time).epochDay; // Instant.epochTime(_time).epochDay;
 
   @deprecated
-  // todo: -- make more efficent?
+  // todo: -- make more efficient?
   /// Nanosecond within the day.
   int get nanosecondOfDay => IInstant.trusted(_time).epochDayTime.inNanoseconds;
 
@@ -157,7 +157,7 @@ class LocalInstant {
     if (this == afterMaxValue) {
       return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
     }
-    var date = ILocalDate.fromDaysSinceEpoch(IInstant.trusted(_time).epochDay);
+    var date = LocalDate.fromEpochDay(IInstant.trusted(_time).epochDay);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
     var utc = new LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(nanosecondOfDay));
     return pattern.format(utc);

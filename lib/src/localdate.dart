@@ -8,8 +8,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal
 abstract class ILocalDate {
   static LocalDate trusted(YearMonthDayCalendar yearMonthDayCalendar) => new LocalDate._trusted(yearMonthDayCalendar);
-  static LocalDate fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar]) => new LocalDate._fromDaysSinceEpoch(daysSinceEpoch, calendar);
-  static int daysSinceEpoch(LocalDate localDate) => localDate._daysSinceEpoch;
+  // static LocalDate fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar]) => new LocalDate.fromEpochDay(daysSinceEpoch, calendar);
+  // static int daysSinceEpoch(LocalDate localDate) => localDate.epochDay;
   static YearMonthDay yearMonthDay(LocalDate localDate) => localDate._yearMonthDay;
   static YearMonthDayCalendar yearMonthDayCalendar(LocalDate localDate) => localDate._yearMonthDayCalendar;
 }
@@ -27,16 +27,15 @@ class LocalDate implements Comparable<LocalDate> {
   /// Constructs an instance from values which are assumed to already have been validated.
   LocalDate._trusted(this._yearMonthDayCalendar);
 
-  // todo: I want to expose `daysSinceEpoch` logic, is there a downside to this?
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
-  factory LocalDate._fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar])
+  factory LocalDate.fromEpochDay(int epochDay, [CalendarSystem calendar])
   {
     if (calendar == null) {
-      assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', daysSinceEpoch, ICalendarSystem.minDays(CalendarSystem.iso), ICalendarSystem.maxDays(CalendarSystem.iso)));
-      return new LocalDate._trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(daysSinceEpoch));
+      assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', epochDay, ICalendarSystem.minDays(CalendarSystem.iso), ICalendarSystem.maxDays(CalendarSystem.iso)));
+      return new LocalDate._trusted(GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(epochDay));
     } else {
-      return new LocalDate._trusted(ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, daysSinceEpoch));
+      return new LocalDate._trusted(ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, epochDay));
     }
   }
 
@@ -89,7 +88,7 @@ class LocalDate implements Comparable<LocalDate> {
     int days = Platform.isWeb
         ? (dateTime.millisecondsSinceEpoch + dateTime.timeZoneOffset.inMilliseconds) ~/ TimeConstants.millisecondsPerDay
         : (dateTime.microsecondsSinceEpoch + dateTime.timeZoneOffset.inMicroseconds) ~/ TimeConstants.microsecondsPerDay;
-    return new LocalDate._fromDaysSinceEpoch(days, calendar);
+    return new LocalDate.fromEpochDay(days, calendar);
   }
 
   /// Gets the calendar system associated with this local date.
@@ -107,7 +106,7 @@ class LocalDate implements Comparable<LocalDate> {
   int get day => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
-  int get _daysSinceEpoch => ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
+  int get epochDay => ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the week day of this local date expressed as an [DayOfWeek] value.
   DayOfWeek get dayOfWeek => ICalendarSystem.getDayOfWeek(calendar, _yearMonthDayCalendar.toYearMonthDay());
@@ -166,7 +165,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [dayOfWeek]: The day-of-week of the value to return.
   /// The date corresponding to the given year and month, on the given occurrence of the
   /// given day of week.
-  factory LocalDate.onDayOfWeek(int year, int month, int occurrence, DayOfWeek dayOfWeek)
+  factory LocalDate.onDayOfWeekInMonth(int year, int month, int occurrence, DayOfWeek dayOfWeek)
   {
     // This validates year and month as well as getting us a useful date.
     LocalDate startOfMonth = new LocalDate(year, month, 1);
@@ -452,7 +451,7 @@ class LocalDate implements Comparable<LocalDate> {
   LocalDate withCalendar(CalendarSystem calendar)
   {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new LocalDate._fromDaysSinceEpoch(_daysSinceEpoch, calendar);
+    return new LocalDate.fromEpochDay(epochDay, calendar);
   }
 
   /// Returns a new LocalDate representing the current value with the given number of years added.

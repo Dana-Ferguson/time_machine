@@ -269,7 +269,7 @@ void Contains_IntervalOverload(String firstInterval, String secondInterval, bool
 @Test()
 void Intersection_NullInterval_Throws()
 {
-  var value = new DateInterval(ILocalDate.fromDaysSinceEpoch(100), ILocalDate.fromDaysSinceEpoch(200));
+  var value = new DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
   // Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
   expect(() => value.intersection(null), throwsArgumentError);
 }
@@ -309,7 +309,7 @@ void Intersection(String firstInterval, String secondInterval, String expectedIn
 @Test()
 void Union_NullInterval_Throws()
 {
-  var value = new DateInterval(ILocalDate.fromDaysSinceEpoch(100), ILocalDate.fromDaysSinceEpoch(200));
+  var value = new DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
   // Assert.Throws<ArgumentNullException>(() => value.Union(null));
   expect(() => value.union(null), throwsArgumentError);
 }

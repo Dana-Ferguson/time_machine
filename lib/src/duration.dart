@@ -45,7 +45,7 @@ abstract class ITime {
   static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
-  static Time untrusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._untrusted(milliseconds, nanosecondsInterval);
+  static Time untrusted(int milliseconds, [int nanoseconds = 0]) => new Time._untrusted(milliseconds, nanoseconds);
 
   // Instant.epochTime(nanos).timeOfEpochDay.inNanoseconds
   @deprecated
@@ -124,6 +124,12 @@ class Time implements Comparable<Time> {
   static final Time minValue = new Time(days: ITime.minDays);
 
   const Time._(this._milliseconds, [this._nanosecondsInterval = 0]);
+
+  /*
+  factory Time._nanoTime(int nanoseconds) {
+    assert(nanoseconds.abs() < Platform.intMaxValueJS);
+    return Time._(0, nanoseconds);
+  }*/
 
   factory Time._untrusted(int milliseconds, [int nanoseconds = 0]) {
     if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Time._(milliseconds, nanoseconds);
@@ -211,16 +217,6 @@ class Time implements Comparable<Time> {
   double get totalMicroseconds => _milliseconds * TimeConstants.microsecondsPerMillisecond + _nanosecondsInterval / TimeConstants.nanosecondsPerMicrosecond;
   double get totalNanoseconds => canNanosecondsBeInteger ? inNanoseconds.toDouble() : inNanosecondsAsBigInt.toDouble();
 
-  /*
-  // todo: I think these can be calculated more cheaply .. but, we're just not doing it right
-  // todo: in reality .. these shouldn't be floors
-  int get inDays => floorDays; // totalDays.floor(); // (_milliseconds / TimeConstants.millisecondsPerDay).floor();
-  int get inHours => totalHours.floor(); // (_milliseconds / TimeConstants.millisecondsPerHour).floor();
-  int get inMinutes => totalMinutes.floor(); // (_milliseconds / TimeConstants.millisecondsPerMinute).floor();
-  int get inSeconds => totalSeconds.floor(); // (_milliseconds / TimeConstants.millisecondsPerSecond).floor();
-  int get inMilliseconds => totalMilliseconds.floor();
-  int get inMicroseconds => totalMicroseconds.floor();
-  int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;*/
   BigInt get inNanosecondsAsBigInt => BigInt.from(_milliseconds) * TimeConstants.nanosecondsPerMillisecondBigInt + BigInt.from(_nanosecondsInterval);
 
   int get inDays => _milliseconds ~/ TimeConstants.millisecondsPerDay;
