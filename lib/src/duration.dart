@@ -44,7 +44,7 @@ abstract class ITime {
 
   static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
-  static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => new Time._(milliseconds, nanosecondsInterval);
+  static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => MillisecondTime(milliseconds, nanosecondsInterval);
   static Time untrusted(int milliseconds, [int nanoseconds = 0]) => new Time._untrusted(milliseconds, nanoseconds);
 
   // Instant.epochTime(nanos).timeOfEpochDay.inNanoseconds
@@ -96,25 +96,24 @@ abstract class ITime {
 ///
 /// This type is immutable.
 @immutable
-class Time implements Comparable<Time> {
+abstract class Time implements Comparable<Time> {
   // 285420 years max (unlimited on VM)
-  final int _milliseconds;
-
+  int get _milliseconds;
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
-  final int _nanosecondsInterval;
+  int get _nanosecondsInterval;
 
   static const int _minNano = 0;
 
-  static const Time zero = const Time._(0);
+  static const Time zero = const MillisecondTime(0, 0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static const Time epsilon = const Time._(0, 1);
+  static const Time epsilon = const MillisecondTime(0, 1);
   // oneNanosecond is constant forever -- in theory, epsilon will change if we go beyond nanosecond precision.
-  static const Time oneNanosecond = const Time._(0, 1);
-  static const Time oneMicrosecond = const Time._(0, TimeConstants.nanosecondsPerMicrosecond);
-  static const Time oneMillisecond = const Time._(1, 0);
-  static const Time oneSecond = const Time._(TimeConstants.millisecondsPerSecond, 0);
-  static const Time oneDay = const Time._(TimeConstants.millisecondsPerDay, 0);
-  static const Time oneWeek = const Time._(TimeConstants.millisecondsPerWeek, 0);
+  static const Time oneNanosecond = const MillisecondTime(0, 1);
+  static const Time oneMicrosecond = const MillisecondTime(0, TimeConstants.nanosecondsPerMicrosecond);
+  static const Time oneMillisecond = const MillisecondTime(1, 0);
+  static const Time oneSecond = const MillisecondTime(TimeConstants.millisecondsPerSecond, 0);
+  static const Time oneDay = const MillisecondTime(TimeConstants.millisecondsPerDay, 0);
+  static const Time oneWeek = const MillisecondTime(TimeConstants.millisecondsPerWeek, 0);
 
   // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
@@ -123,16 +122,8 @@ class Time implements Comparable<Time> {
   /// Gets the minimum (largest negative) value supported by [Time].
   static final Time minValue = new Time(days: ITime.minDays);
 
-  const Time._(this._milliseconds, [this._nanosecondsInterval = 0]);
-
-  /*
-  factory Time._nanoTime(int nanoseconds) {
-    assert(nanoseconds.abs() < Platform.intMaxValueJS);
-    return Time._(0, nanoseconds);
-  }*/
-
   factory Time._untrusted(int milliseconds, [int nanoseconds = 0]) {
-    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new Time._(milliseconds, nanoseconds);
+    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new MillisecondTime(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
@@ -150,7 +141,7 @@ class Time implements Comparable<Time> {
       nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
     }
 
-    return new Time._(milliseconds, nanoseconds);
+    return new MillisecondTime(milliseconds, nanoseconds);
 
     // todo: custom errors
     // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
@@ -162,6 +153,8 @@ class Time implements Comparable<Time> {
     var nanoseconds = bigArithmeticMod(bigNanoseconds, TimeConstants.nanosecondsPerMillisecondBigInt).toInt();
     return Time._untrusted(milliseconds, nanoseconds);
   }
+
+  const Time._();
 
   // todo: more optimization likely possible
   factory Time({num days = 0, num hours = 0, num minutes = 0, num seconds = 0,
@@ -185,12 +178,13 @@ class Time implements Comparable<Time> {
     return new Time._untrusted(_milliseconds.toInt(), _nanoseconds.toInt());
   }
 
-  Time.duration(Duration duration)
-      :
-        _milliseconds = duration.inMilliseconds,
-        _nanosecondsInterval = TimeConstants.nanosecondsPerMicrosecond
-            * (duration.inMicroseconds - duration.inMilliseconds * TimeConstants.microsecondsPerMillisecond)
-  ;
+  factory Time.duration(Duration duration) {
+    var milliseconds = duration.inMilliseconds;
+    // todo: I think this can be optimized
+    var nanosecondsInterval = TimeConstants.nanosecondsPerMicrosecond
+        * (duration.inMicroseconds - duration.inMilliseconds * TimeConstants.microsecondsPerMillisecond);
+    return MillisecondTime(milliseconds, nanosecondsInterval);
+  }
 
   // https://www.dartlang.org/guides/language/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
   Duration get toDuration =>
@@ -198,13 +192,21 @@ class Time implements Comparable<Time> {
           microseconds: millisecondsOfSecond * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
+  /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
+  ///
+  /// see: https://en.wikipedia.org/wiki/12-hour_clock
+  int get hourOf12HourClock {
+    var hod = hoursOfDay;
+    return hod == 0 ? 12 : hod;
+  }
+
   int get hoursOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
   int get minutesOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
   int get secondsOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
   int get millisecondsOfSecond => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
   int get microsecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.microsecondsPerMillisecond
-      + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
+          + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
   int get nanosecondsOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
@@ -228,7 +230,9 @@ class Time implements Comparable<Time> {
   int get inNanoseconds => _milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
 
   // this isn't exact (since we don't look at _nanosecondsInterval, we just don't allow `==`
-  bool get canNanosecondsBeInteger => _milliseconds < Platform.intMaxValue /~ TimeConstants.nanosecondsPerMillisecond && _milliseconds > Platform.intMinValue /~ TimeConstants.nanosecondsPerMillisecond;
+  bool get canNanosecondsBeInteger =>
+      _milliseconds < Platform.intMaxValue ~/ TimeConstants.nanosecondsPerMillisecond
+          && _milliseconds > Platform.intMinValue ~/ TimeConstants.nanosecondsPerMillisecond;
 
   bool get isNegative => _milliseconds < 0 || (_milliseconds == 0 && _nanosecondsInterval < 0);
 
@@ -283,7 +287,7 @@ class Time implements Comparable<Time> {
     if (quotient.abs() < 1) return this * (1.0/quotient);
 
     if (canNanosecondsBeInteger) {
-      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval ~/ quotient));
+      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ quotient);
     } else {
       return new Time.bigIntNanoseconds(inNanosecondsAsBigInt ~/ BigInt.from(quotient));
     }
@@ -332,4 +336,88 @@ class Time implements Comparable<Time> {
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
   }
+}
+
+
+class MillisecondTime extends Time {
+  // 285420 years max (unlimited on VM)
+  final int _milliseconds;
+
+  /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
+  final int _nanosecondsInterval;
+
+  static const int _minNano = 0;
+
+  const MillisecondTime(this._milliseconds, this._nanosecondsInterval) : super._();
+}
+
+/// A [Time] based only on nanoseconds.
+///
+/// Pro: Helps create a consistent experience that is computationally more efficient
+///
+/// Con: The super._milliseconds && super._nanoseconds is null -- and takes up some amount of memory
+///
+/// see: https://en.wikipedia.org/wiki/Space%E2%80%93time_tradeoff
+///
+/// Can we get the best of both?
+@immutable
+class NanosecondTime extends Time {
+  final int _nanoseconds;
+
+  @override int get _milliseconds => inMilliseconds;
+  @override int get _nanosecondsInterval => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerMillisecond);
+
+  NanosecondTime(this._nanoseconds) : super._() {
+    assert(this._nanoseconds >= Platform.intMinValue && this._nanoseconds <= Platform.intMaxValue);
+  }
+
+  @override Time operator -() => NanosecondTime(-_nanoseconds);
+  @override bool operator <(Time other) => _nanoseconds < other.totalNanoseconds;
+  @override bool operator <=(Time other) => _nanoseconds <= other.totalNanoseconds;
+  @override bool operator >(Time other) => _nanoseconds > other.totalNanoseconds;
+  @override bool operator >=(Time other) => _nanoseconds >= other.totalNanoseconds;
+  @override Time _plusSmallNanoseconds(int nanoseconds) => NanosecondTime(nanoseconds + _nanoseconds);
+
+  @override Time abs(Time other) => NanosecondTime(_nanoseconds.abs());
+  @override bool get isNegative => _nanoseconds.isNegative;
+
+  @override bool get canNanosecondsBeInteger => true;
+
+  @override int compareTo(Time other) {
+    if (other == null) return 1;
+    if (other.canNanosecondsBeInteger) {
+      return _nanoseconds.compareTo(other.inNanoseconds);
+    }
+    return super.compareTo(other);
+  }
+
+  @override bool equals(Time other) => other.canNanosecondsBeInteger ? _nanoseconds == other.inNanoseconds : false;
+
+  @override int get hoursOfDay => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
+  @override int get minutesOfHour => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
+  @override int get secondsOfMinute => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
+  @override int get millisecondsOfSecond => arithmeticMod(_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
+  // todo: is [mod, division] or [division, mod] better?
+  @override int get microsecondsOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond) ~/ TimeConstants.microsecondsPerMillisecond;
+  @override int get nanosecondsOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond);
+
+  @override double get totalDays => _nanoseconds / TimeConstants.nanosecondsPerDay;
+  @override double get totalHours => _nanoseconds / TimeConstants.nanosecondsPerHour;
+  @override double get totalMinutes => _nanoseconds / TimeConstants.nanosecondsPerMinute;
+  @override double get totalSeconds => _nanoseconds / TimeConstants.nanosecondsPerSecond;
+  @override double get totalMilliseconds => _nanoseconds / TimeConstants.nanosecondsPerMillisecond;
+  @override double get totalMicroseconds => _nanoseconds / TimeConstants.nanosecondsPerMicrosecond;
+  @override double get totalNanoseconds => _nanoseconds.toDouble();
+
+  @override BigInt get inNanosecondsAsBigInt => BigInt.from(_nanoseconds);
+
+  @override int get inDays => _nanoseconds ~/ TimeConstants.nanosecondsPerDay;
+  @override int get inHours => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
+  @override int get inMinutes => _nanoseconds ~/ TimeConstants.nanosecondsPerMinute;
+  @override int get inSeconds => _nanoseconds ~/ TimeConstants.nanosecondsPerSecond;
+  @override int get inMilliseconds => _nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond;
+  @override int get inMicroseconds => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
+  @override int get inNanoseconds => _nanoseconds;
+
+  @override Duration get toDuration => Duration(microseconds: inMicroseconds);
 }
