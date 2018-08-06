@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.4
+- Many API changes.
+- Fix for Dart 2.0.
+
 ## 0.9.1
 - Continued the API normalization work; removed add*, minus* where it did not
  add any performance gains. `Time` `plus`\\`minus` --> `add`\\`subtract`, added an `abs` method. 

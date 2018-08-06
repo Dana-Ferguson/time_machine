@@ -39,6 +39,7 @@ class LocalTime implements Comparable<LocalTime> {
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   final int _nanoseconds;
+  // final NanosecondTime _time;
 
   static const String _munArgumentError = 'Only one subsecond argument allowed.';
 
@@ -191,8 +192,11 @@ class LocalTime implements Comparable<LocalTime> {
   int get microsecondOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
 
   // Time get timeOfDay => ITime.short(_nanoseconds); <-- a nanosecond only instance?
-  Time get timeOfDay => ITime.untrusted(0, _nanoseconds);
+  // Time get timeOfDay => ITime.untrusted(0, _nanoseconds);
   // int get nanosecondOfDay2 => timeOfDay.inNanoseconds;
+  // Time get timeSinceMidnight => _time;
+  // Time get timeOfDay => _time;
+  // int get nanosecondOfDay2 => _time.inNanoseconds;
 
   /// Adds the specified period to the time. Friendly alternative to `operator+()`.
   ///

@@ -3,7 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
+// import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
@@ -63,7 +63,7 @@ class FixedDateTimeZone extends DateTimeZone {
   /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
   /// using the "general" offset pattern.
   ///
-  /// [id]: ID 
+  /// [id]: ID
   /// Returns: The parsed time zone, or null if the ID doesn't match.
   static DateTimeZone getFixedZoneOrNull(String id) {
     if (!id.startsWith(IDateTimeZone.utcId)) {
@@ -130,7 +130,7 @@ class FixedDateTimeZone extends DateTimeZone {
   /// true if [other] and this instance are the same type and represent the same value; otherwise, false.
   ///
   /// [other]: Another object to compare to.
-  /// 
+  ///
   /// Returns: True if the specified value is a [FixedDateTimeZone] with the same name, ID and offset; otherwise, false.
   bool equals(FixedDateTimeZone other) =>
       other != null &&

@@ -3,7 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'package:meta/meta.dart';
-import 'package:quiver_hashcode/hashcode.dart';
+// import 'package:quiver_hashcode/hashcode.dart';
 
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
@@ -146,7 +146,7 @@ class Country {
   /// [other]: The country to compare with this one.
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
   bool equals(Country other) => other != null && other.Code == Code && other.Name == Name;
-  
+
   @override operator==(dynamic other) => other is Country && other.Code == Code && other.Name == Name;
 
   /// Returns a hash code for this country.

@@ -1,19 +1,19 @@
 name: time_machine
 description: Date and time library for Flutter, Web, and Server with support for timezones, calendars, cultures, formatting and parsing.
-version: 0.9.3
+version: 0.9.4
 homepage: https://github.com/Dana-Ferguson/time_machine
 author: Dana Ferguson <email@example.com>
 
 # SDK's lower bound must be compatible with the current version pushed with Flutter
 # ./flutter --version
 environment:
-  sdk: '>=2.0.0-dev.58.0 <3.0.0'
+  sdk: '>=2.0.0-dev.60.0 <3.0.0'
 
 # Verify flutter_test dependency compatibility first before updating any constraints
 # https://github.com/flutter/flutter/blob/master/packages/flutter_test/pubspec.yaml
 dependencies:
   meta: "^1.1.5"
-  quiver_hashcode: "^1.0.0"
+#  quiver_hashcode: "^1.0.0"
 #  collection: "^1.14.10"
   collection: "^1.14.6"
   resource: "^2.1.4"
