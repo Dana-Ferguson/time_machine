@@ -151,8 +151,8 @@ void Comparison_IgnoresOriginalCalendar()
   LocalDateTime dateTime2 = dateTime1.withCalendar(CalendarSystem.julian);
 
   // Calendar information is propagated into LocalDate, but not into LocalTime
-  expect(dateTime1.date == dateTime2.date, isFalse);
-  expect(dateTime1.time == dateTime2.time, isTrue);
+  expect(dateTime1.localDate == dateTime2.localDate, isFalse);
+  expect(dateTime1.localTime == dateTime2.localTime, isTrue);
 }
 
 @Test()

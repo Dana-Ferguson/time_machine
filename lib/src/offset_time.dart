@@ -21,10 +21,10 @@ class OffsetTime {
   OffsetTime(this.timeOfDay, this.offset);
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
-  int get hour => timeOfDay.hour;
+  int get hour => timeOfDay.timeSinceMidnight.hourOfDay;
 
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => timeOfDay.clockHourOfHalfDay;
+  int get clockHourOfHalfDay => timeOfDay.timeSinceMidnight.hourOf12HourClock;
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
@@ -32,19 +32,20 @@ class OffsetTime {
   /*@internal*/ int get _hourOfHalfDay => ILocalTime.hourOfHalfDay(timeOfDay);
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
-  int get minute => timeOfDay.minute;
+  int get minute => timeOfDay.timeSinceMidnight.minuteOfHour;
 
   /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
-  int get second => timeOfDay.second;
+  int get second => timeOfDay.timeSinceMidnight.secondOfMinute;
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => timeOfDay.millisecond;
+  int get millisecond => timeOfDay.timeSinceMidnight.millisecondOfSecond;
 
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => timeOfDay.nanosecondOfSecond;
+  int get nanosecondOfSecond => timeOfDay.timeSinceMidnight.nanosecondOfSecond;
 
+  @deprecated
   /// Gets the nanosecond of this offset time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => timeOfDay.nanosecondOfDay;
+  int get nanosecondOfDay => timeOfDay.timeSinceMidnight.inNanoseconds;
 
   /// Creates a new [OffsetTime] for the same time-of-day, but with the specified UTC offset.
   ///

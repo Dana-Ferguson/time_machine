@@ -258,23 +258,23 @@ class Period {
     // The date adjustment will always be valid, because it's just moving it towards start.
     // We need this for all date-based period fields. We could potentially optimize by not doing this
     // in cases where we've only got time fields...
-    LocalDate endDate = end.date;
+    LocalDate endDate = end.localDate;
     if (start < end) {
-      if (start.time > end.time) {
+      if (start.localTime > end.localTime) {
         endDate = endDate.addDays(-1);
       }
     }
-    else if (start > end && start.time < end.time) {
+    else if (start > end && start.localTime < end.localTime) {
       endDate = endDate.addDays(1);
     }
 
     // Optimization for single field
     // todo: optimize me?
     Map _betweenFunctionMap = {
-      PeriodUnits.years:  () => new Period(years: DatePeriodFields.yearsField.unitsBetween(start.date, endDate)),
-      PeriodUnits.months: () => new Period(months: DatePeriodFields.monthsField.unitsBetween(start.date, endDate)),
-      PeriodUnits.weeks: () => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start.date, endDate)),
-      PeriodUnits.days: () => new Period(days: _daysBetween(start.date, endDate)),
+      PeriodUnits.years:  () => new Period(years: DatePeriodFields.yearsField.unitsBetween(start.localDate, endDate)),
+      PeriodUnits.months: () => new Period(months: DatePeriodFields.monthsField.unitsBetween(start.localDate, endDate)),
+      PeriodUnits.weeks: () => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start.localDate, endDate)),
+      PeriodUnits.days: () => new Period(days: _daysBetween(start.localDate, endDate)),
       PeriodUnits.hours: () => new Period(hours: TimePeriodField.hours.unitsBetween(start, end)),
       PeriodUnits.minutes: () => new Period(minutes: TimePeriodField.minutes.unitsBetween(start, end)),
       PeriodUnits.seconds: () => new Period(seconds: TimePeriodField.seconds.unitsBetween(start, end)),
@@ -317,14 +317,14 @@ class Period {
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
       // LocalDate remainingDate = DateComponentsBetween(
       //  start.Date, endDate, units, out years, out months, out weeks, out days);
-      var result = _dateComponentsBetween(start.date, endDate, units);
+      var result = _dateComponentsBetween(start.localDate, endDate, units);
       years = result.years;
       months = result.months;
       weeks = result.weeks;
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.time);
+      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.localTime);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(years: years, months: months, weeks: weeks, days: days);
@@ -583,7 +583,7 @@ class Period {
     // We know that the difference is in the range of +/- 1 day, which is a relatively small
     // number of nanoseconds. All the operations can be done with simple int division/remainder ops,
     // so we don't need to delegate to TimePeriodField.
-    int remaining = (end.nanosecondOfDay - start.nanosecondOfDay);
+    int remaining = (end.timeSinceMidnight.inNanoseconds - start.timeSinceMidnight.inNanoseconds);
 
     // Optimization for a single unit
     var singleFieldFunction = _functionMapBetweenTimes[units];

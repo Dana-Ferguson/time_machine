@@ -60,7 +60,7 @@ class OffsetDateTime {
   }
 
   OffsetDateTime._lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
-      : _nanosecondOfDay = time.nanosecondOfDay, offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
+      : _nanosecondOfDay = time.timeSinceMidnight.inNanoseconds, offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
   {
     ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
@@ -95,7 +95,7 @@ class OffsetDateTime {
   /// * [localDateTime]: Local date and time to represent
   /// * [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.date), localDateTime.nanosecondOfDay, offset);
+      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.localDate), localDateTime.nanosecondOfDay, offset);
 
   /// Gets the calendar system associated with this offset date and time.
   CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
@@ -267,7 +267,7 @@ class OffsetDateTime {
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
     LocalTime newTime = timeOfDay.adjust(adjuster);
-    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.nanosecondOfDay, offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.timeSinceMidnight.inNanoseconds, offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,

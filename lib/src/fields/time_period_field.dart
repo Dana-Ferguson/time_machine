@@ -44,9 +44,9 @@ class TimePeriodField
   LocalDateTime addDateTime(LocalDateTime start, int units)
   {
     // int extraDays = 0;
-    var addTimeResult = addTimeAndDays(start.time, units, 0);
+    var addTimeResult = addTimeAndDays(start.localTime, units, 0);
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-    LocalDate date = addTimeResult.extraDays == 0 ? start.date :  start.date.addDays(addTimeResult.extraDays);
+    LocalDate date = addTimeResult.extraDays == 0 ? start.localDate :  start.localDate.addDays(addTimeResult.extraDays);
     return new LocalDateTime.localDateAtTime(date, addTimeResult.time);
   }
 
@@ -61,7 +61,7 @@ class TimePeriodField
         value = value % _unitsPerDay;
       }
       int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
       if (newNanos >= TimeConstants.nanosecondsPerDay)
       {
         newNanos -= TimeConstants.nanosecondsPerDay;
@@ -75,7 +75,7 @@ class TimePeriodField
         value = -(-value % _unitsPerDay);
       }
       int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
       if (newNanos < 0)
       {
         newNanos += TimeConstants.nanosecondsPerDay;
@@ -100,7 +100,7 @@ class TimePeriodField
         value = value % _unitsPerDay;
       }
       int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
       if (newNanos >= TimeConstants.nanosecondsPerDay) {
         newNanos -= TimeConstants.nanosecondsPerDay;
         days = /*checked*/(days + 1);
@@ -116,7 +116,7 @@ class TimePeriodField
         value = -(-value % _unitsPerDay);
       }
       int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.nanosecondOfDay + nanosToAdd;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
       if (newNanos < 0) {
         newNanos += TimeConstants.nanosecondsPerDay;
         days = /*checked*/(days - 1);

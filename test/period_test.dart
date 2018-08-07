@@ -486,19 +486,19 @@ void HasTimeComponent_Compound()
   LocalDateTime dt2 = new LocalDateTime(2000, 2, 4, 11, 50, 0);
 
   // Case 1: Entire period is date-based (no time units available)
-  expect(Period.differenceBetweenDates(dt1.date, dt2.date).hasTimeComponent, isFalse);
+  expect(Period.differenceBetweenDates(dt1.localDate, dt2.localDate).hasTimeComponent, isFalse);
 
   // Case 2: Period contains date and time units, but time units are all zero
-  expect(Period.differenceBetweenDateTime(dt1.date.at(LocalTime.midnight), dt2.date.at(LocalTime.midnight)).hasTimeComponent, isFalse);
+  expect(Period.differenceBetweenDateTime(dt1.localDate.at(LocalTime.midnight), dt2.localDate.at(LocalTime.midnight)).hasTimeComponent, isFalse);
 
   // Case 3: Entire period is time-based, but 0. (Same local time twice here.)
-  expect(Period.differenceBetweenTimes(dt1.time, dt1.time).hasTimeComponent, isFalse);
+  expect(Period.differenceBetweenTimes(dt1.localTime, dt1.localTime).hasTimeComponent, isFalse);
 
   // Case 4: Period contains date and time units, and some time units are non-zero
   expect(Period.differenceBetweenDateTime(dt1, dt2).hasTimeComponent, isTrue);
 
   // Case 5: Entire period is time-based, and some time units are non-zero
-  expect(Period.differenceBetweenTimes(dt1.time, dt2.time).hasTimeComponent, isTrue);
+  expect(Period.differenceBetweenTimes(dt1.localTime, dt2.localTime).hasTimeComponent, isTrue);
 }
 
 @Test()
@@ -508,19 +508,19 @@ void HasDateComponent_Compound()
   LocalDateTime dt2 = new LocalDateTime(2000, 2, 4, 11, 50, 0);
 
   // Case 1: Entire period is time-based (no date units available)
-  expect(Period.differenceBetweenTimes(dt1.time, dt2.time).hasDateComponent, isFalse);
+  expect(Period.differenceBetweenTimes(dt1.localTime, dt2.localTime).hasDateComponent, isFalse);
 
   // Case 2: Period contains date and time units, but date units are all zero
-  expect(Period.differenceBetweenDateTime(dt1, dt1.date.at(dt2.time)).hasDateComponent, isFalse);
+  expect(Period.differenceBetweenDateTime(dt1, dt1.localDate.at(dt2.localTime)).hasDateComponent, isFalse);
 
   // Case 3: Entire period is date-based, but 0. (Same local date twice here.)
-  expect(Period.differenceBetweenDates(dt1.date, dt1.date).hasDateComponent, isFalse);
+  expect(Period.differenceBetweenDates(dt1.localDate, dt1.localDate).hasDateComponent, isFalse);
 
   // Case 4: Period contains date and time units, and some date units are non-zero
   expect(Period.differenceBetweenDateTime(dt1, dt2).hasDateComponent, isTrue);
 
   // Case 5: Entire period is date-based, and some time units are non-zero
-  expect(Period.differenceBetweenDates(dt1.date, dt2.date).hasDateComponent, isTrue);
+  expect(Period.differenceBetweenDates(dt1.localDate, dt2.localDate).hasDateComponent, isTrue);
 }
 
 @Test()

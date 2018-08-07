@@ -28,9 +28,9 @@ abstract class ILocalDateTime {
 @immutable
 class LocalDateTime implements Comparable<LocalDateTime> {
   /// Gets the date portion of this local date and time as a [LocalDate] in the same calendar system as this value.
-  final LocalDate date;
+  final LocalDate localDate;
   /// Gets the time portion of this local date and time as a [LocalTime].
-  final LocalTime time;
+  final LocalTime localTime;
 
   /// Initializes a new instance of the [LocalDateTime] struct using the ISO
   /// calendar system.
@@ -39,8 +39,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// Returns: The resulting date/time.
   LocalDateTime._localInstant(LocalInstant localInstant)
-      : date = LocalDate.fromEpochDay(localInstant.daysSinceEpoch),
-        time = ILocalTime.trustedNanoseconds(localInstant.nanosecondOfDay);
+      : localDate = LocalDate.fromEpochDay(localInstant.daysSinceEpoch),
+        localTime = ILocalTime.trustedNanoseconds(localInstant.nanosecondOfDay);
 
   /// Initializes a new instance of [LocalDateTime].
   ///
@@ -63,7 +63,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
       : this.localDateAtTime(LocalDate(year, month, day, calendar), LocalTime(hour, minute, second, ms:ms, us:us, ns:ns));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
 
-  @wasInternal LocalDateTime.localDateAtTime(this.date, this.time);
+  @wasInternal LocalDateTime.localDateAtTime(this.localDate, this.localTime);
 
   /// Produces a [LocalDateTime] based on your [Clock.current] and your [DateTimeZone.local].
   ///
@@ -103,57 +103,61 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
   /// Gets the calendar system associated with this local date and time.
-  CalendarSystem get calendar => date.calendar;
+  CalendarSystem get calendar => localDate.calendar;
 
   /// Gets the year of this local date and time.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get year => date.year;
+  int get year => localDate.year;
 
   /// Gets the year of this local date and time within its era.
-  int get yearOfEra => date.yearOfEra;
+  int get yearOfEra => localDate.yearOfEra;
 
   /// Gets the era of this local date and time.
-  Era get era => date.era;
+  Era get era => localDate.era;
 
   /// Gets the month of this local date and time within the year.
-  int get month => date.month;
+  int get month => localDate.month;
 
   /// Gets the day of this local date and time within the year.
-  int get dayOfYear => date.dayOfYear;
+  int get dayOfYear => localDate.dayOfYear;
 
   /// Gets the day of this local date and time within the month.
-  int get day => date.day;
+  int get day => localDate.day;
 
   /// Gets the week day of this local date and time expressed as an [DayOfWeek] value.
-  DayOfWeek get dayOfWeek => date.dayOfWeek;
+  DayOfWeek get dayOfWeek => localDate.dayOfWeek;
 
   /// Gets the hour of day of this local date and time, in the range 0 to 23 inclusive.
-  int get hour => time.hour;
+  int get hour => localTime.timeSinceMidnight.hourOfDay;
 
   /// Gets the hour of the half-day of this local date and time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => time.clockHourOfHalfDay;
+  int get clockHourOfHalfDay => localTime.timeSinceMidnight.hourOf12HourClock;
 
   /// Gets the minute of this local date and time, in the range 0 to 59 inclusive.
-  int get minute => time.minute;
+  int get minute => localTime.timeSinceMidnight.minuteOfHour;
 
   /// Gets the second of this local date and time within the minute, in the range 0 to 59 inclusive.
-  int get second => time.second;
+  int get second => localTime.timeSinceMidnight.secondOfMinute;
 
   /// Gets the millisecond of this local date and time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => time.millisecond;
+  int get millisecond => localTime.timeSinceMidnight.millisecondOfSecond;
 
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => time.nanosecondOfSecond;
+  int get nanosecondOfSecond => localTime.timeSinceMidnight.nanosecondOfSecond;
 
+  @deprecated
   /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => time.nanosecondOfDay;
+  int get nanosecondOfDay => localTime.timeSinceMidnight.inNanoseconds;
 
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
-  int get microsecondOfSecond => time.microsecondOfSecond;
+  int get microsecondOfSecond => localTime.timeSinceMidnight.microsecondOfSecond;
 
+  @deprecated
   /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get microsecondOfDay => time.microsecondOfDay;
+  int get microsecondOfDay => localTime.timeSinceMidnight.inMicroseconds;
+
+  // Time get timeSinceMidnight => localTime.timeSinceMidnight;
 
   /// Constructs a [DateTime] from this value which has a [DateTime.isUtc] == false;
   ///
@@ -164,35 +168,35 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   DateTime toDateTimeLocal() {
     if (Platform.isWeb) {
       return new DateTime(
-          date.year,
-          date.month,
-          date.day,
-          time.hour,
-          time.minute,
-          time.second,
-          time.millisecond);
+          year,
+          month,
+          day,
+          hour,
+          minute,
+          second,
+          millisecond);
     } else {
       return new DateTime(
-          date.year,
-          date.month,
-          date.day,
-          time.hour,
-          time.minute,
-          time.second,
+          year,
+          month,
+          day,
+          hour,
+          minute,
+          second,
           0,
-          time.microsecondOfSecond);
+          microsecondOfSecond);
     }
   }
 
 
-  LocalInstant _toLocalInstant() => new LocalInstant.daysNanos(date.epochDay, time.nanosecondOfDay);
+  LocalInstant _toLocalInstant() => new LocalInstant.daysNanos(localDate.epochDay, localTime.timeSinceMidnight.inNanoseconds);
 
   /// Indicates whether the current object is equal to another object of the same type.
   ///
   /// * [other]: An object to compare with this object.
   ///
   /// Returns: true if the current object is equal to the [other] parameter; otherwise, false.
-  bool equals(LocalDateTime other) => date == other.date && time == other.time;
+  bool equals(LocalDateTime other) => localDate == other.localDate && localTime == other.localTime;
 
   /// Implements the operator == (equality).
   ///
@@ -296,11 +300,11 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   int compareTo(LocalDateTime other) {
     // This will check calendars...
     if (other == null) return 1;
-    int dateComparison = date.compareTo(other.date);
+    int dateComparison = localDate.compareTo(other.localDate);
     if (dateComparison != 0) {
       return dateComparison;
     }
-    return time.compareTo(other.time);
+    return localTime.compareTo(other.localTime);
   }
 
   /// Adds a period to a local date/time. Fields are added in the order provided by the period.
@@ -355,7 +359,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime add(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return IPeriod.addDateTimeTo(period, date, time, 1);
+    return IPeriod.addDateTimeTo(period, localDate, localTime, 1);
   }
 
   // dynamic operator -(dynamic other) => other is Period ? minusPeriod(other) : other is LocalDateTime ? minusLocalDateTime(other) : throw new TypeError();
@@ -368,7 +372,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The resulting local date and time
   LocalDateTime subtract(Period period) {
     Preconditions.checkNotNull(period, 'period');
-    return IPeriod.addDateTimeTo(period, date, time, -1);
+    return IPeriod.addDateTimeTo(period, localDate, localTime, -1);
   }
 
   /// Subtracts the specified date/time from this date/time, returning the result as a [Period].
@@ -392,7 +396,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   Period periodUntil(LocalDateTime localDateTime) => Period.differenceBetweenDateTime(this, localDateTime);
 
   /// Returns a hash code for this instance.
-  @override int get hashCode => hash3(date, time, calendar);
+  @override int get hashCode => hash3(localDate, localTime, calendar);
 
   /// Returns this date/time, with the given date adjuster applied to it, maintaining the existing time of day.
   ///
@@ -403,7 +407,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [adjuster]: The adjuster to apply.
   ///
   /// Returns: The adjusted date/time.
-  LocalDateTime adjustDate(LocalDate Function(LocalDate) adjuster) => date.adjust(adjuster).at(time);
+  LocalDateTime adjustDate(LocalDate Function(LocalDate) adjuster) => localDate.adjust(adjuster).at(localTime);
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date.
   ///
@@ -413,7 +417,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [adjuster]: The adjuster to apply.
   ///
   /// Returns: The adjusted date/time.
-  LocalDateTime adjustTime(LocalTime Function(LocalTime) adjuster) => date.at(time.adjust(adjuster));
+  LocalDateTime adjustTime(LocalTime Function(LocalTime) adjuster) => localDate.at(localTime.adjust(adjuster));
 
   /// Creates a new LocalDateTime representing the same physical date and time, but in a different calendar.
   /// The returned LocalDateTime is likely to have different date field values to this one.
@@ -424,7 +428,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The converted LocalDateTime.
   LocalDateTime withCalendar(CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
-    return new LocalDateTime.localDateAtTime(date.withCalendar(calendar), time);
+    return new LocalDateTime.localDateAtTime(localDate.withCalendar(calendar), localTime);
   }
 
   /// Returns a new LocalDateTime representing the current value with the given number of years added.
@@ -436,7 +440,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [years]: The number of years to add
   ///
   /// Returns: The current value plus the given number of years.
-  LocalDateTime addYears(int years) => new LocalDateTime.localDateAtTime(date.addYears(years), time);
+  LocalDateTime addYears(int years) => new LocalDateTime.localDateAtTime(localDate.addYears(years), localTime);
   LocalDateTime subtractYears(int years) => addYears(-years);
 
   /// Returns a new LocalDateTime representing the current value with the given number of months added.
@@ -451,7 +455,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [months]: The number of months to add
   ///
   /// Returns: The current value plus the given number of months.
-  LocalDateTime addMonths(int months) => new LocalDateTime.localDateAtTime(date.addMonths(months), time);
+  LocalDateTime addMonths(int months) => new LocalDateTime.localDateAtTime(localDate.addMonths(months), localTime);
   LocalDateTime subtractMonths(int months) => addMonths(-months);
 
   /// Returns a new LocalDateTime representing the current value with the given number of days added.
@@ -462,7 +466,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [days]: The number of days to add
   ///
   /// Returns: The current value plus the given number of days.
-  LocalDateTime addDays(int days) => new LocalDateTime.localDateAtTime(date.addDays(days), time);
+  LocalDateTime addDays(int days) => new LocalDateTime.localDateAtTime(localDate.addDays(days), localTime);
   LocalDateTime subtractDays(int days) => addDays(-days);
 
   /// Returns a new LocalDateTime representing the current value with the given number of weeks added.
@@ -470,7 +474,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [weeks]: The number of weeks to add
   ///
   /// Returns: The current value plus the given number of weeks.
-  LocalDateTime addWeeks(int weeks) => new LocalDateTime.localDateAtTime(date.addWeeks(weeks), time);
+  LocalDateTime addWeeks(int weeks) => new LocalDateTime.localDateAtTime(localDate.addWeeks(weeks), localTime);
   LocalDateTime subtractWeeks(int weeks) => addWeeks(-weeks);
 
   /// Returns a new LocalDateTime representing the current value with the given number of hours added.
@@ -533,7 +537,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime next(DayOfWeek targetDayOfWeek) => new LocalDateTime.localDateAtTime(date.next(targetDayOfWeek), time);
+  LocalDateTime next(DayOfWeek targetDayOfWeek) => new LocalDateTime.localDateAtTime(localDate.next(targetDayOfWeek), localTime);
 
   /// Returns the previous [LocalDateTime] falling on the specified [DayOfWeek],
   /// at the same time of day as this value.
@@ -547,7 +551,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [InvalidOperationException]: The underlying calendar doesn't use ISO days of the week.
   /// * [ArgumentOutOfRangeException]: [targetDayOfWeek] is not a valid day of the
   /// week (Monday to Sunday).
-  LocalDateTime previous(DayOfWeek targetDayOfWeek) => new LocalDateTime.localDateAtTime(date.previous(targetDayOfWeek), time);
+  LocalDateTime previous(DayOfWeek targetDayOfWeek) => new LocalDateTime.localDateAtTime(localDate.previous(targetDayOfWeek), localTime);
 
   /// Returns an [OffsetDateTime] for this local date/time with the given offset.
   ///
@@ -556,7 +560,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [offset]: The offset to apply.
   ///
   /// Returns: The result of this local date/time offset by the given amount.
-  OffsetDateTime withOffset(Offset offset) => IOffsetDateTime.lessTrust(ILocalDate.yearMonthDayCalendar(date), time, offset);
+  OffsetDateTime withOffset(Offset offset) => IOffsetDateTime.lessTrust(ILocalDate.yearMonthDayCalendar(localDate), localTime, offset);
 
   /// Returns the mapping of this local date/time within [DateTimeZone.utc].
   ///
@@ -565,7 +569,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: The result of mapping this local date/time in UTC.
   ZonedDateTime inUtc() =>
   // Use the internal constructors to avoid validation. We know it will be fine.
-  IZonedDateTime.trusted(IOffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(date), time.nanosecondOfDay, Offset.zero), DateTimeZone.utc);
+  IZonedDateTime.trusted(IOffsetDateTime.fullTrust(ILocalDate.yearMonthDayCalendar(localDate), localTime.timeSinceMidnight.inNanoseconds, Offset.zero), DateTimeZone.utc);
 
   // todo: are these convenience functions still needed? (since we made the DateTimeZone ZonedDateTime constructors, constructors on ZonedDateTime?)
   /// Returns the mapping of this local date/time within the given [DateTimeZone],

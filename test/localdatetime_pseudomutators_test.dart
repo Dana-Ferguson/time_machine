@@ -279,7 +279,7 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   LocalDateTime target = start.next(targetDayOfWeek);
   expect(2011, target.year);
   expect(11, target.month);
-  expect(start.time, target.time);
+  expect(start.localTime, target.localTime);
   expect(target.day, expectedResult);
 }
 

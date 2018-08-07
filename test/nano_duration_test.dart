@@ -182,12 +182,12 @@ void PositiveComponents()
   Time duration = new NanosecondTime(1234567890123456);
   expect(14, duration.inDays);
   expect(24967890123456, ITime.nanosecondOfDay(duration));
-  expect(6, duration.hoursOfDay);
-  expect(56, duration.minutesOfHour);
-  expect(7, duration.secondsOfMinute);
-  expect(890, duration.millisecondsOfSecond);
-  expect(890123, duration.microsecondsOfSecond);
-  expect(890123456, duration.nanosecondsOfSecond);
+  expect(6, duration.hourOfDay);
+  expect(56, duration.minuteOfHour);
+  expect(7, duration.secondOfMinute);
+  expect(890, duration.millisecondOfSecond);
+  expect(890123, duration.microsecondOfSecond);
+  expect(890123456, duration.nanosecondOfSecond);
 }
 
 @Test()
@@ -197,12 +197,12 @@ void NegativeComponents()
   Time duration = new NanosecondTime(-1234567890123456);
   expect(-14, duration.inDays);
   expect(-24967890123456, ITime.nanosecondOfDay(duration));
-  expect(-6, duration.hoursOfDay);
-  expect(-56, duration.minutesOfHour);
-  expect(-7, duration.secondsOfMinute);
-  expect(-890, duration.millisecondsOfSecond);
-  expect(-890123, duration.microsecondsOfSecond);
-  expect(-890123456, duration.nanosecondsOfSecond);
+  expect(-6, duration.hourOfDay);
+  expect(-56, duration.minuteOfHour);
+  expect(-7, duration.secondOfMinute);
+  expect(-890, duration.millisecondOfSecond);
+  expect(-890123, duration.microsecondOfSecond);
+  expect(-890123456, duration.nanosecondOfSecond);
 }
 
 @Test()

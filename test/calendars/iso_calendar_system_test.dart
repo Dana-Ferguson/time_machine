@@ -34,8 +34,8 @@ void FieldsOf_UnixEpoch()
 
   expect(1970, epoch.year);
   expect(1970, epoch.yearOfEra);
-  expect(1970, WeekYearRules.iso.getWeekYear(epoch.date));
-  expect(1, WeekYearRules.iso.getWeekOfWeekYear(epoch.date));
+  expect(1970, WeekYearRules.iso.getWeekYear(epoch.localDate));
+  expect(1, WeekYearRules.iso.getWeekOfWeekYear(epoch.localDate));
   expect(1, epoch.month);
   expect(1, epoch.day);
   expect(1, epoch.dayOfYear);
@@ -59,8 +59,8 @@ void FieldsOf_GreatAchievement()
 
   expect(2009, now.year);
   expect(2009, now.yearOfEra);
-  expect(2009, WeekYearRules.iso.getWeekYear(now.date));
-  expect(48, WeekYearRules.iso.getWeekOfWeekYear(now.date));
+  expect(2009, WeekYearRules.iso.getWeekYear(now.localDate));
+  expect(48, WeekYearRules.iso.getWeekOfWeekYear(now.localDate));
   expect(11, now.month);
   expect(27, now.day);
   // expect(TimeOfGreatAchievement.dayOfYear, now.DayOfYear);

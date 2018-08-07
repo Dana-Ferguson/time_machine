@@ -176,7 +176,7 @@ void WithCalendar()
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.month);
   expect(19, julianEpoch.day);
-  expect(isoEpoch.time, julianEpoch.time);
+  expect(isoEpoch.localTime, julianEpoch.localTime);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -185,7 +185,7 @@ void TimeOfDay_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.time);
+  expect(expected, dateTime.localTime);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -194,7 +194,7 @@ void TimeOfDay_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.time);
+  expect(expected, dateTime.localTime);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -203,7 +203,7 @@ void Date_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1965, 11, 8);
-  expect(expected, dateTime.date);
+  expect(expected, dateTime.localDate);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -212,7 +212,7 @@ void Date_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1975, 11, 8);
-  expect(expected, dateTime.date);
+  expect(expected, dateTime.localDate);
 }
 
 @Test()

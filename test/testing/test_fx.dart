@@ -341,11 +341,11 @@ String _printNewObject(Object obj) {
     sb.write('new LocalDate($year, $month, $day, ${_printNewObject(calendar)})');
   }
   else if (obj is LocalTime) {
-    var nanoseconds = obj.nanosecondOfDay;
+    var nanoseconds = obj.timeSinceMidnight.inNanoseconds;
     sb.write('ILocalTime.fromNanoseconds($nanoseconds)');
   }
   else if (obj is LocalDateTime) {
-    sb.write('new LocalDateTime(${_printNewObject(obj.date)}, ${_printNewObject(obj.time)})');
+    sb.write('new LocalDateTime(${_printNewObject(obj.localDate)}, ${_printNewObject(obj.localTime)})');
   }
   else if (obj is OffsetDate) {
     var date = obj.date;

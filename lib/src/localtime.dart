@@ -14,7 +14,8 @@ abstract class ILocalTime {
 
   static LocalTime untrustedNanoseconds(int nanoseconds) => new LocalTime._untrusted(nanoseconds);
 
-  static int hourOfHalfDay(LocalTime localTime) => localTime._hourOfHalfDay;
+  @deprecated
+  static int hourOfHalfDay(LocalTime localTime) => localTime.timeSinceMidnight.hourOf12HourClock;
 }
 
 /// LocalTime is an immutable class representing a time of day, with no reference
@@ -38,8 +39,8 @@ class LocalTime implements Comparable<LocalTime> {
   static final LocalTime maxValue = new LocalTime._(TimeConstants.nanosecondsPerDay - 1);
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
-  final int _nanoseconds;
-  // final NanosecondTime _time;
+  // final int _nanoseconds;
+  final NanosecondTime timeSinceMidnight;
 
   static const String _munArgumentError = 'Only one subsecond argument allowed.';
 
@@ -100,9 +101,9 @@ class LocalTime implements Comparable<LocalTime> {
   }
 
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
-  LocalTime._(this._nanoseconds)
+  LocalTime._(int nanoseconds) : timeSinceMidnight = NanosecondTime(nanoseconds)
   {
-    assert(_nanoseconds >= 0 && _nanoseconds < TimeConstants.nanosecondsPerDay, 'nanoseconds ($_nanoseconds) must be >= 0 and < ${TimeConstants.nanosecondsPerDay}.');
+    assert(nanoseconds >= 0 && nanoseconds < TimeConstants.nanosecondsPerDay, 'nanoseconds ($nanoseconds) must be >= 0 and < ${TimeConstants.nanosecondsPerDay}.');
   }
 
   /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
@@ -143,7 +144,7 @@ class LocalTime implements Comparable<LocalTime> {
 
     return LocalTime._(nanoOfDay);
   }
-
+/*
   /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
   int get hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
 
@@ -196,7 +197,27 @@ class LocalTime implements Comparable<LocalTime> {
   // int get nanosecondOfDay2 => timeOfDay.inNanoseconds;
   // Time get timeSinceMidnight => _time;
   // Time get timeOfDay => _time;
+  // Time get dayTime => _time;
   // int get nanosecondOfDay2 => _time.inNanoseconds;
+*/
+
+  /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
+  int get hour => timeSinceMidnight.hourOfDay;
+
+  /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
+  int get clockHourOfHalfDay => timeSinceMidnight.hourOf12HourClock;
+
+  /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
+  int get minute => timeSinceMidnight.minuteOfHour;
+
+  /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
+  int get second => timeSinceMidnight.secondOfMinute;
+
+  /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
+  int get millisecond => timeSinceMidnight.millisecondOfSecond;
+
+  /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
+  int get nanosecondOfSecond => timeSinceMidnight.nanosecondOfSecond;
 
   /// Adds the specified period to the time. Friendly alternative to `operator+()`.
   ///
@@ -291,7 +312,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two times are the same; false otherwise
-  @override bool operator ==(dynamic other) => other is LocalTime && this._nanoseconds == other._nanoseconds;
+  @override bool operator ==(dynamic other) => other is LocalTime && this.timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly earlier than the right
   /// one.
@@ -300,7 +321,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly earlier than [other], false otherwise.
-  bool operator <(LocalTime other) => this._nanoseconds < other._nanoseconds;
+  bool operator <(LocalTime other) => this.timeSinceMidnight.inNanoseconds < other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
   /// one.
@@ -309,7 +330,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is earlier than or equal to [other], false otherwise.
-  bool operator <=(LocalTime other) => this._nanoseconds <= other._nanoseconds;
+  bool operator <=(LocalTime other) => this.timeSinceMidnight.inNanoseconds <= other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly later than the right
   /// one.
@@ -318,7 +339,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly later than [other], false otherwise.
-  bool operator >(LocalTime other) => this._nanoseconds > other._nanoseconds;
+  bool operator >(LocalTime other) => this.timeSinceMidnight.inNanoseconds > other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is later than or equal to the right
   /// one.
@@ -327,7 +348,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is later than or equal to [other], false otherwise.
-  bool operator >=(LocalTime other) => this._nanoseconds >= other._nanoseconds;
+  bool operator >=(LocalTime other) => this.timeSinceMidnight.inNanoseconds >= other.timeSinceMidnight.inNanoseconds;
 
   /// Indicates whether this time is earlier, later or the same as another one.
   ///
@@ -336,10 +357,10 @@ class LocalTime implements Comparable<LocalTime> {
   /// A value less than zero if this time is earlier than [other];
   /// zero if this time is the same as [other]; a value greater than zero if this time is
   /// later than [other].
-  int compareTo(LocalTime other) => _nanoseconds.compareTo(other?._nanoseconds ?? 0);
+  int compareTo(LocalTime other) => timeSinceMidnight.inNanoseconds.compareTo(other?.timeSinceMidnight?.inNanoseconds ?? 0);
 
   /// Returns a hash code for this local time.
-  @override int get hashCode => _nanoseconds.hashCode;
+  @override int get hashCode => timeSinceMidnight.inNanoseconds.hashCode;
 
   /// Compares this local time with the specified one for equality,
   /// by checking whether the two values represent the exact same local time, down to the tick.

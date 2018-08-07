@@ -20,7 +20,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// backward up to 6 days to make the day fall on the correct day of the week. The direction the
 /// offset is moved is determined by the [AdvanceDayOfWeek] property.
 ///
-/// Finally the [Mode] property deterines whether the [time] value
+/// Finally the [Mode] property deterines whether the [localTime] value
 /// is added to the calculated offset to generate an offset within the day.
 @immutable
 @internal

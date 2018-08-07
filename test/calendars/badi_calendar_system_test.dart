@@ -38,7 +38,7 @@ void BadiEpoch()
 void UnixEpoch()
 {
   CalendarSystem badi = CalendarSystem.badi;
-  LocalDate unixEpochInBadiCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, badi).localDateTime.date;
+  LocalDate unixEpochInBadiCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, badi).localDateTime.localDate;
   LocalDate expected = CreateBadiDate(126, 16, 2);
   expect(expected, unixEpochInBadiCalendar);
 }
@@ -409,7 +409,7 @@ void BetweenLocalDates_InvalidUnits()
 @Test()
 void SetYear()
 {
-  // crafted to test SetYear with 0 
+  // crafted to test SetYear with 0
   var d1 = CreateBadiDate(180, 1, 1);
   LocalDate result = d1 + new Period(years: 0);
   expect(180, result.year);

@@ -86,7 +86,7 @@ class Instant implements Comparable<Instant> {
   // Convenience methods, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
     var days = LocalDate(year, monthOfYear, dayOfMonth).epochDay;
-    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).nanosecondOfDay;
+    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).timeSinceMidnight.inNanoseconds;
     return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
   }
 

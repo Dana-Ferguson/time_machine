@@ -189,25 +189,26 @@ abstract class Time implements Comparable<Time> {
   // https://www.dartlang.org/guides/language/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
   Duration get toDuration =>
       new Duration(
-          microseconds: millisecondsOfSecond * TimeConstants.microsecondsPerMillisecond
+          microseconds: millisecondOfSecond * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
   /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
   ///
   /// see: https://en.wikipedia.org/wiki/12-hour_clock
   int get hourOf12HourClock {
-    var hod = hoursOfDay;
+    var hod = hourOfDay % 12;
     return hod == 0 ? 12 : hod;
   }
 
-  int get hoursOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
-  int get minutesOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
-  int get secondsOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
-  int get millisecondsOfSecond => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
-  int get microsecondsOfSecond =>
+  // todo: hour of Day?
+  int get hourOfDay => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerHour), TimeConstants.hoursPerDay);
+  int get minuteOfHour => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerMinute), TimeConstants.minutesPerHour);
+  int get secondOfMinute => arithmeticMod((_milliseconds ~/ TimeConstants.millisecondsPerSecond), TimeConstants.secondsPerMinute);
+  int get millisecondOfSecond => arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond);
+  int get microsecondOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.microsecondsPerMillisecond
           + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond;
-  int get nanosecondsOfSecond =>
+  int get nanosecondOfSecond =>
       arithmeticMod(_milliseconds, TimeConstants.millisecondsPerSecond) * TimeConstants.nanosecondsPerMillisecond
           + _nanosecondsInterval; // % TimeConstants.nanosecondsPerSecond;
 
@@ -393,13 +394,13 @@ class NanosecondTime extends Time {
 
   @override bool equals(Time other) => other.canNanosecondsBeInteger ? _nanoseconds == other.inNanoseconds : false;
 
-  @override int get hoursOfDay => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
-  @override int get minutesOfHour => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
-  @override int get secondsOfMinute => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
-  @override int get millisecondsOfSecond => arithmeticMod(_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
+  @override int get hourOfDay => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerHour), TimeConstants.hoursPerDay);
+  @override int get minuteOfHour => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerMinute), TimeConstants.minutesPerHour);
+  @override int get secondOfMinute => arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerSecond), TimeConstants.secondsPerMinute);
+  @override int get millisecondOfSecond => arithmeticMod(_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond, TimeConstants.millisecondsPerSecond);
   // todo: is [mod, division] or [division, mod] better?
-  @override int get microsecondsOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond) ~/ TimeConstants.microsecondsPerMillisecond;
-  @override int get nanosecondsOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond);
+  @override int get microsecondOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond) ~/ TimeConstants.microsecondsPerMillisecond;
+  @override int get nanosecondOfSecond => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerSecond);
 
   @override double get totalDays => _nanoseconds / TimeConstants.nanosecondsPerDay;
   @override double get totalHours => _nanoseconds / TimeConstants.nanosecondsPerHour;

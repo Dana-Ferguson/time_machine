@@ -24,7 +24,7 @@ void MinValueEqualToMidnight()
 @Test()
 void MaxValue()
 {
-  expect(TimeConstants.nanosecondsPerDay - 1, LocalTime.maxValue.nanosecondOfDay);
+  expect(TimeConstants.nanosecondsPerDay - 1, LocalTime.maxValue.timeSinceMidnight.inNanoseconds);
 }
 
 @Test()
