@@ -34,17 +34,17 @@ void FieldsOf_UnixEpoch()
 
   expect(1970, epoch.year);
   expect(1970, epoch.yearOfEra);
-  expect(1970, WeekYearRules.iso.getWeekYear(epoch.localDate));
-  expect(1, WeekYearRules.iso.getWeekOfWeekYear(epoch.localDate));
+  expect(1970, WeekYearRules.iso.getWeekYear(epoch.calendarDate));
+  expect(1, WeekYearRules.iso.getWeekOfWeekYear(epoch.calendarDate));
   expect(1, epoch.month);
-  expect(1, epoch.day);
+  expect(1, epoch.dayOfMonth);
   expect(1, epoch.dayOfYear);
   expect(DayOfWeek.thursday, epoch.dayOfWeek);
   expect(Era.common, epoch.era);
-  expect(0, epoch.hour);
-  expect(0, epoch.minute);
-  expect(0, epoch.second);
-  expect(0, epoch.millisecond);
+  expect(0, epoch.hourOfDay);
+  expect(0, epoch.minuteOfHour);
+  expect(0, epoch.secondOfMinute);
+  expect(0, epoch.millisecondOfSecond);
   expect(0, epoch.microsecondOfDay);
   expect(0, epoch.microsecondOfSecond);
 }
@@ -59,17 +59,17 @@ void FieldsOf_GreatAchievement()
 
   expect(2009, now.year);
   expect(2009, now.yearOfEra);
-  expect(2009, WeekYearRules.iso.getWeekYear(now.localDate));
-  expect(48, WeekYearRules.iso.getWeekOfWeekYear(now.localDate));
+  expect(2009, WeekYearRules.iso.getWeekYear(now.calendarDate));
+  expect(48, WeekYearRules.iso.getWeekOfWeekYear(now.calendarDate));
   expect(11, now.month);
-  expect(27, now.day);
+  expect(27, now.dayOfMonth);
   // expect(TimeOfGreatAchievement.dayOfYear, now.DayOfYear);
   expect(DayOfWeek.friday, now.dayOfWeek);
   expect(Era.common, now.era);
-  expect(18, now.hour);
-  expect(38, now.minute);
-  expect(25, now.second);
-  expect(345, now.millisecond);
+  expect(18, now.hourOfDay);
+  expect(38, now.minuteOfHour);
+  expect(25, now.secondOfMinute);
+  expect(345, now.millisecondOfSecond);
 
   // DartWeb only does millisecond precision in dart:core (which TimeOfGreatAchievement is funnelled through)
   if (Platform.isVM) {

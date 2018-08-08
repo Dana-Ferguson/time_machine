@@ -21,18 +21,18 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<LocalTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.hourOf12HourClock, (bucket, value) => bucket.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.hours24, 0, 23, (value) => value.hour, (bucket, value) => bucket.hours24 = value),
+        2, PatternFields.hours24, 0, 23, (value) => value.hourOfDay, (bucket, value) => bucket.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minuteOfHour, (bucket, value) => bucket.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField /**<LocalTime, LocalTimeParseBucket>*/(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.secondOfMinute, (bucket, value) => bucket.seconds = value),
     'f': TimePatternHelper.createFractionHandler<LocalTime, LocalTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<LocalTime, LocalTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.amPm = value)
+    't': TimePatternHelper.createAmPmHandler<LocalTime, LocalTimeParseBucket>((time) => time.hourOfDay, (bucket, value) => bucket.amPm = value)
   };
 
   LocalTimePatternParser(this._templateValue);
@@ -109,15 +109,15 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
       return ParseResult.forValue<LocalTime>(new LocalTime(hours24, minutes, seconds, ns:fractionalSeconds));
     }
     if (amPm == 2) {
-      amPm = templateValue.hour ~/ 12;
+      amPm = templateValue.hourOfDay ~/ 12;
     }
     var parseResult = _determineHour(usedFields, text);
     if (!parseResult.success) {
       return parseResult.convertError();
     }
     int hour = parseResult.value;
-    int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minute;
-    int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.second;
+    int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minuteOfHour;
+    int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.secondOfMinute;
     int _nanoseconds = usedFields.hasAny(PatternFields.fractionalSeconds) ? fractionalSeconds : templateValue.nanosecondOfSecond;
     return ParseResult.forValue<LocalTime>(new LocalTime(hour, _minutes, _seconds, ns:_nanoseconds));
   }
@@ -148,13 +148,13 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
       hour = (hours12 % 12) + amPm * 12;
     }
     else if (x == PatternFields.hours12) {
-      hour = (hours12 % 12) + (templateValue.hour ~/ 12) * 12;
+      hour = (hours12 % 12) + (templateValue.hourOfDay ~/ 12) * 12;
     }
     else if (x == PatternFields.amPm) {
-      hour = (templateValue.hour % 12) + amPm * 12;
+      hour = (templateValue.hourOfDay % 12) + amPm * 12;
     }
     else {
-      hour = templateValue.hour;
+      hour = templateValue.hourOfDay;
     }
 
     /*

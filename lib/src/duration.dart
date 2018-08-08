@@ -48,17 +48,18 @@ abstract class ITime {
   static Time untrusted(int milliseconds, [int nanoseconds = 0]) => new Time._untrusted(milliseconds, nanoseconds);
 
   // Instant.epochTime(nanos).timeOfEpochDay.inNanoseconds
-  @deprecated
-  static int nanosecondOfFloorDay(Time time) {
-    return Instant.epochTime(time).epochDayTime.inNanoseconds;
-    // return (time._milliseconds - (Instant.epochTime(time).daysSinceEpoch * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + time._nanosecondsInterval;
-  }
+  static int nanosecondOfEpochDay(Time time) => time._nanosecondOfEpochDay;
+  // return Instant.epochTime(time).epochDayTime.inNanoseconds;
+  // return (time._milliseconds - (Instant.epochTime(time).daysSinceEpoch * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + time._nanosecondsInterval;
 
-  @deprecated
-  // this is probably not the method the average person wants to be calling
-  static int nanosecondOfDay(Time time) {
-    return (time._milliseconds - (time.inDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + time._nanosecondsInterval;
-  }
+  // @deprecated
+  /// This is probably not the method the average person wants to be calling.
+  /// This is used by the TimePatternParser to get the nanosecond portion of the amount of nanoseconds passed a day's worth of time,
+  /// (not the calendar concept of a day)
+  static int nanosecondOfDurationDay(Time time) => time._nanosecondOfDurationDay;
+
+  // todo: a performant check?
+  static int epochDay(Time time) => IInstant.trusted(time).epochDay;
 }
 
 // Implementation note:
@@ -337,6 +338,21 @@ abstract class Time implements Comparable<Time> {
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
   }
+
+  int get _nanosecondOfDurationDay {
+    // _milliseconds ~/ TimeConstants.millisecondsPerDay;
+    // todo: convert to mod-based logic? (see: NanosecondTime)
+    // return (_milliseconds - (inDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+    return arithmeticMod(_milliseconds, TimeConstants.millisecondsPerDay) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+        // + arithmeticMod(_nanosecondsInterval, TimeConstants.nanosecondsPerMillisecond);
+  }
+
+  int get _nanosecondOfEpochDay {
+    // return (_milliseconds - (inDays * TimeConstants.millisecondsPerDay)) * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval;
+
+    // Do I need to re-mod this?
+    return epochArithmeticMod(_milliseconds, TimeConstants.millisecondsPerDay) * TimeConstants.nanosecondsPerMillisecond +_nanosecondsInterval;
+  }
 }
 
 
@@ -421,4 +437,14 @@ class NanosecondTime extends Time {
   @override int get inNanoseconds => _nanoseconds;
 
   @override Duration get toDuration => Duration(microseconds: inMicroseconds);
+
+  @override int get _nanosecondOfDurationDay {
+    // return arithmeticMod((_nanoseconds ~/ TimeConstants.nanosecondsPerDay), TimeConstants.hoursPerDay);
+    // return _nanoseconds - (inDays * TimeConstants.nanosecondsPerDay);
+    return arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerDay);
+  }
+
+  @override int get _nanosecondOfEpochDay {
+    return epochArithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerDay);
+  }
 }

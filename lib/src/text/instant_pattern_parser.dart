@@ -67,7 +67,7 @@ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
   ParseResult<Instant> parse(String text) =>
       _pattern
           .parse(text)
-          .convert((local) => IInstant.trusted(new Time(days: local.localDate.epochDay, nanoseconds: local.nanosecondOfDay)));
+          .convert((local) => IInstant.trusted(new Time(days: local.calendarDate.epochDay, nanoseconds: local.nanosecondOfDay)));
 }
 
 

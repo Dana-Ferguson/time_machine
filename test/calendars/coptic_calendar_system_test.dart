@@ -55,16 +55,16 @@ void SampleDate()
   expect(copticCalendar.isLeapYear(1720), isFalse);
 
   expect(10, coptic.month);
-  expect(2, coptic.day);
+  expect(2, coptic.dayOfMonth);
 
   expect(DayOfWeek.wednesday, coptic.dayOfWeek);
 
   expect(9 * 30 + 2, coptic.dayOfYear);
 
-  expect(0, coptic.hour);
-  expect(0, coptic.minute);
-  expect(0, coptic.second);
-  expect(0, coptic.millisecond);
+  expect(0, coptic.hourOfDay);
+  expect(0, coptic.minuteOfHour);
+  expect(0, coptic.secondOfMinute);
+  expect(0, coptic.millisecondOfSecond);
 }
 
 // Really testing SingleEraCalculator...

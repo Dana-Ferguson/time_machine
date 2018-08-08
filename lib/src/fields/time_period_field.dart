@@ -44,9 +44,9 @@ class TimePeriodField
   LocalDateTime addDateTime(LocalDateTime start, int units)
   {
     // int extraDays = 0;
-    var addTimeResult = addTimeAndDays(start.localTime, units, 0);
+    var addTimeResult = addTimeAndDays(start.timeOfDay, units, 0);
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-    LocalDate date = addTimeResult.extraDays == 0 ? start.localDate :  start.localDate.addDays(addTimeResult.extraDays);
+    LocalDate date = addTimeResult.extraDays == 0 ? start.calendarDate :  start.calendarDate.addDays(addTimeResult.extraDays);
     return new LocalDateTime.localDateAtTime(date, addTimeResult.time);
   }
 

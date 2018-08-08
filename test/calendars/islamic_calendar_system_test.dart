@@ -29,13 +29,13 @@ void SampleDate1()
 
   expect(1364, ldt.year);
   expect(12, ldt.month);
-  expect(6, ldt.day);
+  expect(6, ldt.dayOfMonth);
   expect(DayOfWeek.monday, ldt.dayOfWeek);
   expect(6 * 30 + 5 * 29 + 6, ldt.dayOfYear);
 
-  expect(0, ldt.hour);
-  expect(0, ldt.minute);
-  expect(0, ldt.second);
+  expect(0, ldt.hourOfDay);
+  expect(0, ldt.minuteOfHour);
+  expect(0, ldt.secondOfMinute);
   expect(0, ldt.microsecondOfSecond);
 }
 
@@ -49,12 +49,12 @@ void SampleDate2()
 
   expect(1426, ldt.year);
   expect(10, ldt.month);
-  expect(24, ldt.day);
+  expect(24, ldt.dayOfMonth);
   expect(DayOfWeek.saturday, ldt.dayOfWeek);
   expect(5 * 30 + 4 * 29 + 24, ldt.dayOfYear);
-  expect(0, ldt.hour);
-  expect(0, ldt.minute);
-  expect(0, ldt.second);
+  expect(0, ldt.hourOfDay);
+  expect(0, ldt.minuteOfHour);
+  expect(0, ldt.secondOfMinute);
   expect(0, ldt.microsecondOfSecond);
 }
 
@@ -66,12 +66,12 @@ void SampleDate3()
 
   expect(1426, ldt.year);
   expect(12, ldt.month);
-  expect(24, ldt.day);
+  expect(24, ldt.dayOfMonth);
   expect(DayOfWeek.tuesday, ldt.dayOfWeek);
   expect(6 * 30 + 5 * 29 + 24, ldt.dayOfYear);
-  expect(0, ldt.hour);
-  expect(0, ldt.minute);
-  expect(0, ldt.second);
+  expect(0, ldt.hourOfDay);
+  expect(0, ldt.minuteOfHour);
+  expect(0, ldt.secondOfMinute);
   expect(0, ldt.microsecondOfSecond);
 }
 
@@ -414,7 +414,7 @@ void PlusMonths_Simple()
   LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
   LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
   expect(11, expectedEnd.month);
-  expect(30, expectedEnd.day);
+  expect(30, expectedEnd.dayOfMonth);
   expect(expectedEnd, start.addMonths(11));
 }
 

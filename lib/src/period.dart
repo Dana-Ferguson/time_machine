@@ -258,23 +258,23 @@ class Period {
     // The date adjustment will always be valid, because it's just moving it towards start.
     // We need this for all date-based period fields. We could potentially optimize by not doing this
     // in cases where we've only got time fields...
-    LocalDate endDate = end.localDate;
+    LocalDate endDate = end.calendarDate;
     if (start < end) {
-      if (start.localTime > end.localTime) {
+      if (start.timeOfDay > end.timeOfDay) {
         endDate = endDate.addDays(-1);
       }
     }
-    else if (start > end && start.localTime < end.localTime) {
+    else if (start > end && start.timeOfDay < end.timeOfDay) {
       endDate = endDate.addDays(1);
     }
 
     // Optimization for single field
     // todo: optimize me?
     Map _betweenFunctionMap = {
-      PeriodUnits.years:  () => new Period(years: DatePeriodFields.yearsField.unitsBetween(start.localDate, endDate)),
-      PeriodUnits.months: () => new Period(months: DatePeriodFields.monthsField.unitsBetween(start.localDate, endDate)),
-      PeriodUnits.weeks: () => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start.localDate, endDate)),
-      PeriodUnits.days: () => new Period(days: _daysBetween(start.localDate, endDate)),
+      PeriodUnits.years:  () => new Period(years: DatePeriodFields.yearsField.unitsBetween(start.calendarDate, endDate)),
+      PeriodUnits.months: () => new Period(months: DatePeriodFields.monthsField.unitsBetween(start.calendarDate, endDate)),
+      PeriodUnits.weeks: () => new Period(weeks: DatePeriodFields.weeksField.unitsBetween(start.calendarDate, endDate)),
+      PeriodUnits.days: () => new Period(days: _daysBetween(start.calendarDate, endDate)),
       PeriodUnits.hours: () => new Period(hours: TimePeriodField.hours.unitsBetween(start, end)),
       PeriodUnits.minutes: () => new Period(minutes: TimePeriodField.minutes.unitsBetween(start, end)),
       PeriodUnits.seconds: () => new Period(seconds: TimePeriodField.seconds.unitsBetween(start, end)),
@@ -317,14 +317,14 @@ class Period {
     if ((units.value & PeriodUnits.allDateUnits.value) != 0) {
       // LocalDate remainingDate = DateComponentsBetween(
       //  start.Date, endDate, units, out years, out months, out weeks, out days);
-      var result = _dateComponentsBetween(start.localDate, endDate, units);
+      var result = _dateComponentsBetween(start.calendarDate, endDate, units);
       years = result.years;
       months = result.months;
       weeks = result.weeks;
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.localTime);
+      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.timeOfDay);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(years: years, months: months, weeks: weeks, days: days);

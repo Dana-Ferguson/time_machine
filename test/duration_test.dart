@@ -81,7 +81,7 @@ void ConstituentParts_Positive()
 {
   var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
   expect(5, Instant.epochTime(nanos).epochDay);
-  expect(100, ITime.nanosecondOfFloorDay(nanos));
+  expect(100, ITime.nanosecondOfEpochDay(nanos));
   expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
 }
 
@@ -90,8 +90,9 @@ void ConstituentParts_Negative()
 {
   var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
   expect(-5, Instant.epochTime(nanos).epochDay);
-  expect(100, ITime.nanosecondOfFloorDay(nanos));
+  expect(-5, ITime.epochDay(nanos));
   expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
+  expect(100, ITime.nanosecondOfEpochDay(nanos));
 }
 
 @Test()
@@ -101,7 +102,7 @@ void ConstituentParts_Large() {
   expect(365000, Instant.epochTime(nanos).epochDay);
 
   if (Platform.isVM) {
-    expect(500, ITime.nanosecondOfFloorDay(nanos));
+    expect(500, ITime.nanosecondOfEpochDay(nanos));
     expect(500, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
   }
 }
@@ -288,7 +289,7 @@ void PositiveComponents()
   // Worked out with a calculator :)
   Time duration = new Time(nanoseconds: 1234567890123456);
   expect(14, duration.inDays);
-  expect(24967890123456, ITime.nanosecondOfDay(duration));
+  expect(24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(6, duration.hourOfDay);
   expect(56, duration.minuteOfHour);
   expect(7, duration.secondOfMinute);
@@ -303,7 +304,7 @@ void NegativeComponents()
   // Worked out with a calculator :) // -1234567 890123456
   Time duration = new Time(nanoseconds: -1234567890123456);
   expect(-14, duration.inDays);
-  expect(-24967890123456, ITime.nanosecondOfDay(duration));
+  expect(-24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(-6, duration.hourOfDay);
   expect(-56, duration.minuteOfHour);
   expect(-7, duration.secondOfMinute);

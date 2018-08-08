@@ -29,7 +29,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
     'M': DatePatternHelper.createMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
       ((value) => value.month, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
     'd': DatePatternHelper.createDayHandler<LocalDateTime, LocalDateTimeParseBucket>
-      ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
+      ((value) => value.dayOfMonth, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
     bucket.date.dayOfWeek = value),
     '.': TimePatternHelper.createPeriodHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
@@ -37,28 +37,28 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<LocalDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
+      (2, PatternFields.hours12, 1, 12, (value) => value.hourOf12HourClock, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
+      (2, PatternFields.hours24, 0, 24, (value) => value.hourOfDay, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
+      (2, PatternFields.minutes, 0, 59, (value) => value.minuteOfHour, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<LocalDateTime, LocalDateTimeParseBucket>
-      (2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
+      (2, PatternFields.seconds, 0, 59, (value) => value.secondOfMinute, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<LocalDateTime, LocalDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
+    't': TimePatternHelper.createAmPmHandler<LocalDateTime, LocalDateTimeParseBucket>((time) => time.hourOfDay, (bucket, value) => bucket.time.amPm = value),
     'c': DatePatternHelper.createCalendarHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.calendar, (bucket, value) =>
     bucket.date.calendar = value),
     'g': DatePatternHelper.createEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
     'l': (cursor, builder) =>
-        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.localDate, (value) => value.localTime, null),
+        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.calendarDate, (value) => value.timeOfDay, null),
   };
 
   LocalDateTimePatternParser(LocalDateTime templateValue)
-      : _templateValueDate = templateValue.localDate,
-        _templateValueTime = templateValue.localTime;
+      : _templateValueDate = templateValue.calendarDate,
+        _templateValueTime = templateValue.timeOfDay;
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.

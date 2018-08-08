@@ -345,7 +345,7 @@ String _printNewObject(Object obj) {
     sb.write('ILocalTime.fromNanoseconds($nanoseconds)');
   }
   else if (obj is LocalDateTime) {
-    sb.write('new LocalDateTime(${_printNewObject(obj.localDate)}, ${_printNewObject(obj.localTime)})');
+    sb.write('new LocalDateTime(${_printNewObject(obj.calendarDate)}, ${_printNewObject(obj.timeOfDay)})');
   }
   else if (obj is OffsetDate) {
     var date = obj.date;

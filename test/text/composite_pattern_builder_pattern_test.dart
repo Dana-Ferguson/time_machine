@@ -27,7 +27,7 @@ void IsoPattern(String text) {
   var shortPattern = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
   var pattern = (new CompositePatternBuilder<LocalDateTime>()
     ..add(LocalDateTimePattern.extendedIso, (_) => true)
-    ..add(shortPattern, (ldt) => ldt.second == 0 && ldt.nanosecondOfSecond == 0)).build();
+    ..add(shortPattern, (ldt) => ldt.secondOfMinute == 0 && ldt.nanosecondOfSecond == 0)).build();
   var value = pattern
       .parse(text)
       .value;

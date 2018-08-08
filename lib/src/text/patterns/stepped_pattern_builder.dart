@@ -424,10 +424,10 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
                 dateBucket.calendar = value.calendar;
                 dateBucket.year = value.year;
                 dateBucket.monthOfYearNumeric = value.month;
-                dateBucket.dayOfMonth = value.day;
-                timeBucket.hours24 = value.hour;
-                timeBucket.minutes = value.minute;
-                timeBucket.seconds = value.second;
+                dateBucket.dayOfMonth = value.dayOfMonth;
+                timeBucket.hours24 = value.hourOfDay;
+                timeBucket.minutes = value.minuteOfHour;
+                timeBucket.seconds = value.secondOfMinute;
                 timeBucket.fractionalSeconds = value.nanosecondOfSecond;
               },
               dateTimeExtractor);
@@ -472,9 +472,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         LocalTimePatterns.underlyingPattern(LocalTimePatterns.create(embeddedPatternText, formatInfo, templateTime)),
             (TBucket bucket, LocalTime value) {
           var timeBucket = timeBucketExtractor(bucket);
-          timeBucket.hours24 = value.hour;
-          timeBucket.minutes = value.minute;
-          timeBucket.seconds = value.second;
+          timeBucket.hours24 = value.hourOfDay;
+          timeBucket.minutes = value.minuteOfHour;
+          timeBucket.seconds = value.secondOfMinute;
           timeBucket.fractionalSeconds = value.nanosecondOfSecond;
         },
         timeExtractor);

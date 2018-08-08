@@ -144,77 +144,24 @@ class LocalTime implements Comparable<LocalTime> {
 
     return LocalTime._(nanoOfDay);
   }
-/*
-  /// Gets the hour of day of this local time, in the range 0 to 23 inclusive.
-  int get hour => _nanoseconds ~/ TimeConstants.nanosecondsPerHour;
-
-  /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay {
-    int _hourOfHalfDay = this._hourOfHalfDay;
-    return _hourOfHalfDay == 0 ? 12 : _hourOfHalfDay;
-  }
-
-  // TODO(feature): Consider exposing this.
-  /// Gets the hour of the half-day of this local time, in the range 0 to 11 inclusive.
-  int get _hourOfHalfDay => (hour % 12);
-
-  /// Gets the minute of this local time, in the range 0 to 59 inclusive.
-  int get minute {
-    // Effectively nanoseconds / TimeConstants.nanosecondsPerMinute, but apparently rather more efficient.
-    int minuteOfDay = _nanoseconds ~/ TimeConstants.nanosecondsPerMinute;
-    return minuteOfDay % TimeConstants.minutesPerHour;
-  }
-
-  /// Gets the second of this local time within the minute, in the range 0 to 59 inclusive.
-  int get second {
-    int secondOfDay = (_nanoseconds ~/ TimeConstants.nanosecondsPerSecond);
-    return secondOfDay % TimeConstants.secondsPerMinute;
-  }
-
-  // todo: millisecondOfSecond to match the others?
-  /// Gets the millisecond of this local time within the second, in the range 0 to 999 inclusive.
-  int get millisecond {
-    int milliSecondOfDay = (_nanoseconds ~/ TimeConstants.nanosecondsPerMillisecond);
-    return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
-  }
-
-  // TODO(optimization): Rewrite for performance?
-
-  /// Gets the microsecond of this local time within the second, in the range 0 to 999,999 inclusive.
-  int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
-
-  /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => ((_nanoseconds % TimeConstants.nanosecondsPerSecond));
-
-  /// Gets the nanosecond of this local time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => _nanoseconds;
-
-  /// Gets the microsecond of this local time within the day, in the range 0 to 86,399,999,999 inclusive.
-  int get microsecondOfDay => _nanoseconds ~/ TimeConstants.nanosecondsPerMicrosecond;
-
-  // Time get timeOfDay => ITime.short(_nanoseconds); <-- a nanosecond only instance?
-  // Time get timeOfDay => ITime.untrusted(0, _nanoseconds);
-  // int get nanosecondOfDay2 => timeOfDay.inNanoseconds;
-  // Time get timeSinceMidnight => _time;
-  // Time get timeOfDay => _time;
-  // Time get dayTime => _time;
-  // int get nanosecondOfDay2 => _time.inNanoseconds;
-*/
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
-  int get hour => timeSinceMidnight.hourOfDay;
+  int get hourOfDay => timeSinceMidnight.hourOfDay;
 
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => timeSinceMidnight.hourOf12HourClock;
+  int get hourOf12HourClock => timeSinceMidnight.hourOf12HourClock;
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
-  int get minute => timeSinceMidnight.minuteOfHour;
+  int get minuteOfHour => timeSinceMidnight.minuteOfHour;
 
   /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
-  int get second => timeSinceMidnight.secondOfMinute;
+  int get secondOfMinute => timeSinceMidnight.secondOfMinute;
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => timeSinceMidnight.millisecondOfSecond;
+  int get millisecondOfSecond => timeSinceMidnight.millisecondOfSecond;
+
+  /// Gets the microsecond of this local time within the second, in the range 0 to 999,999 inclusive.
+  int get microsecondOfSecond => timeSinceMidnight.microsecondOfSecond;
 
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => timeSinceMidnight.nanosecondOfSecond;

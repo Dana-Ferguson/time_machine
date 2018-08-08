@@ -61,7 +61,7 @@ class TimePatternParser implements IPatternParser<Time> {
   }
 
   static int _getPositiveNanosecondOfSecond(Time time) {
-    return ITime.nanosecondOfDay(time).abs() % TimeConstants.nanosecondsPerSecond;
+    return ITime.nanosecondOfDurationDay(time).abs() % TimeConstants.nanosecondsPerSecond;
   }
 
   static CharacterHandler<Time, _TimeParseBucket> _createTotalHandler
@@ -97,7 +97,7 @@ class TimePatternParser implements IPatternParser<Time> {
           return days;
         }
         // Round towards 0.
-        return ITime.nanosecondOfFloorDay(time) == 0 ? -days : -(days + 1);
+        return ITime.nanosecondOfEpochDay(time) == 0 ? -days : -(days + 1);
       },
           assumeNonNegative: true,
           assumeFitsInCount: false);
@@ -113,7 +113,7 @@ class TimePatternParser implements IPatternParser<Time> {
               (bucket, value) => bucket.addUnits(value, nanosecondsPerUnit));
       // This is never used for anything larger than a day, so the day part is irrelevant.
       builder.addFormatLeftPad(count,
-              (time) => (((ITime.nanosecondOfDay(time).abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
+              (time) => (((ITime.nanosecondOfDurationDay(time).abs() ~/ nanosecondsPerUnit)) % unitsPerContainer),
           assumeNonNegative: true,
           assumeFitsInCount: count == 2);
     };
@@ -133,10 +133,10 @@ class TimePatternParser implements IPatternParser<Time> {
     // The property is declared as an int, but we it as a long to force 64-bit arithmetic when multiplying.
     int floorDays = IInstant.trusted(time).epochDay;
     if (floorDays >= 0) {
-      return floorDays * unitsPerDay + ITime.nanosecondOfFloorDay(time) ~/ nanosecondsPerUnit;
+      return floorDays * unitsPerDay + ITime.nanosecondOfEpochDay(time) ~/ nanosecondsPerUnit;
     }
     else {
-      int nanosecondOfDay = ITime.nanosecondOfDay(time);
+      int nanosecondOfDay = ITime.nanosecondOfDurationDay(time);
       // If it's not an exact number of days, FloorDays will overshoot (negatively) by 1.
       int negativeValue = nanosecondOfDay == 0
           ? floorDays * unitsPerDay

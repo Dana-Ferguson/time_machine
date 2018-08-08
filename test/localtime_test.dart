@@ -30,11 +30,11 @@ void MaxValue()
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalTime(0, 0, 0).clockHourOfHalfDay);
-  expect(1, new LocalTime(1, 0, 0).clockHourOfHalfDay);
-  expect(12, new LocalTime(12, 0, 0).clockHourOfHalfDay);
-  expect(1, new LocalTime(13, 0, 0).clockHourOfHalfDay);
-  expect(11, new LocalTime(23, 0, 0).clockHourOfHalfDay);
+  expect(12, new LocalTime(0, 0, 0).hourOf12HourClock);
+  expect(1, new LocalTime(1, 0, 0).hourOf12HourClock);
+  expect(12, new LocalTime(12, 0, 0).hourOf12HourClock);
+  expect(1, new LocalTime(13, 0, 0).hourOf12HourClock);
+  expect(11, new LocalTime(23, 0, 0).hourOf12HourClock);
 }
 
 ///   Using the default constructor is equivalent to midnight

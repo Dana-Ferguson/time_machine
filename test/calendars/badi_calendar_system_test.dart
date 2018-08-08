@@ -38,7 +38,7 @@ void BadiEpoch()
 void UnixEpoch()
 {
   CalendarSystem badi = CalendarSystem.badi;
-  LocalDate unixEpochInBadiCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, badi).localDateTime.localDate;
+  LocalDate unixEpochInBadiCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, badi).localDateTime.calendarDate;
   LocalDate expected = CreateBadiDate(126, 16, 2);
   expect(expected, unixEpochInBadiCalendar);
 }

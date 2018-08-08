@@ -115,11 +115,11 @@ void TimeProperties_AfterEpoch()
 {
   // Use the largest valid year as part of validating against overflow
   LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
-  expect(15, ldt.hour);
-  expect(3, ldt.clockHourOfHalfDay);
-  expect(48, ldt.minute);
-  expect(25, ldt.second);
-  expect(123, ldt.millisecond);
+  expect(15, ldt.hourOfDay);
+  expect(3, ldt.hourOf12HourClock);
+  expect(48, ldt.minuteOfHour);
+  expect(25, ldt.secondOfMinute);
+  expect(123, ldt.millisecondOfSecond);
   expect(123456/*7*/, ldt.microsecondOfSecond);
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
@@ -137,11 +137,11 @@ void TimeProperties_BeforeEpoch()
 {
   // Use the smallest valid year number as part of validating against overflow
   LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
-  expect(15, ldt.hour);
-  expect(3, ldt.clockHourOfHalfDay);
-  expect(48, ldt.minute);
-  expect(25, ldt.second);
-  expect(123, ldt.millisecond);
+  expect(15, ldt.hourOfDay);
+  expect(3, ldt.hourOf12HourClock);
+  expect(48, ldt.minuteOfHour);
+  expect(25, ldt.secondOfMinute);
+  expect(123, ldt.millisecondOfSecond);
   expect(123456/*7*/, ldt.microsecondOfSecond);
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
@@ -175,8 +175,8 @@ void WithCalendar()
   LocalDateTime julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.month);
-  expect(19, julianEpoch.day);
-  expect(isoEpoch.localTime, julianEpoch.localTime);
+  expect(19, julianEpoch.dayOfMonth);
+  expect(isoEpoch.timeOfDay, julianEpoch.timeOfDay);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -185,7 +185,7 @@ void TimeOfDay_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.localTime);
+  expect(expected, dateTime.timeOfDay);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -194,7 +194,7 @@ void TimeOfDay_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.localTime);
+  expect(expected, dateTime.timeOfDay);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -203,7 +203,7 @@ void Date_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1965, 11, 8);
-  expect(expected, dateTime.localDate);
+  expect(expected, dateTime.calendarDate);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -212,7 +212,7 @@ void Date_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
   LocalDate expected = new LocalDate(1975, 11, 8);
-  expect(expected, dateTime.localDate);
+  expect(expected, dateTime.calendarDate);
 }
 
 @Test()
@@ -234,11 +234,11 @@ void DayOfWeek_AroundEpoch()
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalDateTime(1975, 11, 8, 0, 0, 0).clockHourOfHalfDay);
-  expect(1, new LocalDateTime(1975, 11, 8, 1, 0, 0).clockHourOfHalfDay);
-  expect(12, new LocalDateTime(1975, 11, 8, 12, 0, 0).clockHourOfHalfDay);
-  expect(1, new LocalDateTime(1975, 11, 8, 13, 0, 0).clockHourOfHalfDay);
-  expect(11, new LocalDateTime(1975, 11, 8, 23, 0, 0).clockHourOfHalfDay);
+  expect(12, new LocalDateTime(1975, 11, 8, 0, 0, 0).hourOf12HourClock);
+  expect(1, new LocalDateTime(1975, 11, 8, 1, 0, 0).hourOf12HourClock);
+  expect(12, new LocalDateTime(1975, 11, 8, 12, 0, 0).hourOf12HourClock);
+  expect(1, new LocalDateTime(1975, 11, 8, 13, 0, 0).hourOf12HourClock);
+  expect(11, new LocalDateTime(1975, 11, 8, 23, 0, 0).hourOf12HourClock);
 }
 
 @Test()

@@ -67,8 +67,13 @@ abstract class IDateTimeZoneWriter {
 //
 }
 
-// https://en.wikipedia.org/wiki/Modulo_operation
-// we should only use this where 'x' can be negative
+/// see: https://en.wikipedia.org/wiki/Modulo_operation
+///
+/// For performance, we should only use this where 'x' can be negative.
+///
+/// This returns a pattern consistent with duration based times
+/// [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+/// [-2, -1,  0, -2, -1, 0, 1, 2, 0, 1, 2]
 int arithmeticMod(num x, int y) {
   if (x >= 0) return x % y;
   return -((-x)%y);
@@ -78,6 +83,21 @@ BigInt bigArithmeticMod(BigInt x, BigInt y) {
   if (x.isNegative) return -((-x)%y);
   return x % y;
 }
+
+/// This returns a pattern consistent with epoch (or calendar) based times
+/// [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+/// [ 1,  2,  0,  1,  2, 0, 1, 2, 0, 1, 2]
+int epochArithmeticMod(num x, int y) {
+  if (x >= 0) return x % y;
+  if (x >= 0) return x % y;
+  return -(y-x)%y;
+}
+
+BigInt epochBigArithmeticMod(BigInt x, BigInt y) {
+  if (x.isNegative) return -(y-x)%y;
+  return x % y;
+}
+
 
 // https://en.wikipedia.org/wiki/Arithmetic_shift#Handling_the_issue_in_programming_languages
 // JS does bit shifting with two's complement preserved
