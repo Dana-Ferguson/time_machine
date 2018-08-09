@@ -55,8 +55,8 @@ void Constructor_PropertiesRoundTrip()
 {
   LocalDate date = new LocalDate(2023, 7, 27);
   expect(2023, date.year);
-  expect(7, date.month);
-  expect(27, date.day);
+  expect(7, date.monthOfYear);
+  expect(27, date.dayOfMonth);
 }
 
 @Test()
@@ -64,8 +64,8 @@ void Constructor_PropertiesRoundTrip_CustomCalendar()
 {
   LocalDate date = new LocalDate(2023, 7, 27, CalendarSystem.julian);
   expect(2023, date.year);
-  expect(7, date.month);
-  expect(27, date.day);
+  expect(7, date.monthOfYear);
+  expect(27, date.dayOfMonth);
 }
 
 @Test()
@@ -153,6 +153,6 @@ void FromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayO
 {
   var date = new LocalDate.onDayOfWeekInMonth(year, month, occurrence, dayOfWeek);
   expect(year, date.year);
-  expect(month, date.month);
-  expect(expectedDay, date.day);
+  expect(month, date.monthOfYear);
+  expect(expectedDay, date.dayOfMonth);
 }

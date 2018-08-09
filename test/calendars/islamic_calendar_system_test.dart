@@ -28,7 +28,7 @@ void SampleDate1()
   expect(1364, ldt.yearOfEra);
 
   expect(1364, ldt.year);
-  expect(12, ldt.month);
+  expect(12, ldt.monthOfYear);
   expect(6, ldt.dayOfMonth);
   expect(DayOfWeek.monday, ldt.dayOfWeek);
   expect(6 * 30 + 5 * 29 + 6, ldt.dayOfYear);
@@ -48,7 +48,7 @@ void SampleDate2()
   expect(1426, ldt.yearOfEra);
 
   expect(1426, ldt.year);
-  expect(10, ldt.month);
+  expect(10, ldt.monthOfYear);
   expect(24, ldt.dayOfMonth);
   expect(DayOfWeek.saturday, ldt.dayOfWeek);
   expect(5 * 30 + 4 * 29 + 24, ldt.dayOfYear);
@@ -65,7 +65,7 @@ void SampleDate3()
   expect(Era.annoHegirae, ldt.era);
 
   expect(1426, ldt.year);
-  expect(12, ldt.month);
+  expect(12, ldt.monthOfYear);
   expect(24, ldt.dayOfMonth);
   expect(DayOfWeek.tuesday, ldt.dayOfWeek);
   expect(6 * 30 + 5 * 29 + 24, ldt.dayOfYear);
@@ -89,8 +89,8 @@ void InternalConsistency()
       {
         LocalDate date = new LocalDate(year, month, day, calendar);
         expect(year, date.year, reason: "Year of $year-$month-$day");
-        expect(month, date.month, reason: "Month of $year-$month-$day");
-        expect(day, date.day, reason: "Day of $year-$month-$day");
+        expect(month, date.monthOfYear, reason: "Month of $year-$month-$day");
+        expect(day, date.dayOfMonth, reason: "Day of $year-$month-$day");
       }
     }
   }
@@ -413,7 +413,7 @@ void PlusMonths_Simple()
 
   LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
   LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
-  expect(11, expectedEnd.month);
+  expect(11, expectedEnd.monthOfYear);
   expect(30, expectedEnd.dayOfMonth);
   expect(expectedEnd, start.addMonths(11));
 }

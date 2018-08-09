@@ -12,12 +12,12 @@ class DateAdjusters {
 
   /// A date adjuster to move to the first day of the current month.
   static final LocalDate Function(LocalDate) startOfMonth =
-      (date) => new LocalDate(date.year, date.month, 1, date.calendar);
+      (date) => new LocalDate(date.year, date.monthOfYear, 1, date.calendar);
 
 
   /// A date adjuster to move to the last day of the current month.
   static final LocalDate Function(LocalDate) endOfMonth =
-      (date) => new LocalDate(date.year, date.month, date.calendar.getDaysInMonth(date.year, date.month), date.calendar);
+      (date) => new LocalDate(date.year, date.monthOfYear, date.calendar.getDaysInMonth(date.year, date.monthOfYear), date.calendar);
 
 
   /// A date adjuster to move to the specified day of the current month.
@@ -30,7 +30,7 @@ class DateAdjusters {
   /// An adjuster which changes the day to [day],
   /// retaining the same year and month.
   static LocalDate Function(LocalDate) dayOfMonth(int day) =>
-          (date) => new LocalDate(date.year, date.month, day, date.calendar);
+          (date) => new LocalDate(date.year, date.monthOfYear, day, date.calendar);
 
 
   /// A date adjuster to move to the same day of the specified month.
@@ -43,7 +43,7 @@ class DateAdjusters {
   /// An adjuster which changes the month to [month],
   /// retaining the same year and day of month.
   static LocalDate Function(LocalDate) month(int month) =>
-          (date) => new LocalDate(date.year, month, date.day, date.calendar);
+          (date) => new LocalDate(date.year, month, date.dayOfMonth, date.calendar);
 
 
   /// A date adjuster to move to the next specified day-of-week, but return the

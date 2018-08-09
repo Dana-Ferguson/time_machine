@@ -27,7 +27,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
     'u': SteppedPatternBuilder.handlePaddedField /**<LocalDateTime, LocalDateTimeParseBucket>*/
       (4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
     'M': DatePatternHelper.createMonthOfYearHandler<LocalDateTime, LocalDateTimeParseBucket>
-      ((value) => value.month, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
+      ((value) => value.monthOfYear, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
     'd': DatePatternHelper.createDayHandler<LocalDateTime, LocalDateTimeParseBucket>
       ((value) => value.dayOfMonth, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
     bucket.date.dayOfWeek = value),

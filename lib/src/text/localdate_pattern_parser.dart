@@ -29,8 +29,8 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
     '/': (pattern, builder) => builder.addLiteral1(builder.formatInfo.dateSeparator, IParseResult.dateSeparatorMismatch/**<LocalDate>*/),
     'y': DatePatternHelper.createYearOfEraHandler<LocalDate, LocalDateParseBucket>((value) => value.yearOfEra, (bucket, value) => bucket.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<LocalDate, LocalDateParseBucket>(4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.year = value),
-    'M': DatePatternHelper.createMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.month, (bucket, value) => bucket.monthOfYearText = value, (bucket, value) => bucket.monthOfYearNumeric = value),
-    'd': DatePatternHelper.createDayHandler<LocalDate, LocalDateParseBucket>((value) => value.day, (value) => /*(int)*/ value.dayOfWeek.value, (bucket, value) => bucket.dayOfMonth = value, (bucket, value) => bucket.dayOfWeek = value),
+    'M': DatePatternHelper.createMonthOfYearHandler<LocalDate, LocalDateParseBucket>((value) => value.monthOfYear, (bucket, value) => bucket.monthOfYearText = value, (bucket, value) => bucket.monthOfYearNumeric = value),
+    'd': DatePatternHelper.createDayHandler<LocalDate, LocalDateParseBucket>((value) => value.dayOfMonth, (value) => /*(int)*/ value.dayOfWeek.value, (bucket, value) => bucket.dayOfMonth = value, (bucket, value) => bucket.dayOfWeek = value),
     'c': DatePatternHelper.createCalendarHandler<LocalDate, LocalDateParseBucket>((value) => value.calendar, (bucket, value) => bucket.calendar = value),
     'g': DatePatternHelper.createEraHandler<LocalDate, LocalDateParseBucket>((date) => date.era, (bucket) => bucket),
   };
@@ -126,7 +126,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
       return failure;
     }
 
-    int day = usedFields.hasAny(PatternFields.dayOfMonth) ? dayOfMonth : templateValue.day;
+    int day = usedFields.hasAny(PatternFields.dayOfMonth) ? dayOfMonth : templateValue.dayOfMonth;
     if (day > calendar.getDaysInMonth(year, monthOfYearNumeric)) {
       return IParseResult.dayOfMonthOutOfRange<LocalDate>(text, day, monthOfYearNumeric, year);
     }
@@ -231,7 +231,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
     // No need to change MonthOfYearNumeric - this was just a check
     }
     else if (x == PatternFields.none) {
-      monthOfYearNumeric = templateValue.month;
+      monthOfYearNumeric = templateValue.monthOfYear;
     }
 
     /*

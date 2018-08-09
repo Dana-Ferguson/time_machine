@@ -125,8 +125,8 @@ void GeneralConversionNearNawRuz(int gYear, int gMonth, int gDay, int bYear, int
   var bDate = CreateBadiDate(bYear, bMonth, bDay);
   var gDate = bDate.withCalendar(CalendarSystem.gregorian);
   expect(gYear, gDate.year);
-  expect(gMonth, gDate.month);
-  expect(gDay, gDate.day);
+  expect(gMonth, gDate.monthOfYear);
+  expect(gDay, gDate.dayOfMonth);
 
   // convert to the Badíʿ calendar
   var bDate2 = new LocalDate(gYear, gMonth, gDay).withCalendar(CalendarSystem.badi);
@@ -157,7 +157,7 @@ void SpecialCases(int gYear, int gMonth, int gDay, int bYear, int bMonth, int bD
   // convert to gregorian
   var gDate = bDate.withCalendar(CalendarSystem.gregorian);
 
-  expect("$gYear-$gMonth-$gDay", "${gDate.year}-${gDate.month}-${gDate.day}");
+  expect("$gYear-$gMonth-$gDay", "${gDate.year}-${gDate.monthOfYear}-${gDate.dayOfMonth}");
 
   // create in gregorian
   // convert to test calendar
@@ -239,8 +239,8 @@ void GeneralWtoG(int bYear, int bMonth, int bDay, int gYear, int gMonth, int gDa
   var bDate = CreateBadiDate(bYear, bMonth, bDay);
   var gDate = bDate.withCalendar(CalendarSystem.gregorian);
   expect(gYear, gDate.year);
-  expect(gMonth, gDate.month);
-  expect(gDay, gDate.day);
+  expect(gMonth, gDate.monthOfYear);
+  expect(gDay, gDate.dayOfMonth);
 
   // convert to this calendar
   var bDate2 = new LocalDate(gYear, gMonth, gDay).withCalendar(CalendarSystem.badi);
@@ -604,12 +604,12 @@ int BadiDay(LocalDate input)
 {
   Preconditions.checkArgument(input.calendar == CalendarSystem.badi, 'input', "Only valid when using the Badíʿ calendar");
 
-  if (input.month == BadiYearMonthDayCalculator.month18 &&
-      input.day > BadiYearMonthDayCalculator.daysInMonth)
+  if (input.monthOfYear == BadiYearMonthDayCalculator.month18 &&
+      input.dayOfMonth > BadiYearMonthDayCalculator.daysInMonth)
   {
-    return input.day - BadiYearMonthDayCalculator.daysInMonth;
+    return input.dayOfMonth - BadiYearMonthDayCalculator.daysInMonth;
   }
-  return input.day;
+  return input.dayOfMonth;
 }
 
 /// <summary>
@@ -619,12 +619,12 @@ int BadiMonth(LocalDate input)
 {
   Preconditions.checkArgument(input.calendar == CalendarSystem.badi, 'input', "Only valid when using the Badíʿ calendar");
 
-  if (input.month == BadiYearMonthDayCalculator.month18 &&
-      input.day > BadiYearMonthDayCalculator.daysInMonth)
+  if (input.monthOfYear == BadiYearMonthDayCalculator.month18 &&
+      input.dayOfMonth > BadiYearMonthDayCalculator.daysInMonth)
   {
     return AyyamiHaMonth;
   }
-  return input.month;
+  return input.monthOfYear;
 }
 
 /// <summary>

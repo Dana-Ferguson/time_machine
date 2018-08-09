@@ -149,7 +149,7 @@ class ZoneYearOffset {
     }
     if (_addDay) {
       // Adding a day to the last representable day will fail, but we can return an infinite value instead.
-      if (year == 9999 && date.month == 12 && date.day == 31) {
+      if (year == 9999 && date.monthOfYear == 12 && date.dayOfMonth == 31) {
         return LocalInstant.afterMaxValue;
       }
       date = date.addDays(1);

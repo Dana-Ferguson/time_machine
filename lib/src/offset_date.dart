@@ -33,10 +33,10 @@ class OffsetDate
   int get year => date.year;
 
   /// Gets the month of this offset date within the year.
-  int get month => date.month;
+  int get month => date.monthOfYear;
 
   /// Gets the day of this offset date within the month.
-  int get day => date.day;
+  int get day => date.dayOfMonth;
 
   /// Gets the week day of this offset date expressed as an [DayOfWeek] value.
   DayOfWeek get dayOfWeek => date.dayOfWeek;

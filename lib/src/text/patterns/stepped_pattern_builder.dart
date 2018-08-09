@@ -423,7 +423,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
                 var timeBucket = timeBucketExtractor(bucket);
                 dateBucket.calendar = value.calendar;
                 dateBucket.year = value.year;
-                dateBucket.monthOfYearNumeric = value.month;
+                dateBucket.monthOfYearNumeric = value.monthOfYear;
                 dateBucket.dayOfMonth = value.dayOfMonth;
                 timeBucket.hours24 = value.hourOfDay;
                 timeBucket.minutes = value.minuteOfHour;
@@ -456,8 +456,8 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
           var dateBucket = dateBucketExtractor(bucket);
           dateBucket.calendar = value.calendar;
           dateBucket.year = value.year;
-          dateBucket.monthOfYearNumeric = value.month;
-          dateBucket.dayOfMonth = value.day;
+          dateBucket.monthOfYearNumeric = value.monthOfYear;
+          dateBucket.dayOfMonth = value.dayOfMonth;
         },
         dateExtractor);
   }

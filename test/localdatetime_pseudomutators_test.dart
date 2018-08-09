@@ -278,7 +278,7 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   LocalDateTime start = new LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30).addNanoseconds(123456789);
   LocalDateTime target = start.next(targetDayOfWeek);
   expect(2011, target.year);
-  expect(11, target.month);
+  expect(11, target.monthOfYear);
   expect(start.clockTime, target.clockTime);
   expect(target.dayOfMonth, expectedResult);
 }
@@ -309,7 +309,7 @@ void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   LocalDateTime start = new LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30).addNanoseconds(123456789);
   LocalDateTime target = start.previous(targetDayOfWeek);
   expect(2011, target.year);
-  expect(11, target.month);
+  expect(11, target.monthOfYear);
   expect(target.dayOfMonth, expectedResult);
 }
 

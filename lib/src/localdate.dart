@@ -100,10 +100,10 @@ class LocalDate implements Comparable<LocalDate> {
   int get year => _yearMonthDayCalendar.year;
 
   /// Gets the month of this local date within the year.
-  int get month => _yearMonthDayCalendar.month;
+  int get monthOfYear => _yearMonthDayCalendar.month;
 
   /// Gets the day of this local date within the month.
-  int get day => _yearMonthDayCalendar.day;
+  int get dayOfMonth => _yearMonthDayCalendar.day;
 
   /// Gets the number of days since the Unix epoch for this date.
   int get epochDay => ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
@@ -129,7 +129,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Constructs a [DateTime] with [DateTime.isUtc] == `false`. The result is midnight on the day represented
   /// by this value.
-  DateTime toDateTimeUnspecified() => new DateTime(year, month, day);
+  DateTime toDateTimeUnspecified() => new DateTime(year, monthOfYear, dayOfMonth);
   // new DateTime.fromMicrosecondsSinceEpoch(DaysSinceEpoch * TimeConstants.microsecondsPerDay);
   // + TimeConstants.BclTicksAtUnixEpoch ~/ TimeConstants.ticksPerMicrosecond); //, DateTimeKind.Unspecified);
 

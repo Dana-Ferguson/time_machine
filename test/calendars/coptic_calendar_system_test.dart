@@ -54,7 +54,7 @@ void SampleDate()
   expect(1720, coptic.year);
   expect(copticCalendar.isLeapYear(1720), isFalse);
 
-  expect(10, coptic.month);
+  expect(10, coptic.monthOfYear);
   expect(2, coptic.dayOfMonth);
 
   expect(DayOfWeek.wednesday, coptic.dayOfWeek);

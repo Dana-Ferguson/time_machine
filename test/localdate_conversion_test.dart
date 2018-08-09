@@ -27,8 +27,8 @@ void WithCalendar()
   LocalDate isoEpoch = new LocalDate(1970, 1, 1);
   LocalDate julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.year);
-  expect(12, julianEpoch.month);
-  expect(19, julianEpoch.day);
+  expect(12, julianEpoch.monthOfYear);
+  expect(19, julianEpoch.dayOfMonth);
 }
 
 @Test()

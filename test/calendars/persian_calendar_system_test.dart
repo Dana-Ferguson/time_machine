@@ -66,7 +66,7 @@ void ArithmeticExamples(int persianYear, int gregorianYear, int gregorianDayOfMa
   var persian = new LocalDate(persianYear, 1, 1, CalendarSystem.persianArithmetic);
   var gregorian = persian.withCalendar(CalendarSystem.gregorian);
   expect(gregorianYear, gregorian.year);
-  expect(3, gregorian.month);
-  expect(gregorianDayOfMarch, gregorian.day);
+  expect(3, gregorian.monthOfYear);
+  expect(gregorianDayOfMarch, gregorian.dayOfMonth);
 }
 

@@ -117,13 +117,13 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   Era get era => calendarDate.era;
 
   /// Gets the month of this local date and time within the year.
-  int get month => calendarDate.month;
+  int get monthOfYear => calendarDate.monthOfYear;
 
   /// Gets the day of this local date and time within the year.
   int get dayOfYear => calendarDate.dayOfYear;
 
   /// Gets the day of this local date and time within the month.
-  int get dayOfMonth => calendarDate.day;
+  int get dayOfMonth => calendarDate.dayOfMonth;
 
   /// Gets the week day of this local date and time expressed as an [DayOfWeek] value.
   DayOfWeek get dayOfWeek => calendarDate.dayOfWeek;
@@ -161,7 +161,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     if (Platform.isWeb) {
       return new DateTime(
           year,
-          month,
+          monthOfYear,
           dayOfMonth,
           hourOfDay,
           minuteOfHour,
@@ -170,7 +170,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     } else {
       return new DateTime(
           year,
-          month,
+          monthOfYear,
           dayOfMonth,
           hourOfDay,
           minuteOfHour,

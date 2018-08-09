@@ -335,8 +335,8 @@ String _printNewObject(Object obj) {
   }
   else if (obj is LocalDate) {
     var year = obj.year;
-    var month = obj.month;
-    var day = obj.day;
+    var month = obj.monthOfYear;
+    var day = obj.dayOfMonth;
     var calendar = obj.calendar;
     sb.write('new LocalDate($year, $month, $day, ${_printNewObject(calendar)})');
   }

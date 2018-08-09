@@ -19,10 +19,10 @@ void EpochProperties()
   LocalDate date = TimeConstants.unixEpoch.inUtc().date;
   expect(1970, date.year);
   expect(1970, date.yearOfEra);
-  expect(1, date.day);
+  expect(1, date.dayOfMonth);
   expect(DayOfWeek.thursday, date.dayOfWeek);
   expect(1, date.dayOfYear);
-  expect(1, date.month);
+  expect(1, date.monthOfYear);
 }
 
 @Test()
@@ -35,10 +35,10 @@ void ArbitraryDateProperties()
   LocalDate date = LocalDate.fromEpochDay(bclDays, CalendarSystem.iso);
   expect(2011, date.year);
   expect(2011, date.yearOfEra);
-  expect(5, date.day);
+  expect(5, date.dayOfMonth);
   expect(DayOfWeek.saturday, date.dayOfWeek);
   expect(64, date.dayOfYear);
-  expect(3, date.month);
+  expect(3, date.monthOfYear);
 }
 
 @Test()

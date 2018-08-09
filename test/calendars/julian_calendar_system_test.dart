@@ -22,7 +22,7 @@ void Epoch()
 {
   LocalDateTime julianEpoch = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, Julian).localDateTime;
   expect(1969, julianEpoch.year);
-  expect(12, julianEpoch.month);
+  expect(12, julianEpoch.monthOfYear);
   expect(19, julianEpoch.dayOfMonth);
 }
 

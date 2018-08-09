@@ -170,8 +170,8 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   LocalDate start = new LocalDate(2011, 11, dayOfMonth);
   LocalDate target = start.next(targetDayOfWeek);
   expect(2011, target.year);
-  expect(11, target.month);
-  expect(target.day, expectedResult);
+  expect(11, target.monthOfYear);
+  expect(target.dayOfMonth, expectedResult);
 }
 
 @TestCase(const [0])
@@ -200,8 +200,8 @@ void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   LocalDate start = new LocalDate(2011, 11, dayOfMonth);
   LocalDate target = start.previous(targetDayOfWeek);
   expect(2011, target.year);
-  expect(11, target.month);
-  expect(target.day, expectedResult);
+  expect(11, target.monthOfYear);
+  expect(target.dayOfMonth, expectedResult);
 }
 
 @TestCase(const [0])
