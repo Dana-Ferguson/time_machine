@@ -508,6 +508,6 @@ void InstantEpochConstructors(int value) {
   expect(Instant.fromEpochMilliseconds(value).epochMilliseconds, value);
   expect(Instant.fromEpochMicroseconds(value).epochMicroseconds, value);
   expect(Instant.fromEpochNanoseconds(value).epochNanoseconds, value);
-  expect(Instant.fromEpochBigIntNanoseconds(BigInt.from(value)).epochNanosecondsAsBigInt().toInt(), value);
+  expect(Instant.fromEpochBigIntNanoseconds(BigInt.from(value)).epochNanosecondsAsBigInt.toInt(), value);
 }
 
