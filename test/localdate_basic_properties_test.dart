@@ -16,7 +16,7 @@ Future main() async {
 @Test()
 void EpochProperties()
 {
-  LocalDate date = TimeConstants.unixEpoch.inUtc().date;
+  LocalDate date = TimeConstants.unixEpoch.inUtc().calendarDate;
   expect(1970, date.year);
   expect(1970, date.yearOfEra);
   expect(1, date.dayOfMonth);

@@ -52,7 +52,7 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
     'o': _handleOffset,
     'l': (cursor, builder) =>
         builder.addEmbeddedLocalPartial(
-            cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime)
+            cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.calendarDate, (value) => value.clockTime, (value) => value.localDateTime)
   };
 
   OffsetDateTimePatternParser(this._templateValue);
@@ -100,8 +100,8 @@ class _OffsetDateTimeParseBucket extends ParseBucket<OffsetDateTime> {
   Offset offset;
 
   _OffsetDateTimeParseBucket(OffsetDateTime templateValue)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
-        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
+      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
+        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
         offset = templateValue.offset;
 
 

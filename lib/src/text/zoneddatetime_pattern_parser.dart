@@ -27,9 +27,9 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
         4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
-    'M': DatePatternHelper.createMonthOfYearHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.month, (bucket, value) =>
+    'M': DatePatternHelper.createMonthOfYearHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.monthOfYear, (bucket, value) =>
     bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
-    'd': DatePatternHelper.createDayHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) =>
+    'd': DatePatternHelper.createDayHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.dayOfMonth, (value) => value.dayOfWeek.value, (bucket, value) =>
     bucket.date.dayOfMonth = value, (bucket, value) => bucket.date.dayOfWeek = value),
     '.': TimePatternHelper.createPeriodHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
@@ -37,18 +37,18 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<ZonedDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.hourOf12HourClock, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
+        2, PatternFields.hours24, 0, 24, (value) => value.hourOfDay, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minuteOfHour, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<ZonedDateTime, _ZonedDateTimeParseBucket>(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.secondOfMinute, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<ZonedDateTime, _ZonedDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
+    't': TimePatternHelper.createAmPmHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((time) => time.hourOfDay, (bucket, value) => bucket.time.amPm = value),
     'c': DatePatternHelper.createCalendarHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.localDateTime.calendar, (bucket, value) =>
     bucket.date.calendar = value),
     'g': DatePatternHelper.createEraHandler<ZonedDateTime, _ZonedDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
@@ -56,7 +56,7 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
     'x': _handleZoneAbbreviation,
     'o': _handleOffset,
     'l': (cursor, builder) => builder.addEmbeddedLocalPartial(
-        cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.date, (value) => value.timeOfDay, (value) => value.localDateTime),
+        cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.calendarDate, (value) => value.clockTime, (value) => value.localDateTime),
   };
 
   ZonedDateTimePatternParser(this._templateValue, this._resolver, this._zoneProvider);
@@ -132,8 +132,8 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   final DateTimeZoneProvider _zoneProvider;
 
   _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
-        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
+      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
+        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
         _zone = templateValue.zone;
 
 

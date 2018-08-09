@@ -319,12 +319,12 @@ void AtStrictly_InWinter()
   var when = new ZonedDateTime.atStrictly(new LocalDateTime(2009, 12, 22, 21, 39, 30), Pacific);
 
   expect(2009, when.year);
-  expect(12, when.month);
-  expect(22, when.day);
+  expect(12, when.monthOfYear);
+  expect(22, when.dayOfMonth);
   expect(DayOfWeek.tuesday, when.dayOfWeek);
-  expect(21, when.hour);
-  expect(39, when.minute);
-  expect(30, when.second);
+  expect(21, when.hourOfDay);
+  expect(39, when.minuteOfHour);
+  expect(30, when.secondOfMinute);
   expect(new Offset.hours(-8), when.offset);
 }
 
@@ -334,11 +334,11 @@ void AtStrictly_InSummer()
   var when = new ZonedDateTime.atStrictly(new LocalDateTime(2009, 6, 22, 21, 39, 30), Pacific);
 
   expect(2009, when.year);
-  expect(6, when.month);
-  expect(22, when.day);
-  expect(21, when.hour);
-  expect(39, when.minute);
-  expect(30, when.second);
+  expect(6, when.monthOfYear);
+  expect(22, when.dayOfMonth);
+  expect(21, when.hourOfDay);
+  expect(39, when.minuteOfHour);
+  expect(30, when.secondOfMinute);
   expect(new Offset.hours(-7), when.offset);
 }
 

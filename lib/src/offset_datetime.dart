@@ -176,21 +176,21 @@ class OffsetDateTime {
 
   /// Returns the local date and time represented within this offset date and time.
   // todo: should this be a const? or cached -- or???
-  LocalDateTime get localDateTime => new LocalDateTime.localDateAtTime(date, timeOfDay);
+  LocalDateTime get localDateTime => new LocalDateTime.localDateAtTime(calendarDate, clockTime);
 
   /// Gets the local date represented by this offset date and time.
   ///
   /// The returned [LocalDate]
   /// will have the same calendar system and return the same values for each of the date-based calendar
   /// properties (Year, MonthOfYear and so on), but will not have any offset information.
-  LocalDate get date => ILocalDate.trusted(_yearMonthDayCalendar);
+  LocalDate get calendarDate => ILocalDate.trusted(_yearMonthDayCalendar);
 
   /// Gets the time portion of this offset date and time.
   ///
   /// The returned [LocalTime] will
   /// return the same values for each of the time-based properties (Hour, Minute and so on), but
   /// will not have any offset information.
-  LocalTime get timeOfDay => ILocalTime.trustedNanoseconds(nanosecondOfDay);
+  LocalTime get clockTime => ILocalTime.trustedNanoseconds(nanosecondOfDay);
 
   // Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
@@ -242,7 +242,7 @@ class OffsetDateTime {
   ///
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
-    LocalDate newDate = date.withCalendar(calendar);
+    LocalDate newDate = calendarDate.withCalendar(calendar);
     return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
   }
 
@@ -256,7 +256,7 @@ class OffsetDateTime {
   ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
-    LocalDate newDate = date.adjust(adjuster);
+    LocalDate newDate = calendarDate.adjust(adjuster);
     return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
   }
 
@@ -269,7 +269,7 @@ class OffsetDateTime {
   ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
-    LocalTime newTime = timeOfDay.adjust(adjuster);
+    LocalTime newTime = clockTime.adjust(adjuster);
     return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.timeSinceMidnight.inNanoseconds, offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
   }
 
@@ -301,7 +301,7 @@ class OffsetDateTime {
       }
     }
     return new OffsetDateTime._fullTrust(
-        days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(date
+        days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(calendarDate
             .addDays(days)), nanos, offset);
     // _combineNanoOfDayAndOffset(nanos, offset));
   }
@@ -310,13 +310,13 @@ class OffsetDateTime {
   /// but omitting the time-of-day.
   ///
   /// Returns: A value representing the date and offset aspects of this value.
-  OffsetDate toOffsetDate() => new OffsetDate(date, offset);
+  OffsetDate toOffsetDate() => new OffsetDate(calendarDate, offset);
 
   /// Constructs a new [OffsetTime] from the time and offset of this value,
   /// but omitting the date.
   ///
   /// Returns: A value representing the time and offset aspects of this value.
-  OffsetTime toOffsetTime() => new OffsetTime(timeOfDay, offset);
+  OffsetTime toOffsetTime() => new OffsetTime(clockTime, offset);
 
   /// Returns a hash code for this offset date and time.
   @override int get hashCode => hash2(LocalDateTime, offset);
