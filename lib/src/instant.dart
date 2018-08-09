@@ -192,7 +192,7 @@ class Instant implements Comparable<Instant> {
   int get epochMicroseconds => timeSinceEpoch.totalMicroseconds.floor();
   int get epochNanoseconds => timeSinceEpoch.inNanoseconds;
   bool get canEpochNanosecondsBeInteger => timeSinceEpoch.canNanosecondsBeInteger;
-  BigInt epochNanosecondsAsBigInt() => timeSinceEpoch.inNanosecondsAsBigInt;
+  BigInt get epochNanosecondsAsBigInt => timeSinceEpoch.inNanosecondsAsBigInt;
 
   // todo: we do this a lot just to get Time.epochDay --> should we have a shortcut for this?
   int get epochDay {
