@@ -353,7 +353,7 @@ String _printNewObject(Object obj) {
     sb.write('new OffsetDate(${_printNewObject(date)}, ${_printNewObject(offset)})');
   }
   else if (obj is Offset) {
-    var seconds = obj.seconds;
+    var seconds = obj.inSeconds;
     sb.write('new Offset.fromSeconds($seconds)');
   }
   else if (obj is OffsetDateTime) {

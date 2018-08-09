@@ -183,7 +183,7 @@ void AssertOffset(int expectedHours, LocalDateTime localTime, DateTimeZone zone)
   var zoned = mapping.single();
   expect(zoned, mapping.first());
   expect(zoned, mapping.last());
-  int actualHours = zoned.offset.milliseconds ~/ TimeConstants.millisecondsPerHour;
+  int actualHours = zoned.offset.inMilliseconds ~/ TimeConstants.millisecondsPerHour;
   expect(expectedHours, actualHours);
 }
 

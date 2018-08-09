@@ -127,7 +127,7 @@ class TimeMachine  {
       if (_isTheSame(nowDateTime, zone.getZoneInterval(nowInstant))) {
         // todo: test me? ********************************************************************************************************************
         // also: find and link the relevant issue to this!
-        allZoneIntervals.addAll(zone.getZoneIntervals(interval).where((z) => z.wallOffset.seconds.abs() % TimeConstants.secondsPerHour == 0));
+        allZoneIntervals.addAll(zone.getZoneIntervals(interval).where((z) => z.wallOffset.inSeconds.abs() % TimeConstants.secondsPerHour == 0));
         lessZones.add(zone);
       }
     }
@@ -149,7 +149,7 @@ class TimeMachine  {
         for (var zone in zones) {
           var zoneInterval = zone.getZoneInterval(instant);
           if ((_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) != zoneInterval.name
-              || dateTime.timeZoneOffset.inSeconds != zoneInterval.wallOffset.seconds) {
+              || dateTime.timeZoneOffset.inSeconds != zoneInterval.wallOffset.inSeconds) {
             // print('${instant}: ${dateTime}: ${zone.id}: dart: ${dateTime.timeZoneName}@${dateTime.timeZoneOffset.inSeconds} vs tzdb: ${zoneInterval.name}@${zoneInterval.wallOffset.seconds};');
             badZones.add(zone.id);
           }
@@ -188,7 +188,7 @@ class TimeMachine  {
 
   static bool _isTheSame(DateTime dateTime, ZoneInterval zoneInterval) {
     return (_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) == zoneInterval.name
-        && dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.seconds;
+        && dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.inSeconds;
   }
 
   // This is slower (on at least one computer) than guessing the timezone

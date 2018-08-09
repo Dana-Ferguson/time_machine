@@ -132,7 +132,7 @@ class Instant implements Comparable<Instant> {
     // Okay, do the arithmetic as a Duration, then check the result for overflow, effectively.
     // var asDuration = ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds);
     // todo: much simplify
-    var asDuration = Instant._trusted(ITime.plusSmallNanoseconds(timeSinceEpoch, offset.nanoseconds));
+    var asDuration = Instant._trusted(ITime.plusSmallNanoseconds(timeSinceEpoch, offset.inNanoseconds));
     days = asDuration.epochDay;
     if (days < IInstant.minDays)
     {

@@ -77,7 +77,7 @@ void ReturnForwardShifted()
   expect(0, mapping.count);
   var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval);
 
-  var gap = mapping.lateInterval.wallOffset.microseconds - mapping.earlyInterval.wallOffset.microseconds;
+  var gap = mapping.lateInterval.wallOffset.inMicroseconds - mapping.earlyInterval.wallOffset.inMicroseconds;
   var expected = ILocalDateTime.toLocalInstant(TimeInTransition).minus(mapping.lateInterval.wallOffset).add(new Time(microseconds: gap));
   expect(expected, resolved.toInstant());
   expect(mapping.lateInterval.wallOffset, resolved.offset);

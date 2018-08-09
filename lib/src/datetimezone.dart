@@ -83,7 +83,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   ///
   /// Returns: A fixed time zone with the given offset.
   factory DateTimeZone.forOffset(Offset offset) {
-    int seconds = offset.seconds;
+    int seconds = offset.inSeconds;
     if (arithmeticMod(seconds, _fixedZoneCacheGranularitySeconds) != 0) {
       return new FixedDateTimeZone.forOffset(offset);
     }

@@ -61,7 +61,7 @@ void NegateMethod()
 @Test()
 void OperatorPlus_Zero_IsNeutralElement()
 {
-  expect(0, (Offset.zero + Offset.zero).seconds, reason: "0 + 0");
+  expect(0, (Offset.zero + Offset.zero).inSeconds, reason: "0 + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours + Offset.zero, reason: "ThreeHours + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.zero + ThreeHours, reason: "0 + ThreeHours");
 }
@@ -78,7 +78,7 @@ void OperatorPlus_NonZero()
 @Test()
 void MethodAdd_Zero_IsNeutralElement()
 {
-  expect(0, Offset.plus(Offset.zero, Offset.zero).milliseconds, reason: "0 + 0");
+  expect(0, Offset.plus(Offset.zero, Offset.zero).inMilliseconds, reason: "0 + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.plus(ThreeHours, Offset.zero), reason: "ThreeHours + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.plus(Offset.zero, ThreeHours), reason: "0 + ThreeHours");
 }
@@ -95,7 +95,7 @@ void MethodAdd_NonZero()
 @Test()
 void MethodPlus_Zero_IsNeutralElement()
 {
-  expect(0, Offset.zero.add(Offset.zero).milliseconds, reason: "0 + 0");
+  expect(0, Offset.zero.add(Offset.zero).inMilliseconds, reason: "0 + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), ThreeHours.add(Offset.zero), reason: "ThreeHours + 0");
   expect(TestObjects.CreatePositiveOffset(3, 0, 0), Offset.zero.add(ThreeHours), reason: "0 + ThreeHours");
 }

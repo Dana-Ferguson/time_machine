@@ -73,7 +73,7 @@ class OffsetDateTime {
   factory OffsetDateTime._fromInstant(Instant instant, Offset offset, [CalendarSystem calendar])
   {
     int days = instant.epochDay;
-    int nanoOfDay = instant.epochDayTime.inNanoseconds + offset.nanoseconds;
+    int nanoOfDay = instant.epochDayTime.inNanoseconds + offset.inNanoseconds;
     if (nanoOfDay >= TimeConstants.nanosecondsPerDay) {
       days++;
       nanoOfDay -= TimeConstants.nanosecondsPerDay;
@@ -192,7 +192,7 @@ class OffsetDateTime {
   // Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
   /// Returns the number of nanoseconds in the offset, without going via an Offset.
-  int get _offsetNanoseconds => offset.nanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
+  int get _offsetNanoseconds => offset.inNanoseconds; // (nanosecondsAndOffset >> NanosecondsBits) * TimeConstants.nanosecondsPerSecond;
 
   /// Converts this offset date and time to an instant in time by subtracting the offset from the local date and time.
   ///
@@ -280,7 +280,7 @@ class OffsetDateTime {
     // Slight change to the normal operation, as it's *just* about plausible that we change day
     // twice in one direction or the other.
     int days = 0;
-    int nanos =_nanosecondOfDay /*(nanosecondsAndOffset & NanosecondsMask)*/ + offset.nanoseconds - _offsetNanoseconds;
+    int nanos =_nanosecondOfDay /*(nanosecondsAndOffset & NanosecondsMask)*/ + offset.inNanoseconds - _offsetNanoseconds;
     if (nanos >= TimeConstants.nanosecondsPerDay) {
       days++;
       nanos -= TimeConstants.nanosecondsPerDay;

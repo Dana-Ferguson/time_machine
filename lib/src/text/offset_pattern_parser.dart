@@ -31,11 +31,11 @@ class OffsetPatternParser implements IPatternParser<Offset> {
   // These are used to compute the individual (always-positive) components of an offset.
   // For example, an offset of "three and a half hours behind UTC" would have a "positive hours" value
   // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
-  static int _getPositiveHours(Offset offset) => offset.milliseconds.abs() ~/ TimeConstants.millisecondsPerHour;
+  static int _getPositiveHours(Offset offset) => offset.inMilliseconds.abs() ~/ TimeConstants.millisecondsPerHour;
 
-  static int _getPositiveMinutes(Offset offset) => (offset.milliseconds.abs() % TimeConstants.millisecondsPerHour) ~/ TimeConstants.millisecondsPerMinute;
+  static int _getPositiveMinutes(Offset offset) => (offset.inMilliseconds.abs() % TimeConstants.millisecondsPerHour) ~/ TimeConstants.millisecondsPerMinute;
 
-  static int _getPositiveSeconds(Offset offset) => (offset.milliseconds.abs() % TimeConstants.millisecondsPerMinute) ~/ TimeConstants.millisecondsPerSecond;
+  static int _getPositiveSeconds(Offset offset) => (offset.inMilliseconds.abs() % TimeConstants.millisecondsPerMinute) ~/ TimeConstants.millisecondsPerSecond;
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
@@ -107,20 +107,20 @@ class OffsetPatternParser implements IPatternParser<Offset> {
   }
 
   /// Returns true if the offset is representable just in hours and minutes (no seconds).
-  static bool _hasZeroSeconds(Offset offset) => (offset.seconds % TimeConstants.secondsPerMinute) == 0;
+  static bool _hasZeroSeconds(Offset offset) => (offset.inSeconds % TimeConstants.secondsPerMinute) == 0;
 
   /// Returns true if the offset is representable just in hours (no minutes or seconds).
-  static bool _hasZeroSecondsAndMinutes(Offset offset) => (offset.seconds % TimeConstants.secondsPerHour) == 0;
+  static bool _hasZeroSecondsAndMinutes(Offset offset) => (offset.inSeconds % TimeConstants.secondsPerHour) == 0;
 
   // #region Character handlers
   static void _handlePlus(PatternCursor pattern, SteppedPatternBuilder<Offset, _OffsetParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (offset) => offset.milliseconds >= 0);
+    builder.addRequiredSign((bucket, positive) => bucket.isNegative = !positive, (offset) => offset.inMilliseconds >= 0);
   }
 
   static void _handleMinus(PatternCursor pattern, SteppedPatternBuilder<Offset, _OffsetParseBucket> builder) {
     builder.addField(PatternFields.sign, pattern.current);
-    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (offset) => offset.milliseconds >= 0);
+    builder.addNegativeOnlySign((bucket, positive) => bucket.isNegative = !positive, (offset) => offset.inMilliseconds >= 0);
   }
 // #endregion
 }

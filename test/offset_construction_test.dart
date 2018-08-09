@@ -18,14 +18,14 @@ Future main() async {
 void Zero()
 {
   Offset test = Offset.zero;
-  expect(0, test.milliseconds);
+  expect(0, test.inMilliseconds);
 }
 
 @Test()
 void FromSeconds_Valid()
 {
   var test = new Offset(12345);
-  expect(12345, test.seconds);
+  expect(12345, test.inSeconds);
 }
 
 @Test()
@@ -40,7 +40,7 @@ void FromSeconds_Invalid()
 void FromHours_Valid()
 {
   Offset value = new Offset.hours(-15);
-  expect(-15 * TimeConstants.secondsPerHour, value.seconds);
+  expect(-15 * TimeConstants.secondsPerHour, value.inSeconds);
 }
 
 @Test()
@@ -54,7 +54,7 @@ void FromHours_Invalid()
 void FromHoursAndMinutes_Valid()
 {
   Offset value = new Offset.hoursAndMinutes(5, 30);
-  expect(5 * TimeConstants.secondsPerHour + 30 * TimeConstants.secondsPerMinute, value.seconds);
+  expect(5 * TimeConstants.secondsPerHour + 30 * TimeConstants.secondsPerMinute, value.inSeconds);
 }
 
 

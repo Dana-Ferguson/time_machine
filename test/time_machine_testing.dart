@@ -66,6 +66,6 @@ abstract class TestObjects {
   /// Returns: A new [Offset] representing the given values.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   static Offset CreateNegativeOffset(int hours, int minutes, int seconds) {
-    return new Offset(-CreatePositiveOffset(hours, minutes, seconds).seconds);
+    return new Offset(-CreatePositiveOffset(hours, minutes, seconds).inSeconds);
   }
 }
