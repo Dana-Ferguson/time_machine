@@ -180,12 +180,5 @@ exists, now we just wait for it to hit a live build.
 [contagion](https://engineering.riotgames.com/news/taxonomy-tech-debt) coefficient. If you are writing on DartStable today
 and you need some extra string support because of this bug, let me know.
 
-### Using with Dart 1.24.3
-
-If you are using TimeMachine for Dart 1.24.3, you'll want to depend directly on `0.7.1` or earlier.
-
-```yaml
-dependencies:
-  time_machine: "0.7.1"
-```
-
+_Update_: Dart 2.0 stable did not launch with the fix. Stable release windows are 6 weeks.
+Hopefully we get the fix in the next release (second half of September).
