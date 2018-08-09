@@ -45,7 +45,7 @@ void ComponentProperties()
 
   var offsetDate = new OffsetDate(date, offset);
   expect(offset, offsetDate.offset);
-  expect(date, offsetDate.date);
+  expect(date, offsetDate.calendarDate);
 }
 
 @Test()

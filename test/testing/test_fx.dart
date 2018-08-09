@@ -348,7 +348,7 @@ String _printNewObject(Object obj) {
     sb.write('new LocalDateTime(${_printNewObject(obj.calendarDate)}, ${_printNewObject(obj.clockTime)})');
   }
   else if (obj is OffsetDate) {
-    var date = obj.date;
+    var date = obj.calendarDate;
     var offset = obj.offset;
     sb.write('new OffsetDate(${_printNewObject(date)}, ${_printNewObject(offset)})');
   }

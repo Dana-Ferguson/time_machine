@@ -192,7 +192,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var parsed = pattern
         .parse("08-23")
         .value;
-    expect(new LocalDate(1970, 8, 23), parsed.date);
+    expect(new LocalDate(1970, 8, 23), parsed.calendarDate);
     expect(new Offset.hours(2), parsed.offset);
   }
 
@@ -203,7 +203,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
     var parsed = pattern
         .parse("0284-08-29")
         .value;
-    expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), parsed.date);
+    expect(new LocalDate(284, 8, 29, CalendarSystem.coptic), parsed.calendarDate);
   }
 
   @Test()

@@ -14,7 +14,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 class OffsetDate
 {
   /// Gets the local date represented by this value.
-  final LocalDate date;
+  final LocalDate calendarDate;
   /// Gets the local date represented by this value.
   final Offset offset;
 
@@ -22,40 +22,40 @@ class OffsetDate
   ///
   /// * [date]: The date part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetDate(this.date, this.offset);
+  OffsetDate(this.calendarDate, this.offset);
 
   /// Gets the calendar system associated with this offset date.
-  CalendarSystem get calendar => date.calendar;
+  CalendarSystem get calendar => calendarDate.calendar;
 
   /// Gets the year of this offset date.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get year => date.year;
+  int get year => calendarDate.year;
 
   /// Gets the month of this offset date within the year.
-  int get month => date.monthOfYear;
+  int get monthOfYear => calendarDate.monthOfYear;
 
   /// Gets the day of this offset date within the month.
-  int get day => date.dayOfMonth;
+  int get dayOfMonth => calendarDate.dayOfMonth;
 
   /// Gets the week day of this offset date expressed as an [DayOfWeek] value.
-  DayOfWeek get dayOfWeek => date.dayOfWeek;
+  DayOfWeek get dayOfWeek => calendarDate.dayOfWeek;
 
   /// Gets the year of this offset date within the era.
-  int get yearOfEra => date.yearOfEra;
+  int get yearOfEra => calendarDate.yearOfEra;
 
   /// Gets the era of this offset date.
-  Era get era => date.era;
+  Era get era => calendarDate.era;
 
   /// Gets the day of this offset date within the year.
-  int get dayOfYear => date.dayOfYear;
+  int get dayOfYear => calendarDate.dayOfYear;
 
   /// Creates a new [OffsetDate] for the same date, but with the specified UTC offset.
   ///
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetDate` for the same date, but with the specified UTC offset.
-  OffsetDate withOffset(Offset offset) => new OffsetDate(this.date, offset);
+  OffsetDate withOffset(Offset offset) => new OffsetDate(this.calendarDate, offset);
 
   /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -67,7 +67,7 @@ class OffsetDate
   ///
   /// Returns: The adjusted offset date.
   OffsetDate adjust(LocalDate Function(LocalDate) adjuster) =>
-      new OffsetDate(date.adjust(adjuster), offset);
+      new OffsetDate(calendarDate.adjust(adjuster), offset);
 
 
   /// Creates a new [OffsetDate] representing the same physical date and offset, but in a different calendar.
@@ -78,7 +78,7 @@ class OffsetDate
   ///
   /// Returns: The converted [OffsetDate].
   OffsetDate withCalendar(CalendarSystem calendar) =>
-      new OffsetDate(date.withCalendar(calendar), offset);
+      new OffsetDate(calendarDate.withCalendar(calendar), offset);
 
 
   /// Combines this [OffsetDate] with the given [LocalTime]
@@ -87,11 +87,11 @@ class OffsetDate
   /// * [time]: The time to combine with this date.
   ///
   /// Returns: The [OffsetDateTime] representation of the given time on this date.
-  OffsetDateTime at(LocalTime time) => new OffsetDateTime(date.at(time), offset);
+  OffsetDateTime at(LocalTime time) => new OffsetDateTime(calendarDate.at(time), offset);
 
 
   /// Returns a hash code for this offset date.
-  @override int get hashCode => hash2(date, offset);
+  @override int get hashCode => hash2(calendarDate, offset);
 
   /// Compares two [OffsetDate] values for equality. This requires
   /// that the date values be the same (in the same calendar) and the offsets.
@@ -99,7 +99,7 @@ class OffsetDate
   /// * [other]: The value to compare this offset date with.
   ///
   /// Returns: True if the given value is another offset date equal to this one; false otherwise.
-  bool equals(OffsetDate other) => date == other.date && offset == other.offset;
+  bool equals(OffsetDate other) => calendarDate == other.calendarDate && offset == other.offset;
 
   /// Implements the operator == (equality).
   ///

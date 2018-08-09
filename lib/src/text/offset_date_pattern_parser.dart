@@ -23,15 +23,15 @@ class OffsetDatePatternParser implements IPatternParser<OffsetDate> {
     'u': SteppedPatternBuilder.handlePaddedField<OffsetDate, _OffsetDateParseBucket>(
         4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
     'M': DatePatternHelper.createMonthOfYearHandler<OffsetDate, _OffsetDateParseBucket>
-      ((value) => value.month, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
+      ((value) => value.monthOfYear, (bucket, value) => bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
     'd': DatePatternHelper.createDayHandler<OffsetDate, _OffsetDateParseBucket>
-      ((value) => value.day, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
+      ((value) => value.dayOfMonth, (value) => value.dayOfWeek.value, (bucket, value) => bucket.date.dayOfMonth = value, (bucket, value) =>
     bucket.date.dayOfWeek = value),
-    'c': DatePatternHelper.createCalendarHandler<OffsetDate, _OffsetDateParseBucket>((value) => value.date.calendar, (bucket, value) =>
+    'c': DatePatternHelper.createCalendarHandler<OffsetDate, _OffsetDateParseBucket>((value) => value.calendarDate.calendar, (bucket, value) =>
     bucket.date.calendar = value),
     'g': DatePatternHelper.createEraHandler<OffsetDate, _OffsetDateParseBucket>((value) => value.era, (bucket) => bucket.date),
     'o': _handleOffset,
-    'l': (cursor, builder) => builder.addEmbeddedDatePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.date, (value) => value.date)
+    'l': (cursor, builder) => builder.addEmbeddedDatePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.date, (value) => value.calendarDate)
   };
 
   OffsetDatePatternParser(this._templateValue);
@@ -77,7 +77,7 @@ class _OffsetDateParseBucket extends ParseBucket<OffsetDate> {
   Offset offset;
 
   _OffsetDateParseBucket(OffsetDate templateValue)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.date),
+      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
         offset = templateValue.offset;
 
   @override
