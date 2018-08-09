@@ -260,11 +260,11 @@ class Period {
     // in cases where we've only got time fields...
     LocalDate endDate = end.calendarDate;
     if (start < end) {
-      if (start.timeOfDay > end.timeOfDay) {
+      if (start.clockTime > end.clockTime) {
         endDate = endDate.addDays(-1);
       }
     }
-    else if (start > end && start.timeOfDay < end.timeOfDay) {
+    else if (start > end && start.clockTime < end.clockTime) {
       endDate = endDate.addDays(1);
     }
 
@@ -324,7 +324,7 @@ class Period {
       days = result.days;
 
       var remainingDate = result.date;
-      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.timeOfDay);
+      remaining = new LocalDateTime.localDateAtTime(remainingDate, start.clockTime);
     }
     if ((units.value & PeriodUnits.allTimeUnits.value) == 0) {
       return new Period(years: years, months: months, weeks: weeks, days: days);

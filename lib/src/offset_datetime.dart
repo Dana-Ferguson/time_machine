@@ -95,7 +95,7 @@ class OffsetDateTime {
   /// * [localDateTime]: Local date and time to represent
   /// * [offset]: Offset from UTC
   OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.calendarDate), localDateTime.timeOfDay.timeSinceMidnight.inNanoseconds, offset);
+      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.calendarDate), localDateTime.clockTime.timeSinceMidnight.inNanoseconds, offset);
 
   /// Gets the calendar system associated with this offset date and time.
   CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);

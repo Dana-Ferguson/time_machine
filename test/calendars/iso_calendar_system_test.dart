@@ -45,7 +45,7 @@ void FieldsOf_UnixEpoch()
   expect(0, epoch.minuteOfHour);
   expect(0, epoch.secondOfMinute);
   expect(0, epoch.millisecondOfSecond);
-  expect(0, epoch.timeOfDay.timeSinceMidnight.inMicroseconds);
+  expect(0, epoch.clockTime.timeSinceMidnight.inMicroseconds);
   expect(0, epoch.microsecondOfSecond);
 }
 
@@ -78,7 +78,7 @@ void FieldsOf_GreatAchievement()
         38 * TimeConstants.microsecondsPerMinute +
         25 * TimeConstants.microsecondsPerSecond +
         345876, // 3458765
-        now.timeOfDay.timeSinceMidnight.inMicroseconds);
+        now.clockTime.timeSinceMidnight.inMicroseconds);
   }
 }
 

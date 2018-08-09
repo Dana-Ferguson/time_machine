@@ -124,11 +124,11 @@ void TimeProperties_AfterEpoch()
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
       25 * TimeConstants.microsecondsPerSecond +
-      123456/*7*/, ldt.timeOfDay.timeSinceMidnight.inMicroseconds);
+      123456/*7*/, ldt.clockTime.timeSinceMidnight.inMicroseconds);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.timeOfDay.timeSinceMidnight.inNanoseconds);
+      123456789, ldt.clockTime.timeSinceMidnight.inNanoseconds);
   expect(123456789, ldt.nanosecondOfSecond);
 }
 
@@ -146,11 +146,11 @@ void TimeProperties_BeforeEpoch()
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
       25 * TimeConstants.microsecondsPerSecond +
-      123456/*7*/, ldt.timeOfDay.timeSinceMidnight.inMicroseconds);
+      123456/*7*/, ldt.clockTime.timeSinceMidnight.inMicroseconds);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.timeOfDay.timeSinceMidnight.inNanoseconds);
+      123456789, ldt.clockTime.timeSinceMidnight.inNanoseconds);
   expect(123456789, ldt.nanosecondOfSecond);
 }
 
@@ -176,7 +176,7 @@ void WithCalendar()
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.month);
   expect(19, julianEpoch.dayOfMonth);
-  expect(isoEpoch.timeOfDay, julianEpoch.timeOfDay);
+  expect(isoEpoch.clockTime, julianEpoch.clockTime);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date
@@ -185,7 +185,7 @@ void TimeOfDay_Before1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.timeOfDay);
+  expect(expected, dateTime.clockTime);
 }
 
 // Verifies that positive local instant ticks don't cause a problem with the date
@@ -194,7 +194,7 @@ void TimeOfDay_After1970()
 {
   LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
   LocalTime expected = new LocalTime(12, 5, 23);
-  expect(expected, dateTime.timeOfDay);
+  expect(expected, dateTime.clockTime);
 }
 
 // Verifies that negative local instant ticks don't cause a problem with the date

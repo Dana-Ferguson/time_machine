@@ -152,7 +152,7 @@ void Comparison_IgnoresOriginalCalendar()
 
   // Calendar information is propagated into LocalDate, but not into LocalTime
   expect(dateTime1.calendarDate == dateTime2.calendarDate, isFalse);
-  expect(dateTime1.timeOfDay == dateTime2.timeOfDay, isTrue);
+  expect(dateTime1.clockTime == dateTime2.clockTime, isTrue);
 }
 
 @Test()

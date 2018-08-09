@@ -22,9 +22,9 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns. We've got an offset of 1 hour though.
   @private static final OffsetTime MsdnStandardExample =
-  TestLocalDateTimes.MsdnStandardExample.timeOfDay.withOffset(new Offset.hours(1));
+  TestLocalDateTimes.MsdnStandardExample.clockTime.withOffset(new Offset.hours(1));
   @private static final OffsetTime MsdnStandardExampleNoMillis =
-  TestLocalDateTimes.MsdnStandardExampleNoMillis.timeOfDay.withOffset(new Offset.hours(1));
+  TestLocalDateTimes.MsdnStandardExampleNoMillis.clockTime.withOffset(new Offset.hours(1));
 
   @private static final Offset AthensOffset = new Offset.hours(3);
 

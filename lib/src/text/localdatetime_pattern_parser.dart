@@ -53,12 +53,12 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
     bucket.date.calendar = value),
     'g': DatePatternHelper.createEraHandler<LocalDateTime, LocalDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
     'l': (cursor, builder) =>
-        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.calendarDate, (value) => value.timeOfDay, null),
+        builder.addEmbeddedLocalPartial(cursor, (bucket) => bucket.date, (bucket) => bucket.time, (value) => value.calendarDate, (value) => value.clockTime, null),
   };
 
   LocalDateTimePatternParser(LocalDateTime templateValue)
       : _templateValueDate = templateValue.calendarDate,
-        _templateValueTime = templateValue.timeOfDay;
+        _templateValueTime = templateValue.clockTime;
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
