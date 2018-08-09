@@ -46,7 +46,7 @@ void ComponentProperties()
 
   var offsetDate = new OffsetTime(time, offset);
   expect(offset, offsetDate.offset);
-  expect(time, offsetDate.timeOfDay);
+  expect(time, offsetDate.clockTime);
 }
 
 @Test()

@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @immutable
 class OffsetTime {
   /// Gets the time-of-day represented by this value.
-  final LocalTime timeOfDay;
+  final LocalTime clockTime;
   /// Gets the offset from UTC of this value.
   final Offset offset;
 
@@ -18,36 +18,36 @@ class OffsetTime {
   ///
   /// * [time]: The time part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetTime(this.timeOfDay, this.offset);
+  OffsetTime(this.clockTime, this.offset);
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
-  int get hour => timeOfDay.timeSinceMidnight.hourOfDay;
+  int get hourOfDay => clockTime.timeSinceMidnight.hourOfDay;
 
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => timeOfDay.timeSinceMidnight.hourOf12HourClock;
+  int get hourOf12HourClock => clockTime.timeSinceMidnight.hourOf12HourClock;
 
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
-  int get minute => timeOfDay.timeSinceMidnight.minuteOfHour;
+  int get minuteOfHour => clockTime.timeSinceMidnight.minuteOfHour;
 
   /// Gets the second of this offset time within the minute, in the range 0 to 59 inclusive.
-  int get second => timeOfDay.timeSinceMidnight.secondOfMinute;
+  int get secondOfMinute => clockTime.timeSinceMidnight.secondOfMinute;
 
   /// Gets the millisecond of this offset time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => timeOfDay.timeSinceMidnight.millisecondOfSecond;
+  int get millisecondOfSecond => clockTime.timeSinceMidnight.millisecondOfSecond;
 
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => timeOfDay.timeSinceMidnight.nanosecondOfSecond;
+  int get nanosecondOfSecond => clockTime.timeSinceMidnight.nanosecondOfSecond;
 
   @deprecated
   /// Gets the nanosecond of this offset time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => timeOfDay.timeSinceMidnight.inNanoseconds;
+  int get nanosecondOfDay => clockTime.timeSinceMidnight.inNanoseconds;
 
   /// Creates a new [OffsetTime] for the same time-of-day, but with the specified UTC offset.
   ///
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetTime` for the same date, but with the specified UTC offset.
-  OffsetTime withOffset(Offset offset) => new OffsetTime(this.timeOfDay, offset);
+  OffsetTime withOffset(Offset offset) => new OffsetTime(this.clockTime, offset);
 
   /// Returns this offset time-of-day, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -58,7 +58,7 @@ class OffsetTime {
   ///
   /// Returns: The adjusted offset date.
   OffsetTime adjust(LocalTime Function(LocalTime) adjuster) =>
-      new OffsetTime(timeOfDay.adjust(adjuster), offset);
+      new OffsetTime(clockTime.adjust(adjuster), offset);
 
   /// Combines this [OffsetTime] with the given [LocalDate]
   /// into an [OffsetDateTime].
@@ -66,10 +66,10 @@ class OffsetTime {
   /// * [date]: The date to combine with this time-of-day.
   ///
   /// Returns: The [OffsetDateTime] representation of this time-of-day on the given date.
-  OffsetDateTime atDate(LocalDate date) => new OffsetDateTime(date.at(timeOfDay), offset);
+  OffsetDateTime atDate(LocalDate date) => new OffsetDateTime(date.at(clockTime), offset);
 
   /// Returns a hash code for this offset time.
-  @override int get hashCode => hash2(timeOfDay, offset);
+  @override int get hashCode => hash2(clockTime, offset);
 
   /// Compares two [OffsetTime] values for equality. This requires
   /// that the date values be the same and the offsets.
@@ -77,7 +77,7 @@ class OffsetTime {
   /// * [other]: The value to compare this offset time with.
   ///
   /// Returns: True if the given value is another offset time equal to this one; false otherwise.
-  bool equals(OffsetTime other) => timeOfDay == other.timeOfDay && offset == other.offset;
+  bool equals(OffsetTime other) => clockTime == other.clockTime && offset == other.offset;
 
   /// Implements the operator == (equality).
   ///

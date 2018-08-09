@@ -362,7 +362,7 @@ String _printNewObject(Object obj) {
     sb.write('new OffsetDateTime(${_printNewObject(localDateTime)}, ${_printNewObject(offset)})');
   }
   else if (obj is OffsetTime) {
-    var time = obj.timeOfDay;
+    var time = obj.clockTime;
     var offset= obj.offset;
     sb.write('new OffsetTime(${_printNewObject(time)}, ${_printNewObject(offset)})');
   }

@@ -23,20 +23,20 @@ class OffsetTimePatternParser implements IPatternParser<OffsetTime> {
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<OffsetTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<OffsetTime, _OffsetTimeParseBucket>(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.hourOf12HourClock, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<OffsetTime, _OffsetTimeParseBucket>(
-        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
+        2, PatternFields.hours24, 0, 24, (value) => value.hourOfDay, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<OffsetTime, _OffsetTimeParseBucket>(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minuteOfHour, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<OffsetTime, _OffsetTimeParseBucket>(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.secondOfMinute, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<OffsetTime, _OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<OffsetTime, _OffsetTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<OffsetTime, _OffsetTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
+    't': TimePatternHelper.createAmPmHandler<OffsetTime, _OffsetTimeParseBucket>((time) => time.hourOfDay, (bucket, value) => bucket.time.amPm = value),
     'o': _handleOffset,
-    'l': (cursor, builder) => builder.addEmbeddedTimePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.time, (value) => value.timeOfDay),
+    'l': (cursor, builder) => builder.addEmbeddedTimePattern(cursor.current, cursor.getEmbeddedPattern(), (bucket) => bucket.time, (value) => value.clockTime),
   };
 
   OffsetTimePatternParser(this._templateValue);
@@ -82,7 +82,7 @@ class _OffsetTimeParseBucket extends ParseBucket<OffsetTime> {
   Offset offset;
 
   _OffsetTimeParseBucket(OffsetTime templateValue)
-      :time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.timeOfDay),
+      :time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
         offset = templateValue.offset;
 
   @override

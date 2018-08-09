@@ -188,7 +188,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
         .parse("+02")
         .value;
     // Local time is taken from the template value; offset is from the text
-    expect(new LocalTime(13, 30, 0), parsed.timeOfDay);
+    expect(new LocalTime(13, 30, 0), parsed.clockTime);
     expect(new Offset.hours(2), parsed.offset);
   }
 
