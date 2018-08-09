@@ -44,6 +44,7 @@ class OffsetDateTime {
   /// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
   /// should allow us to optimize memory usage too.
   final YearMonthDayCalendar _yearMonthDayCalendar;
+  // todo: Update :)
   final int _nanosecondOfDay;
 
   /// Gets the offset from UTC.
@@ -106,10 +107,10 @@ class OffsetDateTime {
   int get year => _yearMonthDayCalendar.year;
 
   /// Gets the month of this offset date and time within the year.
-  int get month => _yearMonthDayCalendar.month;
+  int get monthOfYear => _yearMonthDayCalendar.month;
 
   /// Gets the day of this offset date and time within the month.
-  int get day => _yearMonthDayCalendar.day;
+  int get dayOfMonth => _yearMonthDayCalendar.day;
 
   YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
 
@@ -126,33 +127,33 @@ class OffsetDateTime {
   int get dayOfYear => ICalendarSystem.getDayOfYear(calendar, _yearMonthDayCalendar.toYearMonthDay());
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
-  int get hour => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
+  int get hourOfDay => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
 
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay {
+  int get hourOf12HourClock {
     int hohd = _hourOfHalfDay;
     return hohd == 0 ? 12 : hohd;
   }
 
   // TODO(feature): Consider exposing this.
   /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
-  /*internal*/ int get _hourOfHalfDay => (hour % 12);
+  /*internal*/ int get _hourOfHalfDay => (hourOfDay % 12);
 
   /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
-  int get minute {
+  int get minuteOfHour {
     // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
     int minuteOfDay = nanosecondOfDay ~/ TimeConstants.nanosecondsPerMinute; //((nanosecondOfDay >> 11) ~/ 29296875);
     return minuteOfDay % TimeConstants.minutesPerHour;
   }
 
   /// Gets the second of this offset date and time within the minute, in the range 0 to 59 inclusive.
-  int get second {
+  int get secondOfMinute {
     int secondOfDay = (nanosecondOfDay ~/ TimeConstants.nanosecondsPerSecond);
     return secondOfDay % TimeConstants.secondsPerMinute;
   }
 
   /// Gets the millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.
-  int get millisecond {
+  int get millisecondOfSecond {
     int milliSecondOfDay = (nanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
     return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
   }
@@ -162,12 +163,14 @@ class OffsetDateTime {
   /// Gets the microsecond of this offset date and time within the second, in the range 0 to 999,999 inclusive.
   int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
 
+  @deprecated
   /// Gets the microsecond of this offset date and time within the day, in the range 0 to 86,399,999,999 inclusive.
   int get microsecondOfDay => _nanosecondOfDay ~/ TimeConstants.nanosecondsPerMicrosecond;
 
   /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => nanosecondOfDay % TimeConstants.nanosecondsPerSecond;
 
+  @deprecated
   /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
   int get nanosecondOfDay => _nanosecondOfDay;
 

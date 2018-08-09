@@ -216,31 +216,31 @@ class ZonedDateTime {
   int get yearOfEra => _offsetDateTime.yearOfEra;
 
   /// Gets the month of this zoned date and time within the year.
-  int get month => _offsetDateTime.month;
+  int get month => _offsetDateTime.monthOfYear;
 
   /// Gets the day of this zoned date and time within the year.
   int get dayOfYear => _offsetDateTime.dayOfYear;
 
   /// Gets the day of this zoned date and time within the month.
-  int get day => _offsetDateTime.day;
+  int get day => _offsetDateTime.dayOfMonth;
 
   /// Gets the week day of this zoned date and time expressed as an [DayOfWeek] value.
   DayOfWeek get dayOfWeek => _offsetDateTime.dayOfWeek;
 
   /// Gets the hour of day of this zoned date and time, in the range 0 to 23 inclusive.
-  int get hour => _offsetDateTime.hour;
+  int get hour => _offsetDateTime.hourOfDay;
 
   /// Gets the hour of the half-day of this zoned date and time, in the range 1 to 12 inclusive.
-  int get clockHourOfHalfDay => _offsetDateTime.clockHourOfHalfDay;
+  int get clockHourOfHalfDay => _offsetDateTime.hourOf12HourClock;
 
   /// Gets the minute of this zoned date and time, in the range 0 to 59 inclusive.
-  int get minute => _offsetDateTime.minute;
+  int get minute => _offsetDateTime.minuteOfHour;
 
   /// Gets the second of this zoned date and time within the minute, in the range 0 to 59 inclusive.
-  int get second => _offsetDateTime.second;
+  int get second => _offsetDateTime.secondOfMinute;
 
   /// Gets the millisecond of this zoned date and time within the second, in the range 0 to 999 inclusive.
-  int get millisecond => _offsetDateTime.millisecond;
+  int get millisecond => _offsetDateTime.millisecondOfSecond;
 
   /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.
   int get microsecondOfSecond => _offsetDateTime.microsecondOfSecond;

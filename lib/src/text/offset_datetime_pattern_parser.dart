@@ -24,9 +24,9 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
     bucket.date.yearOfEra = value),
     'u': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
         4, PatternFields.year, -9999, 9999, (value) => value.year, (bucket, value) => bucket.date.year = value),
-    'M': DatePatternHelper.createMonthOfYearHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.month, (bucket, value) =>
+    'M': DatePatternHelper.createMonthOfYearHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.monthOfYear, (bucket, value) =>
     bucket.date.monthOfYearText = value, (bucket, value) => bucket.date.monthOfYearNumeric = value),
-    'd': DatePatternHelper.createDayHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.day, (value) => value.dayOfWeek.value, (bucket,
+    'd': DatePatternHelper.createDayHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.dayOfMonth, (value) => value.dayOfWeek.value, (bucket,
         value) => bucket.date.dayOfMonth = value, (bucket, value) => bucket.date.dayOfWeek = value),
     '.': TimePatternHelper.createPeriodHandler<OffsetDateTime, _OffsetDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
@@ -34,18 +34,18 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     ':': (pattern, builder) => builder.addLiteral1(builder.formatInfo.timeSeparator, IParseResult.timeSeparatorMismatch /**<OffsetDateTime>*/),
     'h': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
-        2, PatternFields.hours12, 1, 12, (value) => value.clockHourOfHalfDay, (bucket, value) => bucket.time.hours12 = value),
+        2, PatternFields.hours12, 1, 12, (value) => value.hourOf12HourClock, (bucket, value) => bucket.time.hours12 = value),
     'H': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
-        2, PatternFields.hours24, 0, 24, (value) => value.hour, (bucket, value) => bucket.time.hours24 = value),
+        2, PatternFields.hours24, 0, 24, (value) => value.hourOfDay, (bucket, value) => bucket.time.hours24 = value),
     'm': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
-        2, PatternFields.minutes, 0, 59, (value) => value.minute, (bucket, value) => bucket.time.minutes = value),
+        2, PatternFields.minutes, 0, 59, (value) => value.minuteOfHour, (bucket, value) => bucket.time.minutes = value),
     's': SteppedPatternBuilder.handlePaddedField<OffsetDateTime, _OffsetDateTimeParseBucket>(
-        2, PatternFields.seconds, 0, 59, (value) => value.second, (bucket, value) => bucket.time.seconds = value),
+        2, PatternFields.seconds, 0, 59, (value) => value.secondOfMinute, (bucket, value) => bucket.time.seconds = value),
     'f': TimePatternHelper.createFractionHandler<OffsetDateTime, _OffsetDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
     'F': TimePatternHelper.createFractionHandler<OffsetDateTime, _OffsetDateTimeParseBucket>(
         9, (value) => value.nanosecondOfSecond, (bucket, value) => bucket.time.fractionalSeconds = value),
-    't': TimePatternHelper.createAmPmHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((time) => time.hour, (bucket, value) => bucket.time.amPm = value),
+    't': TimePatternHelper.createAmPmHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((time) => time.hourOfDay, (bucket, value) => bucket.time.amPm = value),
     'c': DatePatternHelper.createCalendarHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.localDateTime.calendar, (bucket, value) =>
     bucket.date.calendar = value),
     'g': DatePatternHelper.createEraHandler<OffsetDateTime, _OffsetDateTimeParseBucket>((value) => value.era, (bucket) => bucket.date),
