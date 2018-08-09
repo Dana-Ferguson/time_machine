@@ -146,16 +146,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => timeOfDay.timeSinceMidnight.nanosecondOfSecond;
 
-  @deprecated
-  /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => timeOfDay.timeSinceMidnight.inNanoseconds;
-
   /// Gets the nanosecond of this local time within the second, in the range 0 to 999,999,999 inclusive.
   int get microsecondOfSecond => timeOfDay.timeSinceMidnight.microsecondOfSecond;
-
-  @deprecated
-  /// Gets the nanosecond of this local date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get microsecondOfDay => timeOfDay.timeSinceMidnight.inMicroseconds;
 
   // Time get timeSinceMidnight => localTime.timeSinceMidnight;
 

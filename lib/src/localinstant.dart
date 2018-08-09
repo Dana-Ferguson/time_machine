@@ -59,7 +59,6 @@ class LocalInstant {
   /// Number of days since the local unix epoch.
   int get daysSinceEpoch => IInstant.trusted(_time).epochDay; // Instant.epochTime(_time).epochDay;
 
-  @deprecated
   // todo: -- make more efficient?
   /// Nanosecond within the day.
   int get nanosecondOfDay => IInstant.trusted(_time).epochDayTime.inNanoseconds;

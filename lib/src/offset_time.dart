@@ -26,11 +26,6 @@ class OffsetTime {
   /// Gets the hour of the half-day of this offset time, in the range 1 to 12 inclusive.
   int get clockHourOfHalfDay => timeOfDay.timeSinceMidnight.hourOf12HourClock;
 
-  // TODO(feature): Consider exposing this.
-  /// Gets the hour of the half-day of this offset time, in the range 0 to 11 inclusive.
-  // ignore: unused_element
-  /*@internal*/ int get _hourOfHalfDay => ILocalTime.hourOfHalfDay(timeOfDay);
-
   /// Gets the minute of this offset time, in the range 0 to 59 inclusive.
   int get minute => timeOfDay.timeSinceMidnight.minuteOfHour;
 

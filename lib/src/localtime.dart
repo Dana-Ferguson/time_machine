@@ -13,9 +13,6 @@ abstract class ILocalTime {
   static LocalTime trustedNanoseconds(int nanoseconds) => new LocalTime._(nanoseconds);
 
   static LocalTime untrustedNanoseconds(int nanoseconds) => new LocalTime._untrusted(nanoseconds);
-
-  @deprecated
-  static int hourOfHalfDay(LocalTime localTime) => localTime.timeSinceMidnight.hourOf12HourClock;
 }
 
 /// LocalTime is an immutable class representing a time of day, with no reference

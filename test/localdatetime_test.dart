@@ -124,11 +124,11 @@ void TimeProperties_AfterEpoch()
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
       25 * TimeConstants.microsecondsPerSecond +
-      123456/*7*/, ldt.microsecondOfDay);
+      123456/*7*/, ldt.timeOfDay.timeSinceMidnight.inMicroseconds);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.nanosecondOfDay);
+      123456789, ldt.timeOfDay.timeSinceMidnight.inNanoseconds);
   expect(123456789, ldt.nanosecondOfSecond);
 }
 
@@ -146,11 +146,11 @@ void TimeProperties_BeforeEpoch()
   expect(15 * TimeConstants.microsecondsPerHour +
       48 * TimeConstants.microsecondsPerMinute +
       25 * TimeConstants.microsecondsPerSecond +
-      123456/*7*/, ldt.microsecondOfDay);
+      123456/*7*/, ldt.timeOfDay.timeSinceMidnight.inMicroseconds);
   expect(15 * TimeConstants.nanosecondsPerHour +
       48 * TimeConstants.nanosecondsPerMinute +
       25 * TimeConstants.nanosecondsPerSecond +
-      123456789, ldt.nanosecondOfDay);
+      123456789, ldt.timeOfDay.timeSinceMidnight.inNanoseconds);
   expect(123456789, ldt.nanosecondOfSecond);
 }
 
