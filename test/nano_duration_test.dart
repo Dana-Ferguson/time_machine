@@ -50,6 +50,7 @@ void ConstituentParts_Positive()
 {
   var nanos = new NanosecondTime(TimeConstants.nanosecondsPerDay * 5 + 100);
   expect(5, Instant.epochTime(nanos).epochDay);
+  expect(5, ITime.epochDay(nanos));
   expect(100, ITime.nanosecondOfEpochDay(nanos));
   expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
 }
@@ -59,6 +60,7 @@ void ConstituentParts_Negative()
 {
   var nanos = new NanosecondTime(TimeConstants.nanosecondsPerDay * -5 + 100);
   expect(-5, Instant.epochTime(nanos).epochDay);
+  expect(-5, ITime.epochDay(nanos));
   expect(100, ITime.nanosecondOfEpochDay(nanos));
   expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
 }
