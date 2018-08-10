@@ -1,6 +1,6 @@
-# Dart Time Machine
+![logo-dtm](https://user-images.githubusercontent.com/7284858/43960873-65f3f080-9c81-11e8-9d4d-c34c7e4cc46c.png)
 
-Time Machine is a date and time library for
+The Dart Time Machine is a date and time library for
 [Flutter](https://flutter.io/), [Web](https://webdev.dartlang.org/), and [Server](https://www.dartlang.org/dart-vm)
 with support for timezones, calendars, cultures, formatting and parsing.
 
