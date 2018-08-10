@@ -220,8 +220,9 @@ class Instant implements Comparable<Instant> {
 
   ZonedDateTime inUtc() {
     // Bypass any determination of offset and arithmetic, as we know the offset is zero.
-    var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(epochDay);
-    var offsetDateTime = IOffsetDateTime.fullTrust(ymdc, epochDayTime.inNanoseconds, Offset.zero);
+    // var ymdc = GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(epochDay);
+    // todo: seems a bit much -- simplify?
+    var offsetDateTime = IOffsetDateTime.fullTrust(LocalDateTime.localDateAtTime(LocalDate.fromEpochDay(epochDay), LocalTime.sinceMidnight(epochDayTime)), Offset.zero);
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 

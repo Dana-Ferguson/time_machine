@@ -466,7 +466,7 @@ void With_TimeAdjuster()
   Offset offset = new Offset.hoursAndMinutes(2, 30);
   OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
   OffsetDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8).withOffset(offset);
-  expect(expected, start.withTime(TimeAdjusters.truncateToSecond));
+  expect(expected, start.adjustTime(TimeAdjusters.truncateToSecond));
 }
 
 @Test()
@@ -475,7 +475,7 @@ void With_DateAdjuster()
   Offset offset = new Offset.hoursAndMinutes(2, 30);
   OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
   OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
-  expect(expected, start.withDate(DateAdjusters.endOfMonth));
+  expect(expected, start.adjustDate(DateAdjusters.endOfMonth));
 }
 
 @Test()

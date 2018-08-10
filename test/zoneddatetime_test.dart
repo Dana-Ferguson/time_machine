@@ -45,12 +45,12 @@ void SimpleProperties()
       9 * TimeConstants.microsecondsPerMinute +
       10 * TimeConstants.microsecondsPerSecond +
       123456/*7*/,
-      value.microsecondOfDay);
+      value.clockTime.timeSinceMidnight.inMicroseconds);
   expect(8 * TimeConstants.nanosecondsPerHour +
       9 * TimeConstants.nanosecondsPerMinute +
       10 * TimeConstants.nanosecondsPerSecond +
       123456789,
-      value.nanosecondOfDay);
+      value.clockTime.timeSinceMidnight.inNanoseconds);
 }
 
 @Test()

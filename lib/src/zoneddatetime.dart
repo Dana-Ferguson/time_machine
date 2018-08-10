@@ -245,16 +245,8 @@ class ZonedDateTime {
   /// Gets the tick of this zoned date and time within the second, in the range 0 to 9,999,999 inclusive.
   int get microsecondOfSecond => _offsetDateTime.microsecondOfSecond;
 
-  @deprecated
-  /// Gets the tick of this zoned date and time within the day, in the range 0 to 863,999,999,999 inclusive.
-  int get microsecondOfDay => _offsetDateTime.microsecondOfDay;
-
   /// Gets the nanosecond of this zoned date and time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => _offsetDateTime.nanosecondOfSecond;
-
-  @deprecated
-  /// Gets the nanosecond of this zoned date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => _offsetDateTime.nanosecondOfDay;
 
   /// Converts this value to the instant it represents on the time line.
   ///

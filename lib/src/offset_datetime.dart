@@ -8,16 +8,17 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal
 abstract class IOffsetDateTime {
-  static OffsetDateTime fullTrust(YearMonthDayCalendar yearMonthDayCalendar, int nanosecondOfDay, Offset offset) =>
-      new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanosecondOfDay, offset);
+  static OffsetDateTime fullTrust(LocalDateTime localDateTime, Offset offset) =>
+      new OffsetDateTime(localDateTime, offset);
 
-  static OffsetDateTime lessTrust(YearMonthDayCalendar yearMonthDayCalendar, LocalTime time, Offset offset) =>
-      new OffsetDateTime._lessTrust(yearMonthDayCalendar, time, offset);
+  static OffsetDateTime lessTrust(LocalDate calendarDate, LocalTime clockTime, Offset offset) =>
+      new OffsetDateTime._lessTrust(calendarDate, clockTime, offset);
 
   static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem calendar]) =>
       new OffsetDateTime._fromInstant(instant, offset, calendar);
 
-  static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => offsetDateTime._yearMonthDay;
+  @deprecated
+  static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => ILocalDate.yearMonthDay(offsetDateTime.calendarDate);
 }
 
 /// A local date and time in a particular calendar system, combined with an offset from UTC.
@@ -30,40 +31,26 @@ abstract class IOffsetDateTime {
 /// This type is immutable.
 @immutable
 class OffsetDateTime {
-  // todo: We can't use this either
-  // @private static const int NanosecondsBits = 47;
-
-  // todo: we can't use this -- WE CAN NOT USE LONG SIZED MASKS IN JS
-  //@private static const int NanosecondsMask = 0; // (1L << TimeConstants.nanosecondsBits) - 1;
-  //@private static const int OffsetMask = ~NanosecondsMask;
-  //static const int _minBclOffsetMinutes = -14 * TimeConstants.minutesPerHour;
-  //static const int _maxBclOffsetMinutes = 14 * TimeConstants.minutesPerHour;
-
-  // todo: verify this for Dart
-  /// These are effectively the fields of a [LocalDateTime] and an [Offset], but by keeping them directly here,
-  /// we reduce the levels of indirection and copying, which makes a surprising difference in speed, and
-  /// should allow us to optimize memory usage too.
-  final YearMonthDayCalendar _yearMonthDayCalendar;
-  // todo: Update :)
-  final int _nanosecondOfDay;
-
   /// Gets the offset from UTC.
   final Offset offset;
 
-  // Bottom NanosecondsBits bits are the nanosecond-of-day; top 17 bits are the offset (in seconds). This has a slight
-  // execution-time cost (masking for each component) but the logical benefit of saving 4 bytes per
-  // value actually ends up being 8 bytes per value on a 64-bit CLR due to alignment.
-  // @private final int nanosecondsAndOffset;
+  /// Returns the local date and time represented within this offset date and time.
+  final LocalDateTime localDateTime;
 
-  OffsetDateTime._fullTrust(this._yearMonthDayCalendar, this._nanosecondOfDay, this.offset) // this.nanosecondsAndOffset)
+  /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
+  ///
+  /// * [localDateTime]: Local date and time to represent
+  /// * [offset]: Offset from UTC
+  OffsetDateTime(this.localDateTime, this.offset)
   {
-    ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
+    // ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
 
-  OffsetDateTime._lessTrust(this._yearMonthDayCalendar, LocalTime time, Offset offset)
-      : _nanosecondOfDay = time.timeSinceMidnight.inNanoseconds, offset = offset // nanosecondsAndOffset = _combineNanoOfDayAndOffset(time.NanosecondOfDay, offset)
+  OffsetDateTime._lessTrust(LocalDate calendarDate, LocalTime clockTime, Offset offset)
+      : localDateTime = calendarDate.at(clockTime),
+        offset = offset
   {
-    ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
+    // ICalendarSystem.validateYearMonthDay_(calendar, _yearMonthDay);
   }
 
   // todo: why is this internal? ... this looks like it would help develop good mental models ... is that correct?
@@ -83,114 +70,85 @@ class OffsetDateTime {
       days--;
       nanoOfDay += TimeConstants.nanosecondsPerDay;
     }
+    /*
     var yearMonthDayCalendar = calendar != null
         ? ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(calendar, days)
         // todo: can we grab the correct calculator based on the default culture? (is that appropriate?)
-        : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);
+        : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);*/
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
-    return new OffsetDateTime._fullTrust(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
+    var ldt = LocalDate.fromEpochDay(days, calendar).at(ILocalTime.trustedNanoseconds(nanoOfDay));
+    return new OffsetDateTime(ldt, offset);
+    // return new OffsetDateTime(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
-  /// Constructs a new offset date/time with the given local date and time, and the given offset from UTC.
-  ///
-  /// * [localDateTime]: Local date and time to represent
-  /// * [offset]: Offset from UTC
-  OffsetDateTime(LocalDateTime localDateTime, Offset offset)
-      : this._fullTrust(ILocalDate.yearMonthDayCalendar(localDateTime.calendarDate), localDateTime.clockTime.timeSinceMidnight.inNanoseconds, offset);
-
   /// Gets the calendar system associated with this offset date and time.
-  CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
+  CalendarSystem get calendar => localDateTime.calendar;
 
   /// Gets the year of this offset date and time.
   /// This returns the "absolute year", so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
-  int get year => _yearMonthDayCalendar.year;
+  int get year => localDateTime.year;
 
   /// Gets the month of this offset date and time within the year.
-  int get monthOfYear => _yearMonthDayCalendar.month;
+  int get monthOfYear => localDateTime.monthOfYear;
 
   /// Gets the day of this offset date and time within the month.
-  int get dayOfMonth => _yearMonthDayCalendar.day;
-
-  YearMonthDay get _yearMonthDay => _yearMonthDayCalendar.toYearMonthDay();
+  int get dayOfMonth => localDateTime.dayOfMonth;
 
   /// Gets the week day of this offset date and time expressed as an [DayOfWeek] value.
-  DayOfWeek get dayOfWeek => ICalendarSystem.getDayOfWeek(calendar, _yearMonthDayCalendar.toYearMonthDay());
+  DayOfWeek get dayOfWeek => localDateTime.dayOfWeek;
 
   /// Gets the year of this offset date and time within the era.
-  int get yearOfEra => ICalendarSystem.getYearOfEra(calendar, _yearMonthDayCalendar.year);
+  int get yearOfEra => localDateTime.yearOfEra;
 
   /// Gets the era of this offset date and time.
-  Era get era => ICalendarSystem.getEra(calendar, _yearMonthDayCalendar.year);
+  Era get era => localDateTime.era;
 
   /// Gets the day of this offset date and time within the year.
-  int get dayOfYear => ICalendarSystem.getDayOfYear(calendar, _yearMonthDayCalendar.toYearMonthDay());
+  int get dayOfYear => localDateTime.dayOfYear;
 
   /// Gets the hour of day of this offest date and time, in the range 0 to 23 inclusive.
-  int get hourOfDay => nanosecondOfDay ~/ TimeConstants.nanosecondsPerHour;
+  int get hourOfDay => localDateTime.hourOfDay;
 
   /// Gets the hour of the half-day of this offest date and time, in the range 1 to 12 inclusive.
-  int get hourOf12HourClock {
-    int hohd = _hourOfHalfDay;
-    return hohd == 0 ? 12 : hohd;
-  }
-
-  // TODO(feature): Consider exposing this.
-  /// Gets the hour of the half-day of this offset date and time, in the range 0 to 11 inclusive.
-  /*internal*/ int get _hourOfHalfDay => (hourOfDay % 12);
+  int get hourOf12HourClock => localDateTime.hourOf12HourClock;
 
   /// Gets the minute of this offset date and time, in the range 0 to 59 inclusive.
-  int get minuteOfHour {
-    // Effectively NanosecondOfDay / NanosecondsPerMinute, but apparently rather more efficient.
-    int minuteOfDay = nanosecondOfDay ~/ TimeConstants.nanosecondsPerMinute; //((nanosecondOfDay >> 11) ~/ 29296875);
-    return minuteOfDay % TimeConstants.minutesPerHour;
-  }
+  int get minuteOfHour => localDateTime.minuteOfHour;
 
   /// Gets the second of this offset date and time within the minute, in the range 0 to 59 inclusive.
-  int get secondOfMinute {
-    int secondOfDay = (nanosecondOfDay ~/ TimeConstants.nanosecondsPerSecond);
-    return secondOfDay % TimeConstants.secondsPerMinute;
-  }
+  int get secondOfMinute => localDateTime.secondOfMinute;
 
   /// Gets the millisecond of this offset date and time within the second, in the range 0 to 999 inclusive.
-  int get millisecondOfSecond {
-    int milliSecondOfDay = (nanosecondOfDay ~/ TimeConstants.nanosecondsPerMillisecond);
-    return (milliSecondOfDay % TimeConstants.millisecondsPerSecond);
-  }
+  int get millisecondOfSecond => localDateTime.millisecondOfSecond;
 
-  // TODO(optimization): Rewrite for performance?
-  // todo: should we have milliSecondOfDay, microSecondOfDay -- or should this all just come from a [Time]???
   /// Gets the microsecond of this offset date and time within the second, in the range 0 to 999,999 inclusive.
-  int get microsecondOfSecond => microsecondOfDay % TimeConstants.microsecondsPerSecond;
+  int get microsecondOfSecond => localDateTime.microsecondOfSecond;
 
-  @deprecated
+  //@deprecated
   /// Gets the microsecond of this offset date and time within the day, in the range 0 to 86,399,999,999 inclusive.
-  int get microsecondOfDay => _nanosecondOfDay ~/ TimeConstants.nanosecondsPerMicrosecond;
+  //int get microsecondOfDay => _nanosecondOfDay ~/ TimeConstants.nanosecondsPerMicrosecond;
 
   /// Gets the nanosecond of this offset date and time within the second, in the range 0 to 999,999,999 inclusive.
-  int get nanosecondOfSecond => nanosecondOfDay % TimeConstants.nanosecondsPerSecond;
+  int get nanosecondOfSecond => localDateTime.nanosecondOfSecond;
 
-  @deprecated
+  //@deprecated
   /// Gets the nanosecond of this offset date and time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => _nanosecondOfDay;
-
-  /// Returns the local date and time represented within this offset date and time.
-  // todo: should this be a const? or cached -- or???
-  LocalDateTime get localDateTime => new LocalDateTime.localDateAtTime(calendarDate, clockTime);
+  //int get nanosecondOfDay => _nanosecondOfDay;
 
   /// Gets the local date represented by this offset date and time.
   ///
   /// The returned [LocalDate]
   /// will have the same calendar system and return the same values for each of the date-based calendar
   /// properties (Year, MonthOfYear and so on), but will not have any offset information.
-  LocalDate get calendarDate => ILocalDate.trusted(_yearMonthDayCalendar);
+  LocalDate get calendarDate => localDateTime.calendarDate;
 
   /// Gets the time portion of this offset date and time.
   ///
   /// The returned [LocalTime] will
   /// return the same values for each of the time-based properties (Hour, Minute and so on), but
   /// will not have any offset information.
-  LocalTime get clockTime => ILocalTime.trustedNanoseconds(nanosecondOfDay);
+  LocalTime get clockTime => localDateTime.clockTime;
 
   // Offset get offset => _offset; // new Offset(nanosecondsAndOffset >> NanosecondsBits);
 
@@ -204,8 +162,7 @@ class OffsetDateTime {
 
   Time _toElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
-    int days = ICalendarSystem.getDaysSinceEpoch(calendar, _yearMonthDayCalendar.toYearMonthDay());
-    Time elapsedTime = new Time(days: days, nanoseconds: nanosecondOfDay - _offsetNanoseconds);
+    Time elapsedTime = new Time(days: calendarDate.epochDay, nanoseconds: clockTime.timeSinceMidnight.inNanoseconds - _offsetNanoseconds);
     // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
   }
@@ -242,8 +199,9 @@ class OffsetDateTime {
   ///
   /// Returns: The converted OffsetDateTime.
   OffsetDateTime withCalendar(CalendarSystem calendar) {
-    LocalDate newDate = calendarDate.withCalendar(calendar);
-    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
+    // todo: equivalent?
+    // LocalDate newDate = calendarDate.withCalendar(calendar);
+    return new OffsetDateTime(localDateTime.withCalendar(calendar), offset);
   }
 
   /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
@@ -255,9 +213,8 @@ class OffsetDateTime {
   /// * [adjuster]: The adjuster to apply.
   ///
   /// Returns: The adjusted offset date/time.
-  OffsetDateTime withDate(LocalDate Function(LocalDate) adjuster) {
-    LocalDate newDate = calendarDate.adjust(adjuster);
-    return new OffsetDateTime._fullTrust(ILocalDate.yearMonthDayCalendar(newDate), _nanosecondOfDay, offset); // nanosecondsAndOffset);
+  OffsetDateTime adjustDate(LocalDate Function(LocalDate) adjuster) {
+    return new OffsetDateTime(localDateTime.adjustDate(adjuster), offset);
   }
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
@@ -268,9 +225,8 @@ class OffsetDateTime {
   /// * [adjuster]: The adjuster to apply.
   ///
   /// Returns: The adjusted offset date/time.
-  OffsetDateTime withTime(LocalTime Function(LocalTime) adjuster) {
-    LocalTime newTime = clockTime.adjust(adjuster);
-    return new OffsetDateTime._fullTrust(_yearMonthDayCalendar, newTime.timeSinceMidnight.inNanoseconds, offset); //  (nanosecondsAndOffset & OffsetMask) | newTime.NanosecondOfDay);
+  OffsetDateTime adjustTime(LocalTime Function(LocalTime) adjuster) {
+    return new OffsetDateTime(localDateTime.adjustTime(adjuster), offset);
   }
 
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
@@ -282,8 +238,10 @@ class OffsetDateTime {
   OffsetDateTime withOffset(Offset offset) {
     // Slight change to the normal operation, as it's *just* about plausible that we change day
     // twice in one direction or the other.
+    // todo: pretty sure this isn't going to work out
+    /*
     int days = 0;
-    int nanos =_nanosecondOfDay /*(nanosecondsAndOffset & NanosecondsMask)*/ + offset.inNanoseconds - _offsetNanoseconds;
+    int nanos = clockTime.timeSinceMidnight.inNanoseconds + offset.inNanoseconds - _offsetNanoseconds;
     if (nanos >= TimeConstants.nanosecondsPerDay) {
       days++;
       nanos -= TimeConstants.nanosecondsPerDay;
@@ -300,10 +258,14 @@ class OffsetDateTime {
         nanos += TimeConstants.nanosecondsPerDay;
       }
     }
-    return new OffsetDateTime._fullTrust(
+
+    return new OffsetDateTime(
         days == 0 ? _yearMonthDayCalendar : ILocalDate.yearMonthDayCalendar(calendarDate
             .addDays(days)), nanos, offset);
-    // _combineNanoOfDayAndOffset(nanos, offset));
+*/
+    // return localDateTime.withOffset(offset);
+
+    return OffsetDateTime._fromInstant(toInstant(), offset, calendar);
   }
 
   /// Constructs a new [OffsetDate] from the date and offset of this value,
@@ -319,7 +281,7 @@ class OffsetDateTime {
   OffsetTime toOffsetTime() => new OffsetTime(clockTime, offset);
 
   /// Returns a hash code for this offset date and time.
-  @override int get hashCode => hash2(LocalDateTime, offset);
+  @override int get hashCode => hash2(localDateTime, offset);
 
   /// Compares two [OffsetDateTime] values for equality. This requires
   /// that the local date/time values be the same (in the same calendar) and the offsets.
@@ -328,7 +290,7 @@ class OffsetDateTime {
   ///
   /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
-      this._yearMonthDayCalendar == other._yearMonthDayCalendar && this._nanosecondOfDay == other._nanosecondOfDay && this.offset == other.offset; // this.nanosecondsAndOffset == other.nanosecondsAndOffset;
+      this.localDateTime.equals(other.localDateTime) && this.offset.equals(other.offset);
 
   /// Returns a [String] that represents this instance.
   ///
@@ -440,15 +402,15 @@ class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
     if (dateComparison != 0) {
       return dateComparison;
     }
-    return x.nanosecondOfDay.compareTo(y.nanosecondOfDay);
+    return x.clockTime.compareTo(y.clockTime);
   }
 
   /// <inheritdoc />
   @override bool equals(OffsetDateTime x, OffsetDateTime y) =>
-      x._yearMonthDayCalendar == y._yearMonthDayCalendar && x.nanosecondOfDay == y.nanosecondOfDay;
+      x.localDateTime.equals(y.localDateTime); // && x.offset.equals(y.offset);
 
   /// <inheritdoc />
-  @override int getHashCode(OffsetDateTime obj) => hash2(obj._yearMonthDayCalendar, obj.nanosecondOfDay);
+  @override int getHashCode(OffsetDateTime obj) => obj.localDateTime.hashCode; // hash2(obj.localDateTime, obj.offset);
 }
 
 
