@@ -38,10 +38,6 @@ class OffsetTime {
   /// Gets the nanosecond of this offset time within the second, in the range 0 to 999,999,999 inclusive.
   int get nanosecondOfSecond => clockTime.timeSinceMidnight.nanosecondOfSecond;
 
-  @deprecated
-  /// Gets the nanosecond of this offset time within the day, in the range 0 to 86,399,999,999,999 inclusive.
-  int get nanosecondOfDay => clockTime.timeSinceMidnight.inNanoseconds;
-
   /// Creates a new [OffsetTime] for the same time-of-day, but with the specified UTC offset.
   ///
   /// * [offset]: The new UTC offset.
