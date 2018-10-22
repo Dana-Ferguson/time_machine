@@ -155,25 +155,16 @@ class TimePeriodField
           : _toSpanSafely(units);
 
   Time _toSpanSafely(int units) {
-    // todo: can this be less expensive?
-    var ms = units * (_unitNanoseconds / 1000000.0);
-    if (ms >= Platform.intMinValue && ms <= Platform.intMaxValue) {
+    var maxLongUnitsMS = _maxLongUnits * TimeConstants.nanosecondsPerMillisecond;
+    if (units >= -maxLongUnitsMS && units <= maxLongUnitsMS) {
       var milliseconds = units * (_unitNanoseconds ~/ 1000000);
       var nanoseconds = units * (_unitNanoseconds % 1000000);
       return new Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
     }
     else {
-      // todo: verify this code path
       var bigNanoseconds = BigInt.from(_unitNanoseconds);
       var bigUnits = BigInt.from(units);
-      var div = BigInt.from(1000000);
-      var milliseconds = bigUnits * (bigNanoseconds ~/ div);
-      var nanoseconds = bigUnits * (bigNanoseconds % div);
-      // todo: can this be simplified... also... this is terrible
-      // return new Time.complex(nanoseconds: (bigNanoseconds * bigUnits).toDouble());
-      print(milliseconds);
-      print(nanoseconds);
-      return new Time(milliseconds: milliseconds.toInt(), nanoseconds: nanoseconds.toInt());
+      return new Time.bigIntNanoseconds(bigNanoseconds * bigUnits);
     }
   }
 }
