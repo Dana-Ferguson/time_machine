@@ -8,11 +8,52 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 // todo: can we refactor out this object?
-class _AddTimeResult {
-  final LocalTime time;
-  final int extraDays;
+class AddTimeCalc {
+  LocalTime localTime;
+  int extraDays;
 
-  _AddTimeResult(this.time, this.extraDays);
+  AddTimeCalc(this.localTime, this.extraDays);
+
+  void addTimeAndDays(TimePeriodField field, int value) {
+    // if (extraDays == null) return AddTimeSimple(localTime, value);
+
+    if (value == 0) return;
+
+    int days = 0;
+    // It's possible that there are better ways to do this, but this at least feels simple.
+    if (value >= 0) {
+      if (value >= field._unitsPerDay) {
+        int longDays = value ~/ field._unitsPerDay;
+        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
+        days = longDays;
+        value = value % field._unitsPerDay;
+      }
+      int nanosToAdd = value * field._unitNanoseconds;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
+      if (newNanos >= TimeConstants.nanosecondsPerDay) {
+        newNanos -= TimeConstants.nanosecondsPerDay;
+        days = (days + 1);
+      }
+      extraDays += days;
+      localTime = ILocalTime.trustedNanoseconds(newNanos);
+    }
+    else {
+      if (value <= -field._unitsPerDay) {
+        int longDays = value ~/ field._unitsPerDay;
+        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
+        days = longDays;
+        value = -(-value % field._unitsPerDay);
+      }
+      int nanosToAdd = value * field._unitNanoseconds;
+      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
+      if (newNanos < 0) {
+        newNanos += TimeConstants.nanosecondsPerDay;
+        days = days - 1;
+      }
+      extraDays += days;
+      localTime = ILocalTime.trustedNanoseconds(newNanos);
+    }
+  }
 }
 
 /// Period field class representing a field with a fixed duration regardless of when it occurs.
@@ -43,11 +84,12 @@ class TimePeriodField
 
   LocalDateTime addDateTime(LocalDateTime start, int units)
   {
-    // int extraDays = 0;
-    var addTimeResult = addTimeAndDays(start.clockTime, units, 0);
+    var calc = new AddTimeCalc(start.clockTime, 0);
+    calc.addTimeAndDays(this, units);
+
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
-    LocalDate date = addTimeResult.extraDays == 0 ? start.calendarDate :  start.calendarDate.addDays(addTimeResult.extraDays);
-    return new LocalDateTime.localDateAtTime(date, addTimeResult.time);
+    LocalDate date = calc.extraDays == 0 ? start.calendarDate :  start.calendarDate.addDays(calc.extraDays);
+    return new LocalDateTime.localDateAtTime(date, calc.localTime);
   }
 
   LocalTime addTime(LocalTime localTime, int value)
@@ -81,48 +123,6 @@ class TimePeriodField
         newNanos += TimeConstants.nanosecondsPerDay;
       }
       return ILocalTime.trustedNanoseconds(newNanos);
-    }
-  }
-
-  _AddTimeResult addTimeAndDays(LocalTime localTime, int value, /*ref*/ int extraDays) {
-    // if (extraDays == null) return AddTimeSimple(localTime, value);
-
-    if (value == 0) {
-      return new _AddTimeResult(localTime, extraDays);
-    }
-    int days = 0;
-    // It's possible that there are better ways to do this, but this at least feels simple.
-    if (value >= 0) {
-      if (value >= _unitsPerDay) {
-        int longDays = value ~/ _unitsPerDay;
-        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
-        days = /*checked*/ (longDays);
-        value = value % _unitsPerDay;
-      }
-      int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
-      if (newNanos >= TimeConstants.nanosecondsPerDay) {
-        newNanos -= TimeConstants.nanosecondsPerDay;
-        days = /*checked*/(days + 1);
-      }
-      extraDays = /*checked*/(extraDays + days);
-      return new _AddTimeResult(ILocalTime.trustedNanoseconds(newNanos), extraDays);
-    }
-    else {
-      if (value <= -_unitsPerDay) {
-        int longDays = value ~/ _unitsPerDay;
-        // If this overflows, that's fine. (An OverflowException is a reasonable outcome.)
-        days = /*checked*/(longDays);
-        value = -(-value % _unitsPerDay);
-      }
-      int nanosToAdd = value * _unitNanoseconds;
-      int newNanos = localTime.timeSinceMidnight.inNanoseconds + nanosToAdd;
-      if (newNanos < 0) {
-        newNanos += TimeConstants.nanosecondsPerDay;
-        days = /*checked*/(days - 1);
-      }
-      extraDays = /*checked*/(days + extraDays);
-      return new _AddTimeResult(ILocalTime.trustedNanoseconds(newNanos), extraDays);
     }
   }
 

@@ -488,23 +488,18 @@ class Period {
   /// Adds the contents of this period to the given date and time, with the given scale (either 1 or -1, usually).
   LocalDateTime _addDateTimeTo(LocalDate date, LocalTime time, int scalar) {
     date = _addDateTo(date, scalar);
-    // todo: probably a better way here
-    int extraDays = 0;
-    var result = TimePeriodField.hours.addTimeAndDays(time, hours * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.minutes.addTimeAndDays(time, minutes * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.seconds.addTimeAndDays(time, seconds * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.milliseconds.addTimeAndDays(time, milliseconds * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.microseconds.addTimeAndDays(time, microseconds * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
-    result = TimePeriodField.nanoseconds.addTimeAndDays(time, nanoseconds * scalar, /*ref*/ extraDays);
-    extraDays = result.extraDays; time = result.time;
+
+    var calc = new AddTimeCalc(time, 0);
+    calc.addTimeAndDays(TimePeriodField.hours, hours*scalar);
+    calc.addTimeAndDays(TimePeriodField.minutes, minutes*scalar);
+    calc.addTimeAndDays(TimePeriodField.seconds, seconds*scalar);
+    calc.addTimeAndDays(TimePeriodField.milliseconds, milliseconds*scalar);
+    calc.addTimeAndDays(TimePeriodField.microseconds, microseconds*scalar);
+    calc.addTimeAndDays(TimePeriodField.nanoseconds, nanoseconds*scalar);
+
     // TODO(optimization): Investigate the performance impact of us calling PlusDays twice.
     // Could optimize by including that in a single call...
-    return new LocalDateTime.localDateAtTime(date.addDays(extraDays), time);
+    return new LocalDateTime.localDateAtTime(date.addDays(calc.extraDays), calc.localTime);
   }
 
   static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
