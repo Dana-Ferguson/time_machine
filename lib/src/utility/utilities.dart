@@ -55,6 +55,12 @@ abstract class Platform {
   static int _intMinValue = isVM ? _intMinValue = int64MinValue : _intMinValue = intMinValueJS;
   static int get intMaxValue => _intMaxValue;
   static int get intMinValue => _intMinValue;
+
+  static BigInt _bigIntMinValue = null;
+  static BigInt bigIntMinValue = _bigIntMinValue ??= BigInt.from(Platform.intMinValue);
+
+  static BigInt _bigIntMaxValue = null;
+  static BigInt bigIntMaxValue = _bigIntMaxValue ??= BigInt.from(Platform.intMaxValue);
 }
 
 // todo: remove me

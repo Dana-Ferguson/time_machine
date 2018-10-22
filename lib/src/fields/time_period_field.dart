@@ -7,7 +7,6 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
-// todo: can we refactor out this object?
 class AddTimeCalc {
   LocalTime localTime;
   int extraDays;
@@ -142,8 +141,7 @@ class TimePeriodField
     }
     else {
       var units = span.inNanosecondsAsBigInt ~/ BigInt.from(_unitNanoseconds);
-      // todo: should these be constants? ... can they be?
-      if (units >= BigInt.from(Platform.intMinValue) && units <= BigInt.from(Platform.intMaxValue)) {
+      if (units >= Platform.bigIntMinValue && units <= Platform.bigIntMaxValue) {
         return units.toInt();
       }
       throw new RangeError('$units out of range of integer: [${Platform.intMinValue}, ${Platform.intMaxValue}]');
