@@ -8,21 +8,6 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// Todo: should I rename Duration? I kind of don't want to cause issues with dart.core collisions?
-// Can I do the core.Duration trick as a standard?
-
-// I did consider just doing nanoseconds only, but we would max out at 104 days.
-
-// *** I guess implicitly hiding a core class (Duration in this case) is considered too evil.
-// todo: maybe names:
-//  - Span, TimeSpan, TimeDuration, Time, TimeLength, TimeAmount
-//  note: I don't want something that required other classes to need to be renamed as well:
-//  I don't want --> TimeDuration; TimeInstant; TimeInterval --> etc...
-//  - maybe it's Darty that way -- but probably not -- in that case, you do your import 'time_machine' as time;
-//  see: https://www.dartlang.org/guides/language/effective-dart/design#do-use-terms-consistently
-//
-// Span (working name atm) is cool... but its a pre-existing concept in many languages that isn't time related
-
 @internal
 abstract class ITime {
   // This is 104249991 days
@@ -31,8 +16,8 @@ abstract class ITime {
   static const int minDays = -104249992; // ~maxDays; <-- doesn't work in JS // todo: may hard encode if this makes unit tests not work
 
   // todo: Convert to BigInt for Dart 2.0
-  static final /*BigInt*/ int minNanoseconds = /*(BigInteger)*/minDays * TimeConstants.nanosecondsPerDay;
-  static final /*BigInt*/ int maxNanoseconds = (maxDays + 1 /*BigInteger.One*/) * TimeConstants.nanosecondsPerDay - 1;
+  static final BigInt minNanoseconds = BigInt.from(minDays) * BigInt.from(TimeConstants.nanosecondsPerDay);
+  static final BigInt maxNanoseconds = (BigInt.from(maxDays) + BigInt.one) * BigInt.from(TimeConstants.nanosecondsPerDay) - BigInt.one;
 
   // 285420 years worth -- we are good for anything;
   // todo: should this be specific to the Platform?

@@ -146,26 +146,25 @@ class TimePatternParser implements IPatternParser<Time> {
   }
 }
 
-// todo: convert int to BigInt for Dart 2.0
 /// Provides a container for the interim parsed pieces of an [Offset] value.
 class _TimeParseBucket extends ParseBucket<Time> {
-  static final /*BigInt*/ int _bigIntegerNanosecondsPerDay = TimeConstants.nanosecondsPerDay;
+  static final BigInt _bigIntegerNanosecondsPerDay = BigInt.from(TimeConstants.nanosecondsPerDay);
 
   // TODO(optimization): We might want to try to optimize this, but it's *much* simpler to get working reliably this way
   // than to manipulate a real Span.
   bool isNegative = false;
-  /*BigInt*/ int _currentNanos = 0;
+  BigInt _currentNanos = BigInt.zero;
 
   void addNanoseconds(int nanoseconds) {
-    this._currentNanos += nanoseconds;
+    this._currentNanos += BigInt.from(nanoseconds);
   }
 
   void addDays(int days) {
-    _currentNanos += days * _bigIntegerNanosecondsPerDay;
+    _currentNanos += BigInt.from(days) * _bigIntegerNanosecondsPerDay;
   }
 
-  void addUnits(int units, /*BigInt*/ int nanosecondsPerUnit) {
-    _currentNanos += units * nanosecondsPerUnit;
+  void addUnits(int units, int nanosecondsPerUnit) {
+    _currentNanos += BigInt.from(units) * BigInt.from(nanosecondsPerUnit);
   }
 
   /// Calculates the value from the parsed pieces.
@@ -177,6 +176,6 @@ class _TimeParseBucket extends ParseBucket<Time> {
     if (_currentNanos < ITime.minNanoseconds || _currentNanos > ITime.maxNanoseconds) {
       return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Time']);
     }
-    return ParseResult.forValue<Time>(new Time(nanoseconds: _currentNanos));
+    return ParseResult.forValue<Time>(new Time.bigIntNanoseconds(_currentNanos));
   }
 }
