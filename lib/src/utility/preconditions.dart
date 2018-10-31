@@ -33,7 +33,7 @@ class Preconditions {
   // version using "long" values, but we'd incur conversions on every call. This method
   // may well be called very often.
   static void checkArgumentRange(String paramName, num value, num minInclusive, num maxInclusive) {
-    if (value < minInclusive || value > maxInclusive) {
+    if (value == null || value < minInclusive || value > maxInclusive) {
       throw new RangeError.range(value, minInclusive, maxInclusive, paramName);
     }
   }
@@ -56,13 +56,13 @@ class Preconditions {
 
   // [ContractAnnotation("expression:false => halt")]
   static void checkArgument(bool expression, String parameter, String message) {
-    if (!expression) {
+    if (expression == null || !expression) {
       throw new ArgumentError("$message (parameter name: $parameter)");
     }
   }
 
   static void checkState(bool expression, String message) {
-    if (!expression) {
+    if (expression == null || !expression) {
       throw new StateError(message);
     }
   }
