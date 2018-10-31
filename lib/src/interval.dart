@@ -34,9 +34,11 @@ class Interval {
   /// * [end]: The end [Instant].
   ///
   /// * [ArgumentOutOfRangeException]: [end] is earlier than [start].
-  Interval(this._start, this._end) {
+  Interval(Instant start, Instant end)
+      : _start = start ?? IInstant.beforeMinValue,
+        _end = end ?? IInstant.afterMaxValue {
     if (_end < _start) {
-      throw new ArgumentError("The end parameter must be equal to or later than the start parameter");
+      throw new RangeError("The end parameter must be equal to or later than the start parameter");
     }
   }
 
@@ -46,7 +48,6 @@ class Interval {
   ///
   /// * [StateError]: The interval extends to the start of time.
   Instant get start {
-    // todo: IsValid .. replace with a null check???
     Preconditions.checkState(_start.isValid, "Interval extends to start of time");
     return _start;
   }
@@ -76,7 +77,7 @@ class Interval {
   /// This will always be a non-negative duration, though it may be zero.
   ///
   /// * [StateError]: The interval extends to the start or end of time.
-  Time get time => start.timeUntil(end);
+  Time get totalTime => start.timeUntil(end);
 
   /// Returns whether or not this interval contains the given instant.
   ///
