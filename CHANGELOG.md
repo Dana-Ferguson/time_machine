@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.5
+- Many API changes.
+- LocalTime is now backed by a Nanosecond based Time Instance.
+- Additional tests added.
+- Performance improvements.
+
 ## 0.9.4
 - Many API changes.
 - Fix for Dart 2.0.
