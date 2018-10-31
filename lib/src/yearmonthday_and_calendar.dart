@@ -7,11 +7,8 @@ import 'package:meta/meta.dart';
 
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// todo: IEquatable<YearMonthDayCalendar>
-/// This is a Year - Month - Day - Calendar TUPLE -- this not actually a Calendar
-/// Todo: I think I'll change this class name to reflect that, when we're farther along with this port
-///   Theoretically this isn't part of the public API + I need to find out if bit packing even makes any sense in this library
-///   It might? -- at least on the VM it might
+// This is a Year - Month - Day - Calendar TUPLE -- this not actually a Calendar;
+// todo: test bit packing
 @internal
 class YearMonthDayCalendar {
   // These constants are internal so they can be used in YearMonthDay
@@ -52,14 +49,10 @@ class YearMonthDayCalendar {
 
   int get year => yearMonthDay.year;
 
-
   int get month => yearMonthDay.month;
-
 
   int get day => yearMonthDay.day;
 
-
-  // Just for testing purposes...
   @visibleForTesting
   static YearMonthDayCalendar Parse(String text) {
     // Handle a leading - to negate the year
@@ -70,18 +63,17 @@ class YearMonthDayCalendar {
 
     List<String> bits = text.split('-');
     return new YearMonthDayCalendar(
-        int.parse(bits[0]), // Culture.invariantCulture),
-        int.parse(bits[1]), // Culture.invariantCulture),
-        int.parse(bits[2]), // Culture.invariantCulture),
+        int.parse(bits[0]),
+        int.parse(bits[1]),
+        int.parse(bits[2]),
         // bits[3]));
         CalendarOrdinal.parse(bits[3]));
   }
 
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
-  @override String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
-
-// string.Format(Culture.invariantCulture, "{0:0000}-{1:00}-{2:00}-{3}", Year, Month, Day, CalendarOrdinal);
+  @override
+  String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
   @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;
