@@ -67,6 +67,7 @@ class CultureLoader {
   }
 
   Future<Culture> getCulture(String cultureId) async {
+    if (cultureId == null) return null;
     return _cache[cultureId] ??= _cultureFromBinary(await PlatformIO.local.getBinary('cultures', '$cultureId.bin'));
   }
 
