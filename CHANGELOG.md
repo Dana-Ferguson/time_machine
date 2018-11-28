@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.6
+- Merged #1 - Fix for when cultureId is null
+
 ## 0.9.5
 - Many API changes.
 - LocalTime is now backed by a Nanosecond based Time Instance.
