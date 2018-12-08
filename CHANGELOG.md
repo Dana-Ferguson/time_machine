@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.7
+- Updated TZDB to 2018g.
+
 ## 0.9.6
 - Merged #1 - Fix for when cultureId is null
 
