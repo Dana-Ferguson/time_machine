@@ -121,8 +121,8 @@ class ZoneInterval {
   ///// or `null` to make the zone interval extend to the start of time.
   ///// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
   ///// or `null` to make the zone interval extend to the end of time.
-  ///// [wallOffset]: The [WallOffset] from UTC for this period including any daylight savings.
-  ///// [savings]: The [WallOffset] daylight savings contribution to the offset.
+  ///// [wallOffset]: The [wallOffset] from UTC for this period including any daylight savings.
+  ///// [savings]: The [wallOffset] daylight savings contribution to the offset.
   ///// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
   //ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
   //    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
@@ -142,8 +142,8 @@ class ZoneInterval {
   /// or [IInstant.beforeMinValue] to make the zone interval extend to the start of time.
   /// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
   /// or [IInstant.afterMaxValue] to make the zone interval extend to the end of time.
-  /// [wallOffset]: The [WallOffset] from UTC for this period including any daylight savings.
-  /// [savings]: The [WallOffset] daylight savings contribution to the offset.
+  /// [wallOffset]: The [wallOffset] from UTC for this period including any daylight savings.
+  /// [savings]: The [wallOffset] daylight savings contribution to the offset.
   /// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
   factory ZoneInterval._(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
     rawStart ??= IInstant.beforeMinValue;

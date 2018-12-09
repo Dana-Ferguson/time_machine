@@ -101,7 +101,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     return IZoneInterval.newZoneInterval(recurrence.name, previous.instant, next.instant, _standardOffset + recurrence.savings, recurrence.savings);
   }
 
-  /// Returns the transition occurring strictly after the specified instant. The [recurrence]
+  /// Returns the transition occurring strictly after the specified instant. The [_recurrence]
   /// parameter will be populated with the recurrence the transition goes *from*.
   ///
   /// [instant]: The instant after which to consider transitions.

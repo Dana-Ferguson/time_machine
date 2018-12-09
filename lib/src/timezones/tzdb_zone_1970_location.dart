@@ -33,7 +33,7 @@ class TzdbZone1970Location {
   /// country containing the position indicated by the latitude and longitude, and
   /// is the most populous country in the list. No entry in this list is ever null.
   // todo: make immutable list?
-  final List<Country> countries;
+  final List<TzdbZone1970LocationCountry> countries;
 
   /// The ID of the time zone for this location.
   ///
@@ -60,11 +60,11 @@ class TzdbZone1970Location {
   /// [zoneId]: Time zone identifier of the location. Must not be null.
   /// [comment]: Optional comment. Must not be null, but may be empty.
   /// [ArgumentOutOfRangeException]: The latitude or longitude is invalid.
-  factory TzdbZone1970Location(int latitudeSeconds, int longitudeSeconds,  List<Country> countries,  String zoneId, String comment) {
+  factory TzdbZone1970Location(int latitudeSeconds, int longitudeSeconds,  List<TzdbZone1970LocationCountry> countries,  String zoneId, String comment) {
     Preconditions.checkArgumentRange('latitudeSeconds', latitudeSeconds, -90 * 3600, 90 * 3600);
     Preconditions.checkArgumentRange('longitudeSeconds', longitudeSeconds, -180 * 3600, 180 * 3600);
 
-    var Countries = new List<Country>.unmodifiable(Preconditions.checkNotNull(countries, 'countries'));
+    var Countries = new List<TzdbZone1970LocationCountry>.unmodifiable(Preconditions.checkNotNull(countries, 'countries'));
     Preconditions.checkArgument(Countries.length > 0, 'countries', "Collection must contain at least one entry");
     for (var entry in Countries) {
       Preconditions.checkArgument(entry != null, 'countries', "Collection must not contain null entries");
@@ -98,12 +98,12 @@ class TzdbZone1970Location {
     int latitudeSeconds = reader.readInt32();
     int longitudeSeconds = reader.readInt32();
     int countryCount = reader.read7BitEncodedInt();
-    var countries = new List<Country>();
+    var countries = new List<TzdbZone1970LocationCountry>();
     for (int i = 0; i < countryCount; i++)
     {
       String countryName = reader.readString();
       String countryCode = reader.readString();
-      countries.add(new Country(countryName, countryCode));
+      countries.add(new TzdbZone1970LocationCountry(countryName, countryCode));
     }
     String zoneId = reader.readString();
     String comment = reader.readString();
@@ -123,35 +123,35 @@ class TzdbZone1970Location {
 /// A country represented within an entry in the "zone1970.tab" file, with the English name
 /// mapped from the "iso3166.tab" file.
 @immutable
-class Country {
+class TzdbZone1970LocationCountry {
   /// Gets the English name of the country.
-  final String Name;
+  final String name;
 
   /// Gets the ISO-3166 2-letter country code for the country.
-  final String Code;
+  final String code;
 
   /// Constructs a new country from its name and ISO-3166 2-letter code.
   ///
   /// [name]: Country name; must not be empty.
   /// [code]: 2-letter code
-  Country(this.Name, this.Code) {
-    Preconditions.checkNotNull(Name, 'name');
-    Preconditions.checkNotNull(Code, 'code');
-    Preconditions.checkArgument(Name.length > 0, 'name', "Country name cannot be empty");
-    Preconditions.checkArgument(Code.length == 2, 'code', "Country code must be two characters");
+  TzdbZone1970LocationCountry(this.name, this.code) {
+    Preconditions.checkNotNull(name, 'name');
+    Preconditions.checkNotNull(code, 'code');
+    Preconditions.checkArgument(name.length > 0, 'name', "Country name cannot be empty");
+    Preconditions.checkArgument(code.length == 2, 'code', "Country code must be two characters");
   }
 
   /// Compares countries for equality, by name and code.
   ///
   /// [other]: The country to compare with this one.
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
-  bool equals(Country other) => other != null && other.Code == Code && other.Name == Name;
+  bool equals(TzdbZone1970LocationCountry other) => other != null && other.code == code && other.name == name;
 
-  @override operator==(dynamic other) => other is Country && other.Code == Code && other.Name == Name;
+  @override operator==(dynamic other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
 
   /// Returns a hash code for this country.
-  @override int get hashCode => hash2(Name, Code);
+  @override int get hashCode => hash2(name, code);
 
   /// Returns a string representation of this country, including the code and name.
-  @override String toString() => "$Code ($Name)";
+  @override String toString() => "$code ($name)";
 }
