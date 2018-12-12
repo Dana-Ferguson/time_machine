@@ -19,14 +19,14 @@ abstract class ParserHelper {
   /// <exception cref="FormatException">If the text is not a valid integer in the range [-23, 23].</exception>
   // todo: was long
   // todo: we don't use ticks anymore
-  static int convertHourToTicks(String text) {
+  static int _convertHourToNanoseconds(String text) {
     Preconditions.checkNotNull(text, 'text');
     int value = int.parse(text);
     if (value < -23 || value > 23) {
       throw new FormatException("hours out of valid range of [-23, 23]: $value");
     }
 
-    return value * TimeConstants.ticksPerHour;
+    return value * TimeConstants.nanosecondsPerHour;
   }
 
   /// Converts a minute string to its long value.
@@ -35,13 +35,13 @@ abstract class ParserHelper {
   /// <returns>The minute in the range [0, 59].</returns>
   /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 59].</exception>
   // todo: was long
-  static int convertMinuteToTicks(String text) {
+  static int _convertMinuteToNanoseconds(String text) {
     Preconditions.checkNotNull(text, 'text');
     int value = int.parse(text.trim());
     if (value < 0 || value > 59) {
       throw new FormatException("minutes out of valid range of [0, 59]: $value");
     }
-    return value * TimeConstants.ticksPerMinute;
+    return value * TimeConstants.nanosecondsPerMinute;
   }
 
   /// Converts a second string to its double value.
@@ -50,13 +50,13 @@ abstract class ParserHelper {
   /// <returns>The second in the range [0, 60).</returns>
   /// <exception cref="FormatException">If the text is not a valid integer in the range [0, 60).</exception>
   // todo: was long
-  static int convertSecondsWithFractionalToTicks(String text) {
+  static int _convertSecondsWithFractionalToNanoseconds(String text) {
     Preconditions.checkNotNull(text, 'text');
     double number = double.parse(text.trim());
     if (number < 0.0 || number >= 60.0) {
       throw new FormatException("seconds out of valid range of [0, 60): $number");
     }
-    int value = ((number * TimeConstants.millisecondsPerSecond) * TimeConstants.ticksPerMillisecond).toInt();
+    int value = (number * TimeConstants.nanosecondsPerSecond).toInt();
     return value;
   }
 
@@ -97,15 +97,16 @@ abstract class ParserHelper {
     if (parts.length > 3) {
       throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
     }
-    int ticks = convertHourToTicks(parts[0]);
+    int nanoseconds = _convertHourToNanoseconds(parts[0]);
     if (parts.length > 1) {
-      ticks += convertMinuteToTicks(parts[1]);
+      nanoseconds += _convertMinuteToNanoseconds(parts[1]);
       if (parts.length > 2) {
-        ticks += convertSecondsWithFractionalToTicks(parts[2]);
+        nanoseconds += _convertSecondsWithFractionalToNanoseconds(parts[2]);
       }
     }
-    ticks = ticks * sign;
-    return Offset.fromTicks(ticks);
+    nanoseconds = nanoseconds * sign;
+
+    return Offset.time(Time(nanoseconds: nanoseconds));
   }
 
   static LocalTime ParseTime(String text) {
