@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.8
+- Fix for issue #13. May investigate better solution in the future.
+
 ## 0.9.7
 - Updated TZDB to 2018g.
 

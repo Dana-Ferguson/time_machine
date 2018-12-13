@@ -13,6 +13,8 @@ abstract class ICultures {
     if (Cultures._loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
     Cultures._loadAllCulturesInformation = true;
   }
+
+  static bool get allCulturesLoaded => Cultures._loadAllCulturesInformation;
 }
 
 abstract class Cultures {

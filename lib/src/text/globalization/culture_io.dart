@@ -68,6 +68,18 @@ class CultureLoader {
 
   Future<Culture> getCulture(String cultureId) async {
     if (cultureId == null) return null;
+
+    if (ICultures.allCulturesLoaded) {
+      // todo: I think there is a more graceful way to handle this
+      // Perform a quick check to make sure the CultureID exists;
+      // see: https://github.com/Dana-Ferguson/time_machine/issues/13
+      if (!_cache.containsKey(cultureId)) {
+        cultureId = cultureId.split('-').first;
+      }
+
+      if (!_cache.containsKey(cultureId)) return null;
+    }
+
     return _cache[cultureId] ??= _cultureFromBinary(await PlatformIO.local.getBinary('cultures', '$cultureId.bin'));
   }
 

@@ -10,14 +10,14 @@ import 'package:matcher/matcher.dart';
 import '../time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
+
   await runTests();
 }
 
 @Test()
 Future loadCultures() async
 {
-  await TimeMachine.initialize();
-  
   var ids = await Cultures.ids;
   expect(ids.length, greaterThan(0));
 
@@ -25,4 +25,11 @@ Future loadCultures() async
     var culture = await Cultures.getCulture(id);
     expect(culture.name, id);
   }
+}
+
+// see: issue #13
+@Test()
+Future loadBadCulture() async {
+  var culture = await Cultures.getCulture('en-CN');
+  expect(culture.name, 'en');
 }
