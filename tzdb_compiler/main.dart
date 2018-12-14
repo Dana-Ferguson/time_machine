@@ -8,6 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'compiler_options.dart';
 import 'tzdb/tzdb_zone_info_compiler.dart';
+import 'tzdb/cldr_windows_zone_parser.dart';
 
 /// Main entry point for the time zone information compiler. In theory we could support
 /// multiple sources and formats but currently we only support one:
@@ -32,7 +33,7 @@ main(List<String> args) {
 
   var windowsZones = LoadWindowsZones(options, tzdb.version);
   if (options.windowsOverride != null) {
-    var overrideFile = CldrWindowsZonesParser.parserStream(options.WindowsOverride);
+    var overrideFile = CldrWindowsZonesParser.parseFile(options.windowsOverride);
     windowsZones = MergeWindowsZones(windowsZones, overrideFile);
   }
   LogWindowsZonesSummary(windowsZones);
@@ -50,112 +51,124 @@ main(List<String> args) {
   return 0;
 }
 
-  /// <summary>
-  /// Loads the best windows zones file based on the options. If the WindowsMapping option is
-  /// just a straight file, that's used. If it's a directory, this method loads all the XML files
-  /// in the directory (expecting them all to be mapping files) and then picks the best one based
-  /// on the version of TZDB we're targeting - basically, the most recent one before or equal to the
-  /// target version.
-  /// </summary>
-  WindowsZones LoadWindowsZones(CompilerOptions options, string targetTzdbVersion)
-  {
-    var mappingPath = options.WindowsMapping;
-    if (File.Exists(mappingPath))
-    {
-      return CldrWindowsZonesParser.parserStream(mappingPath);
-    }
-    if (!Directory(mappingPath).existsSync())
-    {
-      throw new Exception("$mappingPath does not exist as either a file or a directory");
-    }
-    var xmlFiles = Directory.GetFiles(mappingPath, "*.xml");
-    if (xmlFiles.Length == 0)
-    {
-      throw new Exception("$mappingPath does not contain any XML files");
-    }
-    var allFiles = xmlFiles
-        .Select((file) => CldrWindowsZonesParser.parserStream(file))
-        .OrderByDescending((zones) => zones.tzdbVersion)
-        .ToList();
-
-    var versions = String.join(", ", allFiles.Select((z) => z.tzdbVersion).ToArray());
-
-    var bestFile = allFiles
-        .where((zones) => (zones.tzdbVersion.compareTo(targetTzdbVersion)) <= 0)
-        .FirstOrDefault();
-
-    if (bestFile == null)
-    {
-    throw new Exception("No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]");
-    }
-    print("Picked Windows Zones with TZDB version ${bestFile.tzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
-    return bestFile;
+/// <summary>
+/// Loads the best windows zones file based on the options. If the WindowsMapping option is
+/// just a straight file, that's used. If it's a directory, this method loads all the XML files
+/// in the directory (expecting them all to be mapping files) and then picks the best one based
+/// on the version of TZDB we're targeting - basically, the most recent one before or equal to the
+/// target version.
+/// </summary>
+WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion) {
+  var mappingPath = options.windowsMapping;
+  if (File(mappingPath).existsSync()) {
+    return CldrWindowsZonesParser.parseFile(mappingPath);
   }
-
-  void LogWindowsZonesSummary(WindowsZones windowsZones)
-  {
-    print("Windows Zones:");
-    print("  Version: ${windowsZones.version}");
-    print("  TZDB version: ${windowsZones.tzdbVersion}");
-    print("  Windows version: ${windowsZones.windowsVersion}");
-    print("  ${windowsZones._mapZones.Count} MapZones");
-    print("  ${windowsZones.primaryMapping.Count} primary mappings");
+  if (!Directory(mappingPath).existsSync()) {
+    throw new Exception(
+        "$mappingPath does not exist as either a file or a directory");
   }
+  var xmlFiles = Directory(mappingPath)
+      .listSync()
+      .where((f) => f is File && f.path.endsWith('.xml'))
+      .toList();
+  if (xmlFiles.length == 0) {
+    throw new Exception("$mappingPath does not contain any XML files");
+  }
+  var allFiles = xmlFiles
+      .map((file) => CldrWindowsZonesParser.parseFile(file.path))
+      .toList()
+    ..sort((a, b) => a.tzdbVersion.compareTo(b.tzdbVersion));
 
-  Stream CreateOutputStream(CompilerOptions options)
+  var versions = allFiles.map((z) => z.tzdbVersion).join(', ');
+
+  var bestFile = allFiles
+      .where((zones) => (zones.tzdbVersion.compareTo(targetTzdbVersion)) <= 0)
+      .first; // or default
+
+  if (bestFile == null) {
+    throw new Exception(
+        "No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]");
+  }
+  print("Picked Windows Zones with TZDB version ${bestFile
+      .tzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
+  return bestFile;
+}
+
+void LogWindowsZonesSummary(WindowsZones windowsZones)
+{
+  print("Windows Zones:");
+  print("  Version: ${windowsZones.version}");
+  print("  TZDB version: ${windowsZones.tzdbVersion}");
+  print("  Windows version: ${windowsZones.windowsVersion}");
+  print("  ${windowsZones.mapZones.length} MapZones");
+  print("  ${windowsZones.primaryMapping.length} primary mappings");
+}
+
+Stream CreateOutputStream(CompilerOptions options)
+{
+  // If we don't have an actual file, just write to an empty stream.
+  // That way, while debugging, we still get to see all the data written etc.
+  if (options.outputFileName == null)
   {
-    // If we don't have an actual file, just write to an empty stream.
-    // That way, while debugging, we still get to see all the data written etc.
-    if (options.outputFileName is null)
-    {
-      return new MemoryStream();
+    return new MemoryStream();
+  }
+  String file = Path.ChangeExtension(options.outputFileName, "nzd");
+  return File.create(file);
+}
+
+TzdbDateTimeZoneSource Read(CompilerOptions options)
+{
+  String file = Path.ChangeExtension(options.outputFileName, "nzd");
+  // todo: using (var stream = File.OpenRead(file))
+  {
+  return TzdbDateTimeZoneSource.FromStream(stream);
+  }
+}
+
+/// Merge two WindowsZones objects together. The result has versions present in override,
+/// but falling back to the original for versions absent in the override. The set of MapZones
+/// in the result is the union of those in the original and override, but any ID/Territory
+/// pair present in both results in the override taking priority, unless the override has an
+/// empty "type" entry, in which case the entry is removed entirely.
+///
+/// While this method could reasonably be in WindowsZones class, it's only needed in
+/// TzdbCompiler - and here is as good a place as any.
+///
+/// The resulting MapZones will be ordered by Windows ID followed by territory.
+/// </summary>
+/// <param name="windowsZones">The original WindowsZones</param>
+/// <param name="overrideFile">The WindowsZones to override entries in the original</param>
+/// <returns>A merged zones object.</returns>
+WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones overrideZones) {
+  var version = overrideZones.version == ""
+      ? originalZones.version
+      : overrideZones.version;
+  var tzdbVersion = overrideZones.tzdbVersion == "" ? originalZones
+      .tzdbVersion : overrideZones.tzdbVersion;
+  var windowsVersion = overrideZones.windowsVersion == "" ? originalZones
+      .windowsVersion : overrideZones.windowsVersion;
+
+  // Work everything out using dictionaries, and then sort.
+  // todo: is there are type-safe version of this?
+  var mapZones = Map.fromIterable(originalZones.mapZones,
+      key: (mz) =>
+      {
+        'windowsId': (mz as MapZone).windowsId,
+        'territory': (mz as MapZone).territory
+      },
+      value: (mz) => mz);
+
+  for (var overrideMapZone in overrideZones.mapZones) {
+    var key = {
+      'windowsId': overrideMapZone.windowsId,
+      'territory': overrideMapZone.territory
+    };
+    if (overrideMapZone.tzdbIds.length == 0) {
+      mapZones.remove(key);
     }
-    String file = Path.ChangeExtension(options.outputFileName, "nzd");
-    return File.create(file);
-  }
-
-  TzdbDateTimeZoneSource Read(CompilerOptions options)
-  {
-    String file = Path.ChangeExtension(options.outputFileName, "nzd");
-    // todo: using (var stream = File.OpenRead(file))
-    {
-    return TzdbDateTimeZoneSource.FromStream(stream);
+    else {
+      mapZones[key] = overrideMapZone;
     }
-  }
-
-  /// Merge two WindowsZones objects together. The result has versions present in override,
-  /// but falling back to the original for versions absent in the override. The set of MapZones
-  /// in the result is the union of those in the original and override, but any ID/Territory
-  /// pair present in both results in the override taking priority, unless the override has an
-  /// empty "type" entry, in which case the entry is removed entirely.
-  ///
-  /// While this method could reasonably be in WindowsZones class, it's only needed in
-  /// TzdbCompiler - and here is as good a place as any.
-  ///
-  /// The resulting MapZones will be ordered by Windows ID followed by territory.
-  /// </summary>
-  /// <param name="windowsZones">The original WindowsZones</param>
-  /// <param name="overrideFile">The WindowsZones to override entries in the original</param>
-  /// <returns>A merged zones object.</returns>
-  WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones overrideZones)
-  {
-    var version = overrideZones.version == "" ? originalZones.version : overrideZones.version;
-    var tzdbVersion = overrideZones.tzdbVersion == "" ? originalZones.tzdbVersion : overrideZones.tzdbVersion;
-    var windowsVersion = overrideZones.windowsVersion == "" ? originalZones.windowsVersion : overrideZones.windowsVersion;
-
-    // Work everything out using dictionaries, and then sort.
-    var mapZones = originalZones._mapZones.ToDictionary((mz) => new { mz.windowsId, mz.territory });
-    foreach (var overrideMapZone in overrideZones.MapZones)
-    {
-      var key = new { overrideMapZone.windowsId, overrideMapZone.territory };
-  if (overrideMapZone.tzdbIds.Count == 0)
-  {
-  mapZones.Remove(key);
-  }
-  else
-  {
-  mapZones[key] = overrideMapZone;
-  }
   }
   var mapZoneList = mapZones
       .OrderBy((pair) => pair.Key.windowsId)
@@ -163,4 +176,4 @@ main(List<String> args) {
       .Select((pair) => pair.Value)
       .ToList();
   return new WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);
-  }
+}
