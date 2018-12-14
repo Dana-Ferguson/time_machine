@@ -39,7 +39,7 @@ main(List<String> args) {
   var writer = new TzdbStreamWriter();
   // todo: using (var stream = CreateOutputStream(options))
       {
-    writer.Write(tzdb, windowsZones, NameIdMappingSupport.StandardNameToIdMap, stream);
+    writer.write(tzdb, windowsZones, NameIdMappingSupport.StandardNameToIdMap, stream);
   }
 
   if (options.outputFileName != null) {
@@ -75,10 +75,10 @@ main(List<String> args) {
     }
     var allFiles = xmlFiles
         .Select((file) => CldrWindowsZonesParser.parserStream(file))
-        .OrderByDescending((zones) => zones.TzdbVersion)
+        .OrderByDescending((zones) => zones.tzdbVersion)
         .ToList();
 
-    var versions = String.join(", ", allFiles.Select((z) => z.TzdbVersion).ToArray());
+    var versions = String.join(", ", allFiles.Select((z) => z.tzdbVersion).ToArray());
 
     var bestFile = allFiles
         .where((zones) => (zones.tzdbVersion.compareTo(targetTzdbVersion)) <= 0)
@@ -88,7 +88,7 @@ main(List<String> args) {
     {
     throw new Exception("No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]");
     }
-    print("Picked Windows Zones with TZDB version ${bestFile.TzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
+    print("Picked Windows Zones with TZDB version ${bestFile.tzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
     return bestFile;
   }
 
@@ -96,10 +96,10 @@ main(List<String> args) {
   {
     print("Windows Zones:");
     print("  Version: ${windowsZones.version}");
-    print("  TZDB version: ${windowsZones.TzdbVersion}");
-    print("  Windows version: ${windowsZones.WindowsVersion}");
-    print("  ${windowsZones.MapZones.Count} MapZones");
-    print("  ${windowsZones.PrimaryMapping.Count} primary mappings");
+    print("  TZDB version: ${windowsZones.tzdbVersion}");
+    print("  Windows version: ${windowsZones.windowsVersion}");
+    print("  ${windowsZones._mapZones.Count} MapZones");
+    print("  ${windowsZones.primaryMapping.Count} primary mappings");
   }
 
   Stream CreateOutputStream(CompilerOptions options)
@@ -140,15 +140,15 @@ main(List<String> args) {
   WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones overrideZones)
   {
     var version = overrideZones.version == "" ? originalZones.version : overrideZones.version;
-    var tzdbVersion = overrideZones.TzdbVersion == "" ? originalZones.TzdbVersion : overrideZones.TzdbVersion;
-    var windowsVersion = overrideZones.WindowsVersion == "" ? originalZones.WindowsVersion : overrideZones.WindowsVersion;
+    var tzdbVersion = overrideZones.tzdbVersion == "" ? originalZones.tzdbVersion : overrideZones.tzdbVersion;
+    var windowsVersion = overrideZones.windowsVersion == "" ? originalZones.windowsVersion : overrideZones.windowsVersion;
 
     // Work everything out using dictionaries, and then sort.
-    var mapZones = originalZones.MapZones.ToDictionary((mz) => new { mz.WindowsId, mz.Territory });
+    var mapZones = originalZones._mapZones.ToDictionary((mz) => new { mz.windowsId, mz.territory });
     foreach (var overrideMapZone in overrideZones.MapZones)
     {
-      var key = new { overrideMapZone.WindowsId, overrideMapZone.Territory };
-  if (overrideMapZone.TzdbIds.Count == 0)
+      var key = new { overrideMapZone.windowsId, overrideMapZone.territory };
+  if (overrideMapZone.tzdbIds.Count == 0)
   {
   mapZones.Remove(key);
   }
@@ -158,8 +158,8 @@ main(List<String> args) {
   }
   }
   var mapZoneList = mapZones
-      .OrderBy((pair) => pair.Key.WindowsId)
-      .ThenBy((pair) => pair.Key.Territory)
+      .OrderBy((pair) => pair.Key.windowsId)
+      .ThenBy((pair) => pair.Key.territory)
       .Select((pair) => pair.Value)
       .ToList();
   return new WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);

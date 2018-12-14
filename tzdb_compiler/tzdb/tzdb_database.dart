@@ -3,6 +3,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'datetimezone_builder.dart';
 import 'rule_line.dart';
 import 'zone_line.dart';
+import 'cldr_windows_zone_parser.dart';
 
 /// Provides a container for the definitions parsed from the TZDB zone info files.
 class TzdbDatabase {
@@ -32,7 +33,7 @@ class TzdbDatabase {
   TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource() {
     var ms = new MemoryStream();
     var writer = new TzdbStreamWriter();
-    writer.Write(this,
+    writer.write(this,
         new WindowsZones("n/a", version, "n/a", new MapZone[0]), // No Windows mappings,
         new Map<String, String>(), // No additional name-to-id mappings
         ms);
