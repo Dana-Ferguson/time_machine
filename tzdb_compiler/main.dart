@@ -149,7 +149,7 @@ WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones override
       .windowsVersion : overrideZones.windowsVersion;
 
   // Work everything out using dictionaries, and then sort.
-  // todo: is there are type-safe version of this?
+  // todo: is there are type-safe version of this? (obj-literals & fromIterable) (looks like Dart-Dev's don't believe in 'em)
   var mapZones = Map.fromIterable(originalZones.mapZones,
       key: (mz) =>
       {
@@ -170,10 +170,19 @@ WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones override
       mapZones[key] = overrideMapZone;
     }
   }
-  var mapZoneList = mapZones
-      .OrderBy((pair) => pair.Key.windowsId)
-      .ThenBy((pair) => pair.Key.territory)
-      .Select((pair) => pair.Value)
-      .ToList();
+
+  var mapZoneList = (mapZones
+      .entries
+      .toList()
+    ..sort((a, b) {
+      // order by 'windowsId'
+      var cmp = a.key['windowsId'].compareTo(b.key['windowsId']);
+      if (cmp != 0) return cmp;
+
+      // then by 'territory'
+      return a.key['territory'].compareTo(b.key['territory']);
+    }))
+      .map((a) => a.value).toList();
+
   return new WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);
 }
