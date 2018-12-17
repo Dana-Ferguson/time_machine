@@ -117,6 +117,11 @@ class BinaryWriter {
     return BinaryWriter(file.openWrite());
   }
 
+  Future close() async {
+    await _sink.flush();
+    await _sink.close();
+  }
+
   void _advance(int byteCount) {
     _offset += byteCount;
     if (byteCount > _bufferFlush) {
