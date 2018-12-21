@@ -3,6 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:async';
 
@@ -127,6 +128,59 @@ class DateTimeZoneReader extends BinaryReader {
     var wallOffset = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     var savings = /*stream.*/readOffsetSeconds2(); // Offset.fromSeconds(stream.readInt32());
     return IZoneInterval.newZoneInterval(name, start, end, wallOffset, savings);
+  }
+}
+
+@internal
+class DateTimeZoneWriter extends BinaryWriter {
+  DateTimeZoneWriter(IOSink sink) : super(sink);
+
+  void writeZoneInterval(ZoneInterval z) {
+    // todo: zoneInterval.start.epochSeconds check for actually being seconds
+    writeString(z.name);
+
+    var zoneInterval = z;
+
+    int /*byte*/ flag = 0;
+    bool longStartRequired = false;
+    bool longEndRequired = false;
+
+    if (zoneInterval.hasStart)
+    {
+      var longStart = zoneInterval.start.epochSeconds;
+      longStartRequired = longStart < Platform.int32MinValue || longStart > Platform.int32MaxValue;
+
+      flag |= 1;
+      if (longStartRequired) flag |= 1 << 2;
+    }
+
+    if (zoneInterval.hasEnd)
+    {
+      var longEnd = zoneInterval.end.epochSeconds;
+      longEndRequired = longEnd < Platform.int32MinValue || longEnd > Platform.int32MaxValue;
+
+      flag |= 2;
+      if (longEndRequired) flag |= 1 << 3;
+    }
+    writeUint8(flag);
+
+    if (zoneInterval.hasStart) {
+      if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.Start not seconds.");
+      if (longStartRequired) writeInt64(zoneInterval.start.epochSeconds);
+      else writeInt32(zoneInterval.start.epochSeconds); // .ToUnixTimeMilliseconds());
+    }
+
+    if (zoneInterval.hasEnd) {
+      if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.End not seconds.");
+      if (longEndRequired) writeInt64(zoneInterval.end.epochSeconds);
+      else writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
+    }
+
+    //if (zoneInterval.wallOffset.Nanoseconds % NodaConstants.NanosecondsPerSecond != 0) throw new Exception("zoneInterval.WallOffset not seconds.");
+    //if (zoneInterval.savings.inSeconds % NodaConstants.NanosecondsPerSecond != 0) throw new Exception("zoneInterval.Savings not seconds.");
+
+    writeInt32(zoneInterval.wallOffset.inSeconds);
+    writeInt32(zoneInterval.savings.inSeconds);
   }
 }
 
