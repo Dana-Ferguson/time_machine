@@ -135,13 +135,8 @@ class DateTimeZoneReader extends BinaryReader {
 class DateTimeZoneWriter extends BinaryWriter {
   DateTimeZoneWriter(IOSink sink) : super(sink);
 
-  void writeZoneInterval(ZoneInterval z) {
-    // todo: zoneInterval.start.epochSeconds check for actually being seconds
-    writeString(z.name);
-
-    var zoneInterval = z;
-
-    int /*byte*/ flag = 0;
+  void writeZoneInterval(ZoneInterval zoneInterval) {
+    int flag = 0;
     bool longStartRequired = false;
     bool longEndRequired = false;
 
@@ -175,9 +170,6 @@ class DateTimeZoneWriter extends BinaryWriter {
       if (longEndRequired) writeInt64(zoneInterval.end.epochSeconds);
       else writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
     }
-
-    //if (zoneInterval.wallOffset.Nanoseconds % NodaConstants.NanosecondsPerSecond != 0) throw new Exception("zoneInterval.WallOffset not seconds.");
-    //if (zoneInterval.savings.inSeconds % NodaConstants.NanosecondsPerSecond != 0) throw new Exception("zoneInterval.Savings not seconds.");
 
     writeInt32(zoneInterval.wallOffset.inSeconds);
     writeInt32(zoneInterval.savings.inSeconds);
