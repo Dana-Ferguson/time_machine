@@ -6,31 +6,60 @@ import 'zone_line.dart';
 import 'cldr_windows_zone_parser.dart';
 import 'tzdb_database.dart';
 
-/// <summary>
+// from: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/IO/TzdbStreamFieldId.cs
+
+/// Enumeration of the fields which can occur in a TZDB stream file.
+/// This enables the file to be self-describing to a reasonable extent.
+enum TzdbStreamFieldId {
+  /// String pool. Format is: number of strings (WriteCount) followed by that many string values.
+  /// The indexes into the resultant list are used for other strings in the file, in some fields.
+  stringPool,
+
+  /// Repeated field of time zones. Format is: zone ID, then zone as written by DateTimeZoneWriter.
+  timeZone,
+
+  /// Single field giving the version of the TZDB source data. A string value which does *not* use the string pool.
+  tzdbVersion,
+
+  /// Single field giving the mapping of ID to canonical ID, as written by DateTimeZoneWriter.WriteDictionary.
+  tzdbIdMap,
+
+  /// Single field containing mapping data as written by WindowsZones.Write.
+  cldrSupplementalWindowsZones,
+
+  /// Single field giving the mapping of Windows StandardName to TZDB canonical ID,
+  /// for time zones where TimeZoneInfo.Id != TimeZoneInfo.StandardName,
+  /// as written by DateTimeZoneWriter.WriteDictionary.
+  windowsAdditionalStandardNameToIdMapping,
+
+  /// Single field providing all zone locations. The format is simply a count, and then that many copies of
+  /// TzdbZoneLocation data.
+  zoneLocations,
+
+  /// Single field providing all "zone 1970" locations. The format is simply a count, and then that many copies of
+  /// TzdbZone1970Location data. This field was introduced in Noda Time 2.0.
+  zone1970Locations
+}
+
 /// Writes time zone data to a stream in nzd format.
-/// </summary>
-/// <remarks>
+///
 /// <para>The file format consists of four bytes indicating the file format version/type (mostly for
 /// future expansion), followed by a number of fields. Each field is identified by a <see cref="TzdbStreamFieldId"/>.
 /// The fields are always written in order, and the format of a field consists of its field ID, a 7-bit-encoded
 /// integer with the size of the data, and then the data itself.
-/// </para>
-/// <para>
+///
 /// The version number does not need to be increased if new fields are added, as the reader will simply ignore
 /// unknown fields. It only needs to be increased for incompatible changes such as a different time zone format,
 /// or if old fields are removed.
-/// </para>
-/// </remarks>
 // todo: internal
-class TzdbStreamWriter
-{
+class TzdbStreamWriter {
   static const int _version = 0;
 
-  void Write(
+  void write(
       TzdbDatabase database,
       WindowsZones cldrWindowsZones,
       Map<String, String> additionalWindowsNameToIdMappings,
-      Stream stream)
+      BinaryWriter stream)
   {
     _FieldCollection fields = new _FieldCollection();
 
@@ -40,11 +69,11 @@ class TzdbStreamWriter
     // First assemble the fields (writing to the string pool as we go)
     for (var zone in zones)
     {
-      var zoneField = fields.AddField(TzdbStreamFieldId.TimeZone, stringPool);
-      _writeZone(zone, zoneField.Writer);
+      var zoneField = fields.addField(TzdbStreamFieldId.timeZone, stringPool);
+      _writeZone(zone, zoneField.writer);
     }
 
-    fields.AddField(TzdbStreamFieldId.TzdbVersion, null).Writer.WriteString(database.version);
+    fields.addField(TzdbStreamFieldId.tzdbVersion, null).writer.writeString(database.version);
 
     // Normalize the aliases
     var timeZoneMap = new Map<String, String>();
@@ -58,24 +87,24 @@ class TzdbStreamWriter
       timeZoneMap[key] = value;
     }
 
-    fields.AddField(TzdbStreamFieldId.TzdbIdMap, stringPool).Writer.WriteDictionary(timeZoneMap);
+    fields.addField(TzdbStreamFieldId.tzdbIdMap, stringPool).writer.WriteDictionary(timeZoneMap);
 
     // Windows mappings
-    cldrWindowsZones.write(fields.AddField(TzdbStreamFieldId.CldrSupplementalWindowsZones, stringPool).Writer);
+    cldrWindowsZones.write(fields.addField(TzdbStreamFieldId.cldrSupplementalWindowsZones, stringPool).Writer);
     // Additional names from Windows Standard Name to canonical ID, used in Noda Time 1.x BclDateTimeZone, when we
     // didn't have access to TimeZoneInfo.Id.
-    fields.AddField(TzdbStreamFieldId.WindowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
-      (additionalWindowsNameToIdMappings.ToDictionary(pair => pair.Key, pair => cldrWindowsZones.PrimaryMapping[pair.Value]));
+    fields.addField(TzdbStreamFieldId.windowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
+      (additionalWindowsNameToIdMappings.ToDictionary((pair) => pair.Key, (pair) => cldrWindowsZones.PrimaryMapping[pair.Value]));
 
     // Zone locations, if any.
     var zoneLocations = database.zoneLocations;
     if (zoneLocations != null)
     {
-      var field = fields.AddField(TzdbStreamFieldId.ZoneLocations, stringPool);
-      field.Writer.WriteCount(zoneLocations.length);
+      var field = fields.addField(TzdbStreamFieldId.zoneLocations, stringPool);
+      field.writer.writeCount(zoneLocations.length);
       for (var zoneLocation in zoneLocations)
       {
-        zoneLocation.write(field.Writer);
+        zoneLocation.write(field.writer);
       }
     }
 
@@ -83,29 +112,30 @@ class TzdbStreamWriter
     var zone1970Locations = database.zone1970Locations;
     if (zone1970Locations != null)
     {
-      var field = fields.AddField(TzdbStreamFieldId.Zone1970Locations, stringPool);
-      field.Writer.WriteCount(zone1970Locations.length);
-      foreach (var zoneLocation in zone1970Locations)
+      var field = fields.addField(TzdbStreamFieldId.zone1970Locations, stringPool);
+      field.writer.writeCount(zone1970Locations.length);
+      for (var zoneLocation in zone1970Locations)
       {
-        zoneLocation.Write(field.Writer);
+        zoneLocation.write(field.writer);
       }
     }
 
-    var stringPoolField = fields.AddField(TzdbStreamFieldId.StringPool, null);
-    stringPoolField.Writer.WriteCount(stringPool.length);
+    var stringPoolField = fields.addField(TzdbStreamFieldId.stringPool, null);
+    stringPoolField.writer.writeCount(stringPool.length);
     for (String value in stringPool)
     {
-      stringPoolField.Writer.WriteString(value);
+      stringPoolField.writer.writeString(value);
     }
 
     // Now write all the fields out, in the right order.
-    new BinaryWriter(stream).Write(_version);
-    fields.WriteTo(stream);
+    // new BinaryWriter(stream).writeUint8(_version);
+    stream.writeUint8(_version);
+    fields.writeTo(stream);
   }
 
   static void _writeZone(DateTimeZone zone, IDateTimeZoneWriter writer)
   {
-    writer.WriteString(zone.id);
+    writer.writeString(zone.id);
     // For cached zones, simply uncache first.
     var cachedZone = zone as CachedDateTimeZone;
     if (cachedZone != null)
@@ -115,7 +145,7 @@ class TzdbStreamWriter
     var fixedZone = zone as FixedDateTimeZone;
     if (fixedZone != null)
     {
-      writer.WriteByte((byte) DateTimeZoneWriter.DateTimeZoneType.Fixed);
+      writer.writeByte(DateTimeZoneWriter.DateTimeZoneType.Fixed);
       fixedZone.write(writer);
     }
     else
@@ -123,7 +153,7 @@ class TzdbStreamWriter
       var precalculatedZone = zone as PrecalculatedDateTimeZone;
       if (precalculatedZone != null)
       {
-        writer.WriteByte((byte) DateTimeZoneWriter.DateTimeZoneType.Precalculated);
+        writer.writeByte(DateTimeZoneWriter.DateTimeZoneType.Precalculated);
         precalculatedZone.write(writer);
       }
       else
@@ -178,8 +208,8 @@ class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
   final List<String> _allStrings = new List<String>();
 
   List<String> CreatePool() => _allStrings.GroupBy(x => x)
-      .OrderByDescending(g => g.Count())
-      .Select(g => g.Key)
+      .OrderByDescending((g) => g.Count())
+      .Select((g) => g.Key)
       .ToList();
 
   void WriteString(String value)
@@ -190,7 +220,7 @@ class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
   void WriteMilliseconds(int millis) { }
   void WriteOffset(Offset offset) {}
   void WriteCount(int count) { }
-  void WriteByte(byte value) { }
+  void WriteByte(int value) { }
   void WriteSignedCount(int count) { }
   void WriteZoneIntervalTransition(Instant previous, Instant value) {}
 
@@ -210,17 +240,16 @@ class _FieldData {
   // todo: private
   final MemoryStream stream;
 
-  _FieldData(this.fieldId, List<String> stringPool) {
-    this.stream = new MemoryStream();
-    this.Writer = new DateTimeZoneWriter(stream, stringPool);
-  }
+  _FieldData(this.fieldId, List<String> stringPool)
+      : this.stream = new MemoryStream(),
+        this.Writer = new DateTimeZoneWriter(stream, stringPool);
 
-  final IDateTimeZoneWriter Writer;
+  final IDateTimeZoneWriter writer;
   final TzdbStreamFieldId fieldId;
 
-  void WriteTo(Stream output) {
-    output.writeByte((byte)fieldId);
-    int length = (int) stream.Length;
+  void writeTo(BinaryWriter output) {
+    output.writeUint8(fieldId.index);
+    int length = stream.Length;
     // We've got a 7-bit-encoding routine... might as well use it.
     new DateTimeZoneWriter(output, null).WriteCount(length);
     stream.WriteTo(output);
@@ -231,18 +260,18 @@ class _FieldCollection
 {
   final List<_FieldData> fields = [];
 
-  _FieldData AddField(TzdbStreamFieldId fieldNumber, List<String> stringPool)
+  _FieldData addField(TzdbStreamFieldId fieldNumber, List<String> stringPool)
   {
     var ret = new _FieldData(fieldNumber, stringPool);
     fields.add(ret);
     return ret;
   }
 
-  void WriteTo(Stream stream)
+  void writeTo(BinaryWriter stream)
   {
-    for (var field in fields..sort((a, b) => a.fieldId.compareTo(b.fieldId)))
+    for (var field in fields..sort((a, b) => a.fieldId.index.compareTo(b.fieldId.index)))
     {
-    field.WriteTo(stream);
+      field.writeTo(stream);
     }
   }
 }

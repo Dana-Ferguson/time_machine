@@ -5,10 +5,13 @@
 import 'dart:io';
 
 import 'package:time_machine/src/time_machine_internal.dart';
+import 'package:path/path.dart' as path;
 
 import 'compiler_options.dart';
 import 'tzdb/tzdb_zone_info_compiler.dart';
 import 'tzdb/cldr_windows_zone_parser.dart';
+import 'tzdb/tzdb_stream_writer.dart';
+import 'tzdb/named_id_mapping_support.dart';
 
 /// Main entry point for the time zone information compiler. In theory we could support
 /// multiple sources and formats but currently we only support one:
@@ -37,11 +40,13 @@ main(List<String> args) {
     windowsZones = MergeWindowsZones(windowsZones, overrideFile);
   }
   LogWindowsZonesSummary(windowsZones);
-  var writer = new TzdbStreamWriter();
-  // todo: using (var stream = CreateOutputStream(options))
-      {
+  var writer = TzdbStreamWriter();
+
+  var stream = BinaryWriter(CreateOutputStream(options));
+  {
     writer.write(tzdb, windowsZones, NameIdMappingSupport.StandardNameToIdMap, stream);
   }
+  stream.close();
 
   if (options.outputFileName != null) {
     print("Reading generated data and validating...");
@@ -104,25 +109,24 @@ void LogWindowsZonesSummary(WindowsZones windowsZones)
   print("  ${windowsZones.primaryMapping.length} primary mappings");
 }
 
-Stream CreateOutputStream(CompilerOptions options)
+IOSink CreateOutputStream(CompilerOptions options)
 {
   // If we don't have an actual file, just write to an empty stream.
   // That way, while debugging, we still get to see all the data written etc.
   if (options.outputFileName == null)
   {
-    return new MemoryStream();
+    return stdout; // new MemoryStream();
   }
-  String file = Path.ChangeExtension(options.outputFileName, "nzd");
-  return File.create(file);
+
+  String file = path.setExtension(options.outputFileName, 'nzd');
+  return File(file).openWrite();
 }
 
 TzdbDateTimeZoneSource Read(CompilerOptions options)
 {
-  String file = Path.ChangeExtension(options.outputFileName, "nzd");
-  // todo: using (var stream = File.OpenRead(file))
-  {
+  String file = path.setExtension(options.outputFileName, 'nzd');
+  var stream = File(file).openRead();
   return TzdbDateTimeZoneSource.FromStream(stream);
-  }
 }
 
 /// Merge two WindowsZones objects together. The result has versions present in override,
