@@ -133,7 +133,7 @@ class TzdbStreamWriter {
     fields.writeTo(stream);
   }
 
-  static void _writeZone(DateTimeZone zone, IDateTimeZoneWriter writer)
+  static void _writeZone(DateTimeZone zone, DateTimeZoneWriter writer)
   {
     writer.writeString(zone.id);
     // For cached zones, simply uncache first.
@@ -145,7 +145,7 @@ class TzdbStreamWriter {
     var fixedZone = zone as FixedDateTimeZone;
     if (fixedZone != null)
     {
-      writer.writeByte(DateTimeZoneWriter.DateTimeZoneType.Fixed);
+      writer.writeUint8(DateTimeZoneWriter.DateTimeZoneType.Fixed);
       fixedZone.write(writer);
     }
     else
@@ -153,7 +153,7 @@ class TzdbStreamWriter {
       var precalculatedZone = zone as PrecalculatedDateTimeZone;
       if (precalculatedZone != null)
       {
-        writer.writeByte(DateTimeZoneWriter.DateTimeZoneType.Precalculated);
+        writer.writeUint8(DateTimeZoneWriter.DateTimeZoneType.Precalculated);
         precalculatedZone.write(writer);
       }
       else
@@ -242,7 +242,7 @@ class _FieldData {
 
   _FieldData(this.fieldId, List<String> stringPool)
       : this.stream = new MemoryStream(),
-        this.Writer = new DateTimeZoneWriter(stream, stringPool);
+        this.writer = new DateTimeZoneWriter(stream, stringPool);
 
   final IDateTimeZoneWriter writer;
   final TzdbStreamFieldId fieldId;
@@ -251,7 +251,8 @@ class _FieldData {
     output.writeUint8(fieldId.index);
     int length = stream.Length;
     // We've got a 7-bit-encoding routine... might as well use it.
-    new DateTimeZoneWriter(output, null).WriteCount(length);
+    output.write7BitEncodedInt(length);
+    // new DateTimeZoneWriter(output).WriteCount(length);
     stream.WriteTo(output);
   }
 }

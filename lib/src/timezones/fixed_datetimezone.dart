@@ -105,11 +105,11 @@ class FixedDateTimeZone extends DateTimeZone {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer.
-  void write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('This feature is not supported.');
-    //  Preconditions.checkNotNull(writer, 'writer');
-    //  writer.WriteOffset(Offset);
-    //  writer.WriteString(Name);
+  void write(DateTimeZoneWriter writer) {
+    Preconditions.checkNotNull(writer, 'writer');
+    writer.writeOffsetSeconds(offset);
+    // todo: I think we can just make this null if name == id -- see below
+    writer.writeString(name);
   }
 
   /// Reads a fixed time zone from the specified reader.

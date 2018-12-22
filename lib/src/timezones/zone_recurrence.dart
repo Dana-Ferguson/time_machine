@@ -228,8 +228,14 @@ class ZoneRecurrence {
   /// Writes this object to the given [DateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  void write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('This feature is not supported');
+  void write(DateTimeZoneWriter writer) {
+    Preconditions.checkNotNull(writer, 'writer');
+    writer.writeString(name);
+    writer.writeOffsetSeconds2(savings); // Offset.fromSeconds(reader.readInt32());
+    yearOffset.write(writer);
+    writer.writeInt32(fromYear);
+    writer.writeInt32(toYear);
+
     //    writer.WriteString(name);
     //    writer.WriteOffset(savings);
     //    yearOffset.Write(writer);

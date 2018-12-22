@@ -143,8 +143,12 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  void write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('This feature is not available.');
+  void write(DateTimeZoneWriter writer) {
+    Preconditions.checkNotNull(writer, 'writer');
+    writer.writeOffsetSeconds2(_standardOffset); // Offset.fromSeconds(reader.readInt32());
+    _standardRecurrence.write(writer);
+    _dstRecurrence.write(writer);
+
     // We don't need everything a recurrence can supply: we know that both recurrences should be
     // infinite, and that only the DST recurrence should have savings.
     //    Preconditions.checkNotNull(writer, 'writer');
@@ -156,7 +160,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     //    writer.WriteOffset(dstRecurrence.savings);
   }
 
-  static StandardDaylightAlternatingMap Read(DateTimeZoneReader reader) {
+  static StandardDaylightAlternatingMap read(DateTimeZoneReader reader) {
     Preconditions.checkNotNull(reader, 'reader');
     var standardOffset = reader.readOffsetSeconds2(); // Offset.fromSeconds(reader.readInt32());
     var standardRecurrence = ZoneRecurrence.read(reader);

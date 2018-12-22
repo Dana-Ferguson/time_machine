@@ -160,19 +160,25 @@ class ZoneYearOffset {
   /// Writes this object to the given [IDateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  void write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('This feature is not supported');
-    //  // Flags contains four pieces of information in a single byte:
-    //  // 0MMDDDAP:
-    //  // - MM is the mode (0-2)
-    //  // - DDD is the day of week (0-7)
-    //  // - A is the AdvanceDayOfWeek
-    //  // - P is the "addDay" (24:00) flag
-    //  int flags = ((mode << 5) |
-    //  (dayOfWeek << 2) |
-    //  (advanceDayOfWeek ? 2 : 0) |
-    //  (addDay ? 1 : 0);
-    //  writer.WriteByte(flags /*as byte*/);
+  void write(DateTimeZoneWriter writer) {
+    // Flags contains four pieces of information in a single byte:
+    // 0MMDDDAP:
+    // - 0 is the _dayOfMonth.sign (specific to TimeMachine)
+    // - MM is the mode (0-2)
+    // - DDD is the day of week (0-7)
+    // - A is the AdvanceDayOfWeek
+    // - P is the "addDay" (24:00) flag
+    int flags = (_dayOfMonth.sign == -1 ? 1 << 7 : 0)
+    | (mode.value << 5)
+    | (_dayOfWeek << 2)
+    | (advanceDayOfWeek ? 2 : 0)
+    | (_addDay ? 1 : 0);
+    writer.writeUint8(flags /*as byte*/);
+
+    writer.write7BitEncodedInt(_dayOfMonth.abs());
+    writer.write7BitEncodedInt(_monthOfYear);
+    writer.writeInt32(timeOfDay.timeSinceMidnight.inSeconds);
+
     //  writer.WriteCount(monthOfYear);
     //  writer.WriteSignedCount(dayOfMonth);
     //  // The time of day is written as a number of milliseconds historical reasons.

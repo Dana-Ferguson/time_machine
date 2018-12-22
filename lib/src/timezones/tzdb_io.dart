@@ -99,6 +99,10 @@ class TzdbIndex {
   static String localId = IDateTimeZone.utcId; // => Platform.localeName;
 }
 
+// todo: if we get extension methods, that'll work pretty well with these two classes
+// https://github.com/dart-lang/language/issues/41
+// todo: normalize behavior so these classes look more alike
+
 @internal
 class DateTimeZoneReader extends BinaryReader {
   DateTimeZoneReader(ByteData binary, [int offset = 0]) : super(binary, offset);
@@ -132,8 +136,9 @@ class DateTimeZoneReader extends BinaryReader {
 }
 
 @internal
-class DateTimeZoneWriter extends BinaryWriter {
-  DateTimeZoneWriter(IOSink sink) : super(sink);
+class DateTimeZoneWriter implements BinaryWriter {
+  BinaryWriter _writer;
+  DateTimeZoneWriter(this._writer);
 
   void writeZoneInterval(ZoneInterval zoneInterval) {
     int flag = 0;
@@ -157,23 +162,55 @@ class DateTimeZoneWriter extends BinaryWriter {
       flag |= 2;
       if (longEndRequired) flag |= 1 << 3;
     }
-    writeUint8(flag);
+    _writer.writeUint8(flag);
 
     if (zoneInterval.hasStart) {
       if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.Start not seconds.");
-      if (longStartRequired) writeInt64(zoneInterval.start.epochSeconds);
-      else writeInt32(zoneInterval.start.epochSeconds); // .ToUnixTimeMilliseconds());
+      if (longStartRequired) _writer.writeInt64(zoneInterval.start.epochSeconds);
+      else _writer.writeInt32(zoneInterval.start.epochSeconds); // .ToUnixTimeMilliseconds());
     }
 
     if (zoneInterval.hasEnd) {
       if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.End not seconds.");
-      if (longEndRequired) writeInt64(zoneInterval.end.epochSeconds);
-      else writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
+      if (longEndRequired) _writer.writeInt64(zoneInterval.end.epochSeconds);
+      else _writer.writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
     }
 
-    writeInt32(zoneInterval.wallOffset.inSeconds);
-    writeInt32(zoneInterval.savings.inSeconds);
+    _writer.writeInt32(zoneInterval.wallOffset.inSeconds);
+    _writer.writeInt32(zoneInterval.savings.inSeconds);
   }
+
+  // todo: this is a bit ugly
+
+  @override
+  Future close() => _writer.close();
+
+  @override
+  void write7BitEncodedInt(int value) => _writer.write7BitEncodedInt(value);
+
+  @override
+  void writeBool(bool value) => _writer.writeBool(value);
+
+  @override
+  void writeInt32(int value) => _writer.writeInt32(value);
+
+  @override
+  void writeInt64(int value) => _writer.writeInt64(value);
+
+  @override
+  void writeOffsetSeconds(Offset value) => _writer.writeOffsetSeconds(value);
+
+  @override
+  void writeOffsetSeconds2(Offset value) => _writer.writeOffsetSeconds2(value);
+
+  @override
+  void writeString(String value) => _writer.writeString(value);
+
+  @override
+  void writeStringList(List<String> list) => _writer.writeStringList(list);
+
+  @override
+  void writeUint8(int value) => _writer.writeUint8(value);
 }
 
 

@@ -12,7 +12,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 typedef _offsetAggregator = Offset Function(Offset x, Offset y);
 // typedef _offsetExtractor = Offset Function</*todo:in*/T>(T input);
 
-/// Most time zones have a relatively small set of transitions at their start until they finally 
+/// Most time zones have a relatively small set of transitions at their start until they finally
 /// settle down to either a fixed time zone or a daylight savings time zone. This provides the
 /// container for the initial zone intervals and a pointer to the time zone that handles all of
 /// the rest until the end of time.
@@ -62,7 +62,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
     Preconditions.checkArgument(periods.length > 0, 'periods', "No periods specified in precalculated time zone");
     Preconditions.checkArgument(!periods[0].hasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
     for (int i = 0; i < periods.length - 1; i++) {
-      // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next 
+      // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next
       // period, as there can't be a period *before* one which goes back to the start of time.
       Preconditions.checkArgument(periods[i].end == periods[i + 1].start, 'periods', "Non-adjoining ZoneIntervals for precalculated time zone");
     }
@@ -108,33 +108,45 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  void write(IDateTimeZoneWriter writer) {
-    throw new UnimplementedError('FixedDateTimeZone.write unimplemented');
-    //Preconditions.checkNotNull(writer, 'writer');
-    //
-    //// We used to create a pool of strings just for this zone. This was more efficient
-    //// for some zones, as it meant that each String would be written out with just a single
-    //// byte after the pooling. Optimizing the String pool globally instead allows for
-    //// roughly the same efficiency, and simpler code here.
-    //writer.WriteCount(periods.Length);
-    //Instant previous = null;
-    //for (var period in periods)
-    //{
-    //writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));
-    //writer.WriteString(period.Name);
-    //writer.WriteOffset(period.WallOffset);
-    //writer.WriteOffset(period.Savings);
-    //}
-    //writer.WriteZoneIntervalTransition(previous, tailZoneStart);
-    //// We could just check whether we've got to the end of the stream, but this
-    //// feels slightly safer.
-    //writer.WriteByte((byte) (tailZone == null ? 0 : 1));
-    //if (tailZone != null)
-    //{
-    //// This is the only kind of zone we support in the new format. Enforce that...
-    //var tailDstZone = tailZone as StandardDaylightAlternatingMap;
-    //tailDstZone.Write(writer);
-    //}
+  void write(DateTimeZoneWriter writer) {
+    Preconditions.checkNotNull(writer, 'writer');
+
+    writer.write7BitEncodedInt(_periods.length);
+    for (var period in _periods) {
+      writer.writeZoneInterval(period);
+    }
+
+    writer.writeUint8(_tailZone == null ? 0 : 1);
+    if (_tailZone != null)
+    {
+      // This is the only kind of zone we support in the new format. Enforce that...
+      var tailDstZone = _tailZone as StandardDaylightAlternatingMap;
+      tailDstZone.write(writer);
+    }
+
+    /*
+    // We used to create a pool of strings just for this zone. This was more efficient
+    // for some zones, as it meant that each String would be written out with just a single
+    // byte after the pooling. Optimizing the String pool globally instead allows for
+    // roughly the same efficiency, and simpler code here.
+    Instant previous = null;
+    for (var period in _periods)
+    {
+    writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));
+    writer.WriteString(period.Name);
+    writer.WriteOffset(period.WallOffset);
+    writer.WriteOffset(period.Savings);
+    }
+    writer.WriteZoneIntervalTransition(previous, tailZoneStart);
+    // We could just check whether we've got to the end of the stream, but this
+    // feels slightly safer.
+    writer.WriteByte((byte) (tailZone == null ? 0 : 1));
+    if (tailZone != null)
+    {
+    // This is the only kind of zone we support in the new format. Enforce that...
+    var tailDstZone = tailZone as StandardDaylightAlternatingMap;
+    tailDstZone.Write(writer);
+    }*/
   }
 
   /// Reads a time zone from the specified reader.
@@ -152,7 +164,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
 
     var tailFlag = reader.readUint8();
     if (tailFlag == 1) {
-      var tailZone = StandardDaylightAlternatingMap.Read(reader);
+      var tailZone = StandardDaylightAlternatingMap.read(reader);
       return new PrecalculatedDateTimeZone(id, periods, tailZone);
     }
     return new PrecalculatedDateTimeZone(id, periods, null);
