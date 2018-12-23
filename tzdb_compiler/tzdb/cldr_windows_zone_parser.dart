@@ -112,16 +112,14 @@ class MapZone // : IEquatable<MapZone>
   /// </summary>
   /// <param name="writer"></param>
 // todo: internal
-  void write(IDateTimeZoneWriter writer) {
-    throw Exception('not imlemented');
-    /*
-  writer.WriteString(WindowsId);
-  writer.WriteString(Territory);
-  writer.WriteCount(TzdbIds.Count);
-  for (String id in TzdbIds)
-  {
-    writer.WriteString(id);
-  }*/
+  void write(DateTimeZoneWriter writer) {
+    writer.writeString(windowsId);
+    writer.writeString(territory);
+    writer.write7BitEncodedInt(tzdbIds.length);
+
+    for (String id in tzdbIds) {
+      writer.writeString(id);
+    }
   }
 
   @override bool operator ==(dynamic other) {
@@ -255,7 +253,7 @@ class WindowsZones {
             key: (z) => z.windowsId, value: (z) => z.tzdbIds.Single());
 
   // todo: internal
-  static WindowsZones read(/*I*/DateTimeZoneReader reader) {
+  static WindowsZones read(DateTimeZoneReader reader) {
     String version = reader.readString();
     String tzdbVersion = reader.readString();
     String windowsVersion = reader.readString();
@@ -270,17 +268,15 @@ class WindowsZones {
   }
 
   // todo: internal
-  void write(IDateTimeZoneWriter writer) {
-    throw Exception('not implemented');
-    /*
-    writer.WriteString(Version);
-    writer.WriteString(TzdbVersion);
-    writer.WriteString(WindowsVersion);
-    writer.WriteCount(MapZones.Count);
-    for(var mapZone in MapZones)
+  void write(DateTimeZoneWriter writer) {
+    writer.writeString(version);
+    writer.writeString(tzdbVersion);
+    writer.writeString(windowsVersion);
+    writer.write7BitEncodedInt(mapZones.length);
+    for(var mapZone in mapZones)
     {
-      mapZone.Write(writer);
-    }*/
+      mapZone.write(writer);
+    }
   }
 }
 

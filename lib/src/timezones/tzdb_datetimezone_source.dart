@@ -44,7 +44,7 @@ class TzdbDateTimeZoneSource extends DateTimeZoneSource {
 
   static Future _init() async {
     if (_cachedTzdbIndex != null) return;
-    
+
     if (_loadAllTimeZoneInformation) {
       _cachedTzdbIndex = await TzdbIndex.loadAll();
     }

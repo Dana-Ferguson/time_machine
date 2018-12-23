@@ -23,11 +23,11 @@ import 'tzdb/named_id_mapping_support.dart';
 ///
 /// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
 /// <returns>0 for success, non-0 for error.</returns>
-main(List<String> args) {
+main_old(List<String> args) {
   CompilerOptions options = CompilerOptions(args);
 
   var tzdbCompiler = new TzdbZoneInfoCompiler();
-  var tzdb = tzdbCompiler.Compile(options.sourceDirectoryName);
+  var tzdb = tzdbCompiler.compile(options.sourceDirectoryName);
   tzdb.logCounts();
   if (options.zoneId != null) {
     tzdb.generateDateTimeZone(options.zoneId);
@@ -51,9 +51,18 @@ main(List<String> args) {
   if (options.outputFileName != null) {
     print("Reading generated data and validating...");
     var source = Read(options);
-    source.validate();
+    throw Exception('need validation');
+    // source.validate();
   }
   return 0;
+}
+
+void main(List<String> args) {
+  // https://nodatime.org/tzdb/latest.txt --> https://nodatime.org/tzdb/tzdb2018g.nzd
+  // https://data.iana.org/time-zones/releases/tzdata2018g.tar.gz
+  var tzdbCompiler = new TzdbZoneInfoCompiler();
+  var tzdb = tzdbCompiler.compile('https://data.iana.org/time-zones/releases/tzdata2018g.tar.gz');
+  tzdb.logCounts();
 }
 
 /// <summary>

@@ -8,6 +8,78 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'dart:io' as io;
 
+class MemoryStream implements io.IOSink {
+  final List<int> buffer = [];
+  int _position = 0;
+
+  int get length => buffer.length;
+  int get position => _position;
+  void set position(int value) {
+    _position = value;
+    buffer.length = _position;
+  }
+
+  void writeTo(BinaryWriter writer) {
+    buffer.forEach((value) => writer.writeUint8(value));
+  }
+
+  @override
+  Encoding encoding;
+
+  @override
+  void add(List<int> data) {
+    // this data must all be Uint8
+    buffer.forEach((byte) {
+      if (_position == buffer.length) buffer.add(byte);
+      else buffer[_position] = byte;
+      _position++;
+    });
+  }
+
+  @override
+  void addError(Object error, [StackTrace stackTrace]) {
+    throw Exception('$error :: $stackTrace');
+  }
+
+  @override
+  Future addStream(Stream<List<int>> stream) {
+    throw Exception('not implemented');
+  }
+
+  @override
+  Future close() {
+    return null;
+  }
+
+  @override
+  Future get done => null;
+
+  @override
+  Future flush() {
+    return null;
+  }
+
+  @override
+  void write(Object obj) {
+    throw Exception('not implemented');
+  }
+
+  @override
+  void writeAll(Iterable objects, [String separator = ""]) {
+    throw Exception('not implemented');
+  }
+
+  @override
+  void writeCharCode(int charCode) {
+    throw Exception('not implemented');
+  }
+
+  @override
+  void writeln([Object obj = ""]) {
+    throw Exception('not implemented');
+  }
+}
+
 @internal
 class BinaryWriter {
   static const _bufferSize = 1024 * 16;

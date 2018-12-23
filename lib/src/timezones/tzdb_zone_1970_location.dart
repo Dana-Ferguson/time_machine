@@ -75,23 +75,23 @@ class TzdbZone1970Location {
     return new TzdbZone1970Location._(Comment, Countries, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void write(IDateTimeZoneWriter writer)
-  {
-    throw new UnimplementedError('This feature is not supported.');
-    //    writer.WriteSignedCount(latitudeSeconds);
-    //    writer.WriteSignedCount(longitudeSeconds);
-    //    writer.WriteCount(Countries.length);
-    //    // We considered writing out the ISO-3166 file as a separate field,
-    //    // so we can reuse objects, but we don't actually waste very much space this way,
-    //    // due to the string pool... and the increased code complexity isn't worth it.
-    //    for (var country in Countries)
-    //    {
-    //      writer.WriteString(country.Name);
-    //      writer.WriteString(country.Code);
-    //    }
-    //    writer.WriteString(ZoneId);
-    //    writer.WriteString(Comment);
-    }
+  @internal void write(DateTimeZoneWriter writer) {
+    // We considered writing out the ISO-3166 file as a separate field,
+    // so we can reuse objects, but we don't actually waste very much space this way,
+    // due to the string pool... and the increased code complexity isn't worth it.
+
+    writer.writeInt32(_latitudeSeconds);
+    writer.writeInt32(_longitudeSeconds);
+
+    writer.write7BitEncodedInt(countries.length);
+    countries.forEach((country) {
+      writer.writeString(country.name);
+      writer.writeString(country.code);
+    });
+
+    writer.writeString(zoneId);
+    writer.writeString(comment);
+  }
 
   @internal static TzdbZone1970Location read(DateTimeZoneReader reader)
   {

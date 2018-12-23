@@ -50,7 +50,7 @@ class TzdbZoneInfoCompiler {
   /// name containing the TZDB files, or a local tar.gz file, or a remote tar.gz file.
   /// The version ID is taken from the Makefile, if it exists. Otherwise, an attempt is made to guess
   /// it based on the last element of the path, to match a regex of \d{2,4}[a-z] (anywhere within the element).
-  TzdbDatabase Compile(String path) {
+  TzdbDatabase compile(String path) {
     var source = _loadSource(path);
     var version = _inferVersion(source);
     var database = new TzdbDatabase(version);

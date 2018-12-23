@@ -71,15 +71,14 @@ class TzdbZoneLocation
     return new TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void write(IDateTimeZoneWriter writer)
+  @internal void write(DateTimeZoneWriter writer)
   {
-    throw new UnimplementedError('This feature is not supported.');
-    //    writer.WriteSignedCount(latitudeSeconds);
-    //    writer.WriteSignedCount(longitudeSeconds);
-    //    writer.WriteString(CountryName);
-    //    writer.WriteString(CountryCode);
-    //    writer.WriteString(ZoneId);
-    //    writer.WriteString(Comment);
+    writer.writeInt32(_latitudeSeconds);
+    writer.writeInt32(_longitudeSeconds);
+    writer.writeString(countryName);
+    writer.writeString(countryCode);
+    writer.writeString(zoneId);
+    writer.writeString(comment);
   }
 
   @internal static TzdbZoneLocation read(DateTimeZoneReader reader) {

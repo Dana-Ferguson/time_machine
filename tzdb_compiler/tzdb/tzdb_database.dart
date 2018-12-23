@@ -4,6 +4,7 @@ import 'datetimezone_builder.dart';
 import 'rule_line.dart';
 import 'zone_line.dart';
 import 'cldr_windows_zone_parser.dart';
+import 'tzdb_stream_writer.dart';
 
 /// Provides a container for the definitions parsed from the TZDB zone info files.
 class TzdbDatabase {
@@ -34,10 +35,10 @@ class TzdbDatabase {
     var ms = new MemoryStream();
     var writer = new TzdbStreamWriter();
     writer.write(this,
-        new WindowsZones("n/a", version, "n/a", new MapZone[0]), // No Windows mappings,
+        new WindowsZones("n/a", version, "n/a", <MapZone>[]), // No Windows mappings,
         new Map<String, String>(), // No additional name-to-id mappings
-        ms);
-    ms.Position = 0;
+        BinaryWriter(ms));
+    ms.position = 0;
     return TzdbDateTimeZoneSource.FromStream(ms);
   }
 
@@ -45,7 +46,7 @@ class TzdbDatabase {
   ///
   /// <param name="original">The existing zone ID to map the alias to.</param>
   /// <param name="alias">The zone alias to add.</param>
-  void AddAlias(String existing, String alias) {
+  void addAlias(String existing, String alias) {
     aliases[alias] = existing;
   }
 

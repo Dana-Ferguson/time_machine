@@ -135,10 +135,18 @@ class DateTimeZoneReader extends BinaryReader {
   }
 }
 
+abstract class DateTimeZoneType
+{
+  static const int fixed = 1;
+  static const int precalculated = 2;
+}
+
 @internal
 class DateTimeZoneWriter implements BinaryWriter {
   BinaryWriter _writer;
-  DateTimeZoneWriter(this._writer);
+  final List<String> _stringPool;
+
+  DateTimeZoneWriter(this._writer, [this._stringPool = null]);
 
   void writeZoneInterval(ZoneInterval zoneInterval) {
     int flag = 0;
@@ -211,6 +219,19 @@ class DateTimeZoneWriter implements BinaryWriter {
 
   @override
   void writeUint8(int value) => _writer.writeUint8(value);
+
+  /// Writes the given dictionary of string to string to the stream.
+  /// </summary>
+  /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
+  void writeDictionary(Map<String, String> map) {
+    Preconditions.checkNotNull(map, 'map');
+
+    _writer.write7BitEncodedInt(map.length);
+    for (var entry in map.entries) {
+      _writer.writeString(entry.key);
+      _writer.writeString(entry.value);
+    }
+  }
 }
 
 

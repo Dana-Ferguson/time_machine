@@ -247,7 +247,7 @@ class TzdbZoneInfoParser {
         return null;
       case _keywordLink:
         var alias = parseLink(tokens);
-        database.AddAlias(alias[0], alias[1]);
+        database.addAlias(alias[0], alias[1]);
         return null;
       case _keywordZone:
         var name = _nextString(tokens, "GetName");

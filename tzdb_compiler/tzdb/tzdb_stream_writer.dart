@@ -87,21 +87,21 @@ class TzdbStreamWriter {
       timeZoneMap[key] = value;
     }
 
-    fields.addField(TzdbStreamFieldId.tzdbIdMap, stringPool).writer.WriteDictionary(timeZoneMap);
+    fields.addField(TzdbStreamFieldId.tzdbIdMap, stringPool).writer.writeDictionary(timeZoneMap);
 
     // Windows mappings
-    cldrWindowsZones.write(fields.addField(TzdbStreamFieldId.cldrSupplementalWindowsZones, stringPool).Writer);
+    cldrWindowsZones.write(fields.addField(TzdbStreamFieldId.cldrSupplementalWindowsZones, stringPool).writer);
     // Additional names from Windows Standard Name to canonical ID, used in Noda Time 1.x BclDateTimeZone, when we
     // didn't have access to TimeZoneInfo.Id.
-    fields.addField(TzdbStreamFieldId.windowsAdditionalStandardNameToIdMapping, stringPool).Writer.WriteDictionary
-      (additionalWindowsNameToIdMappings.ToDictionary((pair) => pair.Key, (pair) => cldrWindowsZones.PrimaryMapping[pair.Value]));
+    fields.addField(TzdbStreamFieldId.windowsAdditionalStandardNameToIdMapping, stringPool).writer.writeDictionary
+      (Map.fromEntries(additionalWindowsNameToIdMappings.entries.toList().map((entry) => MapEntry(entry.key, cldrWindowsZones.primaryMapping[entry.value]))));
 
     // Zone locations, if any.
     var zoneLocations = database.zoneLocations;
     if (zoneLocations != null)
     {
       var field = fields.addField(TzdbStreamFieldId.zoneLocations, stringPool);
-      field.writer.writeCount(zoneLocations.length);
+      field.writer.write7BitEncodedInt(zoneLocations.length);
       for (var zoneLocation in zoneLocations)
       {
         zoneLocation.write(field.writer);
@@ -113,7 +113,7 @@ class TzdbStreamWriter {
     if (zone1970Locations != null)
     {
       var field = fields.addField(TzdbStreamFieldId.zone1970Locations, stringPool);
-      field.writer.writeCount(zone1970Locations.length);
+      field.writer.write7BitEncodedInt(zone1970Locations.length);
       for (var zoneLocation in zone1970Locations)
       {
         zoneLocation.write(field.writer);
@@ -121,7 +121,7 @@ class TzdbStreamWriter {
     }
 
     var stringPoolField = fields.addField(TzdbStreamFieldId.stringPool, null);
-    stringPoolField.writer.writeCount(stringPool.length);
+    stringPoolField.writer.write7BitEncodedInt(stringPool.length);
     for (String value in stringPool)
     {
       stringPoolField.writer.writeString(value);
@@ -145,7 +145,7 @@ class TzdbStreamWriter {
     var fixedZone = zone as FixedDateTimeZone;
     if (fixedZone != null)
     {
-      writer.writeUint8(DateTimeZoneWriter.DateTimeZoneType.Fixed);
+      writer.writeUint8(/*DateTimeZoneWriter.*/DateTimeZoneType.fixed);
       fixedZone.write(writer);
     }
     else
@@ -153,7 +153,7 @@ class TzdbStreamWriter {
       var precalculatedZone = zone as PrecalculatedDateTimeZone;
       if (precalculatedZone != null)
       {
-        writer.writeUint8(DateTimeZoneWriter.DateTimeZoneType.Precalculated);
+        writer.writeUint8(/*DateTimeZoneWriter.*/DateTimeZoneType.precalculated);
         precalculatedZone.write(writer);
       }
       else
@@ -176,7 +176,7 @@ class TzdbStreamWriter {
     var optimizingWriter = new _StringPoolOptimizingFakeWriter();
     for (var zone in zones)
     {
-      optimizingWriter.WriteString(zone.id);
+      optimizingWriter.writeString(zone.id);
       _writeZone(zone, optimizingWriter);
     }
     if (zoneLocations != null)
@@ -194,7 +194,7 @@ class TzdbStreamWriter {
       }
     }
     cldrWindowsZones.write(optimizingWriter);
-    return optimizingWriter.CreatePool();
+    return optimizingWriter.createPool();
   }
 }
 
@@ -203,34 +203,58 @@ class TzdbStreamWriter {
 /// zones, then creates a distinct list in most-prevalent-first order. This allows the most frequently-written
 /// strings to be the ones which are cheapest to write.
 /// </summary>
-class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
+class _StringPoolOptimizingFakeWriter implements DateTimeZoneWriter
 {
   final List<String> _allStrings = new List<String>();
 
-  List<String> CreatePool() => _allStrings.GroupBy(x => x)
-      .OrderByDescending((g) => g.Count())
-      .Select((g) => g.Key)
-      .ToList();
+  List<String> createPool()  {
+    // _allStrings.GroupBy(x => x);
+    var map = <String, int>{};
 
-  void WriteString(String value)
+    _allStrings.forEach((text) {
+      if (map.containsKey(text)) map[text] = map[text] + 1;
+      else map[text] = 1;
+    });
+
+    // .OrderByDescending((g) => g.Count())
+    var items = map.entries.toList();
+    items.sort((a, b) => a.value.compareTo(b.value));
+
+    // .Select((g) => g.Key).ToList()
+    return items.map((i) => i.key).toList();
+  }
+
+  void writeString(String value)
   {
     _allStrings.add(value);
   }
 
+  /*
   void WriteMilliseconds(int millis) { }
   void WriteOffset(Offset offset) {}
   void WriteCount(int count) { }
   void WriteByte(int value) { }
   void WriteSignedCount(int count) { }
-  void WriteZoneIntervalTransition(Instant previous, Instant value) {}
+  void WriteZoneIntervalTransition(Instant previous, Instant value) {}*/
 
-  void WriteDictionary(Map<String, String> dictionary)
+  void writeDictionary(Map<String, String> dictionary)
   {
     dictionary.forEach((key, value) {
-      WriteString(key);
-      WriteString(value);
+      writeString(key);
+      writeString(value);
     });
   }
+
+  @override Future close() { return null;}
+  @override void write7BitEncodedInt(int value) { }
+  @override void writeBool(bool value) { }
+  @override void writeInt32(int value) { }
+  @override void writeInt64(int value) { }
+  @override void writeOffsetSeconds(Offset value) { }
+  @override void writeOffsetSeconds2(Offset value) { }
+  @override void writeStringList(List<String> list) { }
+  @override void writeUint8(int value) { }
+  @override void writeZoneInterval(ZoneInterval zoneInterval) { }
 }
 
 /// <summary>
@@ -240,20 +264,24 @@ class _FieldData {
   // todo: private
   final MemoryStream stream;
 
-  _FieldData(this.fieldId, List<String> stringPool)
-      : this.stream = new MemoryStream(),
-        this.writer = new DateTimeZoneWriter(stream, stringPool);
+  _FieldData._(this.fieldId, this.stream, this.writer);
 
-  final IDateTimeZoneWriter writer;
+  factory _FieldData(TzdbStreamFieldId fieldId, List<String> stringPool) {
+    var stream = new MemoryStream();
+    var writer = new DateTimeZoneWriter(BinaryWriter(stream), stringPool);
+    return _FieldData._(fieldId, stream, writer);
+  }
+
+  final DateTimeZoneWriter writer;
   final TzdbStreamFieldId fieldId;
 
   void writeTo(BinaryWriter output) {
     output.writeUint8(fieldId.index);
-    int length = stream.Length;
+    int length = stream.length;
     // We've got a 7-bit-encoding routine... might as well use it.
     output.write7BitEncodedInt(length);
     // new DateTimeZoneWriter(output).WriteCount(length);
-    stream.WriteTo(output);
+    stream.writeTo(output);
   }
 }
 
