@@ -175,7 +175,7 @@ abstract class Time implements Comparable<Time> {
   // https://www.dartlang.org/guides/language/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
   Duration get toDuration =>
       new Duration(
-          microseconds: millisecondOfSecond * TimeConstants.microsecondsPerMillisecond
+          microseconds: _milliseconds * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
   /// Gets the hour of the half-day of this local time, in the range 1 to 12 inclusive.
