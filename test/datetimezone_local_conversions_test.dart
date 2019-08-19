@@ -303,7 +303,7 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 @TestCase(const ["Pacific/Apia", "2011-12-30"])
 @TestCase(const ["Pacific/Enderbury", "1994-12-31"])
 @TestCase(const ["Pacific/Kiritimati", "1994-12-31"])
-@TestCase(const ["Pacific/Kwajalein", "1993-08-20"])
+@TestCase(const ["Pacific/Kwajalein", "1993-08-21"])
 Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
 {
   LocalDate badDate = LocalDatePattern.iso.parse(localDate).value;
