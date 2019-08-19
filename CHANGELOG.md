@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.10
+- Fixes for ddc.
+- Updated TZDB to 2019b.
+
 ## 0.9.9
 - Fix for issue #15. Updated TZDB to 2018i.
 
