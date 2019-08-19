@@ -71,7 +71,7 @@ class TzdbZoneLocation
     return new TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void write(DateTimeZoneWriter writer)
+  @internal void write(IDateTimeZoneWriter writer)
   {
     writer.writeInt32(_latitudeSeconds);
     writer.writeInt32(_longitudeSeconds);

@@ -225,10 +225,10 @@ class ZoneRecurrence {
     return previous;
   }
 
-  /// Writes this object to the given [DateTimeZoneWriter].
+  /// Writes this object to the given [IDateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     Preconditions.checkNotNull(writer, 'writer');
     writer.writeString(name);
     writer.writeOffsetSeconds2(savings); // Offset.fromSeconds(reader.readInt32());

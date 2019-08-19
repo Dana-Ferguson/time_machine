@@ -7,6 +7,5 @@ export 'string_format.dart';
 export 'compare_info.dart';
 export 'cache.dart';
 export 'binary_reader.dart';
-export 'binary_writer.dart';
 
 export 'hashcode.dart';

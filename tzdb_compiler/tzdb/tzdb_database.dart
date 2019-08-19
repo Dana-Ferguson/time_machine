@@ -5,6 +5,7 @@ import 'rule_line.dart';
 import 'zone_line.dart';
 import 'cldr_windows_zone_parser.dart';
 import 'tzdb_stream_writer.dart';
+import 'utility/binary_writer.dart';
 
 /// Provides a container for the definitions parsed from the TZDB zone info files.
 class TzdbDatabase {

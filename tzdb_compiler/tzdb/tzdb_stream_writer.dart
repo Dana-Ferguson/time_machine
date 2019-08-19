@@ -6,6 +6,9 @@ import 'zone_line.dart';
 import 'cldr_windows_zone_parser.dart';
 import 'tzdb_database.dart';
 
+import 'utility/binary_writer.dart';
+import 'utility/datetimezone_writer.dart';
+
 // from: https://github.com/nodatime/nodatime/blob/master/src/NodaTime/TimeZones/IO/TzdbStreamFieldId.cs
 
 /// Enumeration of the fields which can occur in a TZDB stream file.
@@ -133,7 +136,7 @@ class TzdbStreamWriter {
     fields.writeTo(stream);
   }
 
-  static void _writeZone(DateTimeZone zone, DateTimeZoneWriter writer)
+  static void _writeZone(DateTimeZone zone, IDateTimeZoneWriter writer)
   {
     writer.writeString(zone.id);
     // For cached zones, simply uncache first.
@@ -203,7 +206,7 @@ class TzdbStreamWriter {
 /// zones, then creates a distinct list in most-prevalent-first order. This allows the most frequently-written
 /// strings to be the ones which are cheapest to write.
 /// </summary>
-class _StringPoolOptimizingFakeWriter implements DateTimeZoneWriter
+class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
 {
   final List<String> _allStrings = new List<String>();
 
@@ -272,7 +275,7 @@ class _FieldData {
     return _FieldData._(fieldId, stream, writer);
   }
 
-  final DateTimeZoneWriter writer;
+  final IDateTimeZoneWriter writer;
   final TzdbStreamFieldId fieldId;
 
   void writeTo(BinaryWriter output) {

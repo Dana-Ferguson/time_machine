@@ -160,7 +160,7 @@ class ZoneYearOffset {
   /// Writes this object to the given [IDateTimeZoneWriter].
   ///
   /// [writer]: Where to send the output.
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     // Flags contains four pieces of information in a single byte:
     // 0MMDDDAP:
     // - 0 is the _dayOfMonth.sign (specific to TimeMachine)

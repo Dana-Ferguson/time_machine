@@ -143,7 +143,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     Preconditions.checkNotNull(writer, 'writer');
     writer.writeOffsetSeconds2(_standardOffset); // Offset.fromSeconds(reader.readInt32());
     _standardRecurrence.write(writer);

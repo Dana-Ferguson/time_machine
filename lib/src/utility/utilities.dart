@@ -68,11 +68,6 @@ abstract class TimeZoneInfo {
 // This is a BCL class
 }
 
-// todo: remove me
-abstract class IDateTimeZoneWriter {
-//
-}
-
 /// see: https://en.wikipedia.org/wiki/Modulo_operation
 ///
 /// For performance, we should only use this where 'x' can be negative.

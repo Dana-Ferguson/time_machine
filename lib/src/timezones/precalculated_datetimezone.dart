@@ -108,7 +108,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer to write to.
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     Preconditions.checkNotNull(writer, 'writer');
 
     writer.write7BitEncodedInt(_periods.length);

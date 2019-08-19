@@ -105,7 +105,7 @@ class FixedDateTimeZone extends DateTimeZone {
   /// Writes the time zone to the specified writer.
   ///
   /// [writer]: The writer.
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     Preconditions.checkNotNull(writer, 'writer');
     writer.writeOffsetSeconds(offset);
     // todo: I think we can just make this null if name == id -- see below

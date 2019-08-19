@@ -112,7 +112,7 @@ class MapZone // : IEquatable<MapZone>
   /// </summary>
   /// <param name="writer"></param>
 // todo: internal
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     writer.writeString(windowsId);
     writer.writeString(territory);
     writer.write7BitEncodedInt(tzdbIds.length);
@@ -268,7 +268,7 @@ class WindowsZones {
   }
 
   // todo: internal
-  void write(DateTimeZoneWriter writer) {
+  void write(IDateTimeZoneWriter writer) {
     writer.writeString(version);
     writer.writeString(tzdbVersion);
     writer.writeString(windowsVersion);

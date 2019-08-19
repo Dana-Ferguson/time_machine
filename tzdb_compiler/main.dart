@@ -13,6 +13,8 @@ import 'tzdb/cldr_windows_zone_parser.dart';
 import 'tzdb/tzdb_stream_writer.dart';
 import 'tzdb/named_id_mapping_support.dart';
 
+import 'tzdb/utility/binary_writer.dart';
+
 /// Main entry point for the time zone information compiler. In theory we could support
 /// multiple sources and formats but currently we only support one:
 /// http://www.twinsun.com/tz/tz-link.htm. This system refers to it as TZDB.
