@@ -3,7 +3,6 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
 import 'dart:async';
-import 'dart:html' as prefix0;
 import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:js';

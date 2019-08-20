@@ -81,7 +81,6 @@ abstract class YearMonthDayCalculator {
   /// Computes the days since the Unix epoch at the start of the given year/month/day.
   /// This is the opposite of [GetYearMonthDay(int)].
   /// This assumes the parameter have been validated previously.
-  @virtual
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) {
     int year = yearMonthDay.year;
     int startOfYear = getStartOfYearInDays(year);
@@ -94,7 +93,6 @@ abstract class YearMonthDayCalculator {
   ///
   /// The [year] to fetch the days at the start of. This must be within 1 year of the min/max
   /// range, but can exceed it to make week-year calculations simple.
-  @virtual
   int getStartOfYearInDays(int year) { // todo: tag!
     assert(Preconditions.debugCheckArgumentRange('year', year, minYear - 1, maxYear + 1));
     int cacheIndex = YearStartCacheEntry.getCacheIndex(year);
@@ -113,12 +111,10 @@ abstract class YearMonthDayCalculator {
   ///
   /// Although the parameters are trusted (as in, they'll be valid in this calendar),
   /// the method being public isn't a problem - this type is never exposed.
-  @virtual
   int compare(YearMonthDay lhs, YearMonthDay rhs) => lhs.compareTo(rhs);
 
   // Catch-all year/month/day validation. Subclasses can optimize further - currently
   // this is only done for Gregorian/Julian calendars, which are the most performance-critical.
-  @virtual
   void validateYearMonthDay(int year, int month, int day) {
     Preconditions.checkArgumentRange('year', year, minYear, maxYear);
     Preconditions.checkArgumentRange('month', month, 1, getMonthsInYear(year));

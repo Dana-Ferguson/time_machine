@@ -106,7 +106,7 @@ class ZonedDateTime {
         var offsetDateTime = IOffsetDateTime.fromInstant(interval.start, interval.wallOffset, date.calendar);
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
-        if (IOffsetDateTime.yearMonthDay(offsetDateTime) != ILocalDate.yearMonthDay(date)) {
+        if (ILocalDate.yearMonthDay(offsetDateTime.calendarDate) != ILocalDate.yearMonthDay(date)) {
           throw new SkippedTimeError(midnight, zone);
         }
         return IZonedDateTime.trusted(offsetDateTime, zone);

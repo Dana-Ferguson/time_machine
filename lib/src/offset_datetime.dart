@@ -17,8 +17,8 @@ abstract class IOffsetDateTime {
   static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem calendar]) =>
       new OffsetDateTime._fromInstant(instant, offset, calendar);
 
-  @deprecated
-  static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => ILocalDate.yearMonthDay(offsetDateTime.calendarDate);
+  // @deprecated
+  // static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => ILocalDate.yearMonthDay(offsetDateTime.calendarDate);
 }
 
 /// A local date and time in a particular calendar system, combined with an offset from UTC.
@@ -398,7 +398,7 @@ class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y',
         "Only values with the same calendar system can be compared");
-    int dateComparison = ICalendarSystem.compare(x.calendar, IOffsetDateTime.yearMonthDay(x), IOffsetDateTime.yearMonthDay(y));
+    int dateComparison = ICalendarSystem.compare(x.calendar, ILocalDate.yearMonthDay(x.calendarDate), ILocalDate.yearMonthDay(y.calendarDate));
     if (dateComparison != 0) {
       return dateComparison;
     }

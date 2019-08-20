@@ -138,7 +138,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// * [instant]: The instant for which to calculate the offset.
   ///
   /// The offset from UTC at the specified instant.
-  @virtual Offset getUtcOffset(Instant instant) => getZoneInterval(instant).wallOffset;
+  Offset getUtcOffset(Instant instant) => getZoneInterval(instant).wallOffset;
 
 
   /// Gets the zone interval for the given instant; the range of time around the instant in which the same Offset
@@ -166,7 +166,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// * [localDateTime]: The local date and time to map in this time zone.
   ///
   /// Returns: A mapping of the given local date and time to zero, one or two zoned date/time values.
-  @virtual ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
+  ZoneLocalMapping mapLocal(LocalDateTime localDateTime) {
     LocalInstant localInstant = ILocalDateTime.toLocalInstant(localDateTime);
     Instant firstGuess = localInstant.minusZeroOffset();
     ZoneInterval interval = getZoneInterval(firstGuess);
