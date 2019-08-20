@@ -38,9 +38,9 @@ class _TimeComponentsBetweenResult {
 abstract class IPeriod {
   static int daysBetween(LocalDate start, LocalDate end) => Period._daysBetween(start, end);
 
-  static Period period({int years: 0, int months: 0, int weeks: 0, int days: 0,
-    int hours: 0, int minutes: 0, int seconds: 0,
-    int milliseconds: 0, int microseconds: 0, int nanoseconds: 0}) =>
+  static Period period({int years = 0, int months = 0, int weeks = 0, int days = 0,
+    int hours = 0, int minutes = 0, int seconds = 0,
+    int milliseconds = 0, int microseconds = 0, int nanoseconds = 0}) =>
       new Period(years: years, months: months, weeks: weeks, days: days, hours: hours, minutes: minutes, seconds: seconds,
           milliseconds: milliseconds, microseconds: microseconds, nanoseconds: nanoseconds);
 

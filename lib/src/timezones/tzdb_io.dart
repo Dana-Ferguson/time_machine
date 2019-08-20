@@ -112,8 +112,8 @@ class DateTimeZoneReader extends BinaryReader {
     bool endIsLong = (flag & (1 << 3)) != 0;
     bool hasStart = (flag & 1) == 1;
     bool hasEnd = (flag & 2) == 2;
-    int startSeconds = null;
-    int endSeconds = null;
+    int startSeconds = 0;
+    int endSeconds = 0;
 
     if (hasStart) {
       if (startIsLong) startSeconds = readInt64();

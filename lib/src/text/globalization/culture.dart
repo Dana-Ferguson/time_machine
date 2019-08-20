@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal
 abstract class ICultures {
-  static void set currentCulture(Culture value) => Cultures._currentCulture = value;
+  static void set currentCulture(Culture value) { Cultures._currentCulture = value; }
   static void loadAllCulturesInformation_SetFlag() {
     if (Cultures._loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
     Cultures._loadAllCulturesInformation = true;
@@ -22,7 +22,7 @@ abstract class Cultures {
   // This gives us the JS functionality of just minimizing our timezones, and it gives us the VM/Flutter functionality of just loading them all from one file.
   static bool _loadAllCulturesInformation = false;
 
-  static CultureLoader _loader = null;
+  static CultureLoader _loader;
   static Future<CultureLoader> get _cultures async => _loader??= await (_loadAllCulturesInformation ? CultureLoader.loadAll() : CultureLoader.load());
 
   static Future<Iterable<String>> get ids async => (await _cultures).cultureIds;
@@ -31,7 +31,7 @@ abstract class Cultures {
   static final Culture invariantCulture = new Culture._invariant();
 
   // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
-  static Culture _currentCulture = null;
+  static Culture _currentCulture;
   static Culture get currentCulture => _currentCulture??=invariantCulture;
 }
 
@@ -40,9 +40,9 @@ abstract class Cultures {
 class Culture {
   static final Culture invariant = new Culture._invariant();
 
-  static Culture _current = null;
+  static Culture _current;
   static Culture get current => _current??=invariant;
-  static void set current(Culture value) => _current = value;
+  static void set current(Culture value) { _current = value; }
 
   bool get isReadOnly => true;
 
