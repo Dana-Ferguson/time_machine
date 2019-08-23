@@ -180,18 +180,20 @@ void Contains_EmptyInterval_MaxValue()
   expect(interval.contains(instant), isFalse);
 }
 
-/*
 @Test()
-void Deconstruction() {
-  var start = new Instant();
-  var end = start.add(Time(nanoseconds: 1000000 * 100)); //plusTicks(1000000);
-  var value = new Interval(start, end);
+@TestCase(const ["2020-01-01T00:00:00Z", "2030-01-01T00:00:00Z", false], "0")
+@TestCase(const ["1910-01-01T00:00:00Z", "2000-01-01T00:00:00Z", false], "1")
+@TestCase(const ["1910-01-01T00:00:00Z", "2000-01-01T00:00:01Z", true], "2")
+@TestCase(const ["2020-01-01T00:00:00Z", "2030-01-01T00:00:01Z", false], "3")
+@TestCase(const ["2019-12-31T23:59:59Z", "2030-01-01T00:00:01Z", true], "4")
+void Interval_Overlapping(String otherStart, String otherEnd, bool expectedResult) {
+  var start = new Instant.utc(2000, 1, 1, 0, 0);
+  var end = new Instant.utc(2020, 1, 1, 0, 0);
+  var interval = new Interval(start, end);
+  var other = Interval(InstantPattern.extendedIso.parse(otherStart).value, InstantPattern.extendedIso.parse(otherEnd).value);
+  expect(interval.overlaps(other), expectedResult);
+}
 
-  (Instant ? actualStart, Instant? actualEnd) = value;
-
-  expect(start, actualStart);
-  expect(end, actualEnd);
-}*/
 
 /*
 @Test()

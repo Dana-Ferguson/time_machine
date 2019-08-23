@@ -7,7 +7,7 @@ author: Dana Ferguson <email@example.com>
 # SDK's lower bound must be compatible with the current version pushed with Flutter
 # ./flutter --version
 environment:
-  sdk: '>=2.0.0-dev.60.0 <3.0.0'
+  sdk: '>=2.1.0 <3.0.0'
 
 # Verify flutter_test dependency compatibility first before updating any constraints
 # https://github.com/flutter/flutter/blob/master/packages/flutter_test/pubspec.yaml

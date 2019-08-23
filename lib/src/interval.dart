@@ -94,6 +94,29 @@ class Interval {
   /// otherwise, false.
   bool equals(Interval other) => other != null && _start == other._start && _end == other._end;
 
+  /// Returns true if this Interval overlaps the [other] Interval.
+  ///
+  /// * [other]: The value to check for overlap with this instance.
+  ///
+  /// These two intervals overlap
+  /// ```
+  ///  *     *
+  ///    *      *
+  /// ```
+  ///
+  /// These intervals do not overlap
+  /// ```
+  /// *   *
+  ///     *   *
+  ///         *   *
+  ///                     *        *
+  /// ```
+  bool overlaps(Interval other) {
+    if (other.start >= end) return false;
+    if (other.end <= start) return false;
+    return true;
+  }
+
   /// Returns the hash code for this instance.
   @override int get hashCode => hash2(_start, _end);
 
