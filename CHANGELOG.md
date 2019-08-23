@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.11
+- Added Interval.overlaps;
+- Made some changes because of Pana.
+
 ## 0.9.10
 - Fixes for ddc.
 - Updated TZDB to 2019b.
