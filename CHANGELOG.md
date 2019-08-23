@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.12
+- Made some changes because of Pana.
+
 ## 0.9.11
 - Added Interval.overlaps;
 - Made some changes because of Pana.
