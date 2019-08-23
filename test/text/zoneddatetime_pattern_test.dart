@@ -789,7 +789,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([ZonedDateTime value = null]) : super(value ?? ZonedDateTimePatterns.defaultTemplateValue) {
+  Data([ZonedDateTime value]) : super(value ?? ZonedDateTimePatterns.defaultTemplateValue) {
     Resolver = Resolvers.strictResolver;
     ZoneProvider = TestProvider;
   }

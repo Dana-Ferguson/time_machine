@@ -129,7 +129,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
     // for some zones, as it meant that each String would be written out with just a single
     // byte after the pooling. Optimizing the String pool globally instead allows for
     // roughly the same efficiency, and simpler code here.
-    Instant previous = null;
+    Instant previous;
     for (var period in _periods)
     {
     writer.WriteZoneIntervalTransition(previous, (Instant) (previous = period.RawStart));

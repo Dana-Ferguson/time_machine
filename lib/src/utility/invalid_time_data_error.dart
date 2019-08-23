@@ -12,7 +12,7 @@ class InvalidTimeDataError extends Error
   /// Creates an instance with the given message.
   ///
   /// [message]: The message for the exception.
-  InvalidTimeDataError(this.message, [this.error = null]);
+  InvalidTimeDataError(this.message, [this.error]);
 
   @override String toString() => error == null ? '$message' : '$message\n$error';
 }

@@ -38,7 +38,7 @@ void Addition_WithNullPeriod_ThrowsArgumentNullException()
 {
   LocalTime date = new LocalTime(12, 0, 0);
   // Call to ToString just to make it a valid statement
-  Period period = null;
+  Period period;
   expect(() => (date + period).toString(), throwsArgumentError);
 }
 
@@ -65,7 +65,7 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
 {
   LocalTime date = new LocalTime(12, 0, 0);
   // Call to ToString just to make it a valid statement
-  Period period = null;
+  Period period;
   expect(() => (date - period).toString(), throwsArgumentError);
 }
 
@@ -189,7 +189,7 @@ void IComparableCompareTo_Null_Positive()
 {
   var instance = new LocalTime(10, 30, 45);
   Comparable i_instance = instance;
-  Object arg = null;
+  Object arg;
   var result = i_instance.compareTo(arg);
   expect(result,  greaterThan(0));
 }

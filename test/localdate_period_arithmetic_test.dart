@@ -37,7 +37,7 @@ void Addition_WithNullPeriod_ThrowsArgumentNullException()
   LocalDate date = new LocalDate(2010, 1, 1);
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
-  Period p = null;
+  Period p;
   expect(() => (date + p).toString(), throwsArgumentError);
 }
 
@@ -65,7 +65,7 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
   LocalDate date = new LocalDate(2010, 1, 1);
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
-  Period p = null;
+  Period p;
   expect(() => (date - p).toString(), willThrow<ArgumentError>());
 }
 

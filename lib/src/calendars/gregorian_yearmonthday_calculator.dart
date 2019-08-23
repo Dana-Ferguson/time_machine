@@ -13,7 +13,7 @@ class _Constructor {
   static final List<int> _yearStartDays = _gregorianYearMonthDayCalculator_Init()[1];
 
   // this was a static constructor
-  static List<List<int>> _gregorianYearMonthDayCalculator_Initialized = null;
+  static List<List<int>> _gregorianYearMonthDayCalculator_Initialized;
   static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
     if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized;
 

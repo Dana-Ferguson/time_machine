@@ -132,7 +132,7 @@ class DateTimeZoneBuilder
     // Main loop - we keep going round until we run out of rules or hit infinity, each of which
     // corresponds with a return statement in the loop.
     while (true) {
-      ZoneTransition bestTransition = null;
+      ZoneTransition bestTransition;
       for (int i = 0; i < activeRules.length; i++) {
         var rule = activeRules[i];
         var nextTransition = rule.next(previousTransition.instant, standardOffset, previousTransition.savings);

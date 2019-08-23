@@ -271,7 +271,7 @@ class Data extends PatternTestData<AnnualDate> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([AnnualDate value = null]) : super(value ?? AnnualDatePatterns.defaultTemplateValue)
+  Data([AnnualDate value]) : super(value ?? AnnualDatePatterns.defaultTemplateValue)
   {
   }
 

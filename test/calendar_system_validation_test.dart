@@ -111,14 +111,14 @@ void GetAbsoluteYear_InvalidEra()
 @Test()
 void GetAbsoluteYear_NullEra()
 {
-  Era i = null;
+  Era i;
   TestHelper.AssertArgumentNull2<int, Era, int>(Iso.getAbsoluteYear, 1, i);
 }
 
 @Test()
 void GetMinYearOfEra_NullEra()
 {
-  Era i = null;
+  Era i;
   TestHelper.AssertArgumentNull<Era, int>(Iso.getMinYearOfEra, i);
 }
 
@@ -131,7 +131,7 @@ void GetMinYearOfEra_InvalidEra()
 @Test()
 void GetMaxYearOfEra_NullEra()
 {
-  Era i = null;
+  Era i;
   TestHelper.AssertArgumentNull<Era, int>(Iso.getMaxYearOfEra, i);
 }
 

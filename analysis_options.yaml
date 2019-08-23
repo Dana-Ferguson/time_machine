@@ -15,3 +15,6 @@ linter:
     - unrelated_type_equality_checks
     - valid_regexps
     - camel_case_types
+# Pana rules
+    - prefer_equal_for_default_values
+    - avoid_init_to_null

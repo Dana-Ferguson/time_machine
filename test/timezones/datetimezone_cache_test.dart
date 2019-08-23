@@ -32,14 +32,14 @@ void Construction_NullProvider()
 @Test()
 void InvalidSource_NullVersionId()
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
+  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId;
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 Future InvalidSource_NullIdSequence() async
 {
-  List<String> ids = null;
+  List<String> ids;
   var source = new TestDateTimeZoneSource(ids);
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }

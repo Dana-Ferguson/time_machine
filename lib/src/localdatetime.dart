@@ -80,7 +80,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [calendar]: The calendar system to convert into, defaults to [LocalDateTime] in the ISO calendar.
   ///
   /// Returns: A new [LocalDateTime] with the same values as the specified [DateTime].
-  factory LocalDateTime.dateTime(DateTime dateTime, [CalendarSystem calendar = null]) {
+  factory LocalDateTime.dateTime(DateTime dateTime, [CalendarSystem calendar]) {
     int ns;
     int days;
 

@@ -599,7 +599,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDateTime value = null])
+  Data([LocalDateTime value])
       : super(value ?? LocalDateTimePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0, int millis = 0])

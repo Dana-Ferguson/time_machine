@@ -218,11 +218,11 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 /// Initializes a new instance of the [Data] class.
 ///
 /// [value]: The value.
-@internal Data([OffsetDate value = null]) : super(value ?? OffsetDatePatterns.defaultTemplateValue)
+@internal Data([OffsetDate value]) : super(value ?? OffsetDatePatterns.defaultTemplateValue)
 {
 }
 
-@internal Data.ymdo(int year, int month, int day, [Offset offset = null])
+@internal Data.ymdo(int year, int month, int day, [Offset offset])
     : super(new LocalDate(year, month, day).withOffset(offset ?? Offset.zero));
 
 @internal @override IPattern<OffsetDate> CreatePattern() =>

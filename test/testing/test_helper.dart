@@ -9,9 +9,9 @@ import 'test_helper_interface.dart'
   if (dart.library.io) 'test_helper_with_mirrors.dart'
 as helpingMachine;
 
-Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction = null;
-Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction = null;
-Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction = null;
+Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction;
+Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction;
+Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction;
 
 void setFunctions() {
   helpingMachine.setFunctions();

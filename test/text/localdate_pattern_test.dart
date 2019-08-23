@@ -577,7 +577,7 @@ class Data extends PatternTestData<LocalDate> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDate value = null]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
+  Data([LocalDate value]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day) : super(new LocalDate(year, month, day));
 

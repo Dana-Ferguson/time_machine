@@ -160,9 +160,9 @@ class Period {
   final int years;
 
   /// Creates a period with the given time values.
-  const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
-    this.hours: 0, this.minutes: 0, this.seconds: 0,
-    this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});
+  const Period({this.years = 0, this.months = 0, this.weeks = 0, this.days = 0,
+    this.hours = 0, this.minutes = 0, this.seconds = 0,
+    this.milliseconds = 0, this.microseconds = 0, this.nanoseconds = 0});
 
 
   /// Adds two periods together, by simply adding the values for each property.

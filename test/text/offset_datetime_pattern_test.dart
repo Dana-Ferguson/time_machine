@@ -451,7 +451,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetDateTime value = null]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
+  @internal Data([OffsetDateTime value]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
       : super(new LocalDateTime(year, month, day, 0, 0, 0).withOffset(Offset.zero));

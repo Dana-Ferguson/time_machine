@@ -158,7 +158,7 @@ void IComparableCompareTo_SameCalendar()
 //{
 //  var instance = new LocalDate(2012, 3, 5);
 //  var i_instance = instance as Comparable<LocalDate>;
-//  Object arg = null;
+//  Object arg;
 //  var result = i_instance.compareTo(arg);
 //  expect(result, greaterThan(0));
 //}

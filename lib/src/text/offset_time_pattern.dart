@@ -9,7 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// from needing TimeMachineFormatInfo.InvariantInfo...
 @internal
 class OffsetTimePatterns {
-  //static OffsetTimePattern _GeneralIsoPatternImpl = null;
+  //static OffsetTimePattern _GeneralIsoPatternImpl;
   //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
   //    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
 

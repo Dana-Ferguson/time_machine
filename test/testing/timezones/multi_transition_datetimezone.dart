@@ -101,7 +101,7 @@ class MtdtzBuilder {
   /// [newStandardOffsetHours]: The new standard offset, in hours.
   /// [newSavingOffsetHours]: The new daylight saving offset, in hours.
   /// [newName]: The new zone interval name.
-  void Add(Instant transition, int newStandardOffsetHours, [int newSavingOffsetHours = 0, String newName = null]) {
+  void Add(Instant transition, int newStandardOffsetHours, [int newSavingOffsetHours = 0, String newName]) {
     if (newName == null) newName = "Interval from $transition";
 
     EnsureNotBuilt();

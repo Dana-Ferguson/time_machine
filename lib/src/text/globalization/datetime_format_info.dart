@@ -112,7 +112,7 @@ class DateTimeFormatBuilder {
           shortTimePattern,
           longTimePattern);
 
-  DateTimeFormatBuilder([DateTimeFormat info = null]) {
+  DateTimeFormatBuilder([DateTimeFormat info]) {
     if (info == null) return;
     amDesignator = info.amDesignator;
     pmDesignator = info.pmDesignator;

@@ -483,7 +483,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   }
 
   if (testGenTest) {
-    _classVarName = null;
+    _classVarName;
   }
 
   return futures;

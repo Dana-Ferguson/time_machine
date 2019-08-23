@@ -203,7 +203,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetTime value = null]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
+  @internal Data([OffsetTime value]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
 

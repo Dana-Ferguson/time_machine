@@ -79,7 +79,7 @@ class PartialZoneIntervalMap
   static ZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
     var coalescedMaps = new List<PartialZoneIntervalMap>();
-    PartialZoneIntervalMap current = null;
+    PartialZoneIntervalMap current;
     for (var next in maps)
     {
       if (current == null)

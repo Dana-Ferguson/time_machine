@@ -198,7 +198,7 @@ void Interval_Overlapping(String otherStart, String otherEnd, bool expectedResul
 /*
 @Test()
 void Deconstruction_IntervalWithoutStart() {
-  Instant ? start = null;
+  Instant ? start;
   var end = new Instant(1500, 1_000_000);
   var value = new Interval(start, end);
 
@@ -212,7 +212,7 @@ void Deconstruction_IntervalWithoutStart() {
 @Test()
 void Deconstruction_IntervalWithoutEnd() {
   var start = new Instant(1500, 1_000_000);
-  Instant ? end = null;
+  Instant ? end;
   var value = new Interval(start, end);
 
   (Instant ? actualStart, Instant? actualEnd) = value;

@@ -270,7 +270,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
   /// match is used.
   void addParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo compareInfo, Iterable<String> textValues1,
-      [Iterable<String> textValues2 = null]) {
+      [Iterable<String> textValues2]) {
     addParseAction((ValueCursor str, TBucket bucket) {
       var matchCursor = new _FindLongestMatchCursor();
 

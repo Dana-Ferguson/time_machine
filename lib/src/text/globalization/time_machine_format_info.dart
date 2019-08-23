@@ -117,7 +117,7 @@ class TimeMachineFormatInfo {
   static List<String> _convertDayArray(List<String> dayNames) {
     List<String> list = new List<String>.from(dayNames);
     list.add(dayNames[0]);
-    list[0] = null;
+    list[0];
     return new List<String>.unmodifiable(list);
   }
 

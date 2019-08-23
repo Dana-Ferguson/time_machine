@@ -98,7 +98,7 @@ class Tokens {
   }
 
   // bool tryNextToken(out String result)
-  String _tryNextTokenResult = null;
+  String _tryNextTokenResult;
 
   String get tryNextTokenResult => _tryNextTokenResult;
 

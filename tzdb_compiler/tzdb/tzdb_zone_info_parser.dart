@@ -88,7 +88,7 @@ class TzdbZoneInfoParser {
   void parser(List<int> inputBytes, TzdbDatabase database) {
     var text = utf8.decode(inputBytes);
 
-    String currentZone = null;
+    String currentZone;
     for (var line in LineSplitter.split(text)) {
       currentZone = _parseLine(line, currentZone, database);
     }

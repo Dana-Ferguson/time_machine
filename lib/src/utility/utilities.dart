@@ -32,8 +32,8 @@ abstract class Platform {
     return null;
   }
 
-  static bool _isWeb = null;
-  static bool _isVM = null;
+  static bool _isWeb;
+  static bool _isVM;
 
   static bool get isWeb => _isWeb ?? dirtyCheck() ?? _isWeb;
   static bool get isVM => _isVM ?? dirtyCheck() ?? _isVM;
@@ -56,10 +56,10 @@ abstract class Platform {
   static int get intMaxValue => _intMaxValue;
   static int get intMinValue => _intMinValue;
 
-  static BigInt _bigIntMinValue = null;
+  static BigInt _bigIntMinValue ;
   static BigInt bigIntMinValue = _bigIntMinValue ??= BigInt.from(Platform.intMinValue);
 
-  static BigInt _bigIntMaxValue = null;
+  static BigInt _bigIntMaxValue;
   static BigInt bigIntMaxValue = _bigIntMaxValue ??= BigInt.from(Platform.intMaxValue);
 }
 

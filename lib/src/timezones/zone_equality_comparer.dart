@@ -269,7 +269,7 @@ class ZoneIntervalEqualityComparer {
 
   Iterable<ZoneInterval> coalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
   {
-    ZoneInterval current = null;
+    ZoneInterval current;
     for (var zoneInterval in zoneIntervals) {
       if (current == null) {
         current = zoneInterval;

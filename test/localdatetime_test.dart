@@ -310,7 +310,7 @@ void IComparableCompareTo_Null_Positive()
 {
   var instance = new LocalDateTime(2012, 3, 5, 10, 45, 0);
   Comparable i_instance = /*(IComparable)*/instance;
-  Object arg = null;
+  Object arg;
   var result = i_instance.compareTo(arg);
   expect(result,  greaterThan(0));
 }

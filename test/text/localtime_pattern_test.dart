@@ -1068,7 +1068,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
   // Default to midnight
   /*protected*/ @override LocalTime get defaultTemplate => LocalTime.midnight;
 
-  Data([LocalTime value = null]) : super(value ?? LocalTime.midnight);
+  Data([LocalTime value]) : super(value ?? LocalTime.midnight);
 
   Data.hms(int hours, int minutes, int seconds, [int milliseconds = 0, int ticksWithinMillisecond = 0])
       : super(new LocalTime(hours, minutes, seconds, ns: milliseconds * TimeConstants.nanosecondsPerMillisecond + ticksWithinMillisecond * 100));

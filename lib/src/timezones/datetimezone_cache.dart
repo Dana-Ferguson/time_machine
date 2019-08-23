@@ -67,7 +67,7 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
       if (id == null) {
         throw new InvalidDateTimeZoneSourceError("Source-returned ID sequence contained a null reference");
       }
-      cache._timeZoneMap[id] = null;
+      cache._timeZoneMap[id];
     }
     return cache;
   }
