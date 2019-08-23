@@ -32,7 +32,7 @@ void Construction_NullProvider()
 @Test()
 void InvalidSource_NullVersionId()
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId;
+  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
