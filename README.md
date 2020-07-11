@@ -143,7 +143,7 @@ Your initialization function will look like this:
 import 'package:flutter/services.dart';
 
 // TimeMachine discovers your TimeZone heuristically (it's actually pretty fast).
-await TimeMachine.initialize({rootBundle: rootBundle});
+await TimeMachine.initialize({'rootBundle': rootBundle});
 ```
 
 Once flutter gets [`Isolate.resolvePackageUri`](https://github.com/flutter/flutter/issues/14815) functionality,
@@ -156,7 +156,10 @@ Or with: https://pub.dartlang.org/packages/flutter_native_timezone
 import 'package:flutter/services.dart';
 
 // you can get Timezone information directly from the native interface with flutter_native_timezone
-await TimeMachine.initialize({rootBundle: rootBundle, timeZone: await Timezone.getLocalTimezone()});
+await TimeMachine.initialize({
+  'rootBundle': rootBundle,
+  'timeZone': await Timezone.getLocalTimezone(),
+});
 ```
 
 ### DDC Specific Notes

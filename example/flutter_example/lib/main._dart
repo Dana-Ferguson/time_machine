@@ -22,7 +22,7 @@ Future example() async {
 
   try {
     // Sets up timezone and culture information
-    await TimeMachine.initialize({rootBundle: rootBundle});
+    await TimeMachine.initialize({'rootBundle': rootBundle});
     sb.writeln('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
 
     var tzdb = await DateTimeZoneProviders.tzdb;
