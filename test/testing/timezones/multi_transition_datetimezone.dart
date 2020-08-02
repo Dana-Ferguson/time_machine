@@ -42,14 +42,14 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
       }
     }
     // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-    throw new StateError("Instant $instant did not exist in time zone $id.");
+    throw StateError("Instant $instant did not exist in time zone $id.");
   }
 }
 
 /// Builder to create instances of [MultiTransitionDateTimeZone]. Each builder
 /// can only be built once.
 class MtdtzBuilder {
-  final List<ZoneInterval> intervals = new List<ZoneInterval>();
+  final List<ZoneInterval> intervals = List<ZoneInterval>();
   Offset currentStandardOffset;
   Offset currentSavings;
   String currentName;
@@ -90,8 +90,8 @@ class MtdtzBuilder {
   MtdtzBuilder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0, String firstName = "First"]) {
     id = "MultiZone";
     currentName = firstName;
-    currentStandardOffset = new Offset.hours(firstStandardOffsetHours);
-    currentSavings = new Offset.hours(firstSavingOffsetHours);
+    currentStandardOffset = Offset.hours(firstStandardOffsetHours);
+    currentSavings = Offset.hours(firstSavingOffsetHours);
   }
 
   /// Adds a transition at the given instant, to the specified new standard offset,
@@ -109,8 +109,8 @@ class MtdtzBuilder {
     // The ZoneInterval constructor will perform validation.
     intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
     currentName = newName;
-    currentStandardOffset = new Offset.hours(newStandardOffsetHours);
-    currentSavings = new Offset.hours(newSavingOffsetHours);
+    currentStandardOffset = Offset.hours(newStandardOffsetHours);
+    currentSavings = Offset.hours(newSavingOffsetHours);
   }
 
   /// Builds a [MultiTransitionDateTimeZone] from this builder, invalidating it in the process.
@@ -121,12 +121,12 @@ class MtdtzBuilder {
     built = true;
     Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
     intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, null, currentStandardOffset + currentSavings, currentSavings));
-    return new MultiTransitionDateTimeZone(id, intervals);
+    return MultiTransitionDateTimeZone(id, intervals);
   }
 
   void EnsureNotBuilt() {
     if (built) {
-      throw new StateError("Cannot use a builder after building");
+      throw StateError("Cannot use a builder after building");
     }
   }
 }

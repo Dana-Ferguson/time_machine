@@ -13,7 +13,7 @@ abstract class TzdbZoneLocationParser {
     List<int> latLong = _parseCoordinates(bits[1]);
     String zoneId = bits[2];
     String comment = bits.length == 4 ? bits[3] : "";
-    return new TzdbZoneLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
+    return TzdbZoneLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
   }
 
   static TzdbZone1970Location parseEnhancedLocation(String line, Map<String, TzdbZone1970LocationCountry> countryMapping) {
@@ -24,7 +24,7 @@ abstract class TzdbZoneLocationParser {
     List<int> latLong = _parseCoordinates(bits[1]);
     String zoneId = bits[2];
     String comment = bits.length == 4 ? bits[3] : "";
-    return new TzdbZone1970Location(latLong[0], latLong[1], countries, zoneId, comment);
+    return TzdbZone1970Location(latLong[0], latLong[1], countries, zoneId, comment);
   }
 
   // Internal for testing

@@ -32,7 +32,7 @@ void Construction_NullProvider()
 @Test()
 void InvalidSource_NullVersionId()
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
+  var source = TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
@@ -40,14 +40,14 @@ void InvalidSource_NullVersionId()
 Future InvalidSource_NullIdSequence() async
 {
   List<String> ids;
-  var source = new TestDateTimeZoneSource(ids);
+  var source = TestDateTimeZoneSource(ids);
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 Future InvalidSource_ReturnsNullForAdvertisedId() async
 {
-  var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
+  var source = NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
   expect(() => cache.getZoneOrNull("foo"), willThrow<InvalidDateTimeZoneSourceError>());
 }
@@ -55,14 +55,14 @@ Future InvalidSource_ReturnsNullForAdvertisedId() async
 @Test()
 void InvalidProvider_NullIdWithinSequence()
 {
-  var source = new TestDateTimeZoneSource(["Test1", null]);
+  var source = TestDateTimeZoneSource(["Test1", null]);
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 Future CachingForPresentValues() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   var zone1a = await provider["Test1"];
   expect(zone1a, isNotNull);
@@ -83,7 +83,7 @@ Future CachingForPresentValues() async
 @Test()
 Future SourceIsNotAskedForUtcIfNotAdvertised() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
@@ -93,7 +93,7 @@ Future SourceIsNotAskedForUtcIfNotAdvertised() async
 @Test()
 Future SourceIsAskedForUtcIfAdvertised() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
   var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
@@ -103,7 +103,7 @@ Future SourceIsAskedForUtcIfAdvertised() async
 @Test()
 Future SourceIsNotAskedForUnknownIds() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   // todo: was InvalidDateTimeZoneSourceError ... why did this change? -- the returned error still makes sense.
   expect(provider["Unknown"], willThrow<DateTimeZoneNotFoundError>());
@@ -113,7 +113,7 @@ Future SourceIsNotAskedForUnknownIds() async
 @Test()
 Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
   expect(provider.ids.contains(IDateTimeZone.utcId), isTrue);
 }
@@ -121,7 +121,7 @@ Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 @Test()
 Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   expect(provider.ids.contains(IDateTimeZone.utcId), isFalse);
 }
@@ -129,11 +129,11 @@ Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 @Test()
 Future FixedOffsetSucceedsWhenNotAdvertised() async
 {
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   String id = "UTC+05:30";
   DateTimeZone zone = await provider[id];
-  expect(new DateTimeZone.forOffset(new Offset.hoursAndMinutes(5, 30)), zone);
+  expect(DateTimeZone.forOffset(Offset.hoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
   expect(source.LastRequestedId, isNull);
 }
@@ -142,7 +142,7 @@ Future FixedOffsetSucceedsWhenNotAdvertised() async
 Future FixedOffsetConsultsSourceWhenAdvertised() async
 {
   String id = "UTC+05:30";
-  var source = new TestDateTimeZoneSource(["Test1", "Test2", id]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2", id]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone = await provider[id];
   expect(id, zone.id);
@@ -153,7 +153,7 @@ Future FixedOffsetConsultsSourceWhenAdvertised() async
 Future FixedOffsetUncached() async
 {
   String id = "UTC+05:26";
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone1 = await provider[id];
   DateTimeZone zone2 = await provider[id];
@@ -165,7 +165,7 @@ Future FixedOffsetUncached() async
 Future FixedOffsetZeroReturnsUtc() async
 {
   String id = "UTC+00:00";
-  var source = new TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone = await provider[id];
   expect(DateTimeZone.utc, zone);
@@ -181,21 +181,21 @@ void Tzdb_Indexer_InvalidFixedOffset()
 @Test()
 Future NullIdRejected() async
 {
-  var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"]));
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"]));
   expect(provider[null], throwsArgumentError);
 }
 
 @Test()
 Future EmptyIdAccepted() async
 {
-  var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"]));
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"]));
   expect(provider[""], willThrow<DateTimeZoneNotFoundError>());
 }
 
 @Test()
 Future VersionIdPassThrough() async
 {
-  var provider = await DateTimeZoneCache.getCache(new TestDateTimeZoneSource(["Test1", "Test2"])..versionId = new Future(() => "foo"));
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"])..versionId = Future(() => "foo"));
   expect("foo", provider.versionId);
 }
 
@@ -252,7 +252,7 @@ void Tzdb_Indexer_AllIds()
 @Test()
 Future GetSystemDefault_SourceReturnsNullId() async
 {
-  var source = new NullReturningTestDateTimeZoneSource(["foo", "bar"]);
+  var source = NullReturningTestDateTimeZoneSource(["foo", "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
   expect(cache.getSystemDefault(), willThrow<DateTimeZoneNotFoundError>());
 }
@@ -263,18 +263,18 @@ class TestDateTimeZoneSource extends DateTimeZoneSource {
   final List<String> ids;
 
   TestDateTimeZoneSource(this.ids) {
-    versionId = new Future(() => "test version");
+    versionId = Future(() => "test version");
   }
 
-  Future<Iterable<String>> getIds() => new Future(() => ids);
+  Future<Iterable<String>> getIds() => Future(() => ids);
 
   Future<DateTimeZone> forId(String id) {
-    return new Future(() => forCachedId(id));
+    return Future(() => forCachedId(id));
   }
 
   DateTimeZone forCachedId(String id) {
     LastRequestedId = id;
-    return new SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, new Offset.hours(id.hashCode % 18), id);
+    return SingleTransitionDateTimeZone.withId(TimeConstants.unixEpoch, Offset.zero, Offset.hours(id.hashCode % 18), id);
   }
 
   Future<String> versionId;
@@ -291,7 +291,7 @@ class NullReturningTestDateTimeZoneSource extends TestDateTimeZoneSource {
     // Still remember what was requested.
     // ignore: unused_local_variable
     var _id = super.forId(id);
-    return new Future(() => null);
+    return Future(() => null);
   }
 
   @override String get systemDefaultId => null;

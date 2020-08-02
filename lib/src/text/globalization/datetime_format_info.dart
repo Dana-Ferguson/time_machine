@@ -33,9 +33,9 @@ class DateTimeFormat {
 
   final List<String> eraNames;
   String getEraName(int era) {
-    if (era == 0) throw new UnimplementedError('Calendar.CurrentEraValue not implemented.');
+    if (era == 0) throw UnimplementedError('Calendar.CurrentEraValue not implemented.');
     if (--era < this.eraNames.length && era >= 0) return eraNames[era];
-    throw new ArgumentError.value(era, 'era');
+    throw ArgumentError.value(era, 'era');
   }
 
   final String fullDateTimePattern;
@@ -44,7 +44,7 @@ class DateTimeFormat {
   final String shortTimePattern;
   final String longTimePattern;
 
-  factory DateTimeFormat.invariantCulture() => new DateTimeFormatBuilder.invariant().Build();
+  factory DateTimeFormat.invariantCulture() => DateTimeFormatBuilder.invariant().Build();
 
   DateTimeFormat(
       this.amDesignator,
@@ -93,7 +93,7 @@ class DateTimeFormatBuilder {
   String longTimePattern;
 
   DateTimeFormat Build() =>
-      new DateTimeFormat(
+      DateTimeFormat(
           amDesignator,
           pmDesignator,
           timeSeparator,

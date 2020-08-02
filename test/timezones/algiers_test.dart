@@ -29,18 +29,18 @@ DateTimeZone Algiers;
 @Test()
 void GetPeriod_BeforeLast()
 {
-  Instant april1981 = new Instant.utc(1981, 4, 1, 0, 0);
+  Instant april1981 = Instant.utc(1981, 4, 1, 0, 0);
   var actual = Algiers.getZoneInterval(april1981);
-  var expected = IZoneInterval.newZoneInterval("WET", new Instant.fromEpochMicroseconds(341802000000000), new Instant.fromEpochMicroseconds(357523200000000), Offset.zero, Offset.zero);
+  var expected = IZoneInterval.newZoneInterval("WET", Instant.fromEpochMicroseconds(341802000000000), Instant.fromEpochMicroseconds(357523200000000), Offset.zero, Offset.zero);
   expect(expected, actual);
 }
 
 @Test()
 void GetPeriod_AfterLastTransition()
 {
-  var may1981 = new ZonedDateTime.atStrictly(new LocalDateTime(1981, 5, 1, 0, 0, 1), DateTimeZone.utc).toInstant();
+  var may1981 = ZonedDateTime.atStrictly(LocalDateTime(1981, 5, 1, 0, 0, 1), DateTimeZone.utc).toInstant();
   var actual = Algiers.getZoneInterval(may1981);
-  var expected = IZoneInterval.newZoneInterval("CET", new Instant.fromEpochMicroseconds(357523200000000), null, new Offset(TimeConstants.secondsPerHour), Offset.zero);
+  var expected = IZoneInterval.newZoneInterval("CET", Instant.fromEpochMicroseconds(357523200000000), null, Offset(TimeConstants.secondsPerHour), Offset.zero);
   expect(expected, actual);
 }
 

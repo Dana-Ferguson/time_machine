@@ -21,7 +21,7 @@ final CalendarSystem SampleCalendar = CalendarSystem.getIslamicCalendar(IslamicL
 void SampleDate1()
 {
   // Note: field checks removed from the tests.
-  LocalDateTime ldt = new LocalDateTime(1945, 11, 12, 0, 0, 0, calendar: CalendarSystem.iso);
+  LocalDateTime ldt = LocalDateTime(1945, 11, 12, 0, 0, 0, calendar: CalendarSystem.iso);
 
   ldt = ldt.withCalendar(SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
@@ -42,7 +42,7 @@ void SampleDate1()
 @Test()
 void SampleDate2()
 {
-  LocalDateTime ldt = new LocalDateTime(2005, 11, 26, 0, 0, 0, calendar: CalendarSystem.iso);
+  LocalDateTime ldt = LocalDateTime(2005, 11, 26, 0, 0, 0, calendar: CalendarSystem.iso);
   ldt = ldt.withCalendar(SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
   expect(1426, ldt.yearOfEra);
@@ -61,7 +61,7 @@ void SampleDate2()
 @Test()
 void SampleDate3()
 {
-  LocalDateTime ldt = new LocalDateTime(1426, 12, 24, 0, 0, 0, calendar: SampleCalendar);
+  LocalDateTime ldt = LocalDateTime(1426, 12, 24, 0, 0, 0, calendar: SampleCalendar);
   expect(Era.annoHegirae, ldt.era);
 
   expect(1426, ldt.year);
@@ -87,7 +87,7 @@ void InternalConsistency()
       int monthLength = calendar.getDaysInMonth(year, month);
       for (int day = 1; day < monthLength; day++)
       {
-        LocalDate date = new LocalDate(year, month, day, calendar);
+        LocalDate date = LocalDate(year, month, day, calendar);
         expect(year, date.year, reason: "Year of $year-$month-$day");
         expect(month, date.monthOfYear, reason: "Month of $year-$month-$day");
         expect(day, date.dayOfMonth, reason: "Day of $year-$month-$day");
@@ -250,8 +250,8 @@ void ThursdayEpoch()
   CalendarSystem thursdayEpochCalendar = CalendarSystem.islamicBcl;
   CalendarSystem julianCalendar = CalendarSystem.julian;
 
-  LocalDate thursdayEpoch = new LocalDate(1, 1, 1, thursdayEpochCalendar);
-  LocalDate thursdayEpochJulian = new LocalDate(622, 7, 15, julianCalendar);
+  LocalDate thursdayEpoch = LocalDate(1, 1, 1, thursdayEpochCalendar);
+  LocalDate thursdayEpochJulian = LocalDate(622, 7, 15, julianCalendar);
   expect(thursdayEpochJulian, thursdayEpoch.withCalendar(julianCalendar));
 }
 
@@ -261,8 +261,8 @@ void FridayEpoch()
   CalendarSystem fridayEpochCalendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base16, IslamicEpoch.civil);
   CalendarSystem julianCalendar = CalendarSystem.julian;
 
-  LocalDate fridayEpoch = new LocalDate(1, 1, 1, fridayEpochCalendar);
-  LocalDate fridayEpochJulian = new LocalDate(622, 7, 16, julianCalendar);
+  LocalDate fridayEpoch = LocalDate(1, 1, 1, fridayEpochCalendar);
+  LocalDate fridayEpochJulian = LocalDate(622, 7, 16, julianCalendar);
   expect(fridayEpochJulian, fridayEpoch.withCalendar(julianCalendar));
 }
 
@@ -273,10 +273,10 @@ void BclUsesAstronomicalEpoch()
   // DateTime bclDirect = hijri.ToDateTime(1, 1, 1, 0, 0, 0, 0);
   // toString(): 7/18/22 12:00:00 AM (year is 622 but prints weird)
   // ticks: 196139232000000000
-  var bclDirect = new DateTime(622, 7, 18);
+  var bclDirect = DateTime(622, 7, 18);
 
   CalendarSystem julianCalendar = CalendarSystem.julian;
-  LocalDate julianIslamicEpoch = new LocalDate(622, 7, 15, julianCalendar);
+  LocalDate julianIslamicEpoch = LocalDate(622, 7, 15, julianCalendar);
   LocalDate isoIslamicEpoch = julianIslamicEpoch.withCalendar(CalendarSystem.iso);
   DateTime bclFromNoda = isoIslamicEpoch.atMidnight().toDateTimeLocal();
   expect(bclDirect, bclFromNoda);
@@ -289,7 +289,7 @@ void SampleDateBclCompatibility()
   DateTime bclDirect = hijri.ToDateTime(1302, 10, 15, 0, 0, 0, 0);
 
   CalendarSystem islamicCalendar = CalendarSystem.islamicBcl;
-  LocalDate iso = new LocalDate(1302, 10, 15, islamicCalendar);
+  LocalDate iso = LocalDate(1302, 10, 15, islamicCalendar);
   DateTime bclFromNoda = iso.atMidnight().toDateTimeLocal();
   expect(bclDirect, bclFromNoda);
 }
@@ -374,8 +374,8 @@ void GetInstance_ArgumentValidation()
 void PlusYears_Simple()
 {
   var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
-  LocalDateTime start = new LocalDateTime(5, 8, 20, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime(10, 8, 20, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = LocalDateTime(5, 8, 20, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = LocalDateTime(10, 8, 20, 2, 0, 0, calendar: calendar);
   expect(expectedEnd, start.addYears(5));
 }
 
@@ -386,8 +386,8 @@ void PlusYears_TruncatesAtLeapYear()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(3), isFalse);
 
-  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime(3, 12, 29, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = LocalDateTime(3, 12, 29, 2, 0, 0, calendar: calendar);
 
   expect(expectedEnd, start.addYears(1));
 }
@@ -399,8 +399,8 @@ void PlusYears_DoesNotTruncateFromOneLeapYearToAnother()
   expect(calendar.isLeapYear(2), isTrue);
   expect(calendar.isLeapYear(5), isTrue);
 
-  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime(5, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = LocalDateTime(5, 12, 30, 2, 0, 0, calendar: calendar);
 
   expect(expectedEnd, start.addYears(3));
 }
@@ -411,8 +411,8 @@ void PlusMonths_Simple()
   var calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
   expect(calendar.isLeapYear(2), isTrue);
 
-  LocalDateTime start = new LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
-  LocalDateTime expectedEnd = new LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime start = LocalDateTime(2, 12, 30, 2, 0, 0, calendar: calendar);
+  LocalDateTime expectedEnd = LocalDateTime(3, 11, 30, 2, 0, 0, calendar: calendar);
   expect(11, expectedEnd.monthOfYear);
   expect(30, expectedEnd.dayOfMonth);
   expect(expectedEnd, start.addMonths(11));

@@ -18,10 +18,10 @@ CalendarSystem Iso = CalendarSystem.iso;
 @Test()
 void GetMaxYearOfEra()
 {
-  LocalDate date = new LocalDate(Iso.maxYear, 1, 1);
+  LocalDate date = LocalDate(Iso.maxYear, 1, 1);
   expect(date.yearOfEra, Iso.getMaxYearOfEra(Era.common));
   expect(Era.common, date.era);
-  date = new LocalDate(Iso.minYear, 1, 1);
+  date = LocalDate(Iso.minYear, 1, 1);
   expect(Iso.minYear, date.year);
   expect(date.yearOfEra, Iso.getMaxYearOfEra(Era.beforeCommon));
   expect(Era.beforeCommon, date.era);
@@ -30,10 +30,10 @@ void GetMaxYearOfEra()
 @Test()
 void GetMinYearOfEra()
 {
-  LocalDate date = new LocalDate(1, 1, 1);
+  LocalDate date = LocalDate(1, 1, 1);
   expect(date.yearOfEra, Iso.getMinYearOfEra(Era.common));
   expect(Era.common, date.era);
-  date = new LocalDate(0, 1, 1);
+  date = LocalDate(0, 1, 1);
   expect(date.yearOfEra, Iso.getMinYearOfEra(Era.beforeCommon));
   expect(Era.beforeCommon, date.era);
 }

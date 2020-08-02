@@ -99,7 +99,7 @@ abstract class YearMonthDayCalculator {
     YearStartCacheEntry cacheEntry = _yearCache[cacheIndex];
     if (!cacheEntry.isValidForYear(year)) {
       int days = calculateStartOfYearDays(year);
-      cacheEntry = new YearStartCacheEntry(year, days);
+      cacheEntry = YearStartCacheEntry(year, days);
       _yearCache[cacheIndex] = cacheEntry;
     }
     return cacheEntry.startOfYearDays;

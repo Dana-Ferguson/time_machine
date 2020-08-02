@@ -42,13 +42,13 @@ class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
     _writer.writeUint8(flag);
 
     if (zoneInterval.hasStart) {
-      if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.Start not seconds.");
+      if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception("zoneInterval.Start not seconds.");
       if (longStartRequired) _writer.writeInt64(zoneInterval.start.epochSeconds);
       else _writer.writeInt32(zoneInterval.start.epochSeconds); // .ToUnixTimeMilliseconds());
     }
 
     if (zoneInterval.hasEnd) {
-      if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw new Exception("zoneInterval.End not seconds.");
+      if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception("zoneInterval.End not seconds.");
       if (longEndRequired) _writer.writeInt64(zoneInterval.end.epochSeconds);
       else _writer.writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
     }

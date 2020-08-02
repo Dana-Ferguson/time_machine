@@ -28,8 +28,8 @@ void EpochProperties()
 @Test()
 void ArbitraryDateProperties()
 {
-  DateTime bclDate = new DateTime.utc(2011, 3, 5, 0, 0, 0);
-  DateTime bclEpoch = new DateTime.utc(1970, 1, 1, 0, 0, 0);
+  DateTime bclDate = DateTime.utc(2011, 3, 5, 0, 0, 0);
+  DateTime bclEpoch = DateTime.utc(1970, 1, 1, 0, 0, 0);
   int bclMilliseconds = bclDate.millisecondsSinceEpoch - bclEpoch.millisecondsSinceEpoch;
   int bclDays = (bclMilliseconds ~/ TimeConstants.millisecondsPerDay);
   LocalDate date = LocalDate.fromEpochDay(bclDays, CalendarSystem.iso);
@@ -45,7 +45,7 @@ void ArbitraryDateProperties()
 void DayOfWeek_AroundEpoch()
 {
   // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
-  LocalDate date = new LocalDate(1969, 12, 1);
+  LocalDate date = LocalDate(1969, 12, 1);
   for (int i = 0; i < 60; i++)
   {
     // BclConversions.ToIsoDayOfWeek(date.AtMidnight.ToDateTimeUnspecified().DayOfWeek),

@@ -16,15 +16,15 @@ Future main() async {
 @Test()
 void AtMidnight()
 {
-  LocalDate date = new LocalDate(2011, 6, 29);
-  LocalDateTime expected = new LocalDateTime(2011, 6, 29, 0, 0, 0);
+  LocalDate date = LocalDate(2011, 6, 29);
+  LocalDateTime expected = LocalDateTime(2011, 6, 29, 0, 0, 0);
   expect(date.atMidnight(), expected);
 }
 
 @Test()
 void WithCalendar()
 {
-  LocalDate isoEpoch = new LocalDate(1970, 1, 1);
+  LocalDate isoEpoch = LocalDate(1970, 1, 1);
   LocalDate julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.monthOfYear);
@@ -34,17 +34,17 @@ void WithCalendar()
 @Test()
 void WithOffset()
 {
-  var date = new LocalDate(2011, 6, 29);
-  var offset = new Offset.hours(5);
-  var expected = new OffsetDate(date, offset);
+  var date = LocalDate(2011, 6, 29);
+  var offset = Offset.hours(5);
+  var expected = OffsetDate(date, offset);
   expect(expected, date.withOffset(offset));
 }
 
 @Test()
 void ToDateTimeUnspecified()
 {
-  LocalDate noda = new LocalDate(2015, 4, 2);
-  DateTime bcl = new DateTime(2015, 4, 2, 0, 0, 0); //, DateTimeKind.Unspecified);
+  LocalDate noda = LocalDate(2015, 4, 2);
+  DateTime bcl = DateTime(2015, 4, 2, 0, 0, 0); //, DateTimeKind.Unspecified);
   // todo: this needs to be redefined as toDateTimeUtc or toDateTimeLocal or something?
   expect(bcl, noda.toDateTimeUnspecified());
 }
@@ -77,7 +77,7 @@ void ToDateTimeUnspecified()
 @Test()
 void WithCalendar_OutOfRange()
 {
-  LocalDate start = new LocalDate(1, 1, 1);
+  LocalDate start = LocalDate(1, 1, 1);
   // Assert.Throws<ArgumentOutOfRangeException>
   expect(() => start.withCalendar(CalendarSystem.persianSimple), throwsRangeError);
 }

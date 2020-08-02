@@ -38,7 +38,7 @@ void GetStartOfYearInDays()
   35149, 35503, 35858, 36213, 36567, 36921, 37275, 37629, 37984, 38338, 38693, 39047];
 
   // This exercises CalculateStartOfYearInDays too.
-  var calculator = new UmAlQuraYearMonthDayCalculator();
+  var calculator = UmAlQuraYearMonthDayCalculator();
   for (int year = calculator.minYear; year <= calculator.maxYear; year++)
   {
     // var bcl = BclCalendars.UmAlQura.ToDateTime(year, 1, 1, 0, 0, 0, 0);
@@ -51,7 +51,7 @@ void GetStartOfYearInDays()
 @Test()
 void GetYearMonthDay_DaysSinceEpoch()
 {
-  var calculator = new UmAlQuraYearMonthDayCalculator();
+  var calculator = UmAlQuraYearMonthDayCalculator();
   int daysSinceEpoch = calculator.getStartOfYearInDays(calculator.minYear);
   for (int year = calculator.minYear; year <= calculator.maxYear; year++)
   {
@@ -60,7 +60,7 @@ void GetYearMonthDay_DaysSinceEpoch()
       for (int day = 1; day <= calculator.getDaysInMonth(year, month); day++)
       {
         var actual = calculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
-        var expected = new YearMonthDay(year, month, day);
+        var expected = YearMonthDay(year, month, day);
         expect(expected, actual, reason: "daysSinceEpoch=$daysSinceEpoch");
         daysSinceEpoch++;
       }
@@ -71,7 +71,7 @@ void GetYearMonthDay_DaysSinceEpoch()
 @Test()
 void GetYearMonthDay_YearAndDayOfYear()
 {
-  var calculator = new UmAlQuraYearMonthDayCalculator();
+  var calculator = UmAlQuraYearMonthDayCalculator();
   for (int year = calculator.minYear; year <= calculator.maxYear; year++)
   {
     int dayOfYear = 1;
@@ -80,7 +80,7 @@ void GetYearMonthDay_YearAndDayOfYear()
       for (int day = 1; day <= calculator.getDaysInMonth(year, month); day++)
       {
         var actual = calculator.getYearMonthDay(year, dayOfYear);
-        var expected = new YearMonthDay(year, month, day);
+        var expected = YearMonthDay(year, month, day);
         expect(expected, actual, reason: "year=$year; dayOfYear=$dayOfYear");
         dayOfYear++;
       }
@@ -91,14 +91,14 @@ void GetYearMonthDay_YearAndDayOfYear()
 @Test()
 void GetDaysFromStartOfYearToStartOfMonth()
 {
-  var calculator = new UmAlQuraYearMonthDayCalculator();
+  var calculator = UmAlQuraYearMonthDayCalculator();
   for (int year = calculator.minYear; year <= calculator.maxYear; year++)
   {
     int dayOfYear = 1;
     for (int month = 1; month <= 12; month++)
     {
       // This delegates to GetDaysFromStartOfYearToStartOfMonth (which is protected).
-      expect(dayOfYear, calculator.getDayOfYear(new YearMonthDay(year, month, 1)), reason: "year=$year; month=$month");
+      expect(dayOfYear, calculator.getDayOfYear(YearMonthDay(year, month, 1)), reason: "year=$year; month=$month");
       dayOfYear += calculator.getDaysInMonth(year, month);
     }
   }
@@ -108,6 +108,6 @@ void GetDaysFromStartOfYearToStartOfMonth()
 @Test()
 void GetYearMonthDay_InvalidValueForCoverage()
 {
-  var calculator = new UmAlQuraYearMonthDayCalculator();
+  var calculator = UmAlQuraYearMonthDayCalculator();
   expect(() => calculator.getYearMonthDay(calculator.minYear, 1000), throwsRangeError);
 }

@@ -30,7 +30,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
 
   static List<int> _generateTotalDaysByMonth() {
     int days = 0;
-    var totalDaysByMonth = new List<int>(13);
+    var totalDaysByMonth = List<int>(13);
     for (int i = 1; i <= 12; i++) {
       totalDaysByMonth[i] = days;
       int daysInMonth = i <= 6 ? 31 : 30;
@@ -44,7 +44,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
   }
 
   List<int> _generateStartOfYearInDaysCache() {
-    var startOfYearInDaysCache = new List<int>(maxYear + 2);
+    var startOfYearInDaysCache = List<int>(maxYear + 2);
     int startOfYear = daysAtStartOfYear1 - getDaysInYear(0);
     for (int year = 0; year <= maxYear + 1; year++) {
       startOfYearInDaysCache[year] = startOfYear;
@@ -72,7 +72,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
   @override
   int calculateStartOfYearDays(int year) {
     // This would only be called from GetStartOfYearInDays, which is overridden.
-    throw new UnimplementedError();
+    throw UnimplementedError();
   }
 
   @override
@@ -97,7 +97,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
       month = dayOfSecondHalf ~/ 30 + 7;
       day = (dayOfSecondHalf % 30) + 1;
     }
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 
   @override int getDaysInMonth(int year, int month) =>
@@ -138,7 +138,7 @@ class PersianSimple extends PersianYearMonthDayCalculator {
     // would get us back to 1.
     // long key = 1L << yearOfCycle;
     // int key = math.pow(2, yearOfCycle);
-    int key = yearOfCycle < 32 ? 1 << yearOfCycle : yearOfCycle == 32 ? 4294967296 : yearOfCycle == 33 ? 8589934592 : throw new StateError(
+    int key = yearOfCycle < 32 ? 1 << yearOfCycle : yearOfCycle == 32 ? 4294967296 : yearOfCycle == 33 ? 8589934592 : throw StateError(
         'isLeapYear($year).yearOfCycle = $yearOfCycle failed');
     return (_leapYearPatternBits & key) > 0;
   }

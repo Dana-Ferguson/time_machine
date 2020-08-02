@@ -33,7 +33,7 @@ class FileSource {
       entries[file.name] = file.content;
     });
 
-    return new FileSource._(entries.keys.toList(),
+    return FileSource._(entries.keys.toList(),
             (String file) => entries[file], fullOrigin);
   }
 
@@ -43,7 +43,7 @@ class FileSource {
 
     // todo: I don't understand that last argument
     File(path).readAsBytesSync();
-    return new FileSource._(files, (file) => File(Path.join(path, file)).readAsBytesSync(), Path.basename(path));
+    return FileSource._(files, (file) => File(Path.join(path, file)).readAsBytesSync(), Path.basename(path));
   }
 
   // todo: I think this works?

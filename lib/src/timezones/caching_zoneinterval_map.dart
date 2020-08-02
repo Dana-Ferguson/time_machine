@@ -18,7 +18,7 @@ abstract class CachingZoneIntervalMap
   /// Returns a caching map for the given input map.
   static ZoneIntervalMap cacheMap(ZoneIntervalMap map)
   {
-    return new _HashArrayCache(map);
+    return _HashArrayCache(map);
   }
 }
 
@@ -49,7 +49,7 @@ class _HashArrayCache implements ZoneIntervalMap {
   /// converts an instant into a number of 32 day periods.
   static const int _periodShift = 5;
 
-  final List<_HashCacheNode> _instantCache = new List<_HashCacheNode>(_cacheSize);
+  final List<_HashCacheNode> _instantCache = List<_HashCacheNode>(_cacheSize);
   final ZoneIntervalMap _map;
 
   _HashArrayCache(this._map) {
@@ -100,11 +100,11 @@ class _HashCacheNode {
   static _HashCacheNode createNode(int period, ZoneIntervalMap map) {
     // todo: does this need to be a safe shift?
     var days = period << _HashArrayCache._periodShift;
-    var periodStart = IInstant.untrusted(new Time(days: math.max(days, IInstant.minDays)));
+    var periodStart = IInstant.untrusted(Time(days: math.max(days, IInstant.minDays)));
     var nextPeriodStartDays = days + (1 << _HashArrayCache._periodShift);
 
     var interval = map.getZoneInterval(periodStart);
-    var node = new _HashCacheNode(interval, period, null);
+    var node = _HashCacheNode(interval, period, null);
 
     // Keep going while the current interval ends before the period.
     // (We only need to check the days, as every period lands on a
@@ -113,7 +113,7 @@ class _HashCacheNode {
     // evaluate to false.
     while (IZoneInterval.rawEnd(interval).epochDay < nextPeriodStartDays) {
       interval = map.getZoneInterval(interval.end);
-      node = new _HashCacheNode(interval, period, node);
+      node = _HashCacheNode(interval, period, node);
     }
 
     return node;

@@ -21,7 +21,7 @@ class TzdbIndex {
       map[key] = value;
     });
 
-    return new TzdbIndex._(map);
+    return TzdbIndex._(map);
   }
 
   // todo: if we swap to something supporting offset skipping around 'tzdb.bin' file, just fill the _binaryCache instead.
@@ -32,7 +32,7 @@ class TzdbIndex {
     var cache = <String, DateTimeZone>{};
 
     var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
-    var reader = new DateTimeZoneReader(binary);
+    var reader = DateTimeZoneReader(binary);
 
     while (reader.isMore) {
       var id = reader.readString();
@@ -45,7 +45,7 @@ class TzdbIndex {
     // print('Total ${cache.length} zones loaded');
 
     // todo: we might be able to just foward the _cache.keys instead?
-    var index = new TzdbIndex._(jsonMap);
+    var index = TzdbIndex._(jsonMap);
     cache.forEach((id, zone) => index._cache[id] = zone);
     return index;
   }
@@ -66,7 +66,7 @@ class TzdbIndex {
   bool zoneIdExists(String zoneId) => _zoneFilenames.containsKey(zoneId);
 
   DateTimeZone _zoneFromBinary(ByteData binary) {
-    var reader = new DateTimeZoneReader(binary);
+    var reader = DateTimeZoneReader(binary);
     // this should be the same as the index id
     var id = reader.readString();
     var zone = PrecalculatedDateTimeZone.read(reader, id);
@@ -78,7 +78,7 @@ class TzdbIndex {
     if (zone != null) return zone;
 
     var filename = _zoneFilenames[zoneId];
-    if (filename == null) throw new DateTimeZoneNotFoundError('$zoneId had no associated filename.');
+    if (filename == null) throw DateTimeZoneNotFoundError('$zoneId had no associated filename.');
 
     return _cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin'));
   }

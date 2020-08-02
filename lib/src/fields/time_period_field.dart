@@ -65,12 +65,12 @@ class AddTimeCalc {
 @internal
 class TimePeriodField
 {
-  static final TimePeriodField nanoseconds = new TimePeriodField._(1);
-  static final TimePeriodField microseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMicrosecond);
-  static final TimePeriodField milliseconds = new TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
-  static final TimePeriodField seconds = new TimePeriodField._(TimeConstants.nanosecondsPerSecond);
-  static final TimePeriodField minutes = new TimePeriodField._(TimeConstants.nanosecondsPerMinute);
-  static final TimePeriodField hours = new TimePeriodField._(TimeConstants.nanosecondsPerHour);
+  static final TimePeriodField nanoseconds = TimePeriodField._(1);
+  static final TimePeriodField microseconds = TimePeriodField._(TimeConstants.nanosecondsPerMicrosecond);
+  static final TimePeriodField milliseconds = TimePeriodField._(TimeConstants.nanosecondsPerMillisecond);
+  static final TimePeriodField seconds = TimePeriodField._(TimeConstants.nanosecondsPerSecond);
+  static final TimePeriodField minutes = TimePeriodField._(TimeConstants.nanosecondsPerMinute);
+  static final TimePeriodField hours = TimePeriodField._(TimeConstants.nanosecondsPerHour);
 
   final int _unitNanoseconds;
   // The largest number of units (positive or negative) we can multiply unitNanoseconds by without overflowing a long.
@@ -83,12 +83,12 @@ class TimePeriodField
 
   LocalDateTime addDateTime(LocalDateTime start, int units)
   {
-    var calc = new AddTimeCalc(start.clockTime, 0);
+    var calc = AddTimeCalc(start.clockTime, 0);
     calc.addTimeAndDays(this, units);
 
     // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
     LocalDate date = calc.extraDays == 0 ? start.calendarDate :  start.calendarDate.addDays(calc.extraDays);
-    return new LocalDateTime.localDateAtTime(date, calc.localTime);
+    return LocalDateTime.localDateAtTime(date, calc.localTime);
   }
 
   LocalTime addTime(LocalTime localTime, int value)
@@ -144,14 +144,14 @@ class TimePeriodField
       if (units >= Platform.bigIntMinValue && units <= Platform.bigIntMaxValue) {
         return units.toInt();
       }
-      throw new RangeError('$units out of range of integer: [${Platform.intMinValue}, ${Platform.intMaxValue}]');
+      throw RangeError('$units out of range of integer: [${Platform.intMinValue}, ${Platform.intMaxValue}]');
     }
   }
 
   /// Returns a [Time] representing the given number of units.
   Time toSpan(int units) =>
       units >= -_maxLongUnits && units <= _maxLongUnits
-          ? new Time(nanoseconds: units * _unitNanoseconds)
+          ? Time(nanoseconds: units * _unitNanoseconds)
           : _toSpanSafely(units);
 
   Time _toSpanSafely(int units) {
@@ -159,12 +159,12 @@ class TimePeriodField
     if (units >= -maxLongUnitsMS && units <= maxLongUnitsMS) {
       var milliseconds = units * (_unitNanoseconds ~/ 1000000);
       var nanoseconds = units * (_unitNanoseconds % 1000000);
-      return new Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
+      return Time(milliseconds: milliseconds, nanoseconds: nanoseconds);
     }
     else {
       var bigNanoseconds = BigInt.from(_unitNanoseconds);
       var bigUnits = BigInt.from(units);
-      return new Time.bigIntNanoseconds(bigNanoseconds * bigUnits);
+      return Time.bigIntNanoseconds(bigNanoseconds * bigUnits);
     }
   }
 }

@@ -93,7 +93,7 @@ export 'src/timezones/zone_local_mapping.dart' show ZoneLocalMapping;
 bool _initialized = false;
 
 abstract class TimeMachine {
-  TimeMachine() { throw new StateError('TimeMachine can not be instantiated, because no platform has been detected.'); }
+  TimeMachine() { throw StateError('TimeMachine can not be instantiated, because no platform has been detected.'); }
   static Future initialize([Map args = const {}]) {
     if (_initialized) return null;
     _initialized = true;

@@ -68,7 +68,7 @@ class TzdbZoneLocation
     var ZoneId = Preconditions.checkNotNull(zoneId, 'zoneId');
     var Comment = Preconditions.checkNotNull(comment, 'comment');
 
-    return new TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
+    return TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
   @internal void write(IDateTimeZoneWriter writer)
@@ -91,10 +91,10 @@ class TzdbZoneLocation
     // We could duplicate the validation, but there's no good reason to. It's odd
     // to catch ArgumentException, but we're in pretty tight control of what's going on here.
     try {
-      return new TzdbZoneLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
+      return TzdbZoneLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
     }
     on ArgumentError catch (e) {
-      throw new InvalidTimeDataError("Invalid zone location data in stream", e);
+      throw InvalidTimeDataError("Invalid zone location data in stream", e);
     }
   }
 }

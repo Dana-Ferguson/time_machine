@@ -33,7 +33,7 @@ class TzdbZoneInfoCompiler {
     "northamerica", "southamerica", "pacificnew", "etcetera", "backward", "systemv"
   ];
 
-  static final RegExp _versionRegex = new RegExp(r"\d{2,4}[a-z]");
+  static final RegExp _versionRegex = RegExp(r"\d{2,4}[a-z]");
   static final RegExp _versionRegex2 = RegExp(r"VERSION=\d{4}.*");
 
   final TextWriter _log;
@@ -53,14 +53,14 @@ class TzdbZoneInfoCompiler {
   TzdbDatabase compile(String path) {
     var source = _loadSource(path);
     var version = _inferVersion(source);
-    var database = new TzdbDatabase(version);
+    var database = TzdbDatabase(version);
     _loadZoneFiles(source, database);
     _loadLocationFiles(source, database);
     return database;
   }
 
   void _loadZoneFiles(FileSource source, TzdbDatabase database) {
-    var tzdbParser = new TzdbZoneInfoParser();
+    var tzdbParser = TzdbZoneInfoParser();
     for (var file in _zoneFiles) {
       if (source.contains(file)) {
         _log?.WriteLine("Parsing file $file . . .");
@@ -86,7 +86,7 @@ class TzdbZoneInfoCompiler {
           .toList();
     }
     if (source.contains(_zone1970TabFile)) {
-      var iso3166Dict = Map.fromIterable(iso3166, key: (bits) => bits[0], value: (bits) => new TzdbZone1970LocationCountry(/*name:*/ bits[1], /*code:*/ bits[0]));
+      var iso3166Dict = Map.fromIterable(iso3166, key: (bits) => bits[0], value: (bits) => TzdbZone1970LocationCountry(/*name:*/ bits[1], /*code:*/ bits[0]));
       database.zone1970Locations = source.readLines(_zone1970TabFile)
           .where((line) => line != "" && !line.startsWith("#"))
           .map((line) => TzdbZoneLocationParser.parseEnhancedLocation(line, iso3166Dict))

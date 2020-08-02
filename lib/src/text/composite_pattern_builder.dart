@@ -26,7 +26,7 @@ abstract class ICompositePatternBuilder {
 /// This type is mutable, and should not be used between multiple isolates. The patterns created
 /// by the [build] method are immutable.
 class CompositePatternBuilder<T> {
-  final List<IPattern<T>> _patterns = new List<IPattern<T>>();
+  final List<IPattern<T>> _patterns = List<IPattern<T>>();
   // note: this was originally List<bool Function(T arg), but had to be dropped, because
   // in C#, you can have nested classes, so CompositePatternBuilder<T>._CompositePattern
   // would share their type parameter <T> ~ I'm a bit unsure how to do that here
@@ -35,7 +35,7 @@ class CompositePatternBuilder<T> {
   // ~ they could be verified at runtime - but Dart can't do it at compile time (not yet anyway?)
   // We also couldn't use [Object] iaw with the Style guide -- since that failed too???
   // todo: add back in type safety with a new method
-  final List<bool Function(dynamic arg)> _formatPredicates = new List<bool Function(dynamic arg)>();
+  final List<bool Function(dynamic arg)> _formatPredicates = List<bool Function(dynamic arg)>();
 
   /// Constructs a new instance which initially has no component patterns. At least one component
   /// pattern must be added before [build] is called.
@@ -59,7 +59,7 @@ class CompositePatternBuilder<T> {
   /// * [StateError]: No component patterns have been added.
   IPattern<T> build() {
     Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
-    return new _CompositePattern<T>._(_patterns, _formatPredicates);
+    return _CompositePattern<T>._(_patterns, _formatPredicates);
   }
 
   IPartialPattern<T> _buildAsPartial() {
@@ -81,7 +81,7 @@ class _CompositePattern<T> implements IPartialPattern<T> {
         return result;
       }
     }
-    return IParseResult.noMatchingFormat<T>(new ValueCursor(text));
+    return IParseResult.noMatchingFormat<T>(ValueCursor(text));
   }
 
   ParseResult<T> parsePartial(ValueCursor cursor) {
@@ -108,6 +108,6 @@ class _CompositePattern<T> implements IPartialPattern<T> {
         return _patterns[i];
       }
     }
-    throw new FormatException("Composite pattern was unable to format value using any of the provided patterns.");
+    throw FormatException("Composite pattern was unable to format value using any of the provided patterns.");
   }
 }

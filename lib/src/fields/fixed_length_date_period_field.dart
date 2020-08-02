@@ -31,7 +31,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
       int day = yearMonthDay.day;
       int newDayOfMonth = day + daysToAdd;
       if (1 <= newDayOfMonth && newDayOfMonth <= calculator.getDaysInMonth(year, month)) {
-        return ILocalDate.trusted(new YearMonthDayCalendar(year, month, newDayOfMonth, ICalendarSystem.ordinal(calendar)));
+        return ILocalDate.trusted(YearMonthDayCalendar(year, month, newDayOfMonth, ICalendarSystem.ordinal(calendar)));
       }
       int dayOfYear = calculator.getDayOfYear(yearMonthDay);
       int newDayOfYear = dayOfYear + daysToAdd;
@@ -40,7 +40,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
         newDayOfYear += calculator.getDaysInYear(year - 1);
         year--;
         if (year < calculator.minYear) {
-          throw new RangeError("Date computation would underflow the minimum year of the calendar");
+          throw RangeError("Date computation would underflow the minimum year of the calendar");
         }
       }
       else {
@@ -49,7 +49,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
           newDayOfYear -= daysInYear;
           year++;
           if (year > calculator.maxYear) {
-            throw new RangeError("Date computation would overflow the maximum year of the calendar");
+            throw RangeError("Date computation would overflow the maximum year of the calendar");
           }
         }
       }

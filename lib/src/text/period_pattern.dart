@@ -19,7 +19,7 @@ class PeriodPattern implements IPattern<Period> {
   ///
   /// Pattern which uses the normal ISO format for all the supported ISO
   /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
-  static final PeriodPattern roundtrip = new PeriodPattern._(new _RoundtripPatternImpl());
+  static final PeriodPattern roundtrip = PeriodPattern._(_RoundtripPatternImpl());
 
   /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
   /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized
@@ -31,7 +31,7 @@ class PeriodPattern implements IPattern<Period> {
   /// if the period contains more than [System.Int64.MaxValue] ticks when the
   /// combined weeks/days/time portions are considered. Such a period could never
   /// be useful anyway, however.
-  static final PeriodPattern normalizingIso = new PeriodPattern._(new _NormalizingIsoPatternImpl());
+  static final PeriodPattern normalizingIso = PeriodPattern._(_NormalizingIsoPatternImpl());
 
   final IPattern<Period> _pattern;
 
@@ -91,14 +91,14 @@ class _RoundtripPatternImpl implements IPattern<Period> {
       return IParseResult.valueStringEmpty.convertError();
     }
 
-    ValueCursor valueCursor = new ValueCursor(text);
+    ValueCursor valueCursor = ValueCursor(text);
 
     valueCursor.moveNext();
     if (valueCursor.current != 'P') {
       return IParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
-    PeriodBuilder builder = new PeriodBuilder();
+    PeriodBuilder builder = PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
     while (valueCursor.moveNext()) {
       if (inDate && valueCursor.current == 'T') {
@@ -171,7 +171,7 @@ class _RoundtripPatternImpl implements IPattern<Period> {
     return ParseResult.forValue<Period>(builder.build());
   }
 
-  String format(Period value) => appendFormat(value, new StringBuffer()).toString();
+  String format(Period value) => appendFormat(value, StringBuffer()).toString();
 
   StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
@@ -204,14 +204,14 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
       return IParseResult.valueStringEmpty.convertError();
     }
 
-    ValueCursor valueCursor = new ValueCursor(text);
+    ValueCursor valueCursor = ValueCursor(text);
 
     valueCursor.moveNext();
     if (valueCursor.current != 'P') {
       return IParseResult.mismatchedCharacter<Period>(valueCursor, 'P');
     }
     bool inDate = true;
-    PeriodBuilder builder = new PeriodBuilder();
+    PeriodBuilder builder = PeriodBuilder();
     PeriodUnits unitsSoFar = PeriodUnits.none;
     while (valueCursor.moveNext()) {
       if (inDate && valueCursor.current == 'T') {
@@ -319,7 +319,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
     return ParseResult.forValue<Period>(builder.build());
   }
 
-  String format(Period value) => appendFormat(value, new StringBuffer()).toString();
+  String format(Period value) => appendFormat(value, StringBuffer()).toString();
 
   StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');

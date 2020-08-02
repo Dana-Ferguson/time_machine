@@ -36,8 +36,8 @@ abstract class TestHelperWithMirrors
     InstanceMirror equalValueMirror = reflect(equalValue);
     ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
 
-    var gt = new Symbol(">");
-    var lt = new Symbol("<");
+    var gt = Symbol(">");
+    var lt = Symbol("<");
     var greaterThan = classMirror.declarations[gt];
     var lessThan = classMirror.declarations[lt];
 
@@ -99,8 +99,8 @@ abstract class TestHelperWithMirrors
     InstanceMirror equalValueMirror = reflect(equalValue);
     ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
 
-    var gte = new Symbol(">=");
-    var lte = new Symbol("<=");
+    var gte = Symbol(">=");
+    var lte = Symbol("<=");
     var greaterThanOrEqual = classMirror.declarations[gte];
     var lessThanOrEqual = classMirror.declarations[lte];
 
@@ -155,7 +155,7 @@ abstract class TestHelperWithMirrors
     InstanceMirror equalValueMirror = reflect(equalValue);
     ClassMirror classMirror = reflectClass(/*T*/value.runtimeType);
 
-    var equ = new Symbol("==");
+    var equ = Symbol("==");
     var equality = classMirror.declarations[equ];
 
     if (equality != null) {

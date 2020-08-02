@@ -23,7 +23,7 @@ abstract class ParserHelper {
     Preconditions.checkNotNull(text, 'text');
     int value = int.parse(text);
     if (value < -23 || value > 23) {
-      throw new FormatException("hours out of valid range of [-23, 23]: $value");
+      throw FormatException("hours out of valid range of [-23, 23]: $value");
     }
 
     return value * TimeConstants.nanosecondsPerHour;
@@ -39,7 +39,7 @@ abstract class ParserHelper {
     Preconditions.checkNotNull(text, 'text');
     int value = int.parse(text.trim());
     if (value < 0 || value > 59) {
-      throw new FormatException("minutes out of valid range of [0, 59]: $value");
+      throw FormatException("minutes out of valid range of [0, 59]: $value");
     }
     return value * TimeConstants.nanosecondsPerMinute;
   }
@@ -54,7 +54,7 @@ abstract class ParserHelper {
     Preconditions.checkNotNull(text, 'text');
     double number = double.parse(text.trim());
     if (number < 0.0 || number >= 60.0) {
-      throw new FormatException("seconds out of valid range of [0, 60): $number");
+      throw FormatException("seconds out of valid range of [0, 60): $number");
     }
     int value = (number * TimeConstants.nanosecondsPerSecond).toInt();
     return value;
@@ -95,7 +95,7 @@ abstract class ParserHelper {
     }
     var parts = text.split(':');
     if (parts.length > 3) {
-      throw new FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
+      throw FormatException("Offset has too many colon separated parts (max of 3 allowed): " + text);
     }
     int nanoseconds = _convertHourToNanoseconds(parts[0]);
     if (parts.length > 1) {
@@ -116,7 +116,7 @@ abstract class ParserHelper {
         return result.value;
       }
     }
-    throw new FormatException("Invalid time in rules: $text");
+    throw FormatException("Invalid time in rules: $text");
   }
 
   /// Parses an optional value. If the string value is "-" then null is returned otherwise the

@@ -16,9 +16,9 @@ Future main() async {
   await runTests();
 }
 
-final Instant one = IInstant.untrusted(new Time(nanoseconds: 1));
-final Instant threeMillion = IInstant.untrusted(new Time(nanoseconds: 3000000));
-final Instant negativeFiftyMillion = IInstant.untrusted(new Time(nanoseconds: -50000000));
+final Instant one = IInstant.untrusted(Time(nanoseconds: 1));
+final Instant threeMillion = IInstant.untrusted(Time(nanoseconds: 3000000));
+final Instant negativeFiftyMillion = IInstant.untrusted(Time(nanoseconds: -50000000));
 
 @Test()
 // Gregorian calendar: 1957-10-04
@@ -30,8 +30,8 @@ final Instant negativeFiftyMillion = IInstant.untrusted(new Time(nanoseconds: -5
 void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second) {
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
-  Instant actual = new Instant.julianDate(julianDate);
-  var expected = new LocalDateTime(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
+  Instant actual = Instant.julianDate(julianDate);
+  var expected = LocalDateTime(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
   expect(expected.epochMilliseconds, closeTo(actual.epochMilliseconds, 50), reason: "Expected $expected, was $actual");
@@ -40,7 +40,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
 
 @Test()
 void BasicSpanTests() {
-  var aSpan = new Time(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
+  var aSpan = Time(days: 11, nanoseconds: 2 * TimeConstants.nanosecondsPerDay);
 // print('aSpan.totalDays = ${aSpan.totalDays}');
 
   expect(aSpan.totalDays, 11+2);
@@ -49,23 +49,23 @@ void BasicSpanTests() {
 @Test()
 void FromUtcNoSeconds()
 {
-  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 0), DateTimeZone.utc).toInstant();
-  expect(viaUtc, new Instant.utc(2008, 4, 3, 10, 35));
+  Instant viaUtc = ZonedDateTime.atStrictly(LocalDateTime(2008, 4, 3, 10, 35, 0), DateTimeZone.utc).toInstant();
+  expect(viaUtc, Instant.utc(2008, 4, 3, 10, 35));
 }
 
 @Test()
 void FromUtcWithSeconds()
 {
-  Instant viaUtc = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc).toInstant();
-  expect(viaUtc, new Instant.utc(2008, 4, 3, 10, 35, 23));
+  Instant viaUtc = ZonedDateTime.atStrictly(LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc).toInstant();
+  expect(viaUtc, Instant.utc(2008, 4, 3, 10, 35, 23));
 }
 
 
 @Test()
 void InUtc()
 {
-  ZonedDateTime viaInstant = new Instant.utc(2008, 4, 3, 10, 35, 23).inUtc();
-  ZonedDateTime expected = new ZonedDateTime.atStrictly(new LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc);
+  ZonedDateTime viaInstant = Instant.utc(2008, 4, 3, 10, 35, 23).inUtc();
+  ZonedDateTime expected = ZonedDateTime.atStrictly(LocalDateTime(2008, 4, 3, 10, 35, 23), DateTimeZone.utc);
   expect(expected, viaInstant);
 }
 
@@ -74,11 +74,11 @@ Future InZone () async
 {
   // todo: this is absurd
   DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.utc(2008, 6, 10, 13, 16, 17).inZone(london);
+  ZonedDateTime viaInstant = Instant.utc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
-  LocalDateTime local = new LocalDateTime(2008, 6, 10, 14, 16, 17);
-  ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
+  LocalDateTime local = LocalDateTime(2008, 6, 10, 14, 16, 17);
+  ZonedDateTime expected = ZonedDateTime.atStrictly(local, london);
 
   expect(expected, viaInstant);
 }
@@ -88,10 +88,10 @@ Future InZone () async
 void WithOffset()
 {
   // Jon talks about Noda Time at Leetspeak in Sweden on October 12th 2013, at 13:15 UTC+2
-  Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
-  Offset offset = new Offset.hours(2);
+  Instant instant = Instant.utc(2013, 10, 12, 11, 15);
+  Offset offset = Offset.hours(2);
   OffsetDateTime actual = instant.withOffset(offset);
-  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(2013, 10, 12, 13, 15, 0), offset);
+  OffsetDateTime expected = OffsetDateTime(LocalDateTime(2013, 10, 12, 13, 15, 0), offset);
   expect(expected, actual);
 }
 
@@ -101,10 +101,10 @@ void WithOffset_NonIsoCalendar()
 {
   // October 12th 2013 ISO is 1434-12-07 Islamic
   CalendarSystem calendar = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.civil);
-  Instant instant = new Instant.utc(2013, 10, 12, 11, 15);
-  Offset offset = new Offset.hours(2);
+  Instant instant = Instant.utc(2013, 10, 12, 11, 15);
+  Offset offset = Offset.hours(2);
   OffsetDateTime actual = instant.withOffset(offset, calendar);
-  OffsetDateTime expected = new OffsetDateTime(new LocalDateTime(1434, 12, 7, 13, 15, 0, calendar: calendar), offset);
+  OffsetDateTime expected = OffsetDateTime(LocalDateTime(1434, 12, 7, 13, 15, 0, calendar: calendar), offset);
   expect(expected, actual);
 }
 
@@ -112,7 +112,7 @@ void WithOffset_NonIsoCalendar()
 @Test()
 void FromTicksSinceUnixEpoch()
 {
-  Instant instant = new Instant.fromEpochMicroseconds(12345);
+  Instant instant = Instant.fromEpochMicroseconds(12345);
   expect(12345, instant.epochMicroseconds);
 }
 
@@ -121,7 +121,7 @@ void FromTicksSinceUnixEpoch()
 void FromUnixTimeMilliseconds_Valid()
 {
   Instant actual = Instant.fromEpochMilliseconds(12345);
-  Instant expected = new Instant.fromEpochMicroseconds(12345 * TimeConstants.microsecondsPerMillisecond);
+  Instant expected = Instant.fromEpochMicroseconds(12345 * TimeConstants.microsecondsPerMillisecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -145,7 +145,7 @@ void FromUnixTimeMilliseconds_TooSmall()
 void FromUnixTimeSeconds_Valid()
 {
   Instant actual = Instant.fromEpochSeconds(12345);
-  Instant expected = new Instant.fromEpochMicroseconds(12345 * TimeConstants.microsecondsPerSecond);
+  Instant expected = Instant.fromEpochMicroseconds(12345 * TimeConstants.microsecondsPerSecond);
   expect(expected, instantIsCloseTo(actual));
 }
 
@@ -196,7 +196,7 @@ void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
   // todo: rework this test
-  var instant = new Instant().add(new Time(nanoseconds: ticks * 100));
+  var instant = Instant().add(Time(nanoseconds: ticks * 100));
   expect(instant.epochMilliseconds, expectedMilliseconds);
 }
 
@@ -205,15 +205,15 @@ void UnixConversions_ExtremeValues()
 {
   // Round down to a whole second to make round-tripping work.
   // 'max' is 1 second away from from the end of the day, instead of 1 nanosecond away from the end of the day
-  var max = Instant.maxValue.subtract(new Time(seconds: 1)).add(Time.epsilon);
+  var max = Instant.maxValue.subtract(Time(seconds: 1)).add(Time.epsilon);
   expect(max, Instant.fromEpochSeconds(max.epochSeconds));
   expect(max, Instant.fromEpochMilliseconds(max.epochMilliseconds));
-  if (Platform.isVM) expect(max, new Instant.fromEpochMicroseconds(max.epochMicroseconds));
+  if (Platform.isVM) expect(max, Instant.fromEpochMicroseconds(max.epochMicroseconds));
 
   var min = Instant.minValue;
   expect(min, Instant.fromEpochSeconds(min.epochSeconds));
   expect(min, Instant.fromEpochMilliseconds(min.epochMilliseconds));
-  if (Platform.isVM) expect(min, new Instant.fromEpochMicroseconds(min.epochMicroseconds));
+  if (Platform.isVM) expect(min, Instant.fromEpochMicroseconds(min.epochMicroseconds));
 }
 
 @Test()
@@ -221,19 +221,19 @@ Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
   DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  ZonedDateTime viaInstant = new Instant.utc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
+  ZonedDateTime viaInstant = Instant.utc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
-  LocalDateTime local = new LocalDateTime(1720, 10, 2, 12, 10, 0, calendar: copticCalendar);
-  ZonedDateTime expected = new ZonedDateTime.atStrictly(local, london);
+  LocalDateTime local = LocalDateTime(1720, 10, 2, 12, 10, 0, calendar: copticCalendar);
+  ZonedDateTime expected = ZonedDateTime.atStrictly(local, london);
   expect(viaInstant, expected);
 }
 
 @Test()
 void Max()
 {
-  Instant x = new Instant.fromEpochMicroseconds(100);
-  Instant y = new Instant.fromEpochMicroseconds(200);
+  Instant x = Instant.fromEpochMicroseconds(100);
+  Instant y = Instant.fromEpochMicroseconds(200);
   expect(y, Instant.max(x, y));
   expect(y, Instant.max(y, x));
   expect(x, Instant.max(x, Instant.minValue));
@@ -245,8 +245,8 @@ void Max()
 @Test()
 void Min()
 {
-  Instant x = new Instant.fromEpochMicroseconds(100);
-  Instant y = new Instant.fromEpochMicroseconds(200);
+  Instant x = Instant.fromEpochMicroseconds(100);
+  Instant y = Instant.fromEpochMicroseconds(200);
   expect(x, Instant.min(x, y));
   expect(x, Instant.min(y, x));
   expect(Instant.minValue, Instant.min(x, Instant.minValue));
@@ -258,8 +258,8 @@ void Min()
 @Test()
 void ToDateTimeUtc()
 {
-  Instant x = new Instant.utc(2011, 08, 18, 20, 53);
-  DateTime expected = new DateTime.utc(2011, 08, 18, 20, 53, 0);
+  Instant x = Instant.utc(2011, 08, 18, 20, 53);
+  DateTime expected = DateTime.utc(2011, 08, 18, 20, 53, 0);
   DateTime actual = x.toDateTimeUtc();
   expect(expected, actual);
 
@@ -270,7 +270,7 @@ void ToDateTimeUtc()
 @Test()
 void ToDateTimeLocal()
 {
-  Instant x = new Instant.utc(2011, 08, 18, 20, 53);
+  Instant x = Instant.utc(2011, 08, 18, 20, 53);
   DateTime expected = x.inLocalZone().toDateTimeLocal(); //new DateTime.utc(2011, 08, 18, 20, 53, 0);
   DateTime actual = x.toDateTimeLocal();
   expect(expected, actual);
@@ -339,7 +339,7 @@ void ToDateTimeLocal()
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Instant();
+  var actual = Instant();
   expect(TimeConstants.unixEpoch, actual);
 }
 
@@ -354,7 +354,7 @@ void DefaultConstructor()
 @TestCase(const [101, 1])
 void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 {
-  Time nanos = new Time(nanoseconds: nanoseconds);
+  Time nanos = Time(nanoseconds: nanoseconds);
   Instant instant = IInstant.untrusted(nanos); //.FromUntrustedDuration(nanos);
   // todo: maybe change this test up a bit?
   expect((instant.timeSinceEpoch.totalNanoseconds / 100).floor() /*.toUnixTimeTicks()*/, expectedTicks);
@@ -448,15 +448,15 @@ void FromTicksSinceUnixEpoch_Range()
 @Test()
 void PlusOffset()
 {
-  var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, new Offset.hours(1));
-  expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
+  var localInstant = IInstant.plusOffset(TimeConstants.unixEpoch, Offset.hours(1));
+  expect(Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
 void SafePlus_NormalTime()
 {
-  var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, new Offset.hours(1));
-  expect(new Time(hours: 1), localInstant.timeSinceLocalEpoch);
+  var localInstant = IInstant.safePlus(TimeConstants.unixEpoch, Offset.hours(1));
+  expect(Time(hours: 1), localInstant.timeSinceLocalEpoch);
 }
 
 @Test()
@@ -469,11 +469,11 @@ void SafePlus_NormalTime()
 void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
       ? IInstant.beforeMinValue
-      : Instant.minValue + new Time(hours: initialOffset);
+      : Instant.minValue + Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.beforeMinValue
-      : IInstant.plusOffset(Instant.minValue, new Offset.hours(finalOffset));
-  var actual = IInstant.safePlus(start, new Offset.hours(offsetToAdd));
+      : IInstant.plusOffset(Instant.minValue, Offset.hours(finalOffset));
+  var actual = IInstant.safePlus(start, Offset.hours(offsetToAdd));
   expect(actual, expected);
 }
 
@@ -488,11 +488,11 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
 void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
   var start = initialOffset == null
       ? IInstant.afterMaxValue
-      : Instant.maxValue + new Time(hours: initialOffset);
+      : Instant.maxValue + Time(hours: initialOffset);
   var expected = finalOffset == null
       ? LocalInstant.afterMaxValue
-      : IInstant.plusOffset( Instant.maxValue, new Offset.hours(finalOffset));
-  var actual = IInstant.safePlus(start,new Offset.hours(offsetToAdd));
+      : IInstant.plusOffset( Instant.maxValue, Offset.hours(finalOffset));
+  var actual = IInstant.safePlus(start,Offset.hours(offsetToAdd));
 
   expect(actual, expected);
 }

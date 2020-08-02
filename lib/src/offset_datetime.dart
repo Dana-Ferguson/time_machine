@@ -9,13 +9,13 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal
 abstract class IOffsetDateTime {
   static OffsetDateTime fullTrust(LocalDateTime localDateTime, Offset offset) =>
-      new OffsetDateTime(localDateTime, offset);
+      OffsetDateTime(localDateTime, offset);
 
   static OffsetDateTime lessTrust(LocalDate calendarDate, LocalTime clockTime, Offset offset) =>
-      new OffsetDateTime._lessTrust(calendarDate, clockTime, offset);
+      OffsetDateTime._lessTrust(calendarDate, clockTime, offset);
 
   static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem calendar]) =>
-      new OffsetDateTime._fromInstant(instant, offset, calendar);
+      OffsetDateTime._fromInstant(instant, offset, calendar);
 
   // @deprecated
   // static YearMonthDay yearMonthDay(OffsetDateTime offsetDateTime) => ILocalDate.yearMonthDay(offsetDateTime.calendarDate);
@@ -77,7 +77,7 @@ class OffsetDateTime {
         : GregorianYearMonthDayCalculator.getGregorianYearMonthDayCalendarFromDaysSinceEpoch(days);*/
     // var nanosecondsAndOffset = _combineNanoOfDayAndOffset(nanoOfDay, offset);
     var ldt = LocalDate.fromEpochDay(days, calendar).at(ILocalTime.trustedNanoseconds(nanoOfDay));
-    return new OffsetDateTime(ldt, offset);
+    return OffsetDateTime(ldt, offset);
     // return new OffsetDateTime(yearMonthDayCalendar, nanoOfDay, offset); // nanosecondsAndOffset);
   }
 
@@ -162,7 +162,7 @@ class OffsetDateTime {
 
   Time _toElapsedTimeSinceEpoch() {
     // Equivalent to LocalDateTime.ToLocalInstant().Minus(offset)
-    Time elapsedTime = new Time(days: calendarDate.epochDay, nanoseconds: clockTime.timeSinceMidnight.inNanoseconds - _offsetNanoseconds);
+    Time elapsedTime = Time(days: calendarDate.epochDay, nanoseconds: clockTime.timeSinceMidnight.inNanoseconds - _offsetNanoseconds);
     // Duration elapsedTime = new Duration(days, NanosecondOfDay).MinusSmallNanoseconds(OffsetNanoseconds);
     return elapsedTime;
   }
@@ -176,7 +176,7 @@ class OffsetDateTime {
   /// use this result for arithmetic operations, as the zone will not adjust to account for daylight savings.
   ///
   /// Returns: A zoned date/time with the same local time and a fixed time zone using the offset from this value.
-  ZonedDateTime get inFixedZone => IZonedDateTime.trusted(this, new DateTimeZone.forOffset(offset));
+  ZonedDateTime get inFixedZone => IZonedDateTime.trusted(this, DateTimeZone.forOffset(offset));
 
   /// Returns this value in ths specified time zone. This method does not expect
   /// the offset in the zone to be the same as for the current value; it simply converts
@@ -201,7 +201,7 @@ class OffsetDateTime {
   OffsetDateTime withCalendar(CalendarSystem calendar) {
     // todo: equivalent?
     // LocalDate newDate = calendarDate.withCalendar(calendar);
-    return new OffsetDateTime(localDateTime.withCalendar(calendar), offset);
+    return OffsetDateTime(localDateTime.withCalendar(calendar), offset);
   }
 
   /// Returns this offset date/time, with the given date adjuster applied to it, maintaining the existing time of day and offset.
@@ -214,7 +214,7 @@ class OffsetDateTime {
   ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime adjustDate(LocalDate Function(LocalDate) adjuster) {
-    return new OffsetDateTime(localDateTime.adjustDate(adjuster), offset);
+    return OffsetDateTime(localDateTime.adjustDate(adjuster), offset);
   }
 
   /// Returns this date/time, with the given time adjuster applied to it, maintaining the existing date and offset.
@@ -226,7 +226,7 @@ class OffsetDateTime {
   ///
   /// Returns: The adjusted offset date/time.
   OffsetDateTime adjustTime(LocalTime Function(LocalTime) adjuster) {
-    return new OffsetDateTime(localDateTime.adjustTime(adjuster), offset);
+    return OffsetDateTime(localDateTime.adjustTime(adjuster), offset);
   }
 
   /// Creates a new OffsetDateTime representing the instant in time in the same calendar,
@@ -272,13 +272,13 @@ class OffsetDateTime {
   /// but omitting the time-of-day.
   ///
   /// Returns: A value representing the date and offset aspects of this value.
-  OffsetDate toOffsetDate() => new OffsetDate(calendarDate, offset);
+  OffsetDate toOffsetDate() => OffsetDate(calendarDate, offset);
 
   /// Constructs a new [OffsetTime] from the time and offset of this value,
   /// but omitting the date.
   ///
   /// Returns: A value representing the time and offset aspects of this value.
-  OffsetTime toOffsetTime() => new OffsetTime(clockTime, offset);
+  OffsetTime toOffsetTime() => OffsetTime(clockTime, offset);
 
   /// Returns a hash code for this offset date and time.
   @override int get hashCode => hash2(localDateTime, offset);
@@ -340,14 +340,14 @@ class OffsetDateTime {
   /// * [duration]: The duration to add
   ///
   /// Returns: A new [OffsetDateTime] representing the result of the addition.
-  OffsetDateTime add(Time time) => new OffsetDateTime._fromInstant(toInstant() + time, offset);
+  OffsetDateTime add(Time time) => OffsetDateTime._fromInstant(toInstant() + time, offset);
 
   /// Returns the result of subtracting a duration from this offset date and time.
   ///
   /// * [time]: The duration to subtract
   ///
   /// Returns: A new [OffsetDateTime] representing the result of the subtraction.
-  OffsetDateTime subtract(Time time) => new OffsetDateTime._fromInstant(toInstant() - time, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
+  OffsetDateTime subtract(Time time) => OffsetDateTime._fromInstant(toInstant() - time, offset); // new Instant.trusted(ToElapsedTimeSinceEpoch()
 
   // dynamic operator -(dynamic value) => value is Time ? minusSpan(value) : value is OffsetDateTime ? minusOffsetDateTime(value) : throw new TypeError();
   // static Duration operator -(OffsetDateTime end, OffsetDateTime start) => end.ToInstant() - start.ToInstant();
@@ -390,7 +390,7 @@ class OffsetDateTime {
 
 /// Implementation for [Comparer.Local]
 class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = new _OffsetDateTimeLocalComparer._();
+  static final OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
 
   _OffsetDateTimeLocalComparer._() : super._();
 
@@ -489,7 +489,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
 /// Implementation for [Comparer.Instant].
 class _OffsetDateTimeInstantComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = new _OffsetDateTimeInstantComparer._();
+  static final OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
 
   _OffsetDateTimeInstantComparer._() : super._();
 

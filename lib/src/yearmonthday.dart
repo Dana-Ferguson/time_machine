@@ -20,11 +20,11 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     // Handle a leading - to negate the year
     if (text.startsWith("-")) {
       var ymd = parse(text.substring(1));
-      return new YearMonthDay(-ymd.year, ymd.month, ymd.day);
+      return YearMonthDay(-ymd.year, ymd.month, ymd.day);
     }
 
     var bits = text.split('-');
-    return new YearMonthDay(
+    return YearMonthDay(
         int.parse(bits[0]),
         int.parse(bits[1]),
         int.parse(bits[2]));
@@ -35,10 +35,10 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
-      new YearMonthDayCalendar.ymd(this, calendar == null ? 0 : ICalendarSystem.ordinal(calendar));
+      YearMonthDayCalendar.ymd(this, calendar == null ? 0 : ICalendarSystem.ordinal(calendar));
 
   YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
-      new YearMonthDayCalendar.ymd(this, calendarOrdinal);
+      YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
 
   int compareTo(YearMonthDay other) {

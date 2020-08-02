@@ -21,8 +21,8 @@ class BinaryReader {
   // int readInt64() { var i64 = binary.getInt64(_offset, Endianness.LITTLE_ENDIAN); _offset +=8; print('READ ${i64}!!!!'); return i64; }
   int readUint8() => binary.getUint8(_offset++);
   bool readBool() => readUint8() == 1;
-  Offset readOffsetSeconds() => new Offset(read7BitEncodedInt());
-  Offset readOffsetSeconds2() => new Offset(readInt32());
+  Offset readOffsetSeconds() => Offset(read7BitEncodedInt());
+  Offset readOffsetSeconds2() => Offset(readInt32());
 
   // JS Compatible version of readInt64
   int readInt64() {
@@ -61,7 +61,7 @@ class BinaryReader {
     int b;
     do {
       if (shift == 5 * 7) {
-        throw new StateError('7bitInt32 Format Error');
+        throw StateError('7bitInt32 Format Error');
       }
 
       b = binary.getUint8(_offset++);
@@ -80,7 +80,7 @@ class BinaryReader {
   }
 
   List<String> readStringList() {
-    var tokens = new List<String>();
+    var tokens = List<String>();
     var count = read7BitEncodedInt();
     for (int i = 0; i < count; i++) {
       tokens.add(readString());

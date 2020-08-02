@@ -42,7 +42,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
   IPattern<LocalDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDatePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
@@ -55,8 +55,8 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
-            () => new LocalDateParseBucket(_templateValue));
+    var patternBuilder = SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
+            () => LocalDateParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
     return patternBuilder.build(_templateValue);
@@ -113,7 +113,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedDate)) {
-      return ParseResult.forValue<LocalDate>(new LocalDate(year, monthOfYearNumeric, dayOfMonth, calendar));
+      return ParseResult.forValue<LocalDate>(LocalDate(year, monthOfYearNumeric, dayOfMonth, calendar));
     }
     // This will set Year if necessary
     ParseResult<LocalDate> failure = _determineYear(usedFields, text);
@@ -131,7 +131,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
       return IParseResult.dayOfMonthOutOfRange<LocalDate>(text, day, monthOfYearNumeric, year);
     }
 
-    LocalDate value = new LocalDate(year, monthOfYearNumeric, day, calendar);
+    LocalDate value = LocalDate(year, monthOfYearNumeric, day, calendar);
 
     if (usedFields.hasAny(PatternFields.dayOfWeek) && dayOfWeek != value.dayOfWeek.value) {
       return IParseResult.inconsistentDayOfWeekTextValue<LocalDate>(text);

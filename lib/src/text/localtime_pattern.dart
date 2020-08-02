@@ -93,12 +93,12 @@ class LocalTimePattern implements IPattern<LocalTime> {
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == LocalTime.midnight
         ? formatInfo.localTimePatternParser.parsePattern(patternText)
-        : new LocalTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
+        : LocalTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     // (Alternatively, we could just return it directly, instead of creating a new object.)
     pattern = pattern is LocalTimePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalTime>;
-    return new LocalTimePattern._(patternText, formatInfo, templateValue, partialPattern);
+    return LocalTimePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value or [LocalTime.midnight].

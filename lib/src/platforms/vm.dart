@@ -16,18 +16,18 @@ import 'platform_io.dart';
 class _VirtualMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
-    if (filename == null) return new ByteData(0);
+    if (filename == null) return ByteData(0);
 
-    var resource = new Resource("package:time_machine/data/$path/$filename");
+    var resource = Resource("package:time_machine/data/$path/$filename");
     // todo: probably a better way to do this
-    var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
+    var binary = ByteData.view(Int8List.fromList(await resource.readAsBytes()).buffer);
     return binary;
   }
 
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    var resource = new Resource("package:time_machine/data/$path/$filename");
+    var resource = Resource("package:time_machine/data/$path/$filename");
     return json.decode(await resource.readAsString());
   }
 }
@@ -39,7 +39,7 @@ class _FlutterMachineIO implements PlatformIO {
 
   @override
   Future<ByteData> getBinary(String path, String filename) async {
-    if (filename == null) return new ByteData(0);
+    if (filename == null) return ByteData(0);
 
     ByteData byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
     return byteData;
@@ -57,13 +57,13 @@ Future initialize(Map args) {
   String timeZoneOverride = args['timeZone'];
 
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
-    if (args == null || args['rootBundle'] == null) throw new Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+    if (args == null || args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
-    PlatformIO.local = new _FlutterMachineIO(args['rootBundle']);
+    PlatformIO.local = _FlutterMachineIO(args['rootBundle']);
   }
   else {
     // Map IO functions
-    PlatformIO.local = new _VirtualMachineIO();
+    PlatformIO.local = _VirtualMachineIO();
   }
 
   return TimeMachine.initialize(timeZoneOverride);
@@ -111,9 +111,9 @@ class TimeMachine  {
       zones.add(await provider[id]);
     }
 
-    var nowDateTime = new DateTime.now();
-    Instant nowInstant = new Instant.dateTime(nowDateTime);
-    var interval = new Interval(new Instant.utc(1900, 1, 1, 0, 0), nowInstant);
+    var nowDateTime = DateTime.now();
+    Instant nowInstant = Instant.dateTime(nowDateTime);
+    var interval = Interval(Instant.utc(1900, 1, 1, 0, 0), nowInstant);
     var allZoneIntervals = <ZoneInterval>[];
     var allSpecialInstants = <Instant>[];
 
@@ -121,7 +121,7 @@ class TimeMachine  {
       _longIdNames = true;
     }
 
-    var lessZones = new List<DateTimeZone>();
+    var lessZones = List<DateTimeZone>();
     for (var zone in zones) {
       // first pass; todo: identify special instants with a high amount of diversity among timezones so we can get a better first pass
       if (_isTheSame(nowDateTime, zone.getZoneInterval(nowInstant))) {
@@ -133,7 +133,7 @@ class TimeMachine  {
     }
 
     allSpecialInstants = allZoneIntervals.map((z) => IZoneInterval.rawStart(z)).toList();
-    var badZones = new HashSet<String>();
+    var badZones = HashSet<String>();
 
     zones = lessZones;
     // print(zones.join("\n"));
@@ -224,16 +224,16 @@ class TimeMachine  {
       }
     } catch (e) {
       // todo: custom error type
-      throw new StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; Error was $e');
+      throw StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; Error was $e');
     }
 
-    throw new StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
+    throw StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
   }
 
   static Map<String, String> _windowsZones;
   static Future windowsZoneToCldrZone(String id) async {
     if (_windowsZones == null) {
-      var file = new io.File('${io.Directory.current.path}/lib/data/zones.json');
+      var file = io.File('${io.Directory.current.path}/lib/data/zones.json');
       _windowsZones = json.decode(await file.readAsString());
     }
 

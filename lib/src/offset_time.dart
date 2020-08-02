@@ -43,7 +43,7 @@ class OffsetTime {
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetTime` for the same date, but with the specified UTC offset.
-  OffsetTime withOffset(Offset offset) => new OffsetTime(this.clockTime, offset);
+  OffsetTime withOffset(Offset offset) => OffsetTime(this.clockTime, offset);
 
   /// Returns this offset time-of-day, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -54,7 +54,7 @@ class OffsetTime {
   ///
   /// Returns: The adjusted offset date.
   OffsetTime adjust(LocalTime Function(LocalTime) adjuster) =>
-      new OffsetTime(clockTime.adjust(adjuster), offset);
+      OffsetTime(clockTime.adjust(adjuster), offset);
 
   /// Combines this [OffsetTime] with the given [LocalDate]
   /// into an [OffsetDateTime].
@@ -62,7 +62,7 @@ class OffsetTime {
   /// * [date]: The date to combine with this time-of-day.
   ///
   /// Returns: The [OffsetDateTime] representation of this time-of-day on the given date.
-  OffsetDateTime atDate(LocalDate date) => new OffsetDateTime(date.at(clockTime), offset);
+  OffsetDateTime atDate(LocalDate date) => OffsetDateTime(date.at(clockTime), offset);
 
   /// Returns a hash code for this offset time.
   @override int get hashCode => hash2(clockTime, offset);

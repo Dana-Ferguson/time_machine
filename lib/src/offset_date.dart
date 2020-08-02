@@ -55,7 +55,7 @@ class OffsetDate
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetDate` for the same date, but with the specified UTC offset.
-  OffsetDate withOffset(Offset offset) => new OffsetDate(this.calendarDate, offset);
+  OffsetDate withOffset(Offset offset) => OffsetDate(this.calendarDate, offset);
 
   /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -67,7 +67,7 @@ class OffsetDate
   ///
   /// Returns: The adjusted offset date.
   OffsetDate adjust(LocalDate Function(LocalDate) adjuster) =>
-      new OffsetDate(calendarDate.adjust(adjuster), offset);
+      OffsetDate(calendarDate.adjust(adjuster), offset);
 
 
   /// Creates a new [OffsetDate] representing the same physical date and offset, but in a different calendar.
@@ -78,7 +78,7 @@ class OffsetDate
   ///
   /// Returns: The converted [OffsetDate].
   OffsetDate withCalendar(CalendarSystem calendar) =>
-      new OffsetDate(calendarDate.withCalendar(calendar), offset);
+      OffsetDate(calendarDate.withCalendar(calendar), offset);
 
 
   /// Combines this [OffsetDate] with the given [LocalTime]
@@ -87,7 +87,7 @@ class OffsetDate
   /// * [time]: The time to combine with this date.
   ///
   /// Returns: The [OffsetDateTime] representation of the given time on this date.
-  OffsetDateTime at(LocalTime time) => new OffsetDateTime(calendarDate.at(time), offset);
+  OffsetDateTime at(LocalTime time) => OffsetDateTime(calendarDate.at(time), offset);
 
 
   /// Returns a hash code for this offset date.

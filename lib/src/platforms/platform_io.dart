@@ -18,5 +18,5 @@ abstract class PlatformIO {
 }
 
 Future initialize(dynamic arg) {
-  throw new Exception('Conditional Import Failure.');
+  throw Exception('Conditional Import Failure.');
 }

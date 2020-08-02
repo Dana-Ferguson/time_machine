@@ -19,7 +19,7 @@ void AllYears()
   // Range of years we actually care about. We support more, but that's okay.
   for (int year = -9999; year <= 9999; year++)
   {
-    var ymd = new YearMonthDay(year, 5, 20);
+    var ymd = YearMonthDay(year, 5, 20);
     expect(year, ymd.year);
     expect(5, ymd.month);
     expect(20, ymd.day);
@@ -32,7 +32,7 @@ void AllMonths()
   // We'll never actually need 32 months, but we support that many...
   for (int month = 1; month < 32; month++)
   {
-    var ymd = new YearMonthDay(-123, month, 20);
+    var ymd = YearMonthDay(-123, month, 20);
     expect(-123, ymd.year);
     expect(month, ymd.month);
     expect(20, ymd.day);
@@ -45,7 +45,7 @@ void AllDays()
   // We'll never actually need 64 days, but we support that many...
   for (int day = 1; day < 64; day++)
   {
-    var ymd = new YearMonthDay(-123, 30, day);
+    var ymd = YearMonthDay(-123, 30, day);
     expect(-123, ymd.year);
     expect(30, ymd.month);
     expect(day, ymd.day);
@@ -74,7 +74,7 @@ void Comparisons(String smallerText, String greaterText)
 @Test()
 void YearMonthDayToString()
 {
-  var ymd = new YearMonthDay(2017, 8, 25);
+  var ymd = YearMonthDay(2017, 8, 25);
   expect("2017-08-25", ymd.toString());
 }
 

@@ -12,7 +12,7 @@ import 'missing_token_error.dart';
 /// </remarks>
 class Tokens {
   /// Represents an empty token list.
-  static final List<String> _noTokens = new List<String>(0);
+  static final List<String> _noTokens = List<String>(0);
 
   /// The list of words. This will never be null but may be empty.
   final List<String> _words;
@@ -41,7 +41,7 @@ class Tokens {
     if (tryNextToken()) {
       return tryNextTokenResult;
     }
-    throw new MissingTokenError(name);
+    throw MissingTokenError(name);
   }
 
   /// <summary>
@@ -54,11 +54,11 @@ class Tokens {
     Preconditions.checkNotNull(text, 'text');
     text = text.trimRight();
     if (text == "") {
-      return new Tokens._(_noTokens);
+      return Tokens._(_noTokens);
     }
     // Primitive parser, but we need to handle double quotes.
-    var list = new List<String>();
-    var currentWord = new StringBuffer();
+    var list = List<String>();
+    var currentWord = StringBuffer();
     bool inQuotes = false;
     bool lastCharacterWasWhitespace = false;
 
@@ -92,9 +92,9 @@ class Tokens {
     }
     if (inQuotes) {
       // InvalidDataException
-      throw new Exception("Line has unterminated quotes");
+      throw Exception("Line has unterminated quotes");
     }
-    return new Tokens._(list);
+    return Tokens._(list);
   }
 
   // bool tryNextToken(out String result)

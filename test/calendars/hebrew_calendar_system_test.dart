@@ -22,7 +22,7 @@ Future main() async {
 @Test()
 void IsLeapYear()
 {
-  var bclIsLeapYear = new HashSet.from([5345, 5347, 5350, 5353, 5356, 5358, 5361, 5364, 5366, 5369, 5372, 5375, 5377, 5380, 5383, 5385, 5388, 5391, 5394, 5396, 5399, 5402, 5404, 5407, 5410, 5413, 5415, 5418, 5421, 5423, 5426, 5429, 5432, 5434, 5437, 5440, 5442, 5445, 5448, 5451, 5453, 5456, 5459, 5461, 5464, 5467, 5470, 5472, 5475, 5478, 5480, 5483, 5486, 5489, 5491, 5494, 5497, 5499, 5502, 5505, 5508, 5510, 5513, 5516, 5518, 5521, 5524, 5527, 5529, 5532, 5535, 5537, 5540, 5543, 5546, 5548, 5551, 5554, 5556, 5559, 5562, 5565, 5567, 5570, 5573, 5575, 5578, 5581, 5584, 5586, 5589, 5592, 5594, 5597, 5600, 5603, 5605, 5608, 5611, 5613, 5616, 5619, 5622, 5624, 5627, 5630, 5632, 5635, 5638, 5641, 5643, 5646, 5649, 5651, 5654, 5657, 5660, 5662, 5665, 5668, 5670, 5673, 5676, 5679, 5681, 5684, 5687, 5689, 5692, 5695, 5698, 5700, 5703, 5706, 5708, 5711, 5714, 5717, 5719, 5722, 5725, 5727, 5730, 5733, 5736, 5738, 5741, 5744, 5746, 5749, 5752, 5755, 5757, 5760, 5763, 5765, 5768, 5771, 5774, 5776, 5779, 5782, 5784, 5787, 5790, 5793, 5795, 5798, 5801, 5803, 5806, 5809, 5812, 5814, 5817, 5820, 5822, 5825, 5828, 5831, 5833, 5836, 5839, 5841, 5844, 5847, 5850, 5852, 5855, 5858, 5860, 5863, 5866, 5869, 5871, 5874, 5877, 5879, 5882, 5885, 5888, 5890, 5893, 5896, 5898, 5901, 5904, 5907, 5909, 5912, 5915, 5917, 5920, 5923, 5926, 5928, 5931, 5934, 5936, 5939, 5942, 5945, 5947, 5950, 5953, 5955, 5958, 5961, 5964, 5966, 5969, 5972, 5974, 5977, 5980, 5983, 5985, 5988, 5991, 5993, 5996, 5999]);
+  var bclIsLeapYear = HashSet.from([5345, 5347, 5350, 5353, 5356, 5358, 5361, 5364, 5366, 5369, 5372, 5375, 5377, 5380, 5383, 5385, 5388, 5391, 5394, 5396, 5399, 5402, 5404, 5407, 5410, 5413, 5415, 5418, 5421, 5423, 5426, 5429, 5432, 5434, 5437, 5440, 5442, 5445, 5448, 5451, 5453, 5456, 5459, 5461, 5464, 5467, 5470, 5472, 5475, 5478, 5480, 5483, 5486, 5489, 5491, 5494, 5497, 5499, 5502, 5505, 5508, 5510, 5513, 5516, 5518, 5521, 5524, 5527, 5529, 5532, 5535, 5537, 5540, 5543, 5546, 5548, 5551, 5554, 5556, 5559, 5562, 5565, 5567, 5570, 5573, 5575, 5578, 5581, 5584, 5586, 5589, 5592, 5594, 5597, 5600, 5603, 5605, 5608, 5611, 5613, 5616, 5619, 5622, 5624, 5627, 5630, 5632, 5635, 5638, 5641, 5643, 5646, 5649, 5651, 5654, 5657, 5660, 5662, 5665, 5668, 5670, 5673, 5676, 5679, 5681, 5684, 5687, 5689, 5692, 5695, 5698, 5700, 5703, 5706, 5708, 5711, 5714, 5717, 5719, 5722, 5725, 5727, 5730, 5733, 5736, 5738, 5741, 5744, 5746, 5749, 5752, 5755, 5757, 5760, 5763, 5765, 5768, 5771, 5774, 5776, 5779, 5782, 5784, 5787, 5790, 5793, 5795, 5798, 5801, 5803, 5806, 5809, 5812, 5814, 5817, 5820, 5822, 5825, 5828, 5831, 5833, 5836, 5839, 5841, 5844, 5847, 5850, 5852, 5855, 5858, 5860, 5863, 5866, 5869, 5871, 5874, 5877, 5879, 5882, 5885, 5888, 5890, 5893, 5896, 5898, 5901, 5904, 5907, 5909, 5912, 5915, 5917, 5920, 5923, 5926, 5928, 5931, 5934, 5936, 5939, 5942, 5945, 5947, 5950, 5953, 5955, 5958, 5961, 5964, 5966, 5969, 5972, 5974, 5977, 5980, 5983, 5985, 5988, 5991, 5993, 5996, 5999]);
 
   // var bcl = BclCalendars.hebrew;
   var minYear = 5343; //bcl.GetYear(bcl.MinSupportedDateTime);
@@ -119,7 +119,7 @@ void SetYear(String startText, int years, String expectedEndText)
   var civil = CalendarSystem.hebrewCivil;
   var scriptural = CalendarSystem.hebrewScriptural;
   var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
-      .withTemplateValue(new LocalDate(5774, 1, 1, scriptural)); // Sample value in 2014 ISO
+      .withTemplateValue(LocalDate(5774, 1, 1, scriptural)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
   var expectedEnd = pattern.parse(expectedEndText).value;
@@ -136,7 +136,7 @@ void AddMonths_MonthsBetween(String startText, int months, String expectedEndTex
 {
   var civil = CalendarSystem.hebrewCivil;
   var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
-      .withTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
+      .withTemplateValue(LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
   var expectedEnd = pattern.parse(expectedEndText).value;
@@ -150,7 +150,7 @@ void MonthsBetween(String startText, int expectedMonths, String endText)
 {
   var civil = CalendarSystem.hebrewCivil;
   var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
-      .withTemplateValue(new LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
+      .withTemplateValue(LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
   var end = pattern.parse(endText).value;
@@ -161,8 +161,8 @@ void MonthsBetween(String startText, int expectedMonths, String endText)
 void MonthsBetween_TimeOfDay()
 {
   var civil = CalendarSystem.hebrewCivil;
-  var start = new LocalDateTime(5774, 5, 10, 15, 0, 0, calendar: civil); // 3pm
-  var end = new LocalDateTime(5774, 7, 10, 5, 0, 0, calendar: civil); // 5am
+  var start = LocalDateTime(5774, 5, 10, 15, 0, 0, calendar: civil); // 3pm
+  var end = LocalDateTime(5774, 7, 10, 5, 0, 0, calendar: civil); // 5am
   // Would be 2, but the start time is later than the end time.
   expect(1, Period.differenceBetweenDateTime(start, end, PeriodUnits.months).months);
 }
@@ -172,7 +172,7 @@ void MonthsBetween_TimeOfDay()
 @TestCase(const [HebrewMonthNumbering.scriptural])
 void DayOfYearAndReverse(HebrewMonthNumbering numbering)
 {
-  var calculator = new HebrewYearMonthDayCalculator(numbering);
+  var calculator = HebrewYearMonthDayCalculator(numbering);
   for (int year = 5400; year < 5419; year++)
   {
     int daysInYear = calculator.getDaysInYear(year);
@@ -187,8 +187,8 @@ void DayOfYearAndReverse(HebrewMonthNumbering numbering)
 @Test()
 void GetDaysSinceEpoch()
 {
-  var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural);
-  var unixEpoch = new YearMonthDay(5730, 10, 23);
+  var calculator = HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural);
+  var unixEpoch = YearMonthDay(5730, 10, 23);
   expect(0, calculator.getDaysSinceEpoch(unixEpoch));
 }
 
@@ -196,22 +196,22 @@ void GetDaysSinceEpoch()
 void DaysAtStartOfYear()
 {
   // These are somewhat random values used when diagnosing an issue.
-  var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural);
+  var calculator = HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural);
   expect(-110, calculator.getStartOfYearInDays(5730));
   expect(273, calculator.getStartOfYearInDays(5731));
   expect(-140735, calculator.getStartOfYearInDays(5345));
-  expect(new YearMonthDay(5345, 1, 1), calculator.getYearMonthDayFromDaysSinceEpoch(-140529));
+  expect(YearMonthDay(5345, 1, 1), calculator.getYearMonthDayFromDaysSinceEpoch(-140529));
 }
 
 @Test()
 void GetDaysInYearCrossCheck() {
-  var calculator = new HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil);
+  var calculator = HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil);
   for (int year = calculator.minYear; year <= calculator.maxYear; year++) {
     // int sum = Enumerable.Range(1, calculator.GetMonthsInYear(year))
     //    .Sum(month => calculator.GetDaysInMonth(year, month));
     // expect(sum, calculator.GetDaysInYear(year), "Days in {0}", year);
 
-    int sum = new Iterable
+    int sum = Iterable
         .generate(calculator.getMonthsInYear(year), (i) => i + 1)
         .map((month) => calculator.getDaysInMonth(year, month))
         .reduce((a, b) => a + b);

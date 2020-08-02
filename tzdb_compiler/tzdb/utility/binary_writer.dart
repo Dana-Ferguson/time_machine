@@ -101,7 +101,7 @@ class BinaryWriter {
   }
 
   factory BinaryWriter.fromFile(String path) {
-    var file = new io.File(path);
+    var file = io.File(path);
     return BinaryWriter(file.openWrite());
   }
 

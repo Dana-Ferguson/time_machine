@@ -17,13 +17,13 @@ class _Constructor {
   static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
     if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized;
 
-    var _monthStartDays = new List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
-    var _yearStartDays = new List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
+    var _monthStartDays = List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
+    var _yearStartDays = List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
 
     // It's generally a really bad idea to create an instance before the static initializer
     // has completed, but we know its safe because we're only using a very restricted set of methods.
     // ^^^ We're using a flag to prevent a recursive tragedy
-    var instance = new GregorianYearMonthDayCalculator();
+    var instance = GregorianYearMonthDayCalculator();
     for (int year = _firstOptimizedYear; year <= _lastOptimizedYear; year++) {
       int yearStart = instance.calculateStartOfYearDays(year);
       _yearStartDays[year - _firstOptimizedYear] = yearStart;
@@ -105,7 +105,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
     }
     int month = startOfMonth ~/ 29 + 1;
     int dayOfMonth = d - startOfMonth;
-    return new YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.iso);
+    return YearMonthDayCalendar(year, month, dayOfMonth, CalendarOrdinal.iso);
   }
 
   GregorianYearMonthDayCalculator() : super(minGregorianYear, maxGregorianYear, _averageDaysPer10Years, -719162) {

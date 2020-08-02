@@ -19,10 +19,10 @@ CalendarSystem Julian = CalendarSystem.julian;
 @Test()
 void GetMaxYearOfEra()
 {
-  LocalDate date = new LocalDate(Julian.maxYear, 1, 1, Julian);
+  LocalDate date = LocalDate(Julian.maxYear, 1, 1, Julian);
   expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.common));
   expect(Era.common, date.era);
-  date = new LocalDate(Julian.minYear, 1, 1, Julian);
+  date = LocalDate(Julian.minYear, 1, 1, Julian);
   expect(Julian.minYear, date.year);
   expect(date.yearOfEra, Julian.getMaxYearOfEra(Era.beforeCommon));
   expect(Era.beforeCommon, date.era);
@@ -31,10 +31,10 @@ void GetMaxYearOfEra()
 @Test()
 void GetMinYearOfEra()
 {
-  LocalDate date = new LocalDate(1, 1, 1, Julian);
+  LocalDate date = LocalDate(1, 1, 1, Julian);
   expect(date.yearOfEra, Julian.getMinYearOfEra(Era.common));
   expect(Era.common, date.era);
-  date = new LocalDate(0, 1, 1, Julian);
+  date = LocalDate(0, 1, 1, Julian);
   expect(date.yearOfEra, Julian.getMinYearOfEra(Era.beforeCommon));
   expect(Era.beforeCommon, date.era);
 }
@@ -53,7 +53,7 @@ void GetAbsoluteYear()
 void EraProperty()
 {
   CalendarSystem calendar = CalendarSystem.julian;
-  LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar: calendar);
+  LocalDateTime startOfEra = LocalDateTime(1, 1, 1, 0, 0, 0, calendar: calendar);
   expect(Era.common, startOfEra.era);
   expect(Era.beforeCommon, startOfEra.addMicroseconds(-1).era);
 }

@@ -29,7 +29,7 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
   IPattern<AnnualDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in AnnualDatePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing 
@@ -46,8 +46,8 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket>(formatInfo,
-            () => new AnnualDateParseBucket(_templateValue));
+    var patternBuilder = SteppedPatternBuilder<AnnualDate, AnnualDateParseBucket>(formatInfo,
+            () => AnnualDateParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
     return patternBuilder.build(_templateValue);
@@ -65,7 +65,7 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
         builder.addFormatLeftPad(count, (value) => value.day, assumeNonNegative: true, assumeFitsInCount: count == 2);
         break;
       default:
-        throw new StateError/*InvalidOperationException*/("Invalid count!");
+        throw StateError/*InvalidOperationException*/("Invalid count!");
     }
     builder.addField(field, pattern.current);
   }
@@ -96,7 +96,7 @@ class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
       return IParseResult.dayOfMonthOutOfRangeNoYear<AnnualDate>(text, day, monthOfYearNumeric);
     }
 
-    return ParseResult.forValue<AnnualDate>(new AnnualDate(monthOfYearNumeric, day));
+    return ParseResult.forValue<AnnualDate>(AnnualDate(monthOfYearNumeric, day));
   }
 
   // PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText

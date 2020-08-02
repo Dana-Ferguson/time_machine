@@ -72,7 +72,7 @@ class DateInterval {
   /// * [ArgumentException]: [date] is not in the same
   /// calendar as the start and end date of this interval.
   bool contains(LocalDate date) {
-    if (date == null) throw new ArgumentError.notNull('date');
+    if (date == null) throw ArgumentError.notNull('date');
     Preconditions.checkArgument(date.calendar == start.calendar, 'date', "The date to check must be in the same calendar as the start and end dates");
     return start <= date && date <= end;
   }
@@ -126,8 +126,8 @@ class DateInterval {
   DateInterval intersection(DateInterval interval) {
     return containsInterval(interval) ? interval
         : interval.containsInterval(this) ? this
-        : interval.contains(start) ? new DateInterval(start, interval.end)
-        : interval.contains(end) ? new DateInterval(interval.start, end)
+        : interval.contains(start) ? DateInterval(start, interval.end)
+        : interval.contains(end) ? DateInterval(interval.start, end)
         : null;
   }
 
@@ -153,7 +153,7 @@ class DateInterval {
     // but with fewer operations.
     return IPeriod.daysBetween(_start, _end) >= length + interval.length
         ? null
-        : new DateInterval(_start, _end);
+        : DateInterval(_start, _end);
   }
 
   void _validateInterval(DateInterval interval) {

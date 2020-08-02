@@ -30,11 +30,11 @@ void MaxValue()
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalTime(0, 0, 0).hourOf12HourClock);
-  expect(1, new LocalTime(1, 0, 0).hourOf12HourClock);
-  expect(12, new LocalTime(12, 0, 0).hourOf12HourClock);
-  expect(1, new LocalTime(13, 0, 0).hourOf12HourClock);
-  expect(11, new LocalTime(23, 0, 0).hourOf12HourClock);
+  expect(12, LocalTime(0, 0, 0).hourOf12HourClock);
+  expect(1, LocalTime(1, 0, 0).hourOf12HourClock);
+  expect(12, LocalTime(12, 0, 0).hourOf12HourClock);
+  expect(1, LocalTime(13, 0, 0).hourOf12HourClock);
+  expect(11, LocalTime(23, 0, 0).hourOf12HourClock);
 }
 
 ///   Using the default constructor is equivalent to midnight
@@ -42,15 +42,15 @@ void ClockHourOfHalfDay()
 void DefaultConstructor()
 {
   // todo: new LocalTime();
-  var actual = new LocalTime(0, 0, 0);
+  var actual = LocalTime(0, 0, 0);
   expect(LocalTime.midnight, actual);
 }
 
 @Test()
 void Max()
 {
-  LocalTime x = new LocalTime(5, 10, 0);
-  LocalTime y = new LocalTime(6, 20, 0);
+  LocalTime x = LocalTime(5, 10, 0);
+  LocalTime y = LocalTime(6, 20, 0);
   expect(y, LocalTime.max(x, y));
   expect(y, LocalTime.max(y, x));
   expect(x, LocalTime.max(x, LocalTime.minValue));
@@ -62,8 +62,8 @@ void Max()
 @Test()
 void Min()
 {
-  LocalTime x = new LocalTime(5, 10, 0);
-  LocalTime y = new LocalTime(6, 20, 0);
+  LocalTime x = LocalTime(5, 10, 0);
+  LocalTime y = LocalTime(6, 20, 0);
   expect(x, LocalTime.min(x, y));
   expect(x, LocalTime.min(y, x));
   expect(LocalTime.minValue, LocalTime.min(x, LocalTime.minValue));
@@ -75,9 +75,9 @@ void Min()
 @Test()
 void WithOffset()
 {
-  var time = new LocalTime(3, 45, 12, ms: 34);
-  var offset = new Offset.hours(5);
-  var expected = new OffsetTime(time, offset);
+  var time = LocalTime(3, 45, 12, ms: 34);
+  var offset = Offset.hours(5);
+  var expected = OffsetTime(time, offset);
   expect(expected, time.withOffset(offset));
 }
 

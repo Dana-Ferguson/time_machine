@@ -31,12 +31,12 @@ class PartialZoneIntervalMap
 
   /// Builds a PartialZoneIntervalMap for a single zone interval with the given name, start, end, wall offset and daylight savings.
   factory PartialZoneIntervalMap.forSingleZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings) =>
-      new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.newZoneInterval(name, start, end, wallOffset, savings));
+      PartialZoneIntervalMap.forZoneInterval(IZoneInterval.newZoneInterval(name, start, end, wallOffset, savings));
 
   /// Builds a PartialZoneIntervalMap wrapping the given zone interval, taking its start and end as the start and end of
   /// the portion of the time line handled by the partial map.
   factory PartialZoneIntervalMap.forZoneInterval(ZoneInterval interval) =>
-      new PartialZoneIntervalMap(IZoneInterval.rawStart(interval), IZoneInterval.rawEnd(interval), new SingleZoneIntervalMap(interval));
+      PartialZoneIntervalMap(IZoneInterval.rawStart(interval), IZoneInterval.rawEnd(interval), SingleZoneIntervalMap(interval));
 
   ZoneInterval getZoneInterval(Instant instant)
   {
@@ -62,13 +62,13 @@ class PartialZoneIntervalMap
   /// Returns a partial zone interval map equivalent to this one, but with the given start point.
   PartialZoneIntervalMap withStart(Instant start)
   {
-    return new PartialZoneIntervalMap(start, this.end, this._map);
+    return PartialZoneIntervalMap(start, this.end, this._map);
   }
 
   /// Returns a partial zone interval map equivalent to this one, but with the given end point.
   PartialZoneIntervalMap withEnd(Instant end)
   {
-    return new PartialZoneIntervalMap(this.start, end, this._map);
+    return PartialZoneIntervalMap(this.start, end, this._map);
   }
 
   /// Converts a sequence of PartialZoneIntervalMaps covering the whole time line into an IZoneIntervalMap.
@@ -78,7 +78,7 @@ class PartialZoneIntervalMap
   /// are coalesced in the resulting map.
   static ZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
-    var coalescedMaps = new List<PartialZoneIntervalMap>();
+    var coalescedMaps = List<PartialZoneIntervalMap>();
     PartialZoneIntervalMap current;
     for (var next in maps)
     {
@@ -113,13 +113,13 @@ class PartialZoneIntervalMap
         // go on until the end of the next one instead.
         if (current._isSingleInterval && next._isSingleInterval)
         {
-          current = new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, next.end));
+          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, next.end));
         }
         else if (current._isSingleInterval)
         {
           // The next map has at least one transition. Add a single new map for the portion of time from the
           // start of current to the first transition in next, then continue on with the next map, starting at the first transition.
-          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
+          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
           current = next.withStart(firstIntervalOfNext.end);
         }
         else if (next._isSingleInterval)
@@ -127,14 +127,14 @@ class PartialZoneIntervalMap
           // The current map as at least one transition. Add a version of that, clamped to end at the final transition,
           // then continue with a new map which takes in the last portion of the current and the whole of next.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          current = new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withStart(firstIntervalOfNext, lastIntervalOfCurrent.start));
+          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withStart(firstIntervalOfNext, lastIntervalOfCurrent.start));
         }
         else
         {
           // Transitions in both maps. Add the part of current before the last transition, and a single map containing
           // the coalesced interval across the boundary, then continue with the next map, starting at the first transition.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          coalescedMaps.add(new PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
+          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
           current = next.withStart(firstIntervalOfNext.end);
         }
       }
@@ -144,7 +144,7 @@ class PartialZoneIntervalMap
 
     // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
     coalescedMaps.add(current);
-    return new _CombinedPartialZoneIntervalMap(coalescedMaps.toList());
+    return _CombinedPartialZoneIntervalMap(coalescedMaps.toList());
   }
 }
 
@@ -164,6 +164,6 @@ class _CombinedPartialZoneIntervalMap implements ZoneIntervalMap {
         return partialMap.getZoneInterval(instant);
       }
     }
-    throw new StateError("Instant not contained in any map");
+    throw StateError("Instant not contained in any map");
   }
 }

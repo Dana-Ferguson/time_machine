@@ -22,7 +22,7 @@ abstract class TextCursor {
 
   /// A nul character. This character is not allowed in any parsable string and is used to
   /// indicate that the current character is not set.
-  static final String nul = new String.fromCharCode(0);
+  static final String nul = String.fromCharCode(0);
 
   /// Initializes a new instance to parse the given value.
   // Validated by caller.

@@ -70,7 +70,7 @@ class TimePattern implements IPattern<Time> {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.timePatternParser.parsePattern(patternText);
-    return new TimePattern._(patternText, pattern);
+    return TimePattern._(patternText, pattern);
   }
 
   /// Creates a pattern for the given pattern text and culture.

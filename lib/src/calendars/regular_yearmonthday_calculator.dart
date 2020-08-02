@@ -28,7 +28,7 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
     int currentMonth = yearMonthDay.month;
     int currentDay = yearMonthDay.day;
     int newDay = getDaysInMonth(year, currentMonth);
-    return new YearMonthDay(year, currentMonth, math.min(currentDay, newDay));
+    return YearMonthDay(year, currentMonth, math.min(currentDay, newDay));
   }
 
   @override YearMonthDay addMonths(YearMonthDay yearMonthDay, int months) {
@@ -69,7 +69,7 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
     int dayToUse = yearMonthDay.day;
     int maxDay = getDaysInMonth(yearToUse, monthToUse);
     dayToUse = math.min(dayToUse, maxDay);
-    return new YearMonthDay(yearToUse, monthToUse, dayToUse);
+    return YearMonthDay(yearToUse, monthToUse, dayToUse);
   }
 
   // todo: this was ported about as wrong as possible ... check the other calculators?

@@ -64,7 +64,7 @@ class TzdbStreamWriter {
       Map<String, String> additionalWindowsNameToIdMappings,
       BinaryWriter stream)
   {
-    _FieldCollection fields = new _FieldCollection();
+    _FieldCollection fields = _FieldCollection();
 
     var zones = database.generateDateTimeZones().toList();
     var stringPool = _createOptimizedStringPool(zones, database.zoneLocations, database.zone1970Locations, cldrWindowsZones);
@@ -79,7 +79,7 @@ class TzdbStreamWriter {
     fields.addField(TzdbStreamFieldId.tzdbVersion, null).writer.writeString(database.version);
 
     // Normalize the aliases
-    var timeZoneMap = new Map<String, String>();
+    var timeZoneMap = Map<String, String>();
     for (var key in database.aliases.keys)
     {
       var value = database.aliases[key];
@@ -161,7 +161,7 @@ class TzdbStreamWriter {
       }
       else
       {
-        throw new ArgumentError("Unserializable DateTimeZone type ${zone.runtimeType}");
+        throw ArgumentError("Unserializable DateTimeZone type ${zone.runtimeType}");
       }
     }
   }
@@ -176,7 +176,7 @@ class TzdbStreamWriter {
       Iterable<TzdbZone1970Location> zone1970Locations,
       WindowsZones cldrWindowsZones)
   {
-    var optimizingWriter = new _StringPoolOptimizingFakeWriter();
+    var optimizingWriter = _StringPoolOptimizingFakeWriter();
     for (var zone in zones)
     {
       optimizingWriter.writeString(zone.id);
@@ -208,7 +208,7 @@ class TzdbStreamWriter {
 /// </summary>
 class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
 {
-  final List<String> _allStrings = new List<String>();
+  final List<String> _allStrings = List<String>();
 
   List<String> createPool()  {
     // _allStrings.GroupBy(x => x);
@@ -270,8 +270,8 @@ class _FieldData {
   _FieldData._(this.fieldId, this.stream, this.writer);
 
   factory _FieldData(TzdbStreamFieldId fieldId, List<String> stringPool) {
-    var stream = new MemoryStream();
-    var writer = new DateTimeZoneWriter(BinaryWriter(stream), stringPool);
+    var stream = MemoryStream();
+    var writer = DateTimeZoneWriter(BinaryWriter(stream), stringPool);
     return _FieldData._(fieldId, stream, writer);
   }
 
@@ -294,7 +294,7 @@ class _FieldCollection
 
   _FieldData addField(TzdbStreamFieldId fieldNumber, List<String> stringPool)
   {
-    var ret = new _FieldData(fieldNumber, stringPool);
+    var ret = _FieldData(fieldNumber, stringPool);
     fields.add(ret);
     return ret;
   }

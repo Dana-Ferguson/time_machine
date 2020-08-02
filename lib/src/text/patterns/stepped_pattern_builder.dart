@@ -30,9 +30,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _ZCodeUnit = 90;
 
   // #Hack: this accommodates IPostPatternParseFormatAction
-  final List<Object> _formatActions = new List<Object>();
+  final List<Object> _formatActions = List<Object>();
   // final List<Function(TResult, StringBuffer)> _formatActions = new List<Function(TResult, StringBuffer)>();
-  final List<ParseAction<TResult, TBucket>> _parseActions = new List<ParseAction<TResult, TBucket>>();
+  final List<ParseAction<TResult, TBucket>> _parseActions = List<ParseAction<TResult, TBucket>>();
   final TBucket Function() _bucketProvider;
   PatternFields _usedFields = PatternFields.none;
   bool _formatOnly = false;
@@ -62,7 +62,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// character in the pattern to build up the steps. If any handler fails,
   /// that failure is returned - otherwise the return value is null.
   void parseCustomPattern(String patternText, Map<String, CharacterHandler<TResult, TBucket>> characterHandlers) {
-    var patternCursor = new PatternCursor(patternText);
+    var patternCursor = PatternCursor(patternText);
 
     // Now iterate over the pattern.
     while (patternCursor.moveNext()) {
@@ -89,11 +89,11 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   // the patterns are parsed ensures we never end up with any invalid individual fields
   // (e.g. time fields within a date pattern).
     if ((_usedFields & (PatternFields.era | PatternFields.yearOfEra)) == PatternFields.era) {
-      throw new InvalidPatternError(TextErrorMessages.eraWithoutYearOfEra);
+      throw InvalidPatternError(TextErrorMessages.eraWithoutYearOfEra);
     }
     /*const*/ PatternFields calendarAndEra = PatternFields.era | PatternFields.calendar;
     if ((_usedFields & calendarAndEra) == calendarAndEra) {
-      throw new InvalidPatternError(TextErrorMessages.calendarAndEra);
+      throw InvalidPatternError(TextErrorMessages.calendarAndEra);
     }
   }
 
@@ -104,12 +104,12 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     // If we've got an embedded date and any *other* date fields, throw.
     if (_usedFields.hasAny(PatternFields.embeddedDate) &&
         _usedFields.hasAny(PatternFields.allDateFields & ~PatternFields.embeddedDate)) {
-      throw new InvalidPatternError(TextErrorMessages.dateFieldAndEmbeddedDate);
+      throw InvalidPatternError(TextErrorMessages.dateFieldAndEmbeddedDate);
     }
     // Ditto for time
     if (_usedFields.hasAny(PatternFields.embeddedTime) &&
         _usedFields.hasAny(PatternFields.allTimeFields & ~PatternFields.embeddedTime)) {
-      throw new InvalidPatternError(TextErrorMessages.timeFieldAndEmbeddedTime);
+      throw InvalidPatternError(TextErrorMessages.timeFieldAndEmbeddedTime);
     }
 
     List<Function(TResult, StringBuffer)> formatDelegate = [];
@@ -123,7 +123,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     // IPostPatternParseFormatAction postAction = formatAction.Target as IPostPatternParseFormatAction;
     // formatDelegate.add(postAction == null ? formatAction : postAction.BuildFormatAction(usedFields));
     }
-    return new _SteppedPattern(formatDelegate, _formatOnly ? null : _parseActions, _bucketProvider, _usedFields, sample);
+    return _SteppedPattern(formatDelegate, _formatOnly ? null : _parseActions, _bucketProvider, _usedFields, sample);
   }
 
   /// Registers that a pattern field has been used in this pattern, and throws a suitable error
@@ -219,7 +219,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
   static void handleBackslash<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     if (!pattern.moveNext()) {
-      throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
+      throw InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
     }
     builder.addLiteral2(pattern.current, IParseResult.escapedCharacterMismatch);
   }
@@ -232,9 +232,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         // Handle the next character as normal
         return;
       }
-      throw new InvalidPatternError(TextErrorMessages.percentDoubled);
+      throw InvalidPatternError(TextErrorMessages.percentDoubled);
     }
-    throw new InvalidPatternError(TextErrorMessages.percentAtEndOfString);
+    throw InvalidPatternError(TextErrorMessages.percentAtEndOfString);
   }
 
   /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
@@ -272,7 +272,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   void addParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo compareInfo, Iterable<String> textValues1,
       [Iterable<String> textValues2]) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      var matchCursor = new _FindLongestMatchCursor();
+      var matchCursor = _FindLongestMatchCursor();
 
       _findLongestMatch(compareInfo, str, textValues1, matchCursor);
       if (textValues2 != null) _findLongestMatch(compareInfo, str, textValues2, matchCursor);
@@ -412,7 +412,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
           var templateTime = timeBucketExtractor(sampleBucket).templateValue;
           var templateDate = dateBucketExtractor(sampleBucket).templateValue;
           if (dateTimeExtractor == null) {
-            throw new InvalidPatternError(TextErrorMessages.invalidEmbeddedPatternType);
+            throw InvalidPatternError(TextErrorMessages.invalidEmbeddedPatternType);
           }
           addField(PatternFields.embeddedDate, 'l');
           addField(PatternFields.embeddedTime, 'l');
@@ -440,7 +440,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
         addEmbeddedTimePattern('l', embeddedPatternText, timeBucketExtractor, timeExtractor);
         break;
       default:
-        throw new StateError("Bug in Time Machine: embedded pattern type wasn't date, time, or date+time");
+        throw StateError("Bug in Time Machine: embedded pattern type wasn't date, time, or date+time");
     }
   }
 
@@ -528,11 +528,11 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     // Format the sample value to work out the expected length, so we
     // can use that when creating a StringBuffer. This will definitely not always
     // be appropriate, but it's a start.
-    StringBuffer builder = new StringBuffer();
+    StringBuffer builder = StringBuffer();
     formatActions.forEach((formatAction) => formatAction(sample, builder));
     var expectedLength = builder.length;
 
-    return new _SteppedPattern<TResult, TBucket>._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
+    return _SteppedPattern<TResult, TBucket>._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
   }
 
   ParseResult<TResult> parse(String text)
@@ -550,7 +550,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
       return IParseResult.valueStringEmpty.convertError();
     }
 
-    var valueCursor = new ValueCursor(text);
+    var valueCursor = ValueCursor(text);
     // Prime the pump... the value cursor ends up *before* the first character, but
     // our steps always assume it's *on* the right character.
     valueCursor.moveNext();
@@ -570,7 +570,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   String format(TResult value)
   {
     // if StringBuffer gets an initial size: pass in expectedLength
-    StringBuffer builder = new StringBuffer();
+    StringBuffer builder = StringBuffer();
     // This will call all the actions in the multicast delegate.
      _formatActions.forEach((formatAction) => formatAction(value, builder));
     /* todo: remove me

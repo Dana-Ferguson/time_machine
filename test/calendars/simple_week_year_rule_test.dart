@@ -23,7 +23,7 @@ void RoundtripFirstDay_Iso7()
   // week, Tuesday January 1st -9998 is in week year -9999. We should be able to
   // round-trip.
   var rule = WeekYearRules.forMinDaysInFirstWeek(7);
-  var date = new LocalDate(-9998, 1, 1);
+  var date = LocalDate(-9998, 1, 1);
   expect(date, rule.getLocalDate(
       rule.getWeekYear(date),
       rule.getWeekOfWeekYear(date),
@@ -38,7 +38,7 @@ void RoundtripLastDay_Iso1()
   // week, Friday December 31st 9999 is in week year 10000. We should be able to
   // round-trip.
   var rule = WeekYearRules.forMinDaysInFirstWeek(1);
-  var date = new LocalDate(9999, 12, 31);
+  var date = LocalDate(9999, 12, 31);
   expect(date, rule.getLocalDate(
       rule.getWeekYear(date),
       rule.getWeekOfWeekYear(date),
@@ -84,7 +84,7 @@ void OutOfRange_ValidWeekYearAndWeek_TooLate()
 @TestCase(const [2005, 1, 2, 2004, 53, DayOfWeek.sunday])
 void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
 {
-  var date = new LocalDate(year, month, day);
+  var date = LocalDate(year, month, day);
   expect(weekYear, WeekYearRules.iso.getWeekYear(date));
   expect(weekOfWeekYear, WeekYearRules.iso.getWeekOfWeekYear(date));
   expect(dayOfWeek, date.dayOfWeek);
@@ -125,7 +125,7 @@ void GetWeeksInWeekYear(int weekYear, int expectedResult)
 @TestCase(const [2010, 1, 4, 1])
 void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekOfWeekYear)
 {
-  var date = new LocalDate(year, month, day);
+  var date = LocalDate(year, month, day);
   expect(weekOfWeekYear, WeekYearRules.iso.getWeekOfWeekYear(date));
 }
 
@@ -139,7 +139,7 @@ void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekO
 @TestCase(const [2006, DayOfWeek.sunday, 1])
 void Gregorian(int year, DayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekForSameWeekYear)
 {
-  var startOfCalendarYear = new LocalDate(year, 1, 1);
+  var startOfCalendarYear = LocalDate(year, 1, 1);
   expect(firstDayOfYear, startOfCalendarYear.dayOfWeek);
 
   // Rules which put the first day of the calendar year into the same week year
@@ -168,7 +168,7 @@ void Gregorian(int year, DayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekForS
 @TestCase(const [2007, 12, 31, 2008, 1, DayOfWeek.monday])
 void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
 {
-  var viaCalendar = new LocalDate(year, month, day);
+  var viaCalendar = LocalDate(year, month, day);
   var rule = WeekYearRules.iso;
   expect(weekYear, rule.getWeekYear(viaCalendar));
   expect(weekOfWeekYear, rule.getWeekOfWeekYear(viaCalendar));
@@ -194,10 +194,10 @@ void HebrewCalendar(int year, DayOfWeek expectedFirstDay,
     int isoYear, int isoMonth, int isoDay, // Mostly for documentation
     int expectedWeeks, int expectedWeekYearOfFirstDay, int expectedWeekOfWeekYearOfFirstDay)
 {
-  var civilDate = new LocalDate(year, 1, 1, CalendarSystem.hebrewCivil);
+  var civilDate = LocalDate(year, 1, 1, CalendarSystem.hebrewCivil);
   var rule = WeekYearRules.iso;
   expect(expectedFirstDay, civilDate.dayOfWeek);
-  expect(civilDate.withCalendar(CalendarSystem.iso), new LocalDate(isoYear, isoMonth, isoDay));
+  expect(civilDate.withCalendar(CalendarSystem.iso), LocalDate(isoYear, isoMonth, isoDay));
   expect(expectedWeeks, rule.getWeeksInWeekYear(year, CalendarSystem.hebrewCivil));
   expect(expectedWeekYearOfFirstDay, rule.getWeekYear(civilDate));
   expect(expectedWeekOfWeekYearOfFirstDay, rule.getWeekOfWeekYear(civilDate));
@@ -229,7 +229,7 @@ void NonMondayFirstDayOfWeek(int minDaysInFirstWeek, DayOfWeek firstDayOfWeek,
 {
   var rule = WeekYearRules.forMinDaysInFirstWeek(minDaysInFirstWeek, firstDayOfWeek);
   var actual = rule.getLocalDate(weekYear, week, dayOfWeek, CalendarSystem.iso);
-  var expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+  var expected = LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
   expect(weekYear, rule.getWeekYear(actual));
   expect(week, rule.getWeekOfWeekYear(actual));

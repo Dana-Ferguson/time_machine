@@ -20,13 +20,13 @@ import 'package:time_machine/src/time_machine_internal.dart';
 class Offset implements Comparable<Offset> {
 
   /// An offset of zero seconds - effectively the permanent offset for UTC.
-  static final Offset zero = new Offset(0);
+  static final Offset zero = Offset(0);
 
   /// The minimum permitted offset; 18 hours before UTC.
-  static final Offset minValue = new Offset.hours(-18);
+  static final Offset minValue = Offset.hours(-18);
 
   /// The maximum permitted offset; 18 hours after UTC.
-  static final Offset maxValue = new Offset.hours(18);
+  static final Offset maxValue = Offset.hours(18);
 
   static const int _minHours = -18;
   static const int _maxHours = 18;
@@ -90,7 +90,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] instance with a negated value.
   Offset operator -() =>
   // Guaranteed to still be in range.
-  new Offset._(-inSeconds);
+  Offset._(-inSeconds);
 
   /// Returns the negation of the specified offset. This is the method form of the unary minus operator.
   ///
@@ -107,7 +107,7 @@ class Offset implements Comparable<Offset> {
   /// Returns: A new [Offset] representing the sum of the given values.
   ///
   /// * [RangeError]: The result of the operation is outside the range of Offset.
-  Offset operator +(Offset other) => new Offset(inSeconds + other.inSeconds);
+  Offset operator +(Offset other) => Offset(inSeconds + other.inSeconds);
 
 
   /// Adds one Offset to another. Friendly alternative to `operator+()`.
@@ -140,7 +140,7 @@ class Offset implements Comparable<Offset> {
   ///
   /// * [RangeError]: The result of the operation is outside the range of Offset.
   Offset operator -(Offset other) =>
-      new Offset(inSeconds - other.inSeconds);
+      Offset(inSeconds - other.inSeconds);
 
 
   /// Subtracts one Offset from another. Friendly alternative to `operator-()`.
@@ -251,7 +251,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18] hours.
   factory Offset([int seconds = 0]) {
     Preconditions.checkArgumentRange('seconds', seconds, _minSeconds, _maxSeconds);
-    return new Offset._(seconds);
+    return Offset._(seconds);
   }
 
   /// Returns an offset for the specified number of hours, which may be negative.
@@ -264,7 +264,7 @@ class Offset implements Comparable<Offset> {
   /// [-18, +18].
   factory Offset.hours(int hours) {
     Preconditions.checkArgumentRange('hours', hours, _minHours, _maxHours);
-    return new Offset._(hours * TimeConstants.secondsPerHour);
+    return Offset._(hours * TimeConstants.secondsPerHour);
   }
 
   /// Returns an offset for the specified number of hours and minutes.
@@ -281,13 +281,13 @@ class Offset implements Comparable<Offset> {
   ///
   /// [RangeError]: The result of the operation is outside the range of Offset.
   factory Offset.hoursAndMinutes(int hours, int minutes) =>
-      new Offset(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
+      Offset(hours * TimeConstants.secondsPerHour + minutes * TimeConstants.secondsPerMinute);
 
   /// Converts this offset to a [Duration] value.
-  Duration toDuration() => new Duration(seconds: inSeconds);
+  Duration toDuration() => Duration(seconds: inSeconds);
 
   /// Converts this offset to a [Time] value.
-  Time toTime() => new Time(seconds: inSeconds);
+  Time toTime() => Time(seconds: inSeconds);
 
   /// Converts the given [Duration] to an offset, with fractional seconds truncated.
   ///
@@ -299,7 +299,7 @@ class Offset implements Comparable<Offset> {
   factory Offset.duration(Duration duration) {
     int seconds = duration.inSeconds;
     Preconditions.checkArgumentRange('duration', seconds, _minSeconds, _maxSeconds);
-    return new Offset(seconds);
+    return Offset(seconds);
   }
 
   /// Converts the given [Time] to an offset, with fractional seconds truncated.
@@ -312,6 +312,6 @@ class Offset implements Comparable<Offset> {
   factory Offset.time(Time time) {
     int seconds = time.totalSeconds.floor();
     Preconditions.checkArgumentRange('time', seconds, _minSeconds, _maxSeconds);
-    return new Offset(seconds);
+    return Offset(seconds);
   }
 }

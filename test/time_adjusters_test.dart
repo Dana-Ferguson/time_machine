@@ -16,24 +16,24 @@ Future main() async {
 @Test()
 void TruncateToSecond()
 {
-  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
-  var end = new LocalTime(7, 4, 30);
+  var start = LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
+  var end = LocalTime(7, 4, 30);
   expect(end, TimeAdjusters.truncateToSecond(start));
 }
 
 @Test()
 void TruncateToMinute()
 {
-  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
-  var end = new LocalTime(7, 4, 0);
+  var start = LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
+  var end = LocalTime(7, 4, 0);
   expect(end, TimeAdjusters.truncateToMinute(start));
 }
 
 @Test()
 void TruncateToHour()
 {
-  var start = new LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
-  var end = new LocalTime(7, 0, 0);
+  var start = LocalTime(7, 4, 30, ns: 123 * TimeConstants.nanosecondsPerMillisecond + 4567 * 100);
+  var end = LocalTime(7, 0, 0);
   expect(end, TimeAdjusters.truncateToHour(start));
 }
 

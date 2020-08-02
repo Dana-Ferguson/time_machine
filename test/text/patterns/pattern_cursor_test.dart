@@ -21,14 +21,14 @@ class PatternCursorTest extends TextCursorTestBase {
   @internal
   @override
   TextCursor MakeCursor(String value) {
-    return new PatternCursor(value);
+    return PatternCursor(value);
   }
 
   @Test()
   @TestCase(const [r"'abc\"], "Escape at end")
   @TestCase(const ["'abc"], "Missing close quote")
   void GetQuotedString_Invalid(String pattern) {
-    var cursor = new PatternCursor(pattern);
+    var cursor = PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
     expect(() => cursor.getQuotedString('\''), willThrow<InvalidPatternError>());
   }
@@ -40,7 +40,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const [r"'ab\c'", "abc"], "Escaped backslash")
   @TestCase(const [r"'ab\'c'", "ab'c"], "Escaped close quote")
   void GetQuotedString_Valid(String pattern, String expected) {
-    var cursor = new PatternCursor(pattern);
+    var cursor = PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
     String actual = cursor.getQuotedString('\'');
     expect(expected, actual);
@@ -49,7 +49,7 @@ class PatternCursorTest extends TextCursorTestBase {
 
   @Test()
   void GetQuotedString_HandlesOtherQuote() {
-    var cursor = new PatternCursor("[abc]");
+    var cursor = PatternCursor("[abc]");
     GetNextCharacter(cursor);
     String actual = cursor.getQuotedString(']');
     expect("abc", actual);
@@ -58,7 +58,7 @@ class PatternCursorTest extends TextCursorTestBase {
 
   @Test()
   void GetQuotedString_NotAtEnd() {
-    var cursor = new PatternCursor("'abc'more");
+    var cursor = PatternCursor("'abc'more");
     String openQuote = GetNextCharacter(cursor);
     String actual = cursor.getQuotedString(openQuote);
     expect("abc", actual);
@@ -72,7 +72,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const ["a", 1])
   @TestCase(const ["aaadaa", 3])
   void GetRepeatCount_Valid(String text, int expectedCount) {
-    var cursor = new PatternCursor(text);
+    var cursor = PatternCursor(text);
     expect(cursor.moveNext(), isTrue);
     int actual = cursor.getRepeatCount(10);
     expect(expectedCount, actual);
@@ -81,7 +81,7 @@ class PatternCursorTest extends TextCursorTestBase {
 
   @Test()
   void GetRepeatCount_ExceedsMax() {
-    var cursor = new PatternCursor("aaa");
+    var cursor = PatternCursor("aaa");
     expect(cursor.moveNext(), isTrue);
     expect(() => cursor.getRepeatCount(2), willThrow<InvalidPatternError>());
   }
@@ -96,7 +96,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const [r"x<a\<bc>y", r"a\<bc"], "Escaped start embedded")
   @TestCase(const [r"x<a\>bc>y", r"a\>bc"], "Escaped end embedded")
   void GetEmbeddedPattern_Valid(String pattern, String expectedEmbedded) {
-    var cursor = new PatternCursor(pattern);
+    var cursor = PatternCursor(pattern);
     cursor.moveNext();
     String embedded = cursor.getEmbeddedPattern();
     expect(expectedEmbedded, embedded);
@@ -110,7 +110,7 @@ class PatternCursorTest extends TextCursorTestBase {
   @TestCase(const ["x<oops'>'"], "Quoted end")
   @TestCase(const ["x<oops<nested>"], "Incomplete after nesting")
   void GetEmbeddedPattern_Invalid(String text) {
-    var cursor = new PatternCursor(text);
+    var cursor = PatternCursor(text);
     cursor.moveNext();
     expect(() => cursor.getEmbeddedPattern(), willThrow<InvalidPatternError>());
   }

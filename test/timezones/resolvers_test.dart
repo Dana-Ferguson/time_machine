@@ -16,13 +16,13 @@ Future main() async {
 
 
 /// Zone where the clocks go back at 1am at the start of the year 2000, back to midnight.
-SingleTransitionDateTimeZone AmbiguousZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2000, 1, 1, 0, 0), 1, 0);
+SingleTransitionDateTimeZone AmbiguousZone = SingleTransitionDateTimeZone.around(Instant.utc(2000, 1, 1, 0, 0), 1, 0);
 
 /// Zone where the clocks go forward at midnight at the start of the year 2000, to 1am.
-SingleTransitionDateTimeZone GapZone = new SingleTransitionDateTimeZone.around(new Instant.utc(2000, 1, 1, 0, 0), 0, 1);
+SingleTransitionDateTimeZone GapZone = SingleTransitionDateTimeZone.around(Instant.utc(2000, 1, 1, 0, 0), 0, 1);
 
 /// Local time which is either skipped or ambiguous, depending on the zones above.
-LocalDateTime TimeInTransition = new LocalDateTime(2000, 1, 1, 0, 20, 0);
+LocalDateTime TimeInTransition = LocalDateTime(2000, 1, 1, 0, 20, 0);
 
 @Test()
 void ReturnEarlier()
@@ -78,7 +78,7 @@ void ReturnForwardShifted()
   var resolved = Resolvers.returnForwardShifted(TimeInTransition, GapZone, mapping.earlyInterval, mapping.lateInterval);
 
   var gap = mapping.lateInterval.wallOffset.inMicroseconds - mapping.earlyInterval.wallOffset.inMicroseconds;
-  var expected = ILocalDateTime.toLocalInstant(TimeInTransition).minus(mapping.lateInterval.wallOffset).add(new Time(microseconds: gap));
+  var expected = ILocalDateTime.toLocalInstant(TimeInTransition).minus(mapping.lateInterval.wallOffset).add(Time(microseconds: gap));
   expect(expected, resolved.toInstant());
   expect(mapping.lateInterval.wallOffset, resolved.offset);
   expect(GapZone, resolved.zone);
@@ -95,17 +95,17 @@ void ThrowWhenSkipped()
 @Test()
 void CreateResolver_Unambiguous() {
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
-    /*Assert.Fail*/ throw new StateError("Shouldn't be called");
+    /*Assert.Fail*/ throw StateError("Shouldn't be called");
     /*default(ZonedDateTime);*/
   };
 
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
-    /*Assert.Fail*/ throw new StateError("Shouldn't be called");
+    /*Assert.Fail*/ throw StateError("Shouldn't be called");
     /*default(ZonedDateTime);*/
   };
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
 
-  LocalDateTime localTime = new LocalDateTime(1900, 1, 1, 0, 0, 0);
+  LocalDateTime localTime = LocalDateTime(1900, 1, 1, 0, 0, 0);
   var resolved = resolver(GapZone.mapLocal(localTime));
   expect(IZonedDateTime.trusted(localTime.withOffset(GapZone.EarlyInterval.wallOffset), GapZone), resolved);
 }
@@ -115,7 +115,7 @@ void CreateResolver_Ambiguous() {
   ZonedDateTime zoned = IZonedDateTime.trusted(TimeInTransition.addDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) => zoned;
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) {
-    /*Assert.Fail*/ throw new StateError("Shouldn't be called");
+    /*Assert.Fail*/ throw StateError("Shouldn't be called");
     /*default(ZonedDateTime);*/
   };
   var resolver = Resolvers.createMappingResolver(ambiguityResolver, skippedTimeResolver);
@@ -128,7 +128,7 @@ void CreateResolver_Ambiguous() {
 void CreateResolver_Skipped() {
   ZonedDateTime zoned = IZonedDateTime.trusted(TimeInTransition.addDays(1).withOffset(GapZone.EarlyInterval.wallOffset), GapZone);
   AmbiguousTimeResolver ambiguityResolver = (earlier, later) {
-    /*Assert.Fail*/ throw new StateError("Shouldn't be called");
+    /*Assert.Fail*/ throw StateError("Shouldn't be called");
     /*default(ZonedDateTime);*/
   };
   SkippedTimeResolver skippedTimeResolver = (local, zone, before, after) => zoned;

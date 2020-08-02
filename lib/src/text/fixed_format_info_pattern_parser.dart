@@ -18,7 +18,7 @@ class FixedFormatInfoPatternParser<T> {
   final Cache<String, IPattern<T>> _cache;
 
   FixedFormatInfoPatternParser(IPatternParser<T> patternParser, TimeMachineFormatInfo formatInfo)
-      : _cache = new Cache<String, IPattern<T>>(_cacheSize, (patternText) => patternParser.parsePattern(patternText, formatInfo)
+      : _cache = Cache<String, IPattern<T>>(_cacheSize, (patternText) => patternParser.parsePattern(patternText, formatInfo)
     // https://msdn.microsoft.com/en-us/library/system.stringcomparer.ordinal(v=vs.110).aspx
     // StringComparer object that performs a case-sensitive ordinal string comparison.
     /*StringComparer.Ordinal*/);

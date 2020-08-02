@@ -46,7 +46,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   // ignore: unused_element
   static List<int> _genTotalDaysByMonth() {
     int days = 0;
-    var totalDaysByMonth = new List<int>();
+    var totalDaysByMonth = List<int>();
     for (int i = 0; i < 12; i++) {
       // _totalDaysByMonth[i] = days;
       totalDaysByMonth.add(days);
@@ -63,7 +63,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   }
 
   factory IslamicYearMonthDayCalculator(IslamicLeapYearPattern leapYearPattern, IslamicEpoch epoch) {
-    return new IslamicYearMonthDayCalculator._(_getLeapYearPatternBits(leapYearPattern), epoch);
+    return IslamicYearMonthDayCalculator._(_getLeapYearPatternBits(leapYearPattern), epoch);
   }
 
   IslamicYearMonthDayCalculator._(this._leapYearPatternBits, IslamicEpoch epoch)
@@ -89,7 +89,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
       month = ((dayOfYearZeroBased * 2) ~/ _monthPairLength) + 1;
       day = ((dayOfYearZeroBased % _monthPairLength) % _longMonthLength) + 1;
     }
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 
   @override bool isLeapYear(int year) {
@@ -149,7 +149,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
       case IslamicLeapYearPattern.habashAlHasib:
         return 153692453; // 0b001001001010010010100100100101
       default:
-        throw new ArgumentError.value(leapYearPattern.index, 'leapYearPattern');
+        throw ArgumentError.value(leapYearPattern.index, 'leapYearPattern');
     }
   }
 
@@ -162,7 +162,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
       case IslamicEpoch.civil:
         return _daysAtCivilEpoch;
       default:
-        throw new ArgumentError.value(epoch.index, 'epoch');
+        throw ArgumentError.value(epoch.index, 'epoch');
     }
   }
 }

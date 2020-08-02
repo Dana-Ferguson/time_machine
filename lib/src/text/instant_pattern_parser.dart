@@ -21,7 +21,7 @@ class InstantPatternParser implements IPatternParser<Instant> {
   IPattern<Instant> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing
@@ -40,7 +40,7 @@ class InstantPatternParser implements IPatternParser<Instant> {
     }
 
     IPattern<LocalDateTime> localResult = formatInfo.localDateTimePatternParser.parsePattern(patternText);
-    return new _LocalDateTimePatternAdapter(localResult);
+    return _LocalDateTimePatternAdapter(localResult);
   }
 }
 
@@ -67,7 +67,7 @@ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
   ParseResult<Instant> parse(String text) =>
       _pattern
           .parse(text)
-          .convert((local) => IInstant.trusted(new Time(days: local.calendarDate.epochDay, nanoseconds: local.clockTime.timeSinceMidnight.inNanoseconds)));
+          .convert((local) => IInstant.trusted(Time(days: local.calendarDate.epochDay, nanoseconds: local.clockTime.timeSinceMidnight.inNanoseconds)));
 }
 
 

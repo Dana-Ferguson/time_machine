@@ -35,7 +35,7 @@ class TimePatternParser implements IPatternParser<Time> {
   IPattern<Time> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     // todo: I am unsure if this is a 'good' or a 'bad' thing -- this is obviously a 'windows' thing
@@ -52,12 +52,12 @@ class TimePatternParser implements IPatternParser<Time> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<Time, _TimeParseBucket>(formatInfo,
-            () => new _TimeParseBucket());
+    var patternBuilder = SteppedPatternBuilder<Time, _TimeParseBucket>(formatInfo,
+            () => _TimeParseBucket());
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     // Somewhat random sample, admittedly...
     // dana: todo: why is this? ... how much overhead does this add?
-    return patternBuilder.build(new Time(hours: 1) + new Time(minutes: 30) + new Time(seconds: 5) + new Time(milliseconds: 500));
+    return patternBuilder.build(Time(hours: 1) + Time(minutes: 30) + Time(seconds: 5) + Time(milliseconds: 500));
   }
 
   static int _getPositiveNanosecondOfSecond(Time time) {
@@ -71,7 +71,7 @@ class TimePatternParser implements IPatternParser<Time> {
       int count = pattern.getRepeatCount(13);
       // AddField would throw an inappropriate exception here, so handle it specially.
       if ((builder.usedFields & PatternFields.totalTime).value != 0) {
-        throw new InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
+        throw InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
       }
       builder.addField(field, pattern.current);
       builder.addField(PatternFields.totalTime, pattern.current);
@@ -86,7 +86,7 @@ class TimePatternParser implements IPatternParser<Time> {
       int count = pattern.getRepeatCount(8); // Enough for 16777216
       // AddField would throw an inappropriate exception here, so handle it specially.
       if ((builder.usedFields & PatternFields.totalTime).value != 0) {
-        throw new InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
+        throw InvalidPatternError(TextErrorMessages.multipleCapitalSpanFields);
       }
       builder.addField(PatternFields.dayOfMonth, pattern.current);
       builder.addField(PatternFields.totalTime, pattern.current);
@@ -176,6 +176,6 @@ class _TimeParseBucket extends ParseBucket<Time> {
     if (_currentNanos < ITime.minNanoseconds || _currentNanos > ITime.maxNanoseconds) {
       return IParseResult.forInvalidValuePostParse<Time>(text, TextErrorMessages.overallValueOutOfRange, ['Time']);
     }
-    return ParseResult.forValue<Time>(new Time.bigIntNanoseconds(_currentNanos));
+    return ParseResult.forValue<Time>(Time.bigIntNanoseconds(_currentNanos));
   }
 }

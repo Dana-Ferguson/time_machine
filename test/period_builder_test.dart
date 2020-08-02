@@ -17,7 +17,7 @@ Future main() async {
 
 @Test()
 void Indexer_Getter_ValidUnits() {
-  var builder = new PeriodBuilder()
+  var builder = PeriodBuilder()
     ..months = 1
     ..weeks = 2
     ..days = 3
@@ -45,15 +45,15 @@ void Call(Object ignored) {}
 @Test()
 void Index_Getter_InvalidUnits()
 {
-  var builder = new PeriodBuilder();
-  expect(() => Call(builder[new PeriodUnits(0)]), throwsArgumentError);
-  expect(() => Call(builder[new PeriodUnits(-1)]), throwsArgumentError);
+  var builder = PeriodBuilder();
+  expect(() => Call(builder[PeriodUnits(0)]), throwsArgumentError);
+  expect(() => Call(builder[PeriodUnits(-1)]), throwsArgumentError);
   expect(() => Call(builder[PeriodUnits.dateAndTime]), throwsArgumentError);
 }
 
 @Test()
 void Indexer_Setter_ValidUnits() {
-  var builder = new PeriodBuilder();
+  var builder = PeriodBuilder();
   builder[PeriodUnits.months] = 1;
   builder[PeriodUnits.weeks] = 2;
   builder[PeriodUnits.days] = 3;
@@ -62,7 +62,7 @@ void Indexer_Setter_ValidUnits() {
   builder[PeriodUnits.seconds] = 6;
   builder[PeriodUnits.milliseconds] = 7;
   builder[PeriodUnits.microseconds] = 8;
-  var expectedBuilder = new PeriodBuilder()
+  var expectedBuilder = PeriodBuilder()
     ..years = 0
     ..months = 1
     ..weeks = 2
@@ -80,32 +80,32 @@ void Indexer_Setter_ValidUnits() {
 @Test()
 void Index_Setter_InvalidUnits()
 {
-  var builder = new PeriodBuilder();
-  expect(() => builder[new PeriodUnits(0)] = 1, throwsArgumentError);
-  expect(() => builder[new PeriodUnits(-1)] = 1, throwsArgumentError);
+  var builder = PeriodBuilder();
+  expect(() => builder[PeriodUnits(0)] = 1, throwsArgumentError);
+  expect(() => builder[PeriodUnits(-1)] = 1, throwsArgumentError);
   expect(() => builder[PeriodUnits.dateAndTime] = 1, throwsArgumentError);
 }
 
 @Test()
 void Build_SingleUnit() {
-  Period period = (new PeriodBuilder()
+  Period period = (PeriodBuilder()
     ..hours = 10).build();
-  Period expected = new Period(hours: 10);
+  Period expected = Period(hours: 10);
   expect(expected, period);
 }
 
 @Test()
 void Build_MultipleUnits() {
-  Period period = (new PeriodBuilder()
+  Period period = (PeriodBuilder()
     ..days = 5
     ..minutes = -10).build();
-  Period expected = new Period(days: 5) + new Period(minutes: -10);
+  Period expected = Period(days: 5) + Period(minutes: -10);
   expect(expected, period);
 }
 
 @Test()
 void Build_Zero()
 {
-  expect(Period.zero, new PeriodBuilder().build());
+  expect(Period.zero, PeriodBuilder().build());
 }
 

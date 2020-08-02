@@ -83,9 +83,9 @@ class PatternFields {
   bool operator >=(PatternFields other) => _value >= other._value;
   int operator -(PatternFields other) => _value - other._value;
   int operator +(PatternFields other) => _value + other._value;
-  PatternFields operator ~() => new PatternFields(~_value);
-  PatternFields operator |(PatternFields other) => new PatternFields(_value | other.value);
-  PatternFields operator &(PatternFields other) => new PatternFields(_value & other.value);
+  PatternFields operator ~() => PatternFields(~_value);
+  PatternFields operator |(PatternFields other) => PatternFields(_value | other.value);
+  PatternFields operator &(PatternFields other) => PatternFields(_value & other.value);
 
   @override
   String toString() => _nameMap[this] ?? 'undefined';
@@ -103,7 +103,7 @@ class PatternFields {
   static PatternFields union(Iterable<PatternFields> units) {
     int i = 0;
     units.forEach((u) => i |= u._value);
-    return new PatternFields(i);
+    return PatternFields(i);
   }
 
   /// Returns true if the given set of fields contains any of the target fields.

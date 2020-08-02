@@ -30,7 +30,7 @@ abstract class ICalendarSystem {
 
   static CalendarSystem forOrdinalUncached(CalendarOrdinal ordinal) {
     var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
-    if (calendarSystem == null) throw new StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
+    if (calendarSystem == null) throw StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
     return calendarSystem;
   }
 
@@ -125,13 +125,13 @@ class CalendarSystem {
 
   // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
   static final CalendarSystem _isoCalendarSystem = _generateIsoCalendarSystem();
-  static final List<CalendarSystem> _calendarByOrdinal = new List<CalendarSystem>(CalendarOrdinal.size.value);
+  static final List<CalendarSystem> _calendarByOrdinal = List<CalendarSystem>(CalendarOrdinal.size.value);
 
   // this was a static constructor
   static CalendarSystem _generateIsoCalendarSystem() {
-    var gregorianCalculator = new GregorianYearMonthDayCalculator();
-    var gregorianEraCalculator = new GJEraCalculator(gregorianCalculator);
-    return new CalendarSystem._(CalendarOrdinal.iso, _isoId, _isoName, gregorianCalculator, gregorianEraCalculator);
+    var gregorianCalculator = GregorianYearMonthDayCalculator();
+    var gregorianEraCalculator = GJEraCalculator(gregorianCalculator);
+    return CalendarSystem._(CalendarOrdinal.iso, _isoId, _isoName, gregorianCalculator, gregorianEraCalculator);
   }
 
   /// Fetches a calendar system by its unique identifier. This provides full round-tripping of a calendar
@@ -148,7 +148,7 @@ class CalendarSystem {
     Preconditions.checkNotNull(id, 'id');
     CalendarSystem Function() factory = _idToFactoryMap[id];
     if (factory == null) {
-      throw new ArgumentError("No calendar system for ID {id} exists");
+      throw ArgumentError("No calendar system for ID {id} exists");
     }
     return factory();
   }
@@ -317,7 +317,7 @@ class CalendarSystem {
   final EraCalculator _eraCalculator;
 
   CalendarSystem._singleEra(CalendarOrdinal ordinal, String id, String name, YearMonthDayCalculator yearMonthDayCalculator, Era singleEra)
-      : this._(ordinal, id, name, yearMonthDayCalculator, new SingleEraCalculator(singleEra, yearMonthDayCalculator));
+      : this._(ordinal, id, name, yearMonthDayCalculator, SingleEraCalculator(singleEra, yearMonthDayCalculator));
 
   CalendarSystem._(this._ordinal, this.id, this.name, this._yearMonthDayCalculator, this._eraCalculator)
       : minYear = _yearMonthDayCalculator.minYear,
@@ -461,7 +461,7 @@ class CalendarSystem {
     // % operations in C# retain their sign, in Dart they are always positive
     int numericDayOfWeek = daysSinceEpoch >= -3 ? 1 + ((daysSinceEpoch + 3) % 7)
         : 7 + -(-(daysSinceEpoch + 4) % 7);
-    return new DayOfWeek(numericDayOfWeek);
+    return DayOfWeek(numericDayOfWeek);
   }
 
 
@@ -664,11 +664,11 @@ class CalendarSystem {
 class _PersianCalendars
 {
   static final CalendarSystem simple =
-  new CalendarSystem._singleEra(CalendarOrdinal.persianSimple, CalendarSystem._persianSimpleId, CalendarSystem._persianName, new PersianSimple(), Era.annoPersico);
+  CalendarSystem._singleEra(CalendarOrdinal.persianSimple, CalendarSystem._persianSimpleId, CalendarSystem._persianName, PersianSimple(), Era.annoPersico);
   static final CalendarSystem arithmetic =
-  new CalendarSystem._singleEra(CalendarOrdinal.persianArithmetic, CalendarSystem._persianArithmeticId, CalendarSystem._persianName, new PersianArithmetic(), Era.annoPersico);
+  CalendarSystem._singleEra(CalendarOrdinal.persianArithmetic, CalendarSystem._persianArithmeticId, CalendarSystem._persianName, PersianArithmetic(), Era.annoPersico);
   static final CalendarSystem astronomical =
-  new CalendarSystem._singleEra(CalendarOrdinal.persianAstronomical, CalendarSystem._persianAstronomicalId, CalendarSystem._persianName, new PersianAstronomical(), Era.annoPersico);
+  CalendarSystem._singleEra(CalendarOrdinal.persianAstronomical, CalendarSystem._persianAstronomicalId, CalendarSystem._persianName, PersianAstronomical(), Era.annoPersico);
 }
 
 
@@ -683,9 +683,9 @@ class _IslamicCalendars {
 
     if (_cache.containsKey(i) && _cache[i].containsKey(j)) return _cache[i][j];
 
-    var calculator = new IslamicYearMonthDayCalculator(leapYearPattern, epoch);
-    CalendarOrdinal ordinal = new CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + i + j * 4);
-    var calendar = new CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
+    var calculator = IslamicYearMonthDayCalculator(leapYearPattern, epoch);
+    CalendarOrdinal ordinal = CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + i + j * 4);
+    var calendar = CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
 
     if (!_cache.containsKey(i)) _cache[i] = {};
     return _cache[i][j] = calendar;
@@ -697,11 +697,11 @@ class _IslamicCalendars {
 /// need Coptic, for example.
 class _MiscellaneousCalendars {
   static final CalendarSystem coptic =
-  new CalendarSystem._singleEra(CalendarOrdinal.coptic, CalendarSystem._copticId, CalendarSystem._copticName, new CopticYearMonthDayCalculator(), Era.annoMartyrum);
+  CalendarSystem._singleEra(CalendarOrdinal.coptic, CalendarSystem._copticId, CalendarSystem._copticName, CopticYearMonthDayCalculator(), Era.annoMartyrum);
   static final CalendarSystem umAlQura =
-  new CalendarSystem._singleEra(CalendarOrdinal.umAlQura, CalendarSystem._umAlQuraId, CalendarSystem._umAlQuraName, new UmAlQuraYearMonthDayCalculator(), Era.annoHegirae);
+  CalendarSystem._singleEra(CalendarOrdinal.umAlQura, CalendarSystem._umAlQuraId, CalendarSystem._umAlQuraName, UmAlQuraYearMonthDayCalculator(), Era.annoHegirae);
   static final CalendarSystem badi =
-  new CalendarSystem._singleEra(CalendarOrdinal.badi, CalendarSystem._badiId, CalendarSystem._badiName, new BadiYearMonthDayCalculator(), Era.bahai);
+  CalendarSystem._singleEra(CalendarOrdinal.badi, CalendarSystem._badiId, CalendarSystem._badiName, BadiYearMonthDayCalculator(), Era.bahai);
 }
 
 class _GregorianJulianCalendars {
@@ -713,10 +713,10 @@ class _GregorianJulianCalendars {
 
   // todo: was a static constructor .. is this an okay pattern? (todo: this can be simplified)
   static List<CalendarSystem> _init() {
-    var julianCalculator = new JulianYearMonthDayCalculator();
-    _julian = new CalendarSystem._(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
-        julianCalculator, new GJEraCalculator(julianCalculator));
-    _gregorian = new CalendarSystem._(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
+    var julianCalculator = JulianYearMonthDayCalculator();
+    _julian = CalendarSystem._(CalendarOrdinal.julian, CalendarSystem._julianId, CalendarSystem._julianName,
+        julianCalculator, GJEraCalculator(julianCalculator));
+    _gregorian = CalendarSystem._(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
         CalendarSystem._isoCalendarSystem._yearMonthDayCalculator, CalendarSystem._isoCalendarSystem._eraCalculator);
 
     return [_gregorian, _julian];
@@ -726,8 +726,8 @@ class _GregorianJulianCalendars {
 class _HebrewCalendars {
   static final List<CalendarSystem> byMonthNumbering =
   [
-    new CalendarSystem._singleEra(CalendarOrdinal.hebrewCivil, CalendarSystem._hebrewCivilId, CalendarSystem._hebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil), Era.annoMundi),
-    new CalendarSystem._singleEra(
-        CalendarOrdinal.hebrewScriptural, CalendarSystem._hebrewScripturalId, CalendarSystem._hebrewName, new HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural), Era.annoMundi)
+    CalendarSystem._singleEra(CalendarOrdinal.hebrewCivil, CalendarSystem._hebrewCivilId, CalendarSystem._hebrewName, HebrewYearMonthDayCalculator(HebrewMonthNumbering.civil), Era.annoMundi),
+    CalendarSystem._singleEra(
+        CalendarOrdinal.hebrewScriptural, CalendarSystem._hebrewScripturalId, CalendarSystem._hebrewName, HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural), Era.annoMundi)
   ];
 }

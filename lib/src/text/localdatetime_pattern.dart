@@ -16,7 +16,7 @@ abstract class LocalDateTimePatterns
   static final LocalDateTimePattern fullRoundtripWithoutCalendarImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff");
   static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 
-  static final LocalDateTime defaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0, 0);
+  static final LocalDateTime defaultTemplateValue = LocalDateTime(2000, 1, 1, 0, 0, 0);
   static String format(LocalDateTime localDateTime, String patternText, Culture culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
@@ -122,11 +122,11 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == LocalDateTimePatterns.defaultTemplateValue
         ? formatInfo.localDateTimePatternParser.parsePattern(patternText)
-        : new LocalDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
+        : LocalDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = pattern is LocalDateTimePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDateTime>;
-    return new LocalDateTimePattern._(patternText, formatInfo, templateValue, partialPattern);
+    return LocalDateTimePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
   // todo: do factories

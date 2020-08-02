@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 abstract class ICultures {
   static void set currentCulture(Culture value) { Cultures._currentCulture = value; }
   static void loadAllCulturesInformation_SetFlag() {
-    if (Cultures._loader != null) throw new StateError('loadAllCultures flag may not be set after Cultures are initalized.');
+    if (Cultures._loader != null) throw StateError('loadAllCultures flag may not be set after Cultures are initalized.');
     Cultures._loadAllCulturesInformation = true;
   }
 
@@ -28,7 +28,7 @@ abstract class Cultures {
   static Future<Iterable<String>> get ids async => (await _cultures).cultureIds;
   static Future<Culture> getCulture(String id) async => (await _cultures).getCulture(id);
 
-  static final Culture invariantCulture = new Culture._invariant();
+  static final Culture invariantCulture = Culture._invariant();
 
   // todo: we need a way to set this for testing && be able to set this with Platform Initialization (and have it not be changed at random)
   static Culture _currentCulture;
@@ -38,7 +38,7 @@ abstract class Cultures {
 // todo: look to combine this with TimeMachineInfo and we can merge all the *_pattern.create*() functions!
 @immutable
 class Culture {
-  static final Culture invariant = new Culture._invariant();
+  static final Culture invariant = Culture._invariant();
 
   static Culture _current;
   static Culture get current => _current??=invariant;
@@ -54,7 +54,7 @@ class Culture {
   static const invariantId = "Invariant Culture";
 
   Culture._invariant()
-      : dateTimeFormat = new DateTimeFormatBuilder.invariant().Build(),
+      : dateTimeFormat = DateTimeFormatBuilder.invariant().Build(),
         name = invariantId,
         compareInfo = null
   ;

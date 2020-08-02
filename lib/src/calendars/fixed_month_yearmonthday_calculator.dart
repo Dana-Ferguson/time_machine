@@ -45,6 +45,6 @@ abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalcu
     int zeroBasedDayOfYear = dayOfYear - 1;
     int month = zeroBasedDayOfYear ~/ _daysInMonth + 1;
     int day = zeroBasedDayOfYear % _daysInMonth + 1;
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 }

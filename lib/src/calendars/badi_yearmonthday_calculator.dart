@@ -94,7 +94,7 @@ static BadiYearMonthDayCalculator()
     // start of the Badíʿ year is in terms of the Gregorian year, we can just use that
     // date's days-since-epoch value.
     var gregorianYear = year + gregorianYearOfFirstBadiYear - 1;
-    var nawRuz = new LocalDate(gregorianYear, 3, _getNawRuzDayInMarch(year));
+    var nawRuz = LocalDate(gregorianYear, 3, _getNawRuzDayInMarch(year));
     return nawRuz.epochDay;
   }
 
@@ -146,7 +146,7 @@ static BadiYearMonthDayCalculator()
 
     Preconditions.checkArgumentRange('nextYear', nextYear, _badiMinYear, _badiMaxYear);
 
-    var result = new YearMonthDay(nextYear, nextMonthNum, nextDay);
+    var result = YearMonthDay(nextYear, nextMonthNum, nextDay);
 
     return result;
   }
@@ -183,13 +183,13 @@ static BadiYearMonthDayCalculator()
     var firstOfLoftiness = 1 + daysInMonth * month18 + getDaysInAyyamiHa(year);
 
     if (dayOfYear >= firstOfLoftiness) {
-      return new YearMonthDay(year, _month19, dayOfYear - firstOfLoftiness + 1);
+      return YearMonthDay(year, _month19, dayOfYear - firstOfLoftiness + 1);
     }
 
     var month = math.min(1 + (dayOfYear - 1) ~/ daysInMonth, month18);
     var day = dayOfYear - (month - 1) * daysInMonth;
 
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 
   bool isInAyyamiHa(YearMonthDay ymd) => ymd.month == month18 && ymd.day > daysInMonth;
@@ -232,10 +232,10 @@ static BadiYearMonthDayCalculator()
       // Moving a year while within Ayyam-i-Ha is not well defined.
       // In this implementation, if starting on day 5, end on day 4 (stay in Ayyam-i-Ha)
       var daysInThisAyyamiHa = getDaysInAyyamiHa(newYear);
-      return new YearMonthDay(newYear, month, math.min(day, daysInMonth + daysInThisAyyamiHa));
+      return YearMonthDay(newYear, month, math.min(day, daysInMonth + daysInThisAyyamiHa));
     }
 
-    return new YearMonthDay(newYear, month, day);
+    return YearMonthDay(newYear, month, day);
   }
 
   @override void validateYearMonthDay(int year, int month, int day) {

@@ -24,7 +24,7 @@ void Zero()
 @Test()
 void FromSeconds_Valid()
 {
-  var test = new Offset(12345);
+  var test = Offset(12345);
   expect(12345, test.inSeconds);
 }
 
@@ -32,28 +32,28 @@ void FromSeconds_Valid()
 void FromSeconds_Invalid()
 {
   int seconds = 18 * TimeConstants.secondsPerHour + 1;
-  expect(() => new Offset(seconds), throwsRangeError);
-  expect(() => new Offset(-seconds), throwsRangeError);
+  expect(() => Offset(seconds), throwsRangeError);
+  expect(() => Offset(-seconds), throwsRangeError);
 }
 
 @Test()
 void FromHours_Valid()
 {
-  Offset value = new Offset.hours(-15);
+  Offset value = Offset.hours(-15);
   expect(-15 * TimeConstants.secondsPerHour, value.inSeconds);
 }
 
 @Test()
 void FromHours_Invalid()
 {
-  expect(() => new Offset.hours(19), throwsRangeError);
-  expect(() => new Offset.hours(-19), throwsRangeError);
+  expect(() => Offset.hours(19), throwsRangeError);
+  expect(() => Offset.hours(-19), throwsRangeError);
 }
 
 @Test()
 void FromHoursAndMinutes_Valid()
 {
-  Offset value = new Offset.hoursAndMinutes(5, 30);
+  Offset value = Offset.hoursAndMinutes(5, 30);
   expect(5 * TimeConstants.secondsPerHour + 30 * TimeConstants.secondsPerMinute, value.inSeconds);
 }
 

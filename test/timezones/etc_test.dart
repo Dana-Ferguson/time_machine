@@ -31,9 +31,9 @@ Future FixedEasternZone() async
   String id = "Etc/GMT+5";
   var zone = await Tzdb[id];
   expect(id, zone.id);
-  expect(zone, new TypeMatcher<FixedDateTimeZone>());
+  expect(zone, TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
-  expect(new Offset.hours(-5), fixedZone.offset);
+  expect(Offset.hours(-5), fixedZone.offset);
 }
 
 @Test() @SkipMe("Aliases not yet available?")
@@ -42,8 +42,8 @@ Future FixedWesternZone() async
   String id = "Etc/GMT-4";
   var zone = await Tzdb[id];
   expect(id, zone.id);
-  expect(zone, new TypeMatcher<FixedDateTimeZone>());
+  expect(zone, TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
-  expect(new Offset.hours(4), fixedZone.offset);
+  expect(Offset.hours(4), fixedZone.offset);
 }
 

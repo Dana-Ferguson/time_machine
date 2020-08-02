@@ -22,7 +22,7 @@ abstract class Resolvers
   static final AmbiguousTimeResolver returnLater = (earlier, later) => later;
 
   /// An [AmbiguousTimeResolver] which simply throws an [AmbiguousTimeException].
-  static final AmbiguousTimeResolver throwWhenAmbiguous = (earlier, later) => throw new AmbiguousTimeError(earlier, later);
+  static final AmbiguousTimeResolver throwWhenAmbiguous = (earlier, later) => throw AmbiguousTimeError(earlier, later);
 
   /// A [SkippedTimeResolver] which returns the final tick of the time zone interval
   /// before the "gap".
@@ -34,7 +34,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
     // Given that there's a zone after before, it can't extend to the end of time.
-    return new ZonedDateTime(before.end - Time.epsilon, zone, local.calendar);
+    return ZonedDateTime(before.end - Time.epsilon, zone, local.calendar);
   };
 
   /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
@@ -48,7 +48,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return new ZonedDateTime(after.start, zone, local.calendar);
+    return ZonedDateTime(after.start, zone, local.calendar);
   };
 
   /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
@@ -63,7 +63,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    return IZonedDateTime.trusted(new OffsetDateTime(local, before.wallOffset).withOffset(after.wallOffset), zone);
+    return IZonedDateTime.trusted(OffsetDateTime(local, before.wallOffset).withOffset(after.wallOffset), zone);
   };
 
   /// A [SkippedTimeResolver] which simply throws a [SkippedTimeException].
@@ -71,7 +71,7 @@ abstract class Resolvers
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
     Preconditions.checkNotNull(after, 'after');
-    throw new SkippedTimeError(local, zone);
+    throw SkippedTimeError(local, zone);
   };
 
   /// A [ZoneLocalMappingResolver] which only ever succeeds in the (usual) case where the result
@@ -122,7 +122,7 @@ abstract class Resolvers
         case 2:
           return ambiguousTimeResolver(mapping.first(), mapping.last());
         default:
-          throw new StateError("Mapping has count outside range 0-2; should not happen.");
+          throw StateError("Mapping has count outside range 0-2; should not happen.");
       }
     }
 

@@ -16,73 +16,73 @@ Future main() async {
 @Test()
 void PlusYear_Simple()
 {
-  LocalDate start = new LocalDate(2011, 6, 26);
-  LocalDate expected = new LocalDate(2016, 6, 26);
+  LocalDate start = LocalDate(2011, 6, 26);
+  LocalDate expected = LocalDate(2016, 6, 26);
   expect(expected, start.addYears(5));
 
-  expected = new LocalDate(2006, 6, 26);
+  expected = LocalDate(2006, 6, 26);
   expect(expected, start.addYears(-5));
 }
 
 @Test()
 void PlusYear_LeapToNonLeap()
 {
-  LocalDate start = new LocalDate(2012, 2, 29);
-  LocalDate expected = new LocalDate(2013, 2, 28);
+  LocalDate start = LocalDate(2012, 2, 29);
+  LocalDate expected = LocalDate(2013, 2, 28);
   expect(expected, start.addYears(1));
 
-  expected = new LocalDate(2011, 2, 28);
+  expected = LocalDate(2011, 2, 28);
   expect(expected, start.addYears(-1));
 }
 
 @Test()
 void PlusYear_LeapToLeap()
 {
-  LocalDate start = new LocalDate(2012, 2, 29);
-  LocalDate expected = new LocalDate(2016, 2, 29);
+  LocalDate start = LocalDate(2012, 2, 29);
+  LocalDate expected = LocalDate(2016, 2, 29);
   expect(expected, start.addYears(4));
 }
 
 @Test()
 void PlusMonth_Simple()
 {
-  LocalDate start = new LocalDate(2012, 4, 15);
-  LocalDate expected = new LocalDate(2012, 8, 15);
+  LocalDate start = LocalDate(2012, 4, 15);
+  LocalDate expected = LocalDate(2012, 8, 15);
   expect(expected, start.addMonths(4));
 }
 
 @Test()
 void PlusMonth_ChangingYear()
 {
-  LocalDate start = new LocalDate(2012, 10, 15);
-  LocalDate expected = new LocalDate(2013, 2, 15);
+  LocalDate start = LocalDate(2012, 10, 15);
+  LocalDate expected = LocalDate(2013, 2, 15);
   expect(expected, start.addMonths(4));
 }
 
 @Test()
 void PlusMonth_WithTruncation()
 {
-  LocalDate start = new LocalDate(2011, 1, 30);
-  LocalDate expected = new LocalDate(2011, 2, 28);
+  LocalDate start = LocalDate(2011, 1, 30);
+  LocalDate expected = LocalDate(2011, 2, 28);
   expect(expected, start.addMonths(1));
 }
 
 @Test()
 void PlusDays_SameMonth()
 {
-  LocalDate start = new LocalDate(2011, 1, 15);
-  LocalDate expected = new LocalDate(2011, 1, 23);
+  LocalDate start = LocalDate(2011, 1, 15);
+  LocalDate expected = LocalDate(2011, 1, 23);
   expect(expected, start.addDays(8));
 
-  expected = new LocalDate(2011, 1, 7);
+  expected = LocalDate(2011, 1, 7);
   expect(expected, start.addDays(-8));
 }
 
 @Test()
 void PlusDays_MonthBoundary()
 {
-  LocalDate start = new LocalDate(2011, 1, 26);
-  LocalDate expected = new LocalDate(2011, 2, 3);
+  LocalDate start = LocalDate(2011, 1, 26);
+  LocalDate expected = LocalDate(2011, 2, 3);
   expect(expected, start.addDays(8));
 
   // Round-trip back across the boundary
@@ -92,8 +92,8 @@ void PlusDays_MonthBoundary()
 @Test()
 void PlusDays_YearBoundary()
 {
-  LocalDate start = new LocalDate(2011, 12, 26);
-  LocalDate expected = new LocalDate(2012, 1, 3);
+  LocalDate start = LocalDate(2011, 12, 26);
+  LocalDate expected = LocalDate(2012, 1, 3);
   expect(expected, start.addDays(8));
 
   // Round-trip back across the boundary
@@ -103,8 +103,8 @@ void PlusDays_YearBoundary()
 @Test()
 void PlusDays_EndOfFebruary_InLeapYear()
 {
-  LocalDate start = new LocalDate(2012, 2, 26);
-  LocalDate expected = new LocalDate(2012, 3, 5);
+  LocalDate start = LocalDate(2012, 2, 26);
+  LocalDate expected = LocalDate(2012, 3, 5);
   expect(expected, start.addDays(8));
   // Round-trip back across the boundary
   expect(start, start.addDays(8).addDays(-8));
@@ -113,8 +113,8 @@ void PlusDays_EndOfFebruary_InLeapYear()
 @Test()
 void PlusDays_EndOfFebruary_NotInLeapYear()
 {
-  LocalDate start = new LocalDate(2011, 2, 26);
-  LocalDate expected = new LocalDate(2011, 3, 6);
+  LocalDate start = LocalDate(2011, 2, 26);
+  LocalDate expected = LocalDate(2011, 3, 6);
   expect(expected, start.addDays(8));
 
   // Round-trip back across the boundary
@@ -124,17 +124,17 @@ void PlusDays_EndOfFebruary_NotInLeapYear()
 @Test()
 void PlusDays_LargeValue()
 {
-  LocalDate start = new LocalDate(2013, 2, 26);
-  LocalDate expected = new LocalDate(2015, 2, 26);
+  LocalDate start = LocalDate(2013, 2, 26);
+  LocalDate expected = LocalDate(2015, 2, 26);
   expect(expected, start.addDays(365 * 2));
 }
 
 @Test()
 void PlusWeeks_Simple()
 {
-  LocalDate start = new LocalDate(2011, 4, 2);
-  LocalDate expectedForward = new LocalDate(2011, 4, 23);
-  LocalDate expectedBackward = new LocalDate(2011, 3, 12);
+  LocalDate start = LocalDate(2011, 4, 2);
+  LocalDate expectedForward = LocalDate(2011, 4, 23);
+  LocalDate expectedBackward = LocalDate(2011, 3, 12);
   expect(expectedForward, start.addWeeks(3));
   expect(expectedBackward, start.addWeeks(-3));
 }
@@ -148,7 +148,7 @@ void PlusWeeks_Simple()
 @TestCase(const [1, 1, 1, Platform.int32MinValue])
 void PlusDays_OutOfRange(int year, int month, int day, int days)
 {
-  var start = new LocalDate(year, month, day);
+  var start = LocalDate(year, month, day);
   TestHelper.AssertOverflow<int, LocalDate>(start.addDays, days);
 }
 
@@ -167,7 +167,7 @@ void PlusDays_OutOfRange(int year, int month, int day, int days)
 @TestCase(const [13, DayOfWeek.friday, 18])
 void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
-  LocalDate start = new LocalDate(2011, 11, dayOfMonth);
+  LocalDate start = LocalDate(2011, 11, dayOfMonth);
   LocalDate target = start.next(targetDayOfWeek);
   expect(2011, target.year);
   expect(11, target.monthOfYear);
@@ -179,7 +179,7 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [8])
 void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
-  LocalDate start = new LocalDate(2011, 1, 1);
+  LocalDate start = LocalDate(2011, 1, 1);
   expect(() => start.next(targetDayOfWeek), throwsRangeError);
 }
 
@@ -197,7 +197,7 @@ void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 @TestCase(const [13, DayOfWeek.friday, 11])
 void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
-  LocalDate start = new LocalDate(2011, 11, dayOfMonth);
+  LocalDate start = LocalDate(2011, 11, dayOfMonth);
   LocalDate target = start.previous(targetDayOfWeek);
   expect(2011, target.year);
   expect(11, target.monthOfYear);
@@ -209,7 +209,7 @@ void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 @TestCase(const [8])
 void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
-  LocalDate start = new LocalDate(2011, 1, 1);
+  LocalDate start = LocalDate(2011, 1, 1);
   expect(() => start.previous(targetDayOfWeek), throwsRangeError);
 }
 
@@ -218,7 +218,7 @@ void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 @Test()
 void With()
 {
-  LocalDate start = new LocalDate(2014, 6, 27);
-  LocalDate expected = new LocalDate(2014, 6, 30);
+  LocalDate start = LocalDate(2014, 6, 27);
+  LocalDate expected = LocalDate(2014, 6, 30);
   expect(expected, start.adjust(DateAdjusters.endOfMonth));
 }

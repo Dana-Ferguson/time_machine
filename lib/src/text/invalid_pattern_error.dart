@@ -26,5 +26,5 @@ class InvalidPatternError extends Error // FormatException
 }
 
 abstract class IInvalidPatternError {
-  static InvalidPatternError format(String formatString, List<dynamic> parameters) => new InvalidPatternError._format(formatString, parameters);
+  static InvalidPatternError format(String formatString, List<dynamic> parameters) => InvalidPatternError._format(formatString, parameters);
 }

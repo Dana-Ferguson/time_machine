@@ -16,7 +16,7 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
 
   // todo: do we care about bclToZoneIds?
   FakeDateTimeZoneSource._(String versionId, this._zones, this._bclToZoneIds)
-      : versionId = new Future<String>.value(versionId);
+      : versionId = Future<String>.value(versionId);
 
   /// Creates a time zone provider ([DateTimeZoneCache]) from this source.
   ///
@@ -24,7 +24,7 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
   Future<DateTimeZoneProvider> ToProvider() => DateTimeZoneCache.getCache(this);
 
   /// <inheritdoc />
-  Future<Iterable<String>> getIds() => new Future.value(_zones.keys);
+  Future<Iterable<String>> getIds() => Future.value(_zones.keys);
 
   /// <inheritdoc />
   final Future<String> versionId;
@@ -34,9 +34,9 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
     Preconditions.checkNotNull(id, 'id');
     var zone = _zones[id];
     if (zone != null) {
-      return new Future.value(zone);
+      return Future.value(zone);
     }
-    throw new ArgumentError("Unknown ID: " + id);
+    throw ArgumentError("Unknown ID: " + id);
   }
 
   // todo: Not a problem for dart... do we have an inheritdoc equivalent?
@@ -62,15 +62,15 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
     if (zone != null) {
       return zone;
     }
-    throw new ArgumentError("Unknown ID: " + id);
+    throw ArgumentError("Unknown ID: " + id);
   }
 }
 
 /// Builder for [FakeDateTimeZoneSource], allowing the built object to
 /// be immutable, but constructed via object/collection initializers.
 class FakeDateTimeZoneSourceBuilder {
-  final Map<String, String> _bclIdsToZoneIds = new Map<String, String>();
-  final List<DateTimeZone> _zones = new List<DateTimeZone>();
+  final Map<String, String> _bclIdsToZoneIds = Map<String, String>();
+  final List<DateTimeZone> _zones = List<DateTimeZone>();
 
   /// Gets the dictionary mapping BCL [TimeZoneInfo] IDs to the canonical IDs
   /// served within the provider being built.
@@ -116,16 +116,16 @@ class FakeDateTimeZoneSourceBuilder {
   ///
   /// Returns: The newly-built time zone source.
   FakeDateTimeZoneSource Build() {
-    var zoneMap = new Map<String, DateTimeZone>.fromIterable(_zones, key: (z) => z.id);
+    var zoneMap = Map<String, DateTimeZone>.fromIterable(_zones, key: (z) => z.id);
     _bclIdsToZoneIds.forEach((key, value) {
       Preconditions.checkNotNull(value, "value");
       if (!zoneMap.containsKey(value)) {
-        throw new StateError("Mapping for BCL ${key}/${value} has no corresponding zone.");
+        throw StateError("Mapping for BCL ${key}/${value} has no corresponding zone.");
       }
     });
 
-    var bclIdMapClone = new Map<String, String>.from(_bclIdsToZoneIds);
-    return new FakeDateTimeZoneSource._(VersionId, zoneMap, bclIdMapClone);
+    var bclIdMapClone = Map<String, String>.from(_bclIdsToZoneIds);
+    return FakeDateTimeZoneSource._(VersionId, zoneMap, bclIdMapClone);
   }
 }
 

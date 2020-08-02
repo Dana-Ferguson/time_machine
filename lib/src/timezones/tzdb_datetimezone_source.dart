@@ -21,7 +21,7 @@ abstract class DateTimeZoneProviders {
 
   static Future<DateTimeZoneProvider> _tzdb;
 
-  static Future<DateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(new TzdbDateTimeZoneSource());
+  static Future<DateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(TzdbDateTimeZoneSource());
 
   static DateTimeZoneProvider _defaultProvider;
   /// This is the default [DateTimeZoneProvider] for the currently loaded TimeMachine.
@@ -32,7 +32,7 @@ abstract class DateTimeZoneProviders {
 @internal
 class ITzdbDateTimeZoneSource {
   static void loadAllTimeZoneInformation_SetFlag() {
-    if (TzdbDateTimeZoneSource._cachedTzdbIndex != null) throw new StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');
+    if (TzdbDateTimeZoneSource._cachedTzdbIndex != null) throw StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');
     TzdbDateTimeZoneSource._loadAllTimeZoneInformation = true;
   }
 }
@@ -64,7 +64,7 @@ class TzdbDateTimeZoneSource extends DateTimeZoneSource {
 
   static TzdbIndex _cachedTzdbIndex;
   static Future<TzdbIndex> _tzdbIndexAsync = _cachedTzdbIndex != null
-      ? new Future.value(_cachedTzdbIndex)
+      ? Future.value(_cachedTzdbIndex)
       : _init().then((_) => _cachedTzdbIndex);
 
   @override
@@ -81,6 +81,6 @@ class TzdbDateTimeZoneSource extends DateTimeZoneSource {
 
   // TODO: forward version to tzdb_index and then get it in here! (I think nodatime is on 2018e atm?)
   @override
-  Future<String> get versionId => new Future.sync(() => 'TZDB: 2018');
+  Future<String> get versionId => Future.sync(() => 'TZDB: 2018');
 }
 

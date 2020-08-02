@@ -44,14 +44,14 @@ class TimeMachineFormatInfo {
 
   /// A TimeMachineFormatInfo wrapping the invariant culture.
   // Note: this must occur below the pattern parsers, to make type initialization work...
-  static final TimeMachineFormatInfo invariantInfo = new TimeMachineFormatInfo(Culture.invariant);
+  static final TimeMachineFormatInfo invariantInfo = TimeMachineFormatInfo(Culture.invariant);
 
   // Justification for max size: [Cultures.getCultures(CultureTypes.AllCultures)] returns 378 cultures
   // on Windows 8 in mid-2013. In late 2016 on Windows 10 it's 832, but it's unlikely that they'll all be
   // used by any particular application.
   // 500 should be ample for almost all cases, without being enormous.
-  static final Cache<Culture, TimeMachineFormatInfo> _cache = new Cache<Culture, TimeMachineFormatInfo>
-    (500, (culture) => new TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<Culture>()*/);
+  static final Cache<Culture, TimeMachineFormatInfo> _cache = Cache<Culture, TimeMachineFormatInfo>
+    (500, (culture) => TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<Culture>()*/);
 
   List<String> _longMonthNames;
   List<String> _longMonthGenitiveNames;
@@ -78,7 +78,7 @@ class TimeMachineFormatInfo {
   /// [dateTimeFormat]: The date/time format to use for format strings etc.
   @visibleForTesting
   TimeMachineFormatInfo.withDateTimeFormat(this.culture, this.dateTimeFormat)
-      : _eraDescriptions = new Map<Era, _EraDescription>() {
+      : _eraDescriptions = Map<Era, _EraDescription>() {
     Preconditions.checkNotNull(culture, 'culture');
     Preconditions.checkNotNull(dateTimeFormat, 'dateTimeFormat');
   }
@@ -96,9 +96,9 @@ class TimeMachineFormatInfo {
 
   /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as null).
   static List<String> _convertMonthArray(List<String> monthNames) {
-    List<String> list = new List<String>.from(monthNames);
+    List<String> list = List<String>.from(monthNames);
     list.insert(0, null);
-    return new List<String>.unmodifiable(list);
+    return List<String>.unmodifiable(list);
   }
 
   void _ensureDaysInitialized() {
@@ -115,10 +115,10 @@ class TimeMachineFormatInfo {
   /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as null)
   /// and with 7 as Sunday.
   static List<String> _convertDayArray(List<String> dayNames) {
-    List<String> list = new List<String>.from(dayNames);
+    List<String> list = List<String>.from(dayNames);
     list.add(dayNames[0]);
     list[0] = null;
-    return new List<String>.unmodifiable(list);
+    return List<String>.unmodifiable(list);
   }
 
   /// Checks whether any of the genitive names differ from the non-genitive names, and returns
@@ -155,43 +155,43 @@ class TimeMachineFormatInfo {
   CompareInfo get compareInfo => culture.compareInfo;
 
   FixedFormatInfoPatternParser<Time> get timePatternParser =>
-      _timePatternParser = _ensureFixedFormatInitialized(_timePatternParser, () => new TimePatternParser());
+      _timePatternParser = _ensureFixedFormatInitialized(_timePatternParser, () => TimePatternParser());
 
   FixedFormatInfoPatternParser<Offset> get offsetPatternParser =>
-      _offsetPatternParser = _ensureFixedFormatInitialized(_offsetPatternParser, () => new OffsetPatternParser());
+      _offsetPatternParser = _ensureFixedFormatInitialized(_offsetPatternParser, () => OffsetPatternParser());
 
   FixedFormatInfoPatternParser<Instant> get instantPatternParser =>
-      _instantPatternParser = _ensureFixedFormatInitialized(_instantPatternParser, () => new InstantPatternParser());
+      _instantPatternParser = _ensureFixedFormatInitialized(_instantPatternParser, () => InstantPatternParser());
 
   FixedFormatInfoPatternParser<LocalTime> get localTimePatternParser =>
-      _localTimePatternParser = _ensureFixedFormatInitialized(_localTimePatternParser, () => new LocalTimePatternParser(LocalTime.midnight));
+      _localTimePatternParser = _ensureFixedFormatInitialized(_localTimePatternParser, () => LocalTimePatternParser(LocalTime.midnight));
 
   FixedFormatInfoPatternParser<LocalDate> get localDatePatternParser =>
-      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => new LocalDatePatternParser(LocalDatePatterns.defaultTemplateValue));
+      _localDatePatternParser = _ensureFixedFormatInitialized(_localDatePatternParser, () => LocalDatePatternParser(LocalDatePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<LocalDateTime> get localDateTimePatternParser =>
       _localDateTimePatternParser =
-          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => new LocalDateTimePatternParser(LocalDateTimePatterns.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_localDateTimePatternParser, () => LocalDateTimePatternParser(LocalDateTimePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<OffsetDateTime> get offsetDateTimePatternParser =>
       _offsetDateTimePatternParser =
-          _ensureFixedFormatInitialized(_offsetDateTimePatternParser, () => new OffsetDateTimePatternParser(OffsetDateTimePatterns.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_offsetDateTimePatternParser, () => OffsetDateTimePatternParser(OffsetDateTimePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<OffsetDate> get offsetDatePatternParser =>
       _offsetDatePatternParser =
-          _ensureFixedFormatInitialized(_offsetDatePatternParser, () => new OffsetDatePatternParser(OffsetDatePatterns.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_offsetDatePatternParser, () => OffsetDatePatternParser(OffsetDatePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<OffsetTime> get offsetTimePatternParser =>
       _offsetTimePatternParser =
-          _ensureFixedFormatInitialized(_offsetTimePatternParser, () => new OffsetTimePatternParser(OffsetTimePatterns.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_offsetTimePatternParser, () => OffsetTimePatternParser(OffsetTimePatterns.defaultTemplateValue));
 
   FixedFormatInfoPatternParser<ZonedDateTime> get zonedDateTimePatternParser =>
       _zonedDateTimePatternParser = _ensureFixedFormatInitialized(
-          _zonedDateTimePatternParser, () => new ZonedDateTimePatternParser(ZonedDateTimePatterns.defaultTemplateValue, Resolvers.strictResolver, null));
+          _zonedDateTimePatternParser, () => ZonedDateTimePatternParser(ZonedDateTimePatterns.defaultTemplateValue, Resolvers.strictResolver, null));
 
   FixedFormatInfoPatternParser<AnnualDate> get annualDatePatternParser =>
       _annualDatePatternParser =
-          _ensureFixedFormatInitialized(_annualDatePatternParser, () => new AnnualDatePatternParser(AnnualDatePatterns.defaultTemplateValue));
+          _ensureFixedFormatInitialized(_annualDatePatternParser, () => AnnualDatePatternParser(AnnualDatePatterns.defaultTemplateValue));
 
 
   // todo: I think I can simplify the usage of this
@@ -199,7 +199,7 @@ class TimeMachineFormatInfo {
       IPatternParser<T> Function() patternParserFactory) {
     // lock (fieldLock)
     if (field == null) {
-      field = new FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
+      field = FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
     }
     return field;
   }
@@ -305,7 +305,7 @@ class TimeMachineFormatInfo {
     {
       _EraDescription ret = _eraDescriptions[era];
       if (ret == null) {
-        ret = new _EraDescription.forEra(era, culture);
+        ret = _EraDescription.forEra(era, culture);
         _eraDescriptions[era] = ret;
       }
       return ret;
@@ -352,7 +352,7 @@ class TimeMachineFormatInfo {
     }
     // Never cache (or consult the cache) for non-read-only cultures.
     if (!culture.isReadOnly) {
-      return new TimeMachineFormatInfo(culture);
+      return TimeMachineFormatInfo(culture);
     }
     return _cache.getOrAdd(culture);
   }
@@ -398,7 +398,7 @@ class _EraDescription {
     List<String> allNames;
     if (pipeDelimited == null)
     {
-      allNames = new List<String>(0); // string[0];
+      allNames = List<String>(0); // string[0];
       primaryName = "";
     }
     else
@@ -413,7 +413,7 @@ class _EraDescription {
       // Order by length, descending to avoid early out (e.g. parsing BCE as BC and then having a spare E)
       allNames.sort((x, y) => y.length.compareTo(x.length));
     }
-    return new _EraDescription._(primaryName, new List<String>.unmodifiable(allNames));
+    return _EraDescription._(primaryName, List<String>.unmodifiable(allNames));
   }
 
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that

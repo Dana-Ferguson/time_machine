@@ -94,13 +94,13 @@ class ZoneEqualityComparerOptions {
 
   // todo: I feel like dynamic dispatch like this is *very* dangerous
   ZoneEqualityComparerOptions operator &(dynamic other) =>
-      other is ZoneEqualityComparerOptions ? new ZoneEqualityComparerOptions(_value & other._value)
-          : other is int ? new ZoneEqualityComparerOptions(_value & other)
-          : throw new ArgumentError('Must be either Options or int.');
+      other is ZoneEqualityComparerOptions ? ZoneEqualityComparerOptions(_value & other._value)
+          : other is int ? ZoneEqualityComparerOptions(_value & other)
+          : throw ArgumentError('Must be either Options or int.');
   ZoneEqualityComparerOptions operator |(dynamic other) =>
-      other is ZoneEqualityComparerOptions ? new ZoneEqualityComparerOptions(_value | other._value)
-          : other is int ? new ZoneEqualityComparerOptions(_value | other)
-          : throw new ArgumentError('Must be either Options or int.');
+      other is ZoneEqualityComparerOptions ? ZoneEqualityComparerOptions(_value | other._value)
+          : other is int ? ZoneEqualityComparerOptions(_value | other)
+          : throw ArgumentError('Must be either Options or int.');
   int operator ~() => ~_value;
 
   @override
@@ -119,7 +119,7 @@ class ZoneEqualityComparerOptions {
   static ZoneEqualityComparerOptions union(Iterable<ZoneEqualityComparerOptions> units) {
     int i = 0;
     units.forEach((u) => i = i|u._value);
-    return new ZoneEqualityComparerOptions(i);
+    return ZoneEqualityComparerOptions(i);
   }
 }
 
@@ -160,9 +160,9 @@ class ZoneEqualityComparer {
   /// [interval]: The interval within the time line to use for comparisons.
   /// [options]: The options to use when comparing time zones.
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
-  ZoneEqualityComparer._(this._interval, this._options) : _zoneIntervalComparer = new ZoneIntervalEqualityComparer(_options, _interval) {
+  ZoneEqualityComparer._(this._interval, this._options) : _zoneIntervalComparer = ZoneIntervalEqualityComparer(_options, _interval) {
     if ((_options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
-      throw new ArgumentError("The value $_options is not defined within ZoneEqualityComparer.Options");
+      throw ArgumentError("The value $_options is not defined within ZoneEqualityComparer.Options");
     }
   }
 
@@ -177,7 +177,7 @@ class ZoneEqualityComparer {
   factory ZoneEqualityComparer.forInterval(Interval interval) {
     Preconditions.checkArgument(interval.hasStart && interval.hasEnd, 'interval',
         "The interval must have both a start and an end.");
-    return new ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.onlyMatchWallOffset);
+    return ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.onlyMatchWallOffset);
   }
 
   /// Returns a comparer operating over the same interval as this one, but with the given
@@ -189,7 +189,7 @@ class ZoneEqualityComparer {
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
   /// Returns: A comparer operating over the same interval as this one, but with the given set of options.
   ZoneEqualityComparer withOptions(ZoneEqualityComparerOptions options) {
-    return this._options == options ? this : new ZoneEqualityComparer._(this._interval, options);
+    return this._options == options ? this : ZoneEqualityComparer._(this._interval, options);
   }
 
   /// Compares two time zones for equality according to the options and interval provided to this comparer.
@@ -255,7 +255,7 @@ class ZoneEqualityComparer {
   }
 
   Iterable<ZoneInterval> _getIntervals(DateTimeZone zone) {
-    var allIntervals = zone.getZoneIntervals(new Interval(_interval.start, _interval.end));
+    var allIntervals = zone.getZoneIntervals(Interval(_interval.start, _interval.end));
     return _checkOption(_options, ZoneEqualityComparerOptions.matchAllTransitions) ? allIntervals : _zoneIntervalComparer.coalesceIntervals(allIntervals);
   }
 }

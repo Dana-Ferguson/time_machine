@@ -98,7 +98,7 @@ class PeriodBuilder {
   /// [ArgumentError]: [unit] is not a single unit, or a value is provided for a date unit which is outside the range of `System.Int32`.
   int operator [](PeriodUnits unit) {
     if (_indexGetterFunctionMap.containsKey(unit)) return _indexGetterFunctionMap[unit](this);
-    throw new ArgumentError("Indexer for PeriodBuilder only takes a single unit");
+    throw ArgumentError("Indexer for PeriodBuilder only takes a single unit");
   }
 
   // todo: I.O.U. some documentation
@@ -109,7 +109,7 @@ class PeriodBuilder {
 //  }
 
     if (_indexSetterFunctionMap.containsKey(unit)) return _indexSetterFunctionMap[unit](this, value);
-    throw new ArgumentError("Indexer for PeriodBuilder only takes a single unit");
+    throw ArgumentError("Indexer for PeriodBuilder only takes a single unit");
   }
 
 

@@ -47,14 +47,14 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static Object _genNumbers() {
     // byte[] data = Convert.FromBase64String(GeneratedData);
     var data = base64.decode(_generatedData);
-    _monthLengths = new List<int>(data.length ~/ 2); // new ushort[data.Length / 2];
+    _monthLengths = List<int>(data.length ~/ 2); // new ushort[data.Length / 2];
 
     for (int i = 0; i < _monthLengths.length; i++) {
       _monthLengths[i] = /*(ushort)*/((data[i * 2] << 8) | (data[i * 2 + 1]));
     }
 
-    _yearLengths = new List<int>(_monthLengths.length);
-    _yearStartDays = new List<int>(_monthLengths.length);
+    _yearLengths = List<int>(_monthLengths.length);
+    _yearStartDays = List<int>(_monthLengths.length);
 
     // Populate arrays from index 1.
     int totalDays = 0;
@@ -90,7 +90,7 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   @override
   int calculateStartOfYearDays(int year) {
     // Only called from the base GetStartOfYearInDays implementation.
-    throw new UnimplementedError();
+    throw UnimplementedError();
   }
 
   @protected
@@ -121,13 +121,13 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     for (int month = 1; month <= 12; month++) {
       int monthLength = 29 + ((monthBits >> month) & 1);
       if (daysLeft <= monthLength) {
-        return new YearMonthDay(year, month, daysLeft);
+        return YearMonthDay(year, month, daysLeft);
       }
       daysLeft -= monthLength;
     }
     // This should throw...
     Preconditions.checkArgumentRange('dayOfYear', dayOfYear, 1, getDaysInYear(year));
-    throw new StateError("Bug in Noda Time: year $year has ${getDaysInYear(year)} days but $dayOfYear isn't valid");
+    throw StateError("Bug in Noda Time: year $year has ${getDaysInYear(year)} days but $dayOfYear isn't valid");
   }
 
   @override

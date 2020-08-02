@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 import 'package:matcher/matcher.dart';
 
 
-Matcher instantIsCloseTo(Instant value) => new InstantIsCloseTo(value, Time.epsilon);
+Matcher instantIsCloseTo(Instant value) => InstantIsCloseTo(value, Time.epsilon);
 
 /// Returns the uncached version of the given zone. If the zone isn't
 /// an instance of CachedDateTimeZone, the same reference is returned back.
@@ -20,7 +20,7 @@ DateTimeZone Uncached(DateTimeZone zone)
 }
 
 // Matcher throwsAsync<T>() => new Throws(wrapMatcher(new isInstanceOf<T>()));
-Matcher willThrow<T>() => throwsA(new TypeMatcher<T>());
+Matcher willThrow<T>() => throwsA(TypeMatcher<T>());
 // Matcher throws<T>() => throwsA(new isInstanceOf<T>());
 
 // throwsA(new isInstanceOf<ArgumentError>()));

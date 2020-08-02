@@ -63,7 +63,7 @@ void BclThroughHistory()
 
 void ArithmeticExamples(int persianYear, int gregorianYear, int gregorianDayOfMarch)
 {
-  var persian = new LocalDate(persianYear, 1, 1, CalendarSystem.persianArithmetic);
+  var persian = LocalDate(persianYear, 1, 1, CalendarSystem.persianArithmetic);
   var gregorian = persian.withCalendar(CalendarSystem.gregorian);
   expect(gregorianYear, gregorian.year);
   expect(3, gregorian.monthOfYear);

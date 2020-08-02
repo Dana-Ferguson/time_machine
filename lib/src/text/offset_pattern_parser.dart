@@ -25,7 +25,7 @@ class OffsetPatternParser implements IPatternParser<Offset> {
         2, PatternFields.seconds, 0, 59, _getPositiveSeconds, (bucket, value) => bucket.seconds = value),
     '+': _handlePlus,
     '-': _handleMinus,
-    'Z': (ignored1, ignored2) => throw new InvalidPatternError(TextErrorMessages.zPrefixNotAtStartOfPattern)
+    'Z': (ignored1, ignored2) => throw InvalidPatternError(TextErrorMessages.zPrefixNotAtStartOfPattern)
   };
 
   // These are used to compute the individual (always-positive) components of an offset.
@@ -44,13 +44,13 @@ class OffsetPatternParser implements IPatternParser<Offset> {
   IPartialPattern<Offset> _parsePartialPattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetPattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
       switch (patternText) {
         case "g":
-          return ICompositePatternBuilder.buildAsPartial(new CompositePatternBuilder<Offset>()
+          return ICompositePatternBuilder.buildAsPartial(CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)
             // _hasZeroSeconds, _hasZeroSecondsAndMinutes can be supplied directly in DartVM
             // we get this failure in Flutter: '(#lib1::Offset) → dart.core::bool' that isn't of expected type '(dynamic) → dart.core::bool'
@@ -59,14 +59,14 @@ class OffsetPatternParser implements IPatternParser<Offset> {
             ..add(_parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), (arg) => _hasZeroSeconds(arg))
             ..add(_parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
         case "G":
-          return new _ZPrefixPattern(_parsePartialPattern("g", formatInfo));
+          return _ZPrefixPattern(_parsePartialPattern("g", formatInfo));
         case "i":
-          return ICompositePatternBuilder.buildAsPartial(new CompositePatternBuilder<Offset>()
+          return ICompositePatternBuilder.buildAsPartial(CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)
             ..add(_parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), (arg) => _hasZeroSeconds(arg))
             ..add(_parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
         case "I":
-          return new _ZPrefixPattern(_parsePartialPattern("i", formatInfo));
+          return _ZPrefixPattern(_parsePartialPattern("i", formatInfo));
         case "l":
           patternText = formatInfo.offsetPatternLong;
           break;
@@ -91,19 +91,19 @@ class OffsetPatternParser implements IPatternParser<Offset> {
     }
     // This is the only way we'd normally end up in custom parsing land for Z on its own.
     if (patternText == "%Z") {
-      throw new InvalidPatternError(TextErrorMessages.emptyZPrefixedOffsetPattern);
+      throw InvalidPatternError(TextErrorMessages.emptyZPrefixedOffsetPattern);
     }
 
     // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern
     // which decides whether or not to delegate.
     bool zPrefix = patternText.startsWith("Z");
 
-    var patternBuilder = new SteppedPatternBuilder<Offset, _OffsetParseBucket>(formatInfo, () => new _OffsetParseBucket());
+    var patternBuilder = SteppedPatternBuilder<Offset, _OffsetParseBucket>(formatInfo, () => _OffsetParseBucket());
     patternBuilder.parseCustomPattern(zPrefix ? patternText.substring(1) : patternText, _patternCharacterHandlers);
     // No need to validate field combinations here, but we do need to do something a bit special
     // for Z-handling.
-    IPartialPattern<Offset> pattern = patternBuilder.build(new Offset.hoursAndMinutes(5, 30));
-    return zPrefix ? new _ZPrefixPattern(pattern) : pattern;
+    IPartialPattern<Offset> pattern = patternBuilder.build(Offset.hoursAndMinutes(5, 30));
+    return zPrefix ? _ZPrefixPattern(pattern) : pattern;
   }
 
   /// Returns true if the offset is representable just in hours and minutes (no seconds).
@@ -174,6 +174,6 @@ class _OffsetParseBucket extends ParseBucket<Offset> {
     if (isNegative) {
       totalSeconds = -totalSeconds;
     }
-    return ParseResult.forValue<Offset>(new Offset(totalSeconds));
+    return ParseResult.forValue<Offset>(Offset(totalSeconds));
   }
 }

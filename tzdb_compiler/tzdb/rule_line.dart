@@ -69,7 +69,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
       var yearPredicate = _getYearPredicate();
       // Apply a little sanity...
       if (_recurrence.isInfinite || _recurrence.toYear - _recurrence.fromYear > 1000) {
-        throw new UnsupportedError("TimeMachine does not support 'typed' rules over large periods");
+        throw UnsupportedError("TimeMachine does not support 'typed' rules over large periods");
       }
       for (int year = _recurrence.fromYear; year <= _recurrence.toYear; year++) {
         if (yearPredicate(year)) {
@@ -95,7 +95,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
 
   /// Returns a [String] that represents this instance.
   @override String toString() {
-    var builder = new StringBuffer();
+    var builder = StringBuffer();
     builder.write(_recurrence);
     if (_daylightSavingsIndicator != null) {
       builder..write(" \"")..write(_daylightSavingsIndicator)..write("\"");

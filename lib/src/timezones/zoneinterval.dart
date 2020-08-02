@@ -13,7 +13,7 @@ abstract class IZoneInterval {
   static Instant rawEnd(ZoneInterval zoneInterval) => zoneInterval._rawEnd;
 
   static ZoneInterval newZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) =>
-      new ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
+      ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
 
   static ZoneInterval withStart(ZoneInterval zoneInterval, Instant newStart) => zoneInterval?._withStart(newStart);
 
@@ -151,7 +151,7 @@ class ZoneInterval {
     // Work out the corresponding local instants, taking care to "go infinite" appropriately.
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkArgument(rawStart < rawEnd, 'start', "The start Instant must be less than the end Instant");
-    return new ZoneInterval._new(name, rawStart, rawEnd, wallOffset, savings);
+    return ZoneInterval._new(name, rawStart, rawEnd, wallOffset, savings);
   }
 
   ZoneInterval._new(this.name, this._rawStart, this._rawEnd, this.wallOffset, this.savings) :
@@ -160,12 +160,12 @@ class ZoneInterval {
 
   /// Returns a copy of this zone interval, but with the given start instant.
   ZoneInterval _withStart(Instant newStart) {
-    return new ZoneInterval._(name, newStart, _rawEnd, wallOffset, savings);
+    return ZoneInterval._(name, newStart, _rawEnd, wallOffset, savings);
   }
 
   /// Returns a copy of this zone interval, but with the given end instant.
   ZoneInterval _withEnd(Instant newEnd) {
-    return new ZoneInterval._(name, _rawStart, newEnd, wallOffset, savings);
+    return ZoneInterval._(name, _rawStart, newEnd, wallOffset, savings);
   }
 
   /// Determines whether this period contains the given Instant in its range.

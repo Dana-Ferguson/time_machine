@@ -37,7 +37,7 @@ abstract class Clock
   /// * [calendar]: Calendar to use in the returned object.
   ///
   /// Returns: A [ZonedClock] with the given clock, time zone and calendar system.
-  ZonedClock inZone(DateTimeZone zone, [CalendarSystem calendar]) => new ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
+  ZonedClock inZone(DateTimeZone zone, [CalendarSystem calendar]) => ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
 
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// using the UTC time zone and ISO calendar system.
@@ -45,7 +45,7 @@ abstract class Clock
   /// * [clock]: Clock to use in the returned object.
   ///
   /// Returns: A [ZonedClock] with the given clock, in the UTC time zone and ISO calendar system.
-  ZonedClock inUtc() => new ZonedClock(this, DateTimeZone.utc, CalendarSystem.iso);
+  ZonedClock inUtc() => ZonedClock(this, DateTimeZone.utc, CalendarSystem.iso);
 
   // todo: rename inLocalZone?
   /// Constructs a [ZonedClock] from a clock (the target of the method),
@@ -62,7 +62,7 @@ abstract class Clock
   Future<ZonedClock> inTzdbSystemDefaultZone() async
   {
     var zone = await (await DateTimeZoneProviders.tzdb).getSystemDefault();
-    return new ZonedClock(this, zone, CalendarSystem.iso);
+    return ZonedClock(this, zone, CalendarSystem.iso);
   }
 
   /// The default [Clock] is the [SystemClock] but can be changed by the user.

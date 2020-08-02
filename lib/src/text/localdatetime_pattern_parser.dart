@@ -65,7 +65,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   IPattern<LocalDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
@@ -88,8 +88,8 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
-            () => new LocalDateTimeParseBucket(_templateValueDate, _templateValueTime));
+    var patternBuilder = SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
+            () => LocalDateTimeParseBucket(_templateValueDate, _templateValueTime));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
     return patternBuilder.build(_templateValueDate.at(_templateValueTime));
@@ -118,8 +118,8 @@ class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
   final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
 
   LocalDateTimeParseBucket(LocalDate templateValueDate, LocalTime templateValueTime)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
-        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
+      : date = /*LocalDatePatternParser.*/LocalDateParseBucket(templateValueDate),
+        time = /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValueTime);
 
   /// Combines the values in a date bucket with the values in a time bucket.
   ///

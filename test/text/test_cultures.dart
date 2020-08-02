@@ -4,9 +4,9 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal abstract class TestLocalDateTimes {
-  @private static final LocalDateTime SampleLocalDateTime = new LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456789);
-  @private static final LocalDateTime SampleLocalDateTimeToTicks = new LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456700);
-  @private static final LocalDateTime SampleLocalDateTimeToMillis = new LocalDateTime(
+  @private static final LocalDateTime SampleLocalDateTime = LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456789);
+  @private static final LocalDateTime SampleLocalDateTimeToTicks = LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456700);
+  @private static final LocalDateTime SampleLocalDateTimeToMillis = LocalDateTime(
       1976,
       6,
       19,
@@ -14,8 +14,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
       13,
       34,
       ms: 123);
-  @private static final LocalDateTime SampleLocalDateTimeToSeconds = new LocalDateTime(1976, 6, 19, 21, 13, 34);
-  @private static final LocalDateTime SampleLocalDateTimeToMinutes = new LocalDateTime(1976, 6, 19, 21, 13, 0);
+  @private static final LocalDateTime SampleLocalDateTimeToSeconds = LocalDateTime(1976, 6, 19, 21, 13, 34);
+  @private static final LocalDateTime SampleLocalDateTimeToMinutes = LocalDateTime(1976, 6, 19, 21, 13, 0);
 
 /*@internal static final LocalDateTime SampleLocalDateTimeCoptic = new LocalDateTime.fromYMDHMSC(
       1976,
@@ -28,7 +28,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns.
-  @internal static final LocalDateTime MsdnStandardExample = new LocalDateTime(
+  @internal static final LocalDateTime MsdnStandardExample = LocalDateTime(
       2009,
       06,
       15,
@@ -36,8 +36,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
       45,
       30,
       ms: 90);
-  @internal static final LocalDateTime MsdnStandardExampleNoMillis = new LocalDateTime(2009, 06, 15, 13, 45, 30);
-  @private static final LocalDateTime MsdnStandardExampleNoSeconds = new LocalDateTime(2009, 06, 15, 13, 45, 0);
+  @internal static final LocalDateTime MsdnStandardExampleNoMillis = LocalDateTime(2009, 06, 15, 13, 45, 30);
+  @private static final LocalDateTime MsdnStandardExampleNoSeconds = LocalDateTime(2009, 06, 15, 13, 45, 0);
 }
 
 /// Cultures to use from various tests.
@@ -70,7 +70,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
   // Generated this from C#
   static final Culture EnUs =
-  new Culture('en-US', (new DateTimeFormatBuilder()
+  Culture('en-US', (DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -89,7 +89,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'h:mm tt'
     ..longTimePattern = 'h:mm:ss tt').Build());
   static final Culture FrFr =
-  new Culture('fr-FR', (new DateTimeFormatBuilder()
+  Culture('fr-FR', (DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -108,7 +108,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture FrCa =
-  new Culture('fr-CA', (new DateTimeFormatBuilder()
+  Culture('fr-CA', (DateTimeFormatBuilder()
     ..amDesignator = 'a.m.'
     ..pmDesignator = 'p.m.'
     ..timeSeparator = ' '
@@ -127,7 +127,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture DotTimeSeparator =
-  new Culture('fi-FI-DotTimeSeparator', (new DateTimeFormatBuilder()
+  Culture('fi-FI-DotTimeSeparator', (DateTimeFormatBuilder()
     ..amDesignator = 'ap.'
     ..pmDesignator = 'ip.'
     ..timeSeparator = '.'
@@ -164,7 +164,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'H.mm'
     ..longTimePattern = 'H.mm.ss').Build());
   static final Culture GenitiveNameTestCulture =
-  new Culture('GenitiveNameTestCulture', (new DateTimeFormatBuilder()
+  Culture('GenitiveNameTestCulture', (DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -185,7 +185,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture GenitiveNameTestCultureWithLeadingNames =
-  new Culture('GenitiveNameTestCultureWithLeadingNames', (new DateTimeFormatBuilder()
+  Culture('GenitiveNameTestCultureWithLeadingNames', (DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -206,7 +206,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..shortTimePattern = 'HH:mm'
     ..longTimePattern = 'HH:mm:ss').Build());
   static final Culture AwkwardDayOfWeekCulture =
-  new Culture('AwkwardDayOfWeekCulture', (new DateTimeFormatBuilder()
+  Culture('AwkwardDayOfWeekCulture', (DateTimeFormatBuilder()
     ..amDesignator = 'AM'
     ..pmDesignator = 'PM'
     ..timeSeparator = ':'
@@ -226,7 +226,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
     ..longTimePattern = 'HH:mm:ss').Build());
 
   static final Culture AwkwardAmPmDesignatorCulture =
-  new Culture('AwkwardAmPmDesignatorCulture', (new DateTimeFormatBuilder()
+  Culture('AwkwardAmPmDesignatorCulture', (DateTimeFormatBuilder()
     ..amDesignator = 'Foo'
     ..pmDesignator = 'FooBar'
     ..timeSeparator = ':'

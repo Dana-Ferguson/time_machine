@@ -11,7 +11,7 @@ class Preconditions {
   static T checkNotNull<T>(T argument, String paramName) // where T : class
   {
     if (argument == null) {
-      throw new ArgumentError.notNull(paramName);
+      throw ArgumentError.notNull(paramName);
     }
     return argument;
   }
@@ -24,7 +24,7 @@ class Preconditions {
   {
     // #if DEBUG
     if (argument == null) {
-      throw new ArgumentError.notNull(paramName);
+      throw ArgumentError.notNull(paramName);
     }
   // #endif
   }
@@ -34,7 +34,7 @@ class Preconditions {
   // may well be called very often.
   static void checkArgumentRange(String paramName, num value, num minInclusive, num maxInclusive) {
     if (value == null || value < minInclusive || value > maxInclusive) {
-      throw new RangeError.range(value, minInclusive, maxInclusive, paramName);
+      throw RangeError.range(value, minInclusive, maxInclusive, paramName);
     }
   }
 
@@ -57,13 +57,13 @@ class Preconditions {
   // [ContractAnnotation("expression:false => halt")]
   static void checkArgument(bool expression, String parameter, String message) {
     if (expression == null || !expression) {
-      throw new ArgumentError("$message (parameter name: $parameter)");
+      throw ArgumentError("$message (parameter name: $parameter)");
     }
   }
 
   static void checkState(bool expression, String message) {
     if (expression == null || !expression) {
-      throw new StateError(message);
+      throw StateError(message);
     }
   }
 

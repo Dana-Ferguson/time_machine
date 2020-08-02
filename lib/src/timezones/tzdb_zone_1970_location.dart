@@ -64,7 +64,7 @@ class TzdbZone1970Location {
     Preconditions.checkArgumentRange('latitudeSeconds', latitudeSeconds, -90 * 3600, 90 * 3600);
     Preconditions.checkArgumentRange('longitudeSeconds', longitudeSeconds, -180 * 3600, 180 * 3600);
 
-    var Countries = new List<TzdbZone1970LocationCountry>.unmodifiable(Preconditions.checkNotNull(countries, 'countries'));
+    var Countries = List<TzdbZone1970LocationCountry>.unmodifiable(Preconditions.checkNotNull(countries, 'countries'));
     Preconditions.checkArgument(Countries.length > 0, 'countries', "Collection must contain at least one entry");
     for (var entry in Countries) {
       Preconditions.checkArgument(entry != null, 'countries', "Collection must not contain null entries");
@@ -72,7 +72,7 @@ class TzdbZone1970Location {
     var ZoneId = Preconditions.checkNotNull(zoneId, 'zoneId');
     var Comment = Preconditions.checkNotNull(comment, 'comment');
 
-    return new TzdbZone1970Location._(Comment, Countries, latitudeSeconds, longitudeSeconds, ZoneId);
+    return TzdbZone1970Location._(Comment, Countries, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
   @internal void write(IDateTimeZoneWriter writer) {
@@ -98,12 +98,12 @@ class TzdbZone1970Location {
     int latitudeSeconds = reader.readInt32();
     int longitudeSeconds = reader.readInt32();
     int countryCount = reader.read7BitEncodedInt();
-    var countries = new List<TzdbZone1970LocationCountry>();
+    var countries = List<TzdbZone1970LocationCountry>();
     for (int i = 0; i < countryCount; i++)
     {
       String countryName = reader.readString();
       String countryCode = reader.readString();
-      countries.add(new TzdbZone1970LocationCountry(countryName, countryCode));
+      countries.add(TzdbZone1970LocationCountry(countryName, countryCode));
     }
     String zoneId = reader.readString();
     String comment = reader.readString();
@@ -111,10 +111,10 @@ class TzdbZone1970Location {
     // to catch ArgumentException, but we're in pretty tight control of what's going on here.
     try
     {
-      return new TzdbZone1970Location(latitudeSeconds, longitudeSeconds, countries, zoneId, comment);
+      return TzdbZone1970Location(latitudeSeconds, longitudeSeconds, countries, zoneId, comment);
     }
     on ArgumentError catch (e) {
-      throw new InvalidTimeDataError("Invalid zone location data in stream", e);
+      throw InvalidTimeDataError("Invalid zone location data in stream", e);
     }
   }
 }

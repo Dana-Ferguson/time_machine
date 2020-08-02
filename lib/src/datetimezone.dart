@@ -61,7 +61,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to
   /// compare equal to an instance returned by calling [forOffset] with an offset of zero, but it may
   /// or may not compare equal to an instance returned by e.g. `DateTimeZoneProviders.Tzdb["UTC"]`.
-  static final DateTimeZone utc = new FixedDateTimeZone.forOffset(Offset.zero);
+  static final DateTimeZone utc = FixedDateTimeZone.forOffset(Offset.zero);
   static const int _fixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
   static const int _fixedZoneCacheMinimumSeconds = -_fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
   static const int _fixedZoneCacheSize = (12 + 15) * 2 + 1; // To UTC+15 inclusive
@@ -85,11 +85,11 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   factory DateTimeZone.forOffset(Offset offset) {
     int seconds = offset.inSeconds;
     if (arithmeticMod(seconds, _fixedZoneCacheGranularitySeconds) != 0) {
-      return new FixedDateTimeZone.forOffset(offset);
+      return FixedDateTimeZone.forOffset(offset);
     }
     int index = (seconds - _fixedZoneCacheMinimumSeconds) ~/ _fixedZoneCacheGranularitySeconds;
     if (index < 0 || index >= _fixedZoneCacheSize) {
-      return new FixedDateTimeZone.forOffset(offset);
+      return FixedDateTimeZone.forOffset(offset);
     }
     return _fixedZoneCache[index];
   }
@@ -274,10 +274,10 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
   /// fixing the 0 offset as DateTimeZone.Utc.
   static List<DateTimeZone> _buildFixedZoneCache() {
-    List<DateTimeZone> ret = new List<DateTimeZone>(_fixedZoneCacheSize);
+    List<DateTimeZone> ret = List<DateTimeZone>(_fixedZoneCacheSize);
     for (int i = 0; i < _fixedZoneCacheSize; i++) {
       int offsetSeconds = i * _fixedZoneCacheGranularitySeconds + _fixedZoneCacheMinimumSeconds;
-      ret[i] = new FixedDateTimeZone.forOffset(new Offset(offsetSeconds));
+      ret[i] = FixedDateTimeZone.forOffset(Offset(offsetSeconds));
     }
     ret[-_fixedZoneCacheMinimumSeconds ~/ _fixedZoneCacheGranularitySeconds] = utc;
     return ret;
@@ -299,7 +299,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// see also: [DateTimeZone.getZoneInterval]
   Iterable<ZoneInterval> getZoneIntervalsFromTo(Instant start, Instant end) =>
   //    // The static constructor performs all the validation we need.
-  getZoneIntervals(new Interval(start, end));
+  getZoneIntervals(Interval(start, end));
 
 
   /// Returns all the zone intervals which occur for any instant in the given interval.
@@ -347,9 +347,9 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   // todo: merge with regular getZoneIntervals as a custom parameter
   Iterable<ZoneInterval> getZoneIntervalsOptions(Interval interval, ZoneEqualityComparerOptions options) {
     if ((options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
-      throw new ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
+      throw ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
     }
-    var zoneIntervalEqualityComparer = new ZoneIntervalEqualityComparer(options, interval);
+    var zoneIntervalEqualityComparer = ZoneIntervalEqualityComparer(options, interval);
     var originalIntervals = getZoneIntervals(interval);
     return zoneIntervalEqualityComparer.coalesceIntervals(originalIntervals);
   }

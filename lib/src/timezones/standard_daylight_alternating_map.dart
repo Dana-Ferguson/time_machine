@@ -70,7 +70,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
       standard = startRecurrence;
     }
     Preconditions.checkArgument(standard.savings == Offset.zero, 'startRecurrence', "At least one recurrence must not have savings applied");
-    return new StandardDaylightAlternatingMap._(standardOffset, standard, dst);
+    return StandardDaylightAlternatingMap._(standardOffset, standard, dst);
   }
 
   bool equals(StandardDaylightAlternatingMap other) =>
@@ -114,16 +114,16 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     var dstTransitionInstant = dstTransition.instant;
     if (standardTransitionInstant < dstTransitionInstant) {
       // Next transition is from DST to standard.
-      return new _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
+      return _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
     }
     else if (standardTransitionInstant > dstTransitionInstant) {
       // Next transition is from standard to DST.
-      return new _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
+      return _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
     }
     else {
       // Okay, the transitions happen at the same time. If they're not at infinity, we're stumped.
       if (standardTransitionInstant.isValid) {
-        throw new StateError("Zone recurrence rules have identical transitions. This time zone is broken.");
+        throw StateError("Zone recurrence rules have identical transitions. This time zone is broken.");
       }
       // Okay, the two transitions must be to the end of time. Find which recurrence has the later *previous* transition...
       var previousDstTransition = _dstRecurrence.previousOrSameOrFail(instant, _standardOffset, Offset.zero);
@@ -131,11 +131,11 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
       // No point in checking for equality here... they can't go back from the end of time to the start...
       if (previousDstTransition.instant > previousStandardTransition.instant) {
         // The previous transition is from standard to DST. Therefore the next one is from DST to standard.
-        return new _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
+        return _TransitionRecurrenceResult(standardTransition, _dstRecurrence);
       }
       else {
         // The previous transition is from DST to standard. Therefore the next one is from standard to DST.
-        return new _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
+        return _TransitionRecurrenceResult(dstTransition, _standardRecurrence);
       }
     }
   }
@@ -166,7 +166,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     var standardRecurrence = ZoneRecurrence.read(reader);
     var dstRecurrence = ZoneRecurrence.read(reader);
 
-    return new StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
+    return StandardDaylightAlternatingMap(standardOffset, standardRecurrence, dstRecurrence);
 
     // Offset standardOffset = reader.ReadOffset();
     //    String standardName = reader.ReadString();

@@ -20,7 +20,7 @@ abstract class ZonedDateTimePatterns
           .parsePattern(patternText ?? generalFormatOnlyPatternImpl.patternText)
           .format(zonedDateTime);
 
-  static final ZonedDateTime defaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0, 0).inUtc();
+  static final ZonedDateTime defaultTemplateValue = LocalDateTime(2000, 1, 1, 0, 0, 0).inUtc();
 }
 
 /// Represents a pattern for parsing and formatting [ZonedDateTime] values.
@@ -110,8 +110,8 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
       ZoneLocalMappingResolver resolver, DateTimeZoneProvider zoneProvider, ZonedDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).parsePattern(patternText, formatInfo);
-    return new ZonedDateTimePattern._(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
+    var pattern = ZonedDateTimePatternParser(templateValue, resolver, zoneProvider).parsePattern(patternText, formatInfo);
+    return ZonedDateTimePattern._(patternText, formatInfo, templateValue, resolver, zoneProvider, pattern);
   }
 
   // todo: This needs to be a factory

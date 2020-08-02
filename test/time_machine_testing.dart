@@ -33,7 +33,7 @@ as helpingMachine;
 Future<dynamic> runTests() => helpingMachine.runTests();
 
 abstract class TimeMachine {
-  TimeMachine() { throw new StateError('TimeMachine can not be instantiated.'); }
+  TimeMachine() { throw StateError('TimeMachine can not be instantiated.'); }
   static Future initialize([Map args = const {}]) async {
     helper.setFunctions();
     await publicMachine.TimeMachine.initialize(args);
@@ -55,7 +55,7 @@ abstract class TestObjects {
     Preconditions.checkArgumentRange('seconds', seconds, 0, 59);
     seconds += minutes * TimeConstants.secondsPerMinute;
     seconds += hours * TimeConstants.secondsPerHour;
-    return new Offset(seconds);
+    return Offset(seconds);
   }
 
   /// Creates a negative offset from the given values.
@@ -66,6 +66,6 @@ abstract class TestObjects {
   /// Returns: A new [Offset] representing the given values.
   /// [ArgumentOutOfRangeException]: The result of the operation is outside the range of Offset.
   static Offset CreateNegativeOffset(int hours, int minutes, int seconds) {
-    return new Offset(-CreatePositiveOffset(hours, minutes, seconds).inSeconds);
+    return Offset(-CreatePositiveOffset(hours, minutes, seconds).inSeconds);
   }
 }

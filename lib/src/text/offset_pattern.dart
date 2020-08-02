@@ -78,7 +78,7 @@ class OffsetPattern implements IPattern<Offset> {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.offsetPatternParser.parsePattern(patternText) as IPartialPattern<Offset>;
-    return new OffsetPattern._(patternText, pattern);
+    return OffsetPattern._(patternText, pattern);
   }
 
   /// Creates a pattern for the given pattern text and culture.

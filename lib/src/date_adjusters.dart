@@ -12,12 +12,12 @@ class DateAdjusters {
 
   /// A date adjuster to move to the first day of the current month.
   static final LocalDate Function(LocalDate) startOfMonth =
-      (date) => new LocalDate(date.year, date.monthOfYear, 1, date.calendar);
+      (date) => LocalDate(date.year, date.monthOfYear, 1, date.calendar);
 
 
   /// A date adjuster to move to the last day of the current month.
   static final LocalDate Function(LocalDate) endOfMonth =
-      (date) => new LocalDate(date.year, date.monthOfYear, date.calendar.getDaysInMonth(date.year, date.monthOfYear), date.calendar);
+      (date) => LocalDate(date.year, date.monthOfYear, date.calendar.getDaysInMonth(date.year, date.monthOfYear), date.calendar);
 
 
   /// A date adjuster to move to the specified day of the current month.
@@ -30,7 +30,7 @@ class DateAdjusters {
   /// An adjuster which changes the day to [day],
   /// retaining the same year and month.
   static LocalDate Function(LocalDate) dayOfMonth(int day) =>
-          (date) => new LocalDate(date.year, date.monthOfYear, day, date.calendar);
+          (date) => LocalDate(date.year, date.monthOfYear, day, date.calendar);
 
 
   /// A date adjuster to move to the same day of the specified month.
@@ -43,7 +43,7 @@ class DateAdjusters {
   /// An adjuster which changes the month to [month],
   /// retaining the same year and day of month.
   static LocalDate Function(LocalDate) month(int month) =>
-          (date) => new LocalDate(date.year, month, date.dayOfMonth, date.calendar);
+          (date) => LocalDate(date.year, month, date.dayOfMonth, date.calendar);
 
 
   /// A date adjuster to move to the next specified day-of-week, but return the
@@ -56,7 +56,7 @@ class DateAdjusters {
   static LocalDate Function(LocalDate) nextOrSame(DayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
+      throw RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.dayOfWeek == dayOfWeek ? date : date.next(dayOfWeek);
   }
@@ -72,7 +72,7 @@ class DateAdjusters {
   static LocalDate Function(LocalDate) previousOrSame(DayOfWeek dayOfWeek) {
     // Avoids boxing...
     if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
+      throw RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.dayOfWeek == dayOfWeek ? date : date.previous(dayOfWeek);
   }
@@ -89,7 +89,7 @@ class DateAdjusters {
   /// specified day-of-week.
   static LocalDate Function(LocalDate) next(DayOfWeek dayOfWeek) {
     if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
+      throw RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.next(dayOfWeek);
   }
@@ -106,7 +106,7 @@ class DateAdjusters {
   /// specified day-of-week.
   static LocalDate Function(LocalDate) previous(DayOfWeek dayOfWeek) {
     if (dayOfWeek < DayOfWeek.monday || dayOfWeek > DayOfWeek.sunday) {
-      throw new RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
+      throw RangeError.range(dayOfWeek.value, DayOfWeek.monday.value, DayOfWeek.sunday.value, 'dayOfWeek');
     }
     return (date) => date.previous(dayOfWeek);
   }

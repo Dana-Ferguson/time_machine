@@ -18,9 +18,9 @@ Future main() async {
 // Here the term "Islamic" only refers to whether the implementation is IslamicYearMonthDayCalculator,
 // not whether the calendar itself is based on Islamic scripture.
 List<TestCaseData> NonIslamicCalculators = [
-  new TestCaseData(new GregorianYearMonthDayCalculator())..name="Gregorian",
+  TestCaseData(GregorianYearMonthDayCalculator())..name="Gregorian",
   //new TestCaseData(new CopticYearMonthDayCalculator())..name="Coptic",
-  new TestCaseData(new JulianYearMonthDayCalculator())..name="Julian",
+  TestCaseData(JulianYearMonthDayCalculator())..name="Julian",
 //new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName("Hebrew Civil"),
 //new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName("Hebrew Scriptural"),
 //new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName("Persian Simple"),

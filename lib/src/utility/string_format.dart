@@ -7,7 +7,7 @@
 // Capturing Group 1: Arg Index
 // Capturing Group 3: Special Format
 const String _basicArgPattern = r"\{(\d+)(:([A-Za-z0-9]*))?\}";
-final _pattern = new RegExp(_basicArgPattern);
+final _pattern = RegExp(_basicArgPattern);
 
 /// Simulates basic dotnet BCL string.Format functionality to ease porting. Invariant Culture only.
 String stringFormat(String text, [List<dynamic> args = const []]) {
@@ -36,7 +36,7 @@ String stringInsert(String text, int index, String value) {
 }
 
 String stringFilled(String text, int count) {
-  StringBuffer sb = new StringBuffer();
+  StringBuffer sb = StringBuffer();
   for(int i = 0; i < count; i++) {
     sb.write(text);
   }

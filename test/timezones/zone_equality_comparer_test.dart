@@ -18,8 +18,8 @@ Future main() async {
 }
 
 // Sample instants for use in tests. They're on January 1st 2000...2009, midnight UTC.
-List<Instant> Instants = (new Iterable.generate(10, (i) => (i+2000)))
-    .map((year) => new Instant.utc(year, 1, 1, 0, 0))
+List<Instant> Instants = (Iterable.generate(10, (i) => (i+2000)))
+    .map((year) => Instant.utc(year, 1, 1, 0, 0))
     .toList(growable: false);
 
 // Various tests using a pair of zones which can demonstrate a number of
@@ -28,14 +28,14 @@ List<Instant> Instants = (new Iterable.generate(10, (i) => (i+2000)))
 void Various()
 {
   // Names, some offsets, and first transition are all different.
-  var zone1 = (new MtdtzBuilder()
+  var zone1 = (MtdtzBuilder()
     ..Add(Instants[0], 1, 0, "xx")
     ..Add(Instants[2], 3, 0, "1b")
     ..Add(Instants[4], 2, 1, "1c")
     ..Add(Instants[6], 4, 0, "1d")
   ).Build();
 
-  var zone2 = (new MtdtzBuilder()
+  var zone2 = (MtdtzBuilder()
     ..Add(Instants[1], 1, 0, "xx")
     ..Add(Instants[2], 3, 0, "2b")
     ..Add(Instants[4], 1, 2, "2c")
@@ -63,7 +63,7 @@ void Various()
 
 @Test()
 void ElidedTransitions() {
-  var zone1 = (new MtdtzBuilder()
+  var zone1 = (MtdtzBuilder()
     ..Add(Instants[3], 0, 0, "a")
     ..Add(Instants[4], 1, 2, "b")
     ..Add(Instants[5], 2, 1, "b")
@@ -72,7 +72,7 @@ void ElidedTransitions() {
     ..Add(Instants[8], 0, 0, "x")
   ).Build();
 
-  var zone2 = (new MtdtzBuilder()
+  var zone2 = (MtdtzBuilder()
     ..Add(Instants[3], 0, 0, "a")
     ..Add(Instants[4], 3, 0, "b")
     // Instants[5] isn't included here: wall offset is the same; components change in zone1
@@ -97,8 +97,8 @@ void ElidedTransitions() {
 @Test()
 void ForInterval()
 {
-  var interval = new Interval(Instants[3], Instants[5]);
-  var comparer = new ZoneEqualityComparer.forInterval(interval);
+  var interval = Interval(Instants[3], Instants[5]);
+  var comparer = ZoneEqualityComparer.forInterval(interval);
   expect(ZoneEqualityComparerOptions.onlyMatchWallOffset, IZoneEqualityComparer.optionsForTest(comparer));
   expect(interval, IZoneEqualityComparer.intervalForTest(comparer));
 }
@@ -106,8 +106,8 @@ void ForInterval()
 @Test()
 void WithOptions()
 {
-  var interval = new Interval(Instants[3], Instants[5]);
-  var firstComparer = new ZoneEqualityComparer.forInterval(interval);
+  var interval = Interval(Instants[3], Instants[5]);
+  var firstComparer = ZoneEqualityComparer.forInterval(interval);
   var secondComparer = firstComparer.withOptions(ZoneEqualityComparerOptions.matchNames);
 
   expect(ZoneEqualityComparerOptions.matchNames, IZoneEqualityComparer.optionsForTest(secondComparer));
@@ -123,13 +123,13 @@ void ElidedTransitions_Degenerate() {
   // Transitions with *nothing* that we care about. (Normally
   // these wouldn't even be generated, but we could imagine some
   // sort of zone interval in the future which had another property...)
-  var zone1 = (new MtdtzBuilder()
+  var zone1 = (MtdtzBuilder()
     ..Add(Instants[3], 1, 0, "a")
     ..Add(Instants[4], 1, 0, "a")
     ..Add(Instants[5], 1, 0, "a")
     ..Add(Instants[6], 0)
   ).Build();
-  var zone2 = (new MtdtzBuilder()
+  var zone2 = (MtdtzBuilder()
     ..Add(Instants[3], 1, 0, "a")
     ..Add(Instants[6], 0)
   ).Build();
@@ -146,7 +146,7 @@ void ElidedTransitions_Degenerate() {
 @Test()
 Future ReferenceComparison() async
 {
-  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
+  var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
   var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   expect(comparer.equals(zone, zone), isTrue);
 }
@@ -154,7 +154,7 @@ Future ReferenceComparison() async
 @Test()
 Future NullComparison() async
 {
-  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
+  var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
   var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   expect(comparer.equals(zone, null), isFalse);
   expect(comparer.equals(null, zone), isFalse);
@@ -163,14 +163,14 @@ Future NullComparison() async
 @Test()
 void InvalidOptions()
 {
-  var comparer = new ZoneEqualityComparer.forInterval(new Interval(Instants[0], Instants[2]));
-  expect(() => comparer.withOptions(new ZoneEqualityComparerOptions(9999)), throwsArgumentError);
+  var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
+  expect(() => comparer.withOptions(ZoneEqualityComparerOptions(9999)), throwsArgumentError);
 }
 
 void AssertEqual(DateTimeZone first, DateTimeZone second,
     Instant start, Instant end, ZoneEqualityComparerOptions options)
 {
-  var comparer = new ZoneEqualityComparer.forInterval(new Interval(start, end)).withOptions(options);
+  var comparer = ZoneEqualityComparer.forInterval(Interval(start, end)).withOptions(options);
   expect(comparer.equals(first, second), isTrue);
   expect(comparer.getHashCode(first), comparer.getHashCode(second));
 }
@@ -178,7 +178,7 @@ void AssertEqual(DateTimeZone first, DateTimeZone second,
 void AssertNotEqual(DateTimeZone first, DateTimeZone second,
     Instant start, Instant end, ZoneEqualityComparerOptions options)
 {
-  var comparer = new ZoneEqualityComparer.forInterval(new Interval(start, end)).withOptions(options);
+  var comparer = ZoneEqualityComparer.forInterval(Interval(start, end)).withOptions(options);
   expect(comparer.equals(first, second), isFalse);
   // If this fails, the code *could* still be correct - but it's unlikely...
   expect(comparer.getHashCode(first), isNot(comparer.getHashCode(second)));

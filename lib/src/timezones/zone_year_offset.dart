@@ -26,7 +26,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal
 class ZoneYearOffset {
   /// An offset that specifies the beginning of the year.
-  static final ZoneYearOffset StartOfYear = new ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
+  static final ZoneYearOffset StartOfYear = ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
 
   final int _dayOfMonth;
   // todo: should this be [DayOfWeek]?
@@ -84,7 +84,7 @@ class ZoneYearOffset {
     }
     if (failed) {
       String range = allowNegated ? "[$minimum, $maximum] or [${-maximum}, ${-minimum}]" : "[$minimum, $maximum]";
-      throw new ArgumentError.value(value, name, "$name is not in the valid range: $range");
+      throw ArgumentError.value(value, name, "$name is not in the valid range: $range");
     }
   }
 
@@ -129,7 +129,7 @@ class ZoneYearOffset {
       // rules that are only in force for a single year.
       actualDayOfMonth = 28; // We'll now look backwards for the right day-of-week.
     }
-    LocalDate date = new LocalDate(year, _monthOfYear, actualDayOfMonth);
+    LocalDate date = LocalDate(year, _monthOfYear, actualDayOfMonth);
     if (_dayOfWeek != 0) {
       // Optimized "go to next or previous occurrence of day or week". Try to do as few comparisons
       // as possible, and only fetch DayOfWeek once. (If we call Next or Previous, it will work it out again.)
@@ -189,7 +189,7 @@ class ZoneYearOffset {
     // todo: we can bit-pack all this; for example: see below
     int flags = reader.readUint8();
     var dayOfMonthSign = flags >> 7 == 1 ? -1 : 1;
-    var mode = new TransitionMode(flags >> 5 & 3);
+    var mode = TransitionMode(flags >> 5 & 3);
     var dayOfWeek = (flags >> 2) & 7;
     var advanceDayOfWeek = (flags & 2) != 0;
     var addDay = (flags & 1) != 0;
@@ -202,7 +202,7 @@ class ZoneYearOffset {
     var monthOfYear = reader.read7BitEncodedInt(); //.readInt32();
     var timeOfDay = ILocalTime.trustedNanoseconds(reader.readInt32() * TimeConstants.nanosecondsPerSecond);
 
-    return new ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);//Preconditions.checkNotNull(reader, 'reader');
+    return ZoneYearOffset(mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, timeOfDay, addDay);//Preconditions.checkNotNull(reader, 'reader');
     //int flags = reader.ReadByte();
     //var mode = new TransitionMode(flags >> 5);
     //var dayOfWeek = (flags >> 2) & 7;

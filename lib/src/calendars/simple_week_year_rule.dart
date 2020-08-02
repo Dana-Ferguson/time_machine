@@ -45,7 +45,7 @@ class SimpleWeekYearRule implements WeekYearRule {
     var yearMonthDayCalculator = ICalendarSystem.yearMonthDayCalculator(calendar);
     var maxWeeks = getWeeksInWeekYear(weekYear, calendar);
     if (weekOfWeekYear < 1 || weekOfWeekYear > maxWeeks) {
-      throw new RangeError.value(weekOfWeekYear, 'weekOfWeekYear');
+      throw RangeError.value(weekOfWeekYear, 'weekOfWeekYear');
     }
 
     int startOfWeekYear = _getWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
@@ -53,7 +53,7 @@ class SimpleWeekYearRule implements WeekYearRule {
     int daysIntoWeek = ((dayOfWeek - _firstDayOfWeek) + 7) % 7;
     int days = startOfWeekYear + (weekOfWeekYear - 1) * 7 + daysIntoWeek;
     if (days < ICalendarSystem.minDays(calendar) || days > ICalendarSystem.maxDays(calendar)) {
-      throw new ArgumentError.value(weekYear, 'weekYear', "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
+      throw ArgumentError.value(weekYear, 'weekYear', "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
     }
     LocalDate ret = ILocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).withCalendar(calendar));
 
@@ -68,7 +68,7 @@ class SimpleWeekYearRule implements WeekYearRule {
     // will always be right.
     if (_irregularWeeks && weekYear != ret.year) {
       if (getWeekYear(ret) != weekYear) {
-        throw new ArgumentError.value(weekYear, 'weekYear',
+        throw ArgumentError.value(weekYear, 'weekYear',
             "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
       }
     }

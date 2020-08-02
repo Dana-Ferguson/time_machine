@@ -14,8 +14,8 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @immutable
 @internal
 class LocalInstant {
-  static final LocalInstant beforeMinValue = new LocalInstant._trusted(IInstant.beforeMinValue.epochDay, deliberatelyInvalid: true);
-  static final LocalInstant afterMaxValue = new LocalInstant._trusted(IInstant.afterMaxValue.epochDay, deliberatelyInvalid: true);
+  static final LocalInstant beforeMinValue = LocalInstant._trusted(IInstant.beforeMinValue.epochDay, deliberatelyInvalid: true);
+  static final LocalInstant afterMaxValue = LocalInstant._trusted(IInstant.afterMaxValue.epochDay, deliberatelyInvalid: true);
 
   /// Elapsed time since the local 1970-01-01T00:00:00.
   final Time _time;
@@ -25,7 +25,7 @@ class LocalInstant {
   /// Constructor which should *only* be used to construct the invalid instances.
   factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
   {
-    return new LocalInstant._(new Time(days: days));
+    return LocalInstant._(Time(days: days));
   }
 
   /// Initializes a new instance of [LocalInstant].
@@ -36,7 +36,7 @@ class LocalInstant {
     //{
     //throw new OverflowException("Operation would overflow bounds of local date/time");
     //}
-    return new LocalInstant._(nanoseconds);
+    return LocalInstant._(nanoseconds);
   }
 
   /// Initializes a new instance of [LocalInstant].
@@ -45,7 +45,7 @@ class LocalInstant {
   /// [nanoOfDay]: Nanosecond of the local day.
   factory LocalInstant.daysNanos(int days, int nanoOfDay)
   {
-    return new LocalInstant._(new Time(days: days, nanoseconds: nanoOfDay));
+    return LocalInstant._(Time(days: days, nanoseconds: nanoOfDay));
   }
 
   /// Returns whether or not this is a valid instant. Returns true for all but
@@ -158,7 +158,7 @@ class LocalInstant {
     }
     var date = LocalDate.fromEpochDay(IInstant.trusted(_time).epochDay);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");
-    var utc = new LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(nanosecondOfDay));
+    var utc = LocalDateTime.localDateAtTime(date, ILocalTime.untrustedNanoseconds(nanosecondOfDay));
     return pattern.format(utc);
   // return TextShim.toStringLocalDateTime(utc); // + ' ${_span.days}::${_span.nanosecondOfDay} ';
   }

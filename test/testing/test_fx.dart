@@ -22,23 +22,23 @@ import 'test_fx_attributes.dart';
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
 const bool testGenTest = false;
 String _classVarName;
-StringBuffer _gen_sb_imports = new StringBuffer();
-StringBuffer _gen_sb_methodCalls = new StringBuffer();
+StringBuffer _gen_sb_imports = StringBuffer();
+StringBuffer _gen_sb_methodCalls = StringBuffer();
 String _testFilePath = 'unknown_test.dart';
 
 Iterable<TestCase> toTestCases(TestCaseSource testCaseSource, ObjectMirror mirror) {
   var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable;
 
   if (argumentsSource.isEmpty) return const [];
-  var testCases = new List<TestCase>();
+  var testCases = List<TestCase>();
 
   for (var arguments in argumentsSource) {
     if (arguments is TestCaseData) {
-      if (arguments.arguments is List) testCases.add(new TestCase(arguments.arguments, arguments.name));
-      else testCases.add(new TestCase([arguments.arguments], arguments.name));
+      if (arguments.arguments is List) testCases.add(TestCase(arguments.arguments, arguments.name));
+      else testCases.add(TestCase([arguments.arguments], arguments.name));
     }
-    else if (arguments is List) testCases.add(new TestCase(arguments));
-    else testCases.add(new TestCase([arguments]));
+    else if (arguments is List) testCases.add(TestCase(arguments));
+    else testCases.add(TestCase([arguments]));
   }
 
   return testCases;
@@ -56,7 +56,7 @@ Future runTests() async {
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))
       .toList(growable: false);
 
-  var futures = new List<Future>();
+  var futures = List<Future>();
 
   for (var lib in testLibs) {
     if (testGenTest) _printImport(lib.uri);
@@ -73,7 +73,7 @@ Future runTests() async {
       var testName = test.first.name;
       if (testName == null) {
         var libSimpleName= _stripSymbol(lib.simpleName);
-        var sb = new StringBuffer();
+        var sb = StringBuffer();
         if (libSimpleName?.isNotEmpty ?? false) sb..write(libSimpleName)..write('.');
         sb..write(_stripSymbol(declaration.simpleName));
         testName = sb.toString();
@@ -103,7 +103,7 @@ Future runTests() async {
 }
 
 void _writeTestGenFile() {
-  var sb = new StringBuffer();
+  var sb = StringBuffer();
   sb.writeln("import 'dart:async';");
   sb.writeln("import 'dart:math' as math;");
   sb.writeln();
@@ -132,7 +132,7 @@ void _writeTestGenFile() {
   sb.writeln('}');
 
 
-  var file = new File(_testFilePath);
+  var file = File(_testFilePath);
   file.writeAsString(sb.toString(), mode: FileMode.writeOnly);
 
   print("written '$_testFilePath' to drive.");
@@ -186,7 +186,7 @@ bool _getTzdb = false;
 bool _setupMethod = false;
 
 String _printNewObject(Object obj) {
-  var sb = new StringBuffer();
+  var sb = StringBuffer();
   if (obj == null) {
     sb..write('null');
   }
@@ -390,7 +390,7 @@ String _escapeText(String text) {
 }
 
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
-  var futures = new List<Future>();
+  var futures = List<Future>();
 
   var testCases = method
       .metadata
@@ -445,15 +445,15 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
 }
 
 Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, String testGroupName) {
-  var futures = new List<Future>();
+  var futures = List<Future>();
 
-  var instance = classMirror.newInstance(new Symbol(''), []);
+  var instance = classMirror.newInstance(Symbol(''), []);
   if (testGenTest)
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
     _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
   }
-  var declarations = new List<DeclarationMirror>()..addAll(classMirror.declarations.values);
+  var declarations = List<DeclarationMirror>()..addAll(classMirror.declarations.values);
   while (classMirror.superclass != null) {
     classMirror = classMirror.superclass;
     declarations.addAll(classMirror.declarations.values);

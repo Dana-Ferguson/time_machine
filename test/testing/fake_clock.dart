@@ -39,7 +39,7 @@ class FakeClock extends Clock {
   /// [secondOfMinute]: The second.
   /// Returns: A [FakeClock] initialised to the given instant, with no auto-advance.
   static FakeClock FromUtc(int year, int monthOfYear, int dayOfMonth, [int hourOfDay = 0, int minuteOfHour = 0, int secondOfMinute = 0]) {
-    return new FakeClock(new Instant.utc(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute));
+    return FakeClock(Instant.utc(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute));
   }
 
   /// Advances the clock by the given duration.
@@ -57,43 +57,43 @@ class FakeClock extends Clock {
   ///
   /// [nanoseconds]: The number of nanoseconds to advance the clock by (or if negative, the number to move it back
   /// by).
-  void AdvanceNanoseconds(int nanoseconds) => Advance(new Time(nanoseconds: nanoseconds));
+  void AdvanceNanoseconds(int nanoseconds) => Advance(Time(nanoseconds: nanoseconds));
 
   /// Advances the clock by the given number of ticks.
   ///
   /// [ticks]: The number of ticks to advance the clock by (or if negative, the number to move it back
   /// by).
-  void AdvanceTicks(int ticks) => Advance(new Time(microseconds: ticks));
+  void AdvanceTicks(int ticks) => Advance(Time(microseconds: ticks));
 
   /// Advances the clock by the given number of milliseconds.
   ///
   /// [milliseconds]: The number of milliseconds to advance the clock by (or if negative, the number
   /// to move it back by).
-  void AdvanceMilliseconds(int milliseconds) => Advance(new Time(milliseconds: milliseconds));
+  void AdvanceMilliseconds(int milliseconds) => Advance(Time(milliseconds: milliseconds));
 
   /// Advances the clock by the given number of seconds.
   ///
   /// [seconds]: The number of seconds to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceSeconds(int seconds) => Advance(new Time(seconds: seconds));
+  void AdvanceSeconds(int seconds) => Advance(Time(seconds: seconds));
 
   /// Advances the clock by the given number of minutes.
   ///
   /// [minutes]: The number of minutes to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceMinutes(int minutes) => Advance(new Time(minutes: minutes));
+  void AdvanceMinutes(int minutes) => Advance(Time(minutes: minutes));
 
   /// Advances the clock by the given number of hours.
   ///
   /// [hours]: The number of hours to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceHours(int hours) => Advance(new Time(hours: hours));
+  void AdvanceHours(int hours) => Advance(Time(hours: hours));
 
   /// Advances the clock by the given number of standard (24-hour) days.
   ///
   /// [days]: The number of days to advance the clock by (or if negative, the number to move it
   /// back by).
-  void AdvanceDays(int days) => Advance(new Time(days: days));
+  void AdvanceDays(int days) => Advance(Time(days: days));
 
   /// Resets the clock to the given instant.
   /// The value of the [AutoAdvance] property will be unchanged.

@@ -28,7 +28,7 @@ import 'tzdb/utility/binary_writer.dart';
 main_old(List<String> args) {
   CompilerOptions options = CompilerOptions(args);
 
-  var tzdbCompiler = new TzdbZoneInfoCompiler();
+  var tzdbCompiler = TzdbZoneInfoCompiler();
   var tzdb = tzdbCompiler.compile(options.sourceDirectoryName);
   tzdb.logCounts();
   if (options.zoneId != null) {
@@ -62,7 +62,7 @@ main_old(List<String> args) {
 void main(List<String> args) {
   // https://nodatime.org/tzdb/latest.txt --> https://nodatime.org/tzdb/tzdb2018g.nzd
   // https://data.iana.org/time-zones/releases/tzdata2018g.tar.gz
-  var tzdbCompiler = new TzdbZoneInfoCompiler();
+  var tzdbCompiler = TzdbZoneInfoCompiler();
   var tzdb = tzdbCompiler.compile('https://data.iana.org/time-zones/releases/tzdata2018g.tar.gz');
   tzdb.logCounts();
 }
@@ -80,7 +80,7 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
     return CldrWindowsZonesParser.parseFile(mappingPath);
   }
   if (!Directory(mappingPath).existsSync()) {
-    throw new Exception(
+    throw Exception(
         "$mappingPath does not exist as either a file or a directory");
   }
   var xmlFiles = Directory(mappingPath)
@@ -88,7 +88,7 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
       .where((f) => f is File && f.path.endsWith('.xml'))
       .toList();
   if (xmlFiles.length == 0) {
-    throw new Exception("$mappingPath does not contain any XML files");
+    throw Exception("$mappingPath does not contain any XML files");
   }
   var allFiles = xmlFiles
       .map((file) => CldrWindowsZonesParser.parseFile(file.path))
@@ -102,7 +102,7 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
       .first; // or default
 
   if (bestFile == null) {
-    throw new Exception(
+    throw Exception(
         "No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]");
   }
   print("Picked Windows Zones with TZDB version ${bestFile
@@ -199,5 +199,5 @@ WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones override
     }))
       .map((a) => a.value).toList();
 
-  return new WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);
+  return WindowsZones(version, tzdbVersion, windowsVersion, mapZoneList);
 }

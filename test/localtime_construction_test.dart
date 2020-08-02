@@ -22,7 +22,7 @@ Future main() async {
 @TestCase(const [0, 60])
 void InvalidConstructionToMinute(int hour, int minute)
 {
-  expect(() => new LocalTime(hour, minute, 0), throwsRangeError);
+  expect(() => LocalTime(hour, minute, 0), throwsRangeError);
 }
 
 @Test()
@@ -34,7 +34,7 @@ void InvalidConstructionToMinute(int hour, int minute)
 @TestCase(const [0, 0, -1])
 void InvalidConstructionToSecond(int hour, int minute, int second)
 {
-  expect(() => new LocalTime(hour, minute, second), throwsRangeError);
+  expect(() => LocalTime(hour, minute, second), throwsRangeError);
 }
 
 @Test()
@@ -48,7 +48,7 @@ void InvalidConstructionToSecond(int hour, int minute, int second)
 @TestCase(const [0, 0, 0, 1000])
 void InvalidConstructionToMillisecond(int hour, int minute, int second, int millisecond)
 {
-  expect(() => new LocalTime(hour, minute, second, ms:millisecond), throwsRangeError);
+  expect(() => LocalTime(hour, minute, second, ms:millisecond), throwsRangeError);
 }
 
 @Test()
@@ -65,7 +65,7 @@ void InvalidConstructionToMillisecond(int hour, int minute, int second, int mill
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
   // expect(() => new LocalTime(hour, minute, second, ms:millisecond + tick * TimeConstants.nanosecondsPerTick), throwsRangeError);
-  expect(() => new LocalTime(hour, minute, second, ns:millisecond * TimeConstants.nanosecondsPerMillisecond + tick * 100), throwsRangeError);
+  expect(() => LocalTime(hour, minute, second, ns:millisecond * TimeConstants.nanosecondsPerMillisecond + tick * 100), throwsRangeError);
 }
 
 @Test()
@@ -79,7 +79,7 @@ void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int secon
 @TestCase(const [0, 0, 0, TimeConstants.nanosecondsPerSecond])
 void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, int nanosecond)
 {
-  expect(() => new LocalTime(hour, minute, second, ns: nanosecond), throwsRangeError);
+  expect(() => LocalTime(hour, minute, second, ns: nanosecond), throwsRangeError);
 }
 
 @Test()
@@ -99,21 +99,21 @@ void FromNanosecondsSinceMidnight_RangeChecks()
 @Test()
 void SinceMidnight_Valid()
 {
-  expect(LocalTime.midnight, new LocalTime.sinceMidnight(Time.zero));
-  expect(LocalTime.midnight - new Period(seconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneSecond));
-  expect(LocalTime.midnight - new Period(milliseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMillisecond));
-  expect(LocalTime.midnight - new Period(microseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneMicrosecond));
-  expect(LocalTime.midnight - new Period(nanoseconds: 1), new LocalTime.sinceMidnight(Time.oneDay - Time.oneNanosecond));
+  expect(LocalTime.midnight, LocalTime.sinceMidnight(Time.zero));
+  expect(LocalTime.midnight - Period(seconds: 1), LocalTime.sinceMidnight(Time.oneDay - Time.oneSecond));
+  expect(LocalTime.midnight - Period(milliseconds: 1), LocalTime.sinceMidnight(Time.oneDay - Time.oneMillisecond));
+  expect(LocalTime.midnight - Period(microseconds: 1), LocalTime.sinceMidnight(Time.oneDay - Time.oneMicrosecond));
+  expect(LocalTime.midnight - Period(nanoseconds: 1), LocalTime.sinceMidnight(Time.oneDay - Time.oneNanosecond));
 }
 
 @Test()
 void SinceMidnight_RangeChecks()
 {
-  expect(() => new LocalTime.sinceMidnight(-Time.oneNanosecond), throwsArgumentError);
-  expect(() => new LocalTime.sinceMidnight(-Time.oneMicrosecond), throwsArgumentError);
-  expect(() => new LocalTime.sinceMidnight(-Time.oneMillisecond), throwsArgumentError);
-  expect(() => new LocalTime.sinceMidnight(-Time.oneSecond), throwsArgumentError);
-  expect(() => new LocalTime.sinceMidnight(Time.oneDay), throwsArgumentError);
+  expect(() => LocalTime.sinceMidnight(-Time.oneNanosecond), throwsArgumentError);
+  expect(() => LocalTime.sinceMidnight(-Time.oneMicrosecond), throwsArgumentError);
+  expect(() => LocalTime.sinceMidnight(-Time.oneMillisecond), throwsArgumentError);
+  expect(() => LocalTime.sinceMidnight(-Time.oneSecond), throwsArgumentError);
+  expect(() => LocalTime.sinceMidnight(Time.oneDay), throwsArgumentError);
 }
 
 

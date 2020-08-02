@@ -19,9 +19,9 @@ Future main() async {
 @Test()
 void PlusHours_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expectedForward = new LocalTime(14, 15, 8);
-  LocalTime expectedBackward = new LocalTime(10, 15, 8);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expectedForward = LocalTime(14, 15, 8);
+  LocalTime expectedBackward = LocalTime(10, 15, 8);
   expect(expectedForward, start.addHours(2));
   expect(expectedBackward, start.addHours(-2));
 }
@@ -29,8 +29,8 @@ void PlusHours_Simple()
 @Test()
 void PlusHours_CrossingDayBoundary()
 {
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expected = new LocalTime(8, 15, 8);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expected = LocalTime(8, 15, 8);
   expect(expected, start.addHours(20));
   expect(start, start.addHours(20).addHours(-20));
 }
@@ -39,8 +39,8 @@ void PlusHours_CrossingDayBoundary()
 void PlusHours_CrossingSeveralDaysBoundary()
 {
   // Christmas day + 10 days and 1 hour
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expected = new LocalTime(13, 15, 8);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expected = LocalTime(13, 15, 8);
   expect(expected, start.addHours(241));
   expect(start, start.addHours(241).addHours(-241));
 }
@@ -50,9 +50,9 @@ void PlusHours_CrossingSeveralDaysBoundary()
 @Test()
 void PlusMinutes_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expectedForward = new LocalTime(12, 17, 8);
-  LocalTime expectedBackward = new LocalTime(12, 13, 8);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expectedForward = LocalTime(12, 17, 8);
+  LocalTime expectedBackward = LocalTime(12, 13, 8);
   expect(expectedForward, start.addMinutes(2));
   expect(expectedBackward, start.addMinutes(-2));
 }
@@ -60,9 +60,9 @@ void PlusMinutes_Simple()
 @Test()
 void PlusSeconds_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expectedForward = new LocalTime(12, 15, 18);
-  LocalTime expectedBackward = new LocalTime(12, 14, 58);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expectedForward = LocalTime(12, 15, 18);
+  LocalTime expectedBackward = LocalTime(12, 14, 58);
   expect(expectedForward, start.addSeconds(10));
   expect(expectedBackward, start.addSeconds(-10));
 }
@@ -70,9 +70,9 @@ void PlusSeconds_Simple()
 @Test()
 void PlusMilliseconds_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8, ms: 300);
-  LocalTime expectedForward = new LocalTime(12, 15, 8, ms: 700);
-  LocalTime expectedBackward = new LocalTime(12, 15, 7, ms: 900);
+  LocalTime start = LocalTime(12, 15, 8, ms: 300);
+  LocalTime expectedForward = LocalTime(12, 15, 8, ms: 700);
+  LocalTime expectedBackward = LocalTime(12, 15, 7, ms: 900);
   expect(expectedForward, start.addMilliseconds(400));
   expect(expectedBackward, start.addMilliseconds(-400));
 }
@@ -80,9 +80,9 @@ void PlusMilliseconds_Simple()
 @Test()
 void PlusMicroseconds_Simple()
 {
-  LocalTime start = new LocalTime(12, 15, 8, us: 300750);
-  LocalTime expectedForward = new LocalTime(12, 15, 8, us: 301150);
-  LocalTime expectedBackward = new LocalTime(12, 15, 8, us: 300350);
+  LocalTime start = LocalTime(12, 15, 8, us: 300750);
+  LocalTime expectedForward = LocalTime(12, 15, 8, us: 301150);
+  LocalTime expectedBackward = LocalTime(12, 15, 8, us: 300350);
   expect(expectedForward, start.addMicroseconds(400));
   expect(expectedBackward, start.addMicroseconds(-400));
 }
@@ -91,9 +91,9 @@ void PlusMicroseconds_Simple()
 void PlusTicks_Long()
 {
   expect(TimeConstants.microsecondsPerDay > Platform.int32MaxValue, isTrue);
-  LocalTime start = new LocalTime(12, 15, 8);
-  LocalTime expectedForward = new LocalTime(12, 15, 9);
-  LocalTime expectedBackward = new LocalTime(12, 15, 7);
+  LocalTime start = LocalTime(12, 15, 8);
+  LocalTime expectedForward = LocalTime(12, 15, 9);
+  LocalTime expectedBackward = LocalTime(12, 15, 7);
   expect(start.addMicroseconds(TimeConstants.microsecondsPerDay + TimeConstants.microsecondsPerSecond), expectedForward);
   expect(start.addMicroseconds(-TimeConstants.microsecondsPerDay - TimeConstants.microsecondsPerSecond),  expectedBackward);
 }
@@ -101,20 +101,20 @@ void PlusTicks_Long()
 @Test()
 void With()
 {
-  LocalTime start = new LocalTime(12, 15, 8, ns: 100 * TimeConstants.nanosecondsPerMillisecond + 1234 * 100);
-  LocalTime expected = new LocalTime(12, 15, 8);
+  LocalTime start = LocalTime(12, 15, 8, ns: 100 * TimeConstants.nanosecondsPerMillisecond + 1234 * 100);
+  LocalTime expected = LocalTime(12, 15, 8);
   expect(expected, start.adjust(TimeAdjusters.truncateToSecond));
 }
 
 @Test()
 void PlusMinutes_WouldOverflowNaively()
 {
-  LocalTime start = new LocalTime(12, 34, 56);
+  LocalTime start = LocalTime(12, 34, 56);
   // Very big value, which just wraps round a *lot* and adds one minute.
   // There's no way we could compute that many nanoseconds.
   // note: left-shifting on Web caps at 32 bit and doesn't work here, and the max-int-value is much lower
   int value = Platform.isVM ? (TimeConstants.nanosecondsPerDay << 15) + 1 : (TimeConstants.nanosecondsPerDay * 100) + 1;
-  LocalTime expected = new LocalTime(12, 35, 56);
+  LocalTime expected = LocalTime(12, 35, 56);
   LocalTime actual = start.addMinutes(value);
   expect(actual, expected);
 }

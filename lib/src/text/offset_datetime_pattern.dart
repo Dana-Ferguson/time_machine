@@ -25,7 +25,7 @@ abstract class OffsetDateTimePatterns {
           .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
           .format(offsetDateTime);
 
-  static final OffsetDateTime defaultTemplateValue = new LocalDateTime(2000, 1, 1, 0, 0, 0).withOffset(Offset.zero);
+  static final OffsetDateTime defaultTemplateValue = LocalDateTime(2000, 1, 1, 0, 0, 0).withOffset(Offset.zero);
 
   static TimeMachineFormatInfo formatInfo(OffsetDateTimePattern offsetDateTimePattern) => offsetDateTimePattern._formatInfo;
 }
@@ -119,8 +119,8 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   static OffsetDateTimePattern _create(String patternText, TimeMachineFormatInfo formatInfo, OffsetDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new OffsetDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
-    return new OffsetDateTimePattern._(patternText, formatInfo, templateValue, pattern);
+    var pattern = OffsetDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
+    return OffsetDateTimePattern._(patternText, formatInfo, templateValue, pattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.

@@ -44,7 +44,7 @@ class CachedDateTimeZone extends DateTimeZone {
     if (timeZone is CachedDateTimeZone || IDateTimeZone.isFixed(timeZone)) {
       return timeZone;
     }
-    return new CachedDateTimeZone._(timeZone, CachingZoneIntervalMap.cacheMap(timeZone));
+    return CachedDateTimeZone._(timeZone, CachingZoneIntervalMap.cacheMap(timeZone));
   }
 
   /// Delegates fetching a zone interval to the caching map.

@@ -92,48 +92,48 @@ abstract class FormatHelper {
       }
       // Handle overflow by a single character manually
       if (value < 100) {
-        String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
-        String digit2 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+        String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
+        String digit2 = String.fromCharCode(_zeroCodeUnit + (value % 10));
         outputBuffer..write(digit1)..write(digit2);
         return;
       }
     }
     if (length == 2 && value < 100) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2);
       return;
     }
     if (length == 3 && value < 1000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3);
       return;
     }
     if (length == 4 && value < 10000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 1000));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit4 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 1000));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit4 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3)..write(digit4);
       return;
     }
     if (length == 5 && value < 100000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10000));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 1000) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit4 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit5 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10000));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 1000) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit4 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit5 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3)..write(digit4)..write(digit5);
       return;
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = new List<String>(_maximumPaddingLength);
+    var digits = List<String>(_maximumPaddingLength);
     int pos = _maximumPaddingLength;
     do {
-      digits[--pos] = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
       value ~/= 10;
     } while (value != 0 && pos > 0);
     while ((_maximumPaddingLength - pos) < length) {
@@ -164,48 +164,48 @@ abstract class FormatHelper {
       }
       // Handle overflow by a single character manually
       if (value < 100) {
-        String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
-        String digit2 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+        String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
+        String digit2 = String.fromCharCode(_zeroCodeUnit + (value % 10));
         outputBuffer..write(digit1)..write(digit2);
         return;
       }
     }
     if (length == 2 && value < 100) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2);
       return;
     }
     if (length == 3 && value < 1000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3);
       return;
     }
     if (length == 4 && value < 10000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 1000));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit4 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 1000));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit4 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3)..write(digit4);
       return;
     }
     if (length == 5 && value < 100000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10000));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 1000) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit4 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit5 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10000));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 1000) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit4 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit5 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3)..write(digit4)..write(digit5);
       return;
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = new List<String>(_maximumPaddingLength);
+    var digits = List<String>(_maximumPaddingLength);
     int pos = _maximumPaddingLength;
     do {
-      digits[--pos] = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
       value ~/= 10;
     } while (value != 0 && pos > 0);
     while ((_maximumPaddingLength - pos) < length) {
@@ -236,12 +236,12 @@ abstract class FormatHelper {
     }
 
     // todo: hack around StringBuffer not being indexable, find a better hack?
-    var myOutputBuffer = new List<String>.filled(length, '0');
+    var myOutputBuffer = List<String>.filled(length, '0');
     // for (int i = 0; i < length; i++) outputBuffer.write('0'); //, length);
     int index = myOutputBuffer.length - 1;
     while (relevantDigits > 0)
     {
-      myOutputBuffer[index--] = new String.fromCharCode(_zeroCodeUnit + (relevantDigits % 10));
+      myOutputBuffer[index--] = String.fromCharCode(_zeroCodeUnit + (relevantDigits % 10));
       relevantDigits ~/= 10;
     }
 
@@ -285,13 +285,13 @@ abstract class FormatHelper {
     // so... we have to go through some gymnastics here, todo: definitely some optimization is possible here
     if (relevantLength > 0)
     {
-      var buffer = new List<String>.filled(relevantLength, '0', growable: false);
+      var buffer = List<String>.filled(relevantLength, '0', growable: false);
 
       // outputBuffer.Append('0', relevantLength);
       int index = /*outputBuffer*/buffer.length - 1;
       while (relevantDigits > 0)
       {
-        buffer[index--] = new String.fromCharCode(_zeroCodeUnit + (relevantDigits % 10));
+        buffer[index--] = String.fromCharCode(_zeroCodeUnit + (relevantDigits % 10));
         relevantDigits ~/= 10;
       }
 
@@ -331,23 +331,23 @@ abstract class FormatHelper {
       return;
     }
     if (value < 100) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + (value ~/ 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2);
       return;
     }
     if (value < 1000) {
-      String digit1 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
-      String digit2 = new String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
-      String digit3 = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      String digit1 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 100) % 10));
+      String digit2 = String.fromCharCode(_zeroCodeUnit + ((value ~/ 10) % 10));
+      String digit3 = String.fromCharCode(_zeroCodeUnit + (value % 10));
       outputBuffer..write(digit1)..write(digit2)..write(digit3);
       return;
     }
 
-    var digits = new List<String>(_maximumInt64Length);
+    var digits = List<String>(_maximumInt64Length);
     int pos = _maximumInt64Length;
     do {
-      digits[--pos] = new String.fromCharCode(_zeroCodeUnit + (value % 10));
+      digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
       value ~/= 10;
     } while (value != 0);
     // outputBuffer.write(digits, pos, MaximumInt64Length - pos);

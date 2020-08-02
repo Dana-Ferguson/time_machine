@@ -22,7 +22,7 @@ class DateTimeZoneBuilder
   static DateTimeZone build(String id, List<ZoneRuleSet> ruleSets)
   {
     Preconditions.checkArgument(ruleSets.length > 0, 'ruleSets', 'Cannot create a time zone without any Zone entries');
-    var builder = new DateTimeZoneBuilder._();
+    var builder = DateTimeZoneBuilder._();
     return builder._buildZone(id, ruleSets);
   }
 
@@ -43,11 +43,11 @@ class DateTimeZoneBuilder
     // PrecalculatedDateTimeZone here.
     if (_zoneIntervals.length == 1 && _tailZone == null)
     {
-      return new FixedDateTimeZone(id, _zoneIntervals[0].wallOffset, _zoneIntervals[0].name);
+      return FixedDateTimeZone(id, _zoneIntervals[0].wallOffset, _zoneIntervals[0].name);
     }
     else
     {
-      return new PrecalculatedDateTimeZone(id, _zoneIntervals.toList(), _tailZone);
+      return PrecalculatedDateTimeZone(id, _zoneIntervals.toList(), _tailZone);
     }
   }
 
@@ -73,7 +73,7 @@ class DateTimeZoneBuilder
     // Work on a copy of the rule set. We eliminate rules from it as they expire,
     // so that we can tell when we're down to an infinite pair which can be represented
     // as a tail zone.
-    var activeRules = new List<ZoneRecurrence>.from(ruleSet.rules);
+    var activeRules = List<ZoneRecurrence>.from(ruleSet.rules);
 
     // Surprisingly tricky bit to work out: how to handle the transition from
     // one rule set to another. We know the instant at which the new rule set
@@ -115,7 +115,7 @@ class DateTimeZoneBuilder
     // into the period in which the new rule set is
     ZoneTransition previousTransition;
     if (firstRule != null) {
-      previousTransition = new ZoneTransition(start, firstRule.name, standardOffset, firstRule.savings);
+      previousTransition = ZoneTransition(start, firstRule.name, standardOffset, firstRule.savings);
     }
     else {
       // None of the rules in the current set have *any* transitions in the past, apparently.
@@ -202,7 +202,7 @@ class DateTimeZoneBuilder
         ZoneRecurrence endRule = activeRules[1];
         if (startRule.isInfinite && endRule.isInfinite) {
           // Phase one: build the zone, so we can go round once again and then return.
-          _tailZone = new StandardDaylightAlternatingMap(standardOffset, startRule, endRule);
+          _tailZone = StandardDaylightAlternatingMap(standardOffset, startRule, endRule);
         }
       }
     }

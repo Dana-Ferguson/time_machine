@@ -89,8 +89,8 @@ class PeriodUnits {
   int operator -(PeriodUnits other) => _value - other._value;
   int operator +(PeriodUnits other) => _value + other._value;
 
-  PeriodUnits operator |(PeriodUnits other) => new PeriodUnits(_value | other.value);
-  PeriodUnits operator &(PeriodUnits other) => new PeriodUnits(_value & other.value);
+  PeriodUnits operator |(PeriodUnits other) => PeriodUnits(_value | other.value);
+  PeriodUnits operator &(PeriodUnits other) => PeriodUnits(_value & other.value);
 
   @override
   String toString() => _nameMap[this] ?? 'undefined';
@@ -108,6 +108,6 @@ class PeriodUnits {
   static PeriodUnits union(Iterable<PeriodUnits> units) {
     int i = 0;
     units.forEach((u) => i = i|u._value);
-    return new PeriodUnits(i);
+    return PeriodUnits(i);
   }
 }

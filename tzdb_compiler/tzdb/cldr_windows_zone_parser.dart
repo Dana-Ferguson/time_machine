@@ -262,7 +262,7 @@ class WindowsZones {
     for (int i = 0; i < count; i++) {
       mapZones[i] = MapZone.read(reader);
     }
-    return new WindowsZones(version, tzdbVersion, windowsVersion,
+    return WindowsZones(version, tzdbVersion, windowsVersion,
         // todo: to readonly?
         mapZones);
   }
@@ -291,7 +291,7 @@ class CldrWindowsZonesParser
     // todo: var _tzdbVersion = document.rootElement.("windowsZones")?.Element("mapTimezones")?.Attribute("typeVersion")?.Value ?? "";
     var windowsVersion = document.findElements('windowsZones')?.first?.findElements('mapTimezones')?.first?.getAttribute('typeVersion') ?? '';
     // todo: var windowsVersion = document.Root.Element("windowsZones")?.Element("mapTimezones")?.Attribute("otherVersion")?.Value ?? "";
-    return new WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
+    return WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
   }
 
   // todo: internal
@@ -342,7 +342,7 @@ class CldrWindowsZonesParser
           .findElements("windowsZones").first
           .findElements("mapTimezones").first
           .findElements("mapZone")
-          .map((x) => new MapZone(x.getAttribute("other"),
+          .map((x) => MapZone(x.getAttribute("other"),
           x.getAttribute("territory"),
           x.getAttribute("type").split(r'\\s+')))
           .toList();

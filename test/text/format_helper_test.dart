@@ -34,7 +34,7 @@ Future main() async {
 @TestCase(const [Platform.int32MinValue, 3, "-2147483648"])
 void TestLeftPad(int value, int length, String expected)
 {
-  var builder = new StringBuffer();
+  var builder = StringBuffer();
   FormatHelper.leftPad(value, length, builder);
   expect(expected, builder.toString());
 }
@@ -49,7 +49,7 @@ void TestLeftPad(int value, int length, String expected)
 @TestCase(const [123, 15, "000000000000123"])
 void TestLeftPadNonNegativeInt64(int value, int length, String expected)
 {
-  var builder = new StringBuffer();
+  var builder = StringBuffer();
   FormatHelper.leftPadNonNegativeInt64(value, length, builder);
   expect(expected, builder.toString());
 }
@@ -60,7 +60,7 @@ void TestLeftPadNonNegativeInt64(int value, int length, String expected)
 @TestCase(const [1, 2, 3, "00"])
 void TestAppendFraction(int value, int length, int scale, String expected)
 {
-  var builder = new StringBuffer();
+  var builder = StringBuffer();
   FormatHelper.appendFraction(value, length, scale, builder);
   expect(expected, builder.toString());
 }
@@ -72,7 +72,7 @@ void TestAppendFraction(int value, int length, int scale, String expected)
 @TestCase(const ["1.", 1, 2, 3, "1"])
 void TestAppendFractionTruncate(String initial, int value, int length, int scale, String expected)
 {
-  var builder = new StringBuffer(initial);
+  var builder = StringBuffer(initial);
   FormatHelper.appendFractionTruncate(value, length, scale, builder);
   expect(expected, builder.toString());
 }
@@ -84,7 +84,7 @@ void TestAppendFractionTruncate(String initial, int value, int length, int scale
 @TestCase(const [Platform.int64MinValue, "x-9223372036854775808"])
 void FormatInvariant(int value, String expected)
 {
-  var builder = new StringBuffer("x");
+  var builder = StringBuffer("x");
   FormatHelper.formatInvariant(value, builder);
   expect(expected, builder.toString());
 }        

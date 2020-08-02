@@ -35,21 +35,21 @@ Future setup() async {
 void Transitions2000To2010() {
   // These were fetched with Joda Time 1.6.2, which definitely uses the new rules.
   var expectedDates = [
-    new LocalDate(2000, 3, 30), // Thursday morning
-    new LocalDate(2001, 3, 29), // Thursday morning
-    new LocalDate(2002, 3, 29), // Friday morning from here onwards
-    new LocalDate(2003, 3, 28),
-    new LocalDate(2004, 3, 26),
-    new LocalDate(2005, 4, 1),
-    new LocalDate(2006, 3, 31),
-    new LocalDate(2007, 3, 30),
-    new LocalDate(2008, 3, 28),
-    new LocalDate(2009, 3, 27),
-    new LocalDate(2010, 3, 26)
+    LocalDate(2000, 3, 30), // Thursday morning
+    LocalDate(2001, 3, 29), // Thursday morning
+    LocalDate(2002, 3, 29), // Friday morning from here onwards
+    LocalDate(2003, 3, 28),
+    LocalDate(2004, 3, 26),
+    LocalDate(2005, 4, 1),
+    LocalDate(2006, 3, 31),
+    LocalDate(2007, 3, 30),
+    LocalDate(2008, 3, 28),
+    LocalDate(2009, 3, 27),
+    LocalDate(2010, 3, 26)
   ];
 
   for (int year = 2000; year <= 2010; year++) {
-    LocalDate summer = new LocalDate(year, 6, 1);
+    LocalDate summer = LocalDate(year, 6, 1);
     var intervalPair = Jordan.mapLocal(summer.atMidnight());
     expect(1, intervalPair.count);
     expect(expectedDates[year - 2000], intervalPair.earlyInterval.isoLocalStart.calendarDate);

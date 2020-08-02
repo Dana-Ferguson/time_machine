@@ -32,7 +32,7 @@ void LeapYears()
 void EraProperty()
 {
   CalendarSystem calendar = CalendarSystem.gregorian;
-  LocalDateTime startOfEra = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar: calendar);
+  LocalDateTime startOfEra = LocalDateTime(1, 1, 1, 0, 0, 0, calendar: calendar);
   expect(Era.common, startOfEra.era);
   expect(Era.beforeCommon, startOfEra.addMicroseconds(-1).era);
 }
@@ -40,9 +40,9 @@ void EraProperty()
 @Test()
 void AddMonths_BoundaryCondition()
 {
-  var start = new LocalDate(2017, 8, 20);
+  var start = LocalDate(2017, 8, 20);
   var end = start.addMonths(-19);
-  var expected = new LocalDate(2016, 1, 20);
+  var expected = LocalDate(2016, 1, 20);
   expect(expected, end);
 }
 

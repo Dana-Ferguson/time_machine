@@ -44,45 +44,45 @@ void LocalDateTimeProperties()
 @Test()
 void OffsetProperty()
 {
-  Offset offset = new Offset.hours(5);
+  Offset offset = Offset.hours(5);
 
-  OffsetDateTime odt = new OffsetDateTime(new LocalDateTime(2012, 1, 2, 3, 4, 0), offset);
+  OffsetDateTime odt = OffsetDateTime(LocalDateTime(2012, 1, 2, 3, 4, 0), offset);
   expect(offset, odt.offset);
 }
 
 @Test()
 void LocalDateTimeProperty()
 {
-  LocalDateTime local = new LocalDateTime(2012, 6, 19, 1, 2, 3, calendar: CalendarSystem.julian).addNanoseconds(123456789);
-  Offset offset = new Offset.hours(5);
+  LocalDateTime local = LocalDateTime(2012, 6, 19, 1, 2, 3, calendar: CalendarSystem.julian).addNanoseconds(123456789);
+  Offset offset = Offset.hours(5);
 
-  OffsetDateTime odt = new OffsetDateTime(local, offset);
+  OffsetDateTime odt = OffsetDateTime(local, offset);
   expect(local, odt.localDateTime);
 }
 
 @Test()
 void ToInstant()
 {
-  Instant instant = new Instant.utc(2012, 6, 25, 16, 5, 20);
-  LocalDateTime local = new LocalDateTime(2012, 6, 25, 21, 35, 20);
-  Offset offset = new Offset.hoursAndMinutes(5, 30);
+  Instant instant = Instant.utc(2012, 6, 25, 16, 5, 20);
+  LocalDateTime local = LocalDateTime(2012, 6, 25, 21, 35, 20);
+  Offset offset = Offset.hoursAndMinutes(5, 30);
 
-  OffsetDateTime odt = new OffsetDateTime(local, offset);
+  OffsetDateTime odt = OffsetDateTime(local, offset);
   expect(instant, odt.toInstant());
 }
 
 @Test()
 void Equality()
 {
-  LocalDateTime local1 = new LocalDateTime(2012, 10, 6, 1, 2, 3);
-  LocalDateTime local2 = new LocalDateTime(2012, 9, 5, 1, 2, 3);
-  Offset offset1 = new Offset.hours(1);
-  Offset offset2 = new Offset.hours(2);
+  LocalDateTime local1 = LocalDateTime(2012, 10, 6, 1, 2, 3);
+  LocalDateTime local2 = LocalDateTime(2012, 9, 5, 1, 2, 3);
+  Offset offset1 = Offset.hours(1);
+  Offset offset2 = Offset.hours(2);
 
-  OffsetDateTime equal1 = new OffsetDateTime(local1, offset1);
-  OffsetDateTime equal2 = new OffsetDateTime(local1, offset1);
-  OffsetDateTime unequalByOffset = new OffsetDateTime(local1, offset2);
-  OffsetDateTime unequalByLocal = new OffsetDateTime(local2, offset1);
+  OffsetDateTime equal1 = OffsetDateTime(local1, offset1);
+  OffsetDateTime equal2 = OffsetDateTime(local1, offset1);
+  OffsetDateTime unequalByOffset = OffsetDateTime(local1, offset2);
+  OffsetDateTime unequalByLocal = OffsetDateTime(local2, offset1);
 
   TestHelper.TestEqualsStruct(equal1, equal2, [unequalByOffset]);
   TestHelper.TestEqualsStruct(equal1, equal2, [unequalByLocal]);
@@ -190,37 +190,37 @@ void Equality()
 @Test()
 void InFixedZone()
 {
-  Offset offset = new Offset.hours(5);
-  LocalDateTime local = new LocalDateTime(2012, 1, 2, 3, 4, 0);
-  OffsetDateTime odt = new OffsetDateTime(local, offset);
+  Offset offset = Offset.hours(5);
+  LocalDateTime local = LocalDateTime(2012, 1, 2, 3, 4, 0);
+  OffsetDateTime odt = OffsetDateTime(local, offset);
 
   ZonedDateTime zoned = odt.inFixedZone;
-  expect(new ZonedDateTime.atStrictly(local, new DateTimeZone.forOffset(offset)), zoned);
+  expect(ZonedDateTime.atStrictly(local, DateTimeZone.forOffset(offset)), zoned);
 }
 
 @Test()
 void ToString_WholeHourOffset()
 {
-  LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
-  Offset offset = new Offset.hours(1);
-  OffsetDateTime odt = new OffsetDateTime(local, offset);
+  LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
+  Offset offset = Offset.hours(1);
+  OffsetDateTime odt = OffsetDateTime(local, offset);
   expect("2012-10-06T01:02:03+01", odt.toString());
 }
 
 @Test()
 void ToString_PartHourOffset()
 {
-  LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
-  Offset offset = new Offset.hoursAndMinutes(1, 30);
-  OffsetDateTime odt = new OffsetDateTime(local, offset);
+  LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
+  Offset offset = Offset.hoursAndMinutes(1, 30);
+  OffsetDateTime odt = OffsetDateTime(local, offset);
   expect("2012-10-06T01:02:03+01:30", odt.toString());
 }
 
 @Test()
 void ToString_Utc()
 {
-  LocalDateTime local = new LocalDateTime(2012, 10, 6, 1, 2, 3);
-  OffsetDateTime odt = new OffsetDateTime(local, Offset.zero);
+  LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
+  OffsetDateTime odt = OffsetDateTime(local, Offset.zero);
   expect("2012-10-06T01:02:03Z", odt.toString());
 }
 
@@ -237,17 +237,17 @@ void ToString_Utc()
 @Test() @SkipMe()
 void LocalComparer()
 {
-  var localControl = new LocalDateTime(2013, 4, 2, 19, 54, 0);
-  var control = new OffsetDateTime(localControl, Offset.zero);
-  var negativeOffset = control.localDateTime.withOffset(new Offset.hours(-1));
-  var positiveOffset = control.localDateTime.withOffset(new Offset.hours(1));
-  var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(new Offset.hours(5));
+  var localControl = LocalDateTime(2013, 4, 2, 19, 54, 0);
+  var control = OffsetDateTime(localControl, Offset.zero);
+  var negativeOffset = control.localDateTime.withOffset(Offset.hours(-1));
+  var positiveOffset = control.localDateTime.withOffset(Offset.hours(1));
+  var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(Offset.hours(5));
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.addHours(-2).withOffset(new Offset.hours(-10));
+  var earlierLocal = control.localDateTime.addHours(-2).withOffset(Offset.hours(-10));
   // Same offset, previous day
   var muchEarlierLocal = control.add(Time(hours: -24));
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.addHours(2).withOffset(new Offset.hours(10));
+  var laterLocal = control.localDateTime.addHours(2).withOffset(Offset.hours(10));
   // Same offset, next day
   var muchLaterLocal = control.add(Time(hours: 24));
 
@@ -284,20 +284,20 @@ void LocalComparer()
 @Test() @SkipMe()
 void InstantComparer()
 {
-  var localControl = new LocalDateTime(2013, 4, 2, 19, 54, 0);
-  var control = new OffsetDateTime(localControl, Offset.zero);
-  var equalAndOppositeChanges = control.localDateTime.addHours(1).withOffset(new Offset.hours(1));
+  var localControl = LocalDateTime(2013, 4, 2, 19, 54, 0);
+  var control = OffsetDateTime(localControl, Offset.zero);
+  var equalAndOppositeChanges = control.localDateTime.addHours(1).withOffset(Offset.hours(1));
   var differentCalendar = control.localDateTime.withCalendar(CalendarSystem.coptic).withOffset(Offset.zero);
 
   // Negative offset means later instant
-  var negativeOffset = control.localDateTime.withOffset(new Offset.hours(-1));
+  var negativeOffset = control.localDateTime.withOffset(Offset.hours(-1));
   // Positive offset means earlier instant
-  var positiveOffset = control.localDateTime.withOffset(new Offset.hours(1));
+  var positiveOffset = control.localDateTime.withOffset(Offset.hours(1));
 
   // Later instant, earlier local
-  var earlierLocal = control.localDateTime.addHours(-2).withOffset(new Offset.hours(-10));
+  var earlierLocal = control.localDateTime.addHours(-2).withOffset(Offset.hours(-10));
   // Earlier instant, later local
-  var laterLocal = control.localDateTime.addHours(2).withOffset(new Offset.hours(10));
+  var laterLocal = control.localDateTime.addHours(2).withOffset(Offset.hours(10));
 
   var comparer = OffsetDateTimeComparer.instant;
 
@@ -328,8 +328,8 @@ void InstantComparer()
 void DefaultConstructor()
 {
   // todo: I owe you a default constructor
-  var actual = new OffsetDateTime(new LocalDateTime.localDateAtTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0)), new Offset(0));
-  expect(new LocalDateTime(1, 1, 1, 0, 0, 0), actual.localDateTime);
+  var actual = OffsetDateTime(LocalDateTime.localDateAtTime(LocalDate(1, 1, 1), LocalTime(0, 0, 0)), Offset(0));
+  expect(LocalDateTime(1, 1, 1, 0, 0, 0), actual.localDateTime);
   expect(Offset.zero, actual.offset);
 }
 
@@ -338,9 +338,9 @@ void Subtraction_Duration()
 {
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime end = new LocalDateTime(2014, 08, 14, 15, 0, 0).withOffset(new Offset.hours(1));
-  Time duration = new Time(hours: 8) + new Time(minutes: 9);
-  OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
+  OffsetDateTime end = LocalDateTime(2014, 08, 14, 15, 0, 0).withOffset(Offset.hours(1));
+  Time duration = Time(hours: 8) + Time(minutes: 9);
+  OffsetDateTime expected = LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(Offset.hours(1));
   expect(expected, end - duration);
   expect(expected, end.subtract(duration));
   expect(expected, OffsetDateTime.minus(end, duration));
@@ -358,30 +358,30 @@ void Addition_Duration()
 
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
-  Time duration = new Time(hours: 8) + new Time(minutes: 9);
-  OffsetDateTime expected = new LocalDateTime(2014, 08, 14, 15, 0, 0).withOffset(new Offset.hours(1));
+  OffsetDateTime start = LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(Offset.hours(1));
+  Time duration = Time(hours: 8) + Time(minutes: 9);
+  OffsetDateTime expected = LocalDateTime(2014, 08, 14, 15, 0, 0).withOffset(Offset.hours(1));
   expect(expected, start + duration);
   expect(expected, start.add(duration));
   expect(expected, OffsetDateTime.plus(start, duration));
 
-  expect(start + new Time(hours: hours), start.add(Time(hours: hours)));
-  expect(start + new Time(hours: -hours), start.add(Time(hours: -hours)));
+  expect(start + Time(hours: hours), start.add(Time(hours: hours)));
+  expect(start + Time(hours: -hours), start.add(Time(hours: -hours)));
 
-  expect(start + new Time(minutes: minutes), start.add(Time(minutes: minutes)));
-  expect(start + new Time(minutes: -minutes), start.add(Time(minutes: -minutes)));
+  expect(start + Time(minutes: minutes), start.add(Time(minutes: minutes)));
+  expect(start + Time(minutes: -minutes), start.add(Time(minutes: -minutes)));
 
-  expect(start + new Time(seconds: seconds), start.add(Time(seconds: seconds)));
-  expect(start + new Time(seconds: -seconds), start.add(Time(seconds: -seconds)));
+  expect(start + Time(seconds: seconds), start.add(Time(seconds: seconds)));
+  expect(start + Time(seconds: -seconds), start.add(Time(seconds: -seconds)));
 
-  expect(start + new Time(milliseconds: milliseconds), start.add(Time(milliseconds: milliseconds)));
-  expect(start + new Time(milliseconds: -milliseconds), start.add(Time(milliseconds: -milliseconds)));
+  expect(start + Time(milliseconds: milliseconds), start.add(Time(milliseconds: milliseconds)));
+  expect(start + Time(milliseconds: -milliseconds), start.add(Time(milliseconds: -milliseconds)));
 
-  expect(start + new Time(microseconds: ticks), start.add(Time(microseconds: ticks)));
-  expect(start + new Time(microseconds: -ticks), start.add(Time(microseconds: -ticks)));
+  expect(start + Time(microseconds: ticks), start.add(Time(microseconds: ticks)));
+  expect(start + Time(microseconds: -ticks), start.add(Time(microseconds: -ticks)));
 
-  expect(start + new Time(nanoseconds: nanoseconds), start.add(Time(nanoseconds: nanoseconds)));
-  expect(start + new Time(nanoseconds: -nanoseconds), start.add(Time(nanoseconds: -nanoseconds)));
+  expect(start + Time(nanoseconds: nanoseconds), start.add(Time(nanoseconds: nanoseconds)));
+  expect(start + Time(nanoseconds: -nanoseconds), start.add(Time(nanoseconds: -nanoseconds)));
   /*
   expect(start + new Time(hours: hours), start.addHours(hours));
   expect(start + new Time(hours: -hours), start.addHours(-hours));
@@ -408,9 +408,9 @@ void Subtraction_OffsetDateTime()
 {
   // Test all three approaches... not bothering to check a different calendar,
   // but we'll use two different offsets.
-  OffsetDateTime start = new LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(new Offset.hours(1));
-  OffsetDateTime end = new LocalDateTime(2014, 08, 14, 18, 0, 0).withOffset(new Offset.hours(4));
-  Time expected = new Time(hours: 8) + new Time(minutes: 9);
+  OffsetDateTime start = LocalDateTime(2014, 08, 14, 6, 51, 0).withOffset(Offset.hours(1));
+  OffsetDateTime end = LocalDateTime(2014, 08, 14, 18, 0, 0).withOffset(Offset.hours(4));
+  Time expected = Time(hours: 8) + Time(minutes: 9);
   // expect(expected, end - start);
   expect(expected, end.timeSince(start));
   expect(expected, start.timeUntil(end));
@@ -420,32 +420,32 @@ void Subtraction_OffsetDateTime()
 @Test()
 void WithOffset()
 {
-  LocalDateTime morning = new LocalDateTime(2014, 1, 31, 9, 30, 0);
-  OffsetDateTime original = new OffsetDateTime(morning, new Offset.hours(-8));
-  LocalDateTime evening = new LocalDateTime(2014, 1, 31, 19, 30, 0);
-  Offset newOffset = new Offset.hours(2);
-  OffsetDateTime expected = new OffsetDateTime(evening, newOffset);
+  LocalDateTime morning = LocalDateTime(2014, 1, 31, 9, 30, 0);
+  OffsetDateTime original = OffsetDateTime(morning, Offset.hours(-8));
+  LocalDateTime evening = LocalDateTime(2014, 1, 31, 19, 30, 0);
+  Offset newOffset = Offset.hours(2);
+  OffsetDateTime expected = OffsetDateTime(evening, newOffset);
   expect(expected, original.withOffset(newOffset));
 }
 
 @Test()
 void WithOffset_CrossDates()
 {
-  OffsetDateTime noon = new OffsetDateTime(new LocalDateTime(2017, 8, 22, 12, 0, 0), new Offset.hours(0));
-  OffsetDateTime previousNight = noon.withOffset(new Offset.hours(-14));
-  OffsetDateTime nextMorning = noon.withOffset(new Offset.hours(14));
-  expect(new LocalDateTime(2017, 8, 21, 22, 0, 0), previousNight.localDateTime);
-  expect(new LocalDateTime(2017, 8, 23, 2, 0, 0), nextMorning.localDateTime);
+  OffsetDateTime noon = OffsetDateTime(LocalDateTime(2017, 8, 22, 12, 0, 0), Offset.hours(0));
+  OffsetDateTime previousNight = noon.withOffset(Offset.hours(-14));
+  OffsetDateTime nextMorning = noon.withOffset(Offset.hours(14));
+  expect(LocalDateTime(2017, 8, 21, 22, 0, 0), previousNight.localDateTime);
+  expect(LocalDateTime(2017, 8, 23, 2, 0, 0), nextMorning.localDateTime);
 }
 
 @Test()
 void WithOffset_TwoDaysForwardAndBack()
 {
   // Go from UTC-18 to UTC+18
-  OffsetDateTime night = new OffsetDateTime(new LocalDateTime(2017, 8, 21, 18, 0, 0), new Offset.hours(-18));
-  OffsetDateTime morning = night.withOffset(new Offset.hours(18));
-  expect(new LocalDateTime(2017, 8, 23, 6, 0, 0), morning.localDateTime);
-  OffsetDateTime backAgain = morning.withOffset(new Offset.hours(-18));
+  OffsetDateTime night = OffsetDateTime(LocalDateTime(2017, 8, 21, 18, 0, 0), Offset.hours(-18));
+  OffsetDateTime morning = night.withOffset(Offset.hours(18));
+  expect(LocalDateTime(2017, 8, 23, 6, 0, 0), morning.localDateTime);
+  OffsetDateTime backAgain = morning.withOffset(Offset.hours(-18));
   expect(night, backAgain);
 }
 
@@ -455,7 +455,7 @@ void WithCalendar()
   CalendarSystem julianCalendar = CalendarSystem.julian;
   OffsetDateTime gregorianEpoch = TimeConstants.unixEpoch.withOffset(Offset.zero);
 
-  OffsetDateTime expected = new LocalDate(1969, 12, 19, julianCalendar).atMidnight().withOffset(new Offset.hours(0));
+  OffsetDateTime expected = LocalDate(1969, 12, 19, julianCalendar).atMidnight().withOffset(Offset.hours(0));
   OffsetDateTime actual = gregorianEpoch.withCalendar(CalendarSystem.julian);
   expect(expected, actual);
 }
@@ -463,51 +463,51 @@ void WithCalendar()
 @Test()
 void With_TimeAdjuster()
 {
-  Offset offset = new Offset.hoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
-  OffsetDateTime expected = new LocalDateTime(2014, 6, 27, 12, 15, 8).withOffset(offset);
+  Offset offset = Offset.hoursAndMinutes(2, 30);
+  OffsetDateTime start = LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime expected = LocalDateTime(2014, 6, 27, 12, 15, 8).withOffset(offset);
   expect(expected, start.adjustTime(TimeAdjusters.truncateToSecond));
 }
 
 @Test()
 void With_DateAdjuster()
 {
-  Offset offset = new Offset.hoursAndMinutes(2, 30);
-  OffsetDateTime start = new LocalDateTime(2014, 6, 27, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
-  OffsetDateTime expected = new LocalDateTime(2014, 6, 30, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
+  Offset offset = Offset.hoursAndMinutes(2, 30);
+  OffsetDateTime start = LocalDateTime(2014, 6, 27, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
+  OffsetDateTime expected = LocalDateTime(2014, 6, 30, 12, 5, 8).addNanoseconds(123456789).withOffset(offset);
   expect(expected, start.adjustDate(DateAdjusters.endOfMonth));
 }
 
 @Test()
 Future InZone() async
 {
-  Offset offset = new Offset.hours(-7);
-  OffsetDateTime start = new LocalDateTime(2017, 10, 31, 18, 12, 0).withOffset(offset);
+  Offset offset = Offset.hours(-7);
+  OffsetDateTime start = LocalDateTime(2017, 10, 31, 18, 12, 0).withOffset(offset);
   var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
   var zoned = start.inZone(zone);
 
   // On October 31st, the UK had already gone back, so the offset is 0.
   // Importantly, it's not the offset of the original OffsetDateTime: we're testing
   // that InZone *doesn't* require that.
-  var expected = IZonedDateTime.trusted(new LocalDateTime(2017, 11, 1, 1, 12, 0).withOffset(Offset.zero), zone);
+  var expected = IZonedDateTime.trusted(LocalDateTime(2017, 11, 1, 1, 12, 0).withOffset(Offset.zero), zone);
   expect(expected, zoned);
 }
 
 @Test()
 void ToOffsetDate()
 {
-  var offset = new Offset.hoursAndMinutes(2, 30);
-  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
-  var expected = new OffsetDate(new LocalDate(2014, 6, 27), offset);
+  var offset = Offset.hoursAndMinutes(2, 30);
+  var odt = LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
+  var expected = OffsetDate(LocalDate(2014, 6, 27), offset);
   expect(expected, odt.toOffsetDate());
 }
 
 @Test()
 void ToOffsetTime()
 {
-  var offset = new Offset.hoursAndMinutes(2, 30);
-  var odt = new LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
-  var expected = new OffsetTime(new LocalTime(12, 15, 8).addNanoseconds(123456789), offset);
+  var offset = Offset.hoursAndMinutes(2, 30);
+  var odt = LocalDateTime(2014, 6, 27, 12, 15, 8).addNanoseconds(123456789).withOffset(offset);
+  var expected = OffsetTime(LocalTime(12, 15, 8).addNanoseconds(123456789), offset);
   expect(expected, odt.toOffsetTime());
 }
 

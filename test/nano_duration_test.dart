@@ -20,7 +20,7 @@ Future main() async {
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Time();
+  var actual = Time();
   expect(Time.zero, actual);
 }
 
@@ -41,14 +41,14 @@ void DefaultConstructor()
 @TestCase(const [TimeConstants.nanosecondsPerDay + 1])
 void Int64Conversions(int int64Nanos)
 {
-  var nanoseconds = new NanosecondTime(int64Nanos);
+  var nanoseconds = NanosecondTime(int64Nanos);
   expect(int64Nanos, nanoseconds.inNanoseconds); // .toInt64Nanoseconds());
 }
 
 @Test()
 void ConstituentParts_Positive()
 {
-  var nanos = new NanosecondTime(TimeConstants.nanosecondsPerDay * 5 + 100);
+  var nanos = NanosecondTime(TimeConstants.nanosecondsPerDay * 5 + 100);
   expect(5, Instant.epochTime(nanos).epochDay);
   expect(5, ITime.epochDay(nanos));
   expect(100, ITime.nanosecondOfEpochDay(nanos));
@@ -58,7 +58,7 @@ void ConstituentParts_Positive()
 @Test()
 void ConstituentParts_Negative()
 {
-  var nanos = new NanosecondTime(TimeConstants.nanosecondsPerDay * -5 + 100);
+  var nanos = NanosecondTime(TimeConstants.nanosecondsPerDay * -5 + 100);
   expect(-5, Instant.epochTime(nanos).epochDay);
   expect(-5, ITime.epochDay(nanos));
   expect(100, ITime.nanosecondOfEpochDay(nanos));
@@ -126,7 +126,7 @@ void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedD
   var _start = Time(days: startDays, nanoseconds: startNanoOfDay);
   if (_start.canNanosecondsBeInteger) {
     var start = NanosecondTime(_start.inNanoseconds);
-    var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
+    var expected = Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
     expect(expected, start * scalar);
   }
 }
@@ -181,7 +181,7 @@ void Division(int startDays, int startNanoOfDay, int divisor, int expectedDays, 
 void PositiveComponents()
 {
   // Worked out with a calculator :)
-  Time duration = new NanosecondTime(1234567890123456);
+  Time duration = NanosecondTime(1234567890123456);
   expect(14, duration.inDays);
   expect(24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(6, duration.hourOfDay);
@@ -196,7 +196,7 @@ void PositiveComponents()
 void NegativeComponents()
 {
   // Worked out with a calculator :) // -1234567 890123456
-  Time duration = new NanosecondTime(-1234567890123456);
+  Time duration = NanosecondTime(-1234567890123456);
   expect(-14, duration.inDays);
   expect(-24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(-6, duration.hourOfDay);
@@ -210,8 +210,8 @@ void NegativeComponents()
 @Test()
 void PositiveTotals()
 {
-  Time duration = new Time(days: 4) + new Time(hours: 3) + new Time(minutes: 2) + new Time(seconds: 1)
-      + new NanosecondTime(123456789);
+  Time duration = Time(days: 4) + Time(hours: 3) + Time(minutes: 2) + Time(seconds: 1)
+      + NanosecondTime(123456789);
   expect(4.1264, closeTo(duration.totalDays, 0.0001));
   expect(99.0336, closeTo(duration.totalHours, 0.0001));
   expect(5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -224,8 +224,8 @@ void PositiveTotals()
 @Test()
 void NegativeTotals()
 {
-  Time duration = new Time(days: -4) + new Time(hours: -3) + new Time(minutes: -2) + new Time(seconds: -1)
-      + new NanosecondTime(-123456789);
+  Time duration = Time(days: -4) + Time(hours: -3) + Time(minutes: -2) + Time(seconds: -1)
+      + NanosecondTime(-123456789);
   expect(-4.1264, closeTo(duration.totalDays, 0.0001));
   expect(-99.0336, closeTo(duration.totalHours, 0.0001));
   expect(-5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -237,8 +237,8 @@ void NegativeTotals()
 @Test()
 void Max()
 {
-  Time x = new NanosecondTime(100);
-  Time y = new NanosecondTime(200);
+  Time x = NanosecondTime(100);
+  Time y = NanosecondTime(200);
   expect(y, Time.max(x, y));
   expect(y, Time.max(y, x));
   expect(x, Time.max(x, Time.minValue));
@@ -250,8 +250,8 @@ void Max()
 @Test()
 void Min()
 {
-  Time x = new NanosecondTime(100);
-  Time y = new NanosecondTime(200);
+  Time x = NanosecondTime(100);
+  Time y = NanosecondTime(200);
   expect(x, Time.min(x, y));
   expect(x, Time.min(y, x));
   expect(Time.minValue, Time.min(x, Time.minValue));

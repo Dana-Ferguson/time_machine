@@ -62,7 +62,7 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
   IPattern<OffsetDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetDateTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     // Handle standard patterns
@@ -79,7 +79,7 @@ class OffsetDateTimePatternParser implements IPatternParser<OffsetDateTime> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<OffsetDateTime, _OffsetDateTimeParseBucket>(formatInfo, () => new _OffsetDateTimeParseBucket(_templateValue));
+    var patternBuilder = SteppedPatternBuilder<OffsetDateTime, _OffsetDateTimeParseBucket>(formatInfo, () => _OffsetDateTimeParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
     // Need to reconstruct the template value from the bits...
@@ -100,8 +100,8 @@ class _OffsetDateTimeParseBucket extends ParseBucket<OffsetDateTime> {
   Offset offset;
 
   _OffsetDateTimeParseBucket(OffsetDateTime templateValue)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
-        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
+      : date = /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
+        time = /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
         offset = templateValue.offset;
 
 

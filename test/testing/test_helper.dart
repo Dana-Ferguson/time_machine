@@ -140,7 +140,7 @@ abstract class TestHelper
       return;
     }
     var message = "Failures: ${failureList.length}\n${failureList.map((i) => failureFormatter(i))}";
-    throw new Exception(message);
+    throw Exception(message);
   }
 
 //  static void AssertNoFailures<T>(Iterable<T> failures, String failureFormatter(T), TestExemptionCategory category)
@@ -160,7 +160,7 @@ abstract class TestHelper
     try
     {
       action();
-      throw new Exception("Expected OverflowException, ArgumentException, ArgumentOutOfRangeException or InvalidOperationException");
+      throw Exception("Expected OverflowException, ArgumentException, ArgumentOutOfRangeException or InvalidOperationException");
     }
     // todo: we don't really overflow
     //    on OverflowException catch (e)

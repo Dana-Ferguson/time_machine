@@ -23,8 +23,8 @@ Future main() async {
   await runTests();
 }
 
-Offset ZoneOffset = new Offset.hours(-8);
-FixedDateTimeZone TestZone = new FixedDateTimeZone.forOffset(ZoneOffset);
+Offset ZoneOffset = Offset.hours(-8);
+FixedDateTimeZone TestZone = FixedDateTimeZone.forOffset(ZoneOffset);
 ZoneInterval FixedPeriod = IZoneInterval.newZoneInterval(TestZone.id, IInstant.beforeMinValue, IInstant.afterMaxValue, ZoneOffset, Offset.zero);
 
 @Test()
@@ -53,7 +53,7 @@ void SimpleProperties_ReturnValuesFromConstructor()
 @Test()
 void GetZoneIntervals_ReturnsSingleInterval()
 {
-  var mapping = TestZone.mapLocal(new LocalDateTime(2001, 7, 1, 1, 0, 0));
+  var mapping = TestZone.mapLocal(LocalDateTime(2001, 7, 1, 1, 0, 0));
   expect(FixedPeriod, mapping.earlyInterval);
   expect(FixedPeriod, mapping.lateInterval);
   expect(1, mapping.count);
@@ -64,7 +64,7 @@ void For_Id_FixedOffset()
 {
   String id = "UTC+05:30";
   DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
-  expect(new DateTimeZone.forOffset(new Offset.hoursAndMinutes(5, 30)), zone);
+  expect(DateTimeZone.forOffset(Offset.hoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
 }
 
@@ -73,7 +73,7 @@ void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = "UTC+05:00:00";
   DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
-  expect(zone, new DateTimeZone.forOffset(new Offset.hours(5)));
+  expect(zone, DateTimeZone.forOffset(Offset.hours(5)));
   expect("UTC+05", zone.id);
 }
 
@@ -86,7 +86,7 @@ void For_Id_InvalidFixedOffset()
 @Test()
 void ExplicitNameAppearsInZoneInterval()
 {
-  var zone = new FixedDateTimeZone("id", new Offset.hours(5), "name");
+  var zone = FixedDateTimeZone("id", Offset.hours(5), "name");
   var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", zone.id); // Check we don't get this wrong...
   expect("name", interval.name);
@@ -96,7 +96,7 @@ void ExplicitNameAppearsInZoneInterval()
 @Test()
 void ZoneIntervalNameDefaultsToZoneId()
 {
-  var zone = new FixedDateTimeZone.forIdOffset("id", new Offset.hours(5));
+  var zone = FixedDateTimeZone.forIdOffset("id", Offset.hours(5));
   var interval = zone.getZoneInterval(TimeConstants.unixEpoch);
   expect("id", interval.name);
   expect("id", zone.name);
@@ -107,7 +107,7 @@ void Read_NoNameInStream()
 {
   // var ioHelper = DtzIoHelper.CreateNoStringPool();
   dynamic ioHelper;
-  var offset = new Offset.hours(5);
+  var offset = Offset.hours(5);
   ioHelper.Writer.WriteOffset(offset);
   var zone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
 
@@ -121,7 +121,7 @@ void Read_WithNameInStream()
 {
   // var ioHelper = DtzIoHelper.CreateNoStringPool();
   dynamic ioHelper;
-  var offset = new Offset.hours(5);
+  var offset = Offset.hours(5);
   ioHelper.Writer.WriteOffset(offset);
   ioHelper.Writer.WriteString("name");
   var zone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
@@ -136,7 +136,7 @@ void Roundtrip()
 {
   // var ioHelper = DtzIoHelper.CreateNoStringPool();
   dynamic ioHelper;
-  var oldZone = new FixedDateTimeZone("id", new Offset.hours(4), "name");
+  var oldZone = FixedDateTimeZone("id", Offset.hours(4), "name");
   oldZone.write(ioHelper.Writer);
   var newZone = FixedDateTimeZone.read(ioHelper.Reader, "id") as FixedDateTimeZone;
 
@@ -148,12 +148,12 @@ void Roundtrip()
 @Test()
 void Equals()
 {
-  TestHelper.TestEqualsClass(new FixedDateTimeZone.forOffset(new Offset(300)),
-      new FixedDateTimeZone.forOffset(new Offset(300)),
-      [new FixedDateTimeZone.forOffset(new Offset(500))]);
+  TestHelper.TestEqualsClass(FixedDateTimeZone.forOffset(Offset(300)),
+      FixedDateTimeZone.forOffset(Offset(300)),
+      [FixedDateTimeZone.forOffset(Offset(500))]);
 
-  TestHelper.TestEqualsClass(new FixedDateTimeZone.forIdOffset("Foo", new Offset(300)),
-      new FixedDateTimeZone.forIdOffset("Foo", new Offset(300)),
-      [new FixedDateTimeZone.forIdOffset("Bar", new Offset(300))]);
+  TestHelper.TestEqualsClass(FixedDateTimeZone.forIdOffset("Foo", Offset(300)),
+      FixedDateTimeZone.forIdOffset("Foo", Offset(300)),
+      [FixedDateTimeZone.forIdOffset("Bar", Offset(300))]);
 }
 

@@ -19,35 +19,35 @@ final CalendarSystem JulianCalendar = CalendarSystem.julian;
 @Test()
 void Construction_DifferentCalendars()
 {
-  LocalDate start = new LocalDate(1600, 1, 1);
-  LocalDate end = new LocalDate(1800, 1, 1, JulianCalendar);
-  expect(() => new DateInterval(start, end), throwsArgumentError);
+  LocalDate start = LocalDate(1600, 1, 1);
+  LocalDate end = LocalDate(1800, 1, 1, JulianCalendar);
+  expect(() => DateInterval(start, end), throwsArgumentError);
 // Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
 }
 
 @Test()
 void Construction_EndBeforeStart()
 {
-  LocalDate start = new LocalDate(1600, 1, 1);
-  LocalDate end = new LocalDate(1500, 1, 1);
-  expect(() => new DateInterval(start, end), throwsArgumentError);
+  LocalDate start = LocalDate(1600, 1, 1);
+  LocalDate end = LocalDate(1500, 1, 1);
+  expect(() => DateInterval(start, end), throwsArgumentError);
 // Assert.Throws<ArgumentException>(() => new DateInterval(start, end));
 }
 
 @Test()
 void Construction_EqualStartAndEnd()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
+  LocalDate start = LocalDate(2000, 1, 1);
   // Assert.DoesNotThrow(() => new DateInterval(start, start));
-  expect(() => new DateInterval(start, start), isNotNull);
+  expect(() => DateInterval(start, start), isNotNull);
 }
 
 @Test()
 void Construction_Properties()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval = DateInterval(start, end);
   expect(start, interval.start);
   expect(end, interval.end);
 }
@@ -55,9 +55,9 @@ void Construction_Properties()
 @Test()
 void Equals_SameInstance()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval = DateInterval(start, end);
 
   expect(interval, interval);
   expect(interval.hashCode, interval.hashCode);
@@ -72,10 +72,10 @@ void Equals_SameInstance()
 @Test()
 void Equals_EqualValues()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval1 = new DateInterval(start, end);
-  var interval2 = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval1 = DateInterval(start, end);
+  var interval2 = DateInterval(start, end);
 
   expect(interval1, interval2);
   expect(interval1.hashCode, interval2.hashCode);
@@ -87,13 +87,13 @@ void Equals_EqualValues()
 @Test()
 void Equals_DifferentCalendars()
 {
-  LocalDate start1 = new LocalDate(2000, 1, 1);
-  LocalDate end1 = new LocalDate(2001, 6, 19);
+  LocalDate start1 = LocalDate(2000, 1, 1);
+  LocalDate end1 = LocalDate(2001, 6, 19);
   // This is a really, really similar calendar to ISO, but we do distinguish.
   LocalDate start2 = start1.withCalendar(CalendarSystem.gregorian);
   LocalDate end2 = end1.withCalendar(CalendarSystem.gregorian);
-  var interval1 = new DateInterval(start1, end1);
-  var interval2 = new DateInterval(start2, end2);
+  var interval1 = DateInterval(start1, end1);
+  var interval2 = DateInterval(start2, end2);
 
   expect(interval1, isNot(interval2));
   expect(interval1.hashCode, isNot(interval2.hashCode));
@@ -105,11 +105,11 @@ void Equals_DifferentCalendars()
 @Test()
 void Equals_DifferentStart()
 {
-  LocalDate start1 = new LocalDate(2000, 1, 1);
-  LocalDate start2 = new LocalDate(2000, 1, 2);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval1 = new DateInterval(start1, end);
-  var interval2 = new DateInterval(start2, end);
+  LocalDate start1 = LocalDate(2000, 1, 1);
+  LocalDate start2 = LocalDate(2000, 1, 2);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval1 = DateInterval(start1, end);
+  var interval2 = DateInterval(start2, end);
 
   expect(interval1, isNot(interval2));
   expect(interval1.hashCode, isNot(interval2.hashCode));
@@ -121,11 +121,11 @@ void Equals_DifferentStart()
 @Test()
 void Equals_DifferentEnd()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end1 = new LocalDate(2001, 6, 19);
-  LocalDate end2 = new LocalDate(2001, 6, 20);
-  var interval1 = new DateInterval(start, end1);
-  var interval2 = new DateInterval(start, end2);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end1 = LocalDate(2001, 6, 19);
+  LocalDate end2 = LocalDate(2001, 6, 20);
+  var interval1 = DateInterval(start, end1);
+  var interval2 = DateInterval(start, end2);
 
   expect(interval1, isNot(interval2));
   expect(interval1.hashCode, isNot(interval2.hashCode));
@@ -137,9 +137,9 @@ void Equals_DifferentEnd()
 @Test()
 void Equals_DifferentToNull()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval = DateInterval(start, end);
 
   expect(interval.equals(null), isFalse);
 }
@@ -147,29 +147,29 @@ void Equals_DifferentToNull()
 @Test()
 void Equals_DifferentToOtherType()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval = DateInterval(start, end);
   // expect(interval.equals(new Instant.fromUnixTimeTicks(0)), isFalse);
   // ignore: unrelated_type_equality_checks
-  expect(interval == new Instant.fromEpochMicroseconds(0), isFalse);
+  expect(interval == Instant.fromEpochMicroseconds(0), isFalse);
 }
 
 @Test()
 void StringRepresentation()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2001, 6, 19);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2001, 6, 19);
+  var interval = DateInterval(start, end);
   expect(interval.toString(), "[2000-01-01, 2001-06-19]");
 }
 
 @Test()
 void Length()
 {
-  LocalDate start = new LocalDate(2000, 1, 1);
-  LocalDate end = new LocalDate(2000, 2, 10);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1);
+  LocalDate end = LocalDate(2000, 2, 10);
+  var interval = DateInterval(start, end);
   expect(41, interval.length);
 }
 
@@ -177,9 +177,9 @@ void Length()
 void Calendar()
 {
   var calendar = CalendarSystem.julian;
-  LocalDate start = new LocalDate(2000, 1, 1, calendar);
-  LocalDate end = new LocalDate(2000, 2, 10, calendar);
-  var interval = new DateInterval(start, end);
+  LocalDate start = LocalDate(2000, 1, 1, calendar);
+  LocalDate end = LocalDate(2000, 2, 10, calendar);
+  var interval = DateInterval(start, end);
   expect(calendar, interval.calendar);
 }
 
@@ -191,20 +191,20 @@ void Calendar()
 @TestCase(const ["2014-07-01", false], "After end")
 void Contains(String candidateText, bool expected)
 {
-  var start = new LocalDate(2000, 1, 1);
-  var end = new LocalDate(2014, 06, 30);
+  var start = LocalDate(2000, 1, 1);
+  var end = LocalDate(2014, 06, 30);
   var candidate = LocalDatePattern.iso.parse(candidateText).value;
-  var interval = new DateInterval(start, end);
+  var interval = DateInterval(start, end);
   expect(expected, interval.contains(candidate));
 }
 
 @Test()
 void Contains_DifferentCalendar()
 {
-  var start = new LocalDate(2000, 1, 1);
-  var end = new LocalDate(2014, 06, 30);
-  var interval = new DateInterval(start, end);
-  var candidate = new LocalDate(2000, 1, 1, JulianCalendar);
+  var start = LocalDate(2000, 1, 1);
+  var end = LocalDate(2014, 06, 30);
+  var interval = DateInterval(start, end);
+  var candidate = LocalDate(2000, 1, 1, JulianCalendar);
   // Assert.Throws<ArgumentException>(() => interval.Contains(candidate));
   expect(() => interval.contains(candidate), throwsArgumentError);
 }
@@ -227,9 +227,9 @@ void Contains_DifferentCalendar()
 @Test()
 void Contains_NullInterval_Throws()
 {
-  var start = new LocalDate(2017, 11, 6);
-  var end = new LocalDate(2017, 11, 10);
-  var value = new DateInterval(start, end);
+  var start = LocalDate(2017, 11, 6);
+  var end = LocalDate(2017, 11, 10);
+  var value = DateInterval(start, end);
 
   // Assert.Throws<ArgumentNullException>(() => value.Contains(null));
   expect(() => value.contains(null), throwsArgumentError);
@@ -238,13 +238,13 @@ void Contains_NullInterval_Throws()
 @Test()
 void Contains_IntervalWithinAnotherCalendar_Throws()
 {
-  var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
+  var value = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
-  var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
+  var other = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Contains(other));
   expect(() => value.containsInterval(other), throwsArgumentError);
@@ -269,7 +269,7 @@ void Contains_IntervalOverload(String firstInterval, String secondInterval, bool
 @Test()
 void Intersection_NullInterval_Throws()
 {
-  var value = new DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
+  var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
   // Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
   expect(() => value.intersection(null), throwsArgumentError);
 }
@@ -277,13 +277,13 @@ void Intersection_NullInterval_Throws()
 @Test()
 void Intersection_IntervalInDifferentCalendar_Throws()
 {
-  var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
+  var value = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
-  var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
+  var other = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Intersection(other));
   expect(() => value.intersection(other), throwsArgumentError);
@@ -309,7 +309,7 @@ void Intersection(String firstInterval, String secondInterval, String expectedIn
 @Test()
 void Union_NullInterval_Throws()
 {
-  var value = new DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
+  var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
   // Assert.Throws<ArgumentNullException>(() => value.Union(null));
   expect(() => value.union(null), throwsArgumentError);
 }
@@ -317,13 +317,13 @@ void Union_NullInterval_Throws()
 @Test()
 void Union_DifferentCalendar_Throws()
 {
-  var value = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.gregorian),
-      new LocalDate(2017, 11, 10, CalendarSystem.gregorian));
+  var value = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.gregorian),
+      LocalDate(2017, 11, 10, CalendarSystem.gregorian));
 
-  var other = new DateInterval(
-      new LocalDate(2017, 11, 6, CalendarSystem.coptic),
-      new LocalDate(2017, 11, 10, CalendarSystem.coptic));
+  var other = DateInterval(
+      LocalDate(2017, 11, 6, CalendarSystem.coptic),
+      LocalDate(2017, 11, 10, CalendarSystem.coptic));
 
   // Assert.Throws<ArgumentException>(() => value.Union(other));
   expect(() => value.union(other), throwsArgumentError);
@@ -355,5 +355,5 @@ DateInterval ParseInterval(String textualInterval)
   var start = LocalDatePattern.iso.parse(parts[0]).value;
   var end = LocalDatePattern.iso.parse(parts[1]).value;
 
-  return new DateInterval(start, end);
+  return DateInterval(start, end);
 }

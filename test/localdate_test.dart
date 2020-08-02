@@ -20,8 +20,8 @@ Future main() async {
 void DefaultConstructor()
 {
   // todo: new LocalDate()
-  var actual = new LocalDate(1, 1, 1);
-  expect(new LocalDate(1, 1, 1), actual);
+  var actual = LocalDate(1, 1, 1);
+  expect(LocalDate(1, 1, 1), actual);
 }
 
 @Test()
@@ -29,9 +29,9 @@ void CombinationWithTime()
 {
   // Test all three approaches in the same test - they're logically equivalent.
   var calendar = CalendarSystem.julian;
-  LocalDate date = new LocalDate(2014, 3, 28, calendar);
-  LocalTime time = new LocalTime(20, 17, 30);
-  LocalDateTime expected = new LocalDateTime(2014, 3, 28, 20, 17, 30, calendar: calendar);
+  LocalDate date = LocalDate(2014, 3, 28, calendar);
+  LocalTime time = LocalTime(20, 17, 30);
+  LocalDateTime expected = LocalDateTime(2014, 3, 28, 20, 17, 30, calendar: calendar);
   // expect(expected, date + time);
   expect(expected, date.at(time));
   expect(expected, time.atDate(date));

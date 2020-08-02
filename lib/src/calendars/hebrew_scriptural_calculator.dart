@@ -41,36 +41,36 @@ abstract class HebrewScripturalCalculator {
     if (dayOfYear < 31)
     {
       // Tishri
-      return new YearMonthDay(year, 7, dayOfYear);
+      return YearMonthDay(year, 7, dayOfYear);
     }
     if (dayOfYear < 31 + heshvanLength)
     {
       // Heshvan
-      return new YearMonthDay(year, 8, dayOfYear - 30);
+      return YearMonthDay(year, 8, dayOfYear - 30);
     }
     // Now "day of year without Heshvan"...
     dayOfYear -= heshvanLength;
     if (dayOfYear < 31 + kislevLength)
     {
       // Kislev
-      return new YearMonthDay(year, 9, dayOfYear - 30);
+      return YearMonthDay(year, 9, dayOfYear - 30);
     }
     // Now "day of year without Heshvan or Kislev"...
     dayOfYear -= kislevLength;
     if (dayOfYear < 31 + 29)
     {
       // Tevet
-      return new YearMonthDay(year, 10, dayOfYear - 30);
+      return YearMonthDay(year, 10, dayOfYear - 30);
     }
     if (dayOfYear < 31 + 29 + 30)
     {
       // Shevat
-      return new YearMonthDay(year, 11, dayOfYear - (30 + 29));
+      return YearMonthDay(year, 11, dayOfYear - (30 + 29));
     }
     if (dayOfYear < 31 + 29 + 30 + firstAdarLength)
     {
       // Adar / Adar I
-      return new YearMonthDay(year, 12, dayOfYear - (30 + 29 + 30));
+      return YearMonthDay(year, 12, dayOfYear - (30 + 29 + 30));
     }
     // Now "day of year without first month of Adar"
     dayOfYear -= firstAdarLength;
@@ -78,7 +78,7 @@ abstract class HebrewScripturalCalculator {
     {
       if (dayOfYear < 31 + 29 + 30 + 29)
       {
-        return new YearMonthDay(year, 13, dayOfYear - (30 + 29 + 30));
+        return YearMonthDay(year, 13, dayOfYear - (30 + 29 + 30));
       }
       // Now "day of year without any Adar"
       dayOfYear -= 29;
@@ -88,30 +88,30 @@ abstract class HebrewScripturalCalculator {
     if (dayOfYear < 31 + 29 + 30 + 30)
     {
       // Nisan
-      return new YearMonthDay(year, 1, dayOfYear - (30 + 29 + 30));
+      return YearMonthDay(year, 1, dayOfYear - (30 + 29 + 30));
     }
     if (dayOfYear < 31 + 29 + 30 + 30 + 29)
     {
       // Iyar
-      return new YearMonthDay(year, 2, dayOfYear - (30 + 29 + 30 + 30));
+      return YearMonthDay(year, 2, dayOfYear - (30 + 29 + 30 + 30));
     }
     if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30)
     {
       // Sivan
-      return new YearMonthDay(year, 3, dayOfYear - (30 + 29 + 30 + 30 + 29));
+      return YearMonthDay(year, 3, dayOfYear - (30 + 29 + 30 + 30 + 29));
     }
     if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30 + 29)
     {
       // Tamuz
-      return new YearMonthDay(year, 4, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30));
+      return YearMonthDay(year, 4, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30));
     }
     if (dayOfYear < 31 + 29 + 30 + 30 + 29 + 30 + 29 + 30)
     {
       // Av
-      return new YearMonthDay(year, 5, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29));
+      return YearMonthDay(year, 5, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29));
     }
     // Elul
-    return new YearMonthDay(year, 6, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29 + 30));
+    return YearMonthDay(year, 6, dayOfYear - (30 + 29 + 30 + 30 + 29 + 30 + 29 + 30));
   }
 
   static int getDaysFromStartOfYearToStartOfMonth(int year, int month)
@@ -158,7 +158,7 @@ abstract class HebrewScripturalCalculator {
       default:
       // Just shorthand for using the right exception across netstandard and desktop
         Preconditions.checkArgumentRange('month', month, 1, 13);
-        throw new StateError("CheckArgumentRange should have thrown...");
+        throw StateError("CheckArgumentRange should have thrown...");
     }
   }
 
@@ -245,7 +245,7 @@ abstract class HebrewScripturalCalculator {
     if (!cacheEntry.isValidForYear(year))
     {
       int days = _computeCacheEntry(year);
-      cacheEntry = new YearStartCacheEntry(year, days);
+      cacheEntry = YearStartCacheEntry(year, days);
       _yearCache[cacheIndex] = cacheEntry;
     }
     return cacheEntry.startOfYearDays;

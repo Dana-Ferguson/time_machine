@@ -17,7 +17,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 @internal
 abstract class IZonedDateTime {
-  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => new ZonedDateTime._(offsetDateTime, zone);
+  static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => ZonedDateTime._(offsetDateTime, zone);
 }
 
 /// A [LocalDateTime] in a specific time zone and with a particular offset to distinguish
@@ -53,7 +53,7 @@ class ZonedDateTime {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
-    return new ZonedDateTime._(_offsetDateTime, _zone);
+    return ZonedDateTime._(_offsetDateTime, _zone);
   }
 
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
@@ -74,10 +74,10 @@ class ZonedDateTime {
     Offset correctOffset = zone.getUtcOffset(candidateInstant);
     // Not using Preconditions, to avoid building the string unnecessarily.
     if (correctOffset != offset) {
-      throw new ArgumentError("Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset");
+      throw ArgumentError("Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset");
     }
-    var offsetDateTime = new OffsetDateTime(localDateTime, offset);
-    return new ZonedDateTime._(offsetDateTime, zone);
+    var offsetDateTime = OffsetDateTime(localDateTime, offset);
+    return ZonedDateTime._(offsetDateTime, zone);
   }
 
   /// Returns the earliest valid [ZonedDateTime] with the given local date.
@@ -107,7 +107,7 @@ class ZonedDateTime {
         // It's possible that the entire day is skipped. For example, Samoa skipped December 30th 2011.
         // We know the two values are in the same calendar here, so we just need to check the YearMonthDay.
         if (ILocalDate.yearMonthDay(offsetDateTime.calendarDate) != ILocalDate.yearMonthDay(date)) {
-          throw new SkippedTimeError(midnight, zone);
+          throw SkippedTimeError(midnight, zone);
         }
         return IZonedDateTime.trusted(offsetDateTime, zone);
       // Unambiguous or occurs twice, we can just use the offset from the earlier interval.
@@ -115,7 +115,7 @@ class ZonedDateTime {
       case 2:
         return IZonedDateTime.trusted(midnight.withOffset(mapping.earlyInterval.wallOffset), zone);
       default:
-        throw new StateError("This won't happen.");
+        throw StateError("This won't happen.");
     }
   }
 
@@ -151,7 +151,7 @@ class ZonedDateTime {
   /// * [AmbiguousTimeError]: The given local date/time is ambiguous in this time zone.
   /// Returns: The unambiguous matching [ZonedDateTime] if it exists.
   factory ZonedDateTime.atStrictly(LocalDateTime localDateTime, DateTimeZone zone) =>
-      new ZonedDateTime.resolve(localDateTime, zone, Resolvers.strictResolver);
+      ZonedDateTime.resolve(localDateTime, zone, Resolvers.strictResolver);
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
   /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
@@ -171,7 +171,7 @@ class ZonedDateTime {
   /// The unambiguous mapping if there is one, the earlier result if the mapping is ambiguous,
   /// or the forward-shifted value if the given local date/time is skipped.
   factory ZonedDateTime.atLeniently(LocalDateTime localDateTime, DateTimeZone zone) =>
-      new ZonedDateTime.resolve(localDateTime, zone, Resolvers.lenientResolver);
+      ZonedDateTime.resolve(localDateTime, zone, Resolvers.lenientResolver);
 
 
   /// Gets the offset of the local representation of this value from UTC.
@@ -266,7 +266,7 @@ class ZonedDateTime {
   /// Returns: A new value in the target time zone.
   ZonedDateTime withZone(DateTimeZone targetZone) {
     Preconditions.checkNotNull(targetZone, 'targetZone');
-    return new ZonedDateTime(toInstant(), targetZone, calendar);
+    return ZonedDateTime(toInstant(), targetZone, calendar);
   }
 
   /// Creates a new ZonedDateTime representing the same physical date, time and offset, but in a different calendar.
@@ -277,7 +277,7 @@ class ZonedDateTime {
   ///
   /// Returns: The converted ZonedDateTime.
   ZonedDateTime withCalendar(CalendarSystem calendar) {
-    return new ZonedDateTime._(_offsetDateTime.withCalendar(calendar), zone);
+    return ZonedDateTime._(_offsetDateTime.withCalendar(calendar), zone);
   }
 
   /// Indicates whether the current object is equal to another object of the same type.
@@ -361,7 +361,7 @@ class ZonedDateTime {
   /// * [time]: The duration to add
   ///
   /// Returns: A new [ZonedDateTime] representing the result of the addition.
-  ZonedDateTime add(Time time) => new ZonedDateTime(toInstant() + time, zone, calendar);
+  ZonedDateTime add(Time time) => ZonedDateTime(toInstant() + time, zone, calendar);
 
   /// Returns the result of subtracting a duration from this zoned date and time, for a fluent alternative to
   /// [-].
@@ -369,7 +369,7 @@ class ZonedDateTime {
   /// * [time]: The duration to subtract
   ///
   /// Returns: A new [ZonedDateTime] representing the result of the subtraction.
-  ZonedDateTime subtract(Time time) => new ZonedDateTime(toInstant() - time, zone, calendar);
+  ZonedDateTime subtract(Time time) => ZonedDateTime(toInstant() - time, zone, calendar);
 
   /// Returns the result of subtracting another zoned date and time from this one, resulting in the elapsed duration
   /// between the two instants represented by the values.
@@ -515,7 +515,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
 /// Implementation for [Comparer.Local].
 class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = new _ZonedDateTimeLocalComparer._();
+  static final ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
 
   _ZonedDateTimeLocalComparer._() : super._();
 
@@ -534,7 +534,7 @@ class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
 
 /// Implementation for [Comparer.Instant].
 class _ZonedDateTimeInstantComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = new _ZonedDateTimeInstantComparer._();
+  static final ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
 
   _ZonedDateTimeInstantComparer._() : super._();
 

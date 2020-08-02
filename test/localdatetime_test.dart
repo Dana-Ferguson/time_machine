@@ -29,8 +29,8 @@ Future setup() async {
 @Test()
 void ToDateTimeUnspecified()
 {
-  LocalDateTime zoned = new LocalDateTime(2011, 3, 5, 1, 0, 0);
-  DateTime expected = new DateTime(2011, 3, 5, 1, 0, 0); //, DateTimeKind.Unspecified);
+  LocalDateTime zoned = LocalDateTime(2011, 3, 5, 1, 0, 0);
+  DateTime expected = DateTime(2011, 3, 5, 1, 0, 0); //, DateTimeKind.Unspecified);
   DateTime actual = zoned.toDateTimeLocal();
   expect(expected, actual);
   // Kind isn't checked by Equals...
@@ -58,18 +58,18 @@ void PeriodUntilSince() {
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
   if (Platform.isWeb) {
-    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
+    var ldt = LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
-    var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
-        .add(new Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
+    var expected = DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
+        .add(Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
     var actual = ldt.toDateTimeLocal();
     expect(actual, expected);
   }
   else {
-    var ldt = new LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
+    var ldt = LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
-    var expected = new DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
-        .add(new Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
+    var expected = DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
+        .add(Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
     var actual = ldt.toDateTimeLocal();
     expect(actual, expected);
   }
@@ -87,10 +87,10 @@ void ToDateTimeUnspecified_OutOfRange()
 @Test()
 void FromDateTime()
 {
-  LocalDateTime expected = new LocalDateTime(2011, 08, 18, 20, 53, 0);
+  LocalDateTime expected = LocalDateTime(2011, 08, 18, 20, 53, 0);
   // for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
-  DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = new LocalDateTime.dateTime(x);
+  DateTime x = DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
+  LocalDateTime actual = LocalDateTime.dateTime(x);
   expect(actual, expected);
 }
 
@@ -98,14 +98,14 @@ void FromDateTime()
 void FromDateTime_WithCalendar()
 {
   // Julian calendar is 13 days behind Gregorian calendar in the 21st century
-  LocalDateTime expected = new LocalDateTime(2011, 08, 05, 20, 53, 0, calendar: CalendarSystem.julian);
+  LocalDateTime expected = LocalDateTime(2011, 08, 05, 20, 53, 0, calendar: CalendarSystem.julian);
 // print('Expected day of year: ${expected.date.DaysSinceEpoch}');
 
   // todo: I don't understand what the test is doing here, this doesn't work with DateTime() local.
   //for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
   {
-  DateTime x = new DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
-  LocalDateTime actual = new LocalDateTime.dateTime(x, CalendarSystem.julian);
+  DateTime x = DateTime.utc(2011, 08, 18, 20, 53, 0); //, kind);
+  LocalDateTime actual = LocalDateTime.dateTime(x, CalendarSystem.julian);
   expect(actual, expected);
   }
 }
@@ -114,7 +114,7 @@ void FromDateTime_WithCalendar()
 void TimeProperties_AfterEpoch()
 {
   // Use the largest valid year as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
+  LocalDateTime ldt = LocalDateTime(GregorianYearMonthDayCalculator.maxGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
   expect(15, ldt.hourOfDay);
   expect(3, ldt.hourOf12HourClock);
   expect(48, ldt.minuteOfHour);
@@ -136,7 +136,7 @@ void TimeProperties_AfterEpoch()
 void TimeProperties_BeforeEpoch()
 {
   // Use the smallest valid year number as part of validating against overflow
-  LocalDateTime ldt = new LocalDateTime(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
+  LocalDateTime ldt = LocalDateTime(GregorianYearMonthDayCalculator.minGregorianYear, 1, 2, 15, 48, 25).addNanoseconds(123456789);
   expect(15, ldt.hourOfDay);
   expect(3, ldt.hourOf12HourClock);
   expect(48, ldt.minuteOfHour);
@@ -171,7 +171,7 @@ void DateTime_Roundtrip_OtherCalendarInBcl()
 @Test()
 void WithCalendar()
 {
-  LocalDateTime isoEpoch = new LocalDateTime(1970, 1, 1, 0, 0, 0);
+  LocalDateTime isoEpoch = LocalDateTime(1970, 1, 1, 0, 0, 0);
   LocalDateTime julianEpoch = isoEpoch.withCalendar(CalendarSystem.julian);
   expect(1969, julianEpoch.year);
   expect(12, julianEpoch.monthOfYear);
@@ -183,8 +183,8 @@ void WithCalendar()
 @Test()
 void TimeOfDay_Before1970()
 {
-  LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
-  LocalTime expected = new LocalTime(12, 5, 23);
+  LocalDateTime dateTime = LocalDateTime(1965, 11, 8, 12, 5, 23);
+  LocalTime expected = LocalTime(12, 5, 23);
   expect(expected, dateTime.clockTime);
 }
 
@@ -192,8 +192,8 @@ void TimeOfDay_Before1970()
 @Test()
 void TimeOfDay_After1970()
 {
-  LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
-  LocalTime expected = new LocalTime(12, 5, 23);
+  LocalDateTime dateTime = LocalDateTime(1975, 11, 8, 12, 5, 23);
+  LocalTime expected = LocalTime(12, 5, 23);
   expect(expected, dateTime.clockTime);
 }
 
@@ -201,8 +201,8 @@ void TimeOfDay_After1970()
 @Test()
 void Date_Before1970()
 {
-  LocalDateTime dateTime = new LocalDateTime(1965, 11, 8, 12, 5, 23);
-  LocalDate expected = new LocalDate(1965, 11, 8);
+  LocalDateTime dateTime = LocalDateTime(1965, 11, 8, 12, 5, 23);
+  LocalDate expected = LocalDate(1965, 11, 8);
   expect(expected, dateTime.calendarDate);
 }
 
@@ -210,8 +210,8 @@ void Date_Before1970()
 @Test()
 void Date_After1970()
 {
-  LocalDateTime dateTime = new LocalDateTime(1975, 11, 8, 12, 5, 23);
-  LocalDate expected = new LocalDate(1975, 11, 8);
+  LocalDateTime dateTime = LocalDateTime(1975, 11, 8, 12, 5, 23);
+  LocalDate expected = LocalDate(1975, 11, 8);
   expect(expected, dateTime.calendarDate);
 }
 
@@ -219,13 +219,13 @@ void Date_After1970()
 void DayOfWeek_AroundEpoch()
 {
   // Test about couple of months around the Unix epoch. If that works, I'm confident the rest will.
-  LocalDateTime dateTime = new LocalDateTime(1969, 12, 1, 0, 0, 0);
+  LocalDateTime dateTime = LocalDateTime(1969, 12, 1, 0, 0, 0);
   for (int i = 0; i < 60; i++)
   {
     // Check once per hour of the day, just in case something's messed up based on the time of day.
     for (int hour = 0; hour < 24; hour++)
     {
-      expect(new DayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
+      expect(DayOfWeek(dateTime.toDateTimeLocal().weekday), dateTime.dayOfWeek);
       dateTime = dateTime.addHours(1);
     }
   }
@@ -234,27 +234,27 @@ void DayOfWeek_AroundEpoch()
 @Test()
 void ClockHourOfHalfDay()
 {
-  expect(12, new LocalDateTime(1975, 11, 8, 0, 0, 0).hourOf12HourClock);
-  expect(1, new LocalDateTime(1975, 11, 8, 1, 0, 0).hourOf12HourClock);
-  expect(12, new LocalDateTime(1975, 11, 8, 12, 0, 0).hourOf12HourClock);
-  expect(1, new LocalDateTime(1975, 11, 8, 13, 0, 0).hourOf12HourClock);
-  expect(11, new LocalDateTime(1975, 11, 8, 23, 0, 0).hourOf12HourClock);
+  expect(12, LocalDateTime(1975, 11, 8, 0, 0, 0).hourOf12HourClock);
+  expect(1, LocalDateTime(1975, 11, 8, 1, 0, 0).hourOf12HourClock);
+  expect(12, LocalDateTime(1975, 11, 8, 12, 0, 0).hourOf12HourClock);
+  expect(1, LocalDateTime(1975, 11, 8, 13, 0, 0).hourOf12HourClock);
+  expect(11, LocalDateTime(1975, 11, 8, 23, 0, 0).hourOf12HourClock);
 }
 
 @Test()
 void Operators_SameCalendar()
 {
-  LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
+  LocalDateTime value1 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value2 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value3 = LocalDateTime(2011, 1, 2, 10, 45, 0);
   TestHelper.TestOperatorComparisonEquality(value1, value2, [value3]);
 }
 
 @Test()
 void Operators_DifferentCalendars_Throws()
 {
-  LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value2 = new LocalDateTime(2011, 1, 3, 10, 30, 0, calendar: CalendarSystem.julian);
+  LocalDateTime value1 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value2 = LocalDateTime(2011, 1, 3, 10, 30, 0, calendar: CalendarSystem.julian);
 
   expect(value1 == value2, isFalse);
   expect(value1 != value2, isTrue);
@@ -268,9 +268,9 @@ void Operators_DifferentCalendars_Throws()
 @Test()
 void CompareTo_SameCalendar()
 {
-  LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
+  LocalDateTime value1 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value2 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value3 = LocalDateTime(2011, 1, 2, 10, 45, 0);
 
   expect(value1.compareTo(value2), 0);
   expect(value1.compareTo(value3),  lessThan(0));
@@ -281,8 +281,8 @@ void CompareTo_SameCalendar()
 void CompareTo_DifferentCalendars_Throws()
 {
   CalendarSystem islamic = CalendarSystem.getIslamicCalendar(IslamicLeapYearPattern.base15, IslamicEpoch.astronomical);
-  LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value2 = new LocalDateTime(1500, 1, 1, 10, 30, 0, calendar: islamic);
+  LocalDateTime value1 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value2 = LocalDateTime(1500, 1, 1, 10, 30, 0, calendar: islamic);
 
   expect(() => value1.compareTo(value2), throwsArgumentError);
 // expect(() => ((IComparable)value1).CompareTo(value2), throwsArgumentError);
@@ -292,9 +292,9 @@ void CompareTo_DifferentCalendars_Throws()
 @Test()
 void IComparableCompareTo_SameCalendar()
 {
-  LocalDateTime value1 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value2 = new LocalDateTime(2011, 1, 2, 10, 30, 0);
-  LocalDateTime value3 = new LocalDateTime(2011, 1, 2, 10, 45, 0);
+  LocalDateTime value1 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value2 = LocalDateTime(2011, 1, 2, 10, 30, 0);
+  LocalDateTime value3 = LocalDateTime(2011, 1, 2, 10, 45, 0);
 
   Comparable i_value1 = /*(IComparable)*/value1;
   Comparable i_value3 = /*(IComparable)*/value3;
@@ -308,7 +308,7 @@ void IComparableCompareTo_SameCalendar()
 @Test()
 void IComparableCompareTo_Null_Positive()
 {
-  var instance = new LocalDateTime(2012, 3, 5, 10, 45, 0);
+  var instance = LocalDateTime(2012, 3, 5, 10, 45, 0);
   Comparable i_instance = /*(IComparable)*/instance;
   Object arg;
   var result = i_instance.compareTo(arg);
@@ -320,17 +320,17 @@ void IComparableCompareTo_Null_Positive()
 @Test()
 void IComparableCompareTo_WrongType_ArgumentException()
 {
-  var instance = new LocalDateTime(2012, 3, 5, 10, 45, 0);
+  var instance = LocalDateTime(2012, 3, 5, 10, 45, 0);
   Comparable i_instance = /*(IComparable)*/instance;
-  var arg = new LocalDate(2012, 3, 6);
+  var arg = LocalDate(2012, 3, 6);
   expect(() => i_instance.compareTo(arg), willThrow<TypeError>());
 }
 
 @Test()
 void WithOffset()
 {
-  var offset = new Offset.hoursAndMinutes(5, 10);
-  var localDateTime = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+  var offset = Offset.hoursAndMinutes(5, 10);
+  var localDateTime = LocalDateTime(2009, 12, 22, 21, 39, 30);
   var offsetDateTime = localDateTime.withOffset(offset);
   expect(localDateTime, offsetDateTime.localDateTime);
   expect(offset, offsetDateTime.offset);
@@ -339,7 +339,7 @@ void WithOffset()
 @Test()
 void InUtc()
 {
-  var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+  var local = LocalDateTime(2009, 12, 22, 21, 39, 30);
   var zoned = local.inUtc();
   expect(local, zoned.localDateTime);
   expect(Offset.zero, zoned.offset);
@@ -350,19 +350,19 @@ void InUtc()
 @Test()
 void InZoneStrictly_InWinter()
 {
-  var local = new LocalDateTime(2009, 12, 22, 21, 39, 30);
+  var local = LocalDateTime(2009, 12, 22, 21, 39, 30);
   var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.hours(-8), zoned.offset);
+  expect(Offset.hours(-8), zoned.offset);
 }
 
 @Test()
 void InZoneStrictly_InSummer()
 {
-  var local = new LocalDateTime(2009, 6, 22, 21, 39, 30);
+  var local = LocalDateTime(2009, 6, 22, 21, 39, 30);
   var zoned = local.inZoneStrictly(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.hours(-7), zoned.offset);
+  expect(Offset.hours(-7), zoned.offset);
 }
 
 /// Pacific time changed from -7 to -8 at 2am wall time on November 2nd 2009,
@@ -370,7 +370,7 @@ void InZoneStrictly_InSummer()
 @Test()
 void InZoneStrictly_ThrowsWhenAmbiguous()
 {
-  var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+  var local = LocalDateTime(2009, 11, 1, 1, 30, 0);
   expect(() => local.inZoneStrictly(Pacific), willThrow<AmbiguousTimeError>());
 }
 
@@ -379,7 +379,7 @@ void InZoneStrictly_ThrowsWhenAmbiguous()
 @Test()
 void InZoneStrictly_ThrowsWhenSkipped()
 {
-  var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+  var local = LocalDateTime(2009, 3, 8, 2, 30, 0);
   expect(() => local.inZoneStrictly(Pacific), willThrow<SkippedTimeError>());
 }
 
@@ -388,10 +388,10 @@ void InZoneStrictly_ThrowsWhenSkipped()
 @Test()
 void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
 {
-  var local = new LocalDateTime(2009, 11, 1, 1, 30, 0);
+  var local = LocalDateTime(2009, 11, 1, 1, 30, 0);
   var zoned = local.inZoneLeniently(Pacific);
   expect(local, zoned.localDateTime);
-  expect(new Offset.hours(-7), zoned.offset);
+  expect(Offset.hours(-7), zoned.offset);
 }
 
 /// Pacific time changed from -8 to -7 at 2am wall time on March 8th 2009,
@@ -400,20 +400,20 @@ void InZoneLeniently_AmbiguousTime_ReturnsEarlierMapping()
 @Test()
 void InZoneLeniently_ReturnsStartOfSecondInterval()
 {
-  var local = new LocalDateTime(2009, 3, 8, 2, 30, 0);
+  var local = LocalDateTime(2009, 3, 8, 2, 30, 0);
   var zoned = local.inZoneLeniently(Pacific);
-  expect(new LocalDateTime(2009, 3, 8, 3, 30, 0), zoned.localDateTime);
-  expect(new Offset.hours(-7), zoned.offset);
+  expect(LocalDateTime(2009, 3, 8, 3, 30, 0), zoned.localDateTime);
+  expect(Offset.hours(-7), zoned.offset);
 }
 
 @Test()
 void InZone()
 {
   // Don't need much for this - it only delegates.
-  var ambiguous = new LocalDateTime(2009, 11, 1, 1, 30, 0);
-  var skipped = new LocalDateTime(2009, 3, 8, 2, 30, 0);
-  expect(new ZonedDateTime.atLeniently(ambiguous, Pacific), ambiguous.inZone(Pacific, Resolvers.lenientResolver));
-  expect(new ZonedDateTime.atLeniently(skipped, Pacific), skipped.inZone(Pacific, Resolvers.lenientResolver));
+  var ambiguous = LocalDateTime(2009, 11, 1, 1, 30, 0);
+  var skipped = LocalDateTime(2009, 3, 8, 2, 30, 0);
+  expect(ZonedDateTime.atLeniently(ambiguous, Pacific), ambiguous.inZone(Pacific, Resolvers.lenientResolver));
+  expect(ZonedDateTime.atLeniently(skipped, Pacific), skipped.inZone(Pacific, Resolvers.lenientResolver));
 }
 
 ///   Using the default constructor is equivalent to January 1st 1970, midnight, UTC, ISO calendar
@@ -421,8 +421,8 @@ void InZone()
 void DefaultConstructor()
 {
   // todo: LocalDateTime()
-  var actual = new LocalDateTime.localDateAtTime(new LocalDate(1, 1, 1), new LocalTime(0, 0, 0));
-  expect(new LocalDateTime(1, 1, 1, 0, 0, 0), actual);
+  var actual = LocalDateTime.localDateAtTime(LocalDate(1, 1, 1), LocalTime(0, 0, 0));
+  expect(LocalDateTime(1, 1, 1, 0, 0, 0), actual);
 }
 
 //@Test()
@@ -457,8 +457,8 @@ void DefaultConstructor()
 @Test()
 void MinMax_DifferentCalendars_Throws()
 {
-  LocalDateTime ldt1 = new LocalDateTime(2011, 1, 2, 2, 20, 0);
-  LocalDateTime ldt2 = new LocalDateTime(1500, 1, 1, 5, 10, 0, calendar: CalendarSystem.julian);
+  LocalDateTime ldt1 = LocalDateTime(2011, 1, 2, 2, 20, 0);
+  LocalDateTime ldt2 = LocalDateTime(1500, 1, 1, 5, 10, 0, calendar: CalendarSystem.julian);
 
   expect(() => LocalDateTime.max(ldt1, ldt2), throwsArgumentError);
   expect(() => LocalDateTime.min(ldt1, ldt2), throwsArgumentError);
@@ -467,8 +467,8 @@ void MinMax_DifferentCalendars_Throws()
 @Test()
 void MinMax_SameCalendar()
 {
-  LocalDateTime ldt1 = new LocalDateTime(1500, 1, 1, 7, 20, 0, calendar: CalendarSystem.julian);
-  LocalDateTime ldt2 = new LocalDateTime(1500, 1, 1, 5, 10, 0, calendar: CalendarSystem.julian);
+  LocalDateTime ldt1 = LocalDateTime(1500, 1, 1, 7, 20, 0, calendar: CalendarSystem.julian);
+  LocalDateTime ldt2 = LocalDateTime(1500, 1, 1, 5, 10, 0, calendar: CalendarSystem.julian);
 
   expect(ldt1, LocalDateTime.max(ldt1, ldt2));
   expect(ldt1, LocalDateTime.max(ldt2, ldt1));

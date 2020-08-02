@@ -93,7 +93,7 @@ class ZoneLine {
   ///   A <see cref="System.String" /> that represents this instance.
   /// </returns>
   @override String toString() {
-    var builder = new StringBuffer();
+    var builder = StringBuffer();
     builder..write(name)..write(" ");
     builder..write(standardOffset)..write(" ");
     builder..write(ParserHelper.formatOptional(rules))..write(" ");
@@ -107,7 +107,7 @@ class ZoneLine {
   ZoneRuleSet resolveRules(Map<String, List<RuleLine>> allRules) {
     if (rules == null) {
       var name = formatName(Offset.zero, "");
-      return new ZoneRuleSet.named(name, standardOffset, Offset.zero, untilYear, untilYearOffset);
+      return ZoneRuleSet.named(name, standardOffset, Offset.zero, untilYear, untilYearOffset);
     }
 
     // allRules.
@@ -117,17 +117,17 @@ class ZoneLine {
       for (var zoneRecurrenceRules in ruleSet.map((x) => x.GetRecurrences(this))) {
         _rules.addAll(zoneRecurrenceRules);
       }
-      return new ZoneRuleSet.rules(_rules, standardOffset, untilYear, untilYearOffset);
+      return ZoneRuleSet.rules(_rules, standardOffset, untilYear, untilYearOffset);
     }
     else {
       try {
         // Check if Rules actually just refers to a savings.
         var savings = ParserHelper.parseOffset(rules);
         var name = formatName(savings, "");
-        return new ZoneRuleSet.named(name, standardOffset, savings, untilYear, untilYearOffset);
+        return ZoneRuleSet.named(name, standardOffset, savings, untilYear, untilYearOffset);
       }
       catch (FormatException) {
-        throw new ArgumentError(
+        throw ArgumentError(
             "Daylight savings rule name '$rules' for zone $name is neither a known ruleset nor a fixed offset");
       }
     }

@@ -68,7 +68,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     }
 
     int dayOfMonth = d - startOfMonth;
-    return new YearMonthDay(year, (startOfMonth ~/ 29) + 1, dayOfMonth);
+    return YearMonthDay(year, (startOfMonth ~/ 29) + 1, dayOfMonth);
   }
 
   @override
@@ -91,7 +91,7 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     if (month == 2 && day == 29 && !isLeapYear(year)) {
       day = 28;
     }
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 }
 

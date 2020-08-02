@@ -12,11 +12,11 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @immutable
 class SystemClock extends Clock {
   /// The singleton instance of [SystemClock].
-  static final SystemClock instance = new SystemClock._();
+  static final SystemClock instance = SystemClock._();
 
   /// Constructor present to prevent external construction.
   SystemClock._();
 
   /// Gets the current time as an [Instant].
-  Instant getCurrentInstant() => new Instant.dateTime(new DateTime.now());
+  Instant getCurrentInstant() => Instant.dateTime(DateTime.now());
 }

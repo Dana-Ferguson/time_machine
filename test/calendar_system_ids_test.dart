@@ -21,7 +21,7 @@ final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.
 @TestCaseSource(const Symbol("SupportedIds"))
 void ValidId(String id)
 {
-  expect(CalendarSystem.forId(id), new TypeMatcher<CalendarSystem>());
+  expect(CalendarSystem.forId(id), TypeMatcher<CalendarSystem>());
 // Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
 }
 
@@ -94,6 +94,6 @@ void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 @Test()
 void ForOrdinalUncached_Invalid()
 {
-  expect(() => ICalendarSystem.forOrdinalUncached(new CalendarOrdinal(9999)), throwsStateError);
+  expect(() => ICalendarSystem.forOrdinalUncached(CalendarOrdinal(9999)), throwsStateError);
 // Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
 }

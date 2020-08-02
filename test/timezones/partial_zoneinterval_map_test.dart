@@ -16,7 +16,7 @@ Future main() async {
 }
 
 Future setup() async {
-  ExpectedZone = (new MtdtzBuilder.withName(-2, "Start")
+  ExpectedZone = (MtdtzBuilder.withName(-2, "Start")
     ..Add(Instants['C'], 2, 1, "Middle")
     ..Add(Instants['G'], 1, 0, "End")
   ).Build();
@@ -28,15 +28,15 @@ Future setup() async {
 // Using letter is (IMO) slightly more readable than just having an array and using indexes.
 Map<String /*char*/, Instant> Instants =
 {
-  'A': new Instant.utc(2000, 1, 1, 0, 0),
-  'B': new Instant.utc(2001, 1, 1, 0, 0),
-  'C': new Instant.utc(2002, 1, 1, 0, 0),
-  'D': new Instant.utc(2003, 1, 1, 0, 0),
-  'E': new Instant.utc(2004, 1, 1, 0, 0),
-  'F': new Instant.utc(2005, 1, 1, 0, 0),
-  'G': new Instant.utc(2006, 1, 1, 0, 0),
-  'H': new Instant.utc(2007, 1, 1, 0, 0),
-  'I': new Instant.utc(2008, 1, 1, 0, 0),
+  'A': Instant.utc(2000, 1, 1, 0, 0),
+  'B': Instant.utc(2001, 1, 1, 0, 0),
+  'C': Instant.utc(2002, 1, 1, 0, 0),
+  'D': Instant.utc(2003, 1, 1, 0, 0),
+  'E': Instant.utc(2004, 1, 1, 0, 0),
+  'F': Instant.utc(2005, 1, 1, 0, 0),
+  'G': Instant.utc(2006, 1, 1, 0, 0),
+  'H': Instant.utc(2007, 1, 1, 0, 0),
+  'I': Instant.utc(2008, 1, 1, 0, 0),
 };
 
 DateTimeZone ExpectedZone;
@@ -64,14 +64,14 @@ DateTimeZone ExpectedZone;
 @TestCase(const ["DEF"])
 @TestCase(const ["ABCDEFGHI"])
 void ConvertToFullMap(String intervalBreaks) {
-  var maps = new List<PartialZoneIntervalMap>();
+  var maps = List<PartialZoneIntervalMap>();
   // We just reuse ExpectedZone as the IZoneIntervalMap; PartialZoneIntervalMap itself will clamp the ends.
   var current = IInstant.beforeMinValue;
-  for (var instant in intervalBreaks.codeUnits.map((c) => Instants[new String.fromCharCode(c)])) {
-    maps.add(new PartialZoneIntervalMap(current, instant, ExpectedZone));
+  for (var instant in intervalBreaks.codeUnits.map((c) => Instants[String.fromCharCode(c)])) {
+    maps.add(PartialZoneIntervalMap(current, instant, ExpectedZone));
     current = instant;
   }
-  maps.add(new PartialZoneIntervalMap(current, IInstant.afterMaxValue, ExpectedZone));
+  maps.add(PartialZoneIntervalMap(current, IInstant.afterMaxValue, ExpectedZone));
 
   var converted = PartialZoneIntervalMap.convertToFullMap(maps);
   // CollectionAssert.AreEqual(

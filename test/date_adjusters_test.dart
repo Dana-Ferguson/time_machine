@@ -15,24 +15,24 @@ Future main() async {
 @Test()
 void StartOfMonth()
 {
-  var start = new LocalDate(2014, 6, 27);
-  var end = new LocalDate(2014, 6, 1);
+  var start = LocalDate(2014, 6, 27);
+  var end = LocalDate(2014, 6, 1);
   expect(end, DateAdjusters.startOfMonth(start));
 }
 
 @Test()
 void EndOfMonth()
 {
-  var start = new LocalDate(2014, 6, 27);
-  var end = new LocalDate(2014, 6, 30);
+  var start = LocalDate(2014, 6, 27);
+  var end = LocalDate(2014, 6, 30);
   expect(end, DateAdjusters.endOfMonth(start));
 }
 
 @Test()
 void DayOfMonth()
 {
-  var start = new LocalDate(2014, 6, 27);
-  var end = new LocalDate(2014, 6, 19);
+  var start = LocalDate(2014, 6, 27);
+  var end = LocalDate(2014, 6, 19);
   var adjuster = DateAdjusters.dayOfMonth(19);
   expect(end, adjuster(start));
 }
@@ -46,9 +46,9 @@ void NextOrSame(
     int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
-  LocalDate start = new LocalDate(year, month, day);
+  LocalDate start = LocalDate(year, month, day);
   LocalDate actual = start.adjust(DateAdjusters.nextOrSame(dayOfWeek));
-  LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+  LocalDate expected = LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
 
@@ -61,9 +61,9 @@ void PreviousOrSame(
     int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
-  LocalDate start = new LocalDate(year, month, day);
+  LocalDate start = LocalDate(year, month, day);
   LocalDate actual = start.adjust(DateAdjusters.previousOrSame(dayOfWeek));
-  LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+  LocalDate expected = LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
 
@@ -76,9 +76,9 @@ void Next(
     int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
-  LocalDate start = new LocalDate(year, month, day);
+  LocalDate start = LocalDate(year, month, day);
   LocalDate actual = start.adjust(DateAdjusters.next(dayOfWeek));
-  LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+  LocalDate expected = LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
 
@@ -91,9 +91,9 @@ void Previous(
     int year, int month, int day, DayOfWeek dayOfWeek,
     int expectedYear, int expectedMonth, int expectedDay)
 {
-  LocalDate start = new LocalDate(year, month, day);
+  LocalDate start = LocalDate(year, month, day);
   LocalDate actual = start.adjust(DateAdjusters.previous(dayOfWeek));
-  LocalDate expected = new LocalDate(expectedYear, expectedMonth, expectedDay);
+  LocalDate expected = LocalDate(expectedYear, expectedMonth, expectedDay);
   expect(expected, actual);
 }
 
@@ -101,9 +101,9 @@ void Previous(
 void Month_Valid()
 {
   var adjuster = DateAdjusters.month(2);
-  var start = new LocalDate(2017, 8, 21, CalendarSystem.julian);
+  var start = LocalDate(2017, 8, 21, CalendarSystem.julian);
   var actual = start.adjust(adjuster);
-  var expected = new LocalDate(2017, 2, 21, CalendarSystem.julian);
+  var expected = LocalDate(2017, 2, 21, CalendarSystem.julian);
   expect(expected, actual);
 }
 
@@ -111,7 +111,7 @@ void Month_Valid()
 void Month_InvalidAdjustment()
 {
   var adjuster = DateAdjusters.month(2);
-  var start = new LocalDate(2017, 8, 30, CalendarSystem.julian);
+  var start = LocalDate(2017, 8, 30, CalendarSystem.julian);
   // Assert.Throws<ArgumentOutOfRangeException>(() => start.With(adjuster));
   expect(() => start.adjust(adjuster), throwsRangeError);
 }
@@ -119,7 +119,7 @@ void Month_InvalidAdjustment()
 @Test()
 void IsoDayOfWeekAdjusters_Invalid()
 {
-  var invalid = new DayOfWeek (10); //IsoDayOfWeek) 10;
+  var invalid = DayOfWeek (10); //IsoDayOfWeek) 10;
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));

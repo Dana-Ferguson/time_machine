@@ -19,7 +19,7 @@ void AllYears()
   // Range of years we actually care about. We support more, but that's okay.
   for (int year = -9999; year <= 9999; year++)
   {
-    var ymdc = new YearMonthDayCalendar(year, 5, 20, new CalendarOrdinal(0));
+    var ymdc = YearMonthDayCalendar(year, 5, 20, CalendarOrdinal(0));
     expect(year, ymdc.year);
     expect(5, ymdc.month);
     expect(20, ymdc.day);
@@ -33,7 +33,7 @@ void AllMonths()
   // We'll never actually need 32 months, but we support that many...
   for (int month = 1; month <= 32; month++)
   {
-    var ymdc = new YearMonthDayCalendar(-123, month, 20, CalendarOrdinal.hebrewCivil);
+    var ymdc = YearMonthDayCalendar(-123, month, 20, CalendarOrdinal.hebrewCivil);
     expect(-123, ymdc.year);
     expect(month, ymdc.month);
     expect(20, ymdc.day);
@@ -47,7 +47,7 @@ void AllDays()
   // We'll never actually need 64 days, but we support that many...
   for (int day = 1; day <= 64; day++)
   {
-    var ymdc = new YearMonthDayCalendar(-123, 12, day, CalendarOrdinal.islamicAstronomicalBase15);
+    var ymdc = YearMonthDayCalendar(-123, 12, day, CalendarOrdinal.islamicAstronomicalBase15);
     expect(-123, ymdc.year);
     expect(12, ymdc.month);
     expect(day, ymdc.day);
@@ -60,8 +60,8 @@ void AllCalendars()
 {
   for (int ordinal = 0; ordinal < 64; ordinal++)
   {
-    CalendarOrdinal calendar = new CalendarOrdinal(ordinal); //(CalendarOrdinal) ordinal;
-    var ymdc = new YearMonthDayCalendar(-123, 30, 64, calendar);
+    CalendarOrdinal calendar = CalendarOrdinal(ordinal); //(CalendarOrdinal) ordinal;
+    var ymdc = YearMonthDayCalendar(-123, 30, 64, calendar);
     expect(-123, ymdc.year);
     expect(30, ymdc.month);
     expect(64, ymdc.day);
@@ -72,15 +72,15 @@ void AllCalendars()
 @Test()
 void Equality()
 {
-  var original = new YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic);
-  var original2 = new YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic);
-  TestHelper.TestEqualsStruct(original, new YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic),
-      [new YearMonthDayCalendar(original.year + 1, original.month, original.day, original.calendarOrdinal),
-      new YearMonthDayCalendar(original.year, original.month + 1, original.day, original.calendarOrdinal),
-      new YearMonthDayCalendar(original.year, original.month, original.day + 1, original.calendarOrdinal),
-      new YearMonthDayCalendar(original.year, original.month, original.day, CalendarOrdinal.gregorian)]);
+  var original = YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic);
+  var original2 = YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic);
+  TestHelper.TestEqualsStruct(original, YearMonthDayCalendar(1000, 12, 20, CalendarOrdinal.coptic),
+      [YearMonthDayCalendar(original.year + 1, original.month, original.day, original.calendarOrdinal),
+      YearMonthDayCalendar(original.year, original.month + 1, original.day, original.calendarOrdinal),
+      YearMonthDayCalendar(original.year, original.month, original.day + 1, original.calendarOrdinal),
+      YearMonthDayCalendar(original.year, original.month, original.day, CalendarOrdinal.gregorian)]);
   // Just test the first one again with operators.
-  TestHelper.TestOperatorEquality(original, original2, new YearMonthDayCalendar(original.year + 1, original.month, original.day, original.calendarOrdinal));
+  TestHelper.TestOperatorEquality(original, original2, YearMonthDayCalendar(original.year + 1, original.month, original.day, original.calendarOrdinal));
 }
 
 @Test()

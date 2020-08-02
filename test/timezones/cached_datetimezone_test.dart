@@ -22,7 +22,7 @@ Future setup() async {
 }
 
 CachedDateTimeZone timeZone; // = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
-Instant summer = new Instant.utc(2010, 6, 1, 0, 0);
+Instant summer = Instant.utc(2010, 6, 1, 0, 0);
 
 @Test()
 void GetZoneIntervalInstant_NotNull()
@@ -47,9 +47,9 @@ void GetZoneIntervalInstant_RepeatedCallsReturnSameObjectWithOthersInterspersed(
 {
   var actual = timeZone.getZoneInterval(summer);
   expect(timeZone.getZoneInterval(TimeConstants.unixEpoch), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 2000 * 7)), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 3000 * 7)), isNotNull);
-  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + new Time(days: 4000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + Time(days: 2000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + Time(days: 3000 * 7)), isNotNull);
+  expect(timeZone.getZoneInterval(TimeConstants.unixEpoch + Time(days: 4000 * 7)), isNotNull);
   var newPeriod = timeZone.getZoneInterval(summer);
   expect(identical(actual, newPeriod), isTrue);
 }
@@ -64,7 +64,7 @@ void MinMaxOffsets()
 @Test()
 void ForZone_Fixed()
 {
-  var zone = new DateTimeZone.forOffset(new Offset.hours(1));
+  var zone = DateTimeZone.forOffset(Offset.hours(1));
   expect(identical(zone, CachedDateTimeZone.forZone(zone)), isTrue);
 }
 

@@ -22,7 +22,7 @@ class SingleTransitionDateTimeZone extends DateTimeZone {
   /// [offsetBeforeHours]: The offset of local time from UTC, in hours, before the transition.
   /// [offsetAfterHours]: The offset of local time from UTC, in hours, before the transition.
   SingleTransitionDateTimeZone.around(Instant transitionPoint, int offsetBeforeHours, int offsetAfterHours)
-      : this(transitionPoint, new Offset.hours(offsetBeforeHours), new Offset.hours(offsetAfterHours));
+      : this(transitionPoint, Offset.hours(offsetBeforeHours), Offset.hours(offsetAfterHours));
 
   /// Creates a zone with a single transition between two offsets.
   ///

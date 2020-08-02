@@ -82,7 +82,7 @@ class InstantPattern implements IPattern<Instant> {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
     var pattern = formatInfo.instantPatternParser.parsePattern(patternText);
-    return new InstantPattern._(patternText, pattern);
+    return InstantPattern._(patternText, pattern);
   }
 
   /// Creates a pattern for the given pattern text and culture.

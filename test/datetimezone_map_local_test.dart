@@ -30,25 +30,25 @@ Future main() async {
   await runTests();
 }
 
-final Instant Transition = new Instant.utc(2000, 1, 1, 0, 0);
+final Instant Transition = Instant.utc(2000, 1, 1, 0, 0);
 
-final Offset Minus5 = new Offset.hours(-5);
-final Offset Plus10 = new Offset.hours(10);
+final Offset Minus5 = Offset.hours(-5);
+final Offset Plus10 = Offset.hours(10);
 
-final LocalDateTime NearStartOfTime = new LocalDateTime(-9998, 1, 5, 0, 0, 0);
-final LocalDateTime NearEndOfTime = new LocalDateTime(9999, 12, 25, 0, 0, 0);
+final LocalDateTime NearStartOfTime = LocalDateTime(-9998, 1, 5, 0, 0, 0);
+final LocalDateTime NearEndOfTime = LocalDateTime(9999, 12, 25, 0, 0, 0);
 final LocalDateTime TransitionMinus5 = Transition.withOffset(Minus5).localDateTime;
 final LocalDateTime TransitionPlus10 = Transition.withOffset(Plus10).localDateTime;
 final LocalDateTime MidTransition = Transition.withOffset(Offset.zero).localDateTime;
 
-final LocalDateTime YearBeforeTransition = new LocalDateTime(1999, 1, 1, 0, 0, 0);
-final LocalDateTime YearAfterTransition = new LocalDateTime(2001, 1, 1, 0, 0, 0);
+final LocalDateTime YearBeforeTransition = LocalDateTime(1999, 1, 1, 0, 0, 0);
+final LocalDateTime YearAfterTransition = LocalDateTime(2001, 1, 1, 0, 0, 0);
 
-final SingleTransitionDateTimeZone ZoneWithGap = new SingleTransitionDateTimeZone(Transition, Minus5, Plus10);
+final SingleTransitionDateTimeZone ZoneWithGap = SingleTransitionDateTimeZone(Transition, Minus5, Plus10);
 final ZoneInterval IntervalBeforeGap = ZoneWithGap.EarlyInterval;
 final ZoneInterval IntervalAfterGap = ZoneWithGap.LateInterval;
 
-final SingleTransitionDateTimeZone ZoneWithAmbiguity = new SingleTransitionDateTimeZone(Transition, Plus10, Minus5);
+final SingleTransitionDateTimeZone ZoneWithAmbiguity = SingleTransitionDateTimeZone(Transition, Plus10, Minus5);
 final ZoneInterval IntervalBeforeAmbiguity = ZoneWithAmbiguity.EarlyInterval;
 final ZoneInterval IntervalAfterAmbiguity = ZoneWithAmbiguity.LateInterval;
 
@@ -56,7 +56,7 @@ final ZoneInterval IntervalAfterAmbiguity = ZoneWithAmbiguity.LateInterval;
 @Test()
 void ZoneWithAmbiguity_NearStartOfTime()
 {
-  var mapping = ZoneWithAmbiguity.mapLocal(new LocalDateTime(-9998, 1, 5, 0, 0, 0));
+  var mapping = ZoneWithAmbiguity.mapLocal(LocalDateTime(-9998, 1, 5, 0, 0, 0));
   CheckMapping(mapping, IntervalBeforeAmbiguity, IntervalBeforeAmbiguity, 1);
 }
 
@@ -202,8 +202,8 @@ void ZoneWithGap_FirstTickAfterTransition()
 void TrickyCase()
 {
   // 1am occurs unambiguously in the early zone.
-  var zone = new SingleTransitionDateTimeZone(Transition, new Offset.hours(3), new Offset.hours(5));
-  var mapping = zone.mapLocal(new LocalDateTime(2000, 1, 1, 1, 0, 0));
+  var zone = SingleTransitionDateTimeZone(Transition, Offset.hours(3), Offset.hours(5));
+  var mapping = zone.mapLocal(LocalDateTime(2000, 1, 1, 1, 0, 0));
   CheckMapping(mapping, zone.EarlyInterval, zone.EarlyInterval, 1);
 }
 

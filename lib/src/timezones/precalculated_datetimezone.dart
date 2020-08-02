@@ -43,7 +43,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
     var firstTailZoneInterval = IZoneInterval.withStart(tailZone?.getZoneInterval(tailZoneStart), tailZoneStart);
     validatePeriods(intervals, tailZone);
 
-    return new PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
+    return PrecalculatedDateTimeZone._(id, intervals, tailZone, firstTailZoneInterval, tailZoneStart);
   }
 
 /*
@@ -101,7 +101,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
       }
     }
     // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-    throw new StateError("Instant $instant did not exist in time zone $id");
+    throw StateError("Instant $instant did not exist in time zone $id");
   }
 
   // #region I/O
@@ -156,8 +156,8 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   /// Returns: The time zone.
   static DateTimeZone read(DateTimeZoneReader reader, String id) {
     var periodsCount = reader.read7BitEncodedInt();
-    if (periodsCount > 10000) throw new Exception('Parse error for id = $id. Too many periods. Count = $periodsCount.');
-    var periods = new Iterable
+    if (periodsCount > 10000) throw Exception('Parse error for id = $id. Too many periods. Count = $periodsCount.');
+    var periods = Iterable
         .generate(periodsCount)
         .map((i) => reader.readZoneInterval())
         .toList();
@@ -165,9 +165,9 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
     var tailFlag = reader.readUint8();
     if (tailFlag == 1) {
       var tailZone = StandardDaylightAlternatingMap.read(reader);
-      return new PrecalculatedDateTimeZone(id, periods, tailZone);
+      return PrecalculatedDateTimeZone(id, periods, tailZone);
     }
-    return new PrecalculatedDateTimeZone(id, periods, null);
+    return PrecalculatedDateTimeZone(id, periods, null);
   }
 
   /// Reasonably simple way of computing the maximum/minimum offset

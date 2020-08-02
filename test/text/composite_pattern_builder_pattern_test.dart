@@ -25,7 +25,7 @@ void IsoPattern(String text) {
   // We assert that the text round-trips. If it does, it's
   // reasonable to assume it parsed correctly...
   var shortPattern = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm");
-  var pattern = (new CompositePatternBuilder<LocalDateTime>()
+  var pattern = (CompositePatternBuilder<LocalDateTime>()
     ..add(LocalDateTimePattern.extendedIso, (_) => true)
     ..add(shortPattern, (ldt) => ldt.secondOfMinute == 0 && ldt.nanosecondOfSecond == 0)).build();
   var value = pattern
@@ -38,16 +38,16 @@ void IsoPattern(String text) {
 @Test()
 void Format_NoValidPattern()
 {
-  var pattern = (new CompositePatternBuilder<LocalDate>()
+  var pattern = (CompositePatternBuilder<LocalDate>()
     ..add(LocalDatePattern.iso, (_) => false)
     ..add(LocalDatePattern.createWithInvariantCulture("yyyy"), (_) => false)).build();
 
-  expect(() => pattern.format(new LocalDate(2017, 1, 1)), willThrow<FormatException>());
+  expect(() => pattern.format(LocalDate(2017, 1, 1)), willThrow<FormatException>());
 }
 
 @Test()
 void Parse() {
-  var pattern = (new CompositePatternBuilder<LocalDate>()
+  var pattern = (CompositePatternBuilder<LocalDate>()
     ..add(LocalDatePattern.iso, (_) => true)
     ..add(LocalDatePattern.createWithInvariantCulture("yyyy"), (_) => false)).build();
   expect(pattern.parse("2017-03-20").success, isTrue);
@@ -58,7 +58,7 @@ void Parse() {
 @Test()
 void Build_Empty()
 {
-  var pattern = new CompositePatternBuilder<LocalDate>();
+  var pattern = CompositePatternBuilder<LocalDate>();
   expect(() => pattern.build(), throwsStateError);
 }
 
@@ -68,7 +68,7 @@ void Enumerators()
   var pattern1 = LocalDatePattern.iso;
   var pattern2 = LocalDatePattern.createWithInvariantCulture("yyyy");
 
-  var builder = (new CompositePatternBuilder<LocalDate>()
+  var builder = (CompositePatternBuilder<LocalDate>()
     ..add(pattern1, (_) => true)
     ..add(pattern2, (_) => false)).build();
 

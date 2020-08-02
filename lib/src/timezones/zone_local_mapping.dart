@@ -12,7 +12,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 abstract class IZoneLocalMapping {
   static ZoneLocalMapping newZoneLocalMapping
       (DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count) => 
-      new ZoneLocalMapping._(zone, localDateTime, earlyInterval, lateInterval, count);
+      ZoneLocalMapping._(zone, localDateTime, earlyInterval, lateInterval, count);
 }
 
 /// The result of mapping a [LocalDateTime] within a time zone, i.e. finding out
@@ -92,15 +92,15 @@ class ZoneLocalMapping {
   ZonedDateTime single() {
     switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, zone);
+        throw SkippedTimeError(localDateTime, zone);
       case 1:
         return _buildZonedDateTime(earlyInterval);
       case 2:
-        throw new AmbiguousTimeError(
+        throw AmbiguousTimeError(
             _buildZonedDateTime(earlyInterval),
             _buildZonedDateTime(lateInterval));
       default:
-        throw new StateError("Can't happen");
+        throw StateError("Can't happen");
     }
   }
 
@@ -114,12 +114,12 @@ class ZoneLocalMapping {
   ZonedDateTime first() {
     switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, zone);
+        throw SkippedTimeError(localDateTime, zone);
       case 1:
       case 2:
         return _buildZonedDateTime(earlyInterval);
       default:
-        throw new StateError("Can't happen");
+        throw StateError("Can't happen");
     }
   }
 
@@ -133,13 +133,13 @@ class ZoneLocalMapping {
   ZonedDateTime last() {
     switch (count) {
       case 0:
-        throw new SkippedTimeError(localDateTime, zone);
+        throw SkippedTimeError(localDateTime, zone);
       case 1:
         return _buildZonedDateTime(earlyInterval);
       case 2:
         return _buildZonedDateTime(lateInterval);
       default:
-        throw new StateError("Can't happen");
+        throw StateError("Can't happen");
     }
   }
 

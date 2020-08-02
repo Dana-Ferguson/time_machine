@@ -12,7 +12,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 abstract class AnnualDatePatterns {
   static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) =>
       AnnualDatePattern._create(patternText, formatInfo, templateValue);
-  static final AnnualDate defaultTemplateValue = new AnnualDate(1, 1);
+  static final AnnualDate defaultTemplateValue = AnnualDate(1, 1);
 
   static IPartialPattern<AnnualDate> underlyingPattern(AnnualDatePattern annualDatePattern) => annualDatePattern._underlyingPattern;
 
@@ -92,11 +92,11 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == AnnualDatePatterns.defaultTemplateValue
         ? formatInfo.annualDatePatternParser.parsePattern(patternText)
-        : new AnnualDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
+        : AnnualDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = pattern is AnnualDatePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<AnnualDate>;
-    return new AnnualDatePattern._(patternText, formatInfo, templateValue, partialPattern);
+    return AnnualDatePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.

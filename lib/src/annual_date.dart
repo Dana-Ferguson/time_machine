@@ -30,7 +30,7 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// (February 29th is considered valid.)
   AnnualDate([int month = 1, int day = 1])
     // See comment below for why this is using year 1, and why that's okay even for February 29th.
-    : _value = new YearMonthDay(1, month, day)
+    : _value = YearMonthDay(1, month, day)
   {
     // The year 2000 is a leap year, so this is fine for all valid dates.
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(2000, month, day);
@@ -57,7 +57,7 @@ class AnnualDate implements Comparable<AnnualDate> {
         GregorianYearMonthDayCalculator.minGregorianYear,
         GregorianYearMonthDayCalculator.maxGregorianYear);
     var ymd = ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso).setYear(_value, year);
-    return ILocalDate.trusted(ymd.withCalendarOrdinal(new CalendarOrdinal(0))); // ISO calendar
+    return ILocalDate.trusted(ymd.withCalendarOrdinal(CalendarOrdinal(0))); // ISO calendar
   }
 
   /// Checks whether the specified year forms a valid date with the month/day in this

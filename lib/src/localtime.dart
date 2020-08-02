@@ -10,9 +10,9 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal
 abstract class ILocalTime {
-  static LocalTime trustedNanoseconds(int nanoseconds) => new LocalTime._(nanoseconds);
+  static LocalTime trustedNanoseconds(int nanoseconds) => LocalTime._(nanoseconds);
 
-  static LocalTime untrustedNanoseconds(int nanoseconds) => new LocalTime._untrusted(nanoseconds);
+  static LocalTime untrustedNanoseconds(int nanoseconds) => LocalTime._untrusted(nanoseconds);
 }
 
 /// LocalTime is an immutable class representing a time of day, with no reference
@@ -20,20 +20,20 @@ abstract class ILocalTime {
 @immutable
 class LocalTime implements Comparable<LocalTime> {
   /// Local time at midnight, i.e. 0 hours, 0 minutes, 0 seconds.
-  static final LocalTime midnight = new LocalTime(0, 0, 0);
+  static final LocalTime midnight = LocalTime(0, 0, 0);
 
   /// The minimum value of this type; equivalent to [midnight].
   static final LocalTime minValue = midnight;
 
   /// Local time at noon, i.e. 12 hours, 0 minutes, 0 seconds.
-  static final LocalTime noon = new LocalTime(12, 0, 0);
+  static final LocalTime noon = LocalTime(12, 0, 0);
 
   /// The maximum value of this type, one nanosecond before midnight.
   ///
   /// This is useful if you have to use an inclusive upper bound for some reason.
   /// In general, it's better to use an exclusive upper bound, in which case use midnight of
   /// the following day.
-  static final LocalTime maxValue = new LocalTime._(TimeConstants.nanosecondsPerDay - 1);
+  static final LocalTime maxValue = LocalTime._(TimeConstants.nanosecondsPerDay - 1);
 
   /// Nanoseconds since midnight, in the range [0, 86,400,000,000,000). ~ 46 bits
   // final int _nanoseconds;
@@ -79,13 +79,13 @@ class LocalTime implements Comparable<LocalTime> {
     // Only one sub-second variable may be implemented.
     // todo: is there a more performant check here?
     if (ms != null) {
-      if (us != null) throw new ArgumentError(_munArgumentError);
-      if (ns != null) throw new ArgumentError(_munArgumentError);
+      if (us != null) throw ArgumentError(_munArgumentError);
+      if (ns != null) throw ArgumentError(_munArgumentError);
       if (ms < 0 || ms >= TimeConstants.millisecondsPerSecond) Preconditions.checkArgumentRange('milliseconds', ms, 0, TimeConstants.millisecondsPerSecond - 1);
       nanoseconds += ms * TimeConstants.nanosecondsPerMillisecond;
     }
     else if (us != null) {
-      if (ns != null) throw new ArgumentError(_munArgumentError);
+      if (ns != null) throw ArgumentError(_munArgumentError);
       if (us < 0 || us >= TimeConstants.microsecondsPerSecond) Preconditions.checkArgumentRange('microseconds', us, 0, TimeConstants.microsecondsPerSecond - 1);
       nanoseconds += us * TimeConstants.nanosecondsPerMicrosecond;
     }
@@ -94,7 +94,7 @@ class LocalTime implements Comparable<LocalTime> {
       nanoseconds += ns;
     }
 
-    return new LocalTime._(nanoseconds);
+    return LocalTime._(nanoseconds);
   }
 
   /// Constructor only called from other parts of Time Machine - trusted to be the range [0, TimeConstants.nanosecondsPerDay).
@@ -113,7 +113,7 @@ class LocalTime implements Comparable<LocalTime> {
     if (nanoseconds < 0 || nanoseconds >= TimeConstants.nanosecondsPerDay) {
       Preconditions.checkArgumentRange('nanoseconds', nanoseconds, 0, TimeConstants.nanosecondsPerDay - 1);
     }
-    return new LocalTime._(nanoseconds);
+    return LocalTime._(nanoseconds);
   }
 
   /// Factory method for creating a local time from the number of ticks which have elapsed since midnight.
@@ -127,9 +127,9 @@ class LocalTime implements Comparable<LocalTime> {
     if (nanoseconds < 0 || nanoseconds >= TimeConstants.nanosecondsPerDay) {
       // Range error requires 'num' to be the range bounds, which isn't conceptually true here.
       // todo: is there a way to make this a Range error?
-      throw new ArgumentError.value('Invalid value: $time was out of range of [${Time.zero}, ${Time.oneDay}).');
+      throw ArgumentError.value('Invalid value: $time was out of range of [${Time.zero}, ${Time.oneDay}).');
     }
-    return new LocalTime._(nanoseconds);
+    return LocalTime._(nanoseconds);
   }
 
   /// Produces a [LocalTime] based on your [Clock.current] and your [DateTimeZone.local].
@@ -386,7 +386,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [offset]: The offset to apply.
   ///
   /// Returns: The result of this time-of-day offset by the given amount.
-  OffsetTime withOffset(Offset offset) => new OffsetTime(this, offset);
+  OffsetTime withOffset(Offset offset) => OffsetTime(this, offset);
 
   /// Combines this [LocalTime] with the given [LocalDate]
   /// into a single [LocalDateTime].
@@ -395,7 +395,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [date]: The date to combine with this time
   ///
   /// Returns: The [LocalDateTime] representation of the given time on this date
-  LocalDateTime atDate(LocalDate date) => new LocalDateTime.localDateAtTime(date, this);
+  LocalDateTime atDate(LocalDate date) => LocalDateTime.localDateAtTime(date, this);
 
   /// Returns the later time of the given two.
   ///

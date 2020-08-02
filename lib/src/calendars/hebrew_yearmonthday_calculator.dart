@@ -54,7 +54,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
 
   @override YearMonthDay getYearMonthDay(int year, int dayOfYear) {
     YearMonthDay scriptural = HebrewScripturalCalculator.getYearMonthDay(year, dayOfYear);
-    return _monthNumbering == HebrewMonthNumbering.scriptural ? scriptural : new YearMonthDay(
+    return _monthNumbering == HebrewMonthNumbering.scriptural ? scriptural : YearMonthDay(
         year, HebrewMonthConverter.scripturalToCivil(year, scriptural.month), scriptural.day);
   }
 
@@ -91,7 +91,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
       }
     }
     int targetCalendarMonth = _scripturalToCalendarMonth(year, targetScripturalMonth);
-    return new YearMonthDay(year, targetCalendarMonth, targetDay);
+    return YearMonthDay(year, targetCalendarMonth, targetDay);
   }
 
   @override int getDaysInMonth(int year, int month) =>
@@ -137,7 +137,7 @@ class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
     // Convert back to calendar month
     month = _civilToCalendarMonth(year, month);
     int day = math.min(getDaysInMonth(year, month), yearMonthDay.day);
-    return new YearMonthDay(year, month, day);
+    return YearMonthDay(year, month, day);
   }
 
   @override int monthsBetween(YearMonthDay start, YearMonthDay end) {

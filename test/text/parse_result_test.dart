@@ -14,7 +14,7 @@ Future main() async {
   await runTests();
 }
 
-final ParseResult<int> _failureResult = IParseResult.forInvalidValue<int>(new ValueCursor("text"), "text");
+final ParseResult<int> _failureResult = IParseResult.forInvalidValue<int>(ValueCursor("text"), "text");
 
 @Test()
 void Value_Success()
@@ -40,7 +40,7 @@ void Exception_Success()
 void Exception_Failure()
 {
   // Assert.IsInstanceOf<UnparsableValueError>(FailureResult.Exception);
-  expect(_failureResult.error, new TypeMatcher<UnparsableValueError>());
+  expect(_failureResult.error, TypeMatcher<UnparsableValueError>());
 }
 
 @Test()
@@ -106,7 +106,7 @@ expect(() => original.convertError<String>(), throwsStateError);
 
 @Test()
 void ForException() {
-  Error e = new Error();
+  Error e = Error();
   ParseResult<int> result = ParseResult.forError<int>(() => e);
   expect(result.success, isFalse);
   expect(identical(e, result.error), isTrue);

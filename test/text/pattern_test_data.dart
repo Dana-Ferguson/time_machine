@@ -42,7 +42,7 @@ abstract class PatternTestData<T> {
   @internal String message;
 
   /// Message parameters to verify for exceptions.
-  @internal final List parameters = new List();
+  @internal final List parameters = List();
 
   @internal PatternTestData(this.Value) {
     template = defaultTemplate;
@@ -77,7 +77,7 @@ abstract class PatternTestData<T> {
   @internal void TestParsePartial() {
     var pattern = CreatePartialPattern();
     assert(message == null);
-    var cursor = new ValueCursor("^" + text + "#");
+    var cursor = ValueCursor("^" + text + "#");
     // Move to the ^
     cursor.moveNext();
     // Move to the start of the text
@@ -89,13 +89,13 @@ abstract class PatternTestData<T> {
   }
 
   @internal /*virtual*/ IPartialPattern<T> CreatePartialPattern() {
-    throw new UnimplementedError();
+    throw UnimplementedError();
   }
 
   @internal void TestAppendFormat() {
     assert(message == null);
     var pattern = CreatePattern();
-    var builder = new StringBuffer("x");
+    var builder = StringBuffer("x");
     pattern.appendFormat(Value, builder);
     // assert("x" + Text == builder.toString());
     expect(builder.toString(), "x" + text );
@@ -135,7 +135,7 @@ abstract class PatternTestData<T> {
 
   @override String toString() {
     try {
-      StringBuffer builder = new StringBuffer();
+      StringBuffer builder = StringBuffer();
       builder.write("Value=$Value; ");
       builder.write("Pattern=$pattern; ");
       builder.write("Text=$text; ");
@@ -164,7 +164,7 @@ abstract class PatternTestData<T> {
     }
     on FormatException // catch ()
         {
-      throw new FormatException("Failed to format String '${message}' with ${parameters.length} parameters");
+      throw FormatException("Failed to format String '${message}' with ${parameters.length} parameters");
     }
   }
 }

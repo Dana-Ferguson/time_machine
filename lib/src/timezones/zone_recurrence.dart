@@ -50,11 +50,11 @@ class ZoneRecurrence {
 
   /// Returns a new recurrence which has the same values as this, but a different name.
   ZoneRecurrence withName(String name) =>
-      new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+      ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
 
   /// Returns a new recurrence with the same values as this, but just for a single year.
   ZoneRecurrence forSingleYear(int year) {
-    return new ZoneRecurrence(name, savings, yearOffset, year, year);
+    return ZoneRecurrence(name, savings, yearOffset, year, year);
   }
 
   // #region IEquatable<ZoneRecurrence> Members
@@ -102,7 +102,7 @@ class ZoneRecurrence {
       // Asked for a transition after our final transition... or both are beyond the end of time (in which case
       // we can return an infinite transition). This branch will always be taken for transitions beyond the end
       // of time.
-      return _maxLocalInstant == LocalInstant.afterMaxValue ? new Transition(IInstant.afterMaxValue, newOffset) : null;
+      return _maxLocalInstant == LocalInstant.afterMaxValue ? Transition(IInstant.afterMaxValue, newOffset) : null;
     }
     else if (safeLocal == LocalInstant.beforeMinValue) {
       // We've been asked to find the next transition after some point which is a valid instant, but is before the
@@ -123,7 +123,7 @@ class ZoneRecurrence {
 
     Instant safeTransition = transition.safeMinus(ruleOffset);
     if (safeTransition > instant) {
-      return new Transition(safeTransition, newOffset);
+      return Transition(safeTransition, newOffset);
     }
 
     // We've got a transition earlier than we were asked for. Try next year.
@@ -132,11 +132,11 @@ class ZoneRecurrence {
     targetYear++;
     // Handle infinite transitions
     if (targetYear > GregorianYearMonthDayCalculator.maxGregorianYear) {
-      return new Transition(IInstant.afterMaxValue, newOffset);
+      return Transition(IInstant.afterMaxValue, newOffset);
     }
     // It's fine for this to be "end of time", and it can't be "start of time" because we're at least finding a transition in -9997.
     safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);
-    return new Transition(safeTransition, newOffset);
+    return Transition(safeTransition, newOffset);
   }
 
   /// Returns the last transition which occurs before or on the given instant.
@@ -167,7 +167,7 @@ class ZoneRecurrence {
         // start of valid local time after applying the rule offset.  It's possible that the next transition *would*
         // be representable as an instant (e.g. 1pm Dec 31st -9999 with an offset of -5) but it's reasonable to
         // just return an infinite transition.
-        return new Transition(IInstant.beforeMinValue, newOffset);
+        return Transition(IInstant.beforeMinValue, newOffset);
       }
       else {
         // We've been asked to find the next transition before some point which is a valid instant, but is after the
@@ -189,7 +189,7 @@ class ZoneRecurrence {
 
     Instant safeTransition = transition.safeMinus(ruleOffset);
     if (safeTransition <= instant) {
-      return new Transition(safeTransition, newOffset);
+      return Transition(safeTransition, newOffset);
     }
 
     // We've got a transition later than we were asked for. Try next year.
@@ -198,18 +198,18 @@ class ZoneRecurrence {
     targetYear--;
     // Handle infinite transitions
     if (targetYear < GregorianYearMonthDayCalculator.minGregorianYear) {
-      return new Transition(IInstant.beforeMinValue, newOffset);
+      return Transition(IInstant.beforeMinValue, newOffset);
     }
     // It's fine for this to be "start of time", and it can't be "end of time" because we're at latest finding a transition in 9998.
     safeTransition = yearOffset.getOccurrenceForYear(targetYear).safeMinus(ruleOffset);
-    return new Transition(safeTransition, newOffset);
+    return Transition(safeTransition, newOffset);
   }
 
   /// Piggy-backs onto Next, but fails with an InvalidOperationException if there's no such transition.
   Transition nextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
     Transition next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
-      throw new StateError(
+      throw StateError(
           "Time Machine bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
     return next;
@@ -219,7 +219,7 @@ class ZoneRecurrence {
   Transition previousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
     Transition previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
-      throw new StateError(
+      throw StateError(
           "Time Machine bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
     }
     return previous;
@@ -261,7 +261,7 @@ class ZoneRecurrence {
     //// todo: remove me in the future... but for now, it's a good sanity check
     //var isInfinite = reader.readBool();
 
-    return new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+    return ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
     // if (zoneRecurrence.isInfinite != isInfinite) throw new Exception('zoneRecurrence.isInfinite error.');
 
     // String name = reader.ReadString();
@@ -289,6 +289,6 @@ class ZoneRecurrence {
   /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
   ZoneRecurrence toStartOfTime() =>
-      fromYear == Platform.int32MinValue ? this : new ZoneRecurrence(name, savings, yearOffset, Platform.int32MinValue, toYear);
+      fromYear == Platform.int32MinValue ? this : ZoneRecurrence(name, savings, yearOffset, Platform.int32MinValue, toYear);
 }
 

@@ -13,19 +13,19 @@ import 'package:time_machine/src/platforms/platform_io.dart';
 class CultureLoader {
   static Future<CultureLoader> load() async {
     var map = await _loadCultureMapping();
-    return new CultureLoader._(new HashSet.from(map));
+    return CultureLoader._(HashSet.from(map));
   }
 
   static Future<CultureLoader> loadAll() async {
     // This won't have any filenames in it.
     // It's just a dummy object that will also give [zoneIds] and [zoneIdExists] functionality
-    var cultureIds = new HashSet<String>();
+    var cultureIds = HashSet<String>();
     var cache = <String, Culture>{
       Culture.invariantId: Culture.invariant
     };
 
     var binary = await PlatformIO.local.getBinary('cultures', 'cultures.bin');
-    var reader = new CultureReader(binary);
+    var reader = CultureReader(binary);
 
     while (reader.isMore) {
       var zone = reader.readCulture();
@@ -36,7 +36,7 @@ class CultureLoader {
     // todo: this is a good thing to log? (todo: research whether it's ok for libraries in Dart to log)
     // print('Total ${cache.length} zones loaded');
 
-    var index = new CultureLoader._(cultureIds);
+    var index = CultureLoader._(cultureIds);
     cache.forEach((id, zone) => index._cache[id] = zone);
     return index;
   }
@@ -49,7 +49,7 @@ class CultureLoader {
     // #hack: Flutter is very angry about making sure this is a 100% List<String>
     // map((x) => x as String)
     // return json.toList<String>();
-    var list = new List<String>();
+    var list = List<String>();
     for (var item in json) {
       list.add(item as String);
     }
@@ -63,7 +63,7 @@ class CultureLoader {
   bool zoneIdExists(String zoneId) => _cultureIds.contains(zoneId);
 
   Culture _cultureFromBinary(ByteData binary) {
-    return new CultureReader(binary).readCulture();
+    return CultureReader(binary).readCulture();
   }
 
   Future<Culture> getCulture(String cultureId) async {
@@ -93,11 +93,11 @@ class CultureReader extends BinaryReader {
   Culture readCulture() {
     var name = readString();
     var datetimeFormat = readDateTimeFormatInfo();
-    return new Culture(name, datetimeFormat);
+    return Culture(name, datetimeFormat);
   }
 
   DateTimeFormat readDateTimeFormatInfo() {
-    return (new DateTimeFormatBuilder()
+    return (DateTimeFormatBuilder()
       ..amDesignator = readString()
       ..pmDesignator = readString()
       ..timeSeparator = readString()

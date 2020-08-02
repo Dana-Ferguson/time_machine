@@ -36,7 +36,7 @@ class YearMonthDayCalendar {
 
   /// Constructs a new value for the given year, month, day and calendar. No validation is performed.
   YearMonthDayCalendar(int year, int month, int day, this.calendarOrdinal) :
-      yearMonthDay = new YearMonthDay(year, month, day);
+      yearMonthDay = YearMonthDay(year, month, day);
   //      : _value = ((year - 1) << _calendarDayMonthBits) |
   //  ((month - 1) << _calendarDayBits) |
   //  ((day - 1) << calendarBits) |
@@ -58,11 +58,11 @@ class YearMonthDayCalendar {
     // Handle a leading - to negate the year
     if (text.startsWith("-")) {
       var ymdc = Parse(text.substring(1));
-      return new YearMonthDayCalendar(-ymdc.year, ymdc.month, ymdc.day, ymdc.calendarOrdinal);
+      return YearMonthDayCalendar(-ymdc.year, ymdc.month, ymdc.day, ymdc.calendarOrdinal);
     }
 
     List<String> bits = text.split('-');
-    return new YearMonthDayCalendar(
+    return YearMonthDayCalendar(
         int.parse(bits[0]),
         int.parse(bits[1]),
         int.parse(bits[2]),
@@ -73,7 +73,7 @@ class YearMonthDayCalendar {
   YearMonthDay toYearMonthDay() => yearMonthDay; // new YearMonthDay.raw(_value >> calendarBits);
 
   @override
-  String toString() => new YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
+  String toString() => YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
   @override
   bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;

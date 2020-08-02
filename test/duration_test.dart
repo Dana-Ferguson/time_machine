@@ -20,7 +20,7 @@ Future main() async {
 @Test()
 void DefaultConstructor()
 {
-  var actual = new Time();
+  var actual = Time();
   expect(Time.zero, actual);
 }
 
@@ -45,7 +45,7 @@ void DefaultConstructor()
 void Int64Conversions(int int64Nanos)
 {
   if (Platform.isVM) {
-    var nanoseconds = new Time(nanoseconds: int64Nanos);
+    var nanoseconds = Time(nanoseconds: int64Nanos);
     expect(int64Nanos, nanoseconds.totalNanoseconds); // .toInt64Nanoseconds());
   }
 }
@@ -67,19 +67,19 @@ void Int64Conversions(int int64Nanos)
 void BigIntegerConversions(int int64Nanos)
 {
   var bigIntegerNanos = BigInt.from(int64Nanos);
-  var nanoseconds = new Time.bigIntNanoseconds(bigIntegerNanos);
+  var nanoseconds = Time.bigIntNanoseconds(bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.inNanosecondsAsBigInt);
 
   // And multiply it by 100, which proves we still work for values out of the range of Int64
   bigIntegerNanos *= BigInt.from(100);
-  nanoseconds = new Time.bigIntNanoseconds(bigIntegerNanos);
+  nanoseconds = Time.bigIntNanoseconds(bigIntegerNanos);
   expect(bigIntegerNanos, nanoseconds.inNanosecondsAsBigInt);
 }
 
 @Test()
 void ConstituentParts_Positive()
 {
-  var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
+  var nanos = Time(nanoseconds: TimeConstants.nanosecondsPerDay * 5 + 100);
   expect(5, Instant.epochTime(nanos).epochDay);
   expect(5, ITime.epochDay(nanos));
   expect(100, ITime.nanosecondOfEpochDay(nanos));
@@ -89,7 +89,7 @@ void ConstituentParts_Positive()
 @Test()
 void ConstituentParts_Negative()
 {
-  var nanos = new Time(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
+  var nanos = Time(nanoseconds: TimeConstants.nanosecondsPerDay * -5 + 100);
   expect(-5, Instant.epochTime(nanos).epochDay);
   expect(-5, ITime.epochDay(nanos));
   expect(100, Instant.epochTime(nanos).epochDayTime.inNanoseconds);
@@ -99,7 +99,7 @@ void ConstituentParts_Negative()
 @Test()
 void ConstituentParts_Large() {
   // And outside the normal range of long...
-  var nanos = new Time.bigIntNanoseconds(BigInt.from(TimeConstants.nanosecondsPerDay) * BigInt.from(365000) + BigInt.from(500));
+  var nanos = Time.bigIntNanoseconds(BigInt.from(TimeConstants.nanosecondsPerDay) * BigInt.from(365000) + BigInt.from(500));
   expect(365000, Instant.epochTime(nanos).epochDay);
 
   if (Platform.isVM) {
@@ -116,9 +116,9 @@ void Addition_Subtraction(int leftDays, int leftNanos,
     int rightDays, int rightNanos,
     int resultDays, int resultNanos)
 {
-  var left = new Time(days: leftDays, nanoseconds: leftNanos);
-  var right = new Time(days: rightDays, nanoseconds: rightNanos);
-  var result = new Time(days: resultDays, nanoseconds: resultNanos);
+  var left = Time(days: leftDays, nanoseconds: leftNanos);
+  var right = Time(days: rightDays, nanoseconds: rightNanos);
+  var result = Time(days: resultDays, nanoseconds: resultNanos);
 
   expect(result, left + right);
   expect(result, left.add(right));
@@ -132,10 +132,10 @@ void Addition_Subtraction(int leftDays, int leftNanos,
 @Test()
 void Equality()
 {
-  var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Time(microseconds: TimeConstants.microsecondsPerHour * 25);
-  var different1 = new Time(days: 1, nanoseconds: 200);
-  var different2 = new Time(days: 2, nanoseconds: TimeConstants.microsecondsPerHour);
+  var equal1 = Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
+  var equal2 = Time(microseconds: TimeConstants.microsecondsPerHour * 25);
+  var different1 = Time(days: 1, nanoseconds: 200);
+  var different2 = Time(days: 2, nanoseconds: TimeConstants.microsecondsPerHour);
 
   TestHelper.TestEqualsStruct(equal1, equal2, [different1]);
   TestHelper.TestOperatorEquality(equal1, equal2, different1);
@@ -147,10 +147,10 @@ void Equality()
 @Test()
 void Comparison()
 {
-  var equal1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
-  var equal2 = new Time(microseconds: TimeConstants.microsecondsPerHour * 25);
-  var greater1 = new Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour + 1);
-  var greater2 = new Time(days: 2, nanoseconds: 0);
+  var equal1 = Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour);
+  var equal2 = Time(microseconds: TimeConstants.microsecondsPerHour * 25);
+  var greater1 = Time(days: 1, nanoseconds: TimeConstants.nanosecondsPerHour + 1);
+  var greater2 = Time(days: 2, nanoseconds: 0);
 
   TestHelper.TestCompareToStruct<Time>(equal1, equal2, [greater1]);
   // TestHelper.TestNonGenericCompareTo(equal1, equal2, [greater1]);
@@ -166,8 +166,8 @@ void Comparison()
 @TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 1, 0], "Large scalar")
 void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   expect(expected, start * scalar);
 }
 
@@ -178,8 +178,8 @@ void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedD
 @TestCase(const [365000, 500, -365001, TimeConstants.nanosecondsPerDay - 500])
 void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   expect(expected, -start);
   // Test it the other way round as well...
   expect(start, -expected);
@@ -206,8 +206,8 @@ void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expe
 @TestCase(const [365000, 3000, 1000, 365, 3])
 void Division(int startDays, int startNanoOfDay, int divisor, int expectedDays, int expectedNanoOfDay)
 {
-  var start = new Time(days: startDays, nanoseconds: startNanoOfDay);
-  var expected = new Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
+  var start = Time(days: startDays, nanoseconds: startNanoOfDay);
+  var expected = Time(days: expectedDays, nanoseconds: expectedNanoOfDay);
   if (Platform.isVM) {
     expect(expected, start / divisor);
   } else {
@@ -270,9 +270,9 @@ void Validation()
 //TestHelper.AssertOutOfRange(Span.FromDays, -(1 << 24) - 1);
 
   // todo: I owe you out of range behavior
-  expect(new Time(days: (1 << 24) - 1), isNot(throwsException));
+  expect(Time(days: (1 << 24) - 1), isNot(throwsException));
   //expect(new Span(days: (1 << 24)), throwsException);
-  expect(new Time(days: -(1 << 24)), isNot(throwsException));
+  expect(Time(days: -(1 << 24)), isNot(throwsException));
 //expect(new Span(days: -(1 << 24) - 1), throwsException);
 }
 
@@ -288,7 +288,7 @@ void Validation()
 void PositiveComponents()
 {
   // Worked out with a calculator :)
-  Time duration = new Time(nanoseconds: 1234567890123456);
+  Time duration = Time(nanoseconds: 1234567890123456);
   expect(14, duration.inDays);
   expect(24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(6, duration.hourOfDay);
@@ -303,7 +303,7 @@ void PositiveComponents()
 void NegativeComponents()
 {
   // Worked out with a calculator :) // -1234567 890123456
-  Time duration = new Time(nanoseconds: -1234567890123456);
+  Time duration = Time(nanoseconds: -1234567890123456);
   expect(-14, duration.inDays);
   expect(-24967890123456, ITime.nanosecondOfDurationDay(duration));
   expect(-6, duration.hourOfDay);
@@ -317,8 +317,8 @@ void NegativeComponents()
 @Test()
 void PositiveTotals()
 {
-  Time duration = new Time(days: 4) + new Time(hours: 3) + new Time(minutes: 2) + new Time(seconds: 1)
-      + new Time(nanoseconds: 123456789);
+  Time duration = Time(days: 4) + Time(hours: 3) + Time(minutes: 2) + Time(seconds: 1)
+      + Time(nanoseconds: 123456789);
   expect(4.1264, closeTo(duration.totalDays, 0.0001));
   expect(99.0336, closeTo(duration.totalHours, 0.0001));
   expect(5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -331,8 +331,8 @@ void PositiveTotals()
 @Test()
 void NegativeTotals()
 {
-  Time duration = new Time(days: -4) + new Time(hours: -3) + new Time(minutes: -2) + new Time(seconds: -1)
-      + new Time(nanoseconds: -123456789);
+  Time duration = Time(days: -4) + Time(hours: -3) + Time(minutes: -2) + Time(seconds: -1)
+      + Time(nanoseconds: -123456789);
   expect(-4.1264, closeTo(duration.totalDays, 0.0001));
   expect(-99.0336, closeTo(duration.totalHours, 0.0001));
   expect(-5942.0187, closeTo(duration.totalMinutes, 0.0001));
@@ -352,8 +352,8 @@ void MaxMinRelationship()
 @Test()
 void Max()
 {
-  Time x = new Time(nanoseconds: 100);
-  Time y = new Time(nanoseconds: 200);
+  Time x = Time(nanoseconds: 100);
+  Time y = Time(nanoseconds: 200);
   expect(y, Time.max(x, y));
   expect(y, Time.max(y, x));
   expect(x, Time.max(x, Time.minValue));
@@ -365,8 +365,8 @@ void Max()
 @Test()
 void Min()
 {
-  Time x = new Time(nanoseconds: 100);
-  Time y = new Time(nanoseconds: 200);
+  Time x = Time(nanoseconds: 100);
+  Time y = Time(nanoseconds: 200);
   expect(x, Time.min(x, y));
   expect(x, Time.min(y, x));
   expect(Time.minValue, Time.min(x, Time.minValue));

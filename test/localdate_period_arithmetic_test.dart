@@ -16,25 +16,25 @@ Future main() async {
 @Test()
 void Addition_WithPeriod()
 {
-  LocalDate start = new LocalDate(2010, 6, 19);
-  Period period = new Period(months: 3) + new Period(days: 10);
-  LocalDate expected = new LocalDate(2010, 9, 29);
+  LocalDate start = LocalDate(2010, 6, 19);
+  Period period = Period(months: 3) + Period(days: 10);
+  LocalDate expected = LocalDate(2010, 9, 29);
   expect(expected, start + period);
 }
 
 @Test()
 void Addition_TruncatesOnShortMonth()
 {
-  LocalDate start = new LocalDate(2010, 1, 30);
-  Period period = new Period(months: 1);
-  LocalDate expected = new LocalDate(2010, 2, 28);
+  LocalDate start = LocalDate(2010, 1, 30);
+  Period period = Period(months: 1);
+  LocalDate expected = LocalDate(2010, 2, 28);
   expect(expected, start + period);
 }
 
 @Test()
 void Addition_WithNullPeriod_ThrowsArgumentNullException()
 {
-  LocalDate date = new LocalDate(2010, 1, 1);
+  LocalDate date = LocalDate(2010, 1, 1);
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
   Period p;
@@ -44,25 +44,25 @@ void Addition_WithNullPeriod_ThrowsArgumentNullException()
 @Test()
 void Subtraction_WithPeriod()
 {
-  LocalDate start = new LocalDate(2010, 9, 29);
-  Period period = new Period(months: 3) + new Period(days: 10);
-  LocalDate expected = new LocalDate(2010, 6, 19);
+  LocalDate start = LocalDate(2010, 9, 29);
+  Period period = Period(months: 3) + Period(days: 10);
+  LocalDate expected = LocalDate(2010, 6, 19);
   expect(expected, start - period);
 }
 
 @Test()
 void Subtraction_TruncatesOnShortMonth()
 {
-  LocalDate start = new LocalDate(2010, 3, 30);
-  Period period = new Period(months: 1);
-  LocalDate expected = new LocalDate(2010, 2, 28);
+  LocalDate start = LocalDate(2010, 3, 30);
+  Period period = Period(months: 1);
+  LocalDate expected = LocalDate(2010, 2, 28);
   expect(expected, start - period);
 }
 
 @Test()
 void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
 {
-  LocalDate date = new LocalDate(2010, 1, 1);
+  LocalDate date = LocalDate(2010, 1, 1);
   // Call to ToString just to make it a valid statement
   // Assert.Throws<ArgumentNullException>
   Period p;
@@ -72,8 +72,8 @@ void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
 @Test()
 void Addition_PeriodWithTime()
 {
-  LocalDate date = new LocalDate(2010, 1, 1);
-  Period period = new Period(hours: 1);
+  LocalDate date = LocalDate(2010, 1, 1);
+  Period period = Period(hours: 1);
   // Use method not operator here to form a valid statement
   // Assert.Throws<ArgumentException>
   expect(() => LocalDate.plus(date, period), throwsArgumentError);
@@ -82,8 +82,8 @@ void Addition_PeriodWithTime()
 @Test()
 void Subtraction_PeriodWithTime()
 {
-  LocalDate date = new LocalDate(2010, 1, 1);
-  Period period = new Period(hours: 1);
+  LocalDate date = LocalDate(2010, 1, 1);
+  Period period = Period(hours: 1);
   // Use method not operator here to form a valid statement
   // Assert.Throws<ArgumentException>
   expect(() => LocalDate.minus(date, period), throwsArgumentError);
@@ -92,8 +92,8 @@ void Subtraction_PeriodWithTime()
 @Test()
 void PeriodAddition_MethodEquivalents()
 {
-  LocalDate start = new LocalDate(2010, 6, 19);
-  Period period = new Period(months: 3) + new Period(days: 10);
+  LocalDate start = LocalDate(2010, 6, 19);
+  Period period = Period(months: 3) + Period(days: 10);
   expect(start + period, LocalDate.plus(start, period));
   expect(start + period, start.add(period));
 }
@@ -101,8 +101,8 @@ void PeriodAddition_MethodEquivalents()
 @Test()
 void PeriodSubtraction_MethodEquivalents()
 {
-  LocalDate start = new LocalDate(2010, 6, 19);
-  Period period = new Period(months: 3) + new Period(days: 10);
+  LocalDate start = LocalDate(2010, 6, 19);
+  Period period = Period(months: 3) + Period(days: 10);
   LocalDate end = start + period;
   expect(start - period, LocalDate.minus(start, period));
   expect(start - period, start.subtract(period));

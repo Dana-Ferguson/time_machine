@@ -66,7 +66,7 @@ abstract class PatternTestBase<T>
     var result = pattern.parse(null);
     expect(result.success, isFalse);
     // Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
-    expect(result.error, new TypeMatcher<ArgumentError>());
+    expect(result.error, TypeMatcher<ArgumentError>());
   }
 }
 

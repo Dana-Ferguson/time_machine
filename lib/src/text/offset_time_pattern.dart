@@ -110,8 +110,8 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
       OffsetTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new OffsetTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
-    return new OffsetTimePattern._(patternText, formatInfo, templateValue, pattern);
+    var pattern = OffsetTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
+    return OffsetTimePattern._(patternText, formatInfo, templateValue, pattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.

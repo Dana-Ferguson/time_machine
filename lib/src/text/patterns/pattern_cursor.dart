@@ -25,7 +25,7 @@ class PatternCursor extends TextCursor {
   /// [closeQuote]: The close quote character to match for the end of the quoted string.
   /// Returns: The quoted string sans open and close quotes. This can be an empty string but will not be null.
   String getQuotedString(String closeQuote) {
-    var builder = new StringBuffer(); //Length - Index);
+    var builder = StringBuffer(); //Length - Index);
     bool endQuoteFound = false;
     while (moveNext()) {
       if (current == closeQuote) {
@@ -35,7 +35,7 @@ class PatternCursor extends TextCursor {
       }
       if (current == '\\') {
         if (!moveNext()) {
-          throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
+          throw InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
         }
       }
       builder.write(current);
@@ -80,7 +80,7 @@ class PatternCursor extends TextCursor {
   /// Returns: The embedded pattern, not including the start/end pattern characters.
   String getEmbeddedPattern() {
     if (!moveNext() || current != embeddedPatternStart) {
-      throw new InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternStart, [embeddedPatternStart]));
+      throw InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternStart, [embeddedPatternStart]));
     }
     int startIndex = index + 1;
     int depth = 1; // For nesting
@@ -97,7 +97,7 @@ class PatternCursor extends TextCursor {
       }
       else if (current == '\\') {
         if (!moveNext()) {
-          throw new InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
+          throw InvalidPatternError(TextErrorMessages.escapeAtEndOfString);
         }
       }
       else if (current == '\'' || current == '\"') {
@@ -107,6 +107,6 @@ class PatternCursor extends TextCursor {
       }
     }
     // We've reached the end of the enclosing pattern without reaching the end of the embedded pattern. Oops.
-    throw new InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternEnd, [embeddedPatternEnd]));
+    throw InvalidPatternError(stringFormat(TextErrorMessages.missingEmbeddedPatternEnd, [embeddedPatternEnd]));
   }
 }

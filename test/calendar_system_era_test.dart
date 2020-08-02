@@ -21,7 +21,7 @@ void GetAbsoluteYear()
 {
   expect(5, CopticCalendar.getAbsoluteYear(5, Era.annoMartyrum));
   // Prove it's right...
-  LocalDate localDate = new LocalDate(5, 1, 1, CopticCalendar);
+  LocalDate localDate = LocalDate(5, 1, 1, CopticCalendar);
   expect(5, localDate.year);
   expect(5, localDate.yearOfEra);
   expect(Era.annoMartyrum, localDate.era);

@@ -33,11 +33,11 @@ class TzdbDatabase {
   /// Returns the data in this database as a [TzdbDateTimeZoneSource] with no
   /// Windows mappings.
   TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource() {
-    var ms = new MemoryStream();
-    var writer = new TzdbStreamWriter();
+    var ms = MemoryStream();
+    var writer = TzdbStreamWriter();
     writer.write(this,
-        new WindowsZones("n/a", version, "n/a", <MapZone>[]), // No Windows mappings,
-        new Map<String, String>(), // No additional name-to-id mappings
+        WindowsZones("n/a", version, "n/a", <MapZone>[]), // No Windows mappings,
+        Map<String, String>(), // No additional name-to-id mappings
         BinaryWriter(ms));
     ms.position = 0;
     return TzdbDateTimeZoneSource.FromStream(ms);

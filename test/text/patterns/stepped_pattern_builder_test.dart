@@ -18,18 +18,18 @@ Future main() async {
 }
 
 @private final IPartialPattern<Offset> SimpleOffsetPattern =
-new OffsetPatternParser().parsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
+OffsetPatternParser().parsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
 
 @Test()
 void ParsePartial_ValidInMiddle()
 {
-  var value = new ValueCursor("x17:30y");
+  var value = ValueCursor("x17:30y");
   value.moveNext();
   value.moveNext();
   // Start already looking at the value to parse
   expect('1', value.current);
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.hoursAndMinutes(17, 30), result.value);
+  expect(Offset.hoursAndMinutes(17, 30), result.value);
   // Finish just after the value
   expect('y', value.current);
 }
@@ -37,11 +37,11 @@ void ParsePartial_ValidInMiddle()
 @Test()
 void ParsePartial_ValidAtEnd()
 {
-  var value = new ValueCursor("x17:30");
+  var value = ValueCursor("x17:30");
   value.moveNext();
   value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
-  expect(new Offset.hoursAndMinutes(17, 30), result.value);
+  expect(Offset.hoursAndMinutes(17, 30), result.value);
   // Finish just after the value, which in this case is at the end.
   expect(TextCursor.nul, value.current);
 }
@@ -49,7 +49,7 @@ void ParsePartial_ValidAtEnd()
 @Test()
 void Parse_Partial_Invalid()
 {
-  var value = new ValueCursor("x17:y");
+  var value = ValueCursor("x17:y");
   value.moveNext();
   value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
@@ -59,8 +59,8 @@ void Parse_Partial_Invalid()
 @Test()
 void AppendFormat()
 {
-  var builder = new StringBuffer("x");
-  var offset = new Offset.hoursAndMinutes(17, 30);
+  var builder = StringBuffer("x");
+  var offset = Offset.hoursAndMinutes(17, 30);
   SimpleOffsetPattern.appendFormat(offset, builder);
   expect("x17:30", builder.toString());
 }
@@ -72,12 +72,12 @@ void AppendFormat()
 @TestCase(const ["aBaB>", false]) // > is reserved
 void UnhandledLiteral(String text, bool valid) {
   CharacterHandler<LocalDate, SampleBucket> handler = (PatternCursor x, SteppedPatternBuilder<LocalDate, SampleBucket> y) => null; // = delegate { };
-  var handlers = new Map<String, CharacterHandler<LocalDate, SampleBucket>>.from(
+  var handlers = Map<String, CharacterHandler<LocalDate, SampleBucket>>.from(
       {
         'a': handler,
         'B': handler
       });
-  var builder = new SteppedPatternBuilder<LocalDate, SampleBucket>(TimeMachineFormatInfo.invariantInfo, () => new SampleBucket());
+  var builder = SteppedPatternBuilder<LocalDate, SampleBucket>(TimeMachineFormatInfo.invariantInfo, () => SampleBucket());
   if (valid) {
     builder.parseCustomPattern(text, handlers);
   }
@@ -90,7 +90,7 @@ void UnhandledLiteral(String text, bool valid) {
   @internal
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String value) {
-    throw new UnimplementedError();
+    throw UnimplementedError();
   }
 }
 

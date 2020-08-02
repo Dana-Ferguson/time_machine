@@ -27,8 +27,8 @@ class Cache<TKey, TValue> {
         //      {bool equals(K key1, K key2),
         //      int hashCode(K key),
         //      bool isValidKey(potentialKey)});
-        this._dictionary = new Map<TKey,TValue>(/*keyComparer*/),
-        this._keyList = new Queue<TKey>();
+        this._dictionary = Map<TKey,TValue>(/*keyComparer*/),
+        this._keyList = Queue<TKey>();
 
   /// Fetches a value from the cache, populating it if necessary.
   ///
@@ -61,7 +61,7 @@ class Cache<TKey, TValue> {
   int get count => _dictionary.length;
 
   /// Returns a copy of the keys in the cache as a list, for diagnostic purposes.
-  List<TKey> get keys => new List<TKey>.unmodifiable(_keyList);
+  List<TKey> get keys => List<TKey>.unmodifiable(_keyList);
 
   /// Clears the cache.
   void clear()

@@ -30,7 +30,7 @@ abstract class ITime {
   static int millisecondsOf(Time span) => span._milliseconds;
   static int nanosecondsIntervalOf(Time span) => span._nanosecondsInterval;
   static Time trusted(int milliseconds, [int nanosecondsInterval = 0]) => MillisecondTime(milliseconds, nanosecondsInterval);
-  static Time untrusted(int milliseconds, [int nanoseconds = 0]) => new Time._untrusted(milliseconds, nanoseconds);
+  static Time untrusted(int milliseconds, [int nanoseconds = 0]) => Time._untrusted(milliseconds, nanoseconds);
 
   // Instant.epochTime(nanos).timeOfEpochDay.inNanoseconds
   static int nanosecondOfEpochDay(Time time) => time._nanosecondOfEpochDay;
@@ -103,13 +103,13 @@ abstract class Time implements Comparable<Time> {
 
   // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
-  static final Time maxValue = new Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
+  static final Time maxValue = Time(days: ITime.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1);
 
   /// Gets the minimum (largest negative) value supported by [Time].
-  static final Time minValue = new Time(days: ITime.minDays);
+  static final Time minValue = Time(days: ITime.minDays);
 
   factory Time._untrusted(int milliseconds, [int nanoseconds = 0]) {
-    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return new MillisecondTime(milliseconds, nanoseconds);
+    if (nanoseconds >= _minNano && nanoseconds < TimeConstants.nanosecondsPerMillisecond) return MillisecondTime(milliseconds, nanoseconds);
 
     if (nanoseconds < _minNano) {
       var delta = ((_minNano - nanoseconds) / TimeConstants.nanosecondsPerMillisecond).ceil();
@@ -127,7 +127,7 @@ abstract class Time implements Comparable<Time> {
       nanoseconds -= TimeConstants.nanosecondsPerMillisecond;
     }
 
-    return new MillisecondTime(milliseconds, nanoseconds);
+    return MillisecondTime(milliseconds, nanoseconds);
 
     // todo: custom errors
     // throw new ArgumentError.notNull('Checked duration failure: milliseconds = $milliseconds, nanoseconds = $nanoseconds;');
@@ -161,7 +161,7 @@ abstract class Time implements Comparable<Time> {
 
     var _nanoseconds = (_microseconds + microseconds) * TimeConstants.nanosecondsPerMicrosecond + nanoseconds;
 
-    return new Time._untrusted(_milliseconds.toInt(), _nanoseconds.toInt());
+    return Time._untrusted(_milliseconds.toInt(), _nanoseconds.toInt());
   }
 
   factory Time.duration(Duration duration) {
@@ -174,7 +174,7 @@ abstract class Time implements Comparable<Time> {
 
   // https://www.dartlang.org/guides/language/effective-dart/design#prefer-naming-a-method-to___-if-it-copies-the-objects-state-to-a-new-object
   Duration get toDuration =>
-      new Duration(
+      Duration(
           microseconds: _milliseconds * TimeConstants.microsecondsPerMillisecond
               + _nanosecondsInterval ~/ TimeConstants.nanosecondsPerMicrosecond);
 
@@ -254,16 +254,16 @@ abstract class Time implements Comparable<Time> {
 
   Time operator -(Time other) => subtract(other);
 
-  Time operator -() => new Time._untrusted(-_milliseconds, -_nanosecondsInterval);
+  Time operator -() => Time._untrusted(-_milliseconds, -_nanosecondsInterval);
 
   // todo: test
-  Time abs(Time other) => new Time._untrusted(_milliseconds.abs(), _nanosecondsInterval.abs());
+  Time abs(Time other) => Time._untrusted(_milliseconds.abs(), _nanosecondsInterval.abs());
 
-  Time add(Time other) => new Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
+  Time add(Time other) => Time._untrusted(_milliseconds + other._milliseconds, _nanosecondsInterval + other._nanosecondsInterval);
 
-  Time subtract(Time other) => new Time._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
+  Time subtract(Time other) => Time._untrusted(_milliseconds - other._milliseconds, _nanosecondsInterval - other._nanosecondsInterval);
 
-  Time operator *(num factor) => new Time._untrusted((_milliseconds * factor).floor(), (_nanosecondsInterval * factor).floor());
+  Time operator *(num factor) => Time._untrusted((_milliseconds * factor).floor(), (_nanosecondsInterval * factor).floor());
 
   // Span operator*(num factor) => new Span(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) * factor);
 
@@ -274,9 +274,9 @@ abstract class Time implements Comparable<Time> {
     if (quotient.abs() < 1) return this * (1.0/quotient);
 
     if (canNanosecondsBeInteger) {
-      return new Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ quotient);
+      return Time(nanoseconds: (_milliseconds * TimeConstants.nanosecondsPerMillisecond + _nanosecondsInterval) ~/ quotient);
     } else {
-      return new Time.bigIntNanoseconds(inNanosecondsAsBigInt ~/ BigInt.from(quotient));
+      return Time.bigIntNanoseconds(inNanosecondsAsBigInt ~/ BigInt.from(quotient));
     }
   }
 
@@ -287,7 +287,7 @@ abstract class Time implements Comparable<Time> {
 
   Time divide(num factor) => this / factor;
 
-  Time _plusSmallNanoseconds(int nanoseconds) => new Time._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
+  Time _plusSmallNanoseconds(int nanoseconds) => Time._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
   bool operator ==(dynamic other) => other is Time && equals(other);

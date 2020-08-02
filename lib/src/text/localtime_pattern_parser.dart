@@ -42,7 +42,7 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
   IPattern<LocalTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
@@ -53,8 +53,8 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
-            () => new LocalTimeParseBucket(_templateValue));
+    var patternBuilder = SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
+            () => LocalTimeParseBucket(_templateValue));
     patternBuilder.parseCustomPattern(patternText, _patternCharacterHandlers);
     patternBuilder.validateUsedFields();
     return patternBuilder.build(_templateValue);
@@ -106,7 +106,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   @override
   ParseResult<LocalTime> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedTime)) {
-      return ParseResult.forValue<LocalTime>(new LocalTime(hours24, minutes, seconds, ns:fractionalSeconds));
+      return ParseResult.forValue<LocalTime>(LocalTime(hours24, minutes, seconds, ns:fractionalSeconds));
     }
     if (amPm == 2) {
       amPm = templateValue.hourOfDay ~/ 12;
@@ -119,7 +119,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
     int _minutes = usedFields.hasAny(PatternFields.minutes) ? minutes : templateValue.minuteOfHour;
     int _seconds = usedFields.hasAny(PatternFields.seconds) ? seconds : templateValue.secondOfMinute;
     int _nanoseconds = usedFields.hasAny(PatternFields.fractionalSeconds) ? fractionalSeconds : templateValue.nanosecondOfSecond;
-    return ParseResult.forValue<LocalTime>(new LocalTime(hour, _minutes, _seconds, ns:_nanoseconds));
+    return ParseResult.forValue<LocalTime>(LocalTime(hour, _minutes, _seconds, ns:_nanoseconds));
   }
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);

@@ -41,7 +41,7 @@ class ParseResult<T> {
   Error get error {
     if (_errorProvider == null) {
       // InvalidOperationException
-      throw new StateError("Parse operation succeeded, so no exception is available");
+      throw StateError("Parse operation succeeded, so no exception is available");
     }
     return _errorProvider();
   }
@@ -89,7 +89,7 @@ class ParseResult<T> {
     Preconditions.checkNotNull(projection, 'projection');
     return success
         ? ParseResult.forValue<TTarget>(projection(value))
-        : new ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
+        : ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
   }
 
   /// Converts this result to a new target type by propagating the exception provider.
@@ -99,9 +99,9 @@ class ParseResult<T> {
   ParseResult<TTarget> convertError<TTarget>() {
     if (success) {
       // InvalidOperationException
-      throw new StateError("ConvertError should not be called on a successful parse result");
+      throw StateError("ConvertError should not be called on a successful parse result");
     }
-    return new ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
+    return ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
   }
 
   // todo: convert to factories.. also, why are these public?
@@ -114,7 +114,7 @@ class ParseResult<T> {
   /// * [value]: The successfully parsed value.
   ///
   /// Returns: A ParseResult representing a successful parsing operation.
-  static ParseResult<T> forValue<T>(T value) => new ParseResult<T>._(value);
+  static ParseResult<T> forValue<T>(T value) => ParseResult<T>._(value);
 
   /// Produces a ParseResult which represents a failed parsing operation.
   ///
@@ -127,7 +127,7 @@ class ParseResult<T> {
   ///
   /// Returns: A ParseResult representing a failed parsing operation.
   static ParseResult<T> forError<T>(Error Function() errorProvider) =>
-      new ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
+      ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
 }
 
 @internal
@@ -140,7 +140,7 @@ abstract class IParseResult {
         String detailMessage = stringFormat(formatString, parameters);
         // Format the overall message, containing the parse error and the value itself.
         String overallMessage = stringFormat(TextErrorMessages.unparsableValue, [detailMessage, cursor]);
-        return new UnparsableValueError(overallMessage);
+        return UnparsableValueError(overallMessage);
       });
 
   static ParseResult<T> forInvalidValuePostParse<T>(String text, String formatString, [List<dynamic> parameters = const[]]) =>
@@ -149,20 +149,20 @@ abstract class IParseResult {
         String detailMessage = stringFormat(formatString, parameters);
         // Format the overall message, containing the parse error and the value itself.
         String overallMessage = stringFormat(TextErrorMessages.unparsableValuePostParse, [detailMessage, text]);
-        return new UnparsableValueError(overallMessage);
+        return UnparsableValueError(overallMessage);
       });
 
   // note: was ForInvalidValue
-  static ParseResult<T> _forInvalidValueError<T>(Error Function() errorProvider) => new ParseResult<T>._error(errorProvider, true);
+  static ParseResult<T> _forInvalidValueError<T>(Error Function() errorProvider) => ParseResult<T>._error(errorProvider, true);
 
-  static ParseResult<T> argumentNull<T>(String parameter) => new ParseResult<T>._error(() => new ArgumentError.notNull(parameter), false);
+  static ParseResult<T> argumentNull<T>(String parameter) => ParseResult<T>._error(() => ArgumentError.notNull(parameter), false);
 
   static ParseResult<T> positiveSignInvalid<T>(ValueCursor cursor) => forInvalidValue<T>(cursor, TextErrorMessages.positiveSignInvalid);
 
   // Special case: it's a fault with the value, but we still don't want to continue with multiple patterns.
   // Also, there's no point in including the text.
   static final ParseResult valueStringEmpty =
-  new ParseResult._error(() => new UnparsableValueError(TextErrorMessages.valueStringEmpty), false);
+  ParseResult._error(() => UnparsableValueError(TextErrorMessages.valueStringEmpty), false);
 
   static ParseResult<T> extraValueCharacters<T>(ValueCursor cursor, String remainder) =>
       IParseResult.forInvalidValue<T>(cursor, TextErrorMessages.extraValueCharacters, [remainder]);
@@ -186,7 +186,7 @@ abstract class IParseResult {
 
   /// This isn't really an issue with the value so much as the pattern... but the result is the same.
   static final ParseResult formatOnlyPattern =
-  new ParseResult._error(() => new UnparsableValueError(TextErrorMessages.formatOnlyPattern), true);
+  ParseResult._error(() => UnparsableValueError(TextErrorMessages.formatOnlyPattern), true);
 
   static ParseResult<T> mismatchedNumber<T>(ValueCursor cursor, String pattern) =>
       forInvalidValue(cursor, TextErrorMessages.mismatchedNumber, [pattern]);

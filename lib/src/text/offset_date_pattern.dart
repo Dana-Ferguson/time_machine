@@ -21,7 +21,7 @@ abstract class OffsetDatePatterns {
           .parsePattern(patternText ?? generalIsoPatternImpl.patternText)
           .format(offsetDate);
 
-  static final OffsetDate defaultTemplateValue = new LocalDate(2000, 1, 1).withOffset(Offset.zero);
+  static final OffsetDate defaultTemplateValue = LocalDate(2000, 1, 1).withOffset(Offset.zero);
 
   static TimeMachineFormatInfo formatInfo(OffsetDatePattern offsetDatePattern) => offsetDatePattern._formatInfo;
 }
@@ -96,8 +96,8 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
       OffsetDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    var pattern = new OffsetDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
-    return new OffsetDatePattern._(patternText, formatInfo, templateValue, pattern);
+    var pattern = OffsetDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
+    return OffsetDatePattern._(patternText, formatInfo, templateValue, pattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.

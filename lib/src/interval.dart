@@ -38,7 +38,7 @@ class Interval {
       : _start = start ?? IInstant.beforeMinValue,
         _end = end ?? IInstant.afterMaxValue {
     if (_end < _start) {
-      throw new RangeError("The end parameter must be equal to or later than the start parameter");
+      throw RangeError("The end parameter must be equal to or later than the start parameter");
     }
   }
 

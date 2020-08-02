@@ -27,7 +27,7 @@ abstract class WeekYearRules {
   /// (Saturday and Sunday) were in 2011. Therefore January 1st is part of
   /// week 52 of week-year 2010. Conversely, December 31st 2012 is a Monday,
   /// so is part of week 1 of week-year 2013.
-  static final WeekYearRule iso = new SimpleWeekYearRule(4, DayOfWeek.monday, false);
+  static final WeekYearRule iso = SimpleWeekYearRule(4, DayOfWeek.monday, false);
 
   /// Creates a week year rule where the boundary between one week-year and the next
   /// is parameterized in terms of how many days of the first week of the week
@@ -49,7 +49,7 @@ abstract class WeekYearRules {
   /// A [SimpleWeekYearRule] with the specified minimum number of days in the first
   /// week and first day of the week.
   static WeekYearRule forMinDaysInFirstWeek(int minDaysInFirstWeek, [DayOfWeek firstDayOfWeek = DayOfWeek.monday])
-  => new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
+  => SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, false);
 
   // todo: BCL references... investigate?
 
@@ -82,9 +82,9 @@ abstract class WeekYearRules {
         minDaysInFirstWeek = 7;
         break;
       default:
-        throw new ArgumentError("Unsupported CalendarWeekRule: $calendarWeekRule");
+        throw ArgumentError("Unsupported CalendarWeekRule: $calendarWeekRule");
     }
-    return new SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, true);
+    return SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, true);
   }
 }
 

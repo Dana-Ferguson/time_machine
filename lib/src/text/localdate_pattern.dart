@@ -14,7 +14,7 @@ abstract class LocalDatePatterns {
   static LocalDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) =>
       LocalDatePattern._create(patternText, formatInfo, templateValue);
 
-  static final LocalDate defaultTemplateValue = new LocalDate(2000, 1, 1);
+  static final LocalDate defaultTemplateValue = LocalDate(2000, 1, 1);
   static IPartialPattern<LocalDate> underlyingPattern(LocalDatePattern localDatePattern) => localDatePattern._underlyingPattern;
 
   // formatInfo.dateTimeFormat.longDatePattern
@@ -94,11 +94,11 @@ class LocalDatePattern implements IPattern<LocalDate> {
     // Use the "fixed" parser for the common case of the default template value.
     var pattern = templateValue == LocalDatePatterns.defaultTemplateValue
         ? formatInfo.localDatePatternParser.parsePattern(patternText)
-        : new LocalDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
+        : LocalDatePatternParser(templateValue).parsePattern(patternText, formatInfo);
     // If ParsePattern returns a standard pattern instance, we need to get the underlying partial pattern.
     pattern = pattern is LocalDatePattern ? pattern._underlyingPattern : pattern;
     var partialPattern = pattern as IPartialPattern<LocalDate>;
-    return new LocalDatePattern._(patternText, formatInfo, templateValue, partialPattern);
+    return LocalDatePattern._(patternText, formatInfo, templateValue, partialPattern);
   }
 
   /// Creates a pattern for the given pattern text, culture, and template value.

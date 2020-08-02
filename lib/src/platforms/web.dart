@@ -43,7 +43,7 @@ Future<List<int>> _readAsBytes(Uri uri) async {
   if (uri.scheme == "data") {
     return uri.data.contentAsBytes();
   }
-  throw new UnsupportedError("Unsupported scheme: $uri");
+  throw UnsupportedError("Unsupported scheme: $uri");
 }
 
 @ddcSupportHack
@@ -60,20 +60,20 @@ Future<String> _readAsString(Uri uri, Encoding encoding) async {
   if (uri.scheme == "data") {
     return uri.data.contentAsString(encoding: encoding);
   }
-  throw new UnsupportedError("Unsupported scheme: $uri");
+  throw UnsupportedError("Unsupported scheme: $uri");
 }
 
 class _WebMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
-    if (filename == null) return new ByteData(0);
+    if (filename == null) return ByteData(0);
 
     // var resource = new Resource("packages/time_machine/data/$path/$filename");
     // // todo: probably a better way to do this
     // var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
 
     var resource = Uri.parse("${Uri.base.origin}/packages/time_machine/data/$path/$filename");
-    var binary = new ByteData.view(new Int8List.fromList(await _readAsBytes(resource)).buffer);
+    var binary = ByteData.view(Int8List.fromList(await _readAsBytes(resource)).buffer);
 
     return binary;
   }
@@ -96,7 +96,7 @@ class TimeMachine {
     Platform.startWeb();
 
     // Map IO functions
-    PlatformIO.local = new _WebMachineIO();
+    PlatformIO.local = _WebMachineIO();
 
     // Default provider
     var tzdb = await DateTimeZoneProviders.tzdb;

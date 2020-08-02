@@ -63,7 +63,7 @@ class TzdbZoneInfoParser {
   String _nextString(Tokens tokens, String name) {
     if (!tokens.hasNextToken) {
       // InvalidDataException
-      throw new Exception("Missing zone info token: $name");
+      throw Exception("Missing zone info token: $name");
     }
     return tokens.nextToken(name);
   }
@@ -142,7 +142,7 @@ class TzdbZoneInfoParser {
             }
             // todo: does this mean the same things in Dart as it does in .NET?
             on FormatException catch (e) {
-              throw new ArgumentError("Unparsable ON token: $on, $e");
+              throw ArgumentError("Unparsable ON token: $on, $e");
             }
           }
         }
@@ -163,7 +163,7 @@ class TzdbZoneInfoParser {
           // As of TZDB 2018f, Japan's fallback transitions occur at 25:00. We can't
           // represent this entirely accurately, but this is as close as we can approximate it.
           else if (atTime == "25:00") {
-            timeOfDay = new LocalTime(1, 0, 0);
+            timeOfDay = LocalTime(1, 0, 0);
             addDay = true;
           }
           else {
@@ -172,7 +172,7 @@ class TzdbZoneInfoParser {
         }
       }
     }
-    return new ZoneYearOffset(
+    return ZoneYearOffset(
         mode,
         monthOfYear,
         dayOfMonth,
@@ -191,7 +191,7 @@ class TzdbZoneInfoParser {
     int index = _daysOfWeek.indexOf(text, 1);
     if (index == -1) {
       // InvalidDataException
-      throw new Exception("Invalid day of week: $text");
+      throw Exception("Invalid day of week: $text");
     }
     return index;
   }
@@ -257,14 +257,14 @@ class TzdbZoneInfoParser {
         if (keyword == null || keyword.isEmpty) {
           if (previousZone == null) {
             // InvalidDataException
-            throw new Exception("Zone continuation provided with no previous zone line");
+            throw Exception("Zone continuation provided with no previous zone line");
           }
           database.addZone(parseZone(previousZone, tokens));
           return previousZone;
         }
         else {
           // InvalidDataException
-          throw new Exception("Unexpected zone database keyword: $keyword");
+          throw Exception("Unexpected zone database keyword: $keyword");
         }
     }
   }
@@ -293,7 +293,7 @@ class TzdbZoneInfoParser {
       index = _longMonths.indexOf(text, 1);
       if (index == -1) {
         // InvalidDataException
-        throw new Exception("Invalid month: $text");
+        throw Exception("Invalid month: $text");
       }
     }
     return index;
@@ -321,7 +321,7 @@ class TzdbZoneInfoParser {
 
     int toYear = _nextYear(tokens, fromYear);
     if (toYear < fromYear) {
-      throw new ArgumentError("To year cannot be before the from year in a Rule: $toYear < $fromYear");
+      throw ArgumentError("To year cannot be before the from year in a Rule: $toYear < $fromYear");
     }
     var type = _nextOptional(tokens, "Type");
     var yearOffset = parseDateTimeOfYear(tokens, true);
@@ -329,8 +329,8 @@ class TzdbZoneInfoParser {
     var daylightSavingsIndicator = _nextOptional(tokens, "LetterS");
     // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
     // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
-    var recurrence = new ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
-    return new RuleLine(recurrence, daylightSavingsIndicator, type);
+    var recurrence = ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);
+    return RuleLine(recurrence, daylightSavingsIndicator, type);
   }
 
   /// <summary>
@@ -350,10 +350,10 @@ class TzdbZoneInfoParser {
 
     if (tokens.hasNextToken) {
       var until = parseDateTimeOfYear(tokens, false);
-      return new ZoneLine(name, offset, rules, format, year, until);
+      return ZoneLine(name, offset, rules, format, year, until);
     }
 
-    return new ZoneLine(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
+    return ZoneLine(name, offset, rules, format, year, ZoneYearOffset.StartOfYear);
   }
 
   /// Normalizes the transition mode characater.

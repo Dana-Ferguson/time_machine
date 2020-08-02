@@ -20,12 +20,12 @@ Future main() async {
 void CopticEpoch()
 {
   CalendarSystem coptic = CalendarSystem.coptic;
-  LocalDateTime copticEpoch = new LocalDateTime(1, 1, 1, 0, 0, 0, calendar: coptic);
+  LocalDateTime copticEpoch = LocalDateTime(1, 1, 1, 0, 0, 0, calendar: coptic);
 
   CalendarSystem julian = CalendarSystem.julian;
   LocalDateTime converted = copticEpoch.withCalendar(julian);
 
-  LocalDateTime expected = new LocalDateTime(284, 8, 29, 0, 0, 0, calendar: julian);
+  LocalDateTime expected = LocalDateTime(284, 8, 29, 0, 0, 0, calendar: julian);
   expect(expected, converted);
 }
 
@@ -37,7 +37,7 @@ void UnixEpoch()
   // todo: investigatge
   // print(TimeConstants.unixEpoch);
   LocalDateTime unixEpochInCopticCalendar = TimeConstants.unixEpoch.inZone(DateTimeZone.utc, coptic).localDateTime;
-  LocalDateTime expected = new LocalDateTime(1686, 4, 23, 0, 0, 0, calendar: coptic);
+  LocalDateTime expected = LocalDateTime(1686, 4, 23, 0, 0, 0, calendar: coptic);
   expect(expected, unixEpochInCopticCalendar);
 }
 
@@ -45,7 +45,7 @@ void UnixEpoch()
 void SampleDate()
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
-  LocalDateTime iso = new LocalDateTime(2004, 6, 9, 0, 0, 0);
+  LocalDateTime iso = LocalDateTime(2004, 6, 9, 0, 0, 0);
   LocalDateTime coptic = iso.withCalendar(copticCalendar);
 
   expect(Era.annoMartyrum, coptic.era);

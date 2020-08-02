@@ -74,7 +74,7 @@ class FixedDateTimeZone extends DateTimeZone {
     }
 
     var parseResult = OffsetPattern.generalInvariant.parse(id.substring(IDateTimeZone.utcId.length));
-    return parseResult.success ? new DateTimeZone.forOffset(parseResult.value) : null;
+    return parseResult.success ? DateTimeZone.forOffset(parseResult.value) : null;
   }
 
   /// Returns the fixed offset for this time zone.
@@ -122,7 +122,7 @@ class FixedDateTimeZone extends DateTimeZone {
     Preconditions.checkNotNull(id, 'id');
     var offset = reader.readOffsetSeconds();
     var name = reader.hasMoreData ? reader.readString() : id;
-    return new FixedDateTimeZone(id, offset, name);
+    return FixedDateTimeZone(id, offset, name);
   }
 
   /// Indicates whether this instance and a specified object are equal.

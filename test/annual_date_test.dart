@@ -16,24 +16,24 @@ Future main() async {
 @Test()
 void Feb29()
 {
-  var date = new AnnualDate(2, 29);
+  var date = AnnualDate(2, 29);
   expect(29, date.day);
   expect(2, date.month);
-  expect(new LocalDate(2016, 2, 29), date.inYear(2016));
+  expect(LocalDate(2016, 2, 29), date.inYear(2016));
   expect(date.isValidYear(2016), isTrue);
-  expect(new LocalDate(2015, 2, 28), date.inYear(2015));
+  expect(LocalDate(2015, 2, 28), date.inYear(2015));
   expect(date.isValidYear(2015), isFalse);
 }
 
 @Test()
 void June19()
 {
-  var date = new AnnualDate(6, 19);
+  var date = AnnualDate(6, 19);
   expect(19, date.day);
   expect(6, date.month);
-  expect(new LocalDate(2016, 6, 19), date.inYear(2016));
+  expect(LocalDate(2016, 6, 19), date.inYear(2016));
   expect(date.isValidYear(2016), isTrue);
-  expect(new LocalDate(2015, 6, 19), date.inYear(2015));
+  expect(LocalDate(2015, 6, 19), date.inYear(2015));
   expect(date.isValidYear(2015), isTrue);
 }
 
@@ -41,45 +41,45 @@ void June19()
 void Validation()
 {
   // Feb 30th is invalid, but January 30th is fine
-  expect(() => new AnnualDate(2, 30), throwsRangeError);
+  expect(() => AnnualDate(2, 30), throwsRangeError);
   // Assert.Throws<ArgumentOutOfRangeException>(() => new AnnualDate(2, 30));
-  new AnnualDate(1, 30);
+  AnnualDate(1, 30);
 
   // 13th month is invalid
-  expect(() => new AnnualDate(13, 1), throwsRangeError);
+  expect(() => AnnualDate(13, 1), throwsRangeError);
 // Assert.Throws<ArgumentOutOfRangeException>(() => new AnnualDate(13, 1));
 }
 
 @Test()
 void Equality()
 {
-  TestHelper.TestEqualsStruct(new AnnualDate(3, 15), new AnnualDate(3, 15), [new AnnualDate(4, 15), new AnnualDate(3, 16)]);
+  TestHelper.TestEqualsStruct(AnnualDate(3, 15), AnnualDate(3, 15), [AnnualDate(4, 15), AnnualDate(3, 16)]);
 }
 
 @Test()
 void DefaultValueIsJanuary1st()
 {
   // todo: I don't see a default constructor in the original C# code?
-  expect(new AnnualDate(1, 1), new AnnualDate());
+  expect(AnnualDate(1, 1), AnnualDate());
 }
 
 @Test()
 void Comparision()
 {
-  TestHelper.TestCompareToStruct(new AnnualDate(6, 19), new AnnualDate(6, 19), [new AnnualDate(6, 20), new AnnualDate(7, 1)]);
+  TestHelper.TestCompareToStruct(AnnualDate(6, 19), AnnualDate(6, 19), [AnnualDate(6, 20), AnnualDate(7, 1)]);
 }
 
 @Test()
 void Operators()
 {
-  TestHelper.TestOperatorComparisonEquality(new AnnualDate(6, 19), new AnnualDate(6, 19), [new AnnualDate(6, 20), new AnnualDate(7, 1)]);
+  TestHelper.TestOperatorComparisonEquality(AnnualDate(6, 19), AnnualDate(6, 19), [AnnualDate(6, 20), AnnualDate(7, 1)]);
 }
 
 @Test()
 void ToStringTest()
 {
-  expect("02-01", new AnnualDate(2, 1).toString());
-  expect("02-10", new AnnualDate(2, 10).toString());
-  expect("12-01", new AnnualDate(12, 1).toString());
-  expect("12-20", new AnnualDate(12, 20).toString());
+  expect("02-01", AnnualDate(2, 1).toString());
+  expect("02-10", AnnualDate(2, 10).toString());
+  expect("12-01", AnnualDate(12, 1).toString());
+  expect("12-20", AnnualDate(12, 20).toString());
 }

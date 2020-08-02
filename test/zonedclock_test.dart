@@ -13,20 +13,20 @@ Future main() async {
   await runTests();
 }
 
-final DateTimeZone SampleZone = new SingleTransitionDateTimeZone.around(TimeConstants.unixEpoch, 1, 2);
+final DateTimeZone SampleZone = SingleTransitionDateTimeZone.around(TimeConstants.unixEpoch, 1, 2);
 
 @Test()
 void GetCurrent()
 {
   var julian = CalendarSystem.julian;
-  FakeClock underlyingClock = new FakeClock(TimeConstants.unixEpoch);
+  FakeClock underlyingClock = FakeClock(TimeConstants.unixEpoch);
   ZonedClock zonedClock = underlyingClock.inZone(SampleZone, julian);
   expect(TimeConstants.unixEpoch, zonedClock.getCurrentInstant());
-  expect(new ZonedDateTime(underlyingClock.getCurrentInstant(), SampleZone, julian),
+  expect(ZonedDateTime(underlyingClock.getCurrentInstant(), SampleZone, julian),
       zonedClock.getCurrentZonedDateTime());
-  expect(new LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian), zonedClock.getCurrentLocalDateTime());
-  expect(new LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian).withOffset(new Offset.hours(2)),
+  expect(LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian), zonedClock.getCurrentLocalDateTime());
+  expect(LocalDateTime(1969, 12, 19, 2, 0, 0, calendar: julian).withOffset(Offset.hours(2)),
       zonedClock.getCurrentOffsetDateTime());
-  expect(new LocalDate(1969, 12, 19, julian), zonedClock.getCurrentDate());
-  expect(new LocalTime(2, 0, 0), zonedClock.getCurrentTimeOfDay());
+  expect(LocalDate(1969, 12, 19, julian), zonedClock.getCurrentDate());
+  expect(LocalTime(2, 0, 0), zonedClock.getCurrentTimeOfDay());
 }

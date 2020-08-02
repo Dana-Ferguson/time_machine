@@ -17,11 +17,11 @@ Future main() async {
 // DateTime doesn't do Ticks -- only Microseconds, so we lose some precision (+ we don't either anymore)
 const int extraMicroseconds = 876; // 8765;
 
-DateTime UnixEpochDateTime = new DateTime.utc(1970, 1, 1, 0, 0, 0);
+DateTime UnixEpochDateTime = DateTime.utc(1970, 1, 1, 0, 0, 0);
 // This was when I was writing the tests, having finally made everything work - several thousand lines
 // of shockingly untested code.
-DateTime TimeOfGreatAchievement = new DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
-    .add(new Duration(microseconds: extraMicroseconds)); // + TimeSpan.FromTicks(8765);
+DateTime TimeOfGreatAchievement = DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
+    .add(Duration(microseconds: extraMicroseconds)); // + TimeSpan.FromTicks(8765);
 
 CalendarSystem Iso = CalendarSystem.iso;
 
@@ -53,7 +53,7 @@ void FieldsOf_UnixEpoch()
 void FieldsOf_GreatAchievement()
 {
   // LocalDateTime now = new Instant.fromUnixTimeTicks((TimeOfGreatAchievement.difference(UnixEpochDateTime)).Ticks).InUtc().LocalDateTime;
-  LocalDateTime now = new Instant.fromEpochMicroseconds((
+  LocalDateTime now = Instant.fromEpochMicroseconds((
       TimeOfGreatAchievement.difference(UnixEpochDateTime))
       .inMicroseconds).inUtc().localDateTime;
 
@@ -85,7 +85,7 @@ void FieldsOf_GreatAchievement()
 @Test()
 void ConstructLocalInstant_WithAllFields()
 {
-  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(new LocalDateTime(2009, 11, 27, 18, 38, 25, ms: 345).addMicroseconds(extraMicroseconds));
+  LocalInstant localAchievement = ILocalDateTime.toLocalInstant(LocalDateTime(2009, 11, 27, 18, 38, 25, ms: 345).addMicroseconds(extraMicroseconds));
   int bclMicroseconds = (TimeOfGreatAchievement.difference(UnixEpochDateTime)).inMicroseconds;
   int bclDays = (bclMicroseconds ~/ TimeConstants.microsecondsPerDay);
   int bclMicrosecondOfDay = bclMicroseconds % TimeConstants.microsecondsPerDay;
@@ -119,7 +119,7 @@ void GetDaysInMonth()
 void BeforeCommonEra()
 {
   // Year -1 in absolute terms is 2BCE
-  LocalDate localDate = new LocalDate(-1, 1, 1);
+  LocalDate localDate = LocalDate(-1, 1, 1);
   expect(Era.beforeCommon, localDate.era);
   expect(-1, localDate.year);
   expect(2, localDate.yearOfEra);
@@ -129,7 +129,7 @@ void BeforeCommonEra()
 void BeforeCommonEra_BySpecifyingEra()
 {
   // Year -1 in absolute terms is 2BCE
-  LocalDate localDate = new LocalDate(2, 1, 1, CalendarSystem.iso, Era.beforeCommon);
+  LocalDate localDate = LocalDate(2, 1, 1, CalendarSystem.iso, Era.beforeCommon);
   expect(Era.beforeCommon, localDate.era);
   expect(-1, localDate.year);
   expect(2, localDate.yearOfEra);

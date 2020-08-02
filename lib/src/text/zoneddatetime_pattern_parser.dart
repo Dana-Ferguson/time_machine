@@ -66,7 +66,7 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
   IPattern<ZonedDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in ZonedDateTimePattern.
     if (patternText.length == 0) {
-      throw new InvalidPatternError(TextErrorMessages.formatStringEmpty);
+      throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     // Handle standard patterns
@@ -85,8 +85,8 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
       }
     }
 
-    var patternBuilder = new SteppedPatternBuilder<ZonedDateTime, _ZonedDateTimeParseBucket>(formatInfo,
-            () => new _ZonedDateTimeParseBucket(_templateValue, _resolver, _zoneProvider));
+    var patternBuilder = SteppedPatternBuilder<ZonedDateTime, _ZonedDateTimeParseBucket>(formatInfo,
+            () => _ZonedDateTimeParseBucket(_templateValue, _resolver, _zoneProvider));
     if (_zoneProvider == null || _resolver == null) {
       patternBuilder.setFormatOnly();
     }
@@ -132,8 +132,8 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   final DateTimeZoneProvider _zoneProvider;
 
   _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
-      : date = new /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
-        time = new /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
+      : date = /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
+        time = /*LocalTimePatternParser.*/LocalTimeParseBucket(templateValue.clockTime),
         _zone = templateValue.zone;
 
 
@@ -159,7 +159,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     value.move(value.index + 3);
     var pattern = OffsetPatterns.underlyingPattern(OffsetPattern.generalInvariant);
     var parseResult = pattern.parsePartial(value);
-    return parseResult.success ? new DateTimeZone.forOffset(parseResult.value) : DateTimeZone.utc;
+    return parseResult.success ? DateTimeZone.forOffset(parseResult.value) : DateTimeZone.utc;
   }
 
   /// Tries to parse a time zone ID from the provider. Returns the zone
@@ -229,7 +229,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     // No offset - so just use the resolver
     if ((usedFields & PatternFields.embeddedOffset).value == 0) {
       try {
-        return ParseResult.forValue<ZonedDateTime>(new ZonedDateTime.resolve(localDateTime, _zone, _resolver));
+        return ParseResult.forValue<ZonedDateTime>(ZonedDateTime.resolve(localDateTime, _zone, _resolver));
       }
       on SkippedTimeError {
         return IParseResult.skippedLocalTime<ZonedDateTime>(text);
@@ -255,7 +255,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
             .offset == offset ? mapping.first() : mapping.last();
         break;
       default:
-        throw new /*InvalidOperationException*/ StateError("Mapping has count outside range 0-2; should not happen.");
+        throw /*InvalidOperationException*/ StateError("Mapping has count outside range 0-2; should not happen.");
     }
     if (result.offset != offset) {
       return IParseResult.invalidOffset<ZonedDateTime>(text);

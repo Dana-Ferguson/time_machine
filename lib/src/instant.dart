@@ -12,15 +12,15 @@ abstract class IInstant {
   static const int minDays = -4371222;
   static const int maxDays = 2932896; // 104249991
 
-  static Instant trusted(Time time) => new Instant._trusted(time);
-  static Instant untrusted(Time time) => new Instant.epochTime(time);
+  static Instant trusted(Time time) => Instant._trusted(time);
+  static Instant untrusted(Time time) => Instant.epochTime(time);
 
   /// Instant which is invalid *except* for comparison purposes; it is earlier than any valid value.
   /// This must never be exposed.
-  static final Instant beforeMinValue = new Instant._trusted(new Time(days: ITime.minDays)); //, deliberatelyInvalid: true);
+  static final Instant beforeMinValue = Instant._trusted(Time(days: ITime.minDays)); //, deliberatelyInvalid: true);
   /// Instant which is invalid *except* for comparison purposes; it is later than any valid value.
   /// This must never be exposed.
-  static final Instant afterMaxValue = new Instant._trusted(new Time(days: ITime.maxDays)); //, deliberatelyInvalid: true);
+  static final Instant afterMaxValue = Instant._trusted(Time(days: ITime.maxDays)); //, deliberatelyInvalid: true);
 
   // note: Extensions would be `better than sliced bread` here!!!!
   static LocalInstant plusOffset(Instant instant, Offset offset) => instant._plusOffset(offset);
@@ -37,10 +37,10 @@ abstract class IInstant {
 class Instant implements Comparable<Instant> {
   /// Represents the smallest possible [Instant].
   /// This value is equivalent to -9998-01-01T00:00:00Z
-  static final Instant minValue = new Instant._trusted(new Time(days: IInstant.minDays));
+  static final Instant minValue = Instant._trusted(Time(days: IInstant.minDays));
   /// Represents the largest possible [Instant].
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
-  static final Instant maxValue = new Instant._trusted(new Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
+  static final Instant maxValue = Instant._trusted(Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
   static const Instant unixEpoch = const Instant._trusted(Time.zero);
 
@@ -51,7 +51,7 @@ class Instant implements Comparable<Instant> {
   factory Instant.epochTime(Time time) {
     if (time < minValue.timeSinceEpoch) return IInstant.beforeMinValue;
     if (time > maxValue.timeSinceEpoch) return IInstant.afterMaxValue;
-    return new Instant._trusted(time);
+    return Instant._trusted(time);
   }
 
   /// [Clock.getCurrentInstant] for [Clock.current].
@@ -86,15 +86,15 @@ class Instant implements Comparable<Instant> {
   // Convenience methods, todo: convert to be like LocalDateTime?
   factory Instant.utc(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minuteOfHour, [int secondOfMinute = 0]) {
     var days = LocalDate(year, monthOfYear, dayOfMonth).epochDay;
-    var nanoOfDay = new LocalTime(hourOfDay, minuteOfHour, secondOfMinute).timeSinceMidnight.inNanoseconds;
-    return new Instant._trusted(new Time(days: days, nanoseconds:  nanoOfDay));
+    var nanoOfDay = LocalTime(hourOfDay, minuteOfHour, secondOfMinute).timeSinceMidnight.inNanoseconds;
+    return Instant._trusted(Time(days: days, nanoseconds:  nanoOfDay));
   }
 
-  factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + new Time(days: julianDate);
+  factory Instant.julianDate(double julianDate) => TimeConstants.julianEpoch + Time(days: julianDate);
 
   factory Instant.dateTime(DateTime dateTime) {
-    if (Platform.isVM) return new Instant._trusted(new Time(microseconds: dateTime.microsecondsSinceEpoch));
-    return new Instant._trusted(new Time(milliseconds: dateTime.millisecondsSinceEpoch));
+    if (Platform.isVM) return Instant._trusted(Time(microseconds: dateTime.microsecondsSinceEpoch));
+    return Instant._trusted(Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
   int compareTo(Instant other) => timeSinceEpoch.compareTo(other.timeSinceEpoch);
@@ -105,11 +105,11 @@ class Instant implements Comparable<Instant> {
 
   Instant operator+(Time time) => this.add(time);
   Instant operator-(Time time) => this.subtract(time);
-  Instant add(Time time) => new Instant.epochTime(timeSinceEpoch + time);
-  Instant subtract(Time time) => new Instant.epochTime(timeSinceEpoch - time);
+  Instant add(Time time) => Instant.epochTime(timeSinceEpoch + time);
+  Instant subtract(Time time) => Instant.epochTime(timeSinceEpoch - time);
 
   LocalInstant _plusOffset(Offset offset) {
-    return new LocalInstant(timeSinceEpoch + offset.toTime());
+    return LocalInstant(timeSinceEpoch + offset.toTime());
   }
 
   LocalInstant _safePlus(Offset offset) {
@@ -142,7 +142,7 @@ class Instant implements Comparable<Instant> {
     {
       return LocalInstant.afterMaxValue;
     }
-    return new LocalInstant(asDuration.timeSinceEpoch);
+    return LocalInstant(asDuration.timeSinceEpoch);
   }
 
   /// Calculates the time until [this] would become [instant].
@@ -177,12 +177,12 @@ class Instant implements Comparable<Instant> {
   double toJulianDate() => (TimeConstants.julianEpoch.timeUntil(this)).totalDays;
 
   DateTime toDateTimeUtc() {
-    if (Platform.isVM) return new DateTime.fromMicrosecondsSinceEpoch(timeSinceEpoch.totalMicroseconds.toInt(), isUtc: true);
-    return new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt(), isUtc: true);
+    if (Platform.isVM) return DateTime.fromMicrosecondsSinceEpoch(timeSinceEpoch.totalMicroseconds.toInt(), isUtc: true);
+    return DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt(), isUtc: true);
   }
 
   // These are the same: DateTime toDateTimeLocal() => inLocalZone().toDateTimeLocal();
-  DateTime toDateTimeLocal() => new DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
+  DateTime toDateTimeLocal() => DateTime.fromMillisecondsSinceEpoch(timeSinceEpoch.totalMilliseconds.toInt());
 
   // int get daysSinceEpoch => timeSinceEpoch.inDays; //days;
   // int get nanosecondOfDay => epochDayTime.inNanoseconds; // timeSinceEpoch.nanosecondOfFloorDay; //nanosecondOfDay;
@@ -229,11 +229,11 @@ class Instant implements Comparable<Instant> {
   ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem calendar]) =>
       // zone is checked for nullity by the constructor.
       // constructor also checks and corrects for calendar being null
-    new ZonedDateTime(this, zone, calendar);
+    ZonedDateTime(this, zone, calendar);
 
   // todo: get the correct calendar for the local timezone / culture
   /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
-  ZonedDateTime inLocalZone([CalendarSystem calendar]) => new ZonedDateTime(this, DateTimeZone.local, calendar);
+  ZonedDateTime inLocalZone([CalendarSystem calendar]) => ZonedDateTime(this, DateTimeZone.local, calendar);
 
   OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 }
