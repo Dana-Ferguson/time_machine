@@ -22,6 +22,7 @@ dependencies:
 dev_dependencies:
   test: "^1.2.0"
   matcher: "^0.12.5"
+  pedantic: ^1.9.0
   # used for the TzdbCompiler
   args: "^1.5.2"
   http: "^0.12.0"
