@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.13
+- Updated TZDB to 2020a.
+
 ## 0.9.12
 - Made some changes because of Pana.
 

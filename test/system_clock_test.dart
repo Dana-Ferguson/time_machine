@@ -28,7 +28,7 @@ void Sanity()
   // Previously all the conversions missed the SystemConversions.DateTimeEpochTicks,
   // so they were self-consistent but not consistent with sanity.
   Instant minimumExpected = new Instant.utc(2011, 8, 1, 0, 0);
-  Instant maximumExpected = new Instant.utc(2020, 1, 1, 0, 0);
+  Instant maximumExpected = new Instant.utc(2030, 1, 1, 0, 0);
   Instant now = SystemClock.instance.getCurrentInstant();
   expect(minimumExpected.epochMicroseconds, lessThan(now.epochMicroseconds));
   expect(now.epochMicroseconds, lessThan(maximumExpected.epochMicroseconds));
