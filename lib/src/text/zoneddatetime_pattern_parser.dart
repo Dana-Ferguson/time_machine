@@ -147,7 +147,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     return null;
   }
 
-  /// Attempts to parse a fixed time zone from "UTC" with an optional
+  /// Attempts to parse a fixed time zone from 'UTC' with an optional
   /// offset, expressed as +HH, +HH:mm, +HH:mm:ss or +HH:mm:ss.fff - i.e. the
   /// general format. If it manages, it will move the cursor and return the
   /// zone. Otherwise, it will return null and the cursor will remain where
@@ -184,12 +184,12 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
       }
       else {
         // We've found a match! But it may not be as long as it
-        // could be. Keep track of a "longest match so far" (starting with the match we've found),
+        // could be. Keep track of a 'longest match so far' (starting with the match we've found),
         // and keep looking through the IDs until we find an ID which doesn't start with that "longest
         // match so far", at which point we know we're done.
         //
         // We can't just look through all the IDs from "guess" to "lowerBound" and stop when we hit
-        // a non-match against "value", because of situations like this:
+        // a non-match against 'value', because of situations like this:
         // value=Etc/GMT-12
         // guess=Etc/GMT-1
         // IDs includes { Etc/GMT-1, Etc/GMT-10, Etc/GMT-11, Etc/GMT-12, Etc/GMT-13 }
@@ -255,7 +255,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
             .offset == offset ? mapping.first() : mapping.last();
         break;
       default:
-        throw /*InvalidOperationException*/ StateError("Mapping has count outside range 0-2; should not happen.");
+        throw /*InvalidOperationException*/ StateError('Mapping has count outside range 0-2; should not happen.');
     }
     if (result.offset != offset) {
       return IParseResult.invalidOffset<ZonedDateTime>(text);

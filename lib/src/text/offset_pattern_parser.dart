@@ -29,8 +29,8 @@ class OffsetPatternParser implements IPatternParser<Offset> {
   };
 
   // These are used to compute the individual (always-positive) components of an offset.
-  // For example, an offset of "three and a half hours behind UTC" would have a "positive hours" value
-  // of 3, and a "positive minutes" value of 30. The sign is computed elsewhere.
+  // For example, an offset of 'three and a half hours behind UTC' would have a "positive hours" value
+  // of 3, and a 'positive minutes' value of 30. The sign is computed elsewhere.
   static int _getPositiveHours(Offset offset) => offset.inMilliseconds.abs() ~/ TimeConstants.millisecondsPerHour;
 
   static int _getPositiveMinutes(Offset offset) => (offset.inMilliseconds.abs() % TimeConstants.millisecondsPerHour) ~/ TimeConstants.millisecondsPerMinute;
@@ -49,7 +49,7 @@ class OffsetPatternParser implements IPatternParser<Offset> {
 
     if (patternText.length == 1) {
       switch (patternText) {
-        case "g":
+        case 'g':
           return ICompositePatternBuilder.buildAsPartial(CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLong, formatInfo), (offset) => true)
             // _hasZeroSeconds, _hasZeroSecondsAndMinutes can be supplied directly in DartVM
@@ -58,31 +58,31 @@ class OffsetPatternParser implements IPatternParser<Offset> {
             // todo: investigate (I feel when all the platforms are on the same version of Dart, life will get easier)
             ..add(_parsePartialPattern(formatInfo.offsetPatternMedium, formatInfo), (arg) => _hasZeroSeconds(arg))
             ..add(_parsePartialPattern(formatInfo.offsetPatternShort, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
-        case "G":
-          return _ZPrefixPattern(_parsePartialPattern("g", formatInfo));
-        case "i":
+        case 'G':
+          return _ZPrefixPattern(_parsePartialPattern('g', formatInfo));
+        case 'i':
           return ICompositePatternBuilder.buildAsPartial(CompositePatternBuilder<Offset>()
             ..add(_parsePartialPattern(formatInfo.offsetPatternLongNoPunctuation, formatInfo), (offset) => true)
             ..add(_parsePartialPattern(formatInfo.offsetPatternMediumNoPunctuation, formatInfo), (arg) => _hasZeroSeconds(arg))
             ..add(_parsePartialPattern(formatInfo.offsetPatternShortNoPunctuation, formatInfo), (arg) => _hasZeroSecondsAndMinutes(arg)));
-        case "I":
-          return _ZPrefixPattern(_parsePartialPattern("i", formatInfo));
-        case "l":
+        case 'I':
+          return _ZPrefixPattern(_parsePartialPattern('i', formatInfo));
+        case 'l':
           patternText = formatInfo.offsetPatternLong;
           break;
-        case "m":
+        case 'm':
           patternText = formatInfo.offsetPatternMedium;
           break;
-        case "s":
+        case 's':
           patternText = formatInfo.offsetPatternShort;
           break;
-        case "L":
+        case 'L':
           patternText = formatInfo.offsetPatternLongNoPunctuation;
           break;
-        case "M":
+        case 'M':
           patternText = formatInfo.offsetPatternMediumNoPunctuation;
           break;
-        case "S":
+        case 'S':
           patternText = formatInfo.offsetPatternShortNoPunctuation;
           break;
         default:
@@ -90,13 +90,13 @@ class OffsetPatternParser implements IPatternParser<Offset> {
       }
     }
     // This is the only way we'd normally end up in custom parsing land for Z on its own.
-    if (patternText == "%Z") {
+    if (patternText == '%Z') {
       throw InvalidPatternError(TextErrorMessages.emptyZPrefixedOffsetPattern);
     }
 
     // Handle Z-prefix by stripping it, parsing the rest as a normal pattern, then building a special pattern
     // which decides whether or not to delegate.
-    bool zPrefix = patternText.startsWith("Z");
+    bool zPrefix = patternText.startsWith('Z');
 
     var patternBuilder = SteppedPatternBuilder<Offset, _OffsetParseBucket>(formatInfo, () => _OffsetParseBucket());
     patternBuilder.parseCustomPattern(zPrefix ? patternText.substring(1) : patternText, _patternCharacterHandlers);
@@ -125,15 +125,15 @@ class OffsetPatternParser implements IPatternParser<Offset> {
 // #endregion
 }
 
-/// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as "Z".
+/// Pattern which optionally delegates to another, but both parses and formats Offset.Zero as 'Z'.
 class _ZPrefixPattern implements IPartialPattern<Offset> {
   final IPartialPattern<Offset> _fullPattern;
 
   _ZPrefixPattern(this._fullPattern);
 
-  ParseResult<Offset> parse(String text) => text == "Z" ? ParseResult.forValue<Offset>(Offset.zero) : _fullPattern.parse(text);
+  ParseResult<Offset> parse(String text) => text == 'Z' ? ParseResult.forValue<Offset>(Offset.zero) : _fullPattern.parse(text);
 
-  String format(Offset value) => value == Offset.zero ? "Z" : _fullPattern.format(value);
+  String format(Offset value) => value == Offset.zero ? 'Z' : _fullPattern.format(value);
 
   ParseResult<Offset> parsePartial(ValueCursor cursor) {
     if (cursor.current == 'Z') {
@@ -145,7 +145,7 @@ class _ZPrefixPattern implements IPartialPattern<Offset> {
 
   StringBuffer appendFormat(Offset value, StringBuffer builder) {
     Preconditions.checkNotNull(builder, 'builder');
-    return value == Offset.zero ? (builder..write("Z")) : _fullPattern.appendFormat(value, builder);
+    return value == Offset.zero ? (builder..write('Z')) : _fullPattern.appendFormat(value, builder);
   }
 }
 

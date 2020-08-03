@@ -74,7 +74,7 @@ class ZonedDateTime {
     Offset correctOffset = zone.getUtcOffset(candidateInstant);
     // Not using Preconditions, to avoid building the string unnecessarily.
     if (correctOffset != offset) {
-      throw ArgumentError("Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset");
+      throw ArgumentError('Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset');
     }
     var offsetDateTime = OffsetDateTime(localDateTime, offset);
     return ZonedDateTime._(offsetDateTime, zone);
@@ -154,8 +154,8 @@ class ZonedDateTime {
       ZonedDateTime.resolve(localDateTime, zone, Resolvers.strictResolver);
 
   /// Maps the given [LocalDateTime] to the corresponding [ZonedDateTime] in a lenient
-  /// manner: ambiguous values map to the earlier of the alternatives, and "skipped" values are shifted forward
-  /// by the duration of the "gap".
+  /// manner: ambiguous values map to the earlier of the alternatives, and 'skipped' values are shifted forward
+  /// by the duration of the 'gap'.
   ///
   /// See [atStrictly] and [ResolveLocal(LocalDateTime, ZoneLocalMappingResolver)] for alternative ways to map a local time to a
   /// specific instant.
@@ -208,7 +208,7 @@ class ZonedDateTime {
   Era get era => _offsetDateTime.era;
 
   /// Gets the year of this zoned date and time.
-  /// This returns the "absolute year", so, for the ISO calendar,
+  /// This returns the 'absolute year', so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
   int get year => _offsetDateTime.year;
 
@@ -315,7 +315,7 @@ class ZonedDateTime {
   /// * [zonedDateTime]: The value to subtract the duration from.
   /// * [time]: The duration to subtract.
   ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
+  /// Returns: A new value with the time 'rewound' by the given duration, in the same calendar system and time zone.
   static ZonedDateTime minus(ZonedDateTime zonedDateTime, Time time) => zonedDateTime.subtract(time);
 
   /// Subtracts one zoned date and time from another, returning an elapsed duration.
@@ -353,7 +353,7 @@ class ZonedDateTime {
   /// * [zonedDateTime]: The value to subtract the duration from.
   /// * [time]: The duration to subtract.
   ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and time zone.
+  /// Returns: A new value with the time 'rewound' by the given duration, in the same calendar system and time zone.
   ZonedDateTime operator -(Time time) => subtract(time);
 
   /// Returns the result of adding a duration to this zoned date and time.
@@ -416,7 +416,7 @@ class ZonedDateTime {
   /// A [String] containing the value of the current instance in the specified format.
   ///
   /// * [patternText]: The [String] specifying the pattern to use,
-  /// or null to use the default format pattern ("G").
+  /// or null to use the default format pattern ('G').
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
@@ -433,7 +433,7 @@ class ZonedDateTime {
   /// If the date and time is not on a millisecond (Web) or microsecond (VM) boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
-  /// A [DateTime] representation of this value with a "universal" kind, with the same
+  /// A [DateTime] representation of this value with a 'universal' kind, with the same
   /// instant of time as this value.
   DateTime toDateTimeUtc() => toInstant().toDateTimeUtc();
 
@@ -444,12 +444,12 @@ class ZonedDateTime {
   /// If the date and time is not on a millisecond (Web) or microsecond (VM) boundary (the unit of granularity of DateTime) the value will be truncated
   /// towards the start of time.
   ///
-  /// A [DateTime] representation of this value with an "unspecified" kind, with the same
+  /// A [DateTime] representation of this value with an 'unspecified' kind, with the same
   /// local date and time as this value.
   DateTime toDateTimeLocal() => localDateTime.toDateTimeLocal();
 
   /// Constructs an [OffsetDateTime] with the same local date and time, and the same offset
-  /// as this zoned date and time, effectively just "removing" the time zone itself.
+  /// as this zoned date and time, effectively just 'removing' the time zone itself.
   ///
   /// Returns: An OffsetDateTime with the same local date/time and offset as this value.
   OffsetDateTime toOffsetDateTime() => _offsetDateTime;

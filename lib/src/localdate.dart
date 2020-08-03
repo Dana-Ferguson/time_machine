@@ -41,7 +41,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Constructs an instance for the given year, month and day in the specified or ISO calendar.
   ///
-  /// * [year]: The year. This is the "absolute year", so a value of 0 means 1 BC, for example.
+  /// * [year]: The year. This is the 'absolute year', so a value of 0 means 1 BC, for example.
   /// * [month]: The month of year.
   /// * [day]: The day of month.
   /// * [calendar]: Calendar system in which to create the date, which defaults to the ISO calendar.
@@ -95,7 +95,7 @@ class LocalDate implements Comparable<LocalDate> {
   CalendarSystem get calendar => ICalendarSystem.forOrdinal(_yearMonthDayCalendar.calendarOrdinal);
 
   /// Gets the year of this local date.
-  /// This returns the "absolute year", so, for the ISO calendar,
+  /// This returns the 'absolute year', so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
   int get year => _yearMonthDayCalendar.year;
 
@@ -137,7 +137,7 @@ class LocalDate implements Comparable<LocalDate> {
   // static int _nonNegativeMicrosecondsToDays(int microseconds) => microseconds ~/ TimeConstants.microsecondsPerDay;
   // ((ticks >> 14) ~/ 52734375);
 
-  /// Returns the local date corresponding to the given "week year", "week of week year", and "day of week"
+  /// Returns the local date corresponding to the given 'week year', "week of week year", and "day of week"
   /// in the ISO calendar system, using the ISO week-year rules.
   ///
   /// * [weekYear]: ISO-8601 week year of value to return
@@ -151,10 +151,10 @@ class LocalDate implements Comparable<LocalDate> {
       WeekYearRules.iso.getLocalDate(weekYear, weekOfWeekYear, dayOfWeek, CalendarSystem.iso);
 
   /// Returns the local date corresponding to a particular occurrence of a day-of-week
-  /// within a year and month. For example, this method can be used to ask for "the third Monday in April 2012".
+  /// within a year and month. For example, this method can be used to ask for 'the third Monday in April 2012'.
   ///
   /// The returned date is always in the ISO calendar. This method is unrelated to week-years and any rules for
-  /// "business weeks" and the like - if a month begins on a Friday, then asking for the first Friday will give
+  /// 'business weeks' and the like - if a month begins on a Friday, then asking for the first Friday will give
   /// that day, for example.
   ///
   /// * [year]: The year of the value to return.
@@ -505,7 +505,7 @@ class LocalDate implements Comparable<LocalDate> {
   LocalDate subtractWeeks(int weeks) => addWeeks(-weeks);
 
   /// Returns the next [LocalDate] falling on the specified [DayOfWeek].
-  /// This is a strict "next" - if this date on already falls on the target
+  /// This is a strict 'next' - if this date on already falls on the target
   /// day of the week, the returned value will be a week later.
   ///
   /// * [targetDayOfWeek]: The ISO day of the week to return the next date of.
@@ -533,7 +533,7 @@ class LocalDate implements Comparable<LocalDate> {
   }
 
   /// Returns the previous [LocalDate] falling on the specified [DayOfWeek].
-  /// This is a strict "previous" - if this date on already falls on the target
+  /// This is a strict 'previous' - if this date on already falls on the target
   /// day of the week, the returned value will be a week earlier.
   ///
   /// * [targetDayOfWeek]: The ISO day of the week to return the previous date of.
@@ -582,7 +582,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("D"), using the current isolates's
+  /// The value of the current instance in the default format pattern ('D'), using the current isolates's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       LocalDatePatterns.format(this, patternText, culture);

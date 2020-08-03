@@ -8,7 +8,7 @@
 import 'dart:async';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// Represents a clock which can return the current time as an <see cref="Instant" />.
+// Represents a clock which can return the current time as an <see cref='Instant' />.
 ///
 /// [IClock] is intended for use anywhere you need to have access to the current time.
 /// Although it's not strictly incorrect to call `SystemClock.Instance.GetCurrentInstant()` directly,

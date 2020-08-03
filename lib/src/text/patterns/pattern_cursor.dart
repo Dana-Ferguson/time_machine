@@ -7,7 +7,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 
 
-/// Extends [TextCursor] to simplify parsing patterns such as "uuuu-MM-dd".
+/// Extends [TextCursor] to simplify parsing patterns such as 'uuuu-MM-dd'.
 @internal
 class PatternCursor extends TextCursor {
   /// The character signifying the start of an embedded pattern.
@@ -73,8 +73,8 @@ class PatternCursor extends TextCursor {
   /// Quote characters (' and ") and escaped characters (escaped with a backslash) are handled
   /// but not unescaped: the resulting pattern should be ready for parsing as normal. It is assumed that the
   /// embedded pattern will itself handle embedded patterns, so if the input is on the first `&lt;`
-  /// of `"before &lt;outer1 &lt;inner&gt; outer2&gt; after"`
-  /// this method will return `"outer1 &lt;inner&gt; outer2"` and the cursor will be positioned
+  /// of `'before &lt;outer1 &lt;inner&gt; outer2&gt; after'`
+  /// this method will return `'outer1 &lt;inner&gt; outer2'` and the cursor will be positioned
   /// on the final `&gt;` afterwards.
   ///
   /// Returns: The embedded pattern, not including the start/end pattern characters.

@@ -26,192 +26,192 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal final List<Data> FormatOnlyData = [
     Data.hms(3, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = ""
-      ..pattern = "%-",
+      ..text = ''
+      ..pattern = '%-',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "g",
+      ..text = '+05'
+      ..pattern = 'g',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12"
-      ..pattern = "g",
+      ..text = '+05:12'
+      ..pattern = 'g',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12:34"
-      ..pattern = "g",
+      ..text = '+05:12:34'
+      ..pattern = 'g',
 
     // Losing information
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "05"
-      ..pattern = "HH",
+      ..text = '05'
+      ..pattern = 'HH',
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "06"
-      ..pattern = "mm",
+      ..text = '06'
+      ..pattern = 'mm',
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "07"
-      ..pattern = "ss",
+      ..text = '07'
+      ..pattern = 'ss',
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "5"
-      ..pattern = "%H",
+      ..text = '5'
+      ..pattern = '%H',
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "6"
-      ..pattern = "%m",
+      ..text = '6'
+      ..pattern = '%m',
     Data.hms(5, 6, 7)
       ..culture = TestCultures.EnUs
-      ..text = "7"
-      ..pattern = "%s",
+      ..text = '7'
+      ..pattern = '%s',
 
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "+18"
-      ..pattern = "g",
+      ..text = '+18'
+      ..pattern = 'g',
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "18"
-      ..pattern = "%H",
+      ..text = '18'
+      ..pattern = '%H',
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "0"
-      ..pattern = "%m",
+      ..text = '0'
+      ..pattern = '%m',
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "0"
-      ..pattern = "%s",
+      ..text = '0'
+      ..pattern = '%s',
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "m"
+      ..text = 'm'
       ..pattern = "\\m",
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "m"
+      ..text = 'm'
       ..pattern = "'m'",
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "mmmmmmmmmm"
+      ..text = 'mmmmmmmmmm'
       ..pattern = "'mmmmmmmmmm'",
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "z"
+      ..text = 'z'
       ..pattern = "'z'",
     Data(Offset.maxValue)
       ..culture = TestCultures.EnUs
-      ..text = "zqw"
+      ..text = 'zqw'
       ..pattern = "'zqw'",
     Data.hms(3, 0, 0, true)
       ..culture = TestCultures.EnUs
-      ..text = "-"
-      ..pattern = "%-",
+      ..text = '-'
+      ..pattern = '%-',
     Data.hms(3, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+"
-      ..pattern = "%+",
+      ..text = '+'
+      ..pattern = '%+',
     Data.hms(3, 0, 0, true)
       ..culture = TestCultures.EnUs
-      ..text = "-"
-      ..pattern = "%+",
+      ..text = '-'
+      ..pattern = '%+',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "s",
+      ..text = '+05'
+      ..pattern = 's',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12"
-      ..pattern = "m",
+      ..text = '+05:12'
+      ..pattern = 'm',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12:34"
-      ..pattern = "l",
+      ..text = '+05:12:34'
+      ..pattern = 'l',
   ];
 
   /// Test data that can only be used to test successful parsing.
   @internal final List<Data> ParseOnlyData = [
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "*"
-      ..pattern = "%*",
+      ..text = '*'
+      ..pattern = '%*',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "zqw"
+      ..text = 'zqw'
       ..pattern = "'zqw'",
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "-"
-      ..pattern = "%-",
+      ..text = '-'
+      ..pattern = '%-',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+"
-      ..pattern = "%+",
+      ..text = '+'
+      ..pattern = '%+',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "-"
-      ..pattern = "%+",
+      ..text = '-'
+      ..pattern = '%+',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "s",
+      ..text = '+05'
+      ..pattern = 's',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12"
-      ..pattern = "m",
+      ..text = '+05:12'
+      ..pattern = 'm',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12:34"
-      ..pattern = "l",
+      ..text = '+05:12:34'
+      ..pattern = 'l',
     Data(Offset.zero)
-      ..pattern = "Z+HH:mm"
-      ..text = "+00:00" // Lenient when parsing Z-prefixed patterns.
+      ..pattern = 'Z+HH:mm'
+      ..text = '+00:00' // Lenient when parsing Z-prefixed patterns.
   ];
 
   /// Test data for invalid patterns
   @internal final List<Data> InvalidPatternData = [
     Data(Offset.zero)
-      ..pattern = ""
+      ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
     Data(Offset.zero)
-      ..pattern = "%Z"
+      ..pattern = '%Z'
       ..message = TextErrorMessages.emptyZPrefixedOffsetPattern,
     Data(Offset.zero)
-      ..pattern = "HH:mmZ"
+      ..pattern = 'HH:mmZ'
       ..message = TextErrorMessages.zPrefixNotAtStartOfPattern,
     Data(Offset.zero)
-      ..pattern = "%%H"
+      ..pattern = '%%H'
       ..message = TextErrorMessages.percentDoubled,
     Data(Offset.zero)
-      ..pattern = "HH:HH"
+      ..pattern = 'HH:HH'
       ..message = TextErrorMessages.repeatedFieldInPattern
       ..parameters.addAll(['H']),
     Data(Offset.zero)
-      ..pattern = "mm:mm"
+      ..pattern = 'mm:mm'
       ..message = TextErrorMessages.repeatedFieldInPattern
       ..parameters.addAll(['m']),
     Data(Offset.zero)
-      ..pattern = "ss:ss"
+      ..pattern = 'ss:ss'
       ..message = TextErrorMessages.repeatedFieldInPattern
       ..parameters.addAll(['s']),
     Data(Offset.zero)
-      ..pattern = "+HH:-mm"
+      ..pattern = '+HH:-mm'
       ..message = TextErrorMessages.repeatedFieldInPattern
       ..parameters.addAll(['-']),
     Data(Offset.zero)
-      ..pattern = "-HH:+mm"
+      ..pattern = '-HH:+mm'
       ..message = TextErrorMessages.repeatedFieldInPattern
       ..parameters.addAll(['+']),
     Data(Offset.zero)
-      ..pattern = "!"
+      ..pattern = '!'
       ..message = TextErrorMessages.unknownStandardFormat
       ..parameters.addAll(['!', 'Offset']),
     Data(Offset.zero)
-      ..pattern = "%"
+      ..pattern = '%'
       ..message = TextErrorMessages.unknownStandardFormat
       ..parameters.addAll(['%', 'Offset']),
     Data(Offset.zero)
-      ..pattern = "%%"
+      ..pattern = '%%'
       ..message = TextErrorMessages.percentDoubled,
     Data(Offset.zero)
       ..pattern = "%\\"
@@ -221,22 +221,22 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..message = TextErrorMessages.unknownStandardFormat
       ..parameters.addAll(['\\', 'Offset']),
     Data(Offset.zero)
-      ..pattern = "H%"
+      ..pattern = 'H%'
       ..message = TextErrorMessages.percentAtEndOfString,
     Data(Offset.zero)
-      ..pattern = "hh"
+      ..pattern = 'hh'
       ..message = TextErrorMessages.hour12PatternNotSupported
       ..parameters.addAll(['Offset']),
     Data(Offset.zero)
-      ..pattern = "HHH"
+      ..pattern = 'HHH'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['H', 2]),
     Data(Offset.zero)
-      ..pattern = "mmm"
+      ..pattern = 'mmm'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['m', 2]),
     Data(Offset.zero)
-      ..pattern = "mmmmmmmmmmmmmmmmmmm"
+      ..pattern = 'mmmmmmmmmmmmmmmmmmm'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['m', 2]),
     Data(Offset.zero)
@@ -251,7 +251,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..message = TextErrorMessages.missingEndQuote
       ..parameters.addAll(['\'']),
     Data(Offset.zero)
-      ..pattern = "sss"
+      ..pattern = 'sss'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['s', 2]),
   ];
@@ -260,118 +260,118 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal final List<Data> ParseFailureData = [
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = ""
-      ..pattern = "g"
+      ..text = ''
+      ..pattern = 'g'
       ..message = TextErrorMessages.valueStringEmpty,
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "1"
-      ..pattern = "HH"
+      ..text = '1'
+      ..pattern = 'HH'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["HH"]),
+      ..parameters.addAll(['HH']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "1"
-      ..pattern = "mm"
+      ..text = '1'
+      ..pattern = 'mm'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["mm"]),
+      ..parameters.addAll(['mm']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "1"
-      ..pattern = "ss"
+      ..text = '1'
+      ..pattern = 'ss'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["ss"]),
+      ..parameters.addAll(['ss']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "12:34 "
-      ..pattern = "HH:mm"
+      ..text = '12:34 '
+      ..pattern = 'HH:mm'
       ..message = TextErrorMessages.extraValueCharacters
-      ..parameters.addAll([" "]),
+      ..parameters.addAll([' ']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "1a"
-      ..pattern = "H "
+      ..text = '1a'
+      ..pattern = 'H '
       ..message = TextErrorMessages.mismatchedCharacter
       ..parameters.addAll([' ']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "2:"
-      ..pattern = "%H"
+      ..text = '2:'
+      ..pattern = '%H'
       ..message = TextErrorMessages.extraValueCharacters
-      ..parameters.addAll([":"]),
+      ..parameters.addAll([':']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = "%."
+      ..text = 'a'
+      ..pattern = '%.'
       ..message = TextErrorMessages.mismatchedCharacter
       ..parameters.addAll(['.']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = "%:"
+      ..text = 'a'
+      ..pattern = '%:'
       ..message = TextErrorMessages.timeSeparatorMismatch,
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = "%H"
+      ..text = 'a'
+      ..pattern = '%H'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["H"]),
+      ..parameters.addAll(['H']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = "%m"
+      ..text = 'a'
+      ..pattern = '%m'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["m"]),
+      ..parameters.addAll(['m']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = "%s"
+      ..text = 'a'
+      ..pattern = '%s'
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["s"]),
+      ..parameters.addAll(['s']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
-      ..pattern = ".H"
+      ..text = 'a'
+      ..pattern = '.H'
       ..message = TextErrorMessages.mismatchedCharacter
       ..parameters.addAll(['.']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "a"
+      ..text = 'a'
       ..pattern = "\\'"
       ..message = TextErrorMessages.escapedCharacterMismatch
       ..parameters.addAll(['\'']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "axc"
+      ..text = 'axc'
       ..pattern = "'abc'"
       ..message = TextErrorMessages.quotedStringMismatch,
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "z"
-      ..pattern = "%*"
+      ..text = 'z'
+      ..pattern = '%*'
       ..message = TextErrorMessages.mismatchedCharacter
       ..parameters.addAll(['*']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "24"
-      ..pattern = "HH"
+      ..text = '24'
+      ..pattern = 'HH'
       ..message = TextErrorMessages.fieldValueOutOfRange
       ..parameters.addAll([24, 'H', 'Offset']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "60"
-      ..pattern = "mm"
+      ..text = '60'
+      ..pattern = 'mm'
       ..message = TextErrorMessages.fieldValueOutOfRange
       ..parameters.addAll([60, 'm', 'Offset']),
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "60"
-      ..pattern = "ss"
+      ..text = '60'
+      ..pattern = 'ss'
       ..message = TextErrorMessages.fieldValueOutOfRange
       ..parameters.addAll([60, 's', 'Offset']),
     Data(Offset.zero)
-      ..text = "+12"
-      ..pattern = "-HH"
+      ..text = '+12'
+      ..pattern = '-HH'
       ..message = TextErrorMessages.positiveSignInvalid,
   ];
 
@@ -380,274 +380,274 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   @internal final List<Data> FormatAndParseData = [
 /*XXX*/ Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "."
-      ..pattern = "%.", // decimal separator
+      ..text = '.'
+      ..pattern = '%.', // decimal separator
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = ":"
-      ..pattern = "%:", // date separator
+      ..text = ':'
+      ..pattern = '%:', // date separator
 /*XXX*/ Data(Offset.zero)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "."
-      ..pattern = "%.", // decimal separator (always period)
+      ..text = '.'
+      ..pattern = '%.', // decimal separator (always period)
     Data(Offset.zero)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "."
-      ..pattern = "%:", // date separator
+      ..text = '.'
+      ..pattern = '%:', // date separator
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "H"
+      ..text = 'H'
       ..pattern = "\\H",
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "HHss"
+      ..text = 'HHss'
       ..pattern = "'HHss'",
     Data.hms(0, 0, 12)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "%s",
+      ..text = '12'
+      ..pattern = '%s',
     Data.hms(0, 0, 12)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "ss",
+      ..text = '12'
+      ..pattern = 'ss',
     Data.hms(0, 0, 2)
       ..culture = TestCultures.EnUs
-      ..text = "2"
-      ..pattern = "%s",
+      ..text = '2'
+      ..pattern = '%s',
     Data.hms(0, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "%m",
+      ..text = '12'
+      ..pattern = '%m',
     Data.hms(0, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "mm",
+      ..text = '12'
+      ..pattern = 'mm',
     Data.hms(0, 2, 0)
       ..culture = TestCultures.EnUs
-      ..text = "2"
-      ..pattern = "%m",
+      ..text = '2'
+      ..pattern = '%m',
 
     Data.hms(12, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "%H",
+      ..text = '12'
+      ..pattern = '%H',
     Data.hms(12, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "12"
-      ..pattern = "HH",
+      ..text = '12'
+      ..pattern = 'HH',
     Data.hms(2, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "2"
-      ..pattern = "%H",
+      ..text = '2'
+      ..pattern = '%H',
     Data.hms(2, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "2"
-      ..pattern = "%H",
+      ..text = '2'
+      ..pattern = '%H',
 
     // Standard patterns with punctuation...
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "G",
+      ..text = '+05'
+      ..pattern = 'G',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12"
-      ..pattern = "G",
+      ..text = '+05:12'
+      ..pattern = 'G',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12:34"
-      ..pattern = "G",
+      ..text = '+05:12:34'
+      ..pattern = 'G',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "g",
+      ..text = '+05'
+      ..pattern = 'g',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12"
-      ..pattern = "g",
+      ..text = '+05:12'
+      ..pattern = 'g',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+05:12:34"
-      ..pattern = "g",
+      ..text = '+05:12:34'
+      ..pattern = 'g',
     Data(Offset.minValue)
       ..culture = TestCultures.EnUs
-      ..text = "-18"
-      ..pattern = "g",
+      ..text = '-18'
+      ..pattern = 'g',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "Z"
-      ..pattern = "G",
+      ..text = 'Z'
+      ..pattern = 'G',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00"
-      ..pattern = "g",
+      ..text = '+00'
+      ..pattern = 'g',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00"
-      ..pattern = "s",
+      ..text = '+00'
+      ..pattern = 's',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00:00"
-      ..pattern = "m",
+      ..text = '+00:00'
+      ..pattern = 'm',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00:00:00"
-      ..pattern = "l",
+      ..text = '+00:00:00'
+      ..pattern = 'l',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.FrFr
-      ..text = "+05"
-      ..pattern = "g",
+      ..text = '+05'
+      ..pattern = 'g',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.FrFr
-      ..text = "+05:12"
-      ..pattern = "g",
+      ..text = '+05:12'
+      ..pattern = 'g',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.FrFr
-      ..text = "+05:12:34"
-      ..pattern = "g",
+      ..text = '+05:12:34'
+      ..pattern = 'g',
     Data(Offset.maxValue)
       ..culture = TestCultures.FrFr
-      ..text = "+18"
-      ..pattern = "g",
+      ..text = '+18'
+      ..pattern = 'g',
     Data(Offset.minValue)
       ..culture = TestCultures.FrFr
-      ..text = "-18"
-      ..pattern = "g",
+      ..text = '-18'
+      ..pattern = 'g',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+05"
-      ..pattern = "g",
+      ..text = '+05'
+      ..pattern = 'g',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+05.12"
-      ..pattern = "g",
+      ..text = '+05.12'
+      ..pattern = 'g',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+05.12.34"
-      ..pattern = "g",
+      ..text = '+05.12.34'
+      ..pattern = 'g',
     Data(Offset.maxValue)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+18"
-      ..pattern = "g",
+      ..text = '+18'
+      ..pattern = 'g',
     Data(Offset.minValue)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "-18"
-      ..pattern = "g",
+      ..text = '-18'
+      ..pattern = 'g',
 
     // Standard patterns without punctuation
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "I",
+      ..text = '+05'
+      ..pattern = 'I',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+0512"
-      ..pattern = "I",
+      ..text = '+0512'
+      ..pattern = 'I',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+051234"
-      ..pattern = "I",
+      ..text = '+051234'
+      ..pattern = 'I',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+05"
-      ..pattern = "i",
+      ..text = '+05'
+      ..pattern = 'i',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.EnUs
-      ..text = "+0512"
-      ..pattern = "i",
+      ..text = '+0512'
+      ..pattern = 'i',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.EnUs
-      ..text = "+051234"
-      ..pattern = "i",
+      ..text = '+051234'
+      ..pattern = 'i',
     Data(Offset.minValue)
       ..culture = TestCultures.EnUs
-      ..text = "-18"
-      ..pattern = "i",
+      ..text = '-18'
+      ..pattern = 'i',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "Z"
-      ..pattern = "I",
+      ..text = 'Z'
+      ..pattern = 'I',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00"
-      ..pattern = "i",
+      ..text = '+00'
+      ..pattern = 'i',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+00"
-      ..pattern = "S",
+      ..text = '+00'
+      ..pattern = 'S',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+0000"
-      ..pattern = "M",
+      ..text = '+0000'
+      ..pattern = 'M',
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
-      ..text = "+000000"
-      ..pattern = "L",
+      ..text = '+000000'
+      ..pattern = 'L',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.FrFr
-      ..text = "+05"
-      ..pattern = "i",
+      ..text = '+05'
+      ..pattern = 'i',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.FrFr
-      ..text = "+0512"
-      ..pattern = "i",
+      ..text = '+0512'
+      ..pattern = 'i',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.FrFr
-      ..text = "+051234"
-      ..pattern = "i",
+      ..text = '+051234'
+      ..pattern = 'i',
     Data(Offset.maxValue)
       ..culture = TestCultures.FrFr
-      ..text = "+18"
-      ..pattern = "i",
+      ..text = '+18'
+      ..pattern = 'i',
     Data(Offset.minValue)
       ..culture = TestCultures.FrFr
-      ..text = "-18"
-      ..pattern = "i",
+      ..text = '-18'
+      ..pattern = 'i',
     Data.hms(5, 0, 0)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+05"
-      ..pattern = "i",
+      ..text = '+05'
+      ..pattern = 'i',
     Data.hms(5, 12, 0)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+0512"
-      ..pattern = "i",
+      ..text = '+0512'
+      ..pattern = 'i',
     Data.hms(5, 12, 34)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+051234"
-      ..pattern = "i",
+      ..text = '+051234'
+      ..pattern = 'i',
     Data(Offset.maxValue)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "+18"
-      ..pattern = "i",
+      ..text = '+18'
+      ..pattern = 'i',
     Data(Offset.minValue)
       ..culture = TestCultures.DotTimeSeparator
-      ..text = "-18"
-      ..pattern = "i",
+      ..text = '-18'
+      ..pattern = 'i',
 
     // Explicit patterns
     Data.hms(0, 30, 0, true)
       ..culture = TestCultures.EnUs
-      ..text = "-00:30"
-      ..pattern = "+HH:mm",
+      ..text = '-00:30'
+      ..pattern = '+HH:mm',
     Data.hms(0, 30, 0, true)
       ..culture = TestCultures.EnUs
-      ..text = "-00:30"
-      ..pattern = "-HH:mm",
+      ..text = '-00:30'
+      ..pattern = '-HH:mm',
     Data.hms(0, 30, 0, false)
       ..culture = TestCultures.EnUs
-      ..text = "00:30"
-      ..pattern = "-HH:mm",
+      ..text = '00:30'
+      ..pattern = '-HH:mm',
 
     // Z-prefixes
     Data(Offset.zero)
-      ..text = "Z"
-      ..pattern = "Z+HH:mm:ss",
+      ..text = 'Z'
+      ..pattern = 'Z+HH:mm:ss',
     Data.hms(5, 12, 34)
-      ..text = "+05:12:34"
-      ..pattern = "Z+HH:mm:ss",
+      ..text = '+05:12:34'
+      ..pattern = 'Z+HH:mm:ss',
     Data.hms(5, 12)
-      ..text = "+05:12"
-      ..pattern = "Z+HH:mm",
+      ..text = '+05:12'
+      ..pattern = 'Z+HH:mm',
   ];
 
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
@@ -668,14 +668,14 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   void NumberFormatIgnored()
   {
     // var builder = new DateTimeFormatInfoBuilder(TestCultures.EnUs.dateTimeFormat);
-    // builder.NumberFormat.PositiveSign = "P";
+    // builder.NumberFormat.PositiveSign = 'P';
     var culture = TestCultures.EnUs;
-    culture.NumberFormat.PositiveSign = "P";
-    culture.NumberFormat.NegativeSign = "N";
-    var pattern = OffsetPattern.Create("+HH:mm", culture);
+    culture.NumberFormat.PositiveSign = 'P';
+    culture.NumberFormat.NegativeSign = 'N';
+    var pattern = OffsetPattern.Create('+HH:mm', culture);
 
-    expect("+05:00", pattern.Format(new Offset.fromHours(5)));
-    expect("-05:00", pattern.Format(new Offset.fromHours(-5)));
+    expect('+05:00', pattern.Format(new Offset.fromHours(5)));
+    expect('-05:00', pattern.Format(new Offset.fromHours(-5)));
   }*/
 
   @Test()
@@ -683,9 +683,9 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     Culture.current = TestCultures.DotTimeSeparator;
     {
-      var pattern = OffsetPattern.createWithCurrentCulture("H:mm");
+      var pattern = OffsetPattern.createWithCurrentCulture('H:mm');
       var text = pattern.format(Offset.hoursAndMinutes(1, 30));
-      expect("1.30", text);
+      expect('1.30', text);
     }
   }
 }

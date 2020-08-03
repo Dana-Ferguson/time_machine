@@ -40,11 +40,11 @@ void MinusOffset_Zero_IsNeutralElement()
 }
 
 @Test()
-@TestCase(const [0, 0, "1970-01-01T00:00:00 LOC"])
-@TestCase(const [0, 1, "1970-01-01T00:00:00.000000001 LOC"])
-@TestCase(const [0, 1000, "1970-01-01T00:00:00.000001 LOC"])
-@TestCase(const [0, 1000000, "1970-01-01T00:00:00.001 LOC"])
-@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 1, "1969-12-31T23:59:59.999999999 LOC"])
+@TestCase(const [0, 0, '1970-01-01T00:00:00 LOC'])
+@TestCase(const [0, 1, '1970-01-01T00:00:00.000000001 LOC'])
+@TestCase(const [0, 1000, '1970-01-01T00:00:00.000001 LOC'])
+@TestCase(const [0, 1000000, '1970-01-01T00:00:00.001 LOC'])
+@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 1, '1969-12-31T23:59:59.999999999 LOC'])
 void ToString_Valid(int day, int nanoOfDay, String expectedText)
 {
   var localInstant = LocalInstant.daysNanos(day, nanoOfDay);
@@ -67,7 +67,7 @@ void SafeMinus_NormalTime()
   expect(Time(hours: -1), end.timeSinceEpoch);
 }
 
-// A null offset indicates "BeforeMinValue". Otherwise, MinValue.Plus(offset)
+// A null offset indicates 'BeforeMinValue'. Otherwise, MinValue.Plus(offset)
 @Test()
 @TestCase(const [null, 0, null])
 @TestCase(const [null, 1, null])
@@ -86,7 +86,7 @@ void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int fina
   expect(actual, expected);
 }
 
-// A null offset indicates "AfterMaxValue". Otherwise, MaxValue.Plus(offset)
+// A null offset indicates 'AfterMaxValue'. Otherwise, MaxValue.Plus(offset)
 @Test()
 @TestCase(const [null, 0, null])
 @TestCase(const [null, 1, null])

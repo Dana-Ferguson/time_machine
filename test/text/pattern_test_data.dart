@@ -77,7 +77,7 @@ abstract class PatternTestData<T> {
   @internal void TestParsePartial() {
     var pattern = CreatePartialPattern();
     assert(message == null);
-    var cursor = ValueCursor("^" + text + "#");
+    var cursor = ValueCursor('^' + text + "#");
     // Move to the ^
     cursor.moveNext();
     // Move to the start of the text
@@ -95,17 +95,17 @@ abstract class PatternTestData<T> {
   @internal void TestAppendFormat() {
     assert(message == null);
     var pattern = CreatePattern();
-    var builder = StringBuffer("x");
+    var builder = StringBuffer('x');
     pattern.appendFormat(Value, builder);
-    // assert("x" + Text == builder.toString());
-    expect(builder.toString(), "x" + text );
+    // assert('x' + Text == builder.toString());
+    expect(builder.toString(), 'x' + text );
   }
 
   @internal void TestInvalidPattern() {
     String expectedMessage = FormatMessage(message, parameters);
     try {
       CreatePattern();
-      // "Expected InvalidPatternException"
+      // 'Expected InvalidPatternException'
       assert(false);
     }
     on InvalidPatternError catch (e) {
@@ -122,7 +122,7 @@ abstract class PatternTestData<T> {
     assert(result.success == false);
     try {
       result.getValueOrThrow();
-      // "Expected UnparsableValueException"
+      // 'Expected UnparsableValueException'
       assert(false);
     }
     on UnparsableValueError catch (e) {
@@ -136,23 +136,23 @@ abstract class PatternTestData<T> {
   @override String toString() {
     try {
       StringBuffer builder = StringBuffer();
-      builder.write("Value=$Value; ");
-      builder.write("Pattern=$pattern; ");
-      builder.write("Text=$text; ");
+      builder.write('Value=$Value; ');
+      builder.write('Pattern=$pattern; ');
+      builder.write('Text=$text; ');
       if (culture != Culture.invariant) {
-        builder.write("Culture=$culture; ");
+        builder.write('Culture=$culture; ');
       }
       if (description != null) {
-        builder.write("Description=$description; ");
+        builder.write('Description=$description; ');
       }
       // if (!Template.Equals(DefaultTemplate)) {
       if (template != defaultTemplate) {
-        builder.write("Template=$template;");
+        builder.write('Template=$template;');
       }
       return builder.toString();
     }
     catch (Exception) {
-      return "Formatting of test name failed";
+      return 'Formatting of test name failed';
     }
   }
 

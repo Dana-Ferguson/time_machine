@@ -62,7 +62,7 @@ class ZoneInterval {
   ///
   /// [InvalidOperationException]: The zone interval extends to the end of time
   Instant get end {
-    Preconditions.checkState(_rawEnd.isValid, "Zone interval extends to the end of time");
+    Preconditions.checkState(_rawEnd.isValid, 'Zone interval extends to the end of time');
     return _rawEnd;
   }
 
@@ -117,13 +117,13 @@ class ZoneInterval {
   ///// Initializes a new instance of the [ZoneInterval] class.
   /////
   ///// [name]: The name of this offset period (e.g. PST or PDT).
-  ///// [start]: The first [Instant] that the <paramref name = "wallOffset" /> applies,
+  ///// [start]: The first [Instant] that the <paramref name = 'wallOffset' /> applies,
   ///// or `null` to make the zone interval extend to the start of time.
-  ///// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
+  ///// [end]: The last [Instant] (exclusive) that the <paramref name = 'wallOffset' /> applies,
   ///// or `null` to make the zone interval extend to the end of time.
   ///// [wallOffset]: The [wallOffset] from UTC for this period including any daylight savings.
   ///// [savings]: The [wallOffset] daylight savings contribution to the offset.
-  ///// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
+  ///// [ArgumentError]: If `<paramref name = 'start' /> &gt;= <paramref name = "end" />`.
   //ZoneInterval(String name, Instant start, Instant end, Offset wallOffset, Offset savings)
   //    : this(name, start ?? Instant.BeforeMinValue, end ?? Instant.AfterMaxValue, wallOffset, savings)
   //{
@@ -131,24 +131,24 @@ class ZoneInterval {
 
   /// Gets the first Instant that the Offset applies.
   Instant get start {
-    Preconditions.checkState(_rawStart.isValid, "Zone interval extends to the beginning of time");
+    Preconditions.checkState(_rawStart.isValid, 'Zone interval extends to the beginning of time');
     return _rawStart;
   }
 
   /// Initializes a new instance of the [ZoneInterval] class.
   ///
   /// [name]: The name of this offset period (e.g. PST or PDT).
-  /// [start]: The first [Instant] that the <paramref name = "wallOffset" /> applies,
+  /// [start]: The first [Instant] that the <paramref name = 'wallOffset' /> applies,
   /// or [IInstant.beforeMinValue] to make the zone interval extend to the start of time.
-  /// [end]: The last [Instant] (exclusive) that the <paramref name = "wallOffset" /> applies,
+  /// [end]: The last [Instant] (exclusive) that the <paramref name = 'wallOffset' /> applies,
   /// or [IInstant.afterMaxValue] to make the zone interval extend to the end of time.
   /// [wallOffset]: The [wallOffset] from UTC for this period including any daylight savings.
   /// [savings]: The [wallOffset] daylight savings contribution to the offset.
-  /// [ArgumentError]: If `<paramref name = "start" /> &gt;= <paramref name = "end" />`.
+  /// [ArgumentError]: If `<paramref name = 'start' /> &gt;= <paramref name = "end" />`.
   factory ZoneInterval._(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
     rawStart ??= IInstant.beforeMinValue;
     rawEnd ??= IInstant.afterMaxValue;
-    // Work out the corresponding local instants, taking care to "go infinite" appropriately.
+    // Work out the corresponding local instants, taking care to 'go infinite' appropriately.
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkArgument(rawStart < rawEnd, 'start', "The start Instant must be less than the end Instant");
     return ZoneInterval._new(name, rawStart, rawEnd, wallOffset, savings);
@@ -170,7 +170,7 @@ class ZoneInterval {
 
   /// Determines whether this period contains the given Instant in its range.
   ///
-  /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of "the end of time"
+  /// Usually this is half-open, i.e. the end is exclusive, but an interval with an end point of 'the end of time'
   /// is deemed to be inclusive at the end.
   ///
   /// [instant]: The instant to test.
@@ -194,7 +194,7 @@ class ZoneInterval {
 
   /// Indicates whether the current object is equal to another object of the same type.
   ///
-  /// true if the current object is equal to the <paramref name = "other" /> parameter; otherwise, false.
+  /// true if the current object is equal to the <paramref name = 'other' /> parameter; otherwise, false.
   ///
   /// [other]: An object to compare with this object.
   bool equals(ZoneInterval other) {
@@ -216,9 +216,9 @@ class ZoneInterval {
   /// Returns a [String] that represents this instance.
   ///
   /// A [String] that represents this instance.
-  @override String toString() => "${name}: [$_rawStart, $_rawEnd) $wallOffset ($savings)";
+  @override String toString() => '${name}: [$_rawStart, $_rawEnd) $wallOffset ($savings)';
 
-// @override String toString() => "${name}: [$RawStart, $RawEnd) $wallOffset ($savings)";
-// @override String toString() => "${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)";
+// @override String toString() => '${name}: [$RawStart, $RawEnd) $wallOffset ($savings)';
+// @override String toString() => '${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)';
 
 }

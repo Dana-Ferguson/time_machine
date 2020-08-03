@@ -16,7 +16,7 @@ Future main() async {
 }
 
 Future setup() async {
-  ExpectedZone = (MtdtzBuilder.withName(-2, "Start")
+  ExpectedZone = (MtdtzBuilder.withName(-2, 'Start')
     ..Add(Instants['C'], 2, 1, "Middle")
     ..Add(Instants['G'], 1, 0, "End")
   ).Build();
@@ -45,24 +45,24 @@ DateTimeZone ExpectedZone;
 // and the letters in the string break it up into partial maps (all based on the original zone). We should
 // be able to break it up anywhere and still get back to something equivalent to the original zone.
 @Test()
-@TestCase(const [""])
-@TestCase(const ["A"])
-@TestCase(const ["C"])
-@TestCase(const ["E"])
-@TestCase(const ["G"])
-@TestCase(const ["H"])
-@TestCase(const ["AB"])
-@TestCase(const ["AC"])
-@TestCase(const ["AD"])
-@TestCase(const ["AG"])
-@TestCase(const ["AH"])
-@TestCase(const ["CG"])
-@TestCase(const ["CH"])
-@TestCase(const ["ACD"])
-@TestCase(const ["ACG"])
-@TestCase(const ["ACH"])
-@TestCase(const ["DEF"])
-@TestCase(const ["ABCDEFGHI"])
+@TestCase(const [''])
+@TestCase(const ['A'])
+@TestCase(const ['C'])
+@TestCase(const ['E'])
+@TestCase(const ['G'])
+@TestCase(const ['H'])
+@TestCase(const ['AB'])
+@TestCase(const ['AC'])
+@TestCase(const ['AD'])
+@TestCase(const ['AG'])
+@TestCase(const ['AH'])
+@TestCase(const ['CG'])
+@TestCase(const ['CH'])
+@TestCase(const ['ACD'])
+@TestCase(const ['ACG'])
+@TestCase(const ['ACH'])
+@TestCase(const ['DEF'])
+@TestCase(const ['ABCDEFGHI'])
 void ConvertToFullMap(String intervalBreaks) {
   var maps = List<PartialZoneIntervalMap>();
   // We just reuse ExpectedZone as the IZoneIntervalMap; PartialZoneIntervalMap itself will clamp the ends.

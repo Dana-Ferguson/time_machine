@@ -42,13 +42,13 @@ class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
     _writer.writeUint8(flag);
 
     if (zoneInterval.hasStart) {
-      if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception("zoneInterval.Start not seconds.");
+      if (zoneInterval.start.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception('zoneInterval.Start not seconds.');
       if (longStartRequired) _writer.writeInt64(zoneInterval.start.epochSeconds);
       else _writer.writeInt32(zoneInterval.start.epochSeconds); // .ToUnixTimeMilliseconds());
     }
 
     if (zoneInterval.hasEnd) {
-      if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception("zoneInterval.End not seconds.");
+      if (zoneInterval.end.epochNanoseconds % TimeConstants.nanosecondsPerSecond != 0) throw Exception('zoneInterval.End not seconds.');
       if (longEndRequired) _writer.writeInt64(zoneInterval.end.epochSeconds);
       else _writer.writeInt32(zoneInterval.end.epochSeconds); // .ToUnixTimeMilliseconds());
     }
@@ -91,7 +91,7 @@ class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
 
   /// Writes the given dictionary of string to string to the stream.
   /// </summary>
-  /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
+  /// <param name='dictionary'>The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
   void writeDictionary(Map<String, String> map) {
     Preconditions.checkNotNull(map, 'map');
 

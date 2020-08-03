@@ -12,16 +12,16 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 @immutable
 class PeriodPattern implements IPattern<Period> {
   /// Pattern which uses the normal ISO format for all the supported ISO
-  /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
+  /// fields, but extends the time part with 's' for milliseconds, "t" for ticks and "n" for nanoseconds.
   /// No normalization is carried out, and a period may contain weeks as well as years, months and days.
   /// Each element may also be negative, independently of other elements. This pattern round-trips its
   /// values: a parse/format cycle will produce an identical period, including units.
   ///
   /// Pattern which uses the normal ISO format for all the supported ISO
-  /// fields, but extends the time part with "s" for milliseconds, "t" for ticks and "n" for nanoseconds.
+  /// fields, but extends the time part with 's' for milliseconds, "t" for ticks and "n" for nanoseconds.
   static final PeriodPattern roundtrip = PeriodPattern._(_RoundtripPatternImpl());
 
-  /// A "normalizing" pattern which abides by the ISO-8601 duration format as far as possible.
+  /// A 'normalizing' pattern which abides by the ISO-8601 duration format as far as possible.
   /// Weeks are added to the number of days (after multiplying by 7). Time units are normalized
   /// (extending into days where necessary), and fractions of seconds are represented within the
   /// seconds part. Unlike ISO-8601, which pattern allows for negative values within a period.
@@ -85,7 +85,7 @@ class PeriodPattern implements IPattern<Period> {
 class _RoundtripPatternImpl implements IPattern<Period> {
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return IParseResult.argumentNull<Period>("text");
+      return IParseResult.argumentNull<Period>('text');
     }
     if (text.length == 0) {
       return IParseResult.valueStringEmpty.convertError();
@@ -176,19 +176,19 @@ class _RoundtripPatternImpl implements IPattern<Period> {
   StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
-    builder.write("P");
-    PeriodPattern._appendValue(builder, value.years, "Y");
-    PeriodPattern._appendValue(builder, value.months, "M");
-    PeriodPattern._appendValue(builder, value.weeks, "W");
-    PeriodPattern._appendValue(builder, value.days, "D");
+    builder.write('P');
+    PeriodPattern._appendValue(builder, value.years, 'Y');
+    PeriodPattern._appendValue(builder, value.months, 'M');
+    PeriodPattern._appendValue(builder, value.weeks, 'W');
+    PeriodPattern._appendValue(builder, value.days, 'D');
     if (value.hasTimeComponent) {
-      builder.write("T");
-      PeriodPattern._appendValue(builder, value.hours, "H");
-      PeriodPattern._appendValue(builder, value.minutes, "M");
-      PeriodPattern._appendValue(builder, value.seconds, "S");
-      PeriodPattern._appendValue(builder, value.milliseconds, "s");
-      PeriodPattern._appendValue(builder, value.microseconds, "t");
-      PeriodPattern._appendValue(builder, value.nanoseconds, "n");
+      builder.write('T');
+      PeriodPattern._appendValue(builder, value.hours, 'H');
+      PeriodPattern._appendValue(builder, value.minutes, 'M');
+      PeriodPattern._appendValue(builder, value.seconds, 'S');
+      PeriodPattern._appendValue(builder, value.milliseconds, 's');
+      PeriodPattern._appendValue(builder, value.microseconds, 't');
+      PeriodPattern._appendValue(builder, value.nanoseconds, 'n');
     }
     return builder;
   }
@@ -198,7 +198,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
   // TODO(misc): Tidy this up a *lot*.
   ParseResult<Period> parse(String text) {
     if (text == null) {
-      return IParseResult.argumentNull<Period>("text");
+      return IParseResult.argumentNull<Period>('text');
     }
     if (text.length == 0) {
       return IParseResult.valueStringEmpty.convertError();
@@ -327,32 +327,32 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
     value = value.normalize();
     // Always ensure we've got *some* unit; arbitrarily pick days.
     if (value.equals(Period.zero)) {
-      builder.write("P0D");
+      builder.write('P0D');
       return builder;
     }
-    builder.write("P");
-    PeriodPattern._appendValue(builder, value.years, "Y");
-    PeriodPattern._appendValue(builder, value.months, "M");
-    PeriodPattern._appendValue(builder, value.weeks, "W");
-    PeriodPattern._appendValue(builder, value.days, "D");
+    builder.write('P');
+    PeriodPattern._appendValue(builder, value.years, 'Y');
+    PeriodPattern._appendValue(builder, value.months, 'M');
+    PeriodPattern._appendValue(builder, value.weeks, 'W');
+    PeriodPattern._appendValue(builder, value.days, 'D');
     if (value.hasTimeComponent) {
-      builder.write("T");
-      PeriodPattern._appendValue(builder, value.hours, "H");
-      PeriodPattern._appendValue(builder, value.minutes, "M");
+      builder.write('T');
+      PeriodPattern._appendValue(builder, value.hours, 'H');
+      PeriodPattern._appendValue(builder, value.minutes, 'M');
       int nanoseconds = value.milliseconds * TimeConstants.nanosecondsPerMillisecond + value.microseconds * TimeConstants.nanosecondsPerMicrosecond + value.nanoseconds;
       int seconds = value.seconds;
       if (nanoseconds != 0 || seconds != 0) {
         if (nanoseconds < 0 || seconds < 0) {
-          builder.write("-");
+          builder.write('-');
           nanoseconds = -nanoseconds;
           seconds = -seconds;
         }
         FormatHelper.formatInvariant(seconds, builder);
         if (nanoseconds != 0) {
-          builder.write(".");
+          builder.write('.');
           FormatHelper.appendFractionTruncate(nanoseconds, 9, 9, builder);
         }
-        builder.write("S");
+        builder.write('S');
       }
     }
     return builder;

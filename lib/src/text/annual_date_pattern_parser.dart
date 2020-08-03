@@ -65,7 +65,7 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
         builder.addFormatLeftPad(count, (value) => value.day, assumeNonNegative: true, assumeFitsInCount: count == 2);
         break;
       default:
-        throw StateError/*InvalidOperationException*/("Invalid count!");
+        throw StateError/*InvalidOperationException*/('Invalid count!');
     }
     builder.addField(field, pattern.current);
   }

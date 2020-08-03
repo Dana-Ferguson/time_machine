@@ -35,5 +35,5 @@ class Transition {
   @override int get hashCode => hash2(Instant, newOffset);
 
   /// Returns a [String] that represents this instance.
-  @override String toString() => "Transition to $newOffset at $instant";
+  @override String toString() => 'Transition to $newOffset at $instant';
 }

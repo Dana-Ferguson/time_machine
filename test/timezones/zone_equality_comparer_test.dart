@@ -29,21 +29,21 @@ void Various()
 {
   // Names, some offsets, and first transition are all different.
   var zone1 = (MtdtzBuilder()
-    ..Add(Instants[0], 1, 0, "xx")
-    ..Add(Instants[2], 3, 0, "1b")
-    ..Add(Instants[4], 2, 1, "1c")
-    ..Add(Instants[6], 4, 0, "1d")
+    ..Add(Instants[0], 1, 0, 'xx')
+    ..Add(Instants[2], 3, 0, '1b')
+    ..Add(Instants[4], 2, 1, '1c')
+    ..Add(Instants[6], 4, 0, '1d')
   ).Build();
 
   var zone2 = (MtdtzBuilder()
-    ..Add(Instants[1], 1, 0, "xx")
-    ..Add(Instants[2], 3, 0, "2b")
-    ..Add(Instants[4], 1, 2, "2c")
-    ..Add(Instants[6], 5, 0, "2d")
+    ..Add(Instants[1], 1, 0, 'xx')
+    ..Add(Instants[2], 3, 0, '2b')
+    ..Add(Instants[4], 1, 2, '2c')
+    ..Add(Instants[6], 5, 0, '2d')
   ).Build();
 
   // Even though the first transition point is different, by default that's fine if
-  // the start point is "inside" both.
+  // the start point is 'inside' both.
   AssertEqual(zone1, zone2, Instants[1], Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
   // When we extend backwards a bit, we can see the difference between the two.
   AssertNotEqual(zone1, zone2, Instants[1] - Time.epsilon, Instants[5], ZoneEqualityComparerOptions.onlyMatchWallOffset);
@@ -64,21 +64,21 @@ void Various()
 @Test()
 void ElidedTransitions() {
   var zone1 = (MtdtzBuilder()
-    ..Add(Instants[3], 0, 0, "a")
-    ..Add(Instants[4], 1, 2, "b")
-    ..Add(Instants[5], 2, 1, "b")
-    ..Add(Instants[6], 1, 0, "d")
-    ..Add(Instants[7], 1, 0, "e")
-    ..Add(Instants[8], 0, 0, "x")
+    ..Add(Instants[3], 0, 0, 'a')
+    ..Add(Instants[4], 1, 2, 'b')
+    ..Add(Instants[5], 2, 1, 'b')
+    ..Add(Instants[6], 1, 0, 'd')
+    ..Add(Instants[7], 1, 0, 'e')
+    ..Add(Instants[8], 0, 0, 'x')
   ).Build();
 
   var zone2 = (MtdtzBuilder()
-    ..Add(Instants[3], 0, 0, "a")
-    ..Add(Instants[4], 3, 0, "b")
+    ..Add(Instants[3], 0, 0, 'a')
+    ..Add(Instants[4], 3, 0, 'b')
     // Instants[5] isn't included here: wall offset is the same; components change in zone1
-    ..Add(Instants[6], 1, 0, "d")
+    ..Add(Instants[6], 1, 0, 'd')
     // Instants[7] isn't included here: offset components are the same; names change in zone1
-    ..Add(Instants[8], 0, 0, "x")
+    ..Add(Instants[8], 0, 0, 'x')
   ).Build();
 
   AssertEqual(zone1, zone2, Instant.minValue, Instant.maxValue, ZoneEqualityComparerOptions.onlyMatchWallOffset);
@@ -124,13 +124,13 @@ void ElidedTransitions_Degenerate() {
   // these wouldn't even be generated, but we could imagine some
   // sort of zone interval in the future which had another property...)
   var zone1 = (MtdtzBuilder()
-    ..Add(Instants[3], 1, 0, "a")
-    ..Add(Instants[4], 1, 0, "a")
-    ..Add(Instants[5], 1, 0, "a")
+    ..Add(Instants[3], 1, 0, 'a')
+    ..Add(Instants[4], 1, 0, 'a')
+    ..Add(Instants[5], 1, 0, 'a')
     ..Add(Instants[6], 0)
   ).Build();
   var zone2 = (MtdtzBuilder()
-    ..Add(Instants[3], 1, 0, "a")
+    ..Add(Instants[3], 1, 0, 'a')
     ..Add(Instants[6], 0)
   ).Build();
 
@@ -147,7 +147,7 @@ void ElidedTransitions_Degenerate() {
 Future ReferenceComparison() async
 {
   var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
-  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   expect(comparer.equals(zone, zone), isTrue);
 }
 
@@ -155,7 +155,7 @@ Future ReferenceComparison() async
 Future NullComparison() async
 {
   var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
-  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   expect(comparer.equals(zone, null), isFalse);
   expect(comparer.equals(null, zone), isFalse);
 }

@@ -5,7 +5,7 @@
 import 'test_helper.dart';
 
 void setFunctions() {
-  print("TEST OPERATOR FUNCTIONS NOT SET!");
+  print('TEST OPERATOR FUNCTIONS NOT SET!');
   testOperatorComparisonFunction = null;
   testOperatorComparisonEqualityFunction = null;
   testOperatorEqualityFunction = null;

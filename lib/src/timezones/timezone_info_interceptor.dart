@@ -18,7 +18,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal abstract class TimeZoneInfoInterceptor
 {
   /// The shim to use for all the static methods. We don't care about thread safety here,
-  /// beyond "it must be correct when used in production" - it's only ever changed in tests,
+  /// beyond 'it must be correct when used in production' - it's only ever changed in tests,
   /// which are single-threaded anyway.
   @internal static ITimeZoneInfoShim Shim = new BclShim();
 

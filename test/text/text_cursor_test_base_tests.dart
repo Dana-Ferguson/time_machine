@@ -16,7 +16,7 @@ import '../time_machine_testing.dart';
 abstract class TextCursorTestBase {
   @Test()
   void TestConstructor() {
-    const String testString = "test";
+    const String testString = 'test';
     TextCursor cursor = MakeCursor(testString);
     ValidateContents(cursor, testString);
     ValidateBeginningOfString(cursor);
@@ -24,7 +24,7 @@ abstract class TextCursorTestBase {
 
   @Test()
   void TestMove() {
-    TextCursor cursor = MakeCursor("test");
+    TextCursor cursor = MakeCursor('test');
     ValidateBeginningOfString(cursor);
     expect(cursor.move(0), isTrue);
     ValidateCurrentCharacter(cursor, 0, 't');
@@ -40,13 +40,13 @@ abstract class TextCursorTestBase {
 
   @Test()
   void TestMove_NextPrevious() {
-    TextCursor cursor = MakeCursor("test");
+    TextCursor cursor = MakeCursor('test');
     ValidateBeginningOfString(cursor);
-    expect(cursor.move(2), isTrue, reason: "Move(2)");
+    expect(cursor.move(2), isTrue, reason: 'Move(2)');
     ValidateCurrentCharacter(cursor, 2, 's');
-    expect(cursor.movePrevious(), isTrue, reason: "MovePrevious()");
+    expect(cursor.movePrevious(), isTrue, reason: 'MovePrevious()');
     ValidateCurrentCharacter(cursor, 1, 'e');
-    expect(cursor.moveNext(), isTrue, reason: "MoveNext()");
+    expect(cursor.moveNext(), isTrue, reason: 'MoveNext()');
     ValidateCurrentCharacter(cursor, 2, 's');
     expect(cursor.movePrevious(), isTrue); // 1
     expect(cursor.movePrevious(), isTrue); // 0
@@ -58,7 +58,7 @@ abstract class TextCursorTestBase {
 
   @Test()
   void TestMove_invalid() {
-    TextCursor cursor = MakeCursor("test");
+    TextCursor cursor = MakeCursor('test');
     ValidateBeginningOfString(cursor);
     expect(cursor.move(-1000), isFalse);
     ValidateBeginningOfString(cursor);
@@ -95,8 +95,8 @@ abstract class TextCursorTestBase {
     if (length < 0) {
       length = value.length;
     }
-    expect(value, cursor.value, reason: "Cursor Value mismatch");
-    expect(length, cursor.length, reason: "Cursor Length mismatch");
+    expect(value, cursor.value, reason: 'Cursor Value mismatch');
+    expect(length, cursor.length, reason: 'Cursor Length mismatch');
   }
 
   @internal TextCursor MakeCursor(String value);

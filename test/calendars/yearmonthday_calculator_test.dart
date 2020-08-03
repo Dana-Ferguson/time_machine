@@ -15,18 +15,18 @@ Future main() async {
 
 // todo: add the rest of the calendars
 
-// Here the term "Islamic" only refers to whether the implementation is IslamicYearMonthDayCalculator,
+// Here the term 'Islamic' only refers to whether the implementation is IslamicYearMonthDayCalculator,
 // not whether the calendar itself is based on Islamic scripture.
 List<TestCaseData> NonIslamicCalculators = [
-  TestCaseData(GregorianYearMonthDayCalculator())..name="Gregorian",
-  //new TestCaseData(new CopticYearMonthDayCalculator())..name="Coptic",
-  TestCaseData(JulianYearMonthDayCalculator())..name="Julian",
-//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName("Hebrew Civil"),
-//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName("Hebrew Scriptural"),
-//new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName("Persian Simple"),
-//new TestCaseData(new PersianYearMonthDayCalculator.Arithmetic()).SetName("Persian Arithmetic"),
-//new TestCaseData(new PersianYearMonthDayCalculator.Astronomical()).SetName("Persian Astronomoical"),
-//new TestCaseData(new UmAlQuraYearMonthDayCalculator()).SetName("Um Al Qura"),
+  TestCaseData(GregorianYearMonthDayCalculator())..name='Gregorian',
+  //new TestCaseData(new CopticYearMonthDayCalculator())..name='Coptic',
+  TestCaseData(JulianYearMonthDayCalculator())..name='Julian',
+//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Civil)).SetName('Hebrew Civil'),
+//new TestCaseData(new HebrewYearMonthDayCalculator(HebrewMonthNumbering.Scriptural)).SetName('Hebrew Scriptural'),
+//new TestCaseData(new PersianYearMonthDayCalculator.Simple()).SetName('Persian Simple'),
+//new TestCaseData(new PersianYearMonthDayCalculator.Arithmetic()).SetName('Persian Arithmetic'),
+//new TestCaseData(new PersianYearMonthDayCalculator.Astronomical()).SetName('Persian Astronomoical'),
+//new TestCaseData(new UmAlQuraYearMonthDayCalculator()).SetName('Um Al Qura'),
 ];
 
 List<TestCaseData> IslamicCalculators = [];
@@ -34,7 +34,7 @@ List<TestCaseData> IslamicCalculators = [];
 (from epoch in Enum.GetValues(typeof(IslamicEpoch)).Cast<IslamicEpoch>()
 from leapYearPattern in Enum.GetValues(typeof(IslamicLeapYearPattern)).Cast<IslamicLeapYearPattern>()
 let calculator = new IslamicYearMonthDayCalculator(leapYearPattern, epoch)
-select new TestCaseData(calculator).SetName($"Islamic: {epoch}, {leapYearPattern}"))
+select new TestCaseData(calculator).SetName($'Islamic: {epoch}, {leapYearPattern}'))
 .ToArray();*/
 
 Iterable<TestCaseData> AllCalculators = [NonIslamicCalculators, IslamicCalculators].expand((x) => x);
@@ -70,13 +70,13 @@ void GetYearConsistentWithGetYearDays(Object calculatorAsObject)
     var tmp = calculator.getYear(startOfYearDays);
     var yearCandidate = tmp[0];
     var dayOfYear = tmp[1];
-    expect(yearCandidate, year, reason: "Start of year $year");
+    expect(yearCandidate, year, reason: 'Start of year $year');
     expect(dayOfYear, 0); // Zero-based...
 
     tmp = calculator.getYear(startOfYearDays - 1);
     yearCandidate = tmp[0];
     dayOfYear = tmp[1];
-    expect(yearCandidate, year - 1, reason: "End of year ${year - 1}");
+    expect(yearCandidate, year - 1, reason: 'End of year ${year - 1}');
     expect(calculator.getDaysInYear(year - 1) - 1, dayOfYear);
   }
 }

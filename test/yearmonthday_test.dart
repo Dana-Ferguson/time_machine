@@ -53,14 +53,14 @@ void AllDays()
 }
 
 @Test()
-@TestCase(const ["1000-01-01", "1000-01-02"])
-@TestCase(const ["1000-01-01", "1000-02-01"])
-@TestCase(const ["999-16-64", "1000-01-01"])
-@TestCase(const ["-1-01-01", "-1-01-02"])
-@TestCase(const ["-1-01-01", "-1-02-01"])
-@TestCase(const ["-2-16-64", "-1-01-01"])
-@TestCase(const ["-1-16-64", "0-01-01"])
-@TestCase(const ["-1-16-64", "1-01-01"])
+@TestCase(const ['1000-01-01', "1000-01-02"])
+@TestCase(const ['1000-01-01', "1000-02-01"])
+@TestCase(const ['999-16-64', "1000-01-01"])
+@TestCase(const ['-1-01-01', "-1-01-02"])
+@TestCase(const ['-1-01-01', "-1-02-01"])
+@TestCase(const ['-2-16-64', "-1-01-01"])
+@TestCase(const ['-1-16-64', "0-01-01"])
+@TestCase(const ['-1-16-64', "1-01-01"])
 void Comparisons(String smallerText, String greaterText)
 {
   var smaller = YearMonthDay.parse(smallerText);
@@ -75,6 +75,6 @@ void Comparisons(String smallerText, String greaterText)
 void YearMonthDayToString()
 {
   var ymd = YearMonthDay(2017, 8, 25);
-  expect("2017-08-25", ymd.toString());
+  expect('2017-08-25', ymd.toString());
 }
 

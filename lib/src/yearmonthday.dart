@@ -18,7 +18,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   // Just for testing purposes...
   static YearMonthDay parse(String text) {
     // Handle a leading - to negate the year
-    if (text.startsWith("-")) {
+    if (text.startsWith('-')) {
       var ymd = parse(text.substring(1));
       return YearMonthDay(-ymd.year, ymd.month, ymd.day);
     }
@@ -138,7 +138,7 @@ class YearMonthDayVM implements Comparable<YearMonthDay> {
   // Just for testing purposes...
   static YearMonthDay parse(String text) {
     // Handle a leading - to negate the year
-    if (text.startsWith("-")) {
+    if (text.startsWith('-')) {
       var ymd = parse(text.substring(1));
       return new YearMonthDay(-ymd.year, ymd.month, ymd.day);
     }

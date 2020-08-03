@@ -65,7 +65,7 @@ class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int _daysFrom0000To1970 = 719527;
   static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...
 
-  /// Specifically Gregorian-optimized conversion from "days since epoch" to year/month/day.
+  /// Specifically Gregorian-optimized conversion from 'days since epoch' to year/month/day.
   static YearMonthDayCalendar getGregorianYearMonthDayCalendarFromDaysSinceEpoch(int daysSinceEpoch) {
     if (daysSinceEpoch < _firstOptimizedDay || daysSinceEpoch > _lastOptimizedDay) {
       return ICalendarSystem.getYearMonthDayCalendarFromDaysSinceEpoch(CalendarSystem.iso, daysSinceEpoch);

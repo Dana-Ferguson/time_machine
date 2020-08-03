@@ -38,6 +38,6 @@ void ResourcePresence(Era era)
 {
   // todo: get us resources?
   var valueByName; // PatternResources.ResourceManager.GetString(era.ResourceIdentifier, Culture.invariantCulture);
-  expect(valueByName, isNotNull, reason: "Missing resource for " + (era != null ? IEra.resourceIdentifier(era) : 'null'));
+  expect(valueByName, isNotNull, reason: 'Missing resource for ' + (era != null ? IEra.resourceIdentifier(era) : 'null'));
 }
 

@@ -36,7 +36,7 @@ abstract class YearMonthDayCalculator {
       averageDaysPer10Years = averageDaysPer10Years + 1 {
     // We should really check the minimum year as well, but constructing it hurts my brain.
     Preconditions.checkArgument(maxYear < YearStartCacheEntry.invalidEntryYear, 'maxYear',
-        "Calendar year range would invalidate caching.");
+        'Calendar year range would invalidate caching.');
   }
 
   /// Returns the number of days from the start of the given year to the start of the given month.
@@ -123,7 +123,7 @@ abstract class YearMonthDayCalculator {
 
 // #endregion Virtual Methods
 
-  /// Converts from a YearMonthDay representation to "day of year".
+  /// Converts from a YearMonthDay representation to 'day of year'.
   /// This assumes the parameter have been validated previously.
   int getDayOfYear(YearMonthDay yearMonthDay) => getDaysFromStartOfYearToStartOfMonth(yearMonthDay.year, yearMonthDay.month) + yearMonthDay.day;
 
@@ -169,7 +169,7 @@ abstract class YearMonthDayCalculator {
     int candidateLength = getDaysInYear(candidate);
     while (daysFromCandidateStartToTarget >= candidateLength) {
       // Our candidate year is earlier than we want, so fast forward a year,
-      // removing the current candidate length from the "remaining days" and
+      // removing the current candidate length from the 'remaining days' and
       // working out the length of the new candidate.
       candidate++;
       daysFromCandidateStartToTarget -= candidateLength;

@@ -88,9 +88,9 @@ void InternalConsistency()
       for (int day = 1; day < monthLength; day++)
       {
         LocalDate date = LocalDate(year, month, day, calendar);
-        expect(year, date.year, reason: "Year of $year-$month-$day");
-        expect(month, date.monthOfYear, reason: "Month of $year-$month-$day");
-        expect(day, date.dayOfMonth, reason: "Day of $year-$month-$day");
+        expect(year, date.year, reason: 'Year of $year-$month-$day');
+        expect(month, date.monthOfYear, reason: 'Month of $year-$month-$day');
+        expect(day, date.dayOfMonth, reason: 'Day of $year-$month-$day');
       }
     }
   }
@@ -296,7 +296,7 @@ void SampleDateBclCompatibility()
 
 /// This tests every day for 9000 (ISO) years, to check that it always matches the year, month and day.
 @Test() @SkipMe()
-// [Category("Slow")]
+// [Category('Slow')]
 void BclThroughHistory()
 {
   //var bcl = BclCalendars.Hijri;

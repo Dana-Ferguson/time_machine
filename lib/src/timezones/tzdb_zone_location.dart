@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
-/// A location entry generated from the "zone.tab" file in a TZDB release. This can be used to provide
+/// A location entry generated from the 'zone.tab' file in a TZDB release. This can be used to provide
 /// users with a choice of time zone, although it is not internationalized.
 @immutable
 class TzdbZoneLocation
@@ -94,7 +94,7 @@ class TzdbZoneLocation
       return TzdbZoneLocation(latitudeSeconds, longitudeSeconds, countryName, countryCode, zoneId, comment);
     }
     on ArgumentError catch (e) {
-      throw InvalidTimeDataError("Invalid zone location data in stream", e);
+      throw InvalidTimeDataError('Invalid zone location data in stream', e);
     }
   }
 }

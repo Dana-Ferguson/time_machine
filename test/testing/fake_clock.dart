@@ -21,7 +21,7 @@ class FakeClock extends Clock {
   ///
   /// [initial]: The initial instant.
   /// [autoAdvance]: The duration to advance the clock on each read.
-  /// <seealso cref="AutoAdvance"/>
+  /// <seealso cref='AutoAdvance'/>
   FakeClock(Instant initial, [Time autoAdvance = Time.zero]) {
     _now = initial;
     this._autoAdvance = autoAdvance;
@@ -30,7 +30,7 @@ class FakeClock extends Clock {
   /// Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.
   /// The value of the [AutoAdvance] property will be initialised to zero.
   ///
-  /// [year]: The year. This is the "absolute year",
+  /// [year]: The year. This is the 'absolute year',
   /// so a value of 0 means 1 BC, for example.
   /// [monthOfYear]: The month of year.
   /// [dayOfMonth]: The day of month.
@@ -106,14 +106,14 @@ class FakeClock extends Clock {
     }
   }
 
-  /// Returns the "current time" for this clock. Unlike a normal clock, this
+  /// Returns the 'current time' for this clock. Unlike a normal clock, this
   /// property may return the same value from repeated calls until one of the methods
   /// to change the time is called.
   ///
   /// If the value of the [AutoAdvance] property is non-zero, then every
   /// call to this method will advance the current time by that value.
   ///
-  /// Returns: The "current time" from this (fake) clock.
+  /// Returns: The 'current time' from this (fake) clock.
   Instant getCurrentInstant() {
     // lock (mutex)
     {
@@ -131,7 +131,7 @@ class FakeClock extends Clock {
   ///
   /// The value could even be negative, to simulate particularly odd system clock effects.
   ///
-  /// <seealso cref="GetCurrentInstant"/>
+  /// <seealso cref='GetCurrentInstant'/>
   Time get AutoAdvance => _autoAdvance;
 
   void set AutoAdvance(Time value) => _autoAdvance = value;

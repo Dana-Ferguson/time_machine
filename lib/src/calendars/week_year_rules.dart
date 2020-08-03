@@ -82,7 +82,7 @@ abstract class WeekYearRules {
         minDaysInFirstWeek = 7;
         break;
       default:
-        throw ArgumentError("Unsupported CalendarWeekRule: $calendarWeekRule");
+        throw ArgumentError('Unsupported CalendarWeekRule: $calendarWeekRule');
     }
     return SimpleWeekYearRule(minDaysInFirstWeek, firstDayOfWeek, true);
   }

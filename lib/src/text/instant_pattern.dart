@@ -35,7 +35,7 @@ class InstantPattern implements IPattern<Instant> {
   static InstantPattern get extendedIso => InstantPatterns.extendedIsoPatternImpl;
 
   // ignore: unused_field
-  static const String _defaultFormatPattern = "g";
+  static const String _defaultFormatPattern = 'g';
 
   final IPattern<Instant> _pattern;
 

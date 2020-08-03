@@ -48,14 +48,14 @@ abstract class HebrewScripturalCalculator {
       // Heshvan
       return YearMonthDay(year, 8, dayOfYear - 30);
     }
-    // Now "day of year without Heshvan"...
+    // Now 'day of year without Heshvan'...
     dayOfYear -= heshvanLength;
     if (dayOfYear < 31 + kislevLength)
     {
       // Kislev
       return YearMonthDay(year, 9, dayOfYear - 30);
     }
-    // Now "day of year without Heshvan or Kislev"...
+    // Now 'day of year without Heshvan or Kislev'...
     dayOfYear -= kislevLength;
     if (dayOfYear < 31 + 29)
     {
@@ -72,7 +72,7 @@ abstract class HebrewScripturalCalculator {
       // Adar / Adar I
       return YearMonthDay(year, 12, dayOfYear - (30 + 29 + 30));
     }
-    // Now "day of year without first month of Adar"
+    // Now 'day of year without first month of Adar'
     dayOfYear -= firstAdarLength;
     if (isLeap)
     {
@@ -80,7 +80,7 @@ abstract class HebrewScripturalCalculator {
       {
         return YearMonthDay(year, 13, dayOfYear - (30 + 29 + 30));
       }
-      // Now "day of year without any Adar"
+      // Now 'day of year without any Adar'
       dayOfYear -= 29;
     }
     // We could definitely do a binary search from here, but it would only
@@ -158,7 +158,7 @@ abstract class HebrewScripturalCalculator {
       default:
       // Just shorthand for using the right exception across netstandard and desktop
         Preconditions.checkArgumentRange('month', month, 1, 13);
-        throw StateError("CheckArgumentRange should have thrown...");
+        throw StateError('CheckArgumentRange should have thrown...');
     }
   }
 
@@ -228,12 +228,12 @@ abstract class HebrewScripturalCalculator {
   }
 
   /// <summary>
-  /// Returns the cached "elapsed day at start of year / IsHeshvanLong / IsKislevShort" combination,
-  /// populating the cache if necessary. Bits 2-24 are the "elapsed days start of year"; bit 0 is
-  /// "is Heshvan long"; bit 1 is "is Kislev short". If the year is out of the range for the cache,
+  /// Returns the cached 'elapsed day at start of year / IsHeshvanLong / IsKislevShort' combination,
+  /// populating the cache if necessary. Bits 2-24 are the 'elapsed days start of year'; bit 0 is
+  /// 'is Heshvan long'; bit 1 is "is Kislev short". If the year is out of the range for the cache,
   /// the value is populated but not cached.
   /// </summary>
-  /// <param name="year"></param>
+  /// <param name='year'></param>
   static int _getOrPopulateCache(int year)
   {
     if (year < minYear || year > maxYear)

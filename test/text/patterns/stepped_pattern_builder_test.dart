@@ -18,12 +18,12 @@ Future main() async {
 }
 
 @private final IPartialPattern<Offset> SimpleOffsetPattern =
-OffsetPatternParser().parsePattern("HH:mm", TimeMachineFormatInfo.invariantInfo);
+OffsetPatternParser().parsePattern('HH:mm', TimeMachineFormatInfo.invariantInfo);
 
 @Test()
 void ParsePartial_ValidInMiddle()
 {
-  var value = ValueCursor("x17:30y");
+  var value = ValueCursor('x17:30y');
   value.moveNext();
   value.moveNext();
   // Start already looking at the value to parse
@@ -37,7 +37,7 @@ void ParsePartial_ValidInMiddle()
 @Test()
 void ParsePartial_ValidAtEnd()
 {
-  var value = ValueCursor("x17:30");
+  var value = ValueCursor('x17:30');
   value.moveNext();
   value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
@@ -49,7 +49,7 @@ void ParsePartial_ValidAtEnd()
 @Test()
 void Parse_Partial_Invalid()
 {
-  var value = ValueCursor("x17:y");
+  var value = ValueCursor('x17:y');
   value.moveNext();
   value.moveNext();
   var result = SimpleOffsetPattern.parsePartial(value);
@@ -59,17 +59,17 @@ void Parse_Partial_Invalid()
 @Test()
 void AppendFormat()
 {
-  var builder = StringBuffer("x");
+  var builder = StringBuffer('x');
   var offset = Offset.hoursAndMinutes(17, 30);
   SimpleOffsetPattern.appendFormat(offset, builder);
-  expect("x17:30", builder.toString());
+  expect('x17:30', builder.toString());
 }
 
 @Test()
-@TestCase(const ["aBaB", true])
-@TestCase(const ["aBAB", false]) // Case-sensitive
-@TestCase(const ["<aBaB", false]) // < is reserved
-@TestCase(const ["aBaB>", false]) // > is reserved
+@TestCase(const ['aBaB', true])
+@TestCase(const ['aBAB', false]) // Case-sensitive
+@TestCase(const ['<aBaB', false]) // < is reserved
+@TestCase(const ['aBaB>', false]) // > is reserved
 void UnhandledLiteral(String text, bool valid) {
   CharacterHandler<LocalDate, SampleBucket> handler = (PatternCursor x, SteppedPatternBuilder<LocalDate, SampleBucket> y) => null; // = delegate { };
   var handlers = Map<String, CharacterHandler<LocalDate, SampleBucket>>.from(

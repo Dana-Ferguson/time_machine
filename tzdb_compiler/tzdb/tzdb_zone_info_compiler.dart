@@ -22,15 +22,15 @@ class TextWriter {
 /// for its [DateTimeZone] definitions. This reads a set of files and generates a resource file with
 /// the compiled contents suitable for reading with [TzdbDateTimeZoneSource] or one of its variants.
 class TzdbZoneInfoCompiler {
-  static const String _makefile = "Makefile";
-  static const String _zone1970TabFile = "zone1970.tab";
-  static const String _iso3166TabFile = "iso3166.tab";
-  static const String _zoneTabFile = "zone.tab";
+  static const String _makefile = 'Makefile';
+  static const String _zone1970TabFile = 'zone1970.tab';
+  static const String _iso3166TabFile = 'iso3166.tab';
+  static const String _zoneTabFile = 'zone.tab';
 
   // todo: readonly collection, get only accessor
   static final List<String> _zoneFiles = [
-    "africa", "antarctica", "asia", "australasia", "europe",
-    "northamerica", "southamerica", "pacificnew", "etcetera", "backward", "systemv"
+    'africa', "antarctica", "asia", "australasia", "europe",
+    'northamerica', "southamerica", "pacificnew", "etcetera", "backward", "systemv"
   ];
 
   static final RegExp _versionRegex = RegExp(r"\d{2,4}[a-z]");
@@ -63,7 +63,7 @@ class TzdbZoneInfoCompiler {
     var tzdbParser = TzdbZoneInfoParser();
     for (var file in _zoneFiles) {
       if (source.contains(file)) {
-        _log?.WriteLine("Parsing file $file . . .");
+        _log?.WriteLine('Parsing file $file . . .');
         var bytes = source.open(file);
         tzdbParser.parser(bytes, database);
       }
@@ -75,28 +75,28 @@ class TzdbZoneInfoCompiler {
       return;
     }
     var iso3166 = source.readLines(_iso3166TabFile)
-        .where((line) => line != "" && !line.startsWith("#"))
+        .where((line) => line != '' && !line.startsWith("#"))
         .map((line) => line.split('\t'))
         .toList();
     if (source.contains(_zoneTabFile)) {
       var iso3166Dict = Map.fromIterable(iso3166, key: (bits) => bits[0], value: (bits) => bits[1]);
       database.zoneLocations = source.readLines(_zoneTabFile)
-          .where((line) => line != "" && !line.startsWith("#"))
+          .where((line) => line != '' && !line.startsWith("#"))
           .map((line) => TzdbZoneLocationParser.parseLocation(line, iso3166Dict))
           .toList();
     }
     if (source.contains(_zone1970TabFile)) {
       var iso3166Dict = Map.fromIterable(iso3166, key: (bits) => bits[0], value: (bits) => TzdbZone1970LocationCountry(/*name:*/ bits[1], /*code:*/ bits[0]));
       database.zone1970Locations = source.readLines(_zone1970TabFile)
-          .where((line) => line != "" && !line.startsWith("#"))
+          .where((line) => line != '' && !line.startsWith("#"))
           .map((line) => TzdbZoneLocationParser.parseEnhancedLocation(line, iso3166Dict))
           .toList();
     }
   }
 
   FileSource _loadSource(String path) {
-    if (path.startsWith("ftp://") || path.startsWith("http://") || path.startsWith("https://")) {
-      _log?.WriteLine("Downloading $path");
+    if (path.startsWith('ftp://') || path.startsWith("http://") || path.startsWith("https://")) {
+      _log?.WriteLine('Downloading $path');
 
       var uri = Uri.parse(path);
 
@@ -104,7 +104,7 @@ class TzdbZoneInfoCompiler {
       http.get(uri).then((response) {
         var data = response.bodyBytes;
 
-        _log?.WriteLine("Compiling from archive");
+        _log?.WriteLine('Compiling from archive');
 
         // todo: was uri.AbsolutePath -- which we don't have, but, it gets turned into a filename??? so.. maybe??
         return FileSource.fromArchive(data, uri.pathSegments.last);
@@ -113,11 +113,11 @@ class TzdbZoneInfoCompiler {
 
     if (Directory(path).existsSync()) {
     // if (FileSystemEntity.typeSync(path) != FileSystemEntityType.notFound) {
-      _log?.WriteLine("Compiling from directory $path");
+      _log?.WriteLine('Compiling from directory $path');
       return FileSource.fromDirectory(path);
     }
     else {
-      _log?.WriteLine("Compiling from archive file $path");
+      _log?.WriteLine('Compiling from archive file $path');
       // todo: await
       var file = File(path).readAsBytesSync();
       return FileSource.fromArchive(file, path);
@@ -130,7 +130,7 @@ class TzdbZoneInfoCompiler {
 
         if (_versionRegex2.hasMatch(line)) {
           var version = line.substring(8).trim();
-          _log?.WriteLine("Inferred version $version from $_makefile");
+          _log?.WriteLine('Inferred version $version from $_makefile');
           return version;
         }
       }
@@ -139,10 +139,10 @@ class TzdbZoneInfoCompiler {
     var match = _versionRegex.firstMatch(source.origin);
     if (match != null) {
       var version = match.group(0);
-      _log?.WriteLine("Inferred version $version from file/directory name ${source.origin}");
+      _log?.WriteLine('Inferred version $version from file/directory name ${source.origin}');
       return version;
     }
     // todo: InvalidDataException
-    throw Exception("Unable to determine TZDB version from source");
+    throw Exception('Unable to determine TZDB version from source');
   }
 }

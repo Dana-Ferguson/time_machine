@@ -26,7 +26,7 @@ Future main() async {
 
 Future setup() async {
   Tzdb = await DateTimeZoneProviders.tzdb;
-  Jordan = await Tzdb["Asia/Amman"];
+  Jordan = await Tzdb['Asia/Amman'];
 }
 
 /// If all of these transitions are right, we're probably okay... in particular,

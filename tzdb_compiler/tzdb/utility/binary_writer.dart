@@ -65,7 +65,7 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  void writeAll(Iterable objects, [String separator = ""]) {
+  void writeAll(Iterable objects, [String separator = '']) {
     throw Exception('not implemented');
   }
 
@@ -75,7 +75,7 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  void writeln([Object obj = ""]) {
+  void writeln([Object obj = '']) {
     throw Exception('not implemented');
   }
 }

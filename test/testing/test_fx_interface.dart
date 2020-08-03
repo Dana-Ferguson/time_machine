@@ -4,5 +4,5 @@
 import 'dart:async';
 
 Future runTests() async {
-  print("BLANK TEST RUNNER");
+  print('BLANK TEST RUNNER');
 }

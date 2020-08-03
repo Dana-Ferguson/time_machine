@@ -29,7 +29,7 @@ abstract class AnnualDatePatterns {
 @immutable
 class AnnualDatePattern implements IPattern<AnnualDate> {
   // ignore: unused_field
-  static const String _defaultFormatPattern = "G"; // General, ISO-like
+  static const String _defaultFormatPattern = 'G'; // General, ISO-like
 
   /// Gets an invariant annual date pattern which is compatible with the month/day part of ISO-8601.
   /// This corresponds to the text pattern "MM'-'dd".
@@ -89,7 +89,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   static AnnualDatePattern _create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    // Use the "fixed" parser for the common case of the default template value.
+    // Use the 'fixed' parser for the common case of the default template value.
     var pattern = templateValue == AnnualDatePatterns.defaultTemplateValue
         ? formatInfo.annualDatePatternParser.parsePattern(patternText)
         : AnnualDatePatternParser(templateValue).parsePattern(patternText, formatInfo);

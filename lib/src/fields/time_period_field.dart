@@ -86,7 +86,7 @@ class TimePeriodField
     var calc = AddTimeCalc(start.clockTime, 0);
     calc.addTimeAndDays(this, units);
 
-    // Even though PlusDays optimizes for "value == 0", it's still quicker not to call it.
+    // Even though PlusDays optimizes for 'value == 0', it's still quicker not to call it.
     LocalDate date = calc.extraDays == 0 ? start.calendarDate :  start.calendarDate.addDays(calc.extraDays);
     return LocalDateTime.localDateAtTime(date, calc.localTime);
   }

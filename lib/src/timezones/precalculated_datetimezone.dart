@@ -39,7 +39,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax tailZone) {
     // We want this to be AfterMaxValue for tail-less zones.
     var tailZoneStart = IZoneInterval.rawEnd(intervals[intervals.length - 1]);
-    // Cache a "clamped" zone interval for use at the start of the tail zone. (if (tailZone != null))
+    // Cache a 'clamped' zone interval for use at the start of the tail zone. (if (tailZone != null))
     var firstTailZoneInterval = IZoneInterval.withStart(tailZone?.getZoneInterval(tailZoneStart), tailZoneStart);
     validatePeriods(intervals, tailZone);
 
@@ -101,7 +101,7 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
       }
     }
     // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-    throw StateError("Instant $instant did not exist in time zone $id");
+    throw StateError('Instant $instant did not exist in time zone $id');
   }
 
   // #region I/O

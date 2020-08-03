@@ -77,12 +77,12 @@ void BclThroughHistory_Scriptural()
     {
       int scripturalMonth = HebrewMonthConverter.civilToScriptural(year, civilMonth);
       expect(bcl.getDaysInMonth(year, civilMonth), noda.getDaysInMonth(year, scripturalMonth),
-          reason: "Year: $year; Month: $civilMonth (civil)");
+          reason: 'Year: $year; Month: $civilMonth (civil)');
       for (int day = 1; day < bcl.GetDaysInMonth(year, civilMonth); day++)
       {
         DateTime bclDate = bcl.ToDateTime(year, civilMonth, day, 0, 0, 0, 0);
         LocalDate nodaDate = new LocalDate(year, scripturalMonth, day, noda);
-        expect(bclDate, nodaDate.atMidnight().toDateTimeLocal(), reason: "$year-$scripturalMonth-$day");
+        expect(bclDate, nodaDate.atMidnight().toDateTimeLocal(), reason: '$year-$scripturalMonth-$day');
         expect(nodaDate, new LocalDateTime.fromDateTime(bclDate, noda).date);
         expect(year, nodaDate.year);
         expect(scripturalMonth, nodaDate.month);
@@ -96,29 +96,29 @@ void BclThroughHistory_Scriptural()
 // mostly testing the behaviour of SetYear, via LocalDate.PlusYears.
 @Test()
 // Simple case
-@TestCase(const ["5405-02-10", 1, "5406-02-10"])
+@TestCase(const ['5405-02-10', 1, "5406-02-10"])
 // Adar mapping - Adar from non-leap maps to Adar II in leap;
 // Adar I and Adar II both map to Adar in a non-leap, except for the 30th of Adar I
 // which maps to the 1st of Nisan.
-@TestCase(const ["5402-12-05", 1, "5403-12-05"]) // Mapping from Adar I to Adar
-@TestCase(const ["5402-13-05", 1, "5403-12-05"]) // Mapping from Adar II to Adar
-@TestCase(const ["5402-12-30", 1, "5403-01-01"]) // Mapping from 30th of Adar I to 1st of Nisan
-@TestCase(const ["5401-12-05", 1, "5402-13-05"]) // Mapping from Adar to Adar II
+@TestCase(const ['5402-12-05', 1, "5403-12-05"]) // Mapping from Adar I to Adar
+@TestCase(const ['5402-13-05', 1, "5403-12-05"]) // Mapping from Adar II to Adar
+@TestCase(const ['5402-12-30', 1, "5403-01-01"]) // Mapping from 30th of Adar I to 1st of Nisan
+@TestCase(const ['5401-12-05', 1, "5402-13-05"]) // Mapping from Adar to Adar II
 // Transfer to another leap year
-@TestCase(const ["5402-12-05", 2, "5404-12-05"]) // Adar I to Adar I
-@TestCase(const ["5402-12-30", 2, "5404-12-30"]) // 30th of Adar I to 30th of Adar I
-@TestCase(const ["5402-13-05", 2, "5404-13-05"]) // Adar II to Adar II
+@TestCase(const ['5402-12-05', 2, "5404-12-05"]) // Adar I to Adar I
+@TestCase(const ['5402-12-30', 2, "5404-12-30"]) // 30th of Adar I to 30th of Adar I
+@TestCase(const ['5402-13-05', 2, "5404-13-05"]) // Adar II to Adar II
 // Rollover of 30th of Kislev and Heshvan to the 1st of the next month.
-@TestCase(const ["5402-08-30", 1, "5403-09-01"]) // Rollover from 30th Heshvan to 1st Kislev
-@TestCase(const ["5400-09-30", 1, "5401-10-01"]) // Rollover from 30th Kislev to 1st Tevet
+@TestCase(const ['5402-08-30', 1, "5403-09-01"]) // Rollover from 30th Heshvan to 1st Kislev
+@TestCase(const ['5400-09-30', 1, "5401-10-01"]) // Rollover from 30th Kislev to 1st Tevet
 // No rollover required (target year has 30 days in as well)
-@TestCase(const ["5402-08-30", 3, "5405-08-30"]) // No truncation in Heshvan (both 5507 and 5509 are long)
-@TestCase(const ["5400-09-30", 2, "5402-09-30"]) // No truncation in Kislev (both 5503 and 5504 are long)
+@TestCase(const ['5402-08-30', 3, "5405-08-30"]) // No truncation in Heshvan (both 5507 and 5509 are long)
+@TestCase(const ['5400-09-30', 2, "5402-09-30"]) // No truncation in Kislev (both 5503 and 5504 are long)
 void SetYear(String startText, int years, String expectedEndText)
 {
   var civil = CalendarSystem.hebrewCivil;
   var scriptural = CalendarSystem.hebrewScriptural;
-  var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
+  var pattern = LocalDatePattern.createWithInvariantCulture('yyyy-MM-dd')
       .withTemplateValue(LocalDate(5774, 1, 1, scriptural)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
@@ -135,7 +135,7 @@ void SetYear(String startText, int years, String expectedEndText)
 void AddMonths_MonthsBetween(String startText, int months, String expectedEndText)
 {
   var civil = CalendarSystem.hebrewCivil;
-  var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
+  var pattern = LocalDatePattern.createWithInvariantCulture('yyyy-MM-dd')
       .withTemplateValue(LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
@@ -149,7 +149,7 @@ void AddMonths_MonthsBetween(String startText, int months, String expectedEndTex
 void MonthsBetween(String startText, int expectedMonths, String endText)
 {
   var civil = CalendarSystem.hebrewCivil;
-  var pattern = LocalDatePattern.createWithInvariantCulture("yyyy-MM-dd")
+  var pattern = LocalDatePattern.createWithInvariantCulture('yyyy-MM-dd')
       .withTemplateValue(LocalDate(5774, 1, 1, civil)); // Sample value in 2014 ISO
 
   var start = pattern.parse(startText).value;
@@ -209,23 +209,23 @@ void GetDaysInYearCrossCheck() {
   for (int year = calculator.minYear; year <= calculator.maxYear; year++) {
     // int sum = Enumerable.Range(1, calculator.GetMonthsInYear(year))
     //    .Sum(month => calculator.GetDaysInMonth(year, month));
-    // expect(sum, calculator.GetDaysInYear(year), "Days in {0}", year);
+    // expect(sum, calculator.GetDaysInYear(year), 'Days in {0}', year);
 
     int sum = Iterable
         .generate(calculator.getMonthsInYear(year), (i) => i + 1)
         .map((month) => calculator.getDaysInMonth(year, month))
         .reduce((a, b) => a + b);
 
-    expect(sum, calculator.getDaysInYear(year), reason: "Days in $year");
+    expect(sum, calculator.getDaysInYear(year), reason: 'Days in $year');
   }
 }
 
 @Test()
-@TestCase(const ["5502-01-01", "5503-01-01"])
-@TestCase(const ["5502-01-01", "5502-02-01"], "Months in same half of year")
+@TestCase(const ['5502-01-01', "5503-01-01"])
+@TestCase(const ['5502-01-01', "5502-02-01"], "Months in same half of year")
 // This is the test that looks odd...
-@TestCase(const ["5502-12-01", "5502-02-01"], "Months in opposite half of year")
-@TestCase(const ["5502-03-10", "5502-03-12"])
+@TestCase(const ['5502-12-01', "5502-02-01"], "Months in opposite half of year")
+@TestCase(const ['5502-03-10', "5502-03-12"])
 void ScripturalCompare(String earlier, String later)
 {
   var pattern = LocalDatePattern.iso.withCalendar(CalendarSystem.hebrewScriptural);
@@ -249,30 +249,30 @@ void ScripturalGetDaysFromStartOfYearToStartOfMonth_InvalidForCoverage()
 // implementation performs converts to civil for most of the work.
 @private final List AddAndSubtractMonthCases =
 [
-  ["5502-02-13", 3, "5502-05-13"], // Simple
-  ["5502-02-13", 238, "5521-05-13"], // Simple after a 19-year cycle
-  ["5502-05-13", -3, "5502-02-13"], // Simple (negative)
-  ["5521-05-13", -238, "5502-02-13"], // Simple after a 19-year cycle (negative)
-  ["5501-02-13", 12, "5502-02-13"], // Not a leap year
-  ["5502-02-13", 13, "5503-02-13"], // Leap year
-  ["5501-02-13", 26, "5503-03-13"], // Traversing both (and then an extra month)
-  ["5502-02-13", -12, "5501-02-13"], // Not a leap year (negative)
-  ["5503-02-13", -13, "5502-02-13"], // Leap year (negative)
-  ["5503-03-13", -26, "5501-02-13"], // Traversing both (and then an extra month) (negative)
-  ["5507-01-30", 1, "5507-02-30"], // Long Heshvan
-  ["5506-01-30", 1, "5506-02-29"], // Short Heshvan
-  ["5505-01-30", 2, "5505-03-30"], // Long Kislev
-  ["5506-01-30", 2, "5506-03-29"] // Short Kislev
+  ['5502-02-13', 3, "5502-05-13"], // Simple
+  ['5502-02-13', 238, "5521-05-13"], // Simple after a 19-year cycle
+  ['5502-05-13', -3, "5502-02-13"], // Simple (negative)
+  ['5521-05-13', -238, "5502-02-13"], // Simple after a 19-year cycle (negative)
+  ['5501-02-13', 12, "5502-02-13"], // Not a leap year
+  ['5502-02-13', 13, "5503-02-13"], // Leap year
+  ['5501-02-13', 26, "5503-03-13"], // Traversing both (and then an extra month)
+  ['5502-02-13', -12, "5501-02-13"], // Not a leap year (negative)
+  ['5503-02-13', -13, "5502-02-13"], // Leap year (negative)
+  ['5503-03-13', -26, "5501-02-13"], // Traversing both (and then an extra month) (negative)
+  ['5507-01-30', 1, "5507-02-30"], // Long Heshvan
+  ['5506-01-30', 1, "5506-02-29"], // Short Heshvan
+  ['5505-01-30', 2, "5505-03-30"], // Long Kislev
+  ['5506-01-30', 2, "5506-03-29"] // Short Kislev
 ];
 
 // Test cases only used for testing MonthsBetween, in the same format as AddAndSubtractMonthCases
 // for simplicity.
 @private final List MonthsBetweenCases =
 [
-  ["5502-02-13", 1, "5502-03-15"],
-  ["5502-02-13", 0, "5502-03-05"],
-  ["5502-02-13", 0, "5502-02-15"],
-  ["5502-02-13", 0, "5502-02-05"],
-  ["5502-02-13", 0, "5502-01-15"],
-  ["5502-02-13", -1, "5502-01-05"],
+  ['5502-02-13', 1, "5502-03-15"],
+  ['5502-02-13', 0, "5502-03-05"],
+  ['5502-02-13', 0, "5502-02-15"],
+  ['5502-02-13', 0, "5502-02-05"],
+  ['5502-02-13', 0, "5502-01-15"],
+  ['5502-02-13', -1, "5502-01-05"],
 ];

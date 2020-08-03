@@ -44,7 +44,7 @@ class FixedDateTimeZone extends DateTimeZone {
       : _interval = IZoneInterval.newZoneInterval(name, IInstant.beforeMinValue, IInstant.afterMaxValue, offset, Offset.zero),
         super(id, true, offset, offset);
 
-  /// Makes the id for this time zone. The format is "UTC+/-Offset".
+  /// Makes the id for this time zone. The format is 'UTC+/-Offset'.
   ///
   /// [offset]: The offset.
   /// Returns: The generated id string.
@@ -60,8 +60,8 @@ class FixedDateTimeZone extends DateTimeZone {
     return IDateTimeZone.utcId + OffsetPattern.generalInvariant.format(offset);
   }
 
-  /// Returns a fixed time zone for the given ID, which must be "UTC" or "UTC[offset]" where "[offset]" can be parsed
-  /// using the "general" offset pattern.
+  /// Returns a fixed time zone for the given ID, which must be 'UTC' or "UTC[offset]" where "[offset]" can be parsed
+  /// using the 'general' offset pattern.
   ///
   /// [id]: ID
   /// Returns: The parsed time zone, or null if the ID doesn't match.

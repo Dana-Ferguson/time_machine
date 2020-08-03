@@ -67,7 +67,7 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
       case 'T':
         return formatInfo.dateTimeFormat.longTimePattern;
       case 'r':
-        return "HH:mm:ss.FFFFFFFFF";
+        return 'HH:mm:ss.FFFFFFFFF';
       default:
         // Will be turned into an exception.
         return null;
@@ -96,7 +96,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   /// The seconds in the range [0, 59].
   int seconds = 0;
 
-  /// AM (0) or PM (1) - or "take from the template" (2). The latter is used in situations
+  /// AM (0) or PM (1) - or 'take from the template' (2). The latter is used in situations
   /// where we're parsing but there is no AM or PM designator.
   int amPm = 0;
 

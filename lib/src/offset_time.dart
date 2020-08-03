@@ -88,7 +88,7 @@ class OffsetTime {
   /// A [String] containing the value of the current instance in the specified format.
   ///
   /// * [patternText]: The [String] specifying the pattern to use,
-  /// or null to use the default format pattern ("G").
+  /// or null to use the default format pattern ('G').
   ///
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture.

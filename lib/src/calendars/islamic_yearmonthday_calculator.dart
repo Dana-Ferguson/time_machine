@@ -127,7 +127,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     // find the days at the start of year 31, then add the days *in* year 31, the days in year 32,
     // and the days in year 33.
     // If this ever proves to be a bottleneck, we could create an array for each IslamicLeapYearPattern
-    // with "the number of days for the first n years in a cycle".
+    // with 'the number of days for the first n years in a cycle'.
     for (int i = yearAtStartOfCycle; i < year; i++) {
       days += getDaysInYear(i);
     }

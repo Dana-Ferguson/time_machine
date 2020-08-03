@@ -22,7 +22,7 @@ class Tokens {
 
   /// Initializes a new instance of the [Tokens] class.
   ///
-  /// <param name="words">The words list.</param>
+  /// <param name='words'>The words list.</param>
   Tokens._(this._words);
 
   /// Gets a value indicating whether this instance has another token.
@@ -34,9 +34,9 @@ class Tokens {
 
   /// Returns the next token.
   ///
-  /// <param name="name">The name of the token. Used in the exception to identify the missing token.</param>
+  /// <param name='name'>The name of the token. Used in the exception to identify the missing token.</param>
   /// <returns>The next token.</returns>
-  /// <exception cref="MissingTokenException">Thrown if there is no next token.</exception>
+  /// <exception cref='MissingTokenException'>Thrown if there is no next token.</exception>
   String nextToken(String name) {
     if (tryNextToken()) {
       return tryNextTokenResult;
@@ -48,12 +48,12 @@ class Tokens {
   /// Returns an object that contains the list of the whitespace separated words in the given
   /// string. The String is assumed to be culture invariant.
   /// </summary>
-  /// <param name="text">The text to break into words.</param>
+  /// <param name='text'>The text to break into words.</param>
   /// <returns>The tokenized text.</returns>
   static Tokens tokenize(String text) {
     Preconditions.checkNotNull(text, 'text');
     text = text.trimRight();
-    if (text == "") {
+    if (text == '') {
       return Tokens._(_noTokens);
     }
     // Primitive parser, but we need to handle double quotes.
@@ -92,7 +92,7 @@ class Tokens {
     }
     if (inQuotes) {
       // InvalidDataException
-      throw Exception("Line has unterminated quotes");
+      throw Exception('Line has unterminated quotes');
     }
     return Tokens._(list);
   }
@@ -104,7 +104,7 @@ class Tokens {
 
   /// Tries to get the next token.
   ///
-  /// <param name="result">Where to place the next token.</param>
+  /// <param name='result'>Where to place the next token.</param>
   /// <returns>True if there was a next token, false otherwise.</returns>
   bool tryNextToken() {
     if (hasNextToken) {

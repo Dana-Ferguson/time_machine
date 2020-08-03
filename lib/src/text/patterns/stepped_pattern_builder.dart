@@ -224,8 +224,8 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     builder.addLiteral2(pattern.current, IParseResult.escapedCharacterMismatch);
   }
 
-  /// Handle a leading "%" which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
-  /// "use a custom format string consisting of H instead of a standard pattern H".
+  /// Handle a leading '%' which acts as a pseudo-escape - it's mostly used to allow format strings such as "%H" to mean
+  /// 'use a custom format string consisting of H instead of a standard pattern H'.
   static void handlePercent<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
     if (pattern.hasMoreCharacters) {
       if (pattern.peekNext() != '%') {
@@ -237,7 +237,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     throw InvalidPatternError(TextErrorMessages.percentAtEndOfString);
   }
 
-  /// Returns a handler for a zero-padded purely-numeric field specifier, such as "seconds", "minutes", "24-hour", "12-hour" etc.
+  /// Returns a handler for a zero-padded purely-numeric field specifier, such as 'seconds', "minutes", "24-hour", "12-hour" etc.
   ///
   /// [maxCount]: Maximum permissable count (usually two)
   /// [field]: Field to remember that we've seen
@@ -325,31 +325,31 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void addRequiredSign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      if (str.matchSingle("-")) {
+      if (str.matchSingle('-')) {
         signSetter(bucket, false);
         return null;
       }
-      if (str.matchSingle("+")) {
+      if (str.matchSingle('+')) {
         signSetter(bucket, true);
         return null;
       }
       return IParseResult.missingSign<TResult>(str);
     }
     );
-    addFormatAction((TResult value, StringBuffer sb) => sb.write(nonNegativePredicate(value) ? "+" : "-"));
+    addFormatAction((TResult value, StringBuffer sb) => sb.write(nonNegativePredicate(value) ? '+' : "-"));
   }
 
-  /// Adds parse and format actions for an "negative only" sign.
+  /// Adds parse and format actions for an 'negative only' sign.
   ///
   /// [signSetter]: Action to take when to set the given sign within the bucket
   /// [nonNegativePredicate]: Predicate to detect whether the value being formatted is non-negative
   void addNegativeOnlySign(Function(TBucket, bool) signSetter, bool Function(TResult) nonNegativePredicate) {
     addParseAction((ValueCursor str, TBucket bucket) {
-      if (str.matchSingle("-")) {
+      if (str.matchSingle('-')) {
         signSetter(bucket, false);
         return null;
       }
-      if (str.matchSingle("+")) {
+      if (str.matchSingle('+')) {
         return IParseResult.positiveSignInvalid<TResult>(str);
       }
       signSetter(bucket, true);
@@ -357,7 +357,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
     });
     addFormatAction((TResult value, StringBuffer builder) {
       if (!nonNegativePredicate(value)) {
-        builder.write("-");
+        builder.write('-');
       }
     });
   }
@@ -543,7 +543,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     }
     if (text == null)
     {
-      return IParseResult.argumentNull<TResult>("text");
+      return IParseResult.argumentNull<TResult>('text');
     }
     if (text.length == 0)
     {

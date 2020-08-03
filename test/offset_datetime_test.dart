@@ -204,7 +204,7 @@ void ToString_WholeHourOffset()
   LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
   Offset offset = Offset.hours(1);
   OffsetDateTime odt = OffsetDateTime(local, offset);
-  expect("2012-10-06T01:02:03+01", odt.toString());
+  expect('2012-10-06T01:02:03+01', odt.toString());
 }
 
 @Test()
@@ -213,7 +213,7 @@ void ToString_PartHourOffset()
   LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
   Offset offset = Offset.hoursAndMinutes(1, 30);
   OffsetDateTime odt = OffsetDateTime(local, offset);
-  expect("2012-10-06T01:02:03+01:30", odt.toString());
+  expect('2012-10-06T01:02:03+01:30', odt.toString());
 }
 
 @Test()
@@ -221,7 +221,7 @@ void ToString_Utc()
 {
   LocalDateTime local = LocalDateTime(2012, 10, 6, 1, 2, 3);
   OffsetDateTime odt = OffsetDateTime(local, Offset.zero);
-  expect("2012-10-06T01:02:03Z", odt.toString());
+  expect('2012-10-06T01:02:03Z', odt.toString());
 }
 
 // Todo: String stuffs (after CLDR)
@@ -231,7 +231,7 @@ void ToString_Utc()
 //  LocalDateTime local = new LocalDateTime.fromYMDHMS(2012, 10, 6, 1, 2, 3);
 //  Offset offset = new Offset.fromHours(1);
 //  OffsetDateTime odt = new OffsetDateTime(local, offset);
-//  expect("2012/10/06 01:02:03 01", odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", Culture.invariantCulture));
+//  expect('2012/10/06 01:02:03 01', odt.toString("yyyy/MM/dd HH:mm:ss o<-HH>", Culture.invariantCulture));
 //}
 
 @Test() @SkipMe()
@@ -483,7 +483,7 @@ Future InZone() async
 {
   Offset offset = Offset.hours(-7);
   OffsetDateTime start = LocalDateTime(2017, 10, 31, 18, 12, 0).withOffset(offset);
-  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   var zoned = start.inZone(zone);
 
   // On October 31st, the UK had already gone back, so the offset is 0.

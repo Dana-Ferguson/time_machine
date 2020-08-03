@@ -15,7 +15,7 @@ Future main() async {
   await runTests();
 }
 
-@Test() @SkipMe("Need Dart Equivalent Test")
+@Test() @SkipMe('Need Dart Equivalent Test')
 void BclEquivalence()
 {
   // BclEquivalenceHelper.AssertEquivalent(BclCalendars.UmAlQura, CalendarSystem.UmAlQura);
@@ -44,7 +44,7 @@ void GetStartOfYearInDays()
     // var bcl = BclCalendars.UmAlQura.ToDateTime(year, 1, 1, 0, 0, 0, 0);
     // var days = (bcl - new DateTime(1970, 1, 1)).Days;
     var days = daysSinceEpoch[year - calculator.minYear];
-    expect(days, calculator.getStartOfYearInDays(year), reason: "year=$year");
+    expect(days, calculator.getStartOfYearInDays(year), reason: 'year=$year');
   }
 }
 
@@ -61,7 +61,7 @@ void GetYearMonthDay_DaysSinceEpoch()
       {
         var actual = calculator.getYearMonthDayFromDaysSinceEpoch(daysSinceEpoch);
         var expected = YearMonthDay(year, month, day);
-        expect(expected, actual, reason: "daysSinceEpoch=$daysSinceEpoch");
+        expect(expected, actual, reason: 'daysSinceEpoch=$daysSinceEpoch');
         daysSinceEpoch++;
       }
     }
@@ -81,7 +81,7 @@ void GetYearMonthDay_YearAndDayOfYear()
       {
         var actual = calculator.getYearMonthDay(year, dayOfYear);
         var expected = YearMonthDay(year, month, day);
-        expect(expected, actual, reason: "year=$year; dayOfYear=$dayOfYear");
+        expect(expected, actual, reason: 'year=$year; dayOfYear=$dayOfYear');
         dayOfYear++;
       }
     }
@@ -98,7 +98,7 @@ void GetDaysFromStartOfYearToStartOfMonth()
     for (int month = 1; month <= 12; month++)
     {
       // This delegates to GetDaysFromStartOfYearToStartOfMonth (which is protected).
-      expect(dayOfYear, calculator.getDayOfYear(YearMonthDay(year, month, 1)), reason: "year=$year; month=$month");
+      expect(dayOfYear, calculator.getDayOfYear(YearMonthDay(year, month, 1)), reason: 'year=$year; month=$month');
       dayOfYear += calculator.getDaysInMonth(year, month);
     }
   }

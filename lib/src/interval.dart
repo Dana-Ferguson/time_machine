@@ -38,7 +38,7 @@ class Interval {
       : _start = start ?? IInstant.beforeMinValue,
         _end = end ?? IInstant.afterMaxValue {
     if (_end < _start) {
-      throw RangeError("The end parameter must be equal to or later than the start parameter");
+      throw RangeError('The end parameter must be equal to or later than the start parameter');
     }
   }
 
@@ -48,7 +48,7 @@ class Interval {
   ///
   /// * [StateError]: The interval extends to the start of time.
   Instant get start {
-    Preconditions.checkState(_start.isValid, "Interval extends to start of time");
+    Preconditions.checkState(_start.isValid, 'Interval extends to start of time');
     return _start;
   }
 
@@ -60,7 +60,7 @@ class Interval {
   ///
   /// * [StateError]: The interval extends to the end of time.
   Instant get end {
-    Preconditions.checkState(_end.isValid, "Interval extends to end of time");
+    Preconditions.checkState(_end.isValid, 'Interval extends to end of time');
     return _end;
   }
 
@@ -90,7 +90,7 @@ class Interval {
   ///
   /// * [other]: The value to compare with this instance.
   ///
-  /// true if the value of this instant is equal to the value of the <paramref name="other" /> parameter;
+  /// true if the value of this instant is equal to the value of the <paramref name='other' /> parameter;
   /// otherwise, false.
   bool equals(Interval other) => other != null && _start == other._start && _end == other._end;
 
@@ -121,15 +121,15 @@ class Interval {
   @override int get hashCode => hash2(_start, _end);
 
   /// Returns a string representation of this interval, in extended ISO-8601 format: the format
-  /// is "start/end" where each instant uses a format of "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
-  /// If the start or end is infinite, the relevant part uses "StartOfTime" or "EndOfTime" to
+  /// is 'start/end' where each instant uses a format of "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF'Z'".
+  /// If the start or end is infinite, the relevant part uses 'StartOfTime' or "EndOfTime" to
   /// represent this.
   ///
   /// Returns: A string representation of this interval.
   @override String toString()
   {
     var pattern = InstantPattern.extendedIso;
-    return pattern.format(_start) + "/" + pattern.format(_end);
+    return pattern.format(_start) + '/' + pattern.format(_end);
   }
 
   /// Implements the operator ==.

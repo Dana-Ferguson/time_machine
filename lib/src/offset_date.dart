@@ -28,7 +28,7 @@ class OffsetDate
   CalendarSystem get calendar => calendarDate.calendar;
 
   /// Gets the year of this offset date.
-  /// This returns the "absolute year", so, for the ISO calendar,
+  /// This returns the 'absolute year', so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
   int get year => calendarDate.year;
 
@@ -111,7 +111,7 @@ class OffsetDate
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("G"), using the current isolate's
+  /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       OffsetDatePatterns.format(this, patternText, culture);

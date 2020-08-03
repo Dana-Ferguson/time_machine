@@ -116,7 +116,7 @@ void ToString_WithFormat()
   LocalDate date = new LocalDate(2012, 10, 6);
   Offset offset = new Offset.fromHours(1);
   OffsetDate offsetDate = new OffsetDate(date, offset);
-  expect("2012/10/06 01", offsetDate.toString("yyyy/MM/dd o<-HH>", Culture.invariantCulture));
+  expect('2012/10/06 01', offsetDate.toString("yyyy/MM/dd o<-HH>", Culture.invariantCulture));
 }
 
 @Test()
@@ -125,7 +125,7 @@ void ToString_WithNullFormat()
   LocalDate date = new LocalDate(2012, 10, 6);
   Offset offset = new Offset.fromHours(1);
   OffsetDate offsetDate = new OffsetDate(date, offset);
-  expect("2012-10-06+01", offsetDate.toString(null, Culture.invariantCulture));
+  expect('2012-10-06+01', offsetDate.toString(null, Culture.invariantCulture));
 }
 
 @Test()
@@ -136,7 +136,7 @@ void ToString_NoFormat()
   OffsetDate offsetDate = new OffsetDate(date, offset);
   using (CultureSaver.SetCultures(Culture.invariantCulture))
   {
-    expect("2012-10-06+01", offsetDate.toString());
+    expect('2012-10-06+01', offsetDate.toString());
   }
 }
 

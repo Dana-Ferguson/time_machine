@@ -15,8 +15,8 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 @internal
 class InstantPatternParser implements IPatternParser<Instant> {
   static const String generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
-  static const String beforeMinValueText = "StartOfTime";
-  static const String afterMaxValueText = "EndOfTime";
+  static const String beforeMinValueText = 'StartOfTime';
+  static const String afterMaxValueText = 'EndOfTime';
 
   IPattern<Instant> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');

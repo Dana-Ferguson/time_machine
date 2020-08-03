@@ -267,10 +267,10 @@ var bclWeek = calendar.GetWeekOfYear(bclDate, bclRule, firstDayOfWeek);
 // we're in the "year-1".
 var bclWeekYear = bclWeek < 10 ? year : year - 1;
 
-expect(bclWeek, nodaRule.GetWeekOfWeekYear(date), "Date: {0}", date);
-expect(bclWeekYear, nodaRule.GetWeekYear(date), "Date: {0}", date);
+expect(bclWeek, nodaRule.GetWeekOfWeekYear(date), 'Date: {0}', date);
+expect(bclWeekYear, nodaRule.GetWeekYear(date), 'Date: {0}', date);
 expect(date, nodaRule.GetLocalDate(bclWeekYear, bclWeek, date.DayOfWeek, nodaCalendar),
-"Week-year:{0}; Week: {1}; Day: {2}", bclWeekYear, bclWeek, date.DayOfWeek);
+'Week-year:{0}; Week: {1}; Day: {2}', bclWeekYear, bclWeek, date.DayOfWeek);
 }
 }
 }
@@ -292,12 +292,12 @@ for (int year = startYear; year < startYear + 30; year++)
 {
 var bclDate = new LocalDate(year + 1, 1, 1, nodaCalendar).PlusDays(-1).ToDateTimeUnspecified();
 expect(calendar.GetWeekOfYear(bclDate, bclRule, firstDayOfWeek),
-nodaRule.GetWeeksInWeekYear(year, nodaCalendar), "Year {0}", year);
+nodaRule.GetWeeksInWeekYear(year, nodaCalendar), 'Year {0}', year);
 }
 }
 
 
-// Tests where we ask for an invalid combination of week-year/week/day-of-week due to a week being "short"
+// Tests where we ask for an invalid combination of week-year/week/day-of-week due to a week being 'short'
 // in BCL rules.
 // Jan 1st 2016 = Friday
 @Test()

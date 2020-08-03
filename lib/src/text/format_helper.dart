@@ -46,9 +46,9 @@ abstract class FormatHelper {
 
   /// Formats the given value left padded with zeros.
   ///
-  /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
-  /// is longer than <paramref name = "length" />, the entire value is formatted. If the value is negative,
-  /// it is preceded by "-" but this does not count against the length.
+  /// Left pads with zeros the value into a field of <paramref name = 'length' /> characters. If the value
+  /// is longer than <paramref name = 'length' />, the entire value is formatted. If the value is negative,
+  /// it is preceded by '-' but this does not count against the length.
   ///
   /// [value]: The value to format.
   /// [length]: The length to fill.
@@ -63,9 +63,9 @@ abstract class FormatHelper {
     // Special case, as we can't use Math.Abs.
     if (value == Platform.int32MinValue) {
       if (length > 10) {
-        outputBuffer.write("000000".substring(16 - length));
+        outputBuffer.write('000000'.substring(16 - length));
       }
-      outputBuffer.write("2147483648");
+      outputBuffer.write('2147483648');
       return;
     }
     leftPadNonNegative(-value, length, outputBuffer);
@@ -73,9 +73,9 @@ abstract class FormatHelper {
 
   /// Formats the given value left padded with zeros. The value is assumed to be non-negative.
   ///
-  /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
-  /// is longer than <paramref name = "length" />, the entire value is formatted. If the value is negative,
-  /// it is preceded by "-" but this does not count against the length.
+  /// Left pads with zeros the value into a field of <paramref name = 'length' /> characters. If the value
+  /// is longer than <paramref name = 'length' />, the entire value is formatted. If the value is negative,
+  /// it is preceded by '-' but this does not count against the length.
   ///
   /// [value]: The value to format.
   /// [length]: The length to fill.
@@ -145,9 +145,9 @@ abstract class FormatHelper {
 
   /// Formats the given Int64 value left padded with zeros. The value is assumed to be non-negative.
   ///
-  /// Left pads with zeros the value into a field of <paramref name = "length" /> characters. If the value
-  /// is longer than <paramref name = "length" />, the entire value is formatted. If the value is negative,
-  /// it is preceded by "-" but this does not count against the length.
+  /// Left pads with zeros the value into a field of <paramref name = 'length' /> characters. If the value
+  /// is longer than <paramref name = 'length' />, the entire value is formatted. If the value is negative,
+  /// it is preceded by '-' but this does not count against the length.
   ///
   /// [value]: The value to format.
   /// [length]: The length to fill.
@@ -219,7 +219,7 @@ abstract class FormatHelper {
   /// Note: current usage means this never has to cope with negative numbers.
   ///
   /// <example>
-  /// `AppendFraction(1200, 4, 5, builder)` will result in "0120" being
+  /// `AppendFraction(1200, 4, 5, builder)` will result in '0120' being
   /// appended to the builder. The value is treated as effectively 0.01200 because
   /// the scale is 5, but only 4 digits are formatted.
   /// </example>
@@ -254,9 +254,9 @@ abstract class FormatHelper {
   /// Note: current usage means this never has to cope with negative numbers.
   ///
   /// <example>
-  /// `AppendFractionTruncate(1200, 4, 5, builder)` will result in "001" being
+  /// `AppendFractionTruncate(1200, 4, 5, builder)` will result in '001' being
   /// appended to the builder. The value is treated as effectively 0.01200 because
-  /// the scale is 5; only 4 digits are formatted (leaving "0120") and then the rightmost
+  /// the scale is 5; only 4 digits are formatted (leaving '0120') and then the rightmost
   /// 0 digit is truncated.
   /// </example>
   /// [value]: The value to format.
@@ -318,7 +318,7 @@ abstract class FormatHelper {
         return;
       }
       if (value == Platform.int64MinValue) {
-        outputBuffer.write("-9223372036854775808");
+        outputBuffer.write('-9223372036854775808');
         return;
       }
       outputBuffer.write('-');

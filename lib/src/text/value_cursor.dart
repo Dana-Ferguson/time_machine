@@ -86,8 +86,8 @@ class ValueCursor extends TextCursor {
   /// ahead but the result is never 0: if the result of comparing to the end of the
   /// value returns 0, the result is -1 to indicate that the value is earlier than the given match.
   /// Conversely, if the remaining value is longer than the match string, the comparison only
-  /// goes as far as the end of the match. So "xabcd" with the cursor at "a" will return 0 when
-  /// matched with "abc".
+  /// goes as far as the end of the match. So 'xabcd' with the cursor at "a" will return 0 when
+  /// matched with 'abc'.
   ///
   /// A negative number if the value (from the current cursor position) is lexicographically
   /// earlier than the given match string; 0 if they are equal (as far as the end of the match) and
@@ -107,7 +107,7 @@ class ValueCursor extends TextCursor {
   // todo: <T> on these values currently don't do anything -- we can't access T directly on VM -- and on JS, I'm not sure it even exists
   //  --> [tType] ferries the information across we need. <T> should be the value being parsed by the Value_Cursor, but I don't think anything enforces that
   /// Parses digits at the current point in the string as a signed 64-bit integer value.
-  /// Currently this method only supports cultures whose negative sign is "-" (and
+  /// Currently this method only supports cultures whose negative sign is '-' (and
   /// using ASCII digits).
   ///
   /// [result]: The result integer value. The value of this is not guaranteed
@@ -257,7 +257,7 @@ class ValueCursor extends TextCursor {
   /// Returns: `true` if the digits were parsed.
   int parseFraction(int maximumDigits, int scale, int minimumDigits) {
     Preconditions.debugCheckArgument(maximumDigits <= scale, 'maximumDigits',
-        "Must not allow more maximum digits than scale");
+        'Must not allow more maximum digits than scale');
 
     int result = 0;
     int localIndex = index;
@@ -286,7 +286,7 @@ class ValueCursor extends TextCursor {
     return result;
   }
 
-  /// Gets the integer value of the current digit character, or -1 for "not a digit".
+  /// Gets the integer value of the current digit character, or -1 for 'not a digit'.
   ///
   /// This currently only handles ASCII digits, which is all we have to parse to stay in line with the BCL.
   int _getDigit() {

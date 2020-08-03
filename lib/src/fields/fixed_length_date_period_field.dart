@@ -40,7 +40,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
         newDayOfYear += calculator.getDaysInYear(year - 1);
         year--;
         if (year < calculator.minYear) {
-          throw RangeError("Date computation would underflow the minimum year of the calendar");
+          throw RangeError('Date computation would underflow the minimum year of the calendar');
         }
       }
       else {
@@ -49,7 +49,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
           newDayOfYear -= daysInYear;
           year++;
           if (year > calculator.maxYear) {
-            throw RangeError("Date computation would overflow the maximum year of the calendar");
+            throw RangeError('Date computation would overflow the maximum year of the calendar');
           }
         }
       }

@@ -51,7 +51,7 @@ class Culture {
   final CompareInfo compareInfo;
 
   final String name;
-  static const invariantId = "Invariant Culture";
+  static const invariantId = 'Invariant Culture';
 
   Culture._invariant()
       : dateTimeFormat = DateTimeFormatBuilder.invariant().Build(),

@@ -23,7 +23,7 @@ import 'tzdb/utility/binary_writer.dart';
 
 /// Runs the compiler from the command line.
 ///
-/// <param name="arguments">The command line arguments. Each compiler defines its own.</param>
+/// <param name='arguments'>The command line arguments. Each compiler defines its own.</param>
 /// <returns>0 for success, non-0 for error.</returns>
 main_old(List<String> args) {
   CompilerOptions options = CompilerOptions(args);
@@ -51,7 +51,7 @@ main_old(List<String> args) {
   stream.close();
 
   if (options.outputFileName != null) {
-    print("Reading generated data and validating...");
+    print('Reading generated data and validating...');
     var source = Read(options);
     throw Exception('need validation');
     // source.validate();
@@ -81,14 +81,14 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
   }
   if (!Directory(mappingPath).existsSync()) {
     throw Exception(
-        "$mappingPath does not exist as either a file or a directory");
+        '$mappingPath does not exist as either a file or a directory');
   }
   var xmlFiles = Directory(mappingPath)
       .listSync()
       .where((f) => f is File && f.path.endsWith('.xml'))
       .toList();
   if (xmlFiles.length == 0) {
-    throw Exception("$mappingPath does not contain any XML files");
+    throw Exception('$mappingPath does not contain any XML files');
   }
   var allFiles = xmlFiles
       .map((file) => CldrWindowsZonesParser.parseFile(file.path))
@@ -103,7 +103,7 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
 
   if (bestFile == null) {
     throw Exception(
-        "No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]");
+        'No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]');
   }
   print("Picked Windows Zones with TZDB version ${bestFile
       .tzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
@@ -112,12 +112,12 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
 
 void LogWindowsZonesSummary(WindowsZones windowsZones)
 {
-  print("Windows Zones:");
-  print("  Version: ${windowsZones.version}");
-  print("  TZDB version: ${windowsZones.tzdbVersion}");
-  print("  Windows version: ${windowsZones.windowsVersion}");
-  print("  ${windowsZones.mapZones.length} MapZones");
-  print("  ${windowsZones.primaryMapping.length} primary mappings");
+  print('Windows Zones:');
+  print('  Version: ${windowsZones.version}');
+  print('  TZDB version: ${windowsZones.tzdbVersion}');
+  print('  Windows version: ${windowsZones.windowsVersion}');
+  print('  ${windowsZones.mapZones.length} MapZones');
+  print('  ${windowsZones.primaryMapping.length} primary mappings');
 }
 
 IOSink CreateOutputStream(CompilerOptions options)
@@ -144,23 +144,23 @@ TzdbDateTimeZoneSource Read(CompilerOptions options)
 /// but falling back to the original for versions absent in the override. The set of MapZones
 /// in the result is the union of those in the original and override, but any ID/Territory
 /// pair present in both results in the override taking priority, unless the override has an
-/// empty "type" entry, in which case the entry is removed entirely.
+/// empty 'type' entry, in which case the entry is removed entirely.
 ///
 /// While this method could reasonably be in WindowsZones class, it's only needed in
 /// TzdbCompiler - and here is as good a place as any.
 ///
 /// The resulting MapZones will be ordered by Windows ID followed by territory.
 /// </summary>
-/// <param name="windowsZones">The original WindowsZones</param>
-/// <param name="overrideFile">The WindowsZones to override entries in the original</param>
+/// <param name='windowsZones'>The original WindowsZones</param>
+/// <param name='overrideFile'>The WindowsZones to override entries in the original</param>
 /// <returns>A merged zones object.</returns>
 WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones overrideZones) {
-  var version = overrideZones.version == ""
+  var version = overrideZones.version == ''
       ? originalZones.version
       : overrideZones.version;
-  var tzdbVersion = overrideZones.tzdbVersion == "" ? originalZones
+  var tzdbVersion = overrideZones.tzdbVersion == '' ? originalZones
       .tzdbVersion : overrideZones.tzdbVersion;
-  var windowsVersion = overrideZones.windowsVersion == "" ? originalZones
+  var windowsVersion = overrideZones.windowsVersion == '' ? originalZones
       .windowsVersion : overrideZones.windowsVersion;
 
   // Work everything out using dictionaries, and then sort.

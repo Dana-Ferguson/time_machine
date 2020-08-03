@@ -49,10 +49,10 @@ class PatternCursorTest extends TextCursorTestBase {
 
   @Test()
   void GetQuotedString_HandlesOtherQuote() {
-    var cursor = PatternCursor("[abc]");
+    var cursor = PatternCursor('[abc]');
     GetNextCharacter(cursor);
     String actual = cursor.getQuotedString(']');
-    expect("abc", actual);
+    expect('abc', actual);
     expect(cursor.moveNext(), isFalse);
   }
 
@@ -61,16 +61,16 @@ class PatternCursorTest extends TextCursorTestBase {
     var cursor = PatternCursor("'abc'more");
     String openQuote = GetNextCharacter(cursor);
     String actual = cursor.getQuotedString(openQuote);
-    expect("abc", actual);
+    expect('abc', actual);
     TextCursorTestBase.ValidateCurrentCharacter(cursor, 4, '\'');
 
     expect('m', GetNextCharacter(cursor));
   }
 
   @Test()
-  @TestCase(const ["aaa", 3])
-  @TestCase(const ["a", 1])
-  @TestCase(const ["aaadaa", 3])
+  @TestCase(const ['aaa', 3])
+  @TestCase(const ['a', 1])
+  @TestCase(const ['aaadaa', 3])
   void GetRepeatCount_Valid(String text, int expectedCount) {
     var cursor = PatternCursor(text);
     expect(cursor.moveNext(), isTrue);
@@ -81,16 +81,16 @@ class PatternCursorTest extends TextCursorTestBase {
 
   @Test()
   void GetRepeatCount_ExceedsMax() {
-    var cursor = PatternCursor("aaa");
+    var cursor = PatternCursor('aaa');
     expect(cursor.moveNext(), isTrue);
     expect(() => cursor.getRepeatCount(2), willThrow<InvalidPatternError>());
   }
 
   @Test()
-  @TestCase(const ["x<HH:mm>y", "HH:mm"], "Simple")
+  @TestCase(const ['x<HH:mm>y', "HH:mm"], "Simple")
   @TestCase(const ["x<HH:'T'mm>y", "HH:'T'mm"], "Quoting")
   @TestCase(const [r"x<HH:\Tmm>y", r"HH:\Tmm"], "Escaping")
-  @TestCase(const ["x<a<b>c>y", "a<b>c"], "Simple nesting")
+  @TestCase(const ['x<a<b>c>y', "a<b>c"], "Simple nesting")
   @TestCase(const ["x<a'<'bc>y", "a'<'bc"], "Quoted start embedded")
   @TestCase(const ["x<a'>'bc>y", "a'>'bc"], "Quoted end embedded")
   @TestCase(const [r"x<a\<bc>y", r"a\<bc"], "Escaped start embedded")
@@ -104,11 +104,11 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const ["x(oops)"], "Wrong start character")
-  @TestCase(const ["x<oops)"], "No end")
+  @TestCase(const ['x(oops)'], "Wrong start character")
+  @TestCase(const ['x<oops)'], "No end")
   @TestCase(const [r"x<oops\>"], "Escaped end")
   @TestCase(const ["x<oops'>'"], "Quoted end")
-  @TestCase(const ["x<oops<nested>"], "Incomplete after nesting")
+  @TestCase(const ['x<oops<nested>'], "Incomplete after nesting")
   void GetEmbeddedPattern_Invalid(String text) {
     var cursor = PatternCursor(text);
     cursor.moveNext();

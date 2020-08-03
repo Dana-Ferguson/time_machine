@@ -122,10 +122,10 @@ void BetweenLocalDates_DifferentCalendarSystems_Throws()
 }
 
 @Test()
-@TestCase(const ["2016-05-16", "2019-03-13", PeriodUnits.years, 2])
-@TestCase(const ["2016-05-16", "2017-07-13", PeriodUnits.months, 13])
-@TestCase(const ["2016-05-16", "2016-07-13", PeriodUnits.weeks, 8])
-@TestCase(const ["2016-05-16", "2016-07-13", PeriodUnits.days, 58])
+@TestCase(const ['2016-05-16', "2019-03-13", PeriodUnits.years, 2])
+@TestCase(const ['2016-05-16', "2017-07-13", PeriodUnits.months, 13])
+@TestCase(const ['2016-05-16', "2016-07-13", PeriodUnits.weeks, 8])
+@TestCase(const ['2016-05-16', "2016-07-13", PeriodUnits.days, 58])
 void BetweenLocalDates_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue)
 {
   var start = LocalDatePattern.iso.parse(startText).value;
@@ -234,11 +234,11 @@ void BetweenLocalDateTimes_OnLeapYear()
   LocalDateTime dt1 = LocalDateTime(2012, 2, 29, 2, 0, 0);
   LocalDateTime dt2 = LocalDateTime(2012, 2, 29, 4, 0, 0);
   LocalDateTime dt3 = LocalDateTime(2013, 2, 28, 3, 0, 0);
-  expect(Parse("P1YT1H"), Period.differenceBetweenDateTime(dt1, dt3));
-  expect(Parse("P11M29DT23H"), Period.differenceBetweenDateTime(dt2, dt3));
+  expect(Parse('P1YT1H'), Period.differenceBetweenDateTime(dt1, dt3));
+  expect(Parse('P11M29DT23H'), Period.differenceBetweenDateTime(dt2, dt3));
 
-  expect(Parse("P-11M-28DT-1H"), Period.differenceBetweenDateTime(dt3, dt1));
-  expect(Parse("P-11M-27DT-23H"), Period.differenceBetweenDateTime(dt3, dt2));
+  expect(Parse('P-11M-28DT-1H'), Period.differenceBetweenDateTime(dt3, dt1));
+  expect(Parse('P-11M-27DT-23H'), Period.differenceBetweenDateTime(dt3, dt2));
 }
 
 @Test()
@@ -253,15 +253,15 @@ void BetweenLocalDateTimes_OnLeapYearIslamic()
   LocalDateTime dt3 = LocalDateTime(3, 12, 29, 3, 0, 0, calendar: calendar);
 
   // Adding a year truncates to 0003-12-28T02:00:00, then add an hour.
-  expect(Parse("P1YT1H"), Period.differenceBetweenDateTime(dt1, dt3));
+  expect(Parse('P1YT1H'), Period.differenceBetweenDateTime(dt1, dt3));
   // Adding a year would overshoot. Adding 11 months takes us to month 03-11-30T04:00.
   // Adding another 28 days takes us to 03-12-28T04:00, then add another 23 hours to finish.
-  expect(Parse("P11M28DT23H"), Period.differenceBetweenDateTime(dt2, dt3));
+  expect(Parse('P11M28DT23H'), Period.differenceBetweenDateTime(dt2, dt3));
 
   // Subtracting 11 months takes us to 03-01-29T03:00. Subtracting another 29 days
   // takes us to 02-12-30T03:00, and another hour to get to the target.
-  expect(Parse("P-11M-29DT-1H"), Period.differenceBetweenDateTime(dt3, dt1));
-  expect(Parse("P-11M-28DT-23H"), Period.differenceBetweenDateTime(dt3, dt2));
+  expect(Parse('P-11M-29DT-1H'), Period.differenceBetweenDateTime(dt3, dt1));
+  expect(Parse('P-11M-28DT-23H'), Period.differenceBetweenDateTime(dt3, dt2));
 }
 
 @Test()
@@ -283,12 +283,12 @@ void BetweenLocalTimes_InvalidUnits()
 }
 
 @Test()
-@TestCase(const ["01:02:03", "05:00:00", PeriodUnits.hours, 3])
-@TestCase(const ["01:02:03", "03:00:00", PeriodUnits.minutes, 117])
-@TestCase(const ["01:02:03", "01:05:02", PeriodUnits.seconds, 179])
-@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.milliseconds, 1123])
-@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.microseconds, 1123400])
-@TestCase(const ["01:02:03", "01:02:04.1234", PeriodUnits.nanoseconds,  1123400000])
+@TestCase(const ['01:02:03', "05:00:00", PeriodUnits.hours, 3])
+@TestCase(const ['01:02:03', "03:00:00", PeriodUnits.minutes, 117])
+@TestCase(const ['01:02:03', "01:05:02", PeriodUnits.seconds, 179])
+@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.milliseconds, 1123])
+@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.microseconds, 1123400])
+@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.nanoseconds,  1123400000])
 void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue) {
   var start = LocalTimePattern.extendedIso
       .parse(startText)
@@ -527,7 +527,7 @@ void HasDateComponent_Compound()
 void ToString_Positive()
 {
   Period period = Period(days: 1) +  Period(hours: 2);
-  expect("P1DT2H", period.toString());
+  expect('P1DT2H', period.toString());
 }
 
 @Test()
@@ -538,27 +538,27 @@ void ToString_AllUnits()
   //    this.Milliseconds: 0, this.Ticks: 0, this.Nanoseconds: 0});
   Period period = IPeriod.period(years: 1, months: 2, weeks: 3, days: 4,
       hours: 5, minutes: 6, seconds: 7, milliseconds: 8, microseconds: 9, nanoseconds: 10);
-  expect("P1Y2M3W4DT5H6M7S8s9t10n", period.toString());
+  expect('P1Y2M3W4DT5H6M7S8s9t10n', period.toString());
 }
 
 @Test()
 void ToString_Negative()
 {
   Period period = Period(days: -1) + Period(hours: -2);
-  expect("P-1DT-2H", period.toString());
+  expect('P-1DT-2H', period.toString());
 }
 
 @Test()
 void ToString_Mixed()
 {
   Period period = Period(days: -1) + Period(hours: 2);
-  expect("P-1DT2H", period.toString());
+  expect('P-1DT2H', period.toString());
 }
 
 @Test()
 void ToString_Zero()
 {
-  expect("P", Period.zero.toString());
+  expect('P', Period.zero.toString());
 }
 
 @Test()
@@ -703,14 +703,14 @@ void Normalize_Overflow()
 void ToString_SingleUnit()
 {
   var period = Period(hours: 5);
-  expect("PT5H", period.toString());
+  expect('PT5H', period.toString());
 }
 
 @Test()
 void ToString_MultipleUnits()
 {
   var period = (PeriodBuilder()..hours = 5..minutes = 30).build();
-expect("PT5H30M", period.toString());
+expect('PT5H30M', period.toString());
 }
 
 @Test()
@@ -761,7 +761,7 @@ void ToDuration_ValidWithZeroValuesInMonthYearUnits()
 
 /* We don't overflow
 @Test()
-//[Category("Overflow")]
+//[Category('Overflow')]
 void ToDuration_Overflow()
 {
   Period period = new Period.fromSeconds(Utility.int64MaxValue);
@@ -769,7 +769,7 @@ void ToDuration_Overflow()
 }*/
 
 //@Test()
-////[Category("Overflow")]
+////[Category('Overflow')]
 //void ToDuration_Overflow_WhenPossiblyValid()
 //{
 //  // These two should pretty much cancel each other out - and would, if we had a 128-bit integer
@@ -900,10 +900,10 @@ void Between_ExtremeValues_Overflow()
 }
 
 @Test()
-@TestCase(const ["2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.years, 1, 0])
-@TestCase(const ["2015-02-28T16:00:00", "2016-02-29T08:00:00", PeriodUnits.months, 12, -11])
-@TestCase(const ["2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.days, 1, -1])
-@TestCase(const ["2014-01-01T16:00:00", "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
+@TestCase(const ['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.years, 1, 0])
+@TestCase(const ['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.months, 12, -11])
+@TestCase(const ['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.days, 1, -1])
+@TestCase(const ['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
 void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, String endText, PeriodUnits units, int expectedForward, int expectedBackward)
 {
   LocalDateTime start = LocalDateTimePattern.extendedIso.parse(startText).value;

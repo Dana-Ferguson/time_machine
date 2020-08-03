@@ -236,7 +236,7 @@ class Offset implements Comparable<Offset> {
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("g"), using the current isolate's
+  /// The value of the current instance in the default format pattern ('g'), using the current isolate's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       OffsetPatterns.format(this, patternText, culture);
@@ -271,7 +271,7 @@ class Offset implements Comparable<Offset> {
   ///
   /// The result simply takes the hours and minutes and converts each component into milliseconds
   /// separately. As a result, a negative offset should usually be obtained by making both arguments
-  /// negative. For example, to obtain "three hours and ten minutes behind UTC" you might call
+  /// negative. For example, to obtain 'three hours and ten minutes behind UTC' you might call
   /// `Offset.hoursAndMinutes(-3, -10)`.
   ///
   /// * [hours]: The number of hours to represent in the new offset.

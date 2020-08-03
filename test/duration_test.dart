@@ -110,8 +110,8 @@ void ConstituentParts_Large() {
 
 @Test()
 @TestCase(const [1, 100, 2, 200, 3, 300])
-@TestCase(const [1, TimeConstants.nanosecondsPerDay - 5, 3, 100, 5, 95], "Overflow")
-@TestCase(const [1, 10, -1, TimeConstants.nanosecondsPerDay - 100, 0, TimeConstants.nanosecondsPerDay - 90], "Underflow")
+@TestCase(const [1, TimeConstants.nanosecondsPerDay - 5, 3, 100, 5, 95], 'Overflow')
+@TestCase(const [1, 10, -1, TimeConstants.nanosecondsPerDay - 100, 0, TimeConstants.nanosecondsPerDay - 90], 'Underflow')
 void Addition_Subtraction(int leftDays, int leftNanos,
     int rightDays, int rightNanos,
     int resultDays, int resultNanos)
@@ -158,12 +158,12 @@ void Comparison()
 }
 
 @Test()
-@TestCase(const [1, 5, 2, 2, 10], "Small, positive")
-@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 10, 2, -1, TimeConstants.nanosecondsPerDay - 20], "Small, negative")
-@TestCase(const [365000, 1, 2, 365000 * 2, 2], "More than 2^63 nanos before multiplication")
-@TestCase(const [1000, 1, 365, 365000, 365], "More than 2^63 nanos after multiplication")
-@TestCase(const [1000, 1, -365, -365001, TimeConstants.nanosecondsPerDay - 365], "Less than -2^63 nanos after multiplication")
-@TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 1, 0], "Large scalar")
+@TestCase(const [1, 5, 2, 2, 10], 'Small, positive')
+@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 10, 2, -1, TimeConstants.nanosecondsPerDay - 20], 'Small, negative')
+@TestCase(const [365000, 1, 2, 365000 * 2, 2], 'More than 2^63 nanos before multiplication')
+@TestCase(const [1000, 1, 365, 365000, 365], 'More than 2^63 nanos after multiplication')
+@TestCase(const [1000, 1, -365, -365001, TimeConstants.nanosecondsPerDay - 365], 'Less than -2^63 nanos after multiplication')
+@TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 1, 0], 'Large scalar')
 void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedDays, int expectedNanoOfDay)
 {
   var start = Time(days: startDays, nanoseconds: startNanoOfDay);
@@ -191,12 +191,12 @@ void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expe
 @TestCase(const [0, 0, TimeConstants.nanosecondsPerDay, 0, 0])
 @TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 0, 0])
 
-// Test cases around dividing -1 day by "nanos per day"
+// Test cases around dividing -1 day by 'nanos per day'
 @TestCase(const [-2, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
 @TestCase(const [-1, 0, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
 @TestCase(const [-1, 1, TimeConstants.nanosecondsPerDay, 0, 0])
 
-// Test cases around dividing 1 day by "nanos per day"
+// Test cases around dividing 1 day by 'nanos per day'
 @TestCase(const [0, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 0])
 @TestCase(const [1, 0, TimeConstants.nanosecondsPerDay, 0, 1])
 @TestCase(const [1, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 1])
@@ -276,8 +276,8 @@ void Validation()
 //expect(new Span(days: -(1 << 24) - 1), throwsException);
 }
 
-//@Test("Overflow")
-//// [Category("Overflow"])
+//@Test('Overflow')
+//// [Category('Overflow'])
 //void BclCompatibleTicks_Overflow()
 //{
 //  Span maxTicks = Span.FromTicks(int.MaxValue) + Span.FromTicks(1);

@@ -96,7 +96,7 @@ abstract class DatePatternHelper {
           builder.addPostPatternParseFormatAction(_MonthFormatActionHolder<TResult, TBucket>(format, count, numberGetter));
           break;
         default:
-          throw StateError("Invalid count!");
+          throw StateError('Invalid count!');
       }
       builder.addField(field, pattern.current);
     };
@@ -127,7 +127,7 @@ abstract class DatePatternHelper {
           builder.addFormatAction((value, sb) => sb.write(textValues[dayOfWeekGetter(value)]));
           break;
         default:
-          throw StateError("Invalid count!");
+          throw StateError('Invalid count!');
       }
       builder.addField(field, pattern.current);
     };
@@ -146,7 +146,7 @@ abstract class DatePatternHelper {
         return dateBucket.parseEra<TResult>(formatInfo, cursor);
       }
 
-      // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just "g".
+      // Note: currently the count is ignored. More work needed to determine whether abbreviated era names should be used for just 'g'.
       builder.addParseAction(_parseAction);
 
       builder.addFormatAction((value, sb) => sb.write(formatInfo.getEraPrimaryName(eraFromValue(value))));

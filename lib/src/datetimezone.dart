@@ -12,14 +12,14 @@ abstract class IDateTimeZone {
   /// The ID of the UTC (Coordinated Universal Time) time zone. This ID is always valid, whatever provider is
   /// used. If the provider has its own mapping for UTC, that will be returned by [DateTimeZoneCache.getZoneOrNull], but otherwise
   /// the value of the [utc] property will be returned.
-  static const String utcId = "UTC";
+  static const String utcId = 'UTC';
 }
 
 
 /// Represents a time zone - a mapping between UTC and local time. A time zone maps UTC instants to local times
 ///  - or, equivalently, to the offset from UTC at any particular instant.
 ///
-/// The mapping is unambiguous in the "UTC to local" direction, but
+/// The mapping is unambiguous in the 'UTC to local' direction, but
 /// the reverse is not true: when the offset changes, usually due to a Daylight Saving transition,
 /// the change either creates a gap (a period of local time which never occurs in the time zone)
 /// or an ambiguity (a period of local time which occurs twice in the time zone). Mapping back from
@@ -58,9 +58,9 @@ abstract class IDateTimeZone {
 abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Gets the UTC (Coordinated Universal Time) time zone.
   ///
-  /// This is a single instance which is not provider-specific; it is guaranteed to have the ID "UTC", and to
+  /// This is a single instance which is not provider-specific; it is guaranteed to have the ID 'UTC', and to
   /// compare equal to an instance returned by calling [forOffset] with an offset of zero, but it may
-  /// or may not compare equal to an instance returned by e.g. `DateTimeZoneProviders.Tzdb["UTC"]`.
+  /// or may not compare equal to an instance returned by e.g. `DateTimeZoneProviders.Tzdb['UTC']`.
   static final DateTimeZone utc = FixedDateTimeZone.forOffset(Offset.zero);
   static const int _fixedZoneCacheGranularitySeconds = TimeConstants.secondsPerMinute * 30;
   static const int _fixedZoneCacheMinimumSeconds = -_fixedZoneCacheGranularitySeconds * 12 * 2; // From UTC-12
@@ -72,7 +72,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
 
   /// Returns a fixed time zone with the given offset.
   ///
-  /// The returned time zone will have an ID of "UTC" if the offset is zero, or "UTC+/-Offset"
+  /// The returned time zone will have an ID of 'UTC' if the offset is zero, or "UTC+/-Offset"
   /// otherwise. In the former case, the returned instance will be equal to [utc].
   ///
   /// Note also that this method is not required to return the same [DateTimeZone] instance for
@@ -205,7 +205,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the start of time, the next check will definitely evaluate to false.
     Instant intervalStart = IZoneInterval.rawStart(interval);
-    // This allows for a maxOffset of up to +1 day, and the "truncate towards beginning of time"
+    // This allows for a maxOffset of up to +1 day, and the 'truncate towards beginning of time'
     // nature of the Days property.
     if (localInstant.daysSinceEpoch <= intervalStart.epochDay + 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
@@ -227,7 +227,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     // definitely evaluate to false.
     Instant intervalEnd = IZoneInterval.rawEnd(interval);
     // Crude but cheap first check to see whether there *might* be a later interval.
-    // This allows for a minOffset of up to -1 day, and the "truncate towards beginning of time"
+    // This allows for a minOffset of up to -1 day, and the 'truncate towards beginning of time'
     // nature of the Days property.
     if (localInstant.daysSinceEpoch >= intervalEnd.epochDay - 1) {
       // We *could* do a more accurate check here based on the actual maxOffset, but it's probably
@@ -347,7 +347,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   // todo: merge with regular getZoneIntervals as a custom parameter
   Iterable<ZoneInterval> getZoneIntervalsOptions(Interval interval, ZoneEqualityComparerOptions options) {
     if ((options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
-      throw ArgumentError("The value $options is not defined within ZoneEqualityComparer.Options");
+      throw ArgumentError('The value $options is not defined within ZoneEqualityComparer.Options');
     }
     var zoneIntervalEqualityComparer = ZoneIntervalEqualityComparer(options, interval);
     var originalIntervals = getZoneIntervals(interval);

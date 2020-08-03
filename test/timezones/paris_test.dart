@@ -34,7 +34,7 @@ Future main() async {
 Future setup() async {
   Tzdb = await DateTimeZoneProviders.tzdb;
   // Make sure we deal with the uncached time zone
-  Paris = Uncached(await Tzdb["Europe/Paris"]);
+  Paris = Uncached(await Tzdb['Europe/Paris']);
 }
 
 @Test()
@@ -48,13 +48,13 @@ void FirstTransitions()
   var afterNameChange = Paris.getZoneInterval(nameChangeInstant);
   var afterSmallChange = Paris.getZoneInterval(utcChangeInstant);
 
-  expect("LMT", beforeNameChange.name);
+  expect('LMT', beforeNameChange.name);
   expect(InitialOffset, beforeNameChange.wallOffset);
 
-  expect("PMT", afterNameChange.name);
+  expect('PMT', afterNameChange.name);
   expect(InitialOffset, afterNameChange.wallOffset);
 
-  expect("WET", afterSmallChange.name);
+  expect('WET', afterSmallChange.name);
   expect(Offset.zero, afterSmallChange.wallOffset);
 }
 

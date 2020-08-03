@@ -78,8 +78,8 @@ void Operators()
 @Test()
 void ToStringTest()
 {
-  expect("02-01", AnnualDate(2, 1).toString());
-  expect("02-10", AnnualDate(2, 10).toString());
-  expect("12-01", AnnualDate(12, 1).toString());
-  expect("12-20", AnnualDate(12, 20).toString());
+  expect('02-01', AnnualDate(2, 1).toString());
+  expect('02-10', AnnualDate(2, 10).toString());
+  expect('12-01', AnnualDate(12, 1).toString());
+  expect('12-20', AnnualDate(12, 20).toString());
 }

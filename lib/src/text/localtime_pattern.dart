@@ -33,7 +33,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// This corresponds to the text pattern "HH':'mm':'ss;FFFFFFFFF".
   static final LocalTimePattern extendedIso = LocalTimePatterns.extendedIsoPatternImpl;
 
-  static const String _defaultFormatPattern = "T"; // Long
+  static const String _defaultFormatPattern = 'T'; // Long
 
   /// Returns the pattern that this object delegates to. Mostly useful to avoid this class
   /// implementing an internal interface.
@@ -90,7 +90,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
       LocalTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    // Use the "fixed" parser for the common case of the default template value.
+    // Use the 'fixed' parser for the common case of the default template value.
     var pattern = templateValue == LocalTime.midnight
         ? formatInfo.localTimePatternParser.parsePattern(patternText)
         : LocalTimePatternParser(templateValue).parsePattern(patternText, formatInfo);

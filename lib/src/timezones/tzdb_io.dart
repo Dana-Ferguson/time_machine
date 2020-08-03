@@ -155,7 +155,7 @@ abstract class IDateTimeZoneWriter {
 
   /// Writes the given dictionary of string to string to the stream.
   /// </summary>
-  /// <param name="dictionary">The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
+  /// <param name='dictionary'>The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
   void writeDictionary(Map<String, String> map);
 }
 

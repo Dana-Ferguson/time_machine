@@ -30,7 +30,7 @@ abstract class LocalDatePatterns {
 /// Represents a pattern for parsing and formatting [LocalDate] values.
 @immutable
 class LocalDatePattern implements IPattern<LocalDate> {
-  static const String _defaultFormatPattern = "D"; // Long
+  static const String _defaultFormatPattern = 'D'; // Long
 
   /// Gets an invariant local date pattern which is ISO-8601 compatible.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd".
@@ -91,7 +91,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   static LocalDatePattern _create(String patternText, TimeMachineFormatInfo formatInfo, LocalDate templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    // Use the "fixed" parser for the common case of the default template value.
+    // Use the 'fixed' parser for the common case of the default template value.
     var pattern = templateValue == LocalDatePatterns.defaultTemplateValue
         ? formatInfo.localDatePatternParser.parsePattern(patternText)
         : LocalDatePatternParser(templateValue).parsePattern(patternText, formatInfo);

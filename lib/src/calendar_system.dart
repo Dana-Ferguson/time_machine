@@ -10,7 +10,7 @@ abstract class ICalendarSystem {
   /// Fetches a calendar system by its ordinal value, constructing it if necessary.
   static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {
     Preconditions.debugCheckArgument(ordinal >= const CalendarOrdinal(0) && ordinal < CalendarOrdinal.size, 'ordinal',
-        "Unknown ordinal value $ordinal");
+        'Unknown ordinal value $ordinal');
     // Avoid an array lookup for the overwhelmingly common case.
     if (ordinal == CalendarOrdinal.iso) {
       return CalendarSystem._isoCalendarSystem;
@@ -30,7 +30,7 @@ abstract class ICalendarSystem {
 
   static CalendarSystem forOrdinalUncached(CalendarOrdinal ordinal) {
     var calendarSystem = CalendarSystem._forOrdinalUncached_referenceMap[ordinal];
-    if (calendarSystem == null) throw StateError("Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.");
+    if (calendarSystem == null) throw StateError('Bug: calendar ordinal $ordinal missing from switch in CalendarSystem.ForOrdinal.');
     return calendarSystem;
   }
 
@@ -66,7 +66,7 @@ abstract class ICalendarSystem {
   static DayOfWeek getDayOfWeek(CalendarSystem calendar, YearMonthDay yearMonthDay) => calendar._getDayOfWeek(yearMonthDay);
 }
 
-/// A calendar system maps the non-calendar-specific "local time line" to human concepts
+/// A calendar system maps the non-calendar-specific 'local time line' to human concepts
 /// such as years, months and days.
 ///
 /// Many developers will never need to touch this class, other than to potentially ask a calendar
@@ -85,22 +85,22 @@ class CalendarSystem {
   // IDs and names are separated out (usually with the ID either being the same as the name,
   // or the base ID being the same as a name and then other IDs being formed from it.) The
   // differentiation is only present for clarity.
-  static const String _gregorianName = "Gregorian";
+  static const String _gregorianName = 'Gregorian';
   static const String _gregorianId = _gregorianName;
 
-  static const String _isoName = "ISO";
+  static const String _isoName = 'ISO';
   static const String _isoId = _isoName;
 
-  static const String _copticName = "Coptic";
+  static const String _copticName = 'Coptic';
   static const String _copticId = _copticName;
 
-  static const String _badiName = "Badi";
+  static const String _badiName = 'Badi';
   static const String _badiId = _badiName;
 
-  static const String _julianName = "Julian";
+  static const String _julianName = 'Julian';
   static const String _julianId = _julianName;
 
-  static const String _islamicName = "Hijri";
+  static const String _islamicName = 'Hijri';
   static const String _islamicIdBase = _islamicName;
 
   // Not part of IslamicCalendars as we want to be able to call it without triggering type initialization.
@@ -109,18 +109,18 @@ class CalendarSystem {
     return '$_islamicIdBase $epoch-$leapYearPattern';
   }
 
-  static const String _persianName = "Persian";
+  static const String _persianName = 'Persian';
   static const String _persianIdBase = _persianName;
-  static const String _persianSimpleId = _persianIdBase + " Simple";
-  static const String _persianAstronomicalId = _persianIdBase + " Algorithmic";
-  static const String _persianArithmeticId = _persianIdBase + " Arithmetic";
+  static const String _persianSimpleId = _persianIdBase + ' Simple';
+  static const String _persianAstronomicalId = _persianIdBase + ' Algorithmic';
+  static const String _persianArithmeticId = _persianIdBase + ' Arithmetic';
 
-  static const String _hebrewName = "Hebrew";
+  static const String _hebrewName = 'Hebrew';
   static const String _hebrewIdBase = _hebrewName;
-  static const String _hebrewCivilId = _hebrewIdBase + " Civil";
-  static const String _hebrewScripturalId = _hebrewIdBase + " Scriptural";
+  static const String _hebrewCivilId = _hebrewIdBase + ' Civil';
+  static const String _hebrewScripturalId = _hebrewIdBase + ' Scriptural';
 
-  static const String _umAlQuraName = "Um Al Qura";
+  static const String _umAlQuraName = 'Um Al Qura';
   static const String _umAlQuraId = _umAlQuraName;
 
   // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
@@ -148,7 +148,7 @@ class CalendarSystem {
     Preconditions.checkNotNull(id, 'id');
     CalendarSystem Function() factory = _idToFactoryMap[id];
     if (factory == null) {
-      throw ArgumentError("No calendar system for ID {id} exists");
+      throw ArgumentError('No calendar system for ID {id} exists');
     }
     return factory();
   }
@@ -243,10 +243,10 @@ class CalendarSystem {
   /// The Wondrous calendar was developed and defined by the founders of the Bahá'í Faith in the mid to late
   /// 1800's A.D. The first year in the calendar coincides with 1844 A.D. Years are labeled "B.E." for Bahá'í Era.
   /// A year consists of 19 months, each with 19 days. Each day starts at sunset. Years are grouped into sets
-  /// of 19 "Unities" (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).
+  /// of 19 'Unities' (Váḥid) and 19 Unities make up 1 "All Things" (Kull-i-Shay’).
   /// A period of days (usually 4 or 5, called Ayyám-i-Há) occurs between the 18th and 19th months. The length of this
   /// period of intercalary days is solely determined by the date of the following vernal equinox. The vernal equinox is
-  /// a momentary point in time, so the "date" of the equinox is determined by the date (beginning
+  /// a momentary point in time, so the 'date' of the equinox is determined by the date (beginning
   /// at sunset) in effect in Tehran, Iran at the moment of the equinox.
   /// In this Time Machine implementation, days start at midnight and lookup tables are used to determine vernal equinox dates.
   /// Ayyám-i-Há is internally modelled as extra days added to the 18th month. As a result, a few functions will
@@ -294,8 +294,8 @@ class CalendarSystem {
   /// Habash al-Hasib | 2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30
   ///
   /// The leap year pattern to use is determined from the first parameter to this factory method.
-  /// The second parameter determines which epoch is used - the "astronomical" or "Thursday" epoch
-  /// (July 15th 622CE) or the "civil" or "Friday" epoch (July 16th 622CE).
+  /// The second parameter determines which epoch is used - the 'astronomical' or "Thursday" epoch
+  /// (July 15th 622CE) or the 'civil' or "Friday" epoch (July 16th 622CE).
   ///
   /// This implementation defines a day as midnight to midnight exactly as per
   /// the ISO calendar. This correct start of day is at sunset on the previous
@@ -389,11 +389,11 @@ class CalendarSystem {
   /// Gets a read-only list of eras used in this calendar system.
   Iterable<Era> get eras => _eraCalculator.eras;
 
-  /// Returns the "absolute year" (the one used throughout most of the API, without respect to eras)
+  /// Returns the 'absolute year' (the one used throughout most of the API, without respect to eras)
   /// from a year-of-era and an era.
   ///
   /// For example, in the Gregorian and Julian calendar systems, the BCE era starts at year 1, which is
-  /// equivalent to an "absolute year" of 0 (then BCE year 2 has an absolute year of -1, and so on).  The absolute
+  /// equivalent to an 'absolute year' of 0 (then BCE year 2 has an absolute year of -1, and so on).  The absolute
   /// year is the year that is used throughout the API; year-of-era is typically used primarily when formatting
   /// and parsing date values to and from text.
   ///
@@ -656,7 +656,7 @@ class CalendarSystem {
   static CalendarSystem get umAlQura => _MiscellaneousCalendars.umAlQura;
 }
 
-// "Holder" classes for lazy initialization of calendar systems
+// 'Holder' classes for lazy initialization of calendar systems
 // todo: privative! piratize?
 // todo: Dart lazy loads static variables, can I use this to lazy load these calendars?
 // (https://stackoverflow.com/questions/23511100/final-and-top-level-lazy-initialization) ~ I'm unable to find official information on this - check language spec?

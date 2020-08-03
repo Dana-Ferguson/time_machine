@@ -22,7 +22,7 @@ abstract class TestHelper
 {
   ///   Tests the equality and inequality operators (==, !=) if they exist on the object.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: The value not equal to the base value.
@@ -31,7 +31,7 @@ abstract class TestHelper
   /// Tests the equality (==), inequality (!=), less than (&lt;), greater than (&gt;), less than or equals (&lt;=),
   /// and greater than or equals (&gt;=) operators if they exist on the object.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [greaterValue]: The values greater than the base value, in ascending order.
@@ -39,7 +39,7 @@ abstract class TestHelper
 
   /// Tests the less than (&lt;) and greater than (&gt;) operators if they exist on the object.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [greaterValue]: The values greater than the base value, in ascending order.
@@ -160,7 +160,7 @@ abstract class TestHelper
     try
     {
       action();
-      throw Exception("Expected OverflowException, ArgumentException, ArgumentOutOfRangeException or InvalidOperationException");
+      throw Exception('Expected OverflowException, ArgumentException, ArgumentOutOfRangeException or InvalidOperationException');
     }
     // todo: we don't really overflow
     //    on OverflowException catch (e)
@@ -169,7 +169,7 @@ abstract class TestHelper
     on ArgumentError catch (e)
     {
     //Assert.IsTrue(e.GetType() == typeof(ArgumentException) || e.GetType() == typeof(ArgumentOutOfRangeException),
-    //"Exception should not be a subtype of ArgumentException, other than ArgumentOutOfRangeException");
+    //'Exception should not be a subtype of ArgumentException, other than ArgumentOutOfRangeException');
       print(e);
     }
     catch (InvalidOperationException)
@@ -203,20 +203,20 @@ abstract class TestHelper
 
   ///   Tests the [IComparable{T}.CompareTo] method for reference objects.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [greaterValue]: The values greater than the base value, in ascending order.
   static void TestCompareToClass<T extends Comparable<T>>(T value, T equalValue, List<T> greaterValues)
   {
-    ValidateInput(value, equalValue, greaterValues, "greaterValue");
-    expect(value.compareTo(null) > 0, isTrue, reason: "value.CompareTo<T>(null)");
-    expect(value.compareTo(value) == 0, isTrue, reason: "value.CompareTo<T>(value)");
-    expect(value.compareTo(equalValue) == 0, isTrue, reason: "value.CompareTo<T>(equalValue)");
-    expect(equalValue.compareTo(value) == 0, isTrue, reason: "equalValue.CompareTo<T>(value)");
+    ValidateInput(value, equalValue, greaterValues, 'greaterValue');
+    expect(value.compareTo(null) > 0, isTrue, reason: 'value.CompareTo<T>(null)');
+    expect(value.compareTo(value) == 0, isTrue, reason: 'value.CompareTo<T>(value)');
+    expect(value.compareTo(equalValue) == 0, isTrue, reason: 'value.CompareTo<T>(equalValue)');
+    expect(equalValue.compareTo(value) == 0, isTrue, reason: 'equalValue.CompareTo<T>(value)');
     for (var greaterValue in greaterValues) {
-      expect(value.compareTo(greaterValue) < 0, isTrue, reason: "value.CompareTo<T>(greaterValue)");
-      expect(greaterValue.compareTo(value) > 0, isTrue, reason: "greaterValue.CompareTo<T>(value)");
+      expect(value.compareTo(greaterValue) < 0, isTrue, reason: 'value.CompareTo<T>(greaterValue)');
+      expect(greaterValue.compareTo(value) > 0, isTrue, reason: 'greaterValue.CompareTo<T>(value)');
       // Now move up to the next pair...
       value = greaterValue;
     }
@@ -224,47 +224,47 @@ abstract class TestHelper
 
   /// Tests the [IComparable{T}.CompareTo] method for value objects.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [greaterValue]: The values greater than the base value, in ascending order.
   static void TestCompareToStruct<T extends Comparable<T>>(T value, T equalValue, List<T> greaterValues) // where T : struct, IComparable<T>
   {
     TestCompareToClass<T>(value, equalValue, greaterValues);
-  //    Assert.AreEqual(value.CompareTo(value), 0, "value.CompareTo(value)");
-  //    Assert.AreEqual(value.CompareTo(equalValue), 0, "value.CompareTo(equalValue)");
-  //    Assert.AreEqual(equalValue.CompareTo(value), 0, "equalValue.CompareTo(value)");
+  //    Assert.AreEqual(value.CompareTo(value), 0, 'value.CompareTo(value)');
+  //    Assert.AreEqual(value.CompareTo(equalValue), 0, 'value.CompareTo(equalValue)');
+  //    Assert.AreEqual(equalValue.CompareTo(value), 0, 'equalValue.CompareTo(value)');
   //    for (var greaterValue in greaterValues) {
-  //      Assert.Less(value.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
-  //      Assert.Greater(greaterValue.CompareTo(value), 0, "greaterValue.CompareTo(value)");
+  //      Assert.Less(value.CompareTo(greaterValue), 0, 'value.CompareTo(greaterValue)');
+  //      Assert.Greater(greaterValue.CompareTo(value), 0, 'greaterValue.CompareTo(value)');
   //      // Now move up to the next pair...
   //      value = greaterValue;
   //    }
   }
 
 //  /// <summary>
-//  /// Tests the <see cref="IComparable.CompareTo" /> method - note that this is the non-generic interface.
+//  /// Tests the <see cref='IComparable.CompareTo' /> method - note that this is the non-generic interface.
 //  /// </summary>
-//  /// <typeparam name="T">The type to test.</typeparam>
-//  /// <param name="value">The base value.</param>
-//  /// <param name="equalValue">The value equal to but not the same object as the base value.</param>
-//  /// <param name="greaterValue">The values greater than the base value, in ascending order.</param>
+//  /// <typeparam name='T'>The type to test.</typeparam>
+//  /// <param name='value'>The base value.</param>
+//  /// <param name='equalValue'>The value equal to but not the same object as the base value.</param>
+//  /// <param name='greaterValue'>The values greater than the base value, in ascending order.</param>
 //  static void TestNonGenericCompareTo<T>(T value, T equalValue, List<T> greaterValues) // where T : IComparable
 //  {
 //  // Just type the values as plain IComparable for simplicity
 //  IComparable value2 = value;
 //  IComparable equalValue2 = equalValue;
 //
-//  ValidateInput(value2, equalValue2, greaterValues, "greaterValues");
-//  Assert.Greater(value2.CompareTo(null), 0, "value.CompareTo(null)");
-//  Assert.AreEqual(value2.CompareTo(value2), 0, "value.CompareTo(value)");
-//  Assert.AreEqual(value2.CompareTo(equalValue2), 0, "value.CompareTo(equalValue)");
-//  Assert.AreEqual(equalValue2.CompareTo(value2), 0, "equalValue.CompareTo(value)");
+//  ValidateInput(value2, equalValue2, greaterValues, 'greaterValues');
+//  Assert.Greater(value2.CompareTo(null), 0, 'value.CompareTo(null)');
+//  Assert.AreEqual(value2.CompareTo(value2), 0, 'value.CompareTo(value)');
+//  Assert.AreEqual(value2.CompareTo(equalValue2), 0, 'value.CompareTo(equalValue)');
+//  Assert.AreEqual(equalValue2.CompareTo(value2), 0, 'equalValue.CompareTo(value)');
 //
 //  for (IComparable greaterValue in greaterValues)
 //  {
-//  Assert.Less(value2.CompareTo(greaterValue), 0, "value.CompareTo(greaterValue)");
-//  Assert.Greater(greaterValue.CompareTo(value2), 0, "greaterValue.CompareTo(value)");
+//  Assert.Less(value2.CompareTo(greaterValue), 0, 'value.CompareTo(greaterValue)');
+//  Assert.Greater(greaterValue.CompareTo(value2), 0, 'greaterValue.CompareTo(value)');
 //  // Now move up to the next pair...
 //  value2 = greaterValue;
 //  }
@@ -274,26 +274,26 @@ abstract class TestHelper
   /// Tests the IEquatable.Equals method for reference objects. Also tests the
   /// object equals method.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: Values not equal to the base value.
   static void TestEqualsClass<T>(T value, T equalValue, List<T> unequalValues) // where T : class, IEquatable<T>
   {
     TestObjectEquals(value, equalValue, unequalValues);
-    expect(value == (null), isFalse, reason: "value.Equals<T>(null)");
-    expect(value == (value), isTrue, reason: "value.Equals<T>(value)");
-    expect(value == (equalValue), isTrue, reason: "value.Equals<T>(equalValue)");
-    expect(equalValue == (value), isTrue, reason: "equalValue.Equals<T>(value)");
+    expect(value == (null), isFalse, reason: 'value.Equals<T>(null)');
+    expect(value == (value), isTrue, reason: 'value.Equals<T>(value)');
+    expect(value == (equalValue), isTrue, reason: 'value.Equals<T>(equalValue)');
+    expect(equalValue == (value), isTrue, reason: 'equalValue.Equals<T>(value)');
     for (var unequal in unequalValues) {
-      expect(value == (unequal), isFalse, reason: "value.Equals<T>(unequalValue)");
+      expect(value == (unequal), isFalse, reason: 'value.Equals<T>(unequalValue)');
     }
   }
 
   /// Tests the IEquatable.Equals method for value objects. Also tests the
   /// object equals method.
   ///
-  /// <typeparam name="T">The type to test.</typeparam>
+  /// <typeparam name='T'>The type to test.</typeparam>
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: The value not equal to the base value.
@@ -302,11 +302,11 @@ abstract class TestHelper
     // var unequalArray = unequalValues.toList(); // unequalValues.Cast<object>().ToArray();
     TestEqualsClass(value, equalValue, unequalValues.toList());
   //    TestObjectEquals(value, equalValue, unequalArray);
-  //    Assert.True(value == (value), reason: "value.Equals<T>(value)");
-  //    Assert.True(value == (equalValue), reason: "value.Equals<T>(equalValue)");
-  //    Assert.True(equalValue == (value), reason: "equalValue.Equals<T>(value)");
+  //    Assert.True(value == (value), reason: 'value.Equals<T>(value)');
+  //    Assert.True(value == (equalValue), reason: 'value.Equals<T>(equalValue)');
+  //    Assert.True(equalValue == (value), reason: 'equalValue.Equals<T>(value)');
   //    for (var unequalValue in unequalValues) {
-  //      Assert.False(value == (unequalValue), reason: "value.Equals<T>(unequalValue)");
+  //      Assert.False(value == (unequalValue), reason: 'value.Equals<T>(unequalValue)');
   //    }
   }
 
@@ -318,16 +318,16 @@ abstract class TestHelper
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: The value not equal to the base value.
   static void TestObjectEquals(Object value, Object equalValue, List<Object> unequalValues) {
-    ValidateInput(value, equalValue, unequalValues, "unequalValue");
-    expect(value == null, isFalse, reason: "value.Equals(null)");
-    expect(value == (value), isTrue, reason: "value.Equals(value)");
-    expect(value == (equalValue), isTrue, reason: "value.Equals(equalValue)");
-    expect(equalValue == (value), isTrue, reason: "equalValue.Equals(value)");
+    ValidateInput(value, equalValue, unequalValues, 'unequalValue');
+    expect(value == null, isFalse, reason: 'value.Equals(null)');
+    expect(value == (value), isTrue, reason: 'value.Equals(value)');
+    expect(value == (equalValue), isTrue, reason: 'value.Equals(equalValue)');
+    expect(equalValue == (value), isTrue, reason: 'equalValue.Equals(value)');
     for (var unequalValue in unequalValues) {
-      expect(value == (unequalValue), isFalse, reason: "value.Equals(unequalValue)");
+      expect(value == (unequalValue), isFalse, reason: 'value.Equals(unequalValue)');
     }
-    expect(value.hashCode, value.hashCode, reason: "hashCode twice for same object");
-    expect(value.hashCode, equalValue.hashCode, reason: "hashCode for two different but equal objects");
+    expect(value.hashCode, value.hashCode, reason: 'hashCode twice for same object');
+    expect(value.hashCode, equalValue.hashCode, reason: 'hashCode for two different but equal objects');
   }
 
   /// Validates that the input parameters to the test methods are valid.
@@ -335,21 +335,21 @@ abstract class TestHelper
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValues]: The values not equal to the base value.
-  /// [unequalName]: The name to use in "not equal value" error messages.
+  /// [unequalName]: The name to use in 'not equal value' error messages.
   static void ValidateInput(Object value, Object equalValue, List unequalValues, String unequalName) {
-    //Assert.NotNull(value, "value cannot be null in TestObjectEquals() method");
-    //Assert.NotNull(equalValue, "equalValue cannot be null in TestObjectEquals() method");
-    //Assert.AreNotSame(value, equalValue, "value and equalValue MUST be different objects");
-    expect(value, isNotNull, reason: "value cannot be null in TestObjectEquals() method");
-    expect(equalValue, isNotNull, reason: "equalValue cannot be null in TestObjectEquals() method");
-    expect(identical(equalValue, value), isFalse, reason: "value and equalValue MUST be different objects");
+    //Assert.NotNull(value, 'value cannot be null in TestObjectEquals() method');
+    //Assert.NotNull(equalValue, 'equalValue cannot be null in TestObjectEquals() method');
+    //Assert.AreNotSame(value, equalValue, 'value and equalValue MUST be different objects');
+    expect(value, isNotNull, reason: 'value cannot be null in TestObjectEquals() method');
+    expect(equalValue, isNotNull, reason: 'equalValue cannot be null in TestObjectEquals() method');
+    expect(identical(equalValue, value), isFalse, reason: 'value and equalValue MUST be different objects');
 
     for (var unequalValue in unequalValues) {
-      expect(unequalName, isNotNull, reason: unequalName + " cannot be null in TestObjectEquals() method");
-      expect(identical(value, unequalValue), isFalse, reason: unequalName + " and value MUST be different objects");
+      expect(unequalName, isNotNull, reason: unequalName + ' cannot be null in TestObjectEquals() method');
+      expect(identical(value, unequalValue), isFalse, reason: unequalName + ' and value MUST be different objects');
 
-    //Assert.NotNull(unequalValue, unequalName + " cannot be null in TestObjectEquals() method");
-    //Assert.AreNotSame(value, unequalValue, unequalName + " and value MUST be different objects");
+    //Assert.NotNull(unequalValue, unequalName + ' cannot be null in TestObjectEquals() method');
+    //Assert.AreNotSame(value, unequalValue, unequalName + ' and value MUST be different objects');
     }
   }
 
@@ -358,7 +358,7 @@ abstract class TestHelper
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: The value not equal to the base value.
-  /// [unequalName]: The name to use in "not equal value" error messages.
+  /// [unequalName]: The name to use in 'not equal value' error messages.
   static void ValidateInput_Single(Object value, Object equalValue, Object unequalValue, String unequalName)
   {
     ValidateInput(value, equalValue, [ unequalValue ], unequalName);

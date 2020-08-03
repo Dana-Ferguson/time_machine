@@ -42,7 +42,7 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
       }
     }
     // Note: this would indicate a bug. The time zone is meant to cover the whole of time.
-    throw StateError("Instant $instant did not exist in time zone $id.");
+    throw StateError('Instant $instant did not exist in time zone $id.');
   }
 }
 
@@ -59,13 +59,13 @@ class MtdtzBuilder {
   String id;
 
 //  /// <summary>
-//  /// Constructs a builder using an ID of "MultiZone", an initial offset of zero (standard and savings),
-//  /// and an initial name of "First".
+//  /// Constructs a builder using an ID of 'MultiZone', an initial offset of zero (standard and savings),
+//  /// and an initial name of 'First'.
 //  /// </summary>
 //  Builder() : this(0, 0);
 
   /// Constructs a builder using the given first name, standard offset, and a daylight saving
-  /// offset of 0. The ID is initially "MultiZone".
+  /// offset of 0. The ID is initially 'MultiZone'.
   ///
   /// [firstName]: Name of the first zone interval.
   /// [firstOffsetHours]: Standard offset in hours in the first zone interval.
@@ -73,22 +73,22 @@ class MtdtzBuilder {
       : this(firstOffsetHours, 0, firstName);
 
 //  /// <summary>
-//  /// Constructs a builder using the given standard offset and saving offset. The ID is initially "MultiZone".
+//  /// Constructs a builder using the given standard offset and saving offset. The ID is initially 'MultiZone'.
 //  /// </summary>
-//  /// <param name="firstStandardOffsetHours">Standard offset in hours in the first zone interval.</param>
-//  /// <param name="firstSavingOffsetHours">Standard offset in hours in the first zone interval.</param>
+//  /// <param name='firstStandardOffsetHours'>Standard offset in hours in the first zone interval.</param>
+//  /// <param name='firstSavingOffsetHours'>Standard offset in hours in the first zone interval.</param>
 //  Builder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0])
-//      : this(firstStandardOffsetHours, firstSavingOffsetHours, "First") {
+//      : this(firstStandardOffsetHours, firstSavingOffsetHours, 'First') {
 //  }
 
   /// Constructs a builder using the given first name, standard offset, and daylight saving offset.
-  /// The ID is initially "MultiZone".
+  /// The ID is initially 'MultiZone'.
   ///
   /// [firstStandardOffsetHours]: Standard offset in hours in the first zone interval.
   /// [firstSavingOffsetHours]: Daylight saving offset in hours in the first zone interval.
   /// [firstName]: Name of the first zone interval.
-  MtdtzBuilder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0, String firstName = "First"]) {
-    id = "MultiZone";
+  MtdtzBuilder([int firstStandardOffsetHours = 0, int firstSavingOffsetHours = 0, String firstName = 'First']) {
+    id = 'MultiZone';
     currentName = firstName;
     currentStandardOffset = Offset.hours(firstStandardOffsetHours);
     currentSavings = Offset.hours(firstSavingOffsetHours);
@@ -126,7 +126,7 @@ class MtdtzBuilder {
 
   void EnsureNotBuilt() {
     if (built) {
-      throw StateError("Cannot use a builder after building");
+      throw StateError('Cannot use a builder after building');
     }
   }
 }

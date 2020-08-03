@@ -260,7 +260,7 @@ void Plus_FullPeriod() {
   expect(expected, actual, reason: "${expected.toString('yyyy-MM-dd HH:mm:ss.fffffffff')} != ${actual.toString('yyyy-MM-dd HH:mm:ss.fffffffff')}");
 }
 
-// Each test case gives a day-of-month in November 2011 and a target "next day of week";
+// Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
 // The tests are picked somewhat arbitrarily...
 @TestCase(const [10, DayOfWeek.wednesday, 16])
@@ -292,7 +292,7 @@ void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
   expect(() => start.next(targetDayOfWeek), throwsRangeError);
 }
 
-// Each test case gives a day-of-month in November 2011 and a target "next day of week";
+// Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
 @TestCase(const [10, DayOfWeek.wednesday, 9])
 @TestCase(const [10, DayOfWeek.friday, 4])

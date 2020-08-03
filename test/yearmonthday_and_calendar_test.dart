@@ -84,8 +84,8 @@ void Equality()
 }
 
 @Test()
-@TestCase(const ["2017-08-21-Julian", 2017, 8, 21, CalendarOrdinal.julian])
-@TestCase(const ["-0005-08-21-Iso", -5, 8, 21, CalendarOrdinal.iso])
+@TestCase(const ['2017-08-21-Julian', 2017, 8, 21, CalendarOrdinal.julian])
+@TestCase(const ['-0005-08-21-Iso', -5, 8, 21, CalendarOrdinal.iso])
 void Parse(String text, int year, int month, int day, CalendarOrdinal calendar)
 {
   var value = YearMonthDayCalendar.Parse(text);

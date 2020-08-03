@@ -22,14 +22,14 @@ abstract class OffsetPatterns {
 /// Represents a pattern for parsing and formatting [Offset] values.
 @immutable
 class OffsetPattern implements IPattern<Offset> {
-  /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
-  static final OffsetPattern generalInvariant = createWithInvariantCulture("g");
+  /// The 'general' offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture.
+  static final OffsetPattern generalInvariant = createWithInvariantCulture('g');
 
-  /// The "general" offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
+  /// The 'general' offset pattern (e.g. +HH, +HH:mm, +HH:mm:ss, +HH:mm:ss.fff) for the invariant culture,
   /// but producing (and allowing) Z as a value for a zero offset.
-  static final OffsetPattern generalInvariantWithZ = createWithInvariantCulture("G");
+  static final OffsetPattern generalInvariantWithZ = createWithInvariantCulture('G');
 
-  static const String _defaultFormatPattern = "g";
+  static const String _defaultFormatPattern = 'g';
 
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;

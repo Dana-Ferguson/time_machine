@@ -2,14 +2,14 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'zone_line.dart';
 
-/// Defines one "Rule" line from the tz data. (This may be applied to multiple zones.)
+/// Defines one 'Rule' line from the tz data. (This may be applied to multiple zones.)
 ///
 /// <remarks>
 /// Immutable, threadsafe.
 /// </remarks>
 class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
     {
-  /// The string to replace "%s" with (if any) when formatting the zone name key.
+  /// The string to replace '%s' with (if any) when formatting the zone name key.
   ///
   /// <remarks>This is always used to replace %s, whether or not the recurrence
   /// actually includes savings; it is expected to be appropriate to the recurrence.</remarks>
@@ -21,24 +21,24 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   /// Returns the name of the rule set this rule belongs to.
   String get name => _recurrence.name;
 
-  /// The "type" of the rule - usually null, meaning "applies in every year" - but can be
-  /// "odd", "even" etc - usually yearistype.sh is used to determine this; TimeMachine only supports
-  /// "odd" and "even" (used in Australia for data up to and including 2000e).
+  /// The 'type' of the rule - usually null, meaning "applies in every year" - but can be
+  /// 'odd', "even" etc - usually yearistype.sh is used to determine this; TimeMachine only supports
+  /// 'odd' and "even" (used in Australia for data up to and including 2000e).
   final String type;
 
   /// Initializes a new instance of the [RuleLine] class.
   ///
-  /// <param name="recurrence">The recurrence definition of this rule.</param>
-  /// <param name="daylightSavingsIndicator">The daylight savings indicator letter for time zone names.</param>
+  /// <param name='recurrence'>The recurrence definition of this rule.</param>
+  /// <param name='daylightSavingsIndicator'>The daylight savings indicator letter for time zone names.</param>
   RuleLine(this._recurrence, this._daylightSavingsIndicator, this.type);
 
 // #region IEquatable<ZoneRule> Members
   /// <summary>
   ///   Indicates whether the current object is equal to another object of the same type.
   /// </summary>
-  /// <param name="other">An object to compare with this object.</param>
+  /// <param name='other'>An object to compare with this object.</param>
   /// <returns>
-  ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+  ///   true if the current object is equal to the <paramref name = 'other' /> parameter;
   ///   otherwise, false.
   /// </returns>
   bool equals(RuleLine other) => !(other == null)
@@ -58,7 +58,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   /// Multiple zones may apply the same set of rules as to when they change into/out of
   /// daylight saving time, but with different names.
   /// </remarks>
-  /// <param name="zone">The zone for which this rule is being considered.</param>
+  /// <param name='zone'>The zone for which this rule is being considered.</param>
   Iterable<ZoneRecurrence> GetRecurrences(ZoneLine zone) sync*
   {
     String name = zone.formatName(_recurrence.savings, _daylightSavingsIndicator);
@@ -81,12 +81,12 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
 
   bool Function(int) _getYearPredicate() {
     switch (type) {
-      case "odd":
+      case 'odd':
         return (year) => year % 2 == 1;
-      case "even":
+      case 'even':
         return (year) => year % 2 == 0;
       default:
-        throw UnsupportedError("TimeMachine does not support rules of type $type");
+        throw UnsupportedError('TimeMachine does not support rules of type $type');
     }
   }
 

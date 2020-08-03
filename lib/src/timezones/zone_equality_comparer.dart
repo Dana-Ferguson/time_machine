@@ -162,7 +162,7 @@ class ZoneEqualityComparer {
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
   ZoneEqualityComparer._(this._interval, this._options) : _zoneIntervalComparer = ZoneIntervalEqualityComparer(_options, _interval) {
     if ((_options & ~ZoneEqualityComparerOptions.strictestMatch).value != 0) {
-      throw ArgumentError("The value $_options is not defined within ZoneEqualityComparer.Options");
+      throw ArgumentError('The value $_options is not defined within ZoneEqualityComparer.Options');
     }
   }
 
@@ -176,7 +176,7 @@ class ZoneEqualityComparer {
   /// Returns: A ZoneEqualityComparer for the given interval with the default options.
   factory ZoneEqualityComparer.forInterval(Interval interval) {
     Preconditions.checkArgument(interval.hasStart && interval.hasEnd, 'interval',
-        "The interval must have both a start and an end.");
+        'The interval must have both a start and an end.');
     return ZoneEqualityComparer._(interval, ZoneEqualityComparerOptions.onlyMatchWallOffset);
   }
 
@@ -320,7 +320,7 @@ class ZoneIntervalEqualityComparer {
       _checkOption(_options, ZoneEqualityComparerOptions.matchStartAndEndTransitions)
           ? IZoneInterval.rawEnd(zoneInterval) : Instant.min(IZoneInterval.rawEnd(zoneInterval), _interval.end);
 
-  /// Compares the parts of two zone intervals which are deemed "interesting" by the options.
+  /// Compares the parts of two zone intervals which are deemed 'interesting' by the options.
   /// The wall offset is always compared, regardless of options, but the start/end points are
   /// never compared.
   bool _equalExceptStartAndEnd(ZoneInterval x, ZoneInterval y) {

@@ -186,10 +186,10 @@ class DateTimeZoneBuilder
       // tail zone, but we don't yet know that we're into its regular tick/tock.
       // It's possible that one rule only starts years after our current transition,
       // so we need to hit the first transition of that rule before we can create a
-      // "seam" from the list of precomputed zone intervals to the calculated-on-demand
+      // 'seam' from the list of precomputed zone intervals to the calculated-on-demand
       // part of history.
       // For an example of why this is necessary, see Asia/Amman in 2013e: in late 2011
-      // we hit "two rules left" but the final rule only starts in 2013 - we don't want
+      // we hit 'two rules left' but the final rule only starts in 2013 - we don't want
       // to see a bogus transition into that rule in 2012.
       // We could potentially record fewer zone intervals by keeping track of which
       // rules have created at least one transition, but this approach is simpler.

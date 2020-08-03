@@ -13,7 +13,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'time_machine_testing.dart';
 
-DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb['America/Los_Angeles'];
 
 Future main() async {
   await TimeMachine.initialize();
@@ -23,7 +23,7 @@ Future main() async {
 }
 
 Future setup() async {
-  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  Pacific = await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles'];
 }
 
 @Test()
@@ -429,7 +429,7 @@ void DefaultConstructor()
 //void XmlSerialization_Iso()
 //{
 //  var value = new LocalDateTime.fromYMDHMS(2013, 4, 12, 17, 53, 23).PlusNanoseconds(123456789);
-//  TestHelper.AssertXmlRoundtrip(value, "<value>2013-04-12T17:53:23.123456789</value>");
+//  TestHelper.AssertXmlRoundtrip(value, '<value>2013-04-12T17:53:23.123456789</value>');
 //}
 //
 //@Test()
@@ -448,7 +448,7 @@ void DefaultConstructor()
 //
 //@Test()
 //@TestCase(const ["<value calendar=\"Rubbish\">2013-06-12T17:53:23</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system"])
-//@TestCase(const ["<value>2013-15-12T17:53:23</value>", typeof(UnparsableValueException), Description = "Invalid month"])
+//@TestCase(const ['<value>2013-15-12T17:53:23</value>', typeof(UnparsableValueException), Description = "Invalid month"])
 //void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
 //{
 //  TestHelper.AssertXmlInvalid<LocalDateTime>(xml, expectedExceptionType);

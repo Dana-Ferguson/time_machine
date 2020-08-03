@@ -4,14 +4,14 @@ import 'parser_helper.dart';
 import 'rule_line.dart';
 import 'zone_rule_set.dart';
 
-/// Contains the parsed information from one "Zone" line of the TZDB zone database.
+/// Contains the parsed information from one 'Zone' line of the TZDB zone database.
 ///
 /// <remarks>
 /// Immutable, thread-safe
 /// </remarks>
 // todo: internal
 class ZoneLine {
-  static final OffsetPattern _percentZPattern = OffsetPattern.createWithInvariantCulture("i");
+  static final OffsetPattern _percentZPattern = OffsetPattern.createWithInvariantCulture('i');
 
   /// Initializes a new instance of the [ZoneLine] class.
   ZoneLine(this.name, this.standardOffset, this.rules, this.format, this.untilYear, this.untilYearOffset);
@@ -20,8 +20,8 @@ class ZoneLine {
 
   final int untilYear;
 
-  /// Returns the format for generating the label for this time zone. May contain "%s" to
-  /// be replaced by a daylight savings indicator, or "%z" to be replaced by an offset indicator.
+  /// Returns the format for generating the label for this time zone. May contain '%s' to
+  /// be replaced by a daylight savings indicator, or '%z' to be replaced by an offset indicator.
   final String format;
 
   /// Returns the name of the time zone.
@@ -31,16 +31,16 @@ class ZoneLine {
   final Offset standardOffset;
 
   /// The name of the set of rules applicable to this zone line, or
-  /// null for just standard time, or an offset for a "fixed savings" rule.
+  /// null for just standard time, or an offset for a 'fixed savings' rule.
   final String rules;
 
 // #region IEquatable<Zone> Members
 
   /// Indicates whether the current object is equal to another object of the same type.
   ///
-  /// <param name="other">An object to compare with this object.</param>
+  /// <param name='other'>An object to compare with this object.</param>
   /// <returns>
-  ///   true if the current object is equal to the <paramref name = "other" /> parameter;
+  ///   true if the current object is equal to the <paramref name = 'other' /> parameter;
   ///   otherwise, false.
   /// </returns>
   bool equals(ZoneLine other) {
@@ -87,26 +87,26 @@ class ZoneLine {
   }
 
 
-  ///   Returns a <see cref="System.String" /> that represents this instance.
+  ///   Returns a <see cref='System.String' /> that represents this instance.
   ///
   /// <returns>
-  ///   A <see cref="System.String" /> that represents this instance.
+  ///   A <see cref='System.String' /> that represents this instance.
   /// </returns>
   @override String toString() {
     var builder = StringBuffer();
-    builder..write(name)..write(" ");
-    builder..write(standardOffset)..write(" ");
-    builder..write(ParserHelper.formatOptional(rules))..write(" ");
+    builder..write(name)..write(' ');
+    builder..write(standardOffset)..write(' ');
+    builder..write(ParserHelper.formatOptional(rules))..write(' ');
     builder..write(format);
     if (untilYear != Platform.int32MaxValue) {
-      builder..write(" ")..write(untilYear.toString().padLeft(4, '0'))..write(" ")..write(untilYearOffset);
+      builder..write(' ')..write(untilYear.toString().padLeft(4, '0'))..write(" ")..write(untilYearOffset);
     }
     return builder.toString();
   }
 
   ZoneRuleSet resolveRules(Map<String, List<RuleLine>> allRules) {
     if (rules == null) {
-      var name = formatName(Offset.zero, "");
+      var name = formatName(Offset.zero, '');
       return ZoneRuleSet.named(name, standardOffset, Offset.zero, untilYear, untilYearOffset);
     }
 
@@ -123,7 +123,7 @@ class ZoneLine {
       try {
         // Check if Rules actually just refers to a savings.
         var savings = ParserHelper.parseOffset(rules);
-        var name = formatName(savings, "");
+        var name = formatName(savings, '');
         return ZoneRuleSet.named(name, standardOffset, savings, untilYear, untilYearOffset);
       }
       catch (FormatException) {
@@ -134,19 +134,19 @@ class ZoneLine {
   }
 
   String formatName(Offset savings, String daylightSavingsIndicator) {
-    int index = format.indexOf("/");
+    int index = format.indexOf('/');
     if (index >= 0) {
       return savings == Offset.zero ? format.substring(0, index) : format.substring(index + 1);
     }
     // todo: is this the same?
-    index = format.indexOf("%s");
+    index = format.indexOf('%s');
     if (index >= 0) {
       var left = format.substring(0, index);
       var right = format.substring(index + 2);
       return left + daylightSavingsIndicator + right;
     }
     // todo: is this the same?
-    index = format.indexOf("%z");
+    index = format.indexOf('%z');
     if (index >= 0) {
       var left = format.substring(0, index);
       var right = format.substring(index + 2);

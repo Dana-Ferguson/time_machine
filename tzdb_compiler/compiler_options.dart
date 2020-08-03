@@ -8,15 +8,15 @@ import 'package:args/args.dart';
 class CompilerOptions
 {
   final String outputFileName;
-  final   String sourceDirectoryName; // = "";
+  final   String sourceDirectoryName; // = '';
   // todo: is this something we still need?
-  final String windowsMapping; // = "";
+  final String windowsMapping; // = '';
   final String windowsOverride;
 
-  /*[Option("z", "zone",
+  /*[Option('z', "zone",
   Required = false,
-  HelpText = "Single zone ID to compile data for, for test purposes. (Incompatible with -o.)",
-  MutuallyExclusiveSet = "Output")] */
+  HelpText = 'Single zone ID to compile data for, for test purposes. (Incompatible with -o.)',
+  MutuallyExclusiveSet = 'Output')] */
   final String zoneId;
 
   CompilerOptions._(this.outputFileName, this.sourceDirectoryName, this.windowsMapping, this.windowsOverride, this.zoneId);

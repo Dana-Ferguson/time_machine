@@ -27,31 +27,31 @@ class BclDayOfWeek {
 @Test()
 void Construct_InvalidMonth_Exception()
 {
-  expect(() => ZoneYearOffset(TransitionMode.standard, 0, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: "Month 0");
-  expect(() => ZoneYearOffset(TransitionMode.standard, 34, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: "Month 34");
-  expect(() => ZoneYearOffset(TransitionMode.standard, -3, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: "Month -3");
+  expect(() => ZoneYearOffset(TransitionMode.standard, 0, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: 'Month 0');
+  expect(() => ZoneYearOffset(TransitionMode.standard, 34, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: 'Month 34');
+  expect(() => ZoneYearOffset(TransitionMode.standard, -3, 1, 1, true, LocalTime.midnight), throwsArgumentError, reason: 'Month -3');
 }
 
 @Test()
 void Construct_InvalidDayOfMonth_Exception()
 {
-  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 0, 1, true, LocalTime.midnight), throwsArgumentError, reason: "Day of Month 0");
-  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 32, 1, true, LocalTime.midnight), throwsArgumentError, reason: "Day of Month 32");
+  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 0, 1, true, LocalTime.midnight), throwsArgumentError, reason: 'Day of Month 0');
+  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 32, 1, true, LocalTime.midnight), throwsArgumentError, reason: 'Day of Month 32');
   expect(() => ZoneYearOffset(TransitionMode.standard, 2, 475, 1, true, LocalTime.midnight), throwsArgumentError,
-      reason: "Day of Month 475");
+      reason: 'Day of Month 475');
   expect(() => ZoneYearOffset(TransitionMode.standard, 2, -32, 1, true, LocalTime.midnight), throwsArgumentError,
-      reason: "Day of Month -32");
+      reason: 'Day of Month -32');
 }
 
 @Test()
 void Construct_InvalidDayOfWeek_Exception()
 {
-  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, -1, true, LocalTime.midnight), throwsArgumentError, reason: "Day of Week -1");
-  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, 8, true, LocalTime.midnight), throwsArgumentError, reason: "Day of Week 8");
+  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, -1, true, LocalTime.midnight), throwsArgumentError, reason: 'Day of Week -1');
+  expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, 8, true, LocalTime.midnight), throwsArgumentError, reason: 'Day of Week 8');
   expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, 5756, true, LocalTime.midnight), throwsArgumentError,
-      reason: "Day of Week 5856");
+      reason: 'Day of Week 5856');
   expect(() => ZoneYearOffset(TransitionMode.standard, 2, 3, -347, true, LocalTime.midnight), throwsArgumentError,
-      reason: "Day of Week -347");
+      reason: 'Day of Week -347');
 }
 
 @Test()
@@ -59,7 +59,7 @@ void Construct_ValidMonths()
 {
   for (int month = 1; month <= 12; month++)
   {
-    expect(ZoneYearOffset(TransitionMode.standard, month, 1, 1, true, LocalTime.midnight), isNotNull, reason: "Month $month");
+    expect(ZoneYearOffset(TransitionMode.standard, month, 1, 1, true, LocalTime.midnight), isNotNull, reason: 'Month $month');
   }
 }
 
@@ -68,11 +68,11 @@ void Construct_ValidDays()
 {
   for (int day = 1; day <= 31; day++)
   {
-    expect(ZoneYearOffset(TransitionMode.standard, 1, day, 1, true, LocalTime.midnight), isNotNull, reason: "Day $day");
+    expect(ZoneYearOffset(TransitionMode.standard, 1, day, 1, true, LocalTime.midnight), isNotNull, reason: 'Day $day');
   }
   for (int day = -1; day >= -31; day--)
   {
-    expect(ZoneYearOffset(TransitionMode.standard, 1, day, 1, true, LocalTime.midnight), isNotNull, reason: "Day $day");
+    expect(ZoneYearOffset(TransitionMode.standard, 1, day, 1, true, LocalTime.midnight), isNotNull, reason: 'Day $day');
   }
 }
 
@@ -81,7 +81,7 @@ void Construct_ValidDaysOfWeek()
 {
   for (int dayOfWeek = 0; dayOfWeek <= 7; dayOfWeek++)
   {
-    expect(ZoneYearOffset(TransitionMode.standard, 1, 1, dayOfWeek, true, LocalTime.midnight), isNotNull, reason: "Day of week $dayOfWeek");
+    expect(ZoneYearOffset(TransitionMode.standard, 1, 1, dayOfWeek, true, LocalTime.midnight), isNotNull, reason: 'Day of week $dayOfWeek');
   }
 }
 
@@ -180,7 +180,7 @@ void GetOccurrenceForYear_ExactlyFeb29th_NotLeapYear()
 {
   ZoneYearOffset offset = ZoneYearOffset(TransitionMode.utc, 2, 29, 0, false, LocalTime.midnight);
   var actual = offset.getOccurrenceForYear(2013);
-  var expected = ILocalDateTime.toLocalInstant(LocalDateTime(2013, 2, 28, 0, 0, 0)); // For "exact", go to Feb 28th
+  var expected = ILocalDateTime.toLocalInstant(LocalDateTime(2013, 2, 28, 0, 0, 0)); // For 'exact', go to Feb 28th
   expect(expected, actual);
 }
 

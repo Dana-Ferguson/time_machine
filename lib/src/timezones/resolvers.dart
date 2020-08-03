@@ -7,7 +7,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// Commonly-used implementations of the delegates used in resolving a [LocalDateTime] to a
-/// [ZonedDateTime], and a method to combine two "partial" resolvers into a full one.
+/// [ZonedDateTime], and a method to combine two 'partial' resolvers into a full one.
 ///
 /// This class contains predefined implementations of [ZoneLocalMappingResolver],
 /// [AmbiguousTimeResolver], and [SkippedTimeResolver], along with
@@ -25,10 +25,10 @@ abstract class Resolvers
   static final AmbiguousTimeResolver throwWhenAmbiguous = (earlier, later) => throw AmbiguousTimeError(earlier, later);
 
   /// A [SkippedTimeResolver] which returns the final tick of the time zone interval
-  /// before the "gap".
+  /// before the 'gap'.
   ///
   /// <value>A [SkippedTimeResolver] which returns the final tick of the time zone interval
-  /// before the "gap".</value>
+  /// before the 'gap'.</value>
   static final SkippedTimeResolver returnEndOfIntervalBefore = (LocalDateTime local, DateTimeZone zone, ZoneInterval before, ZoneInterval after) {
     Preconditions.checkNotNull(zone, 'zone');
     Preconditions.checkNotNull(before, 'before');
@@ -38,11 +38,11 @@ abstract class Resolvers
   };
 
   /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
-  /// after the "gap".
+  /// after the 'gap'.
   ///
   /// <value>
   /// A [SkippedTimeResolver] which returns the first tick of the time zone interval
-  /// after the "gap".
+  /// after the 'gap'.
   /// </value>
   static final SkippedTimeResolver returnStartOfIntervalAfter = (LocalDateTime local, DateTimeZone zone, ZoneInterval before, ZoneInterval after) {
     Preconditions.checkNotNull(zone, 'zone');
@@ -51,12 +51,12 @@ abstract class Resolvers
     return ZonedDateTime(after.start, zone, local.calendar);
   };
 
-  /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
+  /// A [SkippedTimeResolver] which shifts values in the 'gap' forward by the duration
   /// of the gap (which is usually 1 hour). This corresponds to the instant that would have occured,
   /// had there not been a transition.
   ///
   /// <value>
-  /// A [SkippedTimeResolver] which shifts values in the "gap" forward by the duration
+  /// A [SkippedTimeResolver] which shifts values in the 'gap' forward by the duration
   /// of the gap (which is usually 1 hour).
   /// </value>
   static final SkippedTimeResolver returnForwardShifted = (LocalDateTime local, DateTimeZone zone, ZoneInterval before, ZoneInterval after) {
@@ -81,7 +81,7 @@ abstract class Resolvers
   /// [AmbiguousTimeException], as appropriate. This resolver combines
   /// [throwWhenAmbiguous] and [throwWhenSkipped].
   ///
-  /// <seealso cref="DateTimeZone.AtStrictly"/>
+  /// <seealso cref='DateTimeZone.AtStrictly'/>
   /// <value>A [ZoneLocalMappingResolver] which only ever succeeds in the (usual) case where the result
   /// of the mapping is unambiguous.</value>
   static final ZoneLocalMappingResolver strictResolver = createMappingResolver(throwWhenAmbiguous, throwWhenSkipped);
@@ -94,7 +94,7 @@ abstract class Resolvers
   /// usage pattern.  Previous versions combined the [returnLater] and [returnStartOfIntervalAfter]
   /// resolvers, which can still be used separately if desired.
   ///
-  /// <seealso cref="DateTimeZone.AtLeniently"/>
+  /// <seealso cref='DateTimeZone.AtLeniently'/>
   static final ZoneLocalMappingResolver lenientResolver = createMappingResolver(returnEarlier, returnForwardShifted);
 
   /// Combines an [ambiguousTimeResolver] and a [SkippedTimeResolver] to create a
@@ -102,10 +102,10 @@ abstract class Resolvers
   ///
   /// The `ZoneLocalMappingResolver` created by this method operates in the obvious way: unambiguous mappings
   /// are returned directly, ambiguous mappings are delegated to the given `AmbiguousTimeResolver`, and
-  /// "skipped" mappings are delegated to the given `SkippedTimeResolver`.
+  /// 'skipped' mappings are delegated to the given `SkippedTimeResolver`.
   ///
   /// [ambiguousTimeResolver]: Resolver to use for ambiguous mappings.
-  /// [skippedTimeResolver]: Resolver to use for "skipped" mappings.
+  /// [skippedTimeResolver]: Resolver to use for 'skipped' mappings.
   /// Returns: The logical combination of the two resolvers.
   static ZoneLocalMappingResolver createMappingResolver(AmbiguousTimeResolver ambiguousTimeResolver, SkippedTimeResolver skippedTimeResolver) {
     // typedef ZoneLocalMappingResolver = ZonedDateTime Function(ZoneLocalMapping mapping);
@@ -122,7 +122,7 @@ abstract class Resolvers
         case 2:
           return ambiguousTimeResolver(mapping.first(), mapping.last());
         default:
-          throw StateError("Mapping has count outside range 0-2; should not happen.");
+          throw StateError('Mapping has count outside range 0-2; should not happen.');
       }
     }
 

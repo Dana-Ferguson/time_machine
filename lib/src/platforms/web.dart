@@ -19,15 +19,15 @@ import 'platform_io.dart';
 
 @ddcSupportHack
 Uri _resolveUri(Uri uri) {
-  if (uri.scheme == "package") {
-    uri = Uri.parse("packages/${uri.path}");
+  if (uri.scheme == 'package') {
+    uri = Uri.parse('packages/${uri.path}');
   }
   return Uri.base.resolveUri(uri);
 }
 
 @ddcSupportHack
 Future<List<int>> _httpGetBytes(Uri uri) {
-  return HttpRequest.request(uri.toString(), responseType: "arraybuffer")
+  return HttpRequest.request(uri.toString(), responseType: 'arraybuffer')
       .then((request) {
     ByteBuffer data = request.response;
     return data.asUint8List();
@@ -37,19 +37,19 @@ Future<List<int>> _httpGetBytes(Uri uri) {
 @ddcSupportHack
 /// Reads the bytes of a URI as a list of bytes.
 Future<List<int>> _readAsBytes(Uri uri) async {
-  if (uri.scheme == "http" || uri.scheme == "https") {
+  if (uri.scheme == 'http' || uri.scheme == "https") {
     return _httpGetBytes(uri);
   }
-  if (uri.scheme == "data") {
+  if (uri.scheme == 'data') {
     return uri.data.contentAsBytes();
   }
-  throw UnsupportedError("Unsupported scheme: $uri");
+  throw UnsupportedError('Unsupported scheme: $uri');
 }
 
 @ddcSupportHack
 /// Reads the bytes of a URI as a string.
 Future<String> _readAsString(Uri uri, Encoding encoding) async {
-  if (uri.scheme == "http" || uri.scheme == "https") {
+  if (uri.scheme == 'http' || uri.scheme == "https") {
     // Fetch as string if the encoding is expected to be understood,
     // otherwise fetch as bytes and do decoding using the encoding.
     if (encoding != null) {
@@ -57,10 +57,10 @@ Future<String> _readAsString(Uri uri, Encoding encoding) async {
     }
     return HttpRequest.getString(uri.toString());
   }
-  if (uri.scheme == "data") {
+  if (uri.scheme == 'data') {
     return uri.data.contentAsString(encoding: encoding);
   }
-  throw UnsupportedError("Unsupported scheme: $uri");
+  throw UnsupportedError('Unsupported scheme: $uri');
 }
 
 class _WebMachineIO implements PlatformIO {
@@ -68,11 +68,11 @@ class _WebMachineIO implements PlatformIO {
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return ByteData(0);
 
-    // var resource = new Resource("packages/time_machine/data/$path/$filename");
+    // var resource = new Resource('packages/time_machine/data/$path/$filename');
     // // todo: probably a better way to do this
     // var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
 
-    var resource = Uri.parse("${Uri.base.origin}/packages/time_machine/data/$path/$filename");
+    var resource = Uri.parse('${Uri.base.origin}/packages/time_machine/data/$path/$filename');
     var binary = ByteData.view(Int8List.fromList(await _readAsBytes(resource)).buffer);
 
     return binary;
@@ -80,10 +80,10 @@ class _WebMachineIO implements PlatformIO {
 
   @override
   Future/**<Map<String, dynamic>>*/ getJson(String path, String filename) async {
-    // var resource = new Resource("packages/time_machine/data/$path/$filename");
+    // var resource = new Resource('packages/time_machine/data/$path/$filename');
     // return json.decode(await resource.readAsString());
 
-    var resource = Uri.parse("${Uri.base.origin}/packages/time_machine/data/$path/$filename");
+    var resource = Uri.parse('${Uri.base.origin}/packages/time_machine/data/$path/$filename');
     return json.decode(await _readAsString(_resolveUri(resource), null));
   }
 }

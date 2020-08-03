@@ -32,7 +32,7 @@ void Construction_NullProvider()
 @Test()
 void InvalidSource_NullVersionId()
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"])..versionId = null;
+  var source = TestDateTimeZoneSource(['Test1', "Test2"])..versionId = null;
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
@@ -47,35 +47,35 @@ Future InvalidSource_NullIdSequence() async
 @Test()
 Future InvalidSource_ReturnsNullForAdvertisedId() async
 {
-  var source = NullReturningTestDateTimeZoneSource(["foo", "bar"]);
+  var source = NullReturningTestDateTimeZoneSource(['foo', "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
-  expect(() => cache.getZoneOrNull("foo"), willThrow<InvalidDateTimeZoneSourceError>());
+  expect(() => cache.getZoneOrNull('foo'), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 void InvalidProvider_NullIdWithinSequence()
 {
-  var source = TestDateTimeZoneSource(["Test1", null]);
+  var source = TestDateTimeZoneSource(['Test1', null]);
   expect(DateTimeZoneCache.getCache(source), willThrow<InvalidDateTimeZoneSourceError>());
 }
 
 @Test()
 Future CachingForPresentValues() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  var zone1a = await provider["Test1"];
+  var zone1a = await provider['Test1'];
   expect(zone1a, isNotNull);
-  expect("Test1", source.LastRequestedId);
+  expect('Test1', source.LastRequestedId);
 
   // Hit up the cache (and thus the source) for Test2
-  expect(await provider["Test2"], isNotNull);
-  expect("Test2", source.LastRequestedId);
+  expect(await provider['Test2'], isNotNull);
+  expect('Test2', source.LastRequestedId);
 
   // Ask for Test1 again
-  var zone1b = await provider["Test1"];
+  var zone1b = await provider['Test1'];
   // We won't have consulted the source again
-  expect("Test2", source.LastRequestedId);
+  expect('Test2', source.LastRequestedId);
 
   expect(identical(zone1a, zone1b), isTrue);
 }
@@ -83,7 +83,7 @@ Future CachingForPresentValues() async
 @Test()
 Future SourceIsNotAskedForUtcIfNotAdvertised() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
@@ -93,27 +93,27 @@ Future SourceIsNotAskedForUtcIfNotAdvertised() async
 @Test()
 Future SourceIsAskedForUtcIfAdvertised() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
   var zone = await provider[IDateTimeZone.utcId];
   expect(zone, isNotNull);
-  expect("UTC", source.LastRequestedId);
+  expect('UTC', source.LastRequestedId);
 }
 
 @Test()
 Future SourceIsNotAskedForUnknownIds() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   // todo: was InvalidDateTimeZoneSourceError ... why did this change? -- the returned error still makes sense.
-  expect(provider["Unknown"], willThrow<DateTimeZoneNotFoundError>());
+  expect(provider['Unknown'], willThrow<DateTimeZoneNotFoundError>());
   expect(source.LastRequestedId, isNull);
 }
 
 @Test()
 Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2", "UTC"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2", "UTC"]);
   var provider = await DateTimeZoneCache.getCache(source);
   expect(provider.ids.contains(IDateTimeZone.utcId), isTrue);
 }
@@ -121,7 +121,7 @@ Future UtcIsReturnedInIdsIfAdvertisedByProvider() async
 @Test()
 Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   expect(provider.ids.contains(IDateTimeZone.utcId), isFalse);
 }
@@ -129,9 +129,9 @@ Future UtcIsNotReturnedInIdsIfNotAdvertisedByProvider() async
 @Test()
 Future FixedOffsetSucceedsWhenNotAdvertised() async
 {
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
-  String id = "UTC+05:30";
+  String id = 'UTC+05:30';
   DateTimeZone zone = await provider[id];
   expect(DateTimeZone.forOffset(Offset.hoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
@@ -141,8 +141,8 @@ Future FixedOffsetSucceedsWhenNotAdvertised() async
 @Test()
 Future FixedOffsetConsultsSourceWhenAdvertised() async
 {
-  String id = "UTC+05:30";
-  var source = TestDateTimeZoneSource(["Test1", "Test2", id]);
+  String id = 'UTC+05:30';
+  var source = TestDateTimeZoneSource(['Test1', "Test2", id]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone = await provider[id];
   expect(id, zone.id);
@@ -152,8 +152,8 @@ Future FixedOffsetConsultsSourceWhenAdvertised() async
 @Test()
 Future FixedOffsetUncached() async
 {
-  String id = "UTC+05:26";
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  String id = 'UTC+05:26';
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone1 = await provider[id];
   DateTimeZone zone2 = await provider[id];
@@ -164,8 +164,8 @@ Future FixedOffsetUncached() async
 @Test()
 Future FixedOffsetZeroReturnsUtc() async
 {
-  String id = "UTC+00:00";
-  var source = TestDateTimeZoneSource(["Test1", "Test2"]);
+  String id = 'UTC+00:00';
+  var source = TestDateTimeZoneSource(['Test1', "Test2"]);
   var provider = await DateTimeZoneCache.getCache(source);
   DateTimeZone zone = await provider[id];
   expect(DateTimeZone.utc, zone);
@@ -175,31 +175,31 @@ Future FixedOffsetZeroReturnsUtc() async
 @Test()
 void Tzdb_Indexer_InvalidFixedOffset()
 {
-  expect(Tzdb["UTC+5Months"], willThrow<DateTimeZoneNotFoundError>());
+  expect(Tzdb['UTC+5Months'], willThrow<DateTimeZoneNotFoundError>());
 }
 
 @Test()
 Future NullIdRejected() async
 {
-  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"]));
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(['Test1', "Test2"]));
   expect(provider[null], throwsArgumentError);
 }
 
 @Test()
 Future EmptyIdAccepted() async
 {
-  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"]));
-  expect(provider[""], willThrow<DateTimeZoneNotFoundError>());
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(['Test1', "Test2"]));
+  expect(provider[''], willThrow<DateTimeZoneNotFoundError>());
 }
 
 @Test()
 Future VersionIdPassThrough() async
 {
-  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(["Test1", "Test2"])..versionId = Future(() => "foo"));
-  expect("foo", provider.versionId);
+  var provider = await DateTimeZoneCache.getCache(TestDateTimeZoneSource(['Test1', "Test2"])..versionId = Future(() => "foo"));
+  expect('foo', provider.versionId);
 }
 
-@Test("Test for issue 7 in bug tracker")
+@Test('Test for issue 7 in bug tracker')
 Future Tzdb_IterateOverIds() async
 {
   // According to bug, this would go bang
@@ -219,7 +219,7 @@ Future Tzdb_Indexer_UtcId() async
 @Test()
 Future Tzdb_Indexer_AmericaLosAngeles() async
 {
-  const String americaLosAngeles = "America/Los_Angeles";
+  const String americaLosAngeles = 'America/Los_Angeles';
   var actual = await Tzdb[americaLosAngeles];
   expect(actual, isNotNull);
   expect(DateTimeZone.utc, isNot(actual));
@@ -252,7 +252,7 @@ void Tzdb_Indexer_AllIds()
 @Test()
 Future GetSystemDefault_SourceReturnsNullId() async
 {
-  var source = NullReturningTestDateTimeZoneSource(["foo", "bar"]);
+  var source = NullReturningTestDateTimeZoneSource(['foo', "bar"]);
   var cache = await DateTimeZoneCache.getCache(source);
   expect(cache.getSystemDefault(), willThrow<DateTimeZoneNotFoundError>());
 }
@@ -263,7 +263,7 @@ class TestDateTimeZoneSource extends DateTimeZoneSource {
   final List<String> ids;
 
   TestDateTimeZoneSource(this.ids) {
-    versionId = Future(() => "test version");
+    versionId = Future(() => 'test version');
   }
 
   Future<Iterable<String>> getIds() => Future(() => ids);
@@ -279,7 +279,7 @@ class TestDateTimeZoneSource extends DateTimeZoneSource {
 
   Future<String> versionId;
 
-  String get systemDefaultId => "map";
+  String get systemDefaultId => 'map';
 }
 
 // A test source that returns null from ForId and GetSystemDefaultId()

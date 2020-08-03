@@ -33,7 +33,7 @@ Future setup() async {
 @Test()
 Future Niue() async
 {
-  DateTimeZone niue = await Tzdb["Pacific/Niue"];
+  DateTimeZone niue = await Tzdb['Pacific/Niue'];
   var offset = niue.getUtcOffset(ZonedDateTime.atStrictly(LocalDateTime(2010, 1, 1, 0, 0, 0), niue).toInstant());
   expect(Offset.hours(-11), offset);
 }
@@ -41,7 +41,7 @@ Future Niue() async
 @Test()
 Future Kiritimati() async
 {
-  DateTimeZone kiritimati = await Tzdb["Pacific/Kiritimati"];
+  DateTimeZone kiritimati = await Tzdb['Pacific/Kiritimati'];
   var offset = kiritimati.getUtcOffset(ZonedDateTime.atStrictly(LocalDateTime(2010, 1, 1, 0, 0, 0), kiritimati).toInstant());
   expect(Offset.hours(14), offset);
 }
@@ -49,7 +49,7 @@ Future Kiritimati() async
 @Test()
 Future Pyongyang() async
 {
-  DateTimeZone pyongyang = await Tzdb["Asia/Pyongyang"];
+  DateTimeZone pyongyang = await Tzdb['Asia/Pyongyang'];
   var offset = pyongyang.getUtcOffset(ZonedDateTime.atStrictly(LocalDateTime(2010, 1, 1, 0, 0, 0), pyongyang).toInstant());
   expect(Offset.hours(9), offset);
 }
@@ -57,7 +57,7 @@ Future Pyongyang() async
 @Test()
 Future Khartoum() async
 {
-  DateTimeZone khartoum = await Tzdb["Africa/Khartoum"];
+  DateTimeZone khartoum = await Tzdb['Africa/Khartoum'];
   expect(khartoum, isNotNull);
   Instant utc = Instant.utc(2000, 1, 1, 0, 0, 0);
   ZonedDateTime inKhartoum = ZonedDateTime(utc, khartoum);
@@ -75,7 +75,7 @@ Future Khartoum() async
 @Test()
 Future Tbilisi() async
 {
-  var zone = await Tzdb["Asia/Tbilisi"];
+  var zone = await Tzdb['Asia/Tbilisi'];
   Instant summer1996 = Instant.utc(1996, 6, 1, 0, 0);
   var interval = zone.getZoneInterval(summer1996);
   expect(LocalDateTime(1996, 3, 31, 1, 0, 0), interval.isoLocalStart);

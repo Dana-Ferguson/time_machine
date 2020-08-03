@@ -34,7 +34,7 @@ class LocalInstant {
     //int days = nanoseconds.FloorDays;
     //if (days < Instant.MinDays || days > Instant.MaxDays)
     //{
-    //throw new OverflowException("Operation would overflow bounds of local date/time");
+    //throw new OverflowException('Operation would overflow bounds of local date/time');
     //}
     return LocalInstant._(nanoseconds);
   }
@@ -70,7 +70,7 @@ class LocalInstant {
 
   /// Subtracts the given time zone offset from this local instant, to give an [Instant].
   ///
-  /// This would normally be implemented as an operator, but as the corresponding "plus" operation
+  /// This would normally be implemented as an operator, but as the corresponding 'plus' operation
   /// on Instant cannot be written (as Instant is a type and LocalInstant is an type)
   /// it makes sense to keep them both as methods for consistency.
   ///
@@ -151,10 +151,10 @@ class LocalInstant {
   @override String toString() // => TextShim.toStringLocalInstant(this);
   {
     if (this == beforeMinValue) {
-      return "StartOfTime"; // InstantPatternParser.BeforeMinValueText;
+      return 'StartOfTime'; // InstantPatternParser.BeforeMinValueText;
     }
     if (this == afterMaxValue) {
-      return "EndOfTime"; //InstantPatternParser.AfterMaxValueText;
+      return 'EndOfTime'; //InstantPatternParser.AfterMaxValueText;
     }
     var date = LocalDate.fromEpochDay(IInstant.trusted(_time).epochDay);
     var pattern = LocalDateTimePattern.createWithInvariantCulture("uuuu-MM-ddTHH:mm:ss.FFFFFFFFF 'LOC'");

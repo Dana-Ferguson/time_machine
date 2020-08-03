@@ -16,7 +16,7 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 /// A [IIFormatProvider] for Time Machine types, usually initialised from a [Culture].
 /// This provides a single place defining how Time Machine values are formatted and displayed, depending on the culture.
 ///
-/// Currently this is "shallow-immutable" - although none of these properties can be changed, the
+/// Currently this is 'shallow-immutable' - although none of these properties can be changed, the
 /// [Culture] itself may be mutable. If the [Culture] is mutated after initialization, results are not
 /// guaranteed: some aspects of the [Culture] may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
@@ -130,7 +130,7 @@ class TimeMachineFormatInfo {
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=3278 for more details and progress.
   ///
   /// todo: verify and remove
-  /// Mono 3.0.6 has an exciting and different bug, where all the abbreviated genitive month names are just numbers ("1" etc).
+  /// Mono 3.0.6 has an exciting and different bug, where all the abbreviated genitive month names are just numbers ('1' etc).
   /// So again, if we detect that, we'll go back to the non-genitive version.
   /// See http://bugzilla.xamarin.com/show_bug.cgi?id=11361 for more details and progress.
   List<String> _convertGenitiveMonthArray(List<String> nonGenitiveNames, List<String> bclNames, List<String> invariantNames) {
@@ -205,7 +205,7 @@ class TimeMachineFormatInfo {
   // todo: this needs to be immutable
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
-  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
+  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string 'January'.
   List<String> get longMonthNames {
     _ensureMonthsInitialized();
     return _longMonthNames;
@@ -213,7 +213,7 @@ class TimeMachineFormatInfo {
 
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
-  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
+  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string 'Jan'.
   List<String> get shortMonthNames {
     _ensureMonthsInitialized();
     return _shortMonthNames;
@@ -221,7 +221,7 @@ class TimeMachineFormatInfo {
 
   /// Returns a read-only list of the names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
-  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "January".
+  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string 'January'.
   /// The genitive form is used for month text where the day of month also appears in the pattern.
   /// If the culture does not use genitive month names, this property will return the same reference as
   /// [longMonthNames].
@@ -232,7 +232,7 @@ class TimeMachineFormatInfo {
 
   /// Returns a read-only list of the abbreviated names of the months for the default calendar for this culture.
   /// See the usage guide for caveats around the use of these names for other calendars.
-  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string "Jan".
+  /// Element 0 of the list is null, to allow a more natural mapping from (say) 1 to the string 'Jan'.
   /// The genitive form is used for month text where the day also appears in the pattern.
   /// If the culture does not use genitive month names, this property will return the same reference as
   /// [shortMonthNames].
@@ -313,26 +313,26 @@ class TimeMachineFormatInfo {
   /// Gets the [TimeMachineFormatInfo] object for the current thread.
   static TimeMachineFormatInfo get currentInfo => getInstance(Culture.current);
 
-  /// Gets the [Offset] "l" pattern.
-  String get offsetPatternLong => PatternResources.getString("OffsetPatternLong", culture);
+  /// Gets the [Offset] 'l' pattern.
+  String get offsetPatternLong => PatternResources.getString('OffsetPatternLong', culture);
 
-  /// Gets the [Offset] "m" pattern.
-  String get offsetPatternMedium => PatternResources.getString("OffsetPatternMedium", culture);
+  /// Gets the [Offset] 'm' pattern.
+  String get offsetPatternMedium => PatternResources.getString('OffsetPatternMedium', culture);
 
-  /// Gets the [Offset] "s" pattern.
-  String get offsetPatternShort => PatternResources.getString("OffsetPatternShort", culture);
+  /// Gets the [Offset] 's' pattern.
+  String get offsetPatternShort => PatternResources.getString('OffsetPatternShort', culture);
 
-  /// Gets the [Offset] "L" pattern.
+  /// Gets the [Offset] 'L' pattern.
   String get offsetPatternLongNoPunctuation =>
-      PatternResources.getString("OffsetPatternLongNoPunctuation", culture);
+      PatternResources.getString('OffsetPatternLongNoPunctuation', culture);
 
-  /// Gets the [Offset] "M" pattern.
+  /// Gets the [Offset] 'M' pattern.
   String get offsetPatternMediumNoPunctuation =>
-      PatternResources.getString("OffsetPatternMediumNoPunctuation", culture);
+      PatternResources.getString('OffsetPatternMediumNoPunctuation', culture);
 
-  /// Gets the [Offset] "S" pattern.
+  /// Gets the [Offset] 'S' pattern.
   String get offsetPatternShortNoPunctuation =>
-      PatternResources.getString("OffsetPatternShortNoPunctuation", culture);
+      PatternResources.getString('OffsetPatternShortNoPunctuation', culture);
 
   /// Clears the cache. Only used for test purposes.
  static void clearCache() => _cache.clear();
@@ -376,11 +376,11 @@ class TimeMachineFormatInfo {
     //} else if (culture is DateTimeFormat) {
     //  return new TimeMachineFormatInfo.withDateTimeFormat(Culture.invariant, culture);
     //}
-    // throw new ArgumentError("Cannot use provider of type ${culture.runtimeType} in Time Machine");
+    // throw new ArgumentError('Cannot use provider of type ${culture.runtimeType} in Time Machine');
   }
 
   /// Returns a [String] that represents this instance.
-  @override String toString() => "TimeMachineInfo[${culture.name}]";
+  @override String toString() => 'TimeMachineInfo[${culture.name}]';
 }
 
 /// The description for an era: the primary name and all possible names.
@@ -397,14 +397,14 @@ class _EraDescription {
     if (pipeDelimited == null)
     {
       allNames = List<String>(0); // string[0];
-      primaryName = "";
+      primaryName = '';
     }
     else
     {
       String eraNameFromCulture = _getEraNameFromBcl(era, culture);
-      if (eraNameFromCulture != null && !pipeDelimited.startsWith(eraNameFromCulture + "|"))
+      if (eraNameFromCulture != null && !pipeDelimited.startsWith(eraNameFromCulture + '|'))
       {
-        pipeDelimited = eraNameFromCulture + "|" + pipeDelimited;
+        pipeDelimited = eraNameFromCulture + '|' + pipeDelimited;
       }
       allNames = pipeDelimited.split('|');
       primaryName = allNames[0];
@@ -416,7 +416,7 @@ class _EraDescription {
 
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that
   /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
-  /// than nothing, and fixes an issue where non-English BCL cultures have "gg" in their patterns.
+  /// than nothing, and fixes an issue where non-English BCL cultures have 'gg' in their patterns.
   static String _getEraNameFromBcl(Era era, Culture culture) {
     var calendar = culture.dateTimeFormat.calendar;
 

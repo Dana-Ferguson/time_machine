@@ -43,7 +43,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// Gets an invariant offset time pattern based on ISO-8601 (down to the nanosecond), including offset from UTC.
   ///
   /// This corresponds to a custom pattern of "HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;".
-  /// This will round-trip all values, and is available as the "o" standard pattern.
+  /// This will round-trip all values, and is available as the 'o' standard pattern.
   static OffsetTimePattern get extendedIso => OffsetTimePatterns.extendedIsoPatternImpl;
 
   /// Gets an invariant offset time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC

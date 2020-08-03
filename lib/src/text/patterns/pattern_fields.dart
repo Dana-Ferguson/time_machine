@@ -10,7 +10,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// Enum representing the fields available within patterns. This single enum is shared
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,
-/// due to concepts such as "sign".
+/// due to concepts such as 'sign'.
 @internal
 @immutable
 class PatternFields {

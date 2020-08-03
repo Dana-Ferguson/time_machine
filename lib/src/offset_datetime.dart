@@ -85,7 +85,7 @@ class OffsetDateTime {
   CalendarSystem get calendar => localDateTime.calendar;
 
   /// Gets the year of this offset date and time.
-  /// This returns the "absolute year", so, for the ISO calendar,
+  /// This returns the 'absolute year', so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
   int get year => localDateTime.year;
 
@@ -294,7 +294,7 @@ class OffsetDateTime {
 
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("G"), using the current isolate's
+  /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       OffsetDateTimePatterns.format(this, patternText, culture);
@@ -312,7 +312,7 @@ class OffsetDateTime {
   /// * [offsetDateTime]: The value to subtract the duration from.
   /// * [duration]: The duration to subtract.
   ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
+  /// Returns: A new value with the time 'rewound' by the given duration, in the same calendar system and with the same offset.
   static OffsetDateTime minus(OffsetDateTime offsetDateTime, Time time) => offsetDateTime - time;
 
   /// Returns a new [OffsetDateTime] with the time advanced by the given duration.
@@ -332,7 +332,7 @@ class OffsetDateTime {
   /// * [offsetDateTime]: The value to subtract the duration from.
   /// * [duration]: The duration to subtract.
   ///
-  /// Returns: A new value with the time "rewound" by the given duration, in the same calendar system and with the same offset.
+  /// Returns: A new value with the time 'rewound' by the given duration, in the same calendar system and with the same offset.
   OffsetDateTime operator -(Time time) => subtract(time);
 
   /// Returns the result of adding a duration to this offset date and time.
@@ -397,7 +397,7 @@ class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
     Preconditions.checkArgument(x.calendar == y.calendar, 'y',
-        "Only values with the same calendar system can be compared");
+        'Only values with the same calendar system can be compared');
     int dateComparison = ICalendarSystem.compare(x.calendar, ILocalDate.yearMonthDay(x.calendarDate), ILocalDate.yearMonthDay(y.calendarDate));
     if (dateComparison != 0) {
       return dateComparison;
@@ -453,7 +453,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
   /// [x]: The first value to compare.
   /// [y]: The second value to compare.
   /// A signed integer that indicates the relative values of [x] and [y], as shown in the following table.
-  ///   <list type = "table">
+  ///   <list type = 'table'>
   ///     <listheader>
   ///       <term>Value</term>
   ///       <description>Meaning</description>

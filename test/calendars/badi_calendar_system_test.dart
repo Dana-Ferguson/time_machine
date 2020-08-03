@@ -16,7 +16,7 @@ Future main() async {
   await runTests();
 }
 
-// For use with CreateBadíʿDate, this is a notional "month"
+// For use with CreateBadíʿDate, this is a notional 'month'
 // containing Ayyam-i-Ha. The days here are represented in month
 // 18 in LocalDate etc.
 const int AyyamiHaMonth = 0;
@@ -157,14 +157,14 @@ void SpecialCases(int gYear, int gMonth, int gDay, int bYear, int bMonth, int bD
   // convert to gregorian
   var gDate = bDate.withCalendar(CalendarSystem.gregorian);
 
-  expect("$gYear-$gMonth-$gDay", "${gDate.year}-${gDate.monthOfYear}-${gDate.dayOfMonth}");
+  expect('$gYear-$gMonth-$gDay', "${gDate.year}-${gDate.monthOfYear}-${gDate.dayOfMonth}");
 
   // create in gregorian
   // convert to test calendar
   var gDate2 = LocalDate(gYear, gMonth, gDay);
   var bDate2 = gDate2.withCalendar(CalendarSystem.badi);
 
-  expect("$bYear-$bMonth-$bDay", "${bDate2.year}-${BadiMonth(bDate2)}-${BadiDay(bDate2)}");
+  expect('$bYear-$bMonth-$bDay', "${bDate2.year}-${BadiMonth(bDate2)}-${BadiDay(bDate2)}");
 }
 
 @Test()
@@ -501,8 +501,8 @@ void BetweenLocalDates_OnLeapYear()
   LocalDate d1 = LocalDate(2012, 2, 29).withCalendar(CalendarSystem.badi);
   LocalDate d2 = LocalDate(2013, 2, 28).withCalendar(CalendarSystem.badi);
 
-  expect("168-0-4", AsBadiString(d1));
-  expect("169-0-3", AsBadiString(d2));
+  expect('168-0-4', AsBadiString(d1));
+  expect('169-0-3', AsBadiString(d2));
 
   expect(Period(months: 19) + Period(days: 18), Period.differenceBetweenDates(d1, d2));
 }
@@ -579,12 +579,12 @@ void Addition_YearMonthDay()
 }
 
 /// <summary>
-/// Create a <see cref="LocalDate"/> in the Badíʿ calendar, treating 0
+/// Create a <see cref='LocalDate'/> in the Badíʿ calendar, treating 0
 /// as the month containing Ayyam-i-Ha.
 /// </summary>
-/// <param name="year">Year in the Badíʿ calendar</param>
-/// <param name="month">Month (use 0 for Ayyam-i-Ha)</param>
-/// <param name="day">Day in month</param>
+/// <param name='year'>Year in the Badíʿ calendar</param>
+/// <param name='month'>Month (use 0 for Ayyam-i-Ha)</param>
+/// <param name='day'>Day in month</param>
 LocalDate CreateBadiDate(int year, int month, int day)
 {
   if (month == AyyamiHaMonth)
@@ -636,7 +636,7 @@ int BadiMonth(LocalDate input)
   var month = BadiMonth(input);
   var day = BadiDay(input);
 
-  return "$year-$month-$day";
+  return '$year-$month-$day';
 }
 
 @Test()
@@ -663,8 +663,8 @@ void HelperMethod_BadiMonth()
 void HelperMethod_AsBadiString()
 {
   // ensure that this helper method is working
-  expect(AsBadiString(CreateBadiDate(180, 10, 10)), "180-10-10");
-  expect(AsBadiString(CreateBadiDate(180, 18, 19)), "180-18-19");
-  expect(AsBadiString(CreateBadiDate(180, 0, 3)), "180-0-3");
-  expect(AsBadiString(CreateBadiDate(180, 19, 1)), "180-19-1");
+  expect(AsBadiString(CreateBadiDate(180, 10, 10)), '180-10-10');
+  expect(AsBadiString(CreateBadiDate(180, 18, 19)), '180-18-19');
+  expect(AsBadiString(CreateBadiDate(180, 0, 3)), '180-0-3');
+  expect(AsBadiString(CreateBadiDate(180, 19, 1)), '180-19-1');
 }

@@ -53,10 +53,10 @@ class ZoneYearOffset {
   /// [timeOfDay]: The time of day at which the transition occurs.
   /// [addDay]: Whether to add an extra day (for 24:00 handling). Default is false.
   ZoneYearOffset(this.mode, this._monthOfYear, this._dayOfMonth, this._dayOfWeek, this.advanceDayOfWeek, this.timeOfDay, [this._addDay = false]) {
-    _verifyFieldValue(1, 12, "monthOfYear", _monthOfYear, false);
-    _verifyFieldValue(1, 31, "dayOfMonth", _dayOfMonth, true);
+    _verifyFieldValue(1, 12, 'monthOfYear', _monthOfYear, false);
+    _verifyFieldValue(1, 31, 'dayOfMonth', _dayOfMonth, true);
     if (_dayOfWeek != 0) {
-      _verifyFieldValue(1, 7, "dayOfWeek", _dayOfWeek, false);
+      _verifyFieldValue(1, 7, 'dayOfWeek', _dayOfWeek, false);
     }
   }
 
@@ -83,8 +83,8 @@ class ZoneYearOffset {
       }
     }
     if (failed) {
-      String range = allowNegated ? "[$minimum, $maximum] or [${-maximum}, ${-minimum}]" : "[$minimum, $maximum]";
-      throw ArgumentError.value(value, name, "$name is not in the valid range: $range");
+      String range = allowNegated ? '[$minimum, $maximum] or [${-maximum}, ${-minimum}]' : "[$minimum, $maximum]";
+      throw ArgumentError.value(value, name, '$name is not in the valid range: $range');
     }
   }
 
@@ -113,11 +113,11 @@ class ZoneYearOffset {
 
   // todo: timeOfDay:{5:r} <-- recreate the format?
   @override String toString() =>
-      "ZoneYearOffset[mode:$mode monthOfYear:$_monthOfYear dayOfMonth:$_dayOfMonth dayOfWeek:$_dayOfWeek advance:$advanceDayOfWeek timeOfDay:$timeOfDay addDay:$_addDay]";
+      'ZoneYearOffset[mode:$mode monthOfYear:$_monthOfYear dayOfMonth:$_dayOfMonth dayOfWeek:$_dayOfWeek advance:$advanceDayOfWeek timeOfDay:$timeOfDay addDay:$_addDay]';
 
   /// Returns the occurrence of this rule within the given year, as a LocalInstant.
   ///
-  /// LocalInstant is used here so that we can use the representation of "AfterMaxValue"
+  /// LocalInstant is used here so that we can use the representation of 'AfterMaxValue'
   /// for December 31st 9999 24:00.
   LocalInstant getOccurrenceForYear(int year) {
     int actualDayOfMonth = _dayOfMonth > 0 ? _dayOfMonth : CalendarSystem.iso.getDaysInMonth(year, _monthOfYear) + _dayOfMonth + 1;
@@ -131,7 +131,7 @@ class ZoneYearOffset {
     }
     LocalDate date = LocalDate(year, _monthOfYear, actualDayOfMonth);
     if (_dayOfWeek != 0) {
-      // Optimized "go to next or previous occurrence of day or week". Try to do as few comparisons
+      // Optimized 'go to next or previous occurrence of day or week'. Try to do as few comparisons
       // as possible, and only fetch DayOfWeek once. (If we call Next or Previous, it will work it out again.)
       int currentDayOfWeek = date.dayOfWeek.value;
       if (currentDayOfWeek != _dayOfWeek) {
@@ -167,7 +167,7 @@ class ZoneYearOffset {
     // - MM is the mode (0-2)
     // - DDD is the day of week (0-7)
     // - A is the AdvanceDayOfWeek
-    // - P is the "addDay" (24:00) flag
+    // - P is the 'addDay' (24:00) flag
     int flags = (_dayOfMonth.sign == -1 ? 1 << 7 : 0)
     | (mode.value << 5)
     | (_dayOfWeek << 2)
@@ -217,7 +217,7 @@ class ZoneYearOffset {
 
   /// Returns the offset to use for this rule's [TransitionMode].
   /// The year/month/day/time for a rule is in a specific frame of reference:
-  /// UTC, "wall" or "standard".
+  /// UTC, 'wall' or "standard".
   ///
   /// [standardOffset]: The standard offset.
   /// [savings]: The daylight savings adjustment.

@@ -4,11 +4,11 @@
 
 import 'package:time_machine/src/time_machine_internal.dart';
 
-/// Useful constants, mostly along the lines of "number of milliseconds in an hour".
+/// Useful constants, mostly along the lines of 'number of milliseconds in an hour'.
 // https://www.dartlang.org/guides/language/effective-dart/design#avoid-defining-a-class-that-contains-only-static-members
 // I invoke example 3.
 
-/// Useful constants, mostly along the lines of "number of milliseconds in an hour".
+/// Useful constants, mostly along the lines of 'number of milliseconds in an hour'.
 class TimeConstants {
   static const int secondsPerMinute = 60;
   static const int secondsPerHour = secondsPerMinute * minutesPerHour;

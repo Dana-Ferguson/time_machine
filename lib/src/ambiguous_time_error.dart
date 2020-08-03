@@ -31,11 +31,11 @@ class AmbiguousTimeError extends Error {
   /// * [earlierMapping]: The earlier possible mapping
   /// * [laterMapping]: The later possible mapping
   AmbiguousTimeError(this.earlierMapping, this.laterMapping)
-      : message = "Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.zone.id}" {
+      : message = 'Local time ${earlierMapping.localDateTime} is ambiguous in time zone ${earlierMapping.zone.id}' {
     Preconditions.checkArgument(earlierMapping.zone == laterMapping.zone, 'laterMapping',
-        "Ambiguous possible values must use the same time zone");
+        'Ambiguous possible values must use the same time zone');
     Preconditions.checkArgument(earlierMapping.localDateTime == laterMapping.localDateTime, 'laterMapping',
-        "Ambiguous possible values must have the same local date/time");
+        'Ambiguous possible values must have the same local date/time');
   }
 }
 

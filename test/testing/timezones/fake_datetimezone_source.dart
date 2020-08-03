@@ -36,7 +36,7 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
     if (zone != null) {
       return Future.value(zone);
     }
-    throw ArgumentError("Unknown ID: " + id);
+    throw ArgumentError('Unknown ID: ' + id);
   }
 
   // todo: Not a problem for dart... do we have an inheritdoc equivalent?
@@ -62,7 +62,7 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
     if (zone != null) {
       return zone;
     }
-    throw ArgumentError("Unknown ID: " + id);
+    throw ArgumentError('Unknown ID: ' + id);
   }
 }
 
@@ -83,12 +83,12 @@ class FakeDateTimeZoneSourceBuilder {
   /// well as adding zones.
   List<DateTimeZone> get Zones => _zones;
 
-  /// Gets the version ID to advertise; defaults to "TestZones".
+  /// Gets the version ID to advertise; defaults to 'TestZones'.
   String VersionId;
 
   /// Creates a new builder.
   FakeDateTimeZoneSourceBuilder([List<DateTimeZone> zones = const []]) {
-    VersionId = "TestZones";
+    VersionId = 'TestZones';
     this._zones.addAll(zones);
   }
 
@@ -118,9 +118,9 @@ class FakeDateTimeZoneSourceBuilder {
   FakeDateTimeZoneSource Build() {
     var zoneMap = Map<String, DateTimeZone>.fromIterable(_zones, key: (z) => z.id);
     _bclIdsToZoneIds.forEach((key, value) {
-      Preconditions.checkNotNull(value, "value");
+      Preconditions.checkNotNull(value, 'value');
       if (!zoneMap.containsKey(value)) {
-        throw StateError("Mapping for BCL ${key}/${value} has no corresponding zone.");
+        throw StateError('Mapping for BCL ${key}/${value} has no corresponding zone.');
       }
     });
 

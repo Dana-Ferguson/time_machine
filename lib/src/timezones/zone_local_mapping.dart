@@ -16,13 +16,13 @@ abstract class IZoneLocalMapping {
 }
 
 /// The result of mapping a [LocalDateTime] within a time zone, i.e. finding out
-/// at what "global" time the "local" time occurred.
+/// at what 'global' time the "local" time occurred.
 ///
 /// This class is used as the return type of [DateTimeZone.mapLocal]. It allows for
 /// finely-grained handling of the three possible results:
 ///
 /// //todo: Markdown me!
-/// <list type="bullet">
+/// <list type='bullet'>
 ///   <item>
 ///     <term>Unambiguous mapping</term>
 ///     <description>The local time occurs exactly once in the target time zone.</description>

@@ -12,7 +12,7 @@ abstract class TzdbZoneLocationParser {
     String countryName = countryMapping[countryCode];
     List<int> latLong = _parseCoordinates(bits[1]);
     String zoneId = bits[2];
-    String comment = bits.length == 4 ? bits[3] : "";
+    String comment = bits.length == 4 ? bits[3] : '';
     return TzdbZoneLocation(latLong[0], latLong[1], countryName, countryCode, zoneId, comment);
   }
 
@@ -23,17 +23,17 @@ abstract class TzdbZoneLocationParser {
     var countries = countryCodes.split(',').map((code) => countryMapping[code]).toList();
     List<int> latLong = _parseCoordinates(bits[1]);
     String zoneId = bits[2];
-    String comment = bits.length == 4 ? bits[3] : "";
+    String comment = bits.length == 4 ? bits[3] : '';
     return TzdbZone1970Location(latLong[0], latLong[1], countries, zoneId, comment);
   }
 
   // Internal for testing
   /// <summary>
-  /// Parses a string such as "-7750+16636" or "+484531-0913718" into a pair of Int32
+  /// Parses a string such as '-7750+16636' or "+484531-0913718" into a pair of Int32
   /// values: the latitude and longitude of the coordinates, in seconds.
   /// </summary>
   static List<int> _parseCoordinates(String text) {
-    Preconditions.checkArgument(text.length == 11 || text.length == 15, "point", "Invalid coordinates");
+    Preconditions.checkArgument(text.length == 11 || text.length == 15, 'point', "Invalid coordinates");
     int latDegrees;
     int latMinutes;
     int latSeconds = 0;

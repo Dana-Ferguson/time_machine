@@ -30,7 +30,7 @@ class SingleTransitionDateTimeZone extends DateTimeZone {
   /// [offsetBefore]: The offset of local time from UTC before the transition.
   /// [offsetAfter]: The offset of local time from UTC before the transition.
   SingleTransitionDateTimeZone(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter)
-      : this.withId(transitionPoint, offsetBefore, offsetAfter, "Single");
+      : this.withId(transitionPoint, offsetBefore, offsetAfter, 'Single');
 
   /// Creates a zone with a single transition between two offsets.
   ///
@@ -39,8 +39,8 @@ class SingleTransitionDateTimeZone extends DateTimeZone {
   /// [offsetAfter]: The offset of local time from UTC before the transition.
   /// [id]: ID for the newly created time zone.
   SingleTransitionDateTimeZone.withId(Instant transitionPoint, Offset offsetBefore, Offset offsetAfter, String id)
-      : EarlyInterval = IZoneInterval.newZoneInterval(id + "-Early", null, transitionPoint, offsetBefore, Offset.zero),
-        LateInterval = IZoneInterval.newZoneInterval(id + "-Late", transitionPoint, null, offsetAfter, Offset.zero),
+      : EarlyInterval = IZoneInterval.newZoneInterval(id + '-Early', null, transitionPoint, offsetBefore, Offset.zero),
+        LateInterval = IZoneInterval.newZoneInterval(id + '-Late', transitionPoint, null, offsetAfter, Offset.zero),
         super(id, false, Offset.min(offsetBefore, offsetAfter), Offset. max(offsetBefore, offsetAfter));
 
   /// <inheritdoc />

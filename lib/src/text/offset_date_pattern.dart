@@ -40,7 +40,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   ///
   /// The returned pattern corresponds to a custom pattern of
   /// "uuuu'-'MM'-'dd'o&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
-  /// and is available as the "r" standard pattern.
+  /// and is available as the 'r' standard pattern.
   static OffsetDatePattern get fullRoundtrip => OffsetDatePatterns.fullRoundtripPatternImpl;
 
   final IPattern<OffsetDate> _pattern;

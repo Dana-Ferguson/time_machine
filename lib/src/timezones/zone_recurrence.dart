@@ -43,9 +43,9 @@ class ZoneRecurrence {
 
     // todo: magic numbers
     Preconditions.checkArgument(fromYear == Platform.int32MinValue || (fromYear >= -9998 && fromYear <= 9999), 'fromYear',
-        "fromYear must be in the range [-9998, 9999] or Int32.MinValue");
+        'fromYear must be in the range [-9998, 9999] or Int32.MinValue');
     Preconditions.checkArgument(toYear == Platform.int32MaxValue || (toYear >= -9998 && toYear <= 9999), 'toYear',
-        "toYear must be in the range [-9998, 9999] or Int32.MaxValue");
+        'toYear must be in the range [-9998, 9999] or Int32.MaxValue');
   }
 
   /// Returns a new recurrence which has the same values as this, but a different name.
@@ -107,12 +107,12 @@ class ZoneRecurrence {
     else if (safeLocal == LocalInstant.beforeMinValue) {
       // We've been asked to find the next transition after some point which is a valid instant, but is before the
       // start of valid local time after applying the rule offset. For example, passing Instant.MinValue for a rule which says
-      // "transition uses wall time, which is UTC-5". Proceed as if we'd been asked for something in -9998.
+      // 'transition uses wall time, which is UTC-5'. Proceed as if we'd been asked for something in -9998.
       // I *think* that works...
       targetYear = GregorianYearMonthDayCalculator.minGregorianYear;
     }
     else {
-      // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
+      // Simple case: we were asked for a 'normal' value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
       targetYear = ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso)
           .getYear(safeLocal.daysSinceEpoch)
@@ -156,7 +156,7 @@ class ZoneRecurrence {
       // Asked for a transition before some point after our last year: crop to last year.
       targetYear = toYear;
     }
-    // Deliberately < here; "previous or same" means if safeLocal==minLocalInstant, we should compute it for this year.
+    // Deliberately < here; 'previous or same' means if safeLocal==minLocalInstant, we should compute it for this year.
     else if (safeLocal < _minLocalInstant) {
       // Asked for a transition before our first one
       return null;
@@ -172,13 +172,13 @@ class ZoneRecurrence {
       else {
         // We've been asked to find the next transition before some point which is a valid instant, but is after the
         // end of valid local time after applying the rule offset. For example, passing Instant.MaxValue for a rule which says
-        // "transition uses wall time, which is UTC+5". Proceed as if we'd been asked for something in 9999.
+        // 'transition uses wall time, which is UTC+5'. Proceed as if we'd been asked for something in 9999.
         // I *think* that works...
         targetYear = GregorianYearMonthDayCalculator.maxGregorianYear;
       }
     }
     else {
-      // Simple case: we were asked for a "normal" value in the range of years for which this recurrence is valid.
+      // Simple case: we were asked for a 'normal' value in the range of years for which this recurrence is valid.
       // int ignoredDayOfYear;
       targetYear = ICalendarSystem.yearMonthDayCalculator(CalendarSystem.iso)
           .getYear(safeLocal.daysSinceEpoch)
@@ -210,7 +210,7 @@ class ZoneRecurrence {
     Transition next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
       throw StateError(
-          "Time Machine bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
+          'Time Machine bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this');
     }
     return next;
   }
@@ -220,7 +220,7 @@ class ZoneRecurrence {
     Transition previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
       throw StateError(
-          "Time Machine bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this");
+          'Time Machine bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this');
     }
     return previous;
   }
@@ -284,9 +284,9 @@ class ZoneRecurrence {
   /// Returns a [String] that represents this instance.
   ///
   /// A [String] that represents this instance.
-  @override String toString() => "$name $savings $yearOffset [$fromYear-$toYear]";
+  @override String toString() => '$name $savings $yearOffset [$fromYear-$toYear]';
 
-  /// Returns either "this" (if this zone recurrence already has a from year of int.MinValue)
+  /// Returns either 'this' (if this zone recurrence already has a from year of int.MinValue)
   /// or a new zone recurrence which is identical but with a from year of int.MinValue.
   ZoneRecurrence toStartOfTime() =>
       fromYear == Platform.int32MinValue ? this : ZoneRecurrence(name, savings, yearOffset, Platform.int32MinValue, toYear);

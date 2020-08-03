@@ -161,7 +161,7 @@ void StringRepresentation()
   LocalDate start = LocalDate(2000, 1, 1);
   LocalDate end = LocalDate(2001, 6, 19);
   var interval = DateInterval(start, end);
-  expect(interval.toString(), "[2000-01-01, 2001-06-19]");
+  expect(interval.toString(), '[2000-01-01, 2001-06-19]');
 }
 
 @Test()
@@ -184,11 +184,11 @@ void Calendar()
 }
 
 @Test()
-@TestCase(const ["1999-12-31", false], "Before start")
-@TestCase(const ["2000-01-01", true], "On start")
-@TestCase(const ["2005-06-06", true], "In middle")
-@TestCase(const ["2014-06-30", true], "On end")
-@TestCase(const ["2014-07-01", false], "After end")
+@TestCase(const ['1999-12-31', false], "Before start")
+@TestCase(const ['2000-01-01', true], "On start")
+@TestCase(const ['2005-06-06', true], "In middle")
+@TestCase(const ['2014-06-30', true], "On end")
+@TestCase(const ['2014-07-01', false], "After end")
 void Contains(String candidateText, bool expected)
 {
   var start = LocalDate(2000, 1, 1);
@@ -250,15 +250,15 @@ void Contains_IntervalWithinAnotherCalendar_Throws()
   expect(() => value.containsInterval(other), throwsArgumentError);
 }
 
-@TestCase(const ["2014-03-07,2014-03-07", "2014-03-07,2014-03-07", true])
-@TestCase(const ["2014-03-07,2014-03-10", "2015-01-01,2015-04-01", false])
-@TestCase(const ["2015-01-01,2015-04-01", "2014-03-07,2014-03-10", false])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-07,2014-03-15", true])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-10,2014-03-31", true])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-10,2014-03-15", true])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-05,2014-03-09", false])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-20,2014-04-07", false])
-@TestCase(const ["2014-11-01,2014-11-30", "2014-01-01,2014-12-31", false])
+@TestCase(const ['2014-03-07,2014-03-07', "2014-03-07,2014-03-07", true])
+@TestCase(const ['2014-03-07,2014-03-10', "2015-01-01,2015-04-01", false])
+@TestCase(const ['2015-01-01,2015-04-01', "2014-03-07,2014-03-10", false])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-07,2014-03-15", true])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-10,2014-03-31", true])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-10,2014-03-15", true])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-05,2014-03-09", false])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-20,2014-04-07", false])
+@TestCase(const ['2014-11-01,2014-11-30', "2014-01-01,2014-12-31", false])
 void Contains_IntervalOverload(String firstInterval, String secondInterval, bool expectedResult)
 {
   DateInterval value = ParseInterval(firstInterval);
@@ -289,15 +289,15 @@ void Intersection_IntervalInDifferentCalendar_Throws()
   expect(() => value.intersection(other), throwsArgumentError);
 }
 
-@TestCase(const ["2014-03-07,2014-03-07", "2014-03-07,2014-03-07", "2014-03-07,2014-03-07"])
-@TestCase(const ["2014-03-07,2014-03-10", "2015-01-01,2015-04-01", null])
-@TestCase(const ["2015-01-01,2015-04-01", "2014-03-07,2014-03-10", null])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-07,2014-03-15", "2014-03-07,2014-03-15"])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-10,2014-03-31", "2014-03-10,2014-03-31"])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-10,2014-03-15", "2014-03-10,2014-03-15"])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-05,2014-03-09", "2014-03-07,2014-03-09"])
-@TestCase(const ["2014-03-07,2014-03-31", "2014-03-20,2014-04-07", "2014-03-20,2014-03-31"])
-@TestCase(const ["2014-11-01,2014-11-30", "2014-01-01,2014-12-31", "2014-11-01,2014-11-30"])
+@TestCase(const ['2014-03-07,2014-03-07', "2014-03-07,2014-03-07", "2014-03-07,2014-03-07"])
+@TestCase(const ['2014-03-07,2014-03-10', "2015-01-01,2015-04-01", null])
+@TestCase(const ['2015-01-01,2015-04-01', "2014-03-07,2014-03-10", null])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-07,2014-03-15", "2014-03-07,2014-03-15"])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-10,2014-03-31", "2014-03-10,2014-03-31"])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-10,2014-03-15", "2014-03-10,2014-03-15"])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-05,2014-03-09", "2014-03-07,2014-03-09"])
+@TestCase(const ['2014-03-07,2014-03-31', "2014-03-20,2014-04-07", "2014-03-20,2014-03-31"])
+@TestCase(const ['2014-11-01,2014-11-30', "2014-01-01,2014-12-31", "2014-11-01,2014-11-30"])
 void Intersection(String firstInterval, String secondInterval, String expectedInterval)
 {
   var value = ParseInterval(firstInterval);
@@ -329,19 +329,19 @@ void Union_DifferentCalendar_Throws()
   expect(() => value.union(other), throwsArgumentError);
 }
 
-@TestCase(const ["2014-03-07,2014-03-20", "2015-03-07,2015-03-20", null], "Disjointed intervals")
-@TestCase(const ["2014-03-07,2014-03-20", "2014-03-21,2014-03-30", "2014-03-07,2014-03-30"], "Abutting intervals")
-@TestCase(const ["2014-03-07,2014-03-20", "2014-03-07,2014-03-20", "2014-03-07,2014-03-20"], "Equal intervals")
-@TestCase(const ["2014-03-07,2014-03-20", "2014-03-15,2014-03-23", "2014-03-07,2014-03-23"], "Overlapping intervals")
-@TestCase(const ["2014-03-07,2014-03-20", "2014-03-10,2014-03-15", "2014-03-07,2014-03-20"], "Interval completely contained in another")
+@TestCase(const ['2014-03-07,2014-03-20', "2015-03-07,2015-03-20", null], "Disjointed intervals")
+@TestCase(const ['2014-03-07,2014-03-20', "2014-03-21,2014-03-30", "2014-03-07,2014-03-30"], "Abutting intervals")
+@TestCase(const ['2014-03-07,2014-03-20', "2014-03-07,2014-03-20", "2014-03-07,2014-03-20"], "Equal intervals")
+@TestCase(const ['2014-03-07,2014-03-20', "2014-03-15,2014-03-23", "2014-03-07,2014-03-23"], "Overlapping intervals")
+@TestCase(const ['2014-03-07,2014-03-20', "2014-03-10,2014-03-15", "2014-03-07,2014-03-20"], "Interval completely contained in another")
 void Union(String first, String second, String expected)
 {
   DateInterval firstInterval = ParseInterval(first);
   DateInterval secondInterval = ParseInterval(second);
   DateInterval expectedResult = ParseInterval(expected);
 
-  expect(expectedResult, firstInterval.union(secondInterval), reason: "First union failed.");
-  expect(expectedResult, secondInterval.union(firstInterval), reason: "Second union failed.");
+  expect(expectedResult, firstInterval.union(secondInterval), reason: 'First union failed.');
+  expect(expectedResult, secondInterval.union(firstInterval), reason: 'Second union failed.');
 }
 
 DateInterval ParseInterval(String textualInterval)

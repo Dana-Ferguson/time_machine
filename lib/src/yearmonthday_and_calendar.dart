@@ -56,7 +56,7 @@ class YearMonthDayCalendar {
   @visibleForTesting
   static YearMonthDayCalendar Parse(String text) {
     // Handle a leading - to negate the year
-    if (text.startsWith("-")) {
+    if (text.startsWith('-')) {
       var ymdc = Parse(text.substring(1));
       return YearMonthDayCalendar(-ymdc.year, ymdc.month, ymdc.day, ymdc.calendarOrdinal);
     }

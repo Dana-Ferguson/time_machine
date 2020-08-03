@@ -144,7 +144,7 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 @Test()
 @TestCase(const [2014, 8, 3, DayOfWeek.sunday, 17])
 @TestCase(const [2014, 8, 3, DayOfWeek.friday, 15])
-// Needs "rewind" logic as August 1st 2014 is a Friday
+// Needs 'rewind' logic as August 1st 2014 is a Friday
 @TestCase(const [2014, 8, 3, DayOfWeek.thursday, 21])
 @TestCase(const [2014, 8, 5, DayOfWeek.sunday, 31])
 // Only 4 Mondays in August in 2014.

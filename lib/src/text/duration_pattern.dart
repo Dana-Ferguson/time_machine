@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 // Nested class for ease of type initialization
 @internal
 abstract class TimePatterns {
-  static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture("-D:hh:mm:ss.FFFFFFFFF");
+  static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture('-D:hh:mm:ss.FFFFFFFFF');
   static String format(Time time, String patternText, Culture culture) =>
       TimeMachineFormatInfo
         .getInstance(culture)
@@ -20,7 +20,7 @@ abstract class TimePatterns {
 /// Represents a pattern for parsing and formatting [Time] values.
 @immutable
 class TimePattern implements IPattern<Time> {
-  /// Gets the general pattern for Spans using the invariant culture, with a format string of "-D:hh:mm:ss.FFFFFFFFF".
+  /// Gets the general pattern for Spans using the invariant culture, with a format string of '-D:hh:mm:ss.FFFFFFFFF'.
   /// This pattern round-trips.
   static TimePattern get roundtrip => TimePatterns.roundtripPatternImpl;
 

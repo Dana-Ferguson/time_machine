@@ -56,12 +56,12 @@ abstract class IPeriod {
 ///
 /// A [Period] contains a set of properties such as [years], [months], and so on
 /// that return the number of each unit contained within this period. Note that these properties are not normalized in
-/// any way by default, and so a [Period] may contain values such as "2 hours and 90 minutes". The
+/// any way by default, and so a [Period] may contain values such as '2 hours and 90 minutes'. The
 /// [normalize] method will convert equivalent periods into a standard representation.
 ///
-/// Periods can contain negative units as well as positive units ("+2 hours, -43 minutes, +10 seconds"), but do not
-/// differentiate between properties that are zero and those that are absent (i.e. a period created as "10 years"
-/// and one created as "10 years, zero months" are equal periods; the [months] property returns zero in
+/// Periods can contain negative units as well as positive units ('+2 hours, -43 minutes, +10 seconds'), but do not
+/// differentiate between properties that are zero and those that are absent (i.e. a period created as '10 years'
+/// and one created as '10 years, zero months' are equal periods; the [months] property returns zero in
 /// both cases).
 ///
 /// [Period] equality is implemented by comparing each property's values individually.
@@ -187,11 +187,11 @@ class Period {
   }
 
 
-  /// Creates an [Comparer] for periods, using the given "base" local date/time.
+  /// Creates an [Comparer] for periods, using the given 'base' local date/time.
   ///
   /// Certain periods can't naturally be compared without more context - how "one month" compares to
-  /// "30 days" depends on where you start. In order to compare two periods, the returned comparer
-  /// effectively adds both periods to the "base" specified by [baseDateTime] and compares
+  /// '30 days' depends on where you start. In order to compare two periods, the returned comparer
+  /// effectively adds both periods to the 'base' specified by [baseDateTime] and compares
   /// the results. In some cases this arithmetic isn't actually required - when two periods can be
   /// converted to durations, the comparer uses that conversion for efficiency.
   ///
@@ -210,7 +210,7 @@ class Period {
   ///
   /// The result of subtracting all the values in the second operand from the values in the first. The
   /// units of the result will be the union of both periods, even if the subtraction caused some properties to
-  /// become zero (so "2 weeks, 1 days" minus "2 weeks" is "zero weeks, 1 days", not "1 days").
+  /// become zero (so '2 weeks, 1 days' minus "2 weeks" is "zero weeks, 1 days", not "1 days").
   Period operator -(Period other) {
     Preconditions.checkNotNull(other, 'other');
     return Period(
@@ -233,7 +233,7 @@ class Period {
   /// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
   /// the difference between 1am and 3:15am in hours) the result will be such that adding it to [start]
   /// will give a value between [start] and [end]. In other words,
-  /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+  /// any rounding is 'towards start'; this is true whether the resulting period is negative or positive.
   ///
   /// * [start]: Start date/time
   /// * [end]: End date/time
@@ -253,7 +253,7 @@ class Period {
       return zero;
     }
 
-    // Adjust for situations like "days between 5th January 10am and 7th Janary 5am" which should be one
+    // Adjust for situations like 'days between 5th January 10am and 7th Janary 5am' which should be one
     // day, because if we actually reach 7th January with date fields, we've overshot.
     // The date adjustment will always be valid, because it's just moving it towards start.
     // We need this for all date-based period fields. We could potentially optimize by not doing this
@@ -511,11 +511,11 @@ class Period {
 
   /// Returns the exact difference between two dates or returns the period between a start and an end date, using only the given units.
   ///
-  /// If [end] is before <paramref name="start" />, each property in the returned period
+  /// If [end] is before <paramref name='start' />, each property in the returned period
   /// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
   /// the difference between 12th February and 15th March in months) the result will be such that adding it to [start]
   /// will give a value between [start] and [end]. In other words,
-  /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+  /// any rounding is 'towards start'; this is true whether the resulting period is negative or positive.
   ///
   /// * [start]: Start date
   /// * [end]: End date
@@ -556,11 +556,11 @@ class Period {
 
   /// Returns the exact difference between two times or returns the period between a start and an end time, using only the given units.
   ///
-  /// If [end] is before <paramref name="start" />, each property in the returned period
+  /// If [end] is before <paramref name='start' />, each property in the returned period
   /// will be negative. If the given set of units cannot exactly reach the end point (e.g. finding
   /// the difference between 3am and 4.30am in hours) the result will be such that adding it to [start]
   /// will give a value between [start] and [end]. In other words,
-  /// any rounding is "towards start"; this is true whether the resulting period is negative or positive.
+  /// any rounding is 'towards start'; this is true whether the resulting period is negative or positive.
   ///
   /// * [start]: Start time
   /// * [end]: End time
@@ -630,7 +630,7 @@ class Period {
   Time toTime() {
     if (months != 0 || years != 0) {
       // we can't do this because months and years have undefined amounts of times.
-      throw StateError("Cannot construct span of period with non-zero months or years.");
+      throw StateError('Cannot construct span of period with non-zero months or years.');
     }
     return Time(nanoseconds: _totalNanoseconds);
   }
@@ -659,11 +659,11 @@ class Period {
   /// Months and years are unchanged
   /// (as they can vary in length), but weeks are multiplied by 7 and added to the
   /// Days property, and all time properties are normalized to their natural range.
-  /// Subsecond values are normalized to millisecond and "nanosecond within millisecond" values.
+  /// Subsecond values are normalized to millisecond and 'nanosecond within millisecond' values.
   /// So for example, a period of 25 hours becomes a period of 1 day
   /// and 1 hour. A period of 1,500,750,000 nanoseconds becomes 1 second, 500 milliseconds and
   /// 750,000 nanoseconds. Aside from months and years, either all the properties
-  /// end up positive, or they all end up negative. "Week" and "tick" units in the returned period are always 0.
+  /// end up positive, or they all end up negative. 'Week' and "tick" units in the returned period are always 0.
   ///
   /// [OverflowException]: The period doesn't have years or months, but it contains more than
   /// `Int.maxValue` nanoseconds when the combined weeks/days/time portions are considered. This is
@@ -675,7 +675,7 @@ class Period {
   ///
   /// see: [NormalizingEqualityComparer]
   Period normalize() {
-    // Simplest way to normalize: grab all the fields up to "week" and
+    // Simplest way to normalize: grab all the fields up to 'week' and
     // sum them.
     int totalNanoseconds = this._totalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
@@ -718,7 +718,7 @@ class Period {
   /// Compares the given period for equality with this one.
   ///
   /// Periods are equal if they contain the same values for the same properties.
-  /// However, no normalization takes place, so "one hour" is not equal to "sixty minutes".
+  /// However, no normalization takes place, so 'one hour' is not equal to "sixty minutes".
   ///
   /// [other]: The period to compare this one with.
   /// Returns: True if this period has the same values for the same properties as the one specified.

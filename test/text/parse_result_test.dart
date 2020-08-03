@@ -14,7 +14,7 @@ Future main() async {
   await runTests();
 }
 
-final ParseResult<int> _failureResult = IParseResult.forInvalidValue<int>(ValueCursor("text"), "text");
+final ParseResult<int> _failureResult = IParseResult.forInvalidValue<int>(ValueCursor('text'), "text");
 
 @Test()
 void Value_Success()
@@ -78,7 +78,7 @@ void TryGetValue_Failure()
 @Test()
 void Convert_ForFailureResult()
 {
-  ParseResult<String> converted = _failureResult.convert((x) => "xx${x}xx");
+  ParseResult<String> converted = _failureResult.convert((x) => 'xx${x}xx');
   expect(() => converted.getValueOrThrow(), willThrow<UnparsableValueError>());
 }
 
@@ -86,8 +86,8 @@ void Convert_ForFailureResult()
 void Convert_ForSuccessResult()
 {
   ParseResult<int> original = ParseResult.forValue<int>(10);
-  ParseResult<String> converted = original.convert((x) => "xx${x}xx");
-  expect("xx10xx", converted.value);
+  ParseResult<String> converted = original.convert((x) => 'xx${x}xx');
+  expect('xx10xx', converted.value);
 }
 
 @Test()

@@ -32,7 +32,7 @@ class ZoneRuleSet {
   Iterable<ZoneRecurrence> get rules => _rules;
 
   ZoneInterval CreateFixedInterval(Instant start) {
-    Preconditions.checkState(isFixed, "Rule set is not fixed");
+    Preconditions.checkState(isFixed, 'Rule set is not fixed');
     var limit = GetUpperLimit(_fixedSavings);
     return IZoneInterval.newZoneInterval(_name, start, limit, standardOffset + _fixedSavings, _fixedSavings);
   }
@@ -40,8 +40,8 @@ class ZoneRuleSet {
   /// <summary>
   /// Gets the inclusive upper limit of time that this rule set applies to.
   /// </summary>
-  /// <param name="savings">The daylight savings value during the final zone interval.</param>
-  /// <returns>The <see cref="LocalInstant"/> of the upper limit for this rule set.</returns>
+  /// <param name='savings'>The daylight savings value during the final zone interval.</param>
+  /// <returns>The <see cref='LocalInstant'/> of the upper limit for this rule set.</returns>
   Instant GetUpperLimit(Offset savings) {
     if (isInfinite) {
       return IInstant.afterMaxValue;

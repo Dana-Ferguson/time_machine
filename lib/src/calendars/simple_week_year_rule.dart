@@ -49,7 +49,7 @@ class SimpleWeekYearRule implements WeekYearRule {
     }
 
     int startOfWeekYear = _getWeekYearDaysSinceEpoch(yearMonthDayCalculator, weekYear);
-    // 0 for "already on the first day of the week" up to 6 "it's the last day of the week".
+    // 0 for 'already on the first day of the week' up to 6 "it's the last day of the week".
     int daysIntoWeek = ((dayOfWeek - _firstDayOfWeek) + 7) % 7;
     int days = startOfWeekYear + (weekOfWeekYear - 1) * 7 + daysIntoWeek;
     if (days < ICalendarSystem.minDays(calendar) || days > ICalendarSystem.maxDays(calendar)) {
@@ -58,9 +58,9 @@ class SimpleWeekYearRule implements WeekYearRule {
     LocalDate ret = ILocalDate.trusted(yearMonthDayCalculator.getYearMonthDayFromDaysSinceEpoch(days).withCalendar(calendar));
 
     // For rules with irregular weeks, the calculation so far may end up computing a date which isn't
-    // in the right week-year. This will happen if the caller has specified a "short" week (i.e. one
+    // in the right week-year. This will happen if the caller has specified a 'short' week (i.e. one
     // at the start or end of the week-year which is not seven days long due to the week year changing
-    // part way through a week) and a day-of-week which corresponds to the "missing" part of the week.
+    // part way through a week) and a day-of-week which corresponds to the 'missing' part of the week.
     // Examples are in SimpleWeekYearRuleTest.GetLocalDate_Invalid.
     // The simplest way to find out is just to check what the week year is, but we only need to do
     // the full check if the requested week-year is different to the calendar year of the result.
@@ -69,7 +69,7 @@ class SimpleWeekYearRule implements WeekYearRule {
     if (_irregularWeeks && weekYear != ret.year) {
       if (getWeekYear(ret) != weekYear) {
         throw ArgumentError.value(weekYear, 'weekYear',
-            "The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid");
+            'The combination of weekYear, weekOfWeekYear and dayOfWeek is invalid');
       }
     }
     return ret;
@@ -107,14 +107,14 @@ class SimpleWeekYearRule implements WeekYearRule {
 
     // At the end of the year, we may have some extra days too.
     // In a non-regular rule, we just round up, so assume we effectively have 6 extra days.
-    // In a regular rule, there can be at most minDaysInFirstWeek - 1 days "borrowed"
+    // In a regular rule, there can be at most minDaysInFirstWeek - 1 days 'borrowed'
     // from the following year - because if there were any more, those days would be in the
     // the following year instead.
     int extraDaysAtEnd = _irregularWeeks ? 6 : _minDaysInFirstWeek - 1;
 
     int daysInThisYear = yearMonthDayCalculator.getDaysInYear(weekYear);
 
-    // We can have up to "minDaysInFirstWeek - 1" days of the next year, too.
+    // We can have up to 'minDaysInFirstWeek - 1' days of the next year, too.
     return (daysInThisYear + extraDaysAtStart + extraDaysAtEnd) ~/ 7;
   }
 

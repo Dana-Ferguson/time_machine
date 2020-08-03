@@ -123,7 +123,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     else {
       // Okay, the transitions happen at the same time. If they're not at infinity, we're stumped.
       if (standardTransitionInstant.isValid) {
-        throw StateError("Zone recurrence rules have identical transitions. This time zone is broken.");
+        throw StateError('Zone recurrence rules have identical transitions. This time zone is broken.');
       }
       // Okay, the two transitions must be to the end of time. Find which recurrence has the later *previous* transition...
       var previousDstTransition = _dstRecurrence.previousOrSameOrFail(instant, _standardOffset, Offset.zero);

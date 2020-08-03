@@ -34,8 +34,8 @@ abstract class DateTimeZoneSource {
   ///
   /// The source is not required to provide the IDs in any particular order, although they should be distinct.
   ///
-  /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs "UTC" and
-  /// "UTC+/-Offset"), but there is no requirement they be included.
+  /// Note that this list may optionally contain any of the fixed-offset timezones (with IDs 'UTC' and
+  /// 'UTC+/-Offset'), but there is no requirement they be included.
   ///
   /// Returns: The IDs available from this source.
   Future<Iterable<String>> getIds();
@@ -43,7 +43,7 @@ abstract class DateTimeZoneSource {
   /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
   ///
   /// This doesn't have any specific format; it's solely for diagnostic purposes.
-  /// The included sources return strings of the format "source identifier: source version" indicating where the
+  /// The included sources return strings of the format 'source identifier: source version' indicating where the
   /// information comes from and which version of the source information has been loaded.
   final Future<String> versionId = null;
 
@@ -56,7 +56,7 @@ abstract class DateTimeZoneSource {
   /// successive requests for the same ID; however, all instances returned for a given ID must compare as equal.
   ///
   /// It is advised that sources should document their behaviour regarding any fixed-offset timezones
-  /// (i.e. "UTC" and "UTC+/-Offset") that are included in the list returned by [getIds].
+  /// (i.e. 'UTC' and "UTC+/-Offset") that are included in the list returned by [getIds].
   /// (These IDs will not be requested by [DateTimeZoneCache], but any users calling
   /// into the source directly may care.)
   ///

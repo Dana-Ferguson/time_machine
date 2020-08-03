@@ -6,12 +6,12 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: needs rework -- the bit packing worked in VM, but not JS
 
-/// Type containing as much logic as possible for how the cache of "start of year" data works.
+/// Type containing as much logic as possible for how the cache of 'start of year' data works.
 /// This is not specific to YearMonthDayCalculator - it can be used for
 /// other frames of reference, so long as they comply with the restrictions listed below.
 ///
 /// todo: this is different now
-/// Each entry in the cache is a 32-bit number. The "value" part of the entry consists of the
+/// Each entry in the cache is a 32-bit number. The 'value' part of the entry consists of the
 /// number of days since the Unix epoch (negative for a value before the epoch). As Time Machine
 /// only supports a number of ticks since the Unix epoch of between long.MinValue and long.MaxValue,
 /// we only need to support a number of days in the range

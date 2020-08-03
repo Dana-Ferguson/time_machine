@@ -9,7 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
-/// A location entry generated from the "zone1970.tab" file in a TZDB release. This can be used to provide
+/// A location entry generated from the 'zone1970.tab' file in a TZDB release. This can be used to provide
 /// users with a choice of time zone, although it is not internationalized. This is equivalent to
 /// [TzdbZoneLocation], except that multiple countries may be represented.
 @immutable
@@ -29,7 +29,7 @@ class TzdbZone1970Location {
   /// Gets the list of countries associated with this location.
   ///
   /// The list is immutable, and will always contain at least one entry. The list is
-  /// in the order specified in "zone1970.tab", so the first entry is always the
+  /// in the order specified in 'zone1970.tab', so the first entry is always the
   /// country containing the position indicated by the latitude and longitude, and
   /// is the most populous country in the list. No entry in this list is ever null.
   // todo: make immutable list?
@@ -114,14 +114,14 @@ class TzdbZone1970Location {
       return TzdbZone1970Location(latitudeSeconds, longitudeSeconds, countries, zoneId, comment);
     }
     on ArgumentError catch (e) {
-      throw InvalidTimeDataError("Invalid zone location data in stream", e);
+      throw InvalidTimeDataError('Invalid zone location data in stream', e);
     }
   }
 }
 
 
-/// A country represented within an entry in the "zone1970.tab" file, with the English name
-/// mapped from the "iso3166.tab" file.
+/// A country represented within an entry in the 'zone1970.tab' file, with the English name
+/// mapped from the 'iso3166.tab' file.
 @immutable
 class TzdbZone1970LocationCountry {
   /// Gets the English name of the country.
@@ -153,5 +153,5 @@ class TzdbZone1970LocationCountry {
   @override int get hashCode => hash2(name, code);
 
   /// Returns a string representation of this country, including the code and name.
-  @override String toString() => "$code ($name)";
+  @override String toString() => '$code ($name)';
 }

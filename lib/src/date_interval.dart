@@ -107,11 +107,11 @@ class DateInterval {
   /// Returns a string representation of this interval.
   ///
   /// A string representation of this interval, as `[start, end]`,
-  /// where "start" and "end" are the dates formatted using an ISO-8601 compatible pattern.
+  /// where 'start' and "end" are the dates formatted using an ISO-8601 compatible pattern.
   @override String toString() {
     String a = LocalDatePattern.iso.format(start);
     String b = LocalDatePattern.iso.format(end);
-    return "[$a, $b]";
+    return '[$a, $b]';
   }
 
   /// Returns the intersection between the given interval and this interval.
@@ -159,7 +159,7 @@ class DateInterval {
   void _validateInterval(DateInterval interval) {
     Preconditions.checkNotNull(interval, 'interval');
     Preconditions.checkArgument(interval.calendar == start.calendar, 'interval',
-        "The specified interval uses a different calendar system to this one");
+        'The specified interval uses a different calendar system to this one');
   }
 }
 

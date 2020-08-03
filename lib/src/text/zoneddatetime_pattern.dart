@@ -16,7 +16,7 @@ abstract class ZonedDateTimePatterns
       TimeMachineFormatInfo
           .getInstance(culture)
           .zonedDateTimePatternParser
-          // "G"
+          // 'G'
           .parsePattern(patternText ?? generalFormatOnlyPatternImpl.patternText)
           .format(zonedDateTime);
 

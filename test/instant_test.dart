@@ -22,11 +22,11 @@ final Instant negativeFiftyMillion = IInstant.untrusted(Time(nanoseconds: -50000
 
 @Test()
 // Gregorian calendar: 1957-10-04
-@TestCase(const [2436116.31, 1957, 9, 21, 19, 26, 24], "Sample from Astronomical Algorithms 2nd Edition, chapter 7")
+@TestCase(const [2436116.31, 1957, 9, 21, 19, 26, 24], 'Sample from Astronomical Algorithms 2nd Edition, chapter 7')
 // Gregorian calendar: 2013-01-01
-@TestCase(const [2456293.520833, 2012, 12, 19, 0, 30, 0], "Sample from Wikipedia")
-@TestCase(const [1842713.0, 333, 1, 27, 12, 0, 0], "Another sample from Astronomical Algorithms 2nd Edition, chapter 7")
-@TestCase(const [0.0, -4712, 1, 1, 12, 0, 0], "Julian epoch")
+@TestCase(const [2456293.520833, 2012, 12, 19, 0, 30, 0], 'Sample from Wikipedia')
+@TestCase(const [1842713.0, 333, 1, 27, 12, 0, 0], 'Another sample from Astronomical Algorithms 2nd Edition, chapter 7')
+@TestCase(const [0.0, -4712, 1, 1, 12, 0, 0], 'Julian epoch')
 void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second) {
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
@@ -34,7 +34,7 @@ void JulianDateConversions(double julianDate, int year, int month, int day, int 
   var expected = LocalDateTime(year, month, day, hour, minute, second, calendar: CalendarSystem.julian).inUtc().toInstant();
 
   // var ldt = new LocalDateTime.fromInstant(new LocalInstant(expected.timeSinceEpoch));
-  expect(expected.epochMilliseconds, closeTo(actual.epochMilliseconds, 50), reason: "Expected $expected, was $actual");
+  expect(expected.epochMilliseconds, closeTo(actual.epochMilliseconds, 50), reason: 'Expected $expected, was $actual');
   expect(julianDate, closeTo(expected.toJulianDate(), 0.000001));
 }
 
@@ -73,7 +73,7 @@ void InUtc()
 Future InZone () async
 {
   // todo: this is absurd
-  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   ZonedDateTime viaInstant = Instant.utc(2008, 6, 10, 13, 16, 17).inZone(london);
 
   // London is UTC+1 in the Summer, so the above is 14:16:17 local.
@@ -220,7 +220,7 @@ void UnixConversions_ExtremeValues()
 Future InZoneWithCalendar () async
 {
   CalendarSystem copticCalendar = CalendarSystem.coptic;
-  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  DateTimeZone london = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   ZonedDateTime viaInstant = Instant.utc(2004, 6, 9, 11, 10).inZone(london, copticCalendar);
 
   // Date taken from CopticCalendarSystemTest. Time will be 12:10 (London is UTC+1 in Summer)
@@ -477,7 +477,7 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
   expect(actual, expected);
 }
 
-// A null offset indicates "AfterMaxValue". Otherwise, MaxValue.Plus(offset)
+// A null offset indicates 'AfterMaxValue'. Otherwise, MaxValue.Plus(offset)
 @Test()
 @TestCase(const [null, 0, null])
 @TestCase(const [null, 1, null])

@@ -47,7 +47,7 @@ class Instant implements Comparable<Instant> {
   final Time timeSinceEpoch;
 
   // todo: investigate if this is okay ... see Instant.cs#115 (reprinted below)
-  // if (epochDays < MinDays || epochDays > MaxDays) throw new OverflowException("Operation would overflow range of Instant");
+  // if (epochDays < MinDays || epochDays > MaxDays) throw new OverflowException('Operation would overflow range of Instant');
   factory Instant.epochTime(Time time) {
     if (time < minValue.timeSinceEpoch) return IInstant.beforeMinValue;
     if (time > maxValue.timeSinceEpoch) return IInstant.afterMaxValue;

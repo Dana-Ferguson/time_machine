@@ -98,13 +98,13 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   String _expandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'f':
-        return formatInfo.dateTimeFormat.longDatePattern + " " + formatInfo.dateTimeFormat.shortTimePattern;
+        return formatInfo.dateTimeFormat.longDatePattern + ' ' + formatInfo.dateTimeFormat.shortTimePattern;
       case 'F':
         return formatInfo.dateTimeFormat.fullDateTimePattern;
       case 'g':
-        return formatInfo.dateTimeFormat.shortDatePattern + " " + formatInfo.dateTimeFormat.shortTimePattern;
+        return formatInfo.dateTimeFormat.shortDatePattern + ' ' + formatInfo.dateTimeFormat.shortTimePattern;
       case 'G':
-        return formatInfo.dateTimeFormat.shortDatePattern + " " + formatInfo.dateTimeFormat.longTimePattern;
+        return formatInfo.dateTimeFormat.shortDatePattern + ' ' + formatInfo.dateTimeFormat.longTimePattern;
       default:
         // Will be turned into an exception.
         return null;

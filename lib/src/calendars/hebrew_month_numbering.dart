@@ -15,7 +15,7 @@ enum HebrewMonthNumbering {
   /// calendars where the first month is 1; it is easier to tell which date comes before which, aside
   /// from anything else. It is also the numbering system used by the BCL.
   ///
-  /// The main disadvantage is that due to leap years effectively "splitting" Adar into Adar I
+  /// The main disadvantage is that due to leap years effectively 'splitting' Adar into Adar I
   /// and Adar II, the months after that (Nisan, Iyyar and so on) have month numberings which depend
   /// on the year.
   civil, // = 1,

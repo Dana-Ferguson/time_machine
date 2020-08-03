@@ -41,7 +41,7 @@ class ParseResult<T> {
   Error get error {
     if (_errorProvider == null) {
       // InvalidOperationException
-      throw StateError("Parse operation succeeded, so no exception is available");
+      throw StateError('Parse operation succeeded, so no exception is available');
     }
     return _errorProvider();
   }
@@ -63,7 +63,7 @@ class ParseResult<T> {
   /// Returns the success value, and sets the out parameter to either
   /// the specified failure value of T or the successful parse result value.
   ///
-  /// * [failureValue]: The "default" value to set in [result] if parsing failed.
+  /// * [failureValue]: The 'default' value to set in [result] if parsing failed.
   /// * [result]: The parameter to store the parsed value in on success.
   ///
   /// Returns: True if this parse result was successful, or false otherwise.
@@ -99,7 +99,7 @@ class ParseResult<T> {
   ParseResult<TTarget> convertError<TTarget>() {
     if (success) {
       // InvalidOperationException
-      throw StateError("ConvertError should not be called on a successful parse result");
+      throw StateError('ConvertError should not be called on a successful parse result');
     }
     return ParseResult<TTarget>._error(_errorProvider, _continueAfterErrorWithMultipleFormats);
   }
@@ -218,7 +218,7 @@ abstract class IParseResult {
   static ParseResult<T> fieldValueOutOfRangePostParse<T>(String text, int value, String field, String tType) =>
       forInvalidValuePostParse(text, TextErrorMessages.fieldValueOutOfRange, [value, field, tType]);
 
-  /// Two fields (e.g. "hour of day" and "hour of half day") were mutually inconsistent.
+  /// Two fields (e.g. 'hour of day' and "hour of half day") were mutually inconsistent.
   static ParseResult<T> inconsistentValues<T>(String text, String field1, String field2, String tType) =>
       forInvalidValuePostParse(text, TextErrorMessages.inconsistentValues2, [field1, field2, tType]);
 

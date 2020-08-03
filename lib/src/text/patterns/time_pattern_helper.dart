@@ -100,7 +100,7 @@ abstract class TimePatternHelper
     };
   }
 
-  /// Creates a character handler to handle the "fraction of a second" specifier (f or F).
+  /// Creates a character handler to handle the 'fraction of a second' specifier (f or F).
   static CharacterHandler<TResult, TBucket> createFractionHandler<TResult, TBucket extends ParseBucket<TResult>>
       (int maxCount, int Function(TResult) getter, Function(TBucket, int) setter) {
     return (PatternCursor pattern, SteppedPatternBuilder<TResult, TBucket> builder) {
@@ -111,7 +111,7 @@ abstract class TimePatternHelper
       builder.addParseAction((ValueCursor str, ParseBucket bucket) {
         int fractionalSeconds = str.parseFraction(count, maxCount, patternCharacter == 'f' ? count : 0);
         // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
-        // "up to count" digits.
+        // 'up to count' digits.
         if (fractionalSeconds == null) {
           return IParseResult.mismatchedNumber<TResult>(str, stringFilled(patternCharacter, count));
         }
@@ -138,8 +138,8 @@ abstract class TimePatternHelper
       String pmDesignator = builder.formatInfo.pmDesignator;
 
       // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
-      // to the special value of 2, meaning "take it from the template".
-      if (amDesignator == "" && pmDesignator == "") {
+      // to the special value of 2, meaning 'take it from the template'.
+      if (amDesignator == '' && pmDesignator == "") {
         _parseAction(str, bucket) {
           amPmSetter(bucket, 2);
           return null;
@@ -150,8 +150,8 @@ abstract class TimePatternHelper
       }
       // Odd scenario (but present in af-ZA for .NET 2) - exactly one of the AM/PM designator is valid.
       // Delegate to a separate method to keep this clearer...
-      if (amDesignator == "" || pmDesignator == "") {
-        int specifiedDesignatorValue = amDesignator == "" ? 1 : 0;
+      if (amDesignator == '' || pmDesignator == "") {
+        int specifiedDesignatorValue = amDesignator == '' ? 1 : 0;
         String specifiedDesignator = specifiedDesignatorValue == 1 ? pmDesignator : amDesignator;
         TimePatternHelper._handleHalfAmPmDesignator(count, specifiedDesignator, specifiedDesignatorValue, hourOfDayGetter, amPmSetter, builder);
         return;
@@ -182,7 +182,7 @@ abstract class TimePatternHelper
 
       // Full designator
       builder.addParseAction((ValueCursor str, TBucket bucket) {
-        // Could use the "match longest" approach, but with only two it feels a bit silly to build a list...
+        // Could use the 'match longest' approach, but with only two it feels a bit silly to build a list...
         bool pmLongerThanAm = pmDesignator.length > amDesignator.length;
         String longerDesignator = pmLongerThanAm ? pmDesignator : amDesignator;
         String shorterDesignator = pmLongerThanAm ? amDesignator : pmDesignator;

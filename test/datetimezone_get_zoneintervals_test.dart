@@ -104,7 +104,7 @@ void GetZoneIntervals_ExcludesEnd()
 @Test()
 Future GetZoneIntervals_Complex() async
 {
-  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var london = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   // Transitions are always Spring/Autumn, so June and January should be clear.
   var expected = [
     london.getZoneInterval(Instant.utc(1999, 6, 1, 0, 0)),
@@ -136,11 +136,11 @@ void GetZoneIntervals_WithOptions_NoCoalescing() {
   var transition3 = Instant.utc(2002, 1, 1, 0, 0);
   // And one transition afterwards.
   var transition4 = Instant.utc(2004, 1, 1, 0, 0);
-  var builder = MtdtzBuilder.withName(0, "0+0")
-    ..Add(transition1, 1, 1, "1+1")
-    ..Add(transition2, 0, 2, "0+2")
-    ..Add(transition3, 0, 1, "0+1")
-    ..Add(transition4, 0, 0, "0+0");
+  var builder = MtdtzBuilder.withName(0, '0+0')
+    ..Add(transition1, 1, 1, '1+1')
+    ..Add(transition2, 0, 2, '0+2')
+    ..Add(transition3, 0, 1, '0+1')
+    ..Add(transition4, 0, 0, '0+0');
   var zone = builder.Build();
 
   var interval = Interval(
@@ -161,8 +161,8 @@ void GetZoneIntervals_WithOptions_Coalescing() {
   var transition3 = Instant.utc(2002, 1, 1, 0, 0);
   // And one transition afterwards.
   var transition4 = Instant.utc(2004, 1, 1, 0, 0);
-  var builder = MtdtzBuilder.withName(0, "0+0")
-    ..Add(transition1, 1, 1, "1+1")..Add(transition2, 0, 2, "0+2")..Add(transition3, 0, 1, "0+1")..Add(transition4, 0, 0, "0+0");
+  var builder = MtdtzBuilder.withName(0, '0+0')
+    ..Add(transition1, 1, 1, '1+1')..Add(transition2, 0, 2, "0+2")..Add(transition3, 0, 1, "0+1")..Add(transition4, 0, 0, "0+0");
   var zone = builder.Build();
 
   var interval = Interval(
@@ -175,6 +175,6 @@ void GetZoneIntervals_WithOptions_Coalescing() {
   // CollectionAssert.AreEqual
   expect([ transition1, transition3, transition4], zoneIntervals.map((zi) => zi.end));
   expect([ IInstant.beforeMinValue, transition1, transition3], zoneIntervals.map((zi) => IZoneInterval.rawStart(zi)));
-  expect([ "0+0", "1+1", "0+1"], zoneIntervals.map((zi) => zi.name));
+  expect([ '0+0', "1+1", "0+1"], zoneIntervals.map((zi) => zi.name));
 }
 

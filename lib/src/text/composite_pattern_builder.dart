@@ -17,8 +17,8 @@ abstract class ICompositePatternBuilder {
 /// in the order in which they are added to the builder with the [add]
 /// method, by trying to parse and seeing if the result is a successful one. When formatting,
 /// the patterns are checked in the reverse order, using the predicate provided along with the pattern
-/// when calling [add]. The intention is that patterns are added in "most precise first" order,
-/// and the predicate should indicate whether it can fully represent the given value - so the "less precise"
+/// when calling [add]. The intention is that patterns are added in 'most precise first' order,
+/// and the predicate should indicate whether it can fully represent the given value - so the 'less precise'
 /// (and therefore usually shorter) pattern can be used first.
 ///
 /// * [T]: The type of value to be parsed or formatted by the resulting pattern.
@@ -58,12 +58,12 @@ class CompositePatternBuilder<T> {
   ///
   /// * [StateError]: No component patterns have been added.
   IPattern<T> build() {
-    Preconditions.checkState(_patterns.length != 0, "A composite pattern must have at least one component pattern.");
+    Preconditions.checkState(_patterns.length != 0, 'A composite pattern must have at least one component pattern.');
     return _CompositePattern<T>._(_patterns, _formatPredicates);
   }
 
   IPartialPattern<T> _buildAsPartial() {
-    Preconditions.debugCheckState(_patterns.every((p) => p is IPartialPattern<T>), "All patterns should be partial");
+    Preconditions.debugCheckState(_patterns.every((p) => p is IPartialPattern<T>), 'All patterns should be partial');
     return build(); // as IPartialPattern<T>;
   }
 }
@@ -108,6 +108,6 @@ class _CompositePattern<T> implements IPartialPattern<T> {
         return _patterns[i];
       }
     }
-    throw FormatException("Composite pattern was unable to format value using any of the provided patterns.");
+    throw FormatException('Composite pattern was unable to format value using any of the provided patterns.');
   }
 }

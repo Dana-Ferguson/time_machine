@@ -24,7 +24,7 @@ class PartialZoneIntervalMap
     // Allowing empty maps makes life simpler.
     // TODO(misc): Does it really? It's a pain in some places...
     Preconditions.debugCheckArgument(start <= end, 'end',
-        "Invalid start/end combination: $start - $end");
+        'Invalid start/end combination: $start - $end');
   }
 
   // todo: I think this constructors can be made private?
@@ -41,7 +41,7 @@ class PartialZoneIntervalMap
   ZoneInterval getZoneInterval(Instant instant)
   {
     Preconditions.debugCheckArgument(instant >= start && instant < end, 'instant',
-        "Value $instant was not in the range [$start, $end)");
+        'Value $instant was not in the range [$start, $end)');
     var interval = _map.getZoneInterval(instant);
     // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
     // but we're not expecting this to be called too often, due to caching.
@@ -85,10 +85,10 @@ class PartialZoneIntervalMap
       if (current == null)
       {
         current = next;
-        Preconditions.debugCheckArgument(current.start == IInstant.beforeMinValue, "maps", "First partial map must start at the beginning of time");
+        Preconditions.debugCheckArgument(current.start == IInstant.beforeMinValue, 'maps', "First partial map must start at the beginning of time");
         continue;
       }
-      Preconditions.debugCheckArgument(current.end == next.start, "maps", "Maps must abut");
+      Preconditions.debugCheckArgument(current.end == next.start, 'maps', "Maps must abut");
 
       if (next.start == next.end)
       {
@@ -139,8 +139,8 @@ class PartialZoneIntervalMap
         }
       }
     }
-    Preconditions.debugCheckArgument(current != null, "maps", "Collection of maps must not be empty");
-    Preconditions.debugCheckArgument(current.end == IInstant.afterMaxValue, "maps", "Collection of maps must end at the end of time");
+    Preconditions.debugCheckArgument(current != null, 'maps', "Collection of maps must not be empty");
+    Preconditions.debugCheckArgument(current.end == IInstant.afterMaxValue, 'maps', "Collection of maps must end at the end of time");
 
     // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
     coalescedMaps.add(current);
@@ -155,7 +155,7 @@ class _CombinedPartialZoneIntervalMap implements ZoneIntervalMap {
   _CombinedPartialZoneIntervalMap(this._partialMaps);
 
   ZoneInterval getZoneInterval(Instant instant) {
-    // We assume the maps are ordered, and start with "beginning of time"
+    // We assume the maps are ordered, and start with 'beginning of time'
     // which means we only need to find the first partial map which ends after
     // the instant we're interested in. This is just a linear search - a binary search
     // would be feasible, but we're not expecting very many entries.
@@ -164,6 +164,6 @@ class _CombinedPartialZoneIntervalMap implements ZoneIntervalMap {
         return partialMap.getZoneInterval(instant);
       }
     }
-    throw StateError("Instant not contained in any map");
+    throw StateError('Instant not contained in any map');
   }
 }

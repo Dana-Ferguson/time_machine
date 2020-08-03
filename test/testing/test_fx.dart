@@ -50,7 +50,7 @@ Future runTests() async {
   // this doesn't work, but I believe it should
   // var lib = currentMirrorSystem().isolate.rootLibrary.declarations;
   // this works! (but will require more boilerplate than I want)
-  // var lib4 = currentMirrorSystem().findLibrary(new Symbol("testFx"));
+  // var lib4 = currentMirrorSystem().findLibrary(new Symbol('testFx'));
 
   var testLibs = currentMirrorSystem()
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))
@@ -283,11 +283,11 @@ String _printNewObject(Object obj) {
   }
   else if (obj is CalendarSystem) {
     // todo: pull this information directly from CalendarSystem?
-    if (obj.id == "Gregorian") {
+    if (obj.id == 'Gregorian') {
       sb.write('CalendarSystem.gregorian');
-    } else if (obj.id == "ISO") {
+    } else if (obj.id == 'ISO') {
       sb.write('CalendarSystem.iso');
-    } else if (obj.id == "Julian") {
+    } else if (obj.id == 'Julian') {
       sb.write('CalendarSystem.julian');
     }
     else {

@@ -20,13 +20,13 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static const int _computedDaysAtStartOfMinYear = -25448;
   // todo: can this be further compressed (seems like produced data would take twice as much space to store as the code)
   static const String _generatedData =
-      "AAAF1A3SHaQdSBqUFSwKbBVqG1QXSBaSFSYKVhSuCWwVagtUGqoaVBSsCVwSugXYDaoNVAqqCVYStgV0"
-      "CuoXZA7IDpIMqgVWCrYVtA2oHZIbJBpKFJoFWgraFtQWpBVKFJYJLhJuBWwK6hrUGqQVLBJaBLoJuhW0"
-      "C6gbUhqkFVQJrBNsBugO0g6kDUoKlhVWCrQVqhukG0gakhUqCloUugq0FaoNVA0qClYUrglcEuwK2Baq"
-      "FVQUqglaEroFtAuyG2QXSBaUFKoFagrqFtQXpBeIFxIVKgpaC1oW1A2oG5IbJBVMEqwFXAraBtQWqhVU"
-      "EpoJOhK6BXQLagtUGqoVNBJcBNwKuhW0DagNSgqWFS4KnBVcC1gXUhskFkoMlhlWCrQWqg2kHUoclBUq"
-      "CloVWgbYDrINpA0qCloUtgl0E3QHaBbSFqQVTAlsEtoF2A2yHWQaqBpUFKwJXBLaGtQWqBZSFSYKVhSu"
-      "CmwVag1UHSYAAA==";
+      'AAAF1A3SHaQdSBqUFSwKbBVqG1QXSBaSFSYKVhSuCWwVagtUGqoaVBSsCVwSugXYDaoNVAqqCVYStgV0'
+      'CuoXZA7IDpIMqgVWCrYVtA2oHZIbJBpKFJoFWgraFtQWpBVKFJYJLhJuBWwK6hrUGqQVLBJaBLoJuhW0'
+      'C6gbUhqkFVQJrBNsBugO0g6kDUoKlhVWCrQVqhukG0gakhUqCloUugq0FaoNVA0qClYUrglcEuwK2Baq'
+      'FVQUqglaEroFtAuyG2QXSBaUFKoFagrqFtQXpBeIFxIVKgpaC1oW1A2oG5IbJBVMEqwFXAraBtQWqhVU'
+      'EpoJOhK6BXQLagtUGqoVNBJcBNwKuhW0DagNSgqWFS4KnBVcC1gXUhskFkoMlhlWCrQWqg2kHUoclBUq'
+      'CloVWgbYDrINpA0qCloUtgl0E3QHaBbSFqQVTAlsEtoF2A2yHWQaqBpUFKwJXBLaGtQWqBZSFSYKVhSu'
+      'CmwVag1UHSYAAA==';
 
   //  ComputedDaysAtStartOfMinYear + (((1 - ComputedMinYear) / 10.0) * AverageDaysPer10Years).toInt();
   static const int _computedDaysAtStartOfYear1 = -492192;
@@ -70,7 +70,7 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     }
 
     // Fill in the cache with dummy data for before/after the min/max year, pretending
-    // that both of the "extra" years were 354 days long.
+    // that both of the 'extra' years were 354 days long.
     _yearStartDays[0] = _computedDaysAtStartOfMinYear - 354;
     _yearStartDays[_yearStartDays.length - 1] = _computedDaysAtStartOfMinYear + totalDays;
     _yearLengths[0] = 354;

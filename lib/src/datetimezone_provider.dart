@@ -27,8 +27,8 @@ abstract class DateTimeZoneProvider {
   /// must not be modified by the provider either: client code can safely treat it as thread-safe
   /// and deeply immutable.
   ///
-  /// In addition to the list returned here, providers always support the fixed-offset timezones with IDs "UTC"
-  /// and "UTC+/-Offset". These may or may not be included explicitly in this list.
+  /// In addition to the list returned here, providers always support the fixed-offset timezones with IDs 'UTC'
+  /// and 'UTC+/-Offset'. These may or may not be included explicitly in this list.
   final List<String> ids = null;
 
   /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
@@ -37,7 +37,7 @@ abstract class DateTimeZoneProvider {
   /// Callers should be aware that this method will throw [DateTimeZoneNotFoundException] if no matching
   /// time zone is found. For the built-in Time Machine providers, this is unlikely to occur in practice (assuming
   /// the system is using a standard Windows time zone), but can occur even then, if no mapping is found. The TZDB
-  /// source contains mappings for almost all Windows system time zones, but a few (such as "Mid-Atlantic Standard Time")
+  /// source contains mappings for almost all Windows system time zones, but a few (such as 'Mid-Atlantic Standard Time')
   /// are unmappable.
   ///
   /// [DateTimeZoneNotFoundException]: The system default time zone is not mapped by
@@ -57,7 +57,7 @@ abstract class DateTimeZoneProvider {
   /// successive requests for the same ID; however, all instances returned for a given ID must compare
   /// as equal.
   ///
-  /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
+  /// The fixed-offset timezones with IDs 'UTC' and "UTC+/-Offset" are always available.
   ///
   /// [id]: The time zone ID to find.
   Future<DateTimeZone> getZoneOrNull(String id);
@@ -74,7 +74,7 @@ abstract class DateTimeZoneProvider {
   /// successive requests for the same ID; however, all instances returned for a given ID must compare
   /// as equal.
   ///
-  /// The fixed-offset timezones with IDs "UTC" and "UTC+/-Offset" are always available.
+  /// The fixed-offset timezones with IDs 'UTC' and "UTC+/-Offset" are always available.
   ///
   /// * [id]: The time zone id to find.
   ///

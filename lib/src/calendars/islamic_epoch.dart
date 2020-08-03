@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 ///
 /// The Islamic, or Hijri, calendar can either be constructed
 /// starting on July 15th 622CE (in the Julian calendar) or on the following day.
-/// The former is the "astronomical" or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
+/// The former is the 'astronomical' or "Thursday" epoch; the latter is the "civil" or "Friday" epoch.
 ///
 /// [CalendarSystem.getIslamicCalendar]
 enum IslamicEpoch

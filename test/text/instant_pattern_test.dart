@@ -20,14 +20,14 @@ Future main() async {
 class InstantPatternTest extends PatternTestBase<Instant> {
   @internal final List<Data> InvalidPatternData = [
     Data()
-      ..pattern = ""
+      ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
     Data()
-      ..pattern = "!"
+      ..pattern = '!'
       ..message = TextErrorMessages.unknownStandardFormat
       ..parameters.addAll(['!', 'Instant']),
     Data()
-      ..pattern = "%"
+      ..pattern = '%'
       ..message = TextErrorMessages.unknownStandardFormat
       ..parameters.addAll(['%', 'Instant']),
     Data()
@@ -36,35 +36,35 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..parameters.addAll(['\\', 'Instant']),
     // Just a few - these are taken from other tests
     Data()
-      ..pattern = "%%"
+      ..pattern = '%%'
       ..message = TextErrorMessages.percentDoubled,
     Data()
       ..pattern = "%\\"
       ..message = TextErrorMessages.escapeAtEndOfString,
     Data()
-      ..pattern = "ffffffffff"
+      ..pattern = 'ffffffffff'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['f', 9]),
     Data()
-      ..pattern = "FFFFFFFFFF"
+      ..pattern = 'FFFFFFFFFF'
       ..message = TextErrorMessages.repeatCountExceeded
       ..parameters.addAll(['F', 9]),
   ];
 
   @internal List<Data> ParseFailureData = [
     Data()
-      ..text = "rubbish"
+      ..text = 'rubbish'
       .. pattern = "yyyyMMdd'T'HH:mm:ss"
       ..message = TextErrorMessages.mismatchedNumber
-      ..parameters.addAll(["yyyy"]),
+      ..parameters.addAll(['yyyy']),
     Data()
-      ..text = "17 6"
-      .. pattern = "HH h"
+      ..text = '17 6'
+      .. pattern = 'HH h'
       ..message = TextErrorMessages.inconsistentValues2
       ..parameters.addAll(['H', 'h', 'LocalTime']),
     Data()
-      ..text = "17 AM"
-      .. pattern = "HH tt"
+      ..text = '17 AM'
+      .. pattern = 'HH tt'
       ..message = TextErrorMessages.inconsistentValues2
       ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
@@ -77,7 +77,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   void IsoHandlesCommas() {
     Instant expected = Instant.utc(2012, 1, 1, 0, 0) + Time.epsilon;
     Instant actual = InstantPattern.extendedIso
-        .parse("2012-01-01T00:00:00,000000001Z")
+        .parse('2012-01-01T00:00:00,000000001Z')
         .value;
     expect(expected, actual);
   }
@@ -87,17 +87,17 @@ class InstantPatternTest extends PatternTestBase<Instant> {
     // using (CultureSaver.SetCultures(TestCultures.DotTimeSeparator))
     Culture.current = TestCultures.DotTimeSeparator;
     {
-      var pattern = InstantPattern.createWithCurrentCulture("HH:mm:ss");
+      var pattern = InstantPattern.createWithCurrentCulture('HH:mm:ss');
       var text = pattern.format(Instant.utc(2000, 1, 1, 12, 34, 56));
-      expect("12.34.56", text);
+      expect('12.34.56', text);
     }
   }
 
   @Test()
   void Create() {
-    var pattern = InstantPattern.createWithCulture("HH:mm:ss", TestCultures.DotTimeSeparator);
+    var pattern = InstantPattern.createWithCulture('HH:mm:ss', TestCultures.DotTimeSeparator);
     var text = pattern.format(Instant.utc(2000, 1, 1, 12, 34, 56));
-    expect("12.34.56", text);
+    expect('12.34.56', text);
   }
 
   @Test()
@@ -107,31 +107,31 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
   @internal final List<Data> FormatAndParseData = [
     Data.fromUtc(2012, 1, 31, 17, 36, 45)
-      ..text = "2012-01-31T17:36:45"
+      ..text = '2012-01-31T17:36:45'
       ..pattern = "yyyy-MM-dd'T'HH:mm:ss",
     // Check that unquoted T still works.
     Data.fromUtc(2012, 1, 31, 17, 36, 45)
-      .. text = "2012-01-31T17:36:45"
-      ..pattern = "yyyy-MM-ddTHH:mm:ss",
+      .. text = '2012-01-31T17:36:45'
+      ..pattern = 'yyyy-MM-ddTHH:mm:ss',
     Data.fromUtc(2012, 4, 28, 0, 0, 0)
-      .. text = "2012 avr. 28"
-      ..pattern = "yyyy MMM dd"
+      .. text = '2012 avr. 28'
+      ..pattern = 'yyyy MMM dd'
       ..culture = TestCultures.FrFr,
     Data()
-      ..text = " 1970 "
-      ..pattern = " yyyy ",
+      ..text = ' 1970 '
+      ..pattern = ' yyyy ',
     Data(Instant.minValue)
-      ..text = "-9998-01-01T00:00:00Z"
+      ..text = '-9998-01-01T00:00:00Z'
       ..pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
     Data(Instant.maxValue)
-      ..text = "9999-12-31T23:59:59.999999999Z"
+      ..text = '9999-12-31T23:59:59.999999999Z'
       ..pattern = "uuuu-MM-dd'T'HH:mm:ss.FFFFFFFFF'Z'",
 
     // General pattern has no standard single character.
     Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..standardPattern = InstantPattern.general
       ..standardPatternCode = 'InstantPattern.general'
-      ..text = "2012-01-31T17:36:45Z"
+      ..text = '2012-01-31T17:36:45Z'
       ..pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
   ];
 

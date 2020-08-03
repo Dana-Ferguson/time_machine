@@ -174,7 +174,7 @@ Future IsDaylightSavings() async
 {
   // Use a real time zone rather than a single-transition zone, so that we can get
   // a savings offset.
-  var zone = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
+  var zone = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
   var winterSummerTransition = Instant.utc(2014, 3, 30, 1, 0);
   var winter = (winterSummerTransition - Time.epsilon).inZone(zone);
   var summer = winterSummerTransition.inZone(zone);
@@ -423,7 +423,7 @@ void DefaultConstructor()
 void BinarySerialization_Iso()
 {
   DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-  var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+  var zone = DateTimeZoneProviders.Tzdb['America/New_York'];
   var value = new ZonedDateTime(new LocalDateTime.fromYMDHMS(2013, 4, 12, 17, 53, 23).WithOffset(new Offset.fromHours(-4)), zone);
   TestHelper.AssertBinaryRoundtrip(value);
 }
@@ -432,7 +432,7 @@ void BinarySerialization_Iso()
 void XmlSerialization_Iso()
 {
   DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-  var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+  var zone = DateTimeZoneProviders.Tzdb['America/New_York'];
   var value = new ZonedDateTime(new LocalDateTime.fromYMDHMS(2013, 4, 12, 17, 53, 23).WithOffset(new Offset.fromHours(-4)), zone);
   TestHelper.AssertXmlRoundtrip(value, "<value zone=\"America/New_York\">2013-04-12T17:53:23-04</value>");
 }
@@ -446,7 +446,7 @@ void XmlSerialization_Bcl()
   if (!TestHelper.IsRunningOnMono)
   {
     DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
-    var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
+    var zone = DateTimeZoneProviders.Bcl['Eastern Standard Time'];
     var value = new ZonedDateTime(new LocalDateTime.fromYMDHMS(2013, 4, 12, 17, 53, 23).WithOffset(new Offset.fromHours(-4)), zone);
     TestHelper.AssertXmlRoundtrip(value, "<value zone=\"Eastern Standard Time\">2013-04-12T17:53:23-04</value>");
   }
@@ -460,7 +460,7 @@ void BinarySerialization_Bcl()
   if (!TestHelper.IsRunningOnMono)
   {
     DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Bcl;
-    var zone = DateTimeZoneProviders.Bcl["Eastern Standard Time"];
+    var zone = DateTimeZoneProviders.Bcl['Eastern Standard Time'];
     var value = new ZonedDateTime(new LocalDateTime.fromYMDHMS(2013, 4, 12, 17, 53, 23).WithOffset(new Offset.fromHours(-4)), zone);
     TestHelper.AssertBinaryRoundtrip(value);
   }
@@ -471,7 +471,7 @@ void BinarySerialization_Bcl()
 void XmlSerialization_NonIso()
 {
   DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-  var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+  var zone = DateTimeZoneProviders.Tzdb['America/New_York'];
   var localDateTime = new LocalDateTime.fromYMDHMSC(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
   var value = new ZonedDateTime(localDateTime.WithOffset(new Offset.fromHours(-4)), zone);
   TestHelper.AssertXmlRoundtrip(value,
@@ -482,7 +482,7 @@ void XmlSerialization_NonIso()
 void BinarySerialization_NonIso()
 {
   DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
-  var zone = DateTimeZoneProviders.Tzdb["America/New_York"];
+  var zone = DateTimeZoneProviders.Tzdb['America/New_York'];
   var localDateTime = new LocalDateTime.fromYMDHMSC(2013, 6, 12, 17, 53, 23, CalendarSystem.Julian);
   var value = new ZonedDateTime(localDateTime.WithOffset(new Offset.fromHours(-4)), zone);
   TestHelper.AssertBinaryRoundtrip(value);
@@ -491,14 +491,14 @@ void BinarySerialization_NonIso()
 #if !NETCORE
 
 @Test()
-@TestCase(const [typeof(ArgumentException), 10000, 8, 25, 0L, 0, 60, "Europe/London"])
-@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, 0, 60, "Europe/London"])
-@TestCase(const [typeof(ArgumentException), 2017, 13, 25, 0L, 0, 60, "Europe/London"])
-@TestCase(const [typeof(ArgumentException), 2017, 8, 32, 0L, 0, 60, "Europe/London"])
-@TestCase(const [typeof(ArgumentException), 2017, 8, 25, -1L, 0, 60, "Europe/London"])
-@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, -1, 60, "Europe/London", Description = "Invalid calendar ordinal"])
-@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, 0, 120, "Europe/London", Description = "Wrong offset"])
-@TestCase(const [typeof(TimeZoneNotFoundException), 2017, 8, 25, 0L, 0, 120, "Europe/NotLondon", Description = "Unknown zone ID"])
+@TestCase(const [typeof(ArgumentException), 10000, 8, 25, 0L, 0, 60, 'Europe/London'])
+@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, 0, 60, 'Europe/London'])
+@TestCase(const [typeof(ArgumentException), 2017, 13, 25, 0L, 0, 60, 'Europe/London'])
+@TestCase(const [typeof(ArgumentException), 2017, 8, 32, 0L, 0, 60, 'Europe/London'])
+@TestCase(const [typeof(ArgumentException), 2017, 8, 25, -1L, 0, 60, 'Europe/London'])
+@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, -1, 60, 'Europe/London', Description = "Invalid calendar ordinal"])
+@TestCase(const [typeof(ArgumentException), 2017, 8, 25, 0L, 0, 120, 'Europe/London', Description = "Wrong offset"])
+@TestCase(const [typeof(TimeZoneNotFoundException), 2017, 8, 25, 0L, 0, 120, 'Europe/NotLondon', Description = "Unknown zone ID"])
 void InvalidBinaryData(Type expectedExceptionType, int year, int month, int day, int nanosecondOfDay, int calendarOrdinal, int offsetSeconds, string zoneId)
 {
   DateTimeZoneProviders.Serialization = DateTimeZoneProviders.Tzdb;
@@ -517,7 +517,7 @@ void InvalidBinaryData(Type expectedExceptionType, int year, int month, int day,
 
 @Test()
 @TestCase(const ["<value zone=\"America/New_York\" calendar=\"Rubbish\">2013-06-12T17:53:23-04</value>", typeof(KeyNotFoundException), Description = "Unknown calendar system"])
-@TestCase(const ["<value>2013-04-12T17:53:23-04</value>", typeof(ArgumentException), Description = "No zone"])
+@TestCase(const ['<value>2013-04-12T17:53:23-04</value>', typeof(ArgumentException), Description = "No zone"])
 @TestCase(const ["<value zone=\"Unknown\">2013-04-12T17:53:23-04</value>", typeof(DateTimeZoneNotFoundException), Description = "Unknown zone"])
 @TestCase(const ["<value zone=\"Europe/London\">2013-04-12T17:53:23-04</value>", typeof(UnparsableValueException), Description = "Incorrect offset"])
 void XmlSerialization_Invalid(string xml, Type expectedExceptionType)
@@ -532,7 +532,7 @@ void ZonedDateTime_ToString()
 {
   var local = LocalDateTime(2013, 7, 23, 13, 05, 20);
   ZonedDateTime zoned = local.inZoneStrictly(SampleZone);
-  expect("2013-07-23T13:05:20 Single (+04)", zoned.toString());
+  expect('2013-07-23T13:05:20 Single (+04)', zoned.toString());
 }
 
 @Test()
@@ -540,14 +540,14 @@ void ZonedDateTime_ToString_WithFormat()
 {
   var local = LocalDateTime(2013, 7, 23, 13, 05, 20);
   ZonedDateTime zoned = local.inZoneStrictly(SampleZone);
-  expect("2013/07/23 13:05:20 Single", zoned.toString("yyyy/MM/dd HH:mm:ss z", Culture.invariant));
+  expect('2013/07/23 13:05:20 Single', zoned.toString("yyyy/MM/dd HH:mm:ss z", Culture.invariant));
 }
 
 @Test()
 Future LocalComparer() async
 {
-  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  var losAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  var london = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
+  var losAngeles = await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles'];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
   var londonEvening = LocalDateTime(2014, 7, 9, 20, 32, 0).inZoneStrictly(london);
@@ -574,8 +574,8 @@ Future LocalComparer() async
 @Test()
 Future InstantComparer() async
 {
-  var london = await (await DateTimeZoneProviders.tzdb)["Europe/London"];
-  var losAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  var london = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
+  var losAngeles = await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles'];
 
   // LA is 8 hours behind London. So the London evening occurs before the LA afternoon.
   var londonEvening = LocalDateTime(2014, 7, 9, 20, 32, 0).inZoneStrictly(london);
@@ -603,7 +603,7 @@ Future InstantComparer() async
 @Test()
 void Deconstruction()
 {
-  var saoPaulo = DateTimeZoneProviders.Tzdb["America/Sao_Paulo"];
+  var saoPaulo = DateTimeZoneProviders.Tzdb['America/Sao_Paulo'];
   ZonedDateTime value = new LocalDateTime.fromYMDHMS(2017, 10, 15, 21, 30, 15).InZoneStrictly(saoPaulo);
   var expectedDateTime = new LocalDateTime.fromYMDHMS(2017, 10, 15, 21, 30, 15);
   var expectedZone = saoPaulo;

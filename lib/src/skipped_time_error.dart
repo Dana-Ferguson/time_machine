@@ -14,7 +14,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 ///
 /// This exception is used to indicate such problems, as they're usually
 /// not the same as other [RangeError] causes,
-/// such as entering "15" for a month number.
+/// such as entering '15' for a month number.
 ///
 /// Note that it is possible (though extremely rare) for a whole day to be skipped due to a time zone transition,
 /// so this exception may also be thrown in cases where no local time is valid for a particular local date. (For

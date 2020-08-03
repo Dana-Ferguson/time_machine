@@ -15,7 +15,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 ///
 /// The returned value should be one of the two parameter values, based on the policy of the specific
 /// implementation. Alternatively, it can throw an [AmbiguousTimeException] to implement a policy of
-/// "reject ambiguous times."
+/// 'reject ambiguous times.'
 ///
 /// See the [Resolvers] class for predefined implementations.
 ///

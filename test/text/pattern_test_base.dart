@@ -13,7 +13,7 @@ import 'pattern_test_data.dart';
 /// Base class for all the pattern tests (when we've migrated OffsetPattern off FormattingTestSupport).
 /// Derived classes should have internal static fields with the names listed in the TestCaseSource
 /// attributes here: InvalidPatternData, ParseFailureData, ParseData, FormatData. Any field
-/// which is missing causes that test to be "not runnable" for that concrete subclass.
+/// which is missing causes that test to be 'not runnable' for that concrete subclass.
 /// If a test isn't appropriate (e.g. there's no configurable pattern) just provide a property with
 /// an array containing a null value - that will be ignored.
 abstract class PatternTestBase<T>

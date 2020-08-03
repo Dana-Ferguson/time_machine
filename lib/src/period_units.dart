@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// The units within a [period]. When a period is created to find the difference between two local values,
 /// the caller may specify which units are required - for example, you can ask for the difference between two dates
-/// in "years and weeks". Units are always applied largest-first in arithmetic.
+/// in 'years and weeks'. Units are always applied largest-first in arithmetic.
 @immutable
 class PeriodUnits {
   final int _value;

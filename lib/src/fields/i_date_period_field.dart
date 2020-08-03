@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// General representation of the difference between two dates in a particular time unit,
-/// such as "days" or "months".
+/// such as 'days' or "months".
 @internal
 abstract class IDatePeriodField {
   /// Adds a duration value (which may be negative) to the date. This may not

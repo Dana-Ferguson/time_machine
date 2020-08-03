@@ -27,9 +27,9 @@ abstract class CachingZoneIntervalMap
 /// for instants).
 ///
 /// Each hash table entry is either entry or contains a node with enough
-/// information for a particular "period" of 32 days - so multiple calls for time
+/// information for a particular 'period' of 32 days - so multiple calls for time
 /// zone information within the same few years are likely to hit the cache. Note that
-/// a single "period" may include a daylight saving change (or conceivably more than one);
+/// a single 'period' may include a daylight saving change (or conceivably more than one);
 /// a node therefore has to contain enough intervals to completely represent that period.
 ///
 /// If another call is made which maps to the same cache entry number but is for a different
@@ -38,7 +38,7 @@ abstract class CachingZoneIntervalMap
 class _HashArrayCache implements ZoneIntervalMap {
   // Currently we have no need or way to create hash cache zones with
   // different cache sizes. But the cache size should always be a power of 2 to get the
-  // "period to cache entry" conversion simply as a bitmask operation.
+  // 'period to cache entry' conversion simply as a bitmask operation.
   static const int _cacheSize = 512;
 
   // Mask to AND the period number with in order to get the cache entry index. The

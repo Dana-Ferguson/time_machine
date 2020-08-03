@@ -33,11 +33,11 @@ Future main() async {
 }
 
 Future setup() async {
-  LosAngeles = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
-  NewZealand = await (await DateTimeZoneProviders.tzdb)["Pacific/Auckland"];
-  Paris = await (await DateTimeZoneProviders.tzdb)["Europe/Paris"];
-  NewYork = await (await DateTimeZoneProviders.tzdb)["America/New_York"];
-  Pacific = await (await DateTimeZoneProviders.tzdb)["America/Los_Angeles"];
+  LosAngeles = await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles'];
+  NewZealand = await (await DateTimeZoneProviders.tzdb)['Pacific/Auckland'];
+  Paris = await (await DateTimeZoneProviders.tzdb)['Europe/Paris'];
+  NewYork = await (await DateTimeZoneProviders.tzdb)['America/New_York'];
+  Pacific = await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles'];
 }
 
 /// Local midnight at the start of the transition (June 1st) becomes 1am.
@@ -300,10 +300,10 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 // skipped December 30th 2011, going from  23:59:59 December 29th local time UTC-10
 // to 00:00:00 December 31st local time UTC+14
 @Test()
-@TestCase(const ["Pacific/Apia", "2011-12-30"])
-@TestCase(const ["Pacific/Enderbury", "1994-12-31"])
-@TestCase(const ["Pacific/Kiritimati", "1994-12-31"])
-@TestCase(const ["Pacific/Kwajalein", "1993-08-21"])
+@TestCase(const ['Pacific/Apia', "2011-12-30"])
+@TestCase(const ['Pacific/Enderbury', "1994-12-31"])
+@TestCase(const ['Pacific/Kiritimati', "1994-12-31"])
+@TestCase(const ['Pacific/Kwajalein', "1993-08-21"])
 Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
 {
   LocalDate badDate = LocalDatePattern.iso.parse(localDate).value;

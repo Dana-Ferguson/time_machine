@@ -30,6 +30,6 @@ void Equality() {
 void TransitionToString() {
   var transition = Transition(Instant.utc(2017, 8, 25, 15, 26, 30), Offset.hours(1));
   print(transition.toString());
-  expect(transition.toString(), "Transition to +01 at 2017-08-25T15:26:30Z");
+  expect(transition.toString(), 'Transition to +01 at 2017-08-25T15:26:30Z');
 }
 

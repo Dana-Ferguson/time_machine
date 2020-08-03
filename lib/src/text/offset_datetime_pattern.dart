@@ -45,7 +45,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   ///
   /// The calendar system is not parsed or formatted as part of this pattern. It corresponds to a custom pattern of
   /// "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt;". This will round-trip any values
-  /// in the ISO calendar, and is available as the "o" standard pattern.
+  /// in the ISO calendar, and is available as the 'o' standard pattern.
   static OffsetDateTimePattern get extendedIso => OffsetDateTimePatterns.extendedIsoPatternImpl;
 
   /// Gets an invariant offset date/time pattern based on RFC 3339 (down to the nanosecond), including offset from UTC
@@ -64,7 +64,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   ///
   /// The returned pattern corresponds to a custom pattern of
   /// "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo&lt;G&gt; '('c')'". This will round-trip any value in any calendar,
-  /// and is available as the "r" standard pattern.
+  /// and is available as the 'r' standard pattern.
   static OffsetDateTimePattern get fullRoundtrip => OffsetDateTimePatterns.fullRoundtripPatternImpl;
 
   final IPattern<OffsetDateTime> _pattern;

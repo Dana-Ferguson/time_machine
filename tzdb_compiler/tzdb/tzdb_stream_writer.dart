@@ -39,7 +39,7 @@ enum TzdbStreamFieldId {
   /// TzdbZoneLocation data.
   zoneLocations,
 
-  /// Single field providing all "zone 1970" locations. The format is simply a count, and then that many copies of
+  /// Single field providing all 'zone 1970' locations. The format is simply a count, and then that many copies of
   /// TzdbZone1970Location data. This field was introduced in Noda Time 2.0.
   zone1970Locations
 }
@@ -47,7 +47,7 @@ enum TzdbStreamFieldId {
 /// Writes time zone data to a stream in nzd format.
 ///
 /// <para>The file format consists of four bytes indicating the file format version/type (mostly for
-/// future expansion), followed by a number of fields. Each field is identified by a <see cref="TzdbStreamFieldId"/>.
+/// future expansion), followed by a number of fields. Each field is identified by a <see cref='TzdbStreamFieldId'/>.
 /// The fields are always written in order, and the format of a field consists of its field ID, a 7-bit-encoded
 /// integer with the size of the data, and then the data itself.
 ///
@@ -161,7 +161,7 @@ class TzdbStreamWriter {
       }
       else
       {
-        throw ArgumentError("Unserializable DateTimeZone type ${zone.runtimeType}");
+        throw ArgumentError('Unserializable DateTimeZone type ${zone.runtimeType}');
       }
     }
   }

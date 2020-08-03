@@ -18,7 +18,7 @@ final Iterable<String> SupportedIds = CalendarSystem.ids.toList();
 final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
-@TestCaseSource(const Symbol("SupportedIds"))
+@TestCaseSource(const Symbol('SupportedIds'))
 void ValidId(String id)
 {
   expect(CalendarSystem.forId(id), TypeMatcher<CalendarSystem>());
@@ -26,7 +26,7 @@ void ValidId(String id)
 }
 
 @Test()
-@TestCaseSource(const Symbol("SupportedIds"))
+@TestCaseSource(const Symbol('SupportedIds'))
 void IdsAreCaseSensitive(String id)
 {
   expect(() => CalendarSystem.forId(id.toLowerCase()), throwsArgumentError);
@@ -44,8 +44,8 @@ void AllIdsGiveDifferentCalendars()
 @Test()
 void BadId()
 {
-  expect(() => CalendarSystem.forId("bad"), throwsArgumentError);
-// Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId("bad"));
+  expect(() => CalendarSystem.forId('bad'), throwsArgumentError);
+// Assert.Throws<KeyNotFoundException>(() => CalendarSystem.ForId('bad'));
 }
 
 @Test()
@@ -64,10 +64,10 @@ void NoSubstrings()
             }
             expect(stringOrdinalIgnoreCaseCompare(firstId, 0, secondId, 0, firstId.length),
                 isNot(0),
-                reason: "$firstId is a leading substring of $secondId");
+                reason: '$firstId is a leading substring of $secondId');
 
         // Assert.AreNotEqual(0, comparison.Compare(firstId, 0, firstId.length, secondId, 0, firstId.length, CompareOptions.IgnoreCase),
-        //     "$firstId is a leading substring of $secondId");
+        //     '$firstId is a leading substring of $secondId');
         }
     }
 }
@@ -75,7 +75,7 @@ void NoSubstrings()
 // Ordinals are similar enough to IDs to keep the tests in this file too...
 
 @Test()
-@TestCaseSource(const Symbol("SupportedCalendars"))
+@TestCaseSource(const Symbol('SupportedCalendars'))
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
   expect(calendar, ICalendarSystem.forOrdinal(ICalendarSystem.ordinal(calendar)));
@@ -83,7 +83,7 @@ void ForOrdinal_Roundtrip(CalendarSystem calendar)
 }
 
 @Test()
-@TestCaseSource(const Symbol("SupportedCalendars"))
+@TestCaseSource(const Symbol('SupportedCalendars'))
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
   var target = ICalendarSystem.forOrdinalUncached(ICalendarSystem.ordinal(calendar));

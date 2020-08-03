@@ -15,7 +15,7 @@ abstract class ILocalDateTime {
 }
 
 /// A date and time in a particular calendar system. A LocalDateTime value does not represent an
-/// instant on the global time line, because it has no associated time zone: "November 12th 2009 7pm, ISO calendar"
+/// instant on the global time line, because it has no associated time zone: 'November 12th 2009 7pm, ISO calendar'
 /// occurred at different instants for different people around the world.
 ///
 /// This type defaults to using the ISO calendar system unless a different calendar system is
@@ -44,7 +44,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   /// Initializes a new instance of [LocalDateTime].
   ///
-  /// * [year]: The year. This is the "absolute year", so, for
+  /// * [year]: The year. This is the 'absolute year', so, for
   /// the ISO calendar, a value of 0 means 1 BC, for example.
   /// * [month]: The month of year.
   /// * [day]: The day of month.
@@ -106,7 +106,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   CalendarSystem get calendar => calendarDate.calendar;
 
   /// Gets the year of this local date and time.
-  /// This returns the "absolute year", so, for the ISO calendar,
+  /// This returns the 'absolute year', so, for the ISO calendar,
   /// a value of 0 means 1 BC, for example.
   int get year => calendarDate.year;
 
@@ -519,7 +519,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   /// Returns the next [LocalDateTime] falling on the specified [DayOfWeek],
   /// at the same time of day as this value.
-  /// This is a strict "next" - if this value on already falls on the target
+  /// This is a strict 'next' - if this value on already falls on the target
   /// day of the week, the returned value will be a week later.
   ///
   /// * [targetDayOfWeek]: The ISO day of the week to return the next date of.
@@ -533,7 +533,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   /// Returns the previous [LocalDateTime] falling on the specified [DayOfWeek],
   /// at the same time of day as this value.
-  /// This is a strict "previous" - if this value on already falls on the target
+  /// This is a strict 'previous' - if this value on already falls on the target
   /// day of the week, the returned value will be a week earlier.
   ///
   /// * [targetDayOfWeek]: The ISO day of the week to return the previous date of.
@@ -565,7 +565,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
 
   // todo: are these convenience functions still needed? (since we made the DateTimeZone ZonedDateTime constructors, constructors on ZonedDateTime?)
   /// Returns the mapping of this local date/time within the given [DateTimeZone],
-  /// with "strict" rules applied such that an exception is thrown if either the mapping is
+  /// with 'strict' rules applied such that an exception is thrown if either the mapping is
   /// ambiguous or the time is skipped.
   ///
   /// See [inZoneLeniently] and [inZone] for alternative ways to map a local time to a
@@ -584,8 +584,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   }
 
   /// Returns the mapping of this local date/time within the given [DateTimeZone],
-  /// with "lenient" rules applied such that ambiguous values map to the earlier of the alternatives, and
-  /// "skipped" values are shifted forward by the duration of the "gap".
+  /// with 'lenient' rules applied such that ambiguous values map to the earlier of the alternatives, and
+  /// 'skipped' values are shifted forward by the duration of the "gap".
   ///
   /// See [inZoneStrictly] and [inZone] for alternative ways to map a local time to a
   /// specific instant.
@@ -650,10 +650,10 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     return x < y ? x : y;
   }
 
-  // todo: verify default format pattern ("G"), using the current isolate
+  // todo: verify default format pattern ('G'), using the current isolate
   /// Returns a [String] that represents this instance.
   ///
-  /// The value of the current instance in the default format pattern ("G"), using the current isolate's
+  /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
   @override String toString([String patternText, Culture culture]) =>
       LocalDateTimePatterns.format(this, patternText, culture);

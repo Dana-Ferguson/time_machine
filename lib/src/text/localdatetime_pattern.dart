@@ -33,7 +33,7 @@ abstract class LocalDateTimePatterns
 /// Represents a pattern for parsing and formatting [LocalDateTime] values.
 @immutable
 class LocalDateTimePattern implements IPattern<LocalDateTime> {
-  static const String _defaultFormatPattern = "G"; // General (long time)
+  static const String _defaultFormatPattern = 'G'; // General (long time)
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, down to the second.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss", and is also used as the "sortable"
@@ -47,7 +47,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
 
   /// Gets an invariant local date/time pattern which is ISO-8601 compatible, providing up to 7 decimal places
   /// of sub-second accuracy which are always present (including trailing zeroes). This is compatible with the
-  /// BCL round-trip formatting of [DateTime] values with a kind of "unspecified".
+  /// BCL round-trip formatting of [DateTime] values with a kind of 'unspecified'.
   /// This corresponds to the text pattern "uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff". It does not necessarily
   /// round-trip all `LocalDateTime` values as it will lose sub-tick information. Use
   /// [fullRoundtripWithoutCalendar]
@@ -119,7 +119,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
       LocalDateTime templateValue) {
     Preconditions.checkNotNull(patternText, 'patternText');
     Preconditions.checkNotNull(formatInfo, 'formatInfo');
-    // Use the "fixed" parser for the common case of the default template value.
+    // Use the 'fixed' parser for the common case of the default template value.
     var pattern = templateValue == LocalDateTimePatterns.defaultTemplateValue
         ? formatInfo.localDateTimePatternParser.parsePattern(patternText)
         : LocalDateTimePatternParser(templateValue).parsePattern(patternText, formatInfo);
