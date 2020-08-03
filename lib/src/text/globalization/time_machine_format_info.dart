@@ -198,9 +198,7 @@ class TimeMachineFormatInfo {
   FixedFormatInfoPatternParser<T> _ensureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T> field,
       IPatternParser<T> Function() patternParserFactory) {
     // lock (fieldLock)
-    if (field == null) {
-      field = FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
-    }
+    field ??= FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
     return field;
   }
 

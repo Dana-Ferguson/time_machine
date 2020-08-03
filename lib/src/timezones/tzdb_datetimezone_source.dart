@@ -63,7 +63,7 @@ class TzdbDateTimeZoneSource extends DateTimeZoneSource {
   }
 
   static TzdbIndex _cachedTzdbIndex;
-  static Future<TzdbIndex> _tzdbIndexAsync = _cachedTzdbIndex != null
+  static final Future<TzdbIndex> _tzdbIndexAsync = _cachedTzdbIndex != null
       ? Future.value(_cachedTzdbIndex)
       : _init().then((_) => _cachedTzdbIndex);
 
