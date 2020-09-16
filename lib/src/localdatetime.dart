@@ -170,17 +170,17 @@ class LocalDateTime implements Comparable<LocalDateTime> {
           minuteOfHour,
           secondOfMinute,
           millisecondOfSecond,
-        );
+        ).toLocal();
       }
 
       return DateTime(
-          year,
-          monthOfYear,
-          dayOfMonth,
-          hourOfDay,
-          minuteOfHour,
-          secondOfMinute,
-          millisecondOfSecond,
+        year,
+        monthOfYear,
+        dayOfMonth,
+        hourOfDay,
+        minuteOfHour,
+        secondOfMinute,
+        millisecondOfSecond,
       );
     } else {
       if (isUTC) {
@@ -193,7 +193,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
           secondOfMinute,
           0,
           microsecondOfSecond,
-        );
+        ).toLocal();
       }
 
       return DateTime(
