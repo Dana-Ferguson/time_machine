@@ -26,6 +26,8 @@ class Interval {
   /// The end of the interval. This will never be earlier than the start.
   final Instant _end;
 
+  // todo: would this make sense? Interval.forever()? Interval.tillEndOfTime(Instant start)? Interval.startOfTimeTill(Instant end)? Interval.empty([Instant time])?
+  // todo: Instant.timeSince needs better doc comment!
   /// Initializes a new instance of the [Interval] struct.
   /// The interval includes the [start] instant and excludes the
   /// [end] instant. The end may equal the start (resulting in an empty interval), but must not be before the start.
