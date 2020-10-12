@@ -163,7 +163,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime toDateTimeLocal() {
     var isUtc = DateTimeZone.local == DateTimeZone.utc;
-    return isUtc ? inUtc().localDateTime._toDateTimeLocal() : _toDateTimeLocal();
+    return isUtc ? inUtc().localDateTime._toDateTimeLocalUtc() : _toDateTimeLocal();
   }
 
   DateTime _toDateTimeLocal() {
@@ -191,6 +191,30 @@ class LocalDateTime implements Comparable<LocalDateTime> {
     }
   }
 
+  DateTime _toDateTimeLocalUtc() {
+    if (Platform.isWeb) {
+      return DateTime.utc(
+        year,
+        monthOfYear,
+        dayOfMonth,
+        hourOfDay,
+        minuteOfHour,
+        secondOfMinute,
+        millisecondOfSecond,
+      );
+    } else {
+      return DateTime.utc(
+        year,
+        monthOfYear,
+        dayOfMonth,
+        hourOfDay,
+        minuteOfHour,
+        secondOfMinute,
+        0,
+        microsecondOfSecond,
+      );
+    }
+  }
 
   LocalInstant _toLocalInstant() => LocalInstant.daysNanos(calendarDate.epochDay, clockTime.timeSinceMidnight.inNanoseconds);
 

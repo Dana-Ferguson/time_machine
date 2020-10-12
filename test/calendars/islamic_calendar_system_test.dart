@@ -273,7 +273,7 @@ void BclUsesAstronomicalEpoch()
   // DateTime bclDirect = hijri.ToDateTime(1, 1, 1, 0, 0, 0, 0);
   // toString(): 7/18/22 12:00:00 AM (year is 622 but prints weird)
   // ticks: 196139232000000000
-  var bclDirect = DateTime(622, 7, 18);
+  var bclDirect = DateTime.utc(622, 7, 18);
 
   CalendarSystem julianCalendar = CalendarSystem.julian;
   LocalDate julianIslamicEpoch = LocalDate(622, 7, 15, julianCalendar);
