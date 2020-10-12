@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.14
+- Updated TZDB to 2020b.
+- Merged PR's #35, #36, #37, and #39.
+
 ## 0.9.13
 - Updated TZDB to 2020a.
 
