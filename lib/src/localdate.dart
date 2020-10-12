@@ -73,7 +73,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
   ///
   /// Returns: A new [LocalDate] with the same values as the local clock.
-  factory LocalDate.today([CalendarSystem calendar]) => Instant.now().inLocalZone().calendarDate;
+  factory LocalDate.today([CalendarSystem calendar]) =>
+      Instant.now().inLocalZone(calendar).calendarDate;
 
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
   /// This does not perform any time zone conversions, so a DateTime with a [DateTime.isUtc] of
