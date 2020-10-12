@@ -162,17 +162,33 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// Returns: A [DateTime] value for the same date and time as this value.
   DateTime toDateTimeLocal() {
+    final isUTC = DateTimeZone.local.id == 'UTC';
+
     if (Platform.isWeb) {
-      return DateTime(
+      if (isUTC) {
+        return DateTime.utc(
           year,
           monthOfYear,
           dayOfMonth,
           hourOfDay,
           minuteOfHour,
           secondOfMinute,
-          millisecondOfSecond);
-    } else {
+          millisecondOfSecond,
+        ).toLocal();
+      }
+
       return DateTime(
+        year,
+        monthOfYear,
+        dayOfMonth,
+        hourOfDay,
+        minuteOfHour,
+        secondOfMinute,
+        millisecondOfSecond,
+      );
+    } else {
+      if (isUTC) {
+        return DateTime.utc(
           year,
           monthOfYear,
           dayOfMonth,
@@ -180,7 +196,20 @@ class LocalDateTime implements Comparable<LocalDateTime> {
           minuteOfHour,
           secondOfMinute,
           0,
-          microsecondOfSecond);
+          microsecondOfSecond,
+        ).toLocal();
+      }
+
+      return DateTime(
+        year,
+        monthOfYear,
+        dayOfMonth,
+        hourOfDay,
+        minuteOfHour,
+        secondOfMinute,
+        0,
+        microsecondOfSecond,
+      );
     }
   }
 
