@@ -12,7 +12,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 ///
 /// Supported standard patterns:
 ///  * g: general; the UTC ISO-8601 instant in the style uuuu-MM-ddTHH:mm:ssZ
-@internal
+@isInternal
 class InstantPatternParser implements IPatternParser<Instant> {
   static const String generalPatternText = "uuuu'-'MM'-'dd'T'HH':'mm':'ss'Z'";
   static const String beforeMinValueText = 'StartOfTime';

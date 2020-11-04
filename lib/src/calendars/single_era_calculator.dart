@@ -7,7 +7,7 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Implementation of [EraCalculator] for calendars which only have a single era.
-@internal 
+@isInternal 
 class SingleEraCalculator extends EraCalculator {
   final Era _era;
 

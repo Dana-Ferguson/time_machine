@@ -7,7 +7,7 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Parser for patterns of [AnnualDate] values.
-@internal
+@isInternal
 class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
   final AnnualDate _templateValue;
 
@@ -73,7 +73,7 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
 
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by AnnualDateTimePattern to store and calculate values.
-@internal
+@isInternal
 class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
   final AnnualDate templateValue;
   int monthOfYearNumeric = 0;

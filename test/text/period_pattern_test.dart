@@ -22,7 +22,7 @@ class Data extends PatternTestData<Period> {
 
   Data.builder(PeriodBuilder builder) : this(builder.build());
 
-  @internal
+  @isInternal
   @override
   IPattern<Period> CreatePattern() => standardPattern;
 }

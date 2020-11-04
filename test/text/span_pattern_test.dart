@@ -20,7 +20,7 @@ Future main() async {
 @Test()
 class SpanPatternTest extends PatternTestBase<Time> {
   /// Test data that can only be used to test formatting.
-  @internal  final List<Data> FormatOnlyData = [
+  @isInternal  final List<Data> FormatOnlyData = [
     // No sign, so we can't parse it.
     Data.hm(-1, 0)
       ..pattern = 'HH:mm'
@@ -36,10 +36,10 @@ class SpanPatternTest extends PatternTestBase<Time> {
   ];
 
   /// Test data that can only be used to test successful parsing.
-  @internal  final List<Data> ParseOnlyData = [];
+  @isInternal  final List<Data> ParseOnlyData = [];
 
   /// Test data for invalid patterns
-  @internal  final List<Data> InvalidPatternData = [
+  @isInternal  final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -60,7 +60,7 @@ class SpanPatternTest extends PatternTestBase<Time> {
   ];
 
   /// Tests for parsing failures (of values)
-  @internal  final List<Data> ParseFailureData = [
+  @isInternal  final List<Data> ParseFailureData = [
     Data(Time.zero)
       ..pattern = 'H:mm'
       ..text = '1:60'
@@ -143,7 +143,7 @@ class SpanPatternTest extends PatternTestBase<Time> {
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  @internal  final List<Data> FormatAndParseData = [
+  @isInternal  final List<Data> FormatAndParseData = [
     Data.hm(1, 2)
       ..pattern = '+HH:mm'
       ..text = '+01:02',
@@ -255,8 +255,8 @@ class SpanPatternTest extends PatternTestBase<Time> {
       ..Text = '1449551462399.999999999',*/
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void ParseNull() => AssertParseNull(TimePattern.roundtrip);
@@ -296,7 +296,7 @@ class SpanPatternTest extends PatternTestBase<Time> {
   Data.dhmsn(int days, int hours, int minutes, int seconds, int nanoseconds)
       : this(Time(hours: days * 24 + hours) + Time(minutes: minutes) + Time(seconds: seconds) + Time(nanoseconds: nanoseconds));
 
-  @internal
+  @isInternal
   @override
   IPattern<Time> CreatePattern() => TimePattern.createWithCulture(super.pattern, culture);
 }

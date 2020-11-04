@@ -87,7 +87,7 @@ void UnhandledLiteral(String text, bool valid) {
 }
 
 @private class SampleBucket extends ParseBucket<LocalDate> {
-  @internal
+  @isInternal
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String value) {
     throw UnimplementedError();

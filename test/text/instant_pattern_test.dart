@@ -18,7 +18,7 @@ Future main() async {
 
 @Test()
 class InstantPatternTest extends PatternTestBase<Instant> {
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -51,7 +51,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..parameters.addAll(['F', 9]),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..text = 'rubbish'
       .. pattern = "yyyyMMdd'T'HH:mm:ss"
@@ -69,9 +69,9 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
 
-  @internal List<Data> ParseOnlyData = [];
+  @isInternal List<Data> ParseOnlyData = [];
 
-  @internal List<Data> FormatOnlyData = [];
+  @isInternal List<Data> FormatOnlyData = [];
 
   @Test()
   void IsoHandlesCommas() {
@@ -105,7 +105,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  @internal final List<Data> FormatAndParseData = [
+  @isInternal final List<Data> FormatAndParseData = [
     Data.fromUtc(2012, 1, 31, 17, 36, 45)
       ..text = '2012-01-31T17:36:45'
       ..pattern = "yyyy-MM-dd'T'HH:mm:ss",
@@ -135,9 +135,9 @@ class InstantPatternTest extends PatternTestBase<Instant> {
       ..pattern = "uuuu-MM-ddTHH:mm:ss'Z'",
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 }
 
 /// A container for test data for formatting and parsing [LocalTime] objects.
@@ -149,7 +149,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   Data.fromUtc(int year, int month, int day, int hour, int minute, int second)
       : this(Instant.utc(year, month, day, hour, minute, second));
 
-  @internal
+  @isInternal
   @override
   IPattern<Instant> CreatePattern() =>
       InstantPattern.createWithInvariantCulture(super.pattern).withCulture(culture);

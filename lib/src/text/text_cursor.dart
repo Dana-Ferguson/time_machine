@@ -12,7 +12,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// have ref parameters indicating failures, unlike subclasses. This class is used as the basis for both
 /// value and pattern parsing, so can make no judgement about what's wrong (i.e. it wouldn't know what
 /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.
-@internal
+@isInternal
 abstract class TextCursor {
   /// Gets the length of the string being parsed.
   final int length;

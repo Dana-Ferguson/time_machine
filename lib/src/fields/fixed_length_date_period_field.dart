@@ -10,7 +10,7 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
 
 /// Date period field for fixed-length periods (weeks and days).
 @immutable
-@internal
+@isInternal
 class FixedLengthDatePeriodField implements IDatePeriodField {
   final int _unitDays;
 

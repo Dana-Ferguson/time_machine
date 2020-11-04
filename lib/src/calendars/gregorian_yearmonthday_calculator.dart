@@ -51,7 +51,7 @@ const int _lastOptimizedYear = 2100;
 const int _firstOptimizedDay = -25567;
 const int _lastOptimizedDay = 47846;
 
-@internal
+@isInternal
 class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int minGregorianYear = -9998;
   static const int maxGregorianYear = 9999;

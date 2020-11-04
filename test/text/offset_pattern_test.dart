@@ -23,7 +23,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   static const String Nbsp = "\u00a0";
 
   /// Test data that can only be used to test formatting.
-  @internal final List<Data> FormatOnlyData = [
+  @isInternal final List<Data> FormatOnlyData = [
     Data.hms(3, 0, 0)
       ..culture = TestCultures.EnUs
       ..text = ''
@@ -130,7 +130,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   ];
 
   /// Test data that can only be used to test successful parsing.
-  @internal final List<Data> ParseOnlyData = [
+  @isInternal final List<Data> ParseOnlyData = [
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
       ..text = '*'
@@ -169,7 +169,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   ];
 
   /// Test data for invalid patterns
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data(Offset.zero)
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -257,7 +257,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   ];
 
   /// Tests for parsing failures (of values)
-  @internal final List<Data> ParseFailureData = [
+  @isInternal final List<Data> ParseFailureData = [
     Data(Offset.zero)
       ..culture = TestCultures.EnUs
       ..text = ''
@@ -377,7 +377,7 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  @internal final List<Data> FormatAndParseData = [
+  @isInternal final List<Data> FormatAndParseData = [
 /*XXX*/ Data(Offset.zero)
       ..culture = TestCultures.EnUs
       ..text = '.'
@@ -650,9 +650,9 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
       ..pattern = 'Z+HH:mm',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   @TestCaseSource(#ParseData)
@@ -713,13 +713,13 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
   {
   }*/
 
-  @internal
+  @isInternal
   @override
   IPattern<Offset> CreatePattern() =>
       OffsetPattern.createWithInvariantCulture(super.pattern)
           .withCulture(culture);
 
-  @internal
+  @isInternal
   @override
   IPartialPattern<Offset> CreatePartialPattern() =>
       OffsetPatterns.underlyingPattern(

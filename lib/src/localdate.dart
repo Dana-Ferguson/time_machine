@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 abstract class ILocalDate {
   static LocalDate trusted(YearMonthDayCalendar yearMonthDayCalendar) => LocalDate._trusted(yearMonthDayCalendar);
   // static LocalDate fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar]) => new LocalDate.fromEpochDay(daysSinceEpoch, calendar);

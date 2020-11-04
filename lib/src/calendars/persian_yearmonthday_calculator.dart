@@ -11,7 +11,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 ///
 /// The constructor uses IsLeapYear to precompute lots of data; it is therefore important that
 /// the implementation of IsLeapYear in subclasses uses no instance fields.
-@internal
+@isInternal
 abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static const int _daysPerNonLeapYear = (31 * 6) + (30 * 5) + 29;
   static const int _daysPerLeapYear = _daysPerNonLeapYear + 1;
@@ -111,7 +111,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
 
 /// Persian calendar using the simple 33-year cycle of 1, 5, 9, 13, 17, 22, 26, or 30.
 /// This corresponds to System.Globalization.PersianCalendar before .NET 4.6.
-@internal
+@isInternal
 class PersianSimple extends PersianYearMonthDayCalculator {
   // This is a long because we're notionally handling 33 bits. The top bit is
   // false anyway, but IsLeapYear shifts a long for simplicity, so let's be consistent with that.
@@ -145,7 +145,7 @@ class PersianSimple extends PersianYearMonthDayCalculator {
 }
 
 /// Persian calendar based on Birashk's subcycle/cycle/grand cycle scheme.
-@internal
+@isInternal
 class PersianArithmetic extends PersianYearMonthDayCalculator {
   PersianArithmetic() : super._(-492267);
 
@@ -160,7 +160,7 @@ class PersianArithmetic extends PersianYearMonthDayCalculator {
 // todo: what?
 /// Persian calendar based on stored BCL 4.6 information (avoids complex arithmetic for
 /// midday in Tehran).
-@internal
+@isInternal
 class PersianAstronomical extends PersianYearMonthDayCalculator {
   // Ugly, but the simplest way of embedding a big chunk of binary data...
   static final List<int> _astronomicalLeapYearBits = base64.decode(

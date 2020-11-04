@@ -52,7 +52,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
   @private static final Culture PmOnlyCulture = CreateCustomAmPmCulture('', "pm");
   @private static final Culture NoAmOrPmCulture = CreateCustomAmPmCulture('', "");
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -119,7 +119,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..parameters.addAll(['T'])
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..text = '17 6'
       ..pattern = 'HH h'
@@ -150,7 +150,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..message = TextErrorMessages.missingAmPmDesignator
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     Data.hms(0, 0, 0, 400)
       ..text = '4'
       ..pattern = '%f',
@@ -289,7 +289,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..pattern = 'ss.FF',
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     Data.hms(5, 6, 7, 8)
       ..text = ''
       ..pattern = '%F',
@@ -408,7 +408,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..pattern = '%s',
   ];
 
-  @internal List<Data> DefaultPatternData = [
+  @isInternal List<Data> DefaultPatternData = [
     // Invariant culture uses HH:mm:ss for the 'long' pattern
     Data.hms(5, 0, 0, 0)
       ..text = '05:00:00',
@@ -432,7 +432,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..text = '5:12:34 AM',
   ];
 
-  @internal final List<Data> TemplateValueData = [
+  @isInternal final List<Data> TemplateValueData = [
     // Pattern specifies nothing - template value is passed through
     Data(LocalTime(1, 2, 3, ns: 4 * TimeConstants.nanosecondsPerMillisecond + 5 * 100))
       ..culture = TestCultures.EnUs
@@ -501,7 +501,7 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
-  @internal final List<Data> FormatAndParseData = [
+  @isInternal final List<Data> FormatAndParseData = [
     Data(LocalTime.midnight)
       ..culture = TestCultures.EnUs
       ..text = '.'
@@ -946,9 +946,9 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
       ..pattern = "HH':'mm':'ss;FFFFFFF",
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @private static Culture CreateCustomAmPmCulture(String amDesignator, String pmDesignator) {
     return Culture('ampmDesignators'/*Culture.invariantCultureId*/, (
@@ -1079,7 +1079,7 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
   }
 
 
-  @internal @override IPattern<LocalTime> CreatePattern() =>
+  @isInternal @override IPattern<LocalTime> CreatePattern() =>
   LocalTimePattern.createWithInvariantCulture(super.pattern)
       .withTemplateValue(template)
       .withCulture(culture);

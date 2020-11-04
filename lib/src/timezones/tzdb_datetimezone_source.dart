@@ -9,7 +9,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 // todo: the Internal Classes here make me sad
 
-@internal
+@isInternal
 abstract class IDateTimeZoneProviders {
   static void set defaultProvider(DateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
 }
@@ -29,7 +29,7 @@ abstract class DateTimeZoneProviders {
   static DateTimeZoneProvider get defaultProvider => _defaultProvider;
 }
 
-@internal
+@isInternal
 class ITzdbDateTimeZoneSource {
   static void loadAllTimeZoneInformation_SetFlag() {
     if (TzdbDateTimeZoneSource._cachedTzdbIndex != null) throw StateError('loadAllTimeZone flag may not be set after TZDB is initalized.');

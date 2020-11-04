@@ -12,7 +12,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 // was originally a class inside SteppedPatternBuilder
 // internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
 // @internal typedef ParseAction = ParseResult<TResult> Function<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
-@internal
+@isInternal
 typedef ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
 
 class _FindLongestMatchCursor {
@@ -22,7 +22,7 @@ class _FindLongestMatchCursor {
 
 /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
 /// in turn.
-@internal
+@isInternal
 class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _aCodeUnit = 97;
   static const int _zCodeUnit = 122;
@@ -500,7 +500,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
 // todo: this was a C# hack ... it was inside SteppedPatternBuilder original ... this hack is messy
 /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
-@internal
+@isInternal
 abstract class IPostPatternParseFormatAction<TResult>
 {
   Function(TResult, StringBuffer) buildFormatAction(PatternFields finalFields);

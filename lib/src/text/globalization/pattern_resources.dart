@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
 
-@internal
+@isInternal
 abstract class PatternResources
 {
   // Resource files have a structure similar to:

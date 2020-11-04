@@ -29,7 +29,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 
   @private static final Offset AthensOffset = Offset.hours(3);
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -61,7 +61,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..message = TextErrorMessages.escapeAtEndOfString,
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..pattern = 'dd MM yyyy'
       ..text = 'Complete mismatch'
@@ -78,9 +78,9 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..message = TextErrorMessages.noMatchingCalendarSystem,
   ];
 
-  @internal List<Data> ParseOnlyData = [];
+  @isInternal List<Data> ParseOnlyData = [];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     Data.ymdo(2011, 10, 19)
       ..pattern = 'ddd yyyy'
       ..text = 'Wed 2011',
@@ -92,7 +92,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..text = '2009-06-15'
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
     // Copied from LocalDateTimePatternTest
     // Calendar patterns are invariant
     Data(MsdnStandardExample)
@@ -142,9 +142,9 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
       ..text = '15 June 2009 (A.D.) +01',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void CreateWithInvariantCulture() {
@@ -210,7 +210,7 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
   void ParseNull() => AssertParseNull(OffsetDatePattern.generalIso);
 }
 
-@internal /*sealed*/ class Data extends PatternTestData<OffsetDate>
+@isInternal /*sealed*/ class Data extends PatternTestData<OffsetDate>
 {
 // Default to the start of the year 2000 UTC
 /*protected*/ @override OffsetDate get defaultTemplate => OffsetDatePatterns.defaultTemplateValue;
@@ -218,14 +218,14 @@ class OffsetDatePatternTest extends PatternTestBase<OffsetDate> {
 /// Initializes a new instance of the [Data] class.
 ///
 /// [value]: The value.
-@internal Data([OffsetDate value]) : super(value ?? OffsetDatePatterns.defaultTemplateValue)
+@isInternal Data([OffsetDate value]) : super(value ?? OffsetDatePatterns.defaultTemplateValue)
 {
 }
 
-@internal Data.ymdo(int year, int month, int day, [Offset offset])
+@isInternal Data.ymdo(int year, int month, int day, [Offset offset])
     : super(LocalDate(year, month, day).withOffset(offset ?? Offset.zero));
 
-@internal @override IPattern<OffsetDate> CreatePattern() =>
+@isInternal @override IPattern<OffsetDate> CreatePattern() =>
     OffsetDatePattern.createWithCulture(super.pattern, super.culture, template);
 }
 

@@ -8,7 +8,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// Like ZoneIntervalMap, representing just part of the time line. The intervals returned by this map
 /// are clamped to the portion of the time line being represented, to make it easier to work with.
-@internal
+@isInternal
 class PartialZoneIntervalMap
 {
   final ZoneIntervalMap _map;

@@ -10,7 +10,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import 'package:time_machine/src/platforms/platform_io.dart';
 
-@internal
+@isInternal
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var _jsonMap = await _loadIdMapping();
@@ -101,7 +101,7 @@ class TzdbIndex {
 // https://github.com/dart-lang/language/issues/41
 // todo: normalize behavior so these classes look more alike
 
-@internal
+@isInternal
 class DateTimeZoneReader extends BinaryReader {
   DateTimeZoneReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 
@@ -139,7 +139,7 @@ abstract class DateTimeZoneType
   static const int precalculated = 2;
 }
 
-@internal
+@isInternal
 abstract class IDateTimeZoneWriter {
   void writeZoneInterval(ZoneInterval zoneInterval);
   Future close();

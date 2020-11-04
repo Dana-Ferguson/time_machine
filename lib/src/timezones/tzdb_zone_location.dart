@@ -71,7 +71,7 @@ class TzdbZoneLocation
     return TzdbZoneLocation._(Comment, CountryCode, CountryName, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void write(IDateTimeZoneWriter writer)
+  @isInternal void write(IDateTimeZoneWriter writer)
   {
     writer.writeInt32(_latitudeSeconds);
     writer.writeInt32(_longitudeSeconds);
@@ -81,7 +81,7 @@ class TzdbZoneLocation
     writer.writeString(comment);
   }
 
-  @internal static TzdbZoneLocation read(DateTimeZoneReader reader) {
+  @isInternal static TzdbZoneLocation read(DateTimeZoneReader reader) {
     int latitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
     int longitudeSeconds = reader.readInt32(); // reader.ReadSignedCount();
     String countryName = reader.readString();

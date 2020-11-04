@@ -10,7 +10,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'binary_writer.dart';
 
-@internal
+@isInternal
 class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
   BinaryWriter _writer;
   final List<String> _stringPool;

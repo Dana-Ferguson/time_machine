@@ -130,7 +130,7 @@ bool _checkOption(ZoneEqualityComparerOptions options, ZoneEqualityComparerOptio
   return (options & candidate).value != 0;
 }
 
-@internal
+@isInternal
 abstract class IZoneEqualityComparer {
   /// Returns the interval over which this comparer operates.
   @visibleForTesting
@@ -260,7 +260,7 @@ class ZoneEqualityComparer {
   }
 }
 
-@internal
+@isInternal
 class ZoneIntervalEqualityComparer {
   final ZoneEqualityComparerOptions _options;
   final Interval _interval;

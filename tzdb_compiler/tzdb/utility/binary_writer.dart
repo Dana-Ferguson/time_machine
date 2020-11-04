@@ -80,7 +80,7 @@ class MemoryStream implements io.IOSink {
   }
 }
 
-@internal
+@isInternal
 class BinaryWriter {
   static const _bufferSize = 1024 * 16;
   static const _bufferFlush = 1024 * 4;

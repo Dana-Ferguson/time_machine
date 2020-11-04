@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing NodaFormatInfo.InvariantInfo...
-@internal
+@isInternal
 abstract class OffsetDateTimePatterns {
   static final OffsetDateTimePattern generalIsoPatternImpl = OffsetDateTimePattern._create(
       "uuuu'-'MM'-'dd'T'HH':'mm':'sso<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);

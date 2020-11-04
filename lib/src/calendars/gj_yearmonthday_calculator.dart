@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   // These arrays are NOT public. We trust ourselves not to alter the array.
   // They use zero-based array indexes so the that valid range of months is

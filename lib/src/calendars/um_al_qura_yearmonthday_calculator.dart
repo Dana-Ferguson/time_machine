@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// Implementation of the Um Al Qura calendar, using the tabular data in the BCL. This is fetched
 /// on construction and cached - we just need to know the length of each month of each year, which is
 /// cheap as the current implementation only covers 183 years.
-@internal
+@isInternal
 class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static const int _averageDaysPer10Years = 3544;
 

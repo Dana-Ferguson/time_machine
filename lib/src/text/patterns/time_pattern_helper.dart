@@ -9,7 +9,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Common methods used when parsing dates - these are used from LocalDateTimePatternParser,
 /// OffsetPatternParser and LocalTimePatternParser.
-@internal
+@isInternal
 abstract class TimePatternHelper
 {
   /// Creates a character handler for a dot (period). This is *not* culture sensitive - it is

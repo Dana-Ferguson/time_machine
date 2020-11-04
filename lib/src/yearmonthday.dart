@@ -6,7 +6,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: bit packing didn't work on JS -- I feel like it should though (getting the class functional now, will investigate later)
-@internal
+@isInternal
 class YearMonthDay implements Comparable<YearMonthDay> {
   final int year;
   final int month;

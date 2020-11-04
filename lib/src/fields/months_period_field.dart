@@ -6,7 +6,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/fields/time_machine_fields.dart';
 
 /// Period field which uses a [YearMonthDayCalculator] to add/subtract months.
-@internal
+@isInternal
 class MonthsPeriodField implements IDatePeriodField {
   MonthsPeriodField();
 

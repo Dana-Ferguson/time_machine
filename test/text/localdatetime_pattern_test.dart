@@ -55,11 +55,11 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
 
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns.
-  @internal static final LocalDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample;
-  @internal static final LocalDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis;
+  @isInternal static final LocalDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample;
+  @isInternal static final LocalDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis;
   @private static final LocalDateTime MsdnStandardExampleNoSeconds = TestLocalDateTimes.MsdnStandardExampleNoSeconds;
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -95,7 +95,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..parameters.addAll(['<']),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..pattern = 'dd MM yyyy HH:mm:ss'
       ..text = 'Complete mismatch'
@@ -135,7 +135,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..message = TextErrorMessages.invalidHour24,
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     Data.ymd(2011, 10, 19, 16, 05, 20)
       ..pattern = 'dd MM yyyy'
       ..text = '19 10 2011'
@@ -182,7 +182,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..text = '2011-10-19 24',
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     Data.ymd(2011, 10, 19, 16, 05, 20)
       ..pattern = 'ddd yyyy'
       ..text = 'Wed 2011',
@@ -195,7 +195,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..text = '1976-06-19T21:13:34.1234567'
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
     // Standard patterns (US)
     // Full date/time (short time)
     Data(MsdnStandardExampleNoSeconds)
@@ -453,9 +453,9 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
       ..text = '10/24/2015 11:55',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void WithCalendar() {
@@ -615,7 +615,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   Data.dt(LocalDate date, LocalTime time) : super(date.at(time));
 
 
-  @internal
+  @isInternal
   @override
   IPattern<LocalDateTime> CreatePattern() =>
       LocalDateTimePattern.createWithInvariantCulture(super.pattern)

@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 abstract class InstantPatterns {
   /// Class whose existence is solely to avoid type initialization order issues, most of which stem
   /// from needing NodaFormatInfo.InvariantInfo...

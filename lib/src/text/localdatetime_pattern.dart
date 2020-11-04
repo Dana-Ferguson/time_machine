@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing TimeMachineFormatInfo.InvariantInfo... (todo: does this affect us in Dart Land?)
-@internal
+@isInternal
 abstract class LocalDateTimePatterns
 {
   static final LocalDateTimePattern generalIsoPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss");

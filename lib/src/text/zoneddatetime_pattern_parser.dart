@@ -9,7 +9,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
-@internal
+@isInternal
 class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
   final ZonedDateTime _templateValue;
   final DateTimeZoneProvider _zoneProvider;

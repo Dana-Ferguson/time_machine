@@ -12,7 +12,7 @@ import 'dart:collection';
 ///
 /// [TKey]: Type of key
 /// [TValue]: Type of value
-@internal
+@isInternal
 class Cache<TKey, TValue> {
   final int _size;
   // @private final object mutex = new object();

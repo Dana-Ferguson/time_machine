@@ -34,7 +34,7 @@ class _TimeComponentsBetweenResult {
   _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
-@internal
+@isInternal
 abstract class IPeriod {
   static int daysBetween(LocalDate start, LocalDate end) => Period._daysBetween(start, end);
 
@@ -741,7 +741,7 @@ class Period {
 // todo: why is this private, it's used in period_tests?
 /// Equality comparer which simply normalizes periods before comparing them.
 @private class NormalizingPeriodEqualityComparer {
-  @internal static final NormalizingPeriodEqualityComparer instance = NormalizingPeriodEqualityComparer._();
+  @isInternal static final NormalizingPeriodEqualityComparer instance = NormalizingPeriodEqualityComparer._();
 
   NormalizingPeriodEqualityComparer._() {
   }

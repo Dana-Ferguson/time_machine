@@ -18,9 +18,9 @@ Future main() async {
 @Test()
 class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   // Single null value to keep it from being 'inconclusive'
-  @internal final List<Data> InvalidPatternData = [ null];
+  @isInternal final List<Data> InvalidPatternData = [ null];
 
-  @internal final List<Data> ParseFailureData = [
+  @isInternal final List<Data> ParseFailureData = [
     Data()
       ..text = 'X5H'
       ..message = TextErrorMessages.mismatchedCharacter
@@ -107,7 +107,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..message = TextErrorMessages.expectedEndOfString
   ];
 
-  @internal final List<Data> ParseOnlyData = [
+  @isInternal final List<Data> ParseOnlyData = [
     Data.builder(PeriodBuilder()..hours = 5)
       ..text = 'PT005H',
     Data.builder(PeriodBuilder()..milliseconds = 500)
@@ -129,7 +129,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       
     The Text is 'P1D2H30M' online... todo: what is happening here? do the tests fail on NodaTime.Test:master?
   */
-  @internal final List<Data> FormatOnlyData = [
+  @isInternal final List<Data> FormatOnlyData = [
     Data.builder(PeriodBuilder()
       ..hours = 25
       ..minutes = 90)
@@ -149,7 +149,7 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..text = 'P35D',
   ];
 
-  @internal final List<Data> FormatAndParseData = [
+  @isInternal final List<Data> FormatAndParseData = [
     Data(Period.zero)
       ..text = 'P0D',
 
@@ -200,9 +200,9 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
       ..text = 'PT-0.32S',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   // note: in C# this was a static constructor; a regular constructor works in Dart's test infrastructure
   // Go over all our sequences and change the pattern to use. This is ugly,

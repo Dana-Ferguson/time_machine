@@ -68,21 +68,21 @@ abstract class TextCursorTestBase {
     ValidateBeginningOfString(cursor);
   }
 
-  @internal String GetNextCharacter(TextCursor cursor) {
+  @isInternal String GetNextCharacter(TextCursor cursor) {
     expect(cursor.moveNext(), isTrue);
     return cursor.current;
   }
 
-  @internal static void ValidateBeginningOfString(TextCursor cursor) {
+  @isInternal static void ValidateBeginningOfString(TextCursor cursor) {
     ValidateCurrentCharacter(cursor, -1, TextCursor.nul);
   }
 
-  @internal static void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) {
+  @isInternal static void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) {
     expect(cursor.current, expectedCurrentCharacter);
     expect(cursor.index, expectedCurrentIndex);
   }
 
-  @internal static void ValidateEndOfString(TextCursor cursor) {
+  @isInternal static void ValidateEndOfString(TextCursor cursor) {
     ValidateCurrentCharacter(cursor, cursor.length, TextCursor.nul);
   }
 
@@ -91,7 +91,7 @@ abstract class TextCursorTestBase {
     ValidateContents(cursor, value, -1);
   }*/
 
-  @internal static void ValidateContents(TextCursor cursor, String value, [int length = -1]) {
+  @isInternal static void ValidateContents(TextCursor cursor, String value, [int length = -1]) {
     if (length < 0) {
       length = value.length;
     }
@@ -99,6 +99,6 @@ abstract class TextCursorTestBase {
     expect(length, cursor.length, reason: 'Cursor Length mismatch');
   }
 
-  @internal TextCursor MakeCursor(String value);
+  @isInternal TextCursor MakeCursor(String value);
 }
 

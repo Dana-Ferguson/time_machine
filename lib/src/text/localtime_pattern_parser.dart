@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Pattern parser for [LocalTime] values.
-@internal
+@isInternal
 class LocalTimePatternParser implements IPatternParser<LocalTime> {
   final LocalTime _templateValue;
 
@@ -77,7 +77,7 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
 
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-@internal
+@isInternal
 class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   final LocalTime templateValue;
 

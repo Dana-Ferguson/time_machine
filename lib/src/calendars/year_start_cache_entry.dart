@@ -30,7 +30,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// The fact that each cache entry is only 32 bits means that we can safely use the cache from multiple
 /// threads without locking. 32-bit aligned values are guaranteed to be accessed atomically, so we know we'll
 /// never get the value for one year with the validation bits for another, for example.
-@internal
+@isInternal
 class YearStartCacheEntryVM {
   static const int _cacheIndexBits = 10;
   static const int _cacheIndexMask = 1023; // _cacheSize - 1;
@@ -86,7 +86,7 @@ class YearStartCacheEntryVM {
   int get startOfYearDays => _value >> _entryValidationBits;
 }
 
-@internal
+@isInternal
 class YearStartCacheEntry {
   static const int _cacheIndexBits = 10;
   static const int _cacheIndexMask = 1023; // _cacheSize - 1;

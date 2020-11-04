@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 // TODO(feature): Calendar-neutral comparer.
 
-@internal
+@isInternal
 abstract class ILocalDateTime {
   static LocalInstant toLocalInstant(LocalDateTime localDateTime) => localDateTime._toLocalInstant();
   static LocalDateTime fromInstant(LocalInstant localInstant) => LocalDateTime._localInstant(localInstant);

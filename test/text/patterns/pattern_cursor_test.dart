@@ -18,7 +18,7 @@ Future main() async {
 
 @Test()
 class PatternCursorTest extends TextCursorTestBase {
-  @internal
+  @isInternal
   @override
   TextCursor MakeCursor(String value) {
     return PatternCursor(value);

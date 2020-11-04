@@ -9,7 +9,7 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 /// Internal interface used by FixedFormatInfoPatternParser. Unfortunately
 /// even though this is internal, implementations must either use public methods
 /// or explicit interface implementation.
-@internal
+@isInternal
 abstract class IPatternParser<T>
 {
   IPattern<T> parsePattern(String pattern, TimeMachineFormatInfo formatInfo);

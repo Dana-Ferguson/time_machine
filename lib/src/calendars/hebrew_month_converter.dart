@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Conversions between civil and scriptural month numbers in the Hebrew calendar system.
-@internal
+@isInternal
 abstract class HebrewMonthConverter {
   /// Given a civil month number and a year in which it occurs, this method returns
   /// the equivalent scriptural month number.

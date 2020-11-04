@@ -20,7 +20,7 @@ Future main() async {
 
 @Test()
 class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -77,7 +77,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..parameters.addAll([ 'T'])
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..pattern = 'MM dd MMMM'
       ..text = '10 09 January'
@@ -117,7 +117,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..parameters.addAll([ 35, 2])
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     // Month parsing should be case-insensitive
     Data.monthDay(10, 3)
       ..pattern = 'MMM dd'
@@ -145,9 +145,9 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
   ];
 
-  @internal List<Data> FormatOnlyData = [];
+  @isInternal List<Data> FormatOnlyData = [];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
     // Standard patterns
     Data.monthDay(10, 20)
       ..pattern = 'G'
@@ -214,8 +214,8 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
       ..text = 'Oct 09 10',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   Future CreateWithCurrentCulture() async
@@ -277,7 +277,7 @@ class Data extends PatternTestData<AnnualDate> {
 
   Data.monthDay(int month, int day) : super(AnnualDate(month, day));
 
-  @internal
+  @isInternal
   @override
   IPattern<AnnualDate> CreatePattern() =>
       AnnualDatePattern.createWithInvariantCulture(super.pattern)

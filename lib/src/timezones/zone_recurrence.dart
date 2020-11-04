@@ -14,7 +14,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// before the time zones were normalized (i.e. when they were still tightly longitude-based,
 /// with multiple towns in the same country observing different times).
 @immutable
-@internal
+@isInternal
 class ZoneRecurrence {
   final LocalInstant _maxLocalInstant;
   final LocalInstant _minLocalInstant;

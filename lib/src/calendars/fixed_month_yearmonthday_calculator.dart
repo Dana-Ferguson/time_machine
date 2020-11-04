@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// As the month length is fixed various calculations can be optimised.
 /// This implementation assumes any additional days after twelve
 /// months fall into a thirteenth month.
-@internal
+@isInternal
 abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static const int _daysInMonth = 30;
 

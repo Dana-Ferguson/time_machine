@@ -28,7 +28,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
 
   @private static final Offset AthensOffset = Offset.hours(3);
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -52,7 +52,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..parameters.addAll(['x', 'OffsetTime']),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     // Failures copied from LocalDateTimePatternTest
     Data()
       ..pattern = 'HH:mm:ss'
@@ -72,7 +72,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     // Parsing using the semi-colon 'comma dot' specifier
     Data.d(16, 05, 20, 352)
       ..pattern = 'HH:mm:ss;fff'
@@ -82,7 +82,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..text = '16:05:20,352',
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     // Our template value has an offset of 0, but the value has an offset of 1.
     // The pattern doesn't include the offset, so that information is lost - no round-trip.
     Data(MsdnStandardExample)
@@ -97,7 +97,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..culture = TestCultures.FrFr,
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
 // Copied from LocalDateTimePatternTest
 
     // Standard patterns (all invariant)
@@ -136,9 +136,9 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
       ..text = '1:45:30.09 PM +01',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData =>
+  @isInternal Iterable<Data> get FormatData =>
       [FormatOnlyData, FormatAndParseData].expand((x) => x
       );
 
@@ -196,29 +196,29 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   void ParseNull() => AssertParseNull(OffsetTimePattern.extendedIso);
 }
 
-@internal /*sealed*/class Data extends PatternTestData<OffsetTime> {
+@isInternal /*sealed*/class Data extends PatternTestData<OffsetTime> {
   // Default to the start of the year 2000 UTC
   /*protected*/ @override OffsetTime get defaultTemplate => OffsetTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetTime value]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
+  @isInternal Data([OffsetTime value]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
 
-  @internal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
+  @isInternal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
 
-  @internal Data.b(int hour, int minute, int second) : this.d(hour, minute, second, 0);
+  @isInternal Data.b(int hour, int minute, int second) : this.d(hour, minute, second, 0);
 
-  @internal Data.c(int hour, int minute, int second, Offset offset)
+  @isInternal Data.c(int hour, int minute, int second, Offset offset)
       : this.e(hour, minute, second, 0, offset);
 
-  @internal Data.d(int hour, int minute, int second, int millis)
+  @isInternal Data.d(int hour, int minute, int second, int millis)
       : this.e(hour, minute, second, millis, Offset.zero);
 
-  @internal Data.e(int hour, int minute, int second, int millis, Offset offset)
+  @isInternal Data.e(int hour, int minute, int second, int millis, Offset offset)
       : this(LocalTime(hour, minute, second, ms: millis).withOffset(offset));
 
-  @internal
+  @isInternal
   @override
   IPattern<OffsetTime> CreatePattern() =>
       OffsetTimePattern.createWithCulture(super.pattern, super.culture, template);

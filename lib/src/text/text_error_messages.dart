@@ -4,7 +4,7 @@
 
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 abstract class TextErrorMessages
 {
   static const String ambiguousLocalTime = 'The local date/time is ambiguous in the target time zone.';

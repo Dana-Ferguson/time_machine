@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 
-@internal 
+@isInternal 
 class JulianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int _averageDaysPer10JulianYears = 3653; // Ideally 365.25 per year
 

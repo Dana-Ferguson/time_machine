@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// See [CalendarSystem.getHebrewCalendar] for details. This is effectively
 /// an adapter around [HebrewScripturalCalculator].
-@internal
+@isInternal
 class HebrewYearMonthDayCalculator extends YearMonthDayCalculator {
   static const int _unixEpochDayAtStartOfYear1 = -2092590;
   static const int _monthsPerLeapCycle = 235;

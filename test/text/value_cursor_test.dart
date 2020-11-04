@@ -21,7 +21,7 @@ class ValueCursorTest extends TextCursorTestBase {
   ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) =>
       TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedCurrentIndex, expectedCurrentCharacter);
 
-  @internal
+  @isInternal
   @override
   TextCursor MakeCursor(String value) {
     return ValueCursor(value);

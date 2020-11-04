@@ -17,9 +17,9 @@ Future main() async {
 
 @Test()
 class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
-  @internal final List<Data> InvalidPatternData = [ null];
+  @isInternal final List<Data> InvalidPatternData = [ null];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..text = 'X5H'
       ..message = TextErrorMessages.mismatchedCharacter
@@ -81,7 +81,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..parameters.addAll(['-10000000000000000000', 'Period']),
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     Data.builder(PeriodBuilder()..hours = 5)
       ..text = 'PT005H',
     Data.builder(PeriodBuilder()..hours = 5)
@@ -89,9 +89,9 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
   ];
 
   // This pattern round-trips, so we can always parse what we format.
-  @internal List<Data> FormatOnlyData = [];
+  @isInternal List<Data> FormatOnlyData = [];
 
-  @internal static final List<Data> FormatAndParseData = [
+  @isInternal static final List<Data> FormatAndParseData = [
     Data(Period.zero)
       ..text = 'P',
 
@@ -148,9 +148,9 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..text = 'PT-9223372036854775808H',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);

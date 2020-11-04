@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing TimeMachineFormatInfo.InvariantInfo...
-@internal
+@isInternal
 class OffsetTimePatterns {
   //static OffsetTimePattern _GeneralIsoPatternImpl;
   //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(

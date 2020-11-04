@@ -20,7 +20,7 @@ Future main() async {
 class LocalDatePatternTest extends PatternTestBase<LocalDate> {
   @private final LocalDate SampleLocalDate = LocalDate(1976, 6, 19);
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -117,7 +117,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..parameters.addAll(['y', 3]),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     Data()
       ..pattern = 'yyyy gg'
       ..text = '2011 NodaEra'
@@ -248,7 +248,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..message = TextErrorMessages.noMatchingCalendarSystem,
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     // Alternative era names
     Data.ymd(0, 10, 3)
       ..pattern = 'yyyy MM dd gg'
@@ -296,7 +296,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     // Would parse back to 2011
     Data.ymd(1811, 7, 3)
       ..pattern = 'yy M d'
@@ -311,7 +311,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..text = '94 7 3',
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
     // Standard patterns
     // Invariant culture uses the crazy MM/dd/yyyy format. Blech.
     Data.ymd(2011, 10, 20)
@@ -501,9 +501,9 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..text = '-1234 01 02',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   /*
 @Test()
@@ -584,7 +584,7 @@ class Data extends PatternTestData<LocalDate> {
   Data.ymdc(int year, int month, int day, CalendarSystem calendar)
       : super(LocalDate(year, month, day, calendar));
 
-  @internal
+  @isInternal
   @override
   IPattern<LocalDate> CreatePattern() =>
       LocalDatePattern.createWithInvariantCulture(super.pattern)

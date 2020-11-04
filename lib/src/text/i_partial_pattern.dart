@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// when one pattern is embedded within another.
 ///
 /// [T]: The type of value to be parsed or formatted.
-@internal
+@isInternal
 @interface
 abstract class IPartialPattern<T> implements IPattern<T>
 {

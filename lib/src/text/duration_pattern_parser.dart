@@ -7,7 +7,7 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
-@internal
+@isInternal
 class TimePatternParser implements IPatternParser<Time> {
   static final Map</*char*/String, CharacterHandler<Time, _TimeParseBucket>> _patternCharacterHandlers =
   {

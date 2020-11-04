@@ -69,7 +69,7 @@ class _Internal{
 /// What I might do is just separate the classes into a public facing interface only classes and a set of
 /// implementation classes (much like a lot to the io\stream classes).
 /// src/public ~ src/internal ~ or I could just do one large public file with all the classes
-const Object internal = const _Internal();
+const Object isInternal = const _Internal();
 
 /// This was internal in Noda Time, but I'm considering keeping it public in Time Machine
 const Object wasInternal = const _Internal();

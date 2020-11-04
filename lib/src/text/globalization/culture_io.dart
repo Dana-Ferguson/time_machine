@@ -9,7 +9,7 @@ import 'dart:collection';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/platforms/platform_io.dart';
 
-@internal
+@isInternal
 class CultureLoader {
   static Future<CultureLoader> load() async {
     var map = await _loadCultureMapping();
@@ -86,7 +86,7 @@ class CultureLoader {
   // static String get locale => Platform.localeName;
 }
 
-@internal
+@isInternal
 class CultureReader extends BinaryReader {
   CultureReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 

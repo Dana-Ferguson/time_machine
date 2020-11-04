@@ -11,46 +11,46 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// include properties which are irrelevant to the pattern tests but which are used by the BCL-style
 /// formatting tests (e.g. thread culture).
 abstract class PatternTestData<T> {
-  @internal final T Value;
+  @isInternal final T Value;
 
   /*final*/
   T defaultTemplate;
 
   /// Culture of the pattern.
-  @internal Culture culture = Culture.invariant;
+  @isInternal Culture culture = Culture.invariant;
 
   /// Standard pattern, expected to format/parse the same way as Pattern.
-  @internal IPattern<T> standardPattern;
+  @isInternal IPattern<T> standardPattern;
 
   /// This lets the JS_Test_Gen know what to put. (This is a total cop-out ~ complexity level is too high)
   /// rational: there are 33 usages of StandardPattern, it's easier to annotate than spend a week creating the most beautiful reflection program
-  @internal String standardPatternCode;
+  @isInternal String standardPatternCode;
 
   /// Pattern text.
-  @internal String pattern;
+  @isInternal String pattern;
 
   /// String value to be parsed, and expected result of formatting.
-  @internal String text;
+  @isInternal String text;
 
   /// Template value to specify in the pattern
-  @internal T template;
+  @isInternal T template;
 
   /// Extra description for the test case
-  @internal String description;
+  @isInternal String description;
 
   /// Message format to verify for exceptions.
-  @internal String message;
+  @isInternal String message;
 
   /// Message parameters to verify for exceptions.
-  @internal final List parameters = List();
+  @isInternal final List parameters = List();
 
-  @internal PatternTestData(this.Value) {
+  @isInternal PatternTestData(this.Value) {
     template = defaultTemplate;
   }
 
-  @internal IPattern<T> CreatePattern();
+  @isInternal IPattern<T> CreatePattern();
 
-  @internal void TestParse() {
+  @isInternal void TestParse() {
     assert(message == null);
     IPattern<T> pattern = CreatePattern();
     var result = pattern.parse(text);
@@ -64,7 +64,7 @@ abstract class PatternTestData<T> {
     }
   }
 
-  @internal void TestFormat() {
+  @isInternal void TestFormat() {
     assert(message == null);
     IPattern<T> pattern = CreatePattern();
     expect(pattern.format(Value), text);
@@ -74,7 +74,7 @@ abstract class PatternTestData<T> {
     }
   }
 
-  @internal void TestParsePartial() {
+  @isInternal void TestParsePartial() {
     var pattern = CreatePartialPattern();
     assert(message == null);
     var cursor = ValueCursor('^' + text + "#");
@@ -88,11 +88,11 @@ abstract class PatternTestData<T> {
     assert('#' == cursor.current);
   }
 
-  @internal /*virtual*/ IPartialPattern<T> CreatePartialPattern() {
+  @isInternal /*virtual*/ IPartialPattern<T> CreatePartialPattern() {
     throw UnimplementedError();
   }
 
-  @internal void TestAppendFormat() {
+  @isInternal void TestAppendFormat() {
     assert(message == null);
     var pattern = CreatePattern();
     var builder = StringBuffer('x');
@@ -101,7 +101,7 @@ abstract class PatternTestData<T> {
     expect(builder.toString(), 'x' + text );
   }
 
-  @internal void TestInvalidPattern() {
+  @isInternal void TestInvalidPattern() {
     String expectedMessage = FormatMessage(message, parameters);
     try {
       CreatePattern();

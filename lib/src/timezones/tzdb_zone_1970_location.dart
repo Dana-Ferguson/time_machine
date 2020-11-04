@@ -75,7 +75,7 @@ class TzdbZone1970Location {
     return TzdbZone1970Location._(Comment, Countries, latitudeSeconds, longitudeSeconds, ZoneId);
   }
 
-  @internal void write(IDateTimeZoneWriter writer) {
+  @isInternal void write(IDateTimeZoneWriter writer) {
     // We considered writing out the ISO-3166 file as a separate field,
     // so we can reuse objects, but we don't actually waste very much space this way,
     // due to the string pool... and the increased code complexity isn't worth it.
@@ -93,7 +93,7 @@ class TzdbZone1970Location {
     writer.writeString(comment);
   }
 
-  @internal static TzdbZone1970Location read(DateTimeZoneReader reader)
+  @isInternal static TzdbZone1970Location read(DateTimeZoneReader reader)
   {
     int latitudeSeconds = reader.readInt32();
     int longitudeSeconds = reader.readInt32();

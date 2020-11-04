@@ -10,7 +10,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// A transition between two offsets, usually for daylight saving reasons. This type only knows about
 /// the new offset, and the transition point.
 @immutable
-@internal
+@isInternal
 class Transition {
   final Instant instant;
 

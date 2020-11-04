@@ -12,7 +12,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// offset is). This class has been slimmed down considerably over time - it's used much less
 /// than it used to be... almost solely for time zones.
 @immutable
-@internal
+@isInternal
 class LocalInstant {
   static final LocalInstant beforeMinValue = LocalInstant._trusted(IInstant.beforeMinValue.epochDay, deliberatelyInvalid: true);
   static final LocalInstant afterMaxValue = LocalInstant._trusted(IInstant.afterMaxValue.epochDay, deliberatelyInvalid: true);

@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   /// Days in a pair of months, in days.
   static const int _monthPairLength = 59;

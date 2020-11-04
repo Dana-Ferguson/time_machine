@@ -7,7 +7,7 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 
-@internal
+@isInternal
 abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
   final int _monthsInYear;
 

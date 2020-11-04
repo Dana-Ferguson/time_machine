@@ -3,7 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal abstract class TestLocalDateTimes {
+@isInternal abstract class TestLocalDateTimes {
   @private static final LocalDateTime SampleLocalDateTime = LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456789);
   @private static final LocalDateTime SampleLocalDateTimeToTicks = LocalDateTime(1976, 6, 19, 21, 13, 34).addNanoseconds(123456700);
   @private static final LocalDateTime SampleLocalDateTimeToMillis = LocalDateTime(
@@ -28,7 +28,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
   // The standard example date/time used in all the MSDN samples, which means we can just cut and paste
   // the expected results of the standard patterns.
-  @internal static final LocalDateTime MsdnStandardExample = LocalDateTime(
+  @isInternal static final LocalDateTime MsdnStandardExample = LocalDateTime(
       2009,
       06,
       15,
@@ -36,12 +36,12 @@ import 'package:time_machine/src/time_machine_internal.dart';
       45,
       30,
       ms: 90);
-  @internal static final LocalDateTime MsdnStandardExampleNoMillis = LocalDateTime(2009, 06, 15, 13, 45, 30);
+  @isInternal static final LocalDateTime MsdnStandardExampleNoMillis = LocalDateTime(2009, 06, 15, 13, 45, 30);
   @private static final LocalDateTime MsdnStandardExampleNoSeconds = LocalDateTime(2009, 06, 15, 13, 45, 0);
 }
 
 /// Cultures to use from various tests.
-@internal abstract class TestCultures {
+@isInternal abstract class TestCultures {
   /*
   // Force the cultures to be read-only for tests, to take advantage of caching. Note that on .NET Core,
   // Culture.getCultures doesn't exist, so we have a big long list of cultures, generated against
@@ -52,7 +52,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
       .Select(Culture.ReadOnly)
       .ToList();*/
 
-  @internal static final Culture Invariant = Culture.invariant;
+  @isInternal static final Culture Invariant = Culture.invariant;
 
   static Culture getCulture(String id) {
     switch (id) {

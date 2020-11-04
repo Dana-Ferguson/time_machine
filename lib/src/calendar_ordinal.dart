@@ -4,7 +4,7 @@
 
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+@isInternal
 /// Enumeration of calendar ordinal values. Used for converting between a compact integer representation and a calendar system.
 /// We use 7 bits to store the calendar ordinal in YearMonthDayCalendar, so we can have up to 128 calendars.
 class CalendarOrdinal {

@@ -16,7 +16,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// Basic [DateTimeZone] implementation that has a fixed name key and offset i.e.
 /// no daylight savings.
 @immutable
-@internal
+@isInternal
 class FixedDateTimeZone extends DateTimeZone {
   final ZoneInterval _interval;
 

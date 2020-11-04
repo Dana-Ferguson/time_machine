@@ -14,7 +14,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 const int _twoDigitYearMax = 30;
 
 /// Parser for patterns of [LocalDate] values.
-@internal
+@isInternal
 class LocalDatePatternParser implements IPatternParser<LocalDate> {
   final LocalDate _templateValue;
 
@@ -78,7 +78,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
 // todo: was a sub class of LocalDatePatternParser
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-@internal
+@isInternal
 class LocalDateParseBucket extends ParseBucket<LocalDate> {
   final LocalDate templateValue;
 
@@ -109,7 +109,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
     return IParseResult.mismatchedText<TResult>(cursor, 'g');
   }
 
-  @internal
+  @isInternal
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedDate)) {

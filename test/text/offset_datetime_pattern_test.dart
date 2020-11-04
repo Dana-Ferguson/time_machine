@@ -30,7 +30,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
 
   @private static final Offset AthensOffset = Offset.hours(3);
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -92,7 +92,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..message = TextErrorMessages.escapeAtEndOfString,
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     // Failures copied from LocalDateTimePatternTest
     Data()
       ..pattern = 'dd MM yyyy HH:mm:ss'
@@ -133,7 +133,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..message = TextErrorMessages.timeSeparatorMismatch,
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     // Parse-only tests from LocalDateTimeTest.
     Data.c(2011, 10, 19, 16, 05, 20)
       ..pattern = 'dd MM yyyy'
@@ -182,7 +182,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..text = '2011-10-19 24',
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     Data.c(2011, 10, 19, 16, 05, 20)
       ..pattern = 'ddd yyyy'
       ..text = 'Wed 2011',
@@ -193,7 +193,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..text = '2009-06-15 13:45:30.09'
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
     // Copied from LocalDateTimePatternTest
     // Calendar patterns are invariant
     Data(MsdnStandardExample)
@@ -374,9 +374,9 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ..text = '15 June 2009 (A.D.) 1:45:30.09 PM +01',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void CreateWithInvariantCulture() {
@@ -444,28 +444,28 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   void ParseNull() => AssertParseNull(OffsetDateTimePattern.extendedIso);
 }
 
-@internal /*sealed*/ class Data extends PatternTestData<OffsetDateTime> {
+@isInternal /*sealed*/ class Data extends PatternTestData<OffsetDateTime> {
   // Default to the start of the year 2000 UTC
   /*protected*/ @override OffsetDateTime get defaultTemplate => OffsetDateTimePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetDateTime value]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
+  @isInternal Data([OffsetDateTime value]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
 
-  @internal Data.a(int year, int month, int day)
+  @isInternal Data.a(int year, int month, int day)
       : super(LocalDateTime(year, month, day, 0, 0, 0).withOffset(Offset.zero));
 
-  @internal Data.b(int year, int month, int day, int hour, int minute, Offset offset)
+  @isInternal Data.b(int year, int month, int day, int hour, int minute, Offset offset)
       : super(LocalDateTime(year, month, day, hour, minute, 0).withOffset(offset));
 
-  @internal Data.c(int year, int month, int day, int hour, int minute, int second)
+  @isInternal Data.c(int year, int month, int day, int hour, int minute, int second)
       : super(LocalDateTime(year, month, day, hour, minute, second).withOffset(Offset.zero));
 
-  @internal Data.d(int year, int month, int day, int hour, int minute, int second, Offset offset)
+  @isInternal Data.d(int year, int month, int day, int hour, int minute, int second, Offset offset)
       : super(LocalDateTime(year, month, day, hour, minute, second).withOffset(offset));
 
-  @internal Data.e(int year, int month, int day, int hour, int minute, int second, int millis)
+  @isInternal Data.e(int year, int month, int day, int hour, int minute, int second, int millis)
       : super(LocalDateTime(
       year,
       month,
@@ -476,7 +476,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
       ms: millis).withOffset(Offset.zero));
 
 
-  @internal
+  @isInternal
   @override
   IPattern<OffsetDateTime> CreatePattern() =>
       OffsetDateTimePattern.createWithCulture(super.pattern, super.culture, template);

@@ -630,7 +630,7 @@ int BadiMonth(LocalDate input)
 /// <summary>
 /// Get a text representation of the date.
 /// </summary>
-@internal String AsBadiString(LocalDate input)
+@isInternal String AsBadiString(LocalDate input)
 {
   var year = input.year;
   var month = BadiMonth(input);

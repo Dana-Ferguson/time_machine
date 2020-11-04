@@ -70,7 +70,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
   @private static final ZonedDateTime MsdnStandardExample = TestLocalDateTimes.MsdnStandardExample.inUtc();
   @private static final ZonedDateTime MsdnStandardExampleNoMillis = TestLocalDateTimes.MsdnStandardExampleNoMillis.inUtc();
 
-  @internal final List<Data> InvalidPatternData = [
+  @isInternal final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -129,7 +129,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..parameters.addAll(['l']),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @isInternal List<Data> ParseFailureData = [
     // Skipped value
     Data()
       ..pattern = 'yyyy-MM-dd HH:mm z'
@@ -220,7 +220,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..message = TextErrorMessages.noMatchingZoneId
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @isInternal List<Data> ParseOnlyData = [
     // Template value time zone is from a different provider, but it's not part of the pattern.
     Data.b(2013, 1, 13, 16, 2, France)
       ..pattern = 'yyyy-MM-dd HH:mm'
@@ -295,7 +295,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = '2013-01-13 15:44 UTC+01:00:00',
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @isInternal List<Data> FormatOnlyData = [
     Data.c(2011, 10, 19, 16, 05, 20)
       ..pattern = 'ddd yyyy'
       ..text = 'Wed 2011',
@@ -356,7 +356,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..Resolver = null,
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @isInternal List<Data> FormatAndParseData = [
 
     // Zone ID at the end
     Data.b(2013, 01, 13, 15, 44, TestZone1)
@@ -697,9 +697,9 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = '15 June 2009 (A.D.) 1:45:30.09 PM',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @isInternal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   @Test()
   void WithTemplateValue() {
@@ -783,8 +783,8 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 // Default to the start of the year 2000 UTC
 /*protected*/ @override ZonedDateTime get defaultTemplate => ZonedDateTimePatterns.defaultTemplateValue;
 
-  @internal ZoneLocalMappingResolver Resolver;
-  @internal DateTimeZoneProvider ZoneProvider;
+  @isInternal ZoneLocalMappingResolver Resolver;
+  @isInternal DateTimeZoneProvider ZoneProvider;
 
   /// Initializes a new instance of the [Data] class.
   ///
@@ -825,7 +825,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       second,
       ms: millis).inZoneStrictly(zone));
 
-  @internal
+  @isInternal
   @override
   IPattern<ZonedDateTime> CreatePattern() =>
       ZonedDateTimePattern.createWithCulture(super.pattern, super.culture, Resolver, ZoneProvider, template);

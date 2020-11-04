@@ -14,7 +14,7 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 /// year, and the end of the week in the following calendar year, but the whole
 /// week is in the same week-year.)
 @immutable
-@internal
+@isInternal
 class SimpleWeekYearRule implements WeekYearRule {
   final int _minDaysInFirstWeek;
   final DayOfWeek _firstDayOfWeek;

@@ -18,7 +18,7 @@ Future main() async {
   await runTests();
 }
 
-@internal class TimeZoneInfoReplacer extends TimeZoneInfo // TimeZoneInfoInterceptor // .ITimeZoneInfoShim
+@isInternal class TimeZoneInfoReplacer extends TimeZoneInfo // TimeZoneInfoInterceptor // .ITimeZoneInfoShim
 {
   /*
 final TimeZoneInfoInterceptor.ITimeZoneInfoShim originalShim;

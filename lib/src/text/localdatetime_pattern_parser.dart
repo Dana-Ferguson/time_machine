@@ -8,7 +8,7 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 /// Parser for patterns of [LocalDateTime] values.
-@internal
+@isInternal
 class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   // Split the template value into date and time once, to avoid doing it every time we parse.
   final LocalDate _templateValueDate;
@@ -112,7 +112,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   }
 }
 
-@internal
+@isInternal
 class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
   final /*LocalDatePatternParser.*/LocalDateParseBucket date;
   final /*LocalTimePatternParser.*/LocalTimeParseBucket time;

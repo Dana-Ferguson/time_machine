@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
-@internal
+@isInternal
 abstract class IZoneLocalMapping {
   static ZoneLocalMapping newZoneLocalMapping
       (DateTimeZone zone, LocalDateTime localDateTime, ZoneInterval earlyInterval, ZoneInterval lateInterval, int count) => 

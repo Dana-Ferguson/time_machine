@@ -17,7 +17,7 @@ typedef _offsetAggregator = Offset Function(Offset x, Offset y);
 /// container for the initial zone intervals and a pointer to the time zone that handles all of
 /// the rest until the end of time.
 @immutable // todo: we need immutable lists?
-@internal
+@isInternal
 class PrecalculatedDateTimeZone extends DateTimeZone {
   final List<ZoneInterval> _periods;
   final ZoneIntervalMapWithMinMax _tailZone;
