@@ -83,22 +83,25 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   factory LocalDateTime.dateTime(DateTime dateTime, [CalendarSystem calendar]) {
     int ns;
     int days;
-    
+
     if (dateTime == null) {
       return null;
     }
 
     if (Platform.isWeb) {
-      var ms = dateTime.millisecondsSinceEpoch;
+      var ms = dateTime.millisecondsSinceEpoch + dateTime.timeZoneOffset.inMilliseconds;
       days = ms ~/ TimeConstants.millisecondsPerDay;
       ms -= days * TimeConstants.millisecondsPerDay;
-      ns = ms * TimeConstants.nanosecondsPerMillisecond;
-    }
-    else {
-      var us = dateTime.microsecondsSinceEpoch;
+      if (ms < 0) days--;
+      ns = TimeConstants.nanosecondsPerMillisecond *
+          (ms % TimeConstants.millisecondsPerDay);
+    } else {
+      var us = dateTime.microsecondsSinceEpoch + dateTime.timeZoneOffset.inMicroseconds;
       days = us ~/ TimeConstants.microsecondsPerDay;
       us -= days * TimeConstants.microsecondsPerDay;
-      ns = us * TimeConstants.nanosecondsPerMicrosecond;
+      if (us < 0) days--;
+      ns = TimeConstants.nanosecondsPerMicrosecond *
+          (us % TimeConstants.microsecondsPerDay);
     }
 
     return LocalDateTime.localDateAtTime(

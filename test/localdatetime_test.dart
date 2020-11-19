@@ -95,6 +95,16 @@ void FromDateTime()
 }
 
 @Test()
+void FromDateTimeBeforeEpoch()
+{
+  LocalDateTime expected = LocalDateTime(1966, 08, 18, 20, 53, 0);
+  // for (DateTimeKind kind in Enum.GetValues(typeof(DateTimeKind)))
+  DateTime x = DateTime.utc(1966, 08, 18, 20, 53, 0); //, kind);
+  LocalDateTime actual = LocalDateTime.dateTime(x);
+  expect(actual, expected);
+}
+
+@Test()
 void FromDateTime_WithCalendar()
 {
   // Julian calendar is 13 days behind Gregorian calendar in the 21st century
