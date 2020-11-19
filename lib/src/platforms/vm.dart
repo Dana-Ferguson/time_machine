@@ -8,27 +8,28 @@ import 'dart:convert';
 import 'dart:io' as io;
 
 import 'dart:typed_data';
-import 'package:resource/resource.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'platform_io.dart';
+import 'dart:isolate' show Isolate;
 
 class _VirtualMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
     if (filename == null) return ByteData(0);
 
-    var resource = Resource('package:time_machine/data/$path/$filename');
-    // todo: probably a better way to do this
-    var binary = ByteData.view(Int8List.fromList(await resource.readAsBytes()).buffer);
+    var resource = Uri.parse('package:time_machine/data/$path/$filename');
+    var resolved = await Isolate.resolvePackageUri(resource);
+    var binary = ByteData.view(Int8List.fromList(await io.File.fromUri(resolved).readAsBytes()).buffer);
     return binary;
   }
 
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    var resource = Resource('package:time_machine/data/$path/$filename');
-    return json.decode(await resource.readAsString());
+    var resource = Uri.parse('package:time_machine/data/$path/$filename');
+    var resolved = await Isolate.resolvePackageUri(resource);
+    return json.decode(await io.File.fromUri(resolved).readAsString());
   }
 }
 

@@ -34,7 +34,7 @@ The last two/three? are generic library goals.
 
 Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
-Current TZDB Version: 2020b
+Current TZDB Version: 2020d
 
 ### Example Code:
 

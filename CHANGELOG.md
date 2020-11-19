@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.16
+- Update TZDB to 2020d.
+- Fixed loading issues with web, flutter web, and flutter.
+
+
 ## 0.9.15
 - :bug: fix related to #39
 

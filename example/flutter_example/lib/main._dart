@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:fluttexr/services.dart';
+import 'package:flutter/services.dart';
 
 import 'package:time_machine/time_machine.dart';
 import 'package:time_machine/time_machine_text_patterns.dart';
-
-import 'dart:io';
 
 String timeMachineText = '';
 
@@ -21,6 +17,11 @@ Future example() async {
   var sb = new StringBuffer();
 
   try {
+    // Run this before -- await TimeMachine.initialize({'rootBundle': rootBundle});
+    // runApp() triggers this for you, if you initialize TimeMachine inside your app.
+    // your fine
+    WidgetsFlutterBinding.ensureInitialized();
+
     // Sets up timezone and culture information
     await TimeMachine.initialize({'rootBundle': rootBundle});
     sb.writeln('Hello, ${DateTimeZone.local} from the Dart Time Machine!');
