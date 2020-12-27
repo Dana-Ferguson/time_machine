@@ -2,9 +2,9 @@
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 
-import 'package:time_machine/src/time_machine_internal.dart';
+// import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class TextErrorMessages
 {
   static const String ambiguousLocalTime = 'The local date/time is ambiguous in the target time zone.';

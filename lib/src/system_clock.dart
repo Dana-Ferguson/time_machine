@@ -18,5 +18,6 @@ class SystemClock extends Clock {
   SystemClock._();
 
   /// Gets the current time as an [Instant].
+  @override
   Instant getCurrentInstant() => Instant.dateTime(DateTime.now());
 }

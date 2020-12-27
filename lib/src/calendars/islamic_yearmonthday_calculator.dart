@@ -46,7 +46,7 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   // ignore: unused_element
   static List<int> _genTotalDaysByMonth() {
     int days = 0;
-    var totalDaysByMonth = List<int>();
+    var totalDaysByMonth = <int>[];
     for (int i = 0; i < 12; i++) {
       // _totalDaysByMonth[i] = days;
       totalDaysByMonth.add(days);

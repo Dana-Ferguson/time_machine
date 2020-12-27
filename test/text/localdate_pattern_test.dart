@@ -541,8 +541,8 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
     expect('2017-08-23', pattern.format(date));
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(LocalDatePattern.iso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(LocalDatePattern.iso);
 
   /* ~ No BCL ~ todo: equivalent?
   @private void AssertBclNodaEquality(Culture culture, String patternText) {
@@ -577,7 +577,7 @@ class Data extends PatternTestData<LocalDate> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDate value]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
+  Data([LocalDate? value]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day) : super(LocalDate(year, month, day));
 

@@ -42,18 +42,18 @@ class PartialZoneIntervalMap
   {
     Preconditions.debugCheckArgument(instant >= start && instant < end, 'instant',
         'Value $instant was not in the range [$start, $end)');
-    var interval = _map.getZoneInterval(instant);
+    ZoneInterval? interval = _map.getZoneInterval(instant);
     // Clamp the interval for the sake of sanity. Checking this every time isn't very efficient,
     // but we're not expecting this to be called too often, due to caching.
     if (IZoneInterval.rawStart(interval) < start)
     {
       interval = IZoneInterval.withStart(interval, start);
     }
-    if (IZoneInterval.rawEnd(interval) > end)
+    if (IZoneInterval.rawEnd(interval!) > end)
     {
       interval = IZoneInterval.withEnd(interval, end);
     }
-    return interval;
+    return interval!;
   }
 
   /// Returns true if this map only contains a single interval; that is, if the first interval includes the end of the map.
@@ -78,8 +78,8 @@ class PartialZoneIntervalMap
   /// are coalesced in the resulting map.
   static ZoneIntervalMap convertToFullMap(Iterable<PartialZoneIntervalMap> maps)
   {
-    var coalescedMaps = List<PartialZoneIntervalMap>();
-    PartialZoneIntervalMap current;
+    var coalescedMaps = <PartialZoneIntervalMap>[];
+    PartialZoneIntervalMap? current;
     for (var next in maps)
     {
       if (current == null)
@@ -113,13 +113,13 @@ class PartialZoneIntervalMap
         // go on until the end of the next one instead.
         if (current._isSingleInterval && next._isSingleInterval)
         {
-          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, next.end));
+          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, next.end)!);
         }
         else if (current._isSingleInterval)
         {
           // The next map has at least one transition. Add a single new map for the portion of time from the
           // start of current to the first transition in next, then continue on with the next map, starting at the first transition.
-          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
+          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)!));
           current = next.withStart(firstIntervalOfNext.end);
         }
         else if (next._isSingleInterval)
@@ -127,20 +127,20 @@ class PartialZoneIntervalMap
           // The current map as at least one transition. Add a version of that, clamped to end at the final transition,
           // then continue with a new map which takes in the last portion of the current and the whole of next.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withStart(firstIntervalOfNext, lastIntervalOfCurrent.start));
+          current = PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withStart(firstIntervalOfNext, lastIntervalOfCurrent.start)!);
         }
         else
         {
           // Transitions in both maps. Add the part of current before the last transition, and a single map containing
           // the coalesced interval across the boundary, then continue with the next map, starting at the first transition.
           coalescedMaps.add(current.withEnd(lastIntervalOfCurrent.start));
-          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)));
+          coalescedMaps.add(PartialZoneIntervalMap.forZoneInterval(IZoneInterval.withEnd(lastIntervalOfCurrent, firstIntervalOfNext.end)!));
           current = next.withStart(firstIntervalOfNext.end);
         }
       }
     }
     Preconditions.debugCheckArgument(current != null, 'maps', "Collection of maps must not be empty");
-    Preconditions.debugCheckArgument(current.end == IInstant.afterMaxValue, 'maps', "Collection of maps must end at the end of time");
+    Preconditions.debugCheckArgument(current!.end == IInstant.afterMaxValue, 'maps', "Collection of maps must end at the end of time");
 
     // We're left with a map extending to the end of time, which couldn't have been coalesced with its predecessors.
     coalescedMaps.add(current);
@@ -154,6 +154,7 @@ class _CombinedPartialZoneIntervalMap implements ZoneIntervalMap {
 
   _CombinedPartialZoneIntervalMap(this._partialMaps);
 
+  @override
   ZoneInterval getZoneInterval(Instant instant) {
     // We assume the maps are ordered, and start with 'beginning of time'
     // which means we only need to find the first partial map which ends after

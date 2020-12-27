@@ -17,7 +17,7 @@ Future main() async {
 
 @Test()
 class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
-  @internal final List<Data> InvalidPatternData = [ null];
+  @internal final List<Data?> InvalidPatternData = [ null];
 
   @internal List<Data> ParseFailureData = [
     Data()
@@ -152,7 +152,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
 
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
-  @Test()
-  void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);
+  // @Test()
+  // void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);
 }
 

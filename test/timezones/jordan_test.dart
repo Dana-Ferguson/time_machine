@@ -11,8 +11,8 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-DateTimeZoneProvider Tzdb;
-DateTimeZone Jordan;
+late DateTimeZoneProvider tzdb;
+late DateTimeZone jordan;
 
 /// As of 2002, Jordan switches to DST at the *end* of the last Thursday of March.
 /// This is denoted in the zoneinfo database using lastThu 24:00, which was invalid
@@ -25,8 +25,8 @@ Future main() async {
 }
 
 Future setup() async {
-  Tzdb = await DateTimeZoneProviders.tzdb;
-  Jordan = await Tzdb['Asia/Amman'];
+  tzdb = await DateTimeZoneProviders.tzdb;
+  jordan = await tzdb['Asia/Amman'];
 }
 
 /// If all of these transitions are right, we're probably okay... in particular,
@@ -50,7 +50,7 @@ void Transitions2000To2010() {
 
   for (int year = 2000; year <= 2010; year++) {
     LocalDate summer = LocalDate(year, 6, 1);
-    var intervalPair = Jordan.mapLocal(summer.atMidnight());
+    var intervalPair = jordan.mapLocal(summer.atMidnight());
     expect(1, intervalPair.count);
     expect(expectedDates[year - 2000], intervalPair.earlyInterval.isoLocalStart.calendarDate);
   }

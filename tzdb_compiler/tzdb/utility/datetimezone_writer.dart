@@ -12,11 +12,11 @@ import 'binary_writer.dart';
 
 @internal
 class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
-  BinaryWriter _writer;
-  final List<String> _stringPool;
+  final BinaryWriter _writer;
 
-  DateTimeZoneWriter(this._writer, [this._stringPool = null]);
+  DateTimeZoneWriter(this._writer);
 
+  @override
   void writeZoneInterval(ZoneInterval zoneInterval) {
     int flag = 0;
     bool longStartRequired = false;
@@ -92,6 +92,7 @@ class DateTimeZoneWriter implements BinaryWriter, IDateTimeZoneWriter {
   /// Writes the given dictionary of string to string to the stream.
   /// </summary>
   /// <param name='dictionary'>The <see cref="IDictionary{TKey,TValue}" /> to write.</param>
+  @override
   void writeDictionary(Map<String, String> map) {
     Preconditions.checkNotNull(map, 'map');
 

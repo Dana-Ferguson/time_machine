@@ -90,7 +90,8 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// A value less than zero if this annual date is earlier than [other];
   /// zero if this time is the same as [other]; a value greater than zero if this annual date is
   /// later than [other].
-  int compareTo(AnnualDate other) {
+  @override
+  int compareTo(AnnualDate? other) {
     if (other == null) return 1;
     return _value.compareTo(other._value);
   }
@@ -101,6 +102,7 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// * [rhs]: The second value to compare
   ///
   /// Returns: True if the two dates are the same; false otherwise
+  @override
   bool operator ==(dynamic rhs) => rhs is AnnualDate && _value == rhs._value;
 
   /// Compares two annual dates to see if the left one is strictly earlier than the right

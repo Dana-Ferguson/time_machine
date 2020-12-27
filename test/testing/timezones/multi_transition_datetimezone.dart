@@ -49,14 +49,14 @@ class MultiTransitionDateTimeZone extends DateTimeZone {
 /// Builder to create instances of [MultiTransitionDateTimeZone]. Each builder
 /// can only be built once.
 class MtdtzBuilder {
-  final List<ZoneInterval> intervals = List<ZoneInterval>();
-  Offset currentStandardOffset;
-  Offset currentSavings;
-  String currentName;
+  final List<ZoneInterval> intervals = <ZoneInterval>[];
+  late Offset currentStandardOffset;
+  late Offset currentSavings;
+  late String currentName;
   bool built = false;
 
   /// Gets the ID of the time zone which will be built.
-  String id;
+  late String id;
 
 //  /// <summary>
 //  /// Constructs a builder using an ID of 'MultiZone', an initial offset of zero (standard and savings),
@@ -101,11 +101,11 @@ class MtdtzBuilder {
   /// [newStandardOffsetHours]: The new standard offset, in hours.
   /// [newSavingOffsetHours]: The new daylight saving offset, in hours.
   /// [newName]: The new zone interval name.
-  void Add(Instant transition, int newStandardOffsetHours, [int newSavingOffsetHours = 0, String newName]) {
+  void Add(Instant transition, int newStandardOffsetHours, [int newSavingOffsetHours = 0, String? newName]) {
     newName ??= 'Interval from $transition';
 
     EnsureNotBuilt();
-    Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
+    Instant? previousStart = intervals.isEmpty ? null : intervals.last.end;
     // The ZoneInterval constructor will perform validation.
     intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, transition, currentStandardOffset + currentSavings, currentSavings));
     currentName = newName;
@@ -119,7 +119,7 @@ class MtdtzBuilder {
   MultiTransitionDateTimeZone Build() {
     EnsureNotBuilt();
     built = true;
-    Instant previousStart = intervals.length == 0 ? null : intervals.last.end;
+    Instant? previousStart = intervals.isEmpty ? null : intervals.last.end;
     intervals.add(IZoneInterval.newZoneInterval(currentName, previousStart, null, currentStandardOffset + currentSavings, currentSavings));
     return MultiTransitionDateTimeZone(id, intervals);
   }

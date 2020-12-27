@@ -440,8 +440,8 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
     expect(LocalDateTime(284, 8, 29, 0, 0, 0, calendar: CalendarSystem.coptic), parsed.localDateTime);
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(OffsetDateTimePattern.extendedIso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(OffsetDateTimePattern.extendedIso);
 }
 
 @internal /*sealed*/ class Data extends PatternTestData<OffsetDateTime> {
@@ -451,7 +451,7 @@ class OffsetDateTimePatternTest extends PatternTestBase<OffsetDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetDateTime value]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
+  @internal Data([OffsetDateTime? value]) : super(value ?? OffsetDateTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int year, int month, int day)
       : super(LocalDateTime(year, month, day, 0, 0, 0).withOffset(Offset.zero));

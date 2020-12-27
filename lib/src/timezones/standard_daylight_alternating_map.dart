@@ -35,14 +35,16 @@ class _TransitionRecurrenceResult {
 /// only be used as part of a zone which will only ask it for values within the right
 /// portion of the timeline.
 @immutable
-@internal
+// @internal
 class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   final Offset _standardOffset;
   final ZoneRecurrence _standardRecurrence;
   final ZoneRecurrence _dstRecurrence;
 
+  @override
   Offset get minOffset => Offset.min(_standardOffset, _standardOffset + _dstRecurrence.savings);
 
+  @override
   Offset get maxOffset => Offset.max(_standardOffset, _standardOffset + _dstRecurrence.savings);
 
   StandardDaylightAlternatingMap._(this._standardOffset, this._standardRecurrence, this._dstRecurrence);
@@ -73,12 +75,13 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     return StandardDaylightAlternatingMap._(standardOffset, standard, dst);
   }
 
-  bool equals(StandardDaylightAlternatingMap other) =>
+  bool equals(StandardDaylightAlternatingMap? other) =>
       other != null &&
           _standardOffset == other._standardOffset &&
           _dstRecurrence.equals(other._dstRecurrence) &&
           _standardRecurrence.equals(other._standardRecurrence);
 
+  @override
   bool operator==(dynamic other) => other is StandardDaylightAlternatingMap && equals(other);
 
   @override int get hashCode => hash3(_standardOffset, _dstRecurrence, _standardRecurrence);
@@ -89,6 +92,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   /// Returns: The ZoneInterval in effect at the given instant.
   /// [ArgumentOutOfRangeException]: The instant falls outside the bounds
   /// of the recurrence rules of the zone.
+  @override
   ZoneInterval getZoneInterval(Instant instant) {
     var result = _nextTransition(instant);
     ZoneRecurrence recurrence = result.zoneRecurrence;

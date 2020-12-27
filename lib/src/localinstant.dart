@@ -12,7 +12,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// offset is). This class has been slimmed down considerably over time - it's used much less
 /// than it used to be... almost solely for time zones.
 @immutable
-@internal
+// @internal
 class LocalInstant {
   static final LocalInstant beforeMinValue = LocalInstant._trusted(IInstant.beforeMinValue.epochDay, deliberatelyInvalid: true);
   static final LocalInstant afterMaxValue = LocalInstant._trusted(IInstant.afterMaxValue.epochDay, deliberatelyInvalid: true);
@@ -23,7 +23,7 @@ class LocalInstant {
   LocalInstant._ (this._time);
 
   /// Constructor which should *only* be used to construct the invalid instances.
-  factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
+  factory LocalInstant._trusted(int days, {required bool deliberatelyInvalid})
   {
     return LocalInstant._(Time(days: days));
   }
@@ -83,6 +83,7 @@ class LocalInstant {
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
+  @override
   bool operator ==(dynamic right) => right is LocalInstant && _time == right._time;
 
   /// Equivalent to [Instant.safePlus], but in the opposite direction.

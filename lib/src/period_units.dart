@@ -74,8 +74,8 @@ class PeriodUnits {
   /// Compound value representing the combination of all possible elements
   static const PeriodUnits allUnits = const PeriodUnits(1023); // union(const [years, months, weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
 
-  @override get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) =>
+  @override int get hashCode => _value.hashCode;
+  @override bool operator ==(dynamic other) =>
       (other is PeriodUnits && other._value == _value)
           || (other is int && other == _value);
 
@@ -95,7 +95,7 @@ class PeriodUnits {
   @override
   String toString() => _nameMap[this] ?? 'undefined';
 
-  PeriodUnits parse(String text) {
+  PeriodUnits? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];

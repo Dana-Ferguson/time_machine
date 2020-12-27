@@ -40,7 +40,7 @@ class DayOfWeek {
 
   const DayOfWeek(this._value);
 
-  @override get hashCode => _value.hashCode;
+  @override int get hashCode => _value.hashCode;
   @override operator ==(dynamic other) => other is DayOfWeek && other._value == _value || other is int && other == _value;
 
   bool operator <(DayOfWeek other) => _value < other._value;
@@ -54,7 +54,7 @@ class DayOfWeek {
   @override
   String toString() => _stringRepresentations[_value] ?? 'undefined';
 
-  DayOfWeek parse(String text) {
+  DayOfWeek? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];

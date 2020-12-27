@@ -18,7 +18,7 @@ Future main() async {
 @Test()
 class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
   // Single null value to keep it from being 'inconclusive'
-  @internal final List<Data> InvalidPatternData = [ null];
+  @internal final List<Data?> InvalidPatternData = [null];
 
   @internal final List<Data> ParseFailureData = [
     Data()
@@ -216,8 +216,8 @@ class PeriodPatternNormalizingIsoTest extends PatternTestBase<Period> {
     }
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(PeriodPattern.normalizingIso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(PeriodPattern.normalizingIso);
 }
 
 

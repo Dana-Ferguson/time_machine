@@ -4,7 +4,7 @@
 
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 /// Enumeration of calendar ordinal values. Used for converting between a compact integer representation and a calendar system.
 /// We use 7 bits to store the calendar ordinal in YearMonthDayCalendar, so we can have up to 128 calendars.
 class CalendarOrdinal {
@@ -54,8 +54,8 @@ class CalendarOrdinal {
 
   const CalendarOrdinal(this._value);
 
-  @override get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) => other is CalendarOrdinal && other._value == _value || other is int && other == _value;
+  @override int get hashCode => _value.hashCode;
+  @override bool operator ==(dynamic other) => other is CalendarOrdinal && other._value == _value || other is int && other == _value;
 
   bool operator <(CalendarOrdinal other) => _value < other._value;
   bool operator <=(CalendarOrdinal other) => _value <= other._value;
@@ -68,7 +68,7 @@ class CalendarOrdinal {
   @override
   String toString() => _stringRepresentations.length > _value ? _stringRepresentations[_value] : 'undefined';
 
-  static CalendarOrdinal parse(String text) {
+  static CalendarOrdinal? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _enumConstants[i];

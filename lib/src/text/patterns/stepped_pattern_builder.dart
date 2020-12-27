@@ -11,9 +11,9 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 // was originally a class inside SteppedPatternBuilder
 // internal delegate ParseResult<TResult> ParseAction(ValueCursor cursor, TBucket bucket);
-// @internal typedef ParseAction = ParseResult<TResult> Function<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
-@internal
-typedef ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
+@internal typedef ParseAction<TResult, TBucket extends ParseBucket<TResult>> = ParseResult<TResult>? Function(ValueCursor cursor, TBucket bucket);
+// @internal
+// typedef ParseResult<TResult>? ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
 
 class _FindLongestMatchCursor {
   int bestIndex = -1;
@@ -22,7 +22,7 @@ class _FindLongestMatchCursor {
 
 /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
 /// in turn.
-@internal
+// @internal
 class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _aCodeUnit = 97;
   static const int _zCodeUnit = 122;
@@ -30,9 +30,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _ZCodeUnit = 90;
 
   // #Hack: this accommodates IPostPatternParseFormatAction
-  final List<Object> _formatActions = List<Object>();
+  final List<Object> _formatActions = <Object>[];
   // final List<Function(TResult, StringBuffer)> _formatActions = new List<Function(TResult, StringBuffer)>();
-  final List<ParseAction<TResult, TBucket>> _parseActions = List<ParseAction<TResult, TBucket>>();
+  final List<ParseAction<TResult, TBucket>> _parseActions = <ParseAction<TResult, TBucket>>[];
   final TBucket Function() _bucketProvider;
   PatternFields _usedFields = PatternFields.none;
   bool _formatOnly = false;
@@ -66,7 +66,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
     // Now iterate over the pattern.
     while (patternCursor.moveNext()) {
-      CharacterHandler<TResult, TBucket> handler = characterHandlers[patternCursor.current];
+      CharacterHandler<TResult, TBucket>? handler = characterHandlers[patternCursor.current];
       if (handler != null) {
         handler(patternCursor, this);
       }
@@ -150,11 +150,11 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.index;
-      int value = cursor.parseInt64Digits(minimumDigits, maximumDigits);
-      if (value == null) {
-        cursor.move(startingIndex);
-        return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
-      }
+      int value = cursor.parseInt64Digits(minimumDigits, maximumDigits)!;
+      // if (value == null) {
+      //   cursor.move(startingIndex);
+      //   return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+      // }
       if (value < minimumValue || value > maximumValue) {
         cursor.move(startingIndex);
         return IParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
@@ -170,7 +170,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.index;
-      int value;
+      int? value;
       bool negative = cursor.matchSingle('-');
       if (negative && minimumValue >= 0) {
         cursor.move(startingIndex);
@@ -269,13 +269,13 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// Adds parse actions for two list of strings, such as non-genitive and genitive month names.
   /// The parsing is performed case-insensitively. All candidates are tested, and only the longest
   /// match is used.
-  void addParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo compareInfo, Iterable<String> textValues1,
-      [Iterable<String> textValues2]) {
+  void addParseLongestTextAction(String field, Function(TBucket, int) setter, CompareInfo? compareInfo, Iterable<String?> textValues1,
+      [Iterable<String>? textValues2]) {
     addParseAction((ValueCursor str, TBucket bucket) {
       var matchCursor = _FindLongestMatchCursor();
 
-      _findLongestMatch(compareInfo, str, textValues1, matchCursor);
-      if (textValues2 != null) _findLongestMatch(compareInfo, str, textValues2, matchCursor);
+      _findLongestMatch(compareInfo, str, textValues1.toList(growable: false), matchCursor);
+      if (textValues2 != null) _findLongestMatch(compareInfo, str, textValues2.toList(growable: false), matchCursor);
       if (matchCursor.bestIndex != -1) {
         setter(bucket, matchCursor.bestIndex);
         str.move(str.index + matchCursor.longestMatch);
@@ -306,9 +306,9 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// Find the longest match from a given set of candidate strings, updating the index/length of the best value
   /// accordingly.
   ///  // todo: _findLongestMatchCursor should be a return value
-  static void _findLongestMatch(CompareInfo compareInfo, ValueCursor cursor, List<String> values, _FindLongestMatchCursor matchCursor) {
+  static void _findLongestMatch(CompareInfo? compareInfo, ValueCursor cursor, List<String?> values, _FindLongestMatchCursor matchCursor) {
     for (int i = 0; i < values.length; i++) {
-      String candidate = values[i];
+      String? candidate = values[i];
       if (candidate == null || candidate.length <= matchCursor.longestMatch) {
         continue;
       }
@@ -368,7 +368,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   /// [selector]: The selector function to apply to obtain a value to format
   /// [assumeNonNegative]: Whether it is safe to assume the value will be non-negative
   /// [assumeFitsInCount]: Whether it is safe to assume the value will not exceed the specified length
-  void addFormatLeftPad(int count, int Function(TResult) selector, {bool assumeNonNegative, bool assumeFitsInCount}) {
+  void addFormatLeftPad(int count, int Function(TResult) selector, {required bool assumeNonNegative, required bool assumeFitsInCount}) {
     if (count == 2 && assumeNonNegative && assumeFitsInCount) {
       addFormatAction((TResult value, StringBuffer sb) => FormatHelper.format2DigitsNonNegative(selector(value), sb));
     }
@@ -396,7 +396,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
       LocalDate Function(TResult) dateExtractor,
       LocalTime Function(TResult) timeExtractor,
       // null if date/time embedded patterns are invalid
-      LocalDateTime Function(TResult) dateTimeExtractor) {
+      LocalDateTime Function(TResult)? dateTimeExtractor) {
 
     // This will be d (date-only), t (time-only), or < (date and time)
     // If it's anything else, we'll see the problem when we try to get the pattern.
@@ -500,7 +500,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
 // todo: this was a C# hack ... it was inside SteppedPatternBuilder original ... this hack is messy
 /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
-@internal
+// @internal
 abstract class IPostPatternParseFormatAction<TResult>
 {
   Function(TResult, StringBuffer) buildFormatAction(PatternFields finalFields);
@@ -512,7 +512,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
   // todo: check back after Dart 2.0 stable to see if we can bring back type safety here (we can sort of use this in VM, fails in DDC)
   final List<Function/*(TResult, StringBuffer)*/> _formatActions;
   // This will be null if the pattern is only capable of formatting.
-  final Iterable<ParseAction<TResult, TBucket>> _parseActions;
+  final Iterable<ParseAction<TResult, TBucket>>? _parseActions;
   final TBucket Function() _bucketProvider;
   final PatternFields _usedFields;
   // todo: if we're not going to be able to use this... remove it
@@ -521,7 +521,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
 
   _SteppedPattern._(this._formatActions, this._parseActions, this._bucketProvider, this._usedFields, TResult sample, this._expectedLength);
 
-  factory _SteppedPattern(List<Function/*(TResult, StringBuffer)*/> formatActions, Iterable<ParseAction<TResult, TBucket>> parseActions, TBucket Function() bucketProvider,
+  factory _SteppedPattern(List<Function/*(TResult, StringBuffer)*/> formatActions, Iterable<ParseAction<TResult, TBucket>>? parseActions, TBucket Function() bucketProvider,
       PatternFields usedFields, TResult sample)
   {
     // todo: evaluate and remove:: we don't get to pre-game StringBuffer -- or... can we? Investigate!
@@ -535,7 +535,8 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     return _SteppedPattern<TResult, TBucket>._(formatActions, parseActions, bucketProvider, usedFields, sample, expectedLength);
   }
 
-  ParseResult<TResult> parse(String text)
+  @override
+  ParseResult<TResult> parse(String? text)
   {
     if (_parseActions == null)
     {
@@ -545,7 +546,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     {
       return IParseResult.argumentNull<TResult>('text');
     }
-    if (text.length == 0)
+    if (text.isEmpty)
     {
       return IParseResult.valueStringEmpty.convertError();
     }
@@ -567,6 +568,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     return result;
   }
 
+  @override
   String format(TResult value)
   {
     // if StringBuffer gets an initial size: pass in expectedLength
@@ -582,13 +584,14 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     return builder.toString();
   }
 
+  @override
   ParseResult<TResult> parsePartial(ValueCursor cursor)
   {
     TBucket bucket = _bucketProvider();
 
-    for (var action in _parseActions)
+    for (var action in _parseActions!)
     {
-      ParseResult<TResult> failure = action(cursor, bucket);
+      ParseResult<TResult>? failure = action(cursor, bucket);
       if (failure != null)
       {
         return failure;
@@ -597,6 +600,7 @@ class _SteppedPattern<TResult, TBucket extends ParseBucket<TResult>> implements 
     return bucket.calculateValue(_usedFields, cursor.value);
   }
 
+  @override
   StringBuffer appendFormat(TResult value, StringBuffer builder)
   {
     Preconditions.checkNotNull(builder, 'builder');

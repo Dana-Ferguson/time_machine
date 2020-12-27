@@ -21,7 +21,7 @@ import 'test_fx_attributes.dart';
 // Transformers are dead in 2.0, long live build.yaml???
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
 const bool testGenTest = false;
-String _classVarName;
+String? _classVarName;
 StringBuffer _gen_sb_imports = StringBuffer();
 StringBuffer _gen_sb_methodCalls = StringBuffer();
 String _testFilePath = 'unknown_test.dart';
@@ -30,11 +30,11 @@ Iterable<TestCase> toTestCases(TestCaseSource testCaseSource, ObjectMirror mirro
   var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable;
 
   if (argumentsSource.isEmpty) return const [];
-  var testCases = List<TestCase>();
+  var testCases = <TestCase>[];
 
   for (var arguments in argumentsSource) {
     if (arguments is TestCaseData) {
-      if (arguments.arguments is List) testCases.add(TestCase(arguments.arguments, arguments.name));
+      if (arguments.arguments is List) testCases.add(TestCase(arguments.arguments as Iterable, arguments.name));
       else testCases.add(TestCase([arguments.arguments], arguments.name));
     }
     else if (arguments is List) testCases.add(TestCase(arguments));
@@ -56,7 +56,7 @@ Future runTests() async {
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))
       .toList(growable: false);
 
-  var futures = List<Future>();
+  var futures = <Future>[];
 
   for (var lib in testLibs) {
     if (testGenTest) _printImport(lib.uri);
@@ -150,7 +150,7 @@ void _printImport(Uri uri) {
   _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test/test_gen/' + path.last;
 }
 
-void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
+void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase? testCase]) {
   var sb = _gen_sb_methodCalls..write("  test('$testName', () ");
 
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
@@ -257,7 +257,7 @@ String _printNewObject(Object obj) {
     if (obj.text != null) sb.write('..text =${_printNewObject(obj.text)}');
     if (obj.template != null) sb.write('..template =${_printNewObject(obj.template)}');
     if (obj.description != null) sb.write('..description =${_printNewObject(obj.description)}');
-    if (obj.message != null) sb.write('..message =${_printNewObject(obj.message)}');
+    if (obj.message != null) sb.write('..message =${_printNewObject(obj.message!)}');
     if (obj.parameters.isNotEmpty) sb.write('..parameters.addAll(${_printNewObject(obj.parameters)})');
     ;
   }
@@ -390,7 +390,7 @@ String _escapeText(String text) {
 }
 
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
-  var futures = List<Future>();
+  var futures = <Future>[];
 
   var testCases = method
       .metadata
@@ -431,12 +431,12 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
         //futures.add(returnMirror.reflectee);
 
         test(name, () async {
-          var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
+          var returnMirror = mirror.invoke(method.simpleName, testCase.arguments.toList());
           await returnMirror.reflectee;
         });
       }
       else {
-        test(name, () => mirror.invoke(method.simpleName, testCase.arguments));
+        test(name, () => mirror.invoke(method.simpleName, testCase.arguments.toList()));
       }
     }
   }
@@ -445,7 +445,7 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
 }
 
 Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, String testGroupName) {
-  var futures = List<Future>();
+  var futures = <Future>[];
 
   var instance = classMirror.newInstance(Symbol(''), []);
   if (testGenTest)
@@ -453,9 +453,9 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
     _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
   }
-  var declarations = List<DeclarationMirror>()..addAll(classMirror.declarations.values);
+  var declarations = <DeclarationMirror>[...classMirror.declarations.values];
   while (classMirror.superclass != null) {
-    classMirror = classMirror.superclass;
+    classMirror = classMirror.superclass!;
     declarations.addAll(classMirror.declarations.values);
   }
 

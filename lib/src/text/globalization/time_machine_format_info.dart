@@ -20,7 +20,7 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 /// [Culture] itself may be mutable. If the [Culture] is mutated after initialization, results are not
 /// guaranteed: some aspects of the [Culture] may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
-@internal
+// @internal
 class TimeMachineFormatInfo {
   // todo: remove for Dart
   // Names that we can use to check for broken Mono behaviour.
@@ -30,17 +30,17 @@ class TimeMachineFormatInfo {
   static final List<String> _longInvariantMonthNames = Culture.invariant.dateTimeFormat.monthNames.toList(growable: false);
 
   // Patterns
-  FixedFormatInfoPatternParser<Time> _timePatternParser;
-  FixedFormatInfoPatternParser<Offset> _offsetPatternParser;
-  FixedFormatInfoPatternParser<Instant> _instantPatternParser;
-  FixedFormatInfoPatternParser<LocalTime> _localTimePatternParser;
-  FixedFormatInfoPatternParser<LocalDate> _localDatePatternParser;
-  FixedFormatInfoPatternParser<LocalDateTime> _localDateTimePatternParser;
-  FixedFormatInfoPatternParser<OffsetDateTime> _offsetDateTimePatternParser;
-  FixedFormatInfoPatternParser<OffsetDate> _offsetDatePatternParser;
-  FixedFormatInfoPatternParser<OffsetTime> _offsetTimePatternParser;
-  FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
-  FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
+  late FixedFormatInfoPatternParser<Time> _timePatternParser;
+  late FixedFormatInfoPatternParser<Offset> _offsetPatternParser;
+  late FixedFormatInfoPatternParser<Instant> _instantPatternParser;
+  late FixedFormatInfoPatternParser<LocalTime> _localTimePatternParser;
+  late FixedFormatInfoPatternParser<LocalDate> _localDatePatternParser;
+  late FixedFormatInfoPatternParser<LocalDateTime> _localDateTimePatternParser;
+  late FixedFormatInfoPatternParser<OffsetDateTime> _offsetDateTimePatternParser;
+  late FixedFormatInfoPatternParser<OffsetDate> _offsetDatePatternParser;
+  late FixedFormatInfoPatternParser<OffsetTime> _offsetTimePatternParser;
+  late FixedFormatInfoPatternParser<ZonedDateTime> _zonedDateTimePatternParser;
+  late FixedFormatInfoPatternParser<AnnualDate> _annualDatePatternParser;
 
   /// A TimeMachineFormatInfo wrapping the invariant culture.
   // Note: this must occur below the pattern parsers, to make type initialization work...
@@ -53,12 +53,14 @@ class TimeMachineFormatInfo {
   static final Cache<Culture, TimeMachineFormatInfo> _cache = Cache<Culture, TimeMachineFormatInfo>
     (500, (culture) => TimeMachineFormatInfo(culture) /*, new ReferenceEqualityComparer<Culture>()*/);
 
-  List<String> _longMonthNames;
-  List<String> _longMonthGenitiveNames;
-  List<String> _longDayNames;
-  List<String> _shortMonthNames;
-  List<String> _shortMonthGenitiveNames;
-  List<String> _shortDayNames;
+  bool _monthsInitialized = false;
+  bool _daysInitialized = false;
+  late List<String> _longMonthNames;
+  late List<String> _longMonthGenitiveNames;
+  late List<String?> _longDayNames;
+  late List<String> _shortMonthNames;
+  late List<String> _shortMonthGenitiveNames;
+  late List<String?> _shortDayNames;
 
   final Map<Era, _EraDescription> _eraDescriptions;
 
@@ -68,7 +70,7 @@ class TimeMachineFormatInfo {
   /// [culture]: The culture info to use.
   @visibleForTesting
   TimeMachineFormatInfo(Culture culture)
-      : this.withDateTimeFormat(culture, culture?.dateTimeFormat);
+      : this.withDateTimeFormat(culture, culture.dateTimeFormat);
 
   /// Initializes a new instance of the [TimeMachineFormatInfo] class based on
   /// potentially disparate [Culture] and
@@ -78,25 +80,25 @@ class TimeMachineFormatInfo {
   /// [dateTimeFormat]: The date/time format to use for format strings etc.
   @visibleForTesting
   TimeMachineFormatInfo.withDateTimeFormat(this.culture, this.dateTimeFormat)
-      : _eraDescriptions = Map<Era, _EraDescription>() {
+      : _eraDescriptions = <Era, _EraDescription>{} {
     Preconditions.checkNotNull(culture, 'culture');
     Preconditions.checkNotNull(dateTimeFormat, 'dateTimeFormat');
   }
 
   void _ensureMonthsInitialized() {
-    if (_longMonthNames != null) {
-      return;
-    }
+    if (_monthsInitialized) return;
+
     // Turn month names into 1-based read-only lists
     _longMonthNames = _convertMonthArray(dateTimeFormat.monthNames);
     _shortMonthNames = _convertMonthArray(dateTimeFormat.abbreviatedMonthNames);
     _longMonthGenitiveNames = _convertGenitiveMonthArray(_longMonthNames, dateTimeFormat.monthGenitiveNames, _longInvariantMonthNames);
     _shortMonthGenitiveNames = _convertGenitiveMonthArray(_shortMonthNames, dateTimeFormat.abbreviatedMonthGenitiveNames, _shortInvariantMonthNames);
+    _monthsInitialized = true;
   }
 
   /// The BCL returns arrays of month names starting at 0; we want a read-only list starting at 1 (with 0 as null).
   static List<String> _convertMonthArray(List<String> monthNames) {
-    List<String> list = List<String>.from(monthNames);
+    List<String?> list = List<String?>.from(monthNames);
     list.insert(0, null);
     return List<String>.unmodifiable(list);
   }
@@ -104,21 +106,20 @@ class TimeMachineFormatInfo {
   void _ensureDaysInitialized() {
     // lock (fieldLock)
     {
-      if (_longDayNames != null) {
-        return;
-      }
+      if (_daysInitialized) return;
       _longDayNames = _convertDayArray(dateTimeFormat.dayNames);
       _shortDayNames = _convertDayArray(dateTimeFormat.abbreviatedDayNames);
+      _daysInitialized = true;
     }
   }
 
   /// The BCL returns arrays of week names starting at 0 as Sunday; we want a read-only list starting at 1 (with 0 as null)
   /// and with 7 as Sunday.
-  static List<String> _convertDayArray(List<String> dayNames) {
-    List<String> list = List<String>.from(dayNames);
+  static List<String?> _convertDayArray(List<String> dayNames) {
+    List<String?> list = List<String>.from(dayNames);
     list.add(dayNames[0]);
     list[0] = null;
-    return List<String>.unmodifiable(list);
+    return List<String?>.unmodifiable(list);
   }
 
   /// Checks whether any of the genitive names differ from the non-genitive names, and returns
@@ -152,7 +153,7 @@ class TimeMachineFormatInfo {
   final Culture culture;
 
   /// Gets the text comparison information associated with this format provider.
-  CompareInfo get compareInfo => culture.compareInfo;
+  CompareInfo? get compareInfo => culture.compareInfo;
 
   FixedFormatInfoPatternParser<Time> get timePatternParser =>
       _timePatternParser = _ensureFixedFormatInitialized(_timePatternParser, () => TimePatternParser());
@@ -195,7 +196,7 @@ class TimeMachineFormatInfo {
 
 
   // todo: I think I can simplify the usage of this
-  FixedFormatInfoPatternParser<T> _ensureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T> field,
+  FixedFormatInfoPatternParser<T> _ensureFixedFormatInitialized<T>(/*ref*/ FixedFormatInfoPatternParser<T>? field,
       IPatternParser<T> Function() patternParserFactory) {
     // lock (fieldLock)
     field ??= FixedFormatInfoPatternParser<T>(patternParserFactory(), this);
@@ -245,7 +246,7 @@ class TimeMachineFormatInfo {
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
   /// [LocalDateTime.dayOfWeek] and similar properties.
-  List<String> get longDayNames {
+  List<String?> get longDayNames {
     _ensureDaysInitialized();
     return _longDayNames;
   }
@@ -254,7 +255,7 @@ class TimeMachineFormatInfo {
   /// See the usage guide for caveats around the use of these names for other calendars.
   /// Element 0 of the list is null, and the other elements correspond with the index values returned from
   /// [LocalDateTime.dayOfWeek] and similar properties.
-  List<String> get shortDayNames {
+  List<String?> get shortDayNames {
     _ensureDaysInitialized();
     return _shortDayNames;
   }
@@ -301,7 +302,7 @@ class TimeMachineFormatInfo {
   _EraDescription _getEraDescription(Era era) {
     // lock (eraDescriptions)
     {
-      _EraDescription ret = _eraDescriptions[era];
+      _EraDescription? ret = _eraDescriptions[era];
       if (ret == null) {
         ret = _EraDescription.forEra(era, culture);
         _eraDescriptions[era] = ret;
@@ -365,7 +366,7 @@ class TimeMachineFormatInfo {
   /// [provider]: The [IIFormatProvider].
   /// [ArgumentException]: The format provider cannot be used for Time Machine.
   /// Returns: The [TimeMachineFormatInfo]. Will never be null.
-  static TimeMachineFormatInfo getInstance(Culture culture) {
+  static TimeMachineFormatInfo getInstance(Culture? culture) {
     if (culture == null) {
       return getFormatInfo(currentInfo.culture);
     }
@@ -391,17 +392,17 @@ class _EraDescription {
  _EraDescription._(this.primaryName, this.allNames);
 
  factory _EraDescription.forEra(Era era, Culture culture) {
-    String pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), culture);
+    String? pipeDelimited = PatternResources.getString(IEra.resourceIdentifier(era), culture);
     String primaryName;
     List<String> allNames;
     if (pipeDelimited == null)
     {
-      allNames = List<String>(0); // string[0];
+      allNames = List<String>.filled(0, '');
       primaryName = '';
     }
     else
     {
-      String eraNameFromCulture = _getEraNameFromBcl(era, culture);
+      String? eraNameFromCulture = _getEraNameFromBcl(era, culture);
       if (eraNameFromCulture != null && !pipeDelimited.startsWith(eraNameFromCulture + '|'))
       {
         pipeDelimited = eraNameFromCulture + '|' + pipeDelimited;
@@ -417,7 +418,7 @@ class _EraDescription {
   /// Returns the name of the era within a culture according to the BCL, if this is known and we're confident that
   /// it's correct. (The selection here seems small, but it covers most cases.) This isn't ideal, but it's better
   /// than nothing, and fixes an issue where non-English BCL cultures have 'gg' in their patterns.
-  static String _getEraNameFromBcl(Era era, Culture culture) {
+  static String? _getEraNameFromBcl(Era era, Culture culture) {
     var calendar = culture.dateTimeFormat.calendar;
 
     bool getEraFromCalendar =

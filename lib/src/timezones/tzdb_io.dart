@@ -10,7 +10,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 import 'package:time_machine/src/platforms/platform_io.dart';
 
-@internal
+// @internal
 class TzdbIndex {
   static Future<TzdbIndex> load() async {
     var _jsonMap = await _loadIdMapping();
@@ -31,7 +31,7 @@ class TzdbIndex {
     var jsonMap = <String, String>{IDateTimeZone.utcId: ''};
     var cache = <String, DateTimeZone>{};
 
-    var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
+    var binary = await PlatformIO.local!.getBinary('tzdb', 'tzdb.bin');
     var reader = DateTimeZoneReader(binary);
 
     while (reader.isMore) {
@@ -83,7 +83,7 @@ class TzdbIndex {
     return _cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin'));
   }
 
-  DateTimeZone getTimeZoneSync(String zoneId) {
+  DateTimeZone? getTimeZoneSync(String zoneId) {
     var zone = _cache[zoneId];
     if (zone != null) return zone;
 
@@ -101,7 +101,7 @@ class TzdbIndex {
 // https://github.com/dart-lang/language/issues/41
 // todo: normalize behavior so these classes look more alike
 
-@internal
+// @internal
 class DateTimeZoneReader extends BinaryReader {
   DateTimeZoneReader(ByteData binary, [int offset = 0]) : super(binary, offset);
 
@@ -112,8 +112,8 @@ class DateTimeZoneReader extends BinaryReader {
     bool endIsLong = (flag & (1 << 3)) != 0;
     bool hasStart = (flag & 1) == 1;
     bool hasEnd = (flag & 2) == 2;
-    int startSeconds;
-    int endSeconds;
+    int? startSeconds;
+    int? endSeconds;
 
     if (hasStart) {
       if (startIsLong) startSeconds = readInt64();
@@ -139,10 +139,10 @@ abstract class DateTimeZoneType
   static const int precalculated = 2;
 }
 
-@internal
+// @internal
 abstract class IDateTimeZoneWriter {
   void writeZoneInterval(ZoneInterval zoneInterval);
-  Future close();
+  Future? close();
   void write7BitEncodedInt(int value);
   void writeBool(bool value);
   void writeInt32(int value);

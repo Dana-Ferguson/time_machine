@@ -32,7 +32,7 @@ class ZoneLine {
 
   /// The name of the set of rules applicable to this zone line, or
   /// null for just standard time, or an offset for a 'fixed savings' rule.
-  final String rules;
+  final String? rules;
 
 // #region IEquatable<Zone> Members
 
@@ -43,7 +43,7 @@ class ZoneLine {
   ///   true if the current object is equal to the <paramref name = 'other' /> parameter;
   ///   otherwise, false.
   /// </returns>
-  bool equals(ZoneLine other) {
+  bool equals(ZoneLine? other) {
     if (other == null) {
       return false;
     }
@@ -92,7 +92,8 @@ class ZoneLine {
   /// <returns>
   ///   A <see cref='System.String' /> that represents this instance.
   /// </returns>
-  @override String toString() {
+  @override
+  String toString() {
     var builder = StringBuffer();
     builder..write(name)..write(' ');
     builder..write(standardOffset)..write(' ');
@@ -112,8 +113,8 @@ class ZoneLine {
 
     // allRules.
     if (allRules.containsKey(rules)) {
-      var ruleSet = allRules[rules];
-      var _rules = List<ZoneRecurrence>();
+      var ruleSet = allRules[rules]!;
+      var _rules = <ZoneRecurrence>[];
       for (var zoneRecurrenceRules in ruleSet.map((x) => x.GetRecurrences(this))) {
         _rules.addAll(zoneRecurrenceRules);
       }
@@ -122,11 +123,11 @@ class ZoneLine {
     else {
       try {
         // Check if Rules actually just refers to a savings.
-        var savings = ParserHelper.parseOffset(rules);
+        var savings = ParserHelper.parseOffset(rules!);
         var name = formatName(savings, '');
         return ZoneRuleSet.named(name, standardOffset, savings, untilYear, untilYearOffset);
       }
-      catch (FormatException) {
+      on FormatException {
         throw ArgumentError(
             "Daylight savings rule name '$rules' for zone $name is neither a known ruleset nor a fixed offset");
       }

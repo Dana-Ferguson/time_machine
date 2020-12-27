@@ -13,12 +13,12 @@ class _Constructor {
   static final List<int> _yearStartDays = _gregorianYearMonthDayCalculator_Init()[1];
 
   // this was a static constructor
-  static List<List<int>> _gregorianYearMonthDayCalculator_Initialized;
+  static List<List<int>>? _gregorianYearMonthDayCalculator_Initialized;
   static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
-    if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized;
+    if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized!;
 
-    var _monthStartDays = List<int>((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1);
-    var _yearStartDays = List<int>(_lastOptimizedYear + 1 - _firstOptimizedYear);
+    var _monthStartDays = List<int>.generate((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1, (_) => 0);
+    var _yearStartDays = List<int>.generate(_lastOptimizedYear + 1 - _firstOptimizedYear, (_) => 0);
 
     // It's generally a really bad idea to create an instance before the static initializer
     // has completed, but we know its safe because we're only using a very restricted set of methods.
@@ -40,7 +40,7 @@ class _Constructor {
     }
 
     _gregorianYearMonthDayCalculator_Initialized = [_monthStartDays, _yearStartDays];
-    return _gregorianYearMonthDayCalculator_Initialized;
+    return _gregorianYearMonthDayCalculator_Initialized!;
   }
 }
 
@@ -51,7 +51,7 @@ const int _lastOptimizedYear = 2100;
 const int _firstOptimizedDay = -25567;
 const int _lastOptimizedDay = 47846;
 
-@internal
+// @internal
 class GregorianYearMonthDayCalculator extends GJYearMonthDayCalculator {
   static const int minGregorianYear = -9998;
   static const int maxGregorianYear = 9999;

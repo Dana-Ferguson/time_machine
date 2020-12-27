@@ -224,16 +224,16 @@ void Contains_DifferentCalendar()
 //  });
 //}
 
-@Test()
-void Contains_NullInterval_Throws()
-{
-  var start = LocalDate(2017, 11, 6);
-  var end = LocalDate(2017, 11, 10);
-  var value = DateInterval(start, end);
+// @Test()
+// void Contains_NullInterval_Throws()
+// {
+//   var start = LocalDate(2017, 11, 6);
+//   var end = LocalDate(2017, 11, 10);
+//   var value = DateInterval(start, end);
 
-  // Assert.Throws<ArgumentNullException>(() => value.Contains(null));
-  expect(() => value.contains(null), throwsArgumentError);
-}
+//   // Assert.Throws<ArgumentNullException>(() => value.Contains(null));
+//   expect(() => value.contains(null), throwsArgumentError);
+// }
 
 @Test()
 void Contains_IntervalWithinAnotherCalendar_Throws()
@@ -266,13 +266,13 @@ void Contains_IntervalOverload(String firstInterval, String secondInterval, bool
   expect(expectedResult, value.containsInterval(other));
 }
 
-@Test()
-void Intersection_NullInterval_Throws()
-{
-  var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
-  // Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
-  expect(() => value.intersection(null), throwsArgumentError);
-}
+// @Test()
+// void Intersection_NullInterval_Throws()
+// {
+//   var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
+//   // Assert.Throws<ArgumentNullException>(() => value.Intersection(null));
+//   expect(() => value.intersection(null), throwsArgumentError);
+// }
 
 @Test()
 void Intersection_IntervalInDifferentCalendar_Throws()
@@ -306,13 +306,13 @@ void Intersection(String firstInterval, String secondInterval, String expectedIn
   expect(expectedResult, value.intersection(other));
 }
 
-@Test()
-void Union_NullInterval_Throws()
-{
-  var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
-  // Assert.Throws<ArgumentNullException>(() => value.Union(null));
-  expect(() => value.union(null), throwsArgumentError);
-}
+// @Test()
+// void Union_NullInterval_Throws()
+// {
+//   var value = DateInterval(LocalDate.fromEpochDay(100), LocalDate.fromEpochDay(200));
+//   // Assert.Throws<ArgumentNullException>(() => value.Union(null));
+//   expect(() => value.union(null), throwsArgumentError);
+// }
 
 @Test()
 void Union_DifferentCalendar_Throws()
@@ -346,10 +346,10 @@ void Union(String first, String second, String expected)
 
 DateInterval ParseInterval(String textualInterval)
 {
-  if (textualInterval == null)
-  {
-    return null;
-  }
+  // if (textualInterval == null)
+  // {
+  //   return null;
+  // }
 
   var parts = textualInterval.split(','); //new char[] { ',' });
   var start = LocalDatePattern.iso.parse(parts[0]).value;

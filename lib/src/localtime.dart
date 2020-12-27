@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
-@internal
+// @internal
 abstract class ILocalTime {
   static LocalTime trustedNanoseconds(int nanoseconds) => LocalTime._(nanoseconds);
 
@@ -60,7 +60,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// [second] will become optional, like this:
   /// `(int hour, int minute, [int second], {int ms, int us, int ns})`.
   /// The is a planned backwards compatible public API change.
-  factory LocalTime(int hour, int minute, int second, {int ms, int us, int ns}) {
+  factory LocalTime(int hour, int minute, int second, {int? ms, int? us, int? ns}) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour >= TimeConstants.hoursPerDay ||
         minute < 0 || minute >= TimeConstants.minutesPerHour ||
@@ -301,7 +301,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// A value less than zero if this time is earlier than [other];
   /// zero if this time is the same as [other]; a value greater than zero if this time is
   /// later than [other].
-  int compareTo(LocalTime other) => timeSinceMidnight.inNanoseconds.compareTo(other?.timeSinceMidnight?.inNanoseconds ?? 0);
+  @override
+  int compareTo(LocalTime? other) => timeSinceMidnight.inNanoseconds.compareTo(other?.timeSinceMidnight.inNanoseconds ?? 0);
 
   /// Returns a hash code for this local time.
   @override int get hashCode => timeSinceMidnight.inNanoseconds.hashCode;
@@ -423,6 +424,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// or null to use the default format pattern ('T').
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       LocalTimePatterns.format(this, patternText, culture);
 }

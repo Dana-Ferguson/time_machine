@@ -81,6 +81,7 @@ class OffsetTime {
   /// * [right]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
+  @override
   bool operator ==(dynamic right) => right is OffsetTime && equals(right);
 
   /// Formats the value of the current instance using the specified pattern.
@@ -92,6 +93,6 @@ class OffsetTime {
   ///
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetTimePatterns.format(this, patternText, culture);
 }

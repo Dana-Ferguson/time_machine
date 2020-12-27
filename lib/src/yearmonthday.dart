@@ -6,7 +6,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: bit packing didn't work on JS -- I feel like it should though (getting the class functional now, will investigate later)
-@internal
+// @internal
 class YearMonthDay implements Comparable<YearMonthDay> {
   final int year;
   final int month;
@@ -35,13 +35,14 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
-      YearMonthDayCalendar.ymd(this, calendar == null ? 0 : ICalendarSystem.ordinal(calendar));
+      YearMonthDayCalendar.ymd(this, ICalendarSystem.ordinal(calendar));
 
   YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
 
-  int compareTo(YearMonthDay other) {
+  @override
+  int compareTo(YearMonthDay? other) {
     if (other == null) return 1;
 
     int comparison;
@@ -50,11 +51,13 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return day.compareTo(other.day);
   }
 
+  @override
   int get hashCode => hash3(year, month, day);
 
+  @override
   bool operator==(dynamic other) => other is YearMonthDay ? (year == other.year && month == other.month && day == other.day) : false;
 
-  bool operator <(YearMonthDay other) {
+  bool operator <(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year < other.year) return true;
@@ -67,7 +70,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator <=(YearMonthDay other) {
+  bool operator <=(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year < other.year) return true;
@@ -80,7 +83,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator >(YearMonthDay other) {
+  bool operator >(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year > other.year) return true;
@@ -93,7 +96,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator >=(YearMonthDay other) {
+  bool operator >=(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year > other.year) return true;

@@ -7,7 +7,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 /// Specifies how transitions are calculated. Whether relative to UTC, the time zones standard
 /// offset, or the wall (or daylight savings) offset.
-@internal
+// @internal
 class TransitionMode {
   final int _value;
 
@@ -38,14 +38,16 @@ class TransitionMode {
   int operator -(TransitionMode other) => _value - other._value;
   int operator +(TransitionMode other) => _value + other._value;
 
+  @override
   bool operator ==(dynamic other) => other is TransitionMode && other._value == _value;
+  @override
   int get hashCode => _value.hashCode;
 
   @override
   String toString() => _value < _stringRepresentations.length ?
     _stringRepresentations[_value] : 'undefined:$_value';
 
-  TransitionMode parse(String text) {
+  TransitionMode? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];

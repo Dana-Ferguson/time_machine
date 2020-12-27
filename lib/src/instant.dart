@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class IInstant {
   // NodaTime enforces a range of -9998-01-01 and 9999-12-31 ... Is this related to CalendarCalculators?
   // These correspond to -9998-01-01 and 9999-12-31 respectively.
@@ -97,6 +97,7 @@ class Instant implements Comparable<Instant> {
     return Instant._trusted(Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
+  @override
   int compareTo(Instant other) => timeSinceEpoch.compareTo(other.timeSinceEpoch);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
 
@@ -167,11 +168,11 @@ class Instant implements Comparable<Instant> {
   static Time difference(Instant start, Instant end) => start.timeSince(end);
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
   // On Dart2: this is still required, but I can't reproduce a minimal test case -- I am lost.
-  @ddcSupportHack String toStringDDC([String patternText, Culture culture]) =>
+  @ddcSupportHack String toStringDDC([String? patternText, Culture? culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
   double toJulianDate() => (TimeConstants.julianEpoch.timeUntil(this)).totalDays;
@@ -226,14 +227,14 @@ class Instant implements Comparable<Instant> {
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 
-  ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem calendar]) =>
+  ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem? calendar]) =>
       // zone is checked for nullity by the constructor.
       // constructor also checks and corrects for calendar being null
     ZonedDateTime(this, zone, calendar);
 
   // todo: get the correct calendar for the local timezone / culture
   /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
-  ZonedDateTime inLocalZone([CalendarSystem calendar]) => ZonedDateTime(this, DateTimeZone.local, calendar);
+  ZonedDateTime inLocalZone([CalendarSystem? calendar]) => ZonedDateTime(this, DateTimeZone.local, calendar);
 
-  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
+  OffsetDateTime withOffset(Offset offset, [CalendarSystem? calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 }

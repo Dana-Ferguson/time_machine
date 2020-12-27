@@ -13,7 +13,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import 'time_machine_testing.dart';
 
-DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb['America/Los_Angeles'];
+late DateTimeZone Pacific; // = DateTimeZoneProviders.Tzdb['America/Los_Angeles'];
 
 Future main() async {
   await TimeMachine.initialize();
@@ -320,7 +320,7 @@ void IComparableCompareTo_Null_Positive()
 {
   var instance = LocalDateTime(2012, 3, 5, 10, 45, 0);
   Comparable i_instance = /*(IComparable)*/instance;
-  Object arg;
+  Object? arg;
   var result = i_instance.compareTo(arg);
   expect(result,  greaterThan(0));
 }

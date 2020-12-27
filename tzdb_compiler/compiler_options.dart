@@ -7,17 +7,17 @@ import 'package:args/args.dart';
 /// Defines the command line options that are valid.
 class CompilerOptions
 {
-  final String outputFileName;
-  final   String sourceDirectoryName; // = '';
+  final String? outputFileName;
+  final String sourceDirectoryName; // = '';
   // todo: is this something we still need?
-  final String windowsMapping; // = '';
-  final String windowsOverride;
+  final String? windowsMapping; // = '';
+  final String? windowsOverride;
 
   /*[Option('z', "zone",
   Required = false,
   HelpText = 'Single zone ID to compile data for, for test purposes. (Incompatible with -o.)',
   MutuallyExclusiveSet = 'Output')] */
-  final String zoneId;
+  final String? zoneId;
 
   CompilerOptions._(this.outputFileName, this.sourceDirectoryName, this.windowsMapping, this.windowsOverride, this.zoneId);
 

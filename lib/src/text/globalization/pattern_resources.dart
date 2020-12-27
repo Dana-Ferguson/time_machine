@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/text/globalization/time_machine_globalization.dart';
 
-@internal
+// @internal
 abstract class PatternResources
 {
   // Resource files have a structure similar to:
@@ -22,9 +22,9 @@ abstract class PatternResources
   // A quick, totally non exhaustive test, seems to confirm that.
   // For now, we'll just include this in code, we may change this to an Future<String> and
   // load from data files if the resource files get branched out.
-  static String getString(String name, Culture culture) => _data[name];
+  static String getString(String name, Culture culture) => _data[name]!;
 
-  static Map<String, String> _data = {
+  static final Map<String, String> _data = {
     'Eras_AnnoHegirae': 'A.H.|AH',
     'Eras_AnnoMartyrum': 'A.M.|AM',
     'Eras_AnnoMundi': 'A.M.|AM',

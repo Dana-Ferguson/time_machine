@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class ILocalDate {
   static LocalDate trusted(YearMonthDayCalendar yearMonthDayCalendar) => LocalDate._trusted(yearMonthDayCalendar);
   // static LocalDate fromDaysSinceEpoch(int daysSinceEpoch, [CalendarSystem calendar]) => new LocalDate.fromEpochDay(daysSinceEpoch, calendar);
@@ -29,7 +29,7 @@ class LocalDate implements Comparable<LocalDate> {
 
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.
-  factory LocalDate.fromEpochDay(int epochDay, [CalendarSystem calendar])
+  factory LocalDate.fromEpochDay(int epochDay, [CalendarSystem? calendar])
   {
     if (calendar == null) {
       assert(Preconditions.debugCheckArgumentRange('daysSinceEpoch', epochDay, ICalendarSystem.minDays(CalendarSystem.iso), ICalendarSystem.maxDays(CalendarSystem.iso)));
@@ -50,7 +50,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// Returns: The resulting date.
   ///
   /// * [RangeError]: The parameters do not form a valid date.
-  factory LocalDate(int year, int month, int day, [CalendarSystem calendar, Era era])
+  factory LocalDate(int year, int month, int day, [CalendarSystem? calendar, Era? era])
   {
     CalendarOrdinal ordinal;
     if (calendar == null) {
@@ -73,7 +73,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
   ///
   /// Returns: A new [LocalDate] with the same values as the local clock.
-  factory LocalDate.today([CalendarSystem calendar]) =>
+  factory LocalDate.today([CalendarSystem? calendar]) =>
       Instant.now().inLocalZone(calendar).calendarDate;
 
   /// Converts a [DateTime] of any kind to a LocalDate in the specified or ISO calendar, ignoring the time of day.
@@ -84,7 +84,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [calendar]: The calendar system to convert into, defaults to ISO calendar
   ///
   /// Returns: A new [LocalDate] with the same values as the specified `DateTime`.
-  factory LocalDate.dateTime(DateTime dateTime, [CalendarSystem calendar])
+  factory LocalDate.dateTime(DateTime dateTime, [CalendarSystem? calendar])
   {
     int days = Platform.isWeb
         ? (dateTime.millisecondsSinceEpoch + dateTime.timeZoneOffset.inMilliseconds) ~/ TimeConstants.millisecondsPerDay
@@ -240,6 +240,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
+  @override
   bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Adds the specified period to this date. Fluent alternative to `operator+()`.
@@ -378,11 +379,12 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// * [ArgumentException]: The calendar system of [other] is not the
   /// same as the calendar system of this value.
-  int compareTo(LocalDate other)
+  @override
+  int compareTo(LocalDate? other)
   {
     // todo: is this the best way? Should I add a check like this everywhere?
     if (other == null) return 1;
-    Preconditions.checkArgument(calendar == other?.calendar, 'other', "Only values with the same calendar system can be compared");
+    Preconditions.checkArgument(calendar == other.calendar, 'other', "Only values with the same calendar system can be compared");
     return ICalendarSystem.compare(calendar, _yearMonthDay, other._yearMonthDay);
   }
 
@@ -423,7 +425,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [other]: The value to compare this date with.
   ///
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool equals(LocalDate other) => other != null && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool equals(LocalDate? other) => other != null && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.
@@ -585,7 +587,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// The value of the current instance in the default format pattern ('D'), using the current isolates's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       LocalDatePatterns.format(this, patternText, culture);
 }
 

@@ -24,7 +24,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   /// The 'type' of the rule - usually null, meaning "applies in every year" - but can be
   /// 'odd', "even" etc - usually yearistype.sh is used to determine this; TimeMachine only supports
   /// 'odd' and "even" (used in Australia for data up to and including 2000e).
-  final String type;
+  final String? type;
 
   /// Initializes a new instance of the [RuleLine] class.
   ///
@@ -41,7 +41,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   ///   true if the current object is equal to the <paramref name = 'other' /> parameter;
   ///   otherwise, false.
   /// </returns>
-  bool equals(RuleLine other) => !(other == null)
+  bool equals(RuleLine? other) => !(other == null)
       && _recurrence.equals(other._recurrence)
       && _daylightSavingsIndicator == other._daylightSavingsIndicator;
 

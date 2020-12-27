@@ -33,14 +33,14 @@ void Addition_WrapsAtMidnight()
   expect(expected, start + period);
 }
 
-@Test()
-void Addition_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalTime date = LocalTime(12, 0, 0);
-  // Call to ToString just to make it a valid statement
-  Period period;
-  expect(() => (date + period).toString(), throwsArgumentError);
-}
+// @Test()
+// void Addition_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalTime date = LocalTime(12, 0, 0);
+//   // Call to ToString just to make it a valid statement
+//   Period period;
+//   expect(() => (date + period).toString(), throwsArgumentError);
+// }
 
 @Test()
 void Subtraction_WithPeriod()
@@ -60,14 +60,14 @@ void Subtraction_WrapsAtMidnight()
   expect(expected, start - period);
 }
 
-@Test()
-void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalTime date = LocalTime(12, 0, 0);
-  // Call to ToString just to make it a valid statement
-  Period period;
-  expect(() => (date - period).toString(), throwsArgumentError);
-}
+// @Test()
+// void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalTime date = LocalTime(12, 0, 0);
+//   // Call to ToString just to make it a valid statement
+//   Period period;
+//   expect(() => (date - period).toString(), throwsArgumentError);
+// }
 
 @Test()
 void Addition_PeriodWithDate()
@@ -189,7 +189,7 @@ void IComparableCompareTo_Null_Positive()
 {
   var instance = LocalTime(10, 30, 45);
   Comparable i_instance = instance;
-  Object arg;
+  Object? arg;
   var result = i_instance.compareTo(arg);
   expect(result,  greaterThan(0));
 }

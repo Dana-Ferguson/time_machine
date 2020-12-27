@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// todo: investigate, probably not needed for Dart
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing TimeFormatInfo.InvariantInfo...
-@internal
+// @internal
 abstract class AnnualDatePatterns {
   static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) =>
       AnnualDatePattern._create(patternText, formatInfo, templateValue);
@@ -17,7 +17,7 @@ abstract class AnnualDatePatterns {
   static IPartialPattern<AnnualDate> underlyingPattern(AnnualDatePattern annualDatePattern) => annualDatePattern._underlyingPattern;
 
   static final AnnualDatePattern isoPatternImpl = AnnualDatePattern.createWithInvariantCulture("MM'-'dd");
-  static String format(AnnualDate annualDate, String patternText, Culture culture) =>
+  static String format(AnnualDate annualDate, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture ?? Culture.current)
           .annualDatePatternParser
@@ -59,6 +59,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<AnnualDate> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given annual date as text according to the rules of this pattern.
@@ -66,6 +67,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// * [value]: The annual date to format.
   ///
   /// Returns: The annual date formatted according to this pattern.
+  @override
   String format(AnnualDate value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -75,6 +77,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// * [builder]: The [StringBuffer] to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(AnnualDate value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
@@ -111,7 +114,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// Returns: A pattern for parsing and formatting annual dates.
   ///
   /// * [InvalidPatternError]: The pattern text was invalid.
-  static AnnualDatePattern createWithCulture(String patternText, Culture culture, [AnnualDate templateValue]) =>
+  static AnnualDatePattern createWithCulture(String patternText, Culture culture, [AnnualDate? templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), templateValue ?? AnnualDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

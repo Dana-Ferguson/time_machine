@@ -9,7 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// Implementation of the algorithms described in
 /// http://www.cs.tau.ac.il/~nachum/calendar-book/papers/calendar.ps, using scriptural
 /// month numbering.
-@internal
+// @internal
 abstract class HebrewScripturalCalculator {
   static const int maxYear = 9999;
   static const int minYear = 1;

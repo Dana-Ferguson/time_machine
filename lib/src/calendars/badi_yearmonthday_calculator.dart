@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// See [CalendarSystem.badi] for details about the Badíʿ calendar.
-@internal
+// @internal
 class BadiYearMonthDayCalculator extends YearMonthDayCalculator {
 // named constants to avoid use of raw numbers in the code
   static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...
@@ -35,7 +35,7 @@ class BadiYearMonthDayCalculator extends YearMonthDayCalculator {
   /// NazRuzDate falls on March 19, 20, 21, or 22.
   /// DaysInAyymiHa can be 4,5.
   /// For each year, the value in the array is (NawRuzDate - 19) + 10 * (DaysInAyyamiHa - 4)
-  static List<int> _yearInfoRaw = base64.decode(
+  static final List<int> _yearInfoRaw = base64.decode(
       'AgELAgIBCwICAQsCAgEBCwIBAQsCAQELAgEBCwIBAQsCAQELAgEBCwIBAQELAQEBCwEBAQsBAQELAQEB'
           'CwEBAQsBAQELAQEBCwEBAQEKAQEBCgEBAQsCAgILAgICCwICAgsCAgILAgICCwICAgELAgIBCwICAQsC'
           'AgELAgIBCwICAQsCAgELAgIBCwICAQELAgEBCwIBAQsCAQELAgEBCwIBAQsCAQELAgEBCwIBAQELAQEB'

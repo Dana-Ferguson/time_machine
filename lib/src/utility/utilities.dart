@@ -25,18 +25,18 @@ abstract class Platform {
     _isVM = true;
   }
 
-  static Object dirtyCheck() {
+  static bool? dirtyCheck() {
     var isDartVM = _checkForDartVM();
     _isVM = isDartVM;
-    _isWeb = !_isVM;
+    _isWeb = !_isVM!;
     return null;
   }
 
-  static bool _isWeb;
-  static bool _isVM;
+  static bool? _isWeb;
+  static bool? _isVM;
 
-  static bool get isWeb => _isWeb ?? dirtyCheck() ?? _isWeb;
-  static bool get isVM => _isVM ?? dirtyCheck() ?? _isVM;
+  static bool get isWeb => _isWeb ?? dirtyCheck() ?? _isWeb!;
+  static bool get isVM => _isVM ?? dirtyCheck() ?? _isVM!;
 
   static const int intMaxValueJS = 9007199254740992; // math.pow(2, 53);
   static const int intMinValueJS = -9007199254740992; // -math.pow(2, 53); appears to be the same (not 1 more, not 1 less)
@@ -56,10 +56,10 @@ abstract class Platform {
   static int get intMaxValue => _intMaxValue;
   static int get intMinValue => _intMinValue;
 
-  static BigInt _bigIntMinValue ;
+  static BigInt? _bigIntMinValue ;
   static BigInt bigIntMinValue = _bigIntMinValue ??= BigInt.from(Platform.intMinValue);
 
-  static BigInt _bigIntMaxValue;
+  static BigInt? _bigIntMaxValue;
   static BigInt bigIntMaxValue = _bigIntMaxValue ??= BigInt.from(Platform.intMaxValue);
 }
 
@@ -76,8 +76,8 @@ abstract class TimeZoneInfo {
 /// [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 /// [-2, -1,  0, -2, -1, 0, 1, 2, 0, 1, 2]
 int arithmeticMod(num x, int y) {
-  if (x >= 0) return x % y;
-  return -((-x)%y);
+  if (x >= 0) return x % y as int;
+  return -((-x)%y) as int;
 }
 
 BigInt bigArithmeticMod(BigInt x, BigInt y) {
@@ -89,9 +89,9 @@ BigInt bigArithmeticMod(BigInt x, BigInt y) {
 /// [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
 /// [ 1,  2,  0,  1,  2, 0, 1, 2, 0, 1, 2]
 int epochArithmeticMod(num x, int y) {
-  if (x >= 0) return x % y;
-  if (x >= 0) return x % y;
-  return -(y-x)%y;
+  if (x >= 0) return x % y as int;
+  if (x >= 0) return x % y as int;
+  return -(y-x)%y as int;
 }
 
 BigInt epochBigArithmeticMod(BigInt x, BigInt y) {

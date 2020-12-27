@@ -10,15 +10,14 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// As the month length is fixed various calculations can be optimised.
 /// This implementation assumes any additional days after twelve
 /// months fall into a thirteenth month.
-@internal
+// @internal
 abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static const int _daysInMonth = 30;
 
   static const int _averageDaysPer10Years = 3653; // Ideally 365.25 days per year...
 
   @protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear, int daysAtStartOfYear1)
-      : super(minYear, maxYear, 13, _averageDaysPer10Years, daysAtStartOfYear1) {
-  }
+      : super(minYear, maxYear, 13, _averageDaysPer10Years, daysAtStartOfYear1);
 
   @override
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) =>

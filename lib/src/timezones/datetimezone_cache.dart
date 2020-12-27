@@ -21,14 +21,16 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 @immutable // only; caches are naturally mutable internally.
 class DateTimeZoneCache extends DateTimeZoneProvider {
   final DateTimeZoneSource _source;
-  final Map<String, DateTimeZone> _timeZoneMap = Map<String, DateTimeZone>();
+  final Map<String, DateTimeZone?> _timeZoneMap = <String, DateTimeZone?>{};
 
   /// Gets the version ID of this provider. This is simply the [DateTimeZoneSource.versionId] returned by
   /// the underlying source.
+  @override
   final String versionId;
 
   /// <inheritdoc />
   // todo:  ReadOnlyCollection<String>
+  @override
   final List<String> ids;
 
   DateTimeZoneCache._(this._source, this.ids, this.versionId);
@@ -58,7 +60,8 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
 
     var idList = List<String>.from(providerIds);
     // todo: a gentler 'null' okay sorter?
-    idList.sort((a, b) => a?.compareTo(b ?? '')); // sort(StringComparer.Ordinal);
+    // idList.sort((a, b) => (a ?? '').compareTo(b ?? '')); // sort(StringComparer.Ordinal);
+    idList.sort();
     var ids = List<String>.from(idList);
 
     var cache = DateTimeZoneCache._(source, ids, VersionId);
@@ -73,16 +76,18 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
   }
 
   /// <inheritdoc />
+  @override
   Future<DateTimeZone> getSystemDefault() async {
-    String id = _source.systemDefaultId;
+    String? id = _source.systemDefaultId;
     if (id == null) {
       throw DateTimeZoneNotFoundError('System default time zone is unknown to source $versionId');
     }
     return await this[id];
   }
 
+  @override
   DateTimeZone getCachedSystemDefault() {
-    String id = _source.systemDefaultId;
+    String? id = _source.systemDefaultId;
     if (id == null) {
       throw DateTimeZoneNotFoundError('System default time zone is unknown to source $versionId');
     }
@@ -90,24 +95,25 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
   }
 
   /// <inheritdoc />
-  Future<DateTimeZone> getZoneOrNull(String id) async {
+  @override
+  Future<DateTimeZone?> getZoneOrNull(String id) async {
     Preconditions.checkNotNull(id, 'id');
     return (await _getZoneFromSourceOrNull(id)) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
-  DateTimeZone getCachedZoneOrNull(String id) {
+  DateTimeZone? getCachedZoneOrNull(String id) {
     Preconditions.checkNotNull(id, 'id');
     return _getCachedZoneFromSourceOrNull(id) ?? FixedDateTimeZone.getFixedZoneOrNull(id);
   }
 
-  Future<DateTimeZone> _getZoneFromSourceOrNull(String id) async {
+  Future<DateTimeZone?> _getZoneFromSourceOrNull(String id) async {
     // if (!timeZoneMap.TryGetValue(id, /*todo:out*/ zone)) {
     // if ((zone = timeZoneMap[id]) == null) {
     if (!_timeZoneMap.containsKey(id)) {
       return null;
     }
 
-    DateTimeZone zone = _timeZoneMap[id];
+    DateTimeZone? zone = _timeZoneMap[id];
     if (zone == null) {
       zone = await _source.forId(id);
       if (zone == null) {
@@ -121,12 +127,12 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
   }
 
   // todo: compress this call-chain?
-  DateTimeZone _getCachedZoneFromSourceOrNull(String id) {
+  DateTimeZone? _getCachedZoneFromSourceOrNull(String id) {
     if (!_timeZoneMap.containsKey(id)) {
       return null;
     }
 
-    DateTimeZone zone = _timeZoneMap[id];
+    DateTimeZone? zone = _timeZoneMap[id];
     if (zone == null) {
       zone = _source.forCachedId(id);
       if (zone == null) {
@@ -139,6 +145,7 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
     return zone;
   }
 
+  @override
   Future<DateTimeZone> operator [](String id) async {
     var zone = await getZoneOrNull(id);
     if (zone == null) {
@@ -147,6 +154,7 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
     return zone;
   }
 
+  @override
   DateTimeZone getDateTimeZoneSync(String id) {
     var zone = getCachedZoneOrNull(id);
     if (zone == null) {

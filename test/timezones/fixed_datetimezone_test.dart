@@ -12,13 +12,13 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-DateTimeZoneProvider Tzdb;
+late DateTimeZoneProvider tzdb;
 
 /// Tests for fixed 'Etc/GMT+x' zones. These just test that the time zones are built
 /// appropriately; FixedDateTimeZoneTest takes care of the rest.
 Future main() async {
   await TimeMachine.initialize();
-  Tzdb = await DateTimeZoneProviders.tzdb;
+  tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();
 }
@@ -63,7 +63,7 @@ void GetZoneIntervals_ReturnsSingleInterval()
 void For_Id_FixedOffset()
 {
   String id = 'UTC+05:30';
-  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
+  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id)!;
   expect(DateTimeZone.forOffset(Offset.hoursAndMinutes(5, 30)), zone);
   expect(id, zone.id);
 }
@@ -72,7 +72,7 @@ void For_Id_FixedOffset()
 void For_Id_FixedOffset_NonCanonicalId()
 {
   String id = 'UTC+05:00:00';
-  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id);
+  DateTimeZone zone = FixedDateTimeZone.getFixedZoneOrNull(id)!;
   expect(zone, DateTimeZone.forOffset(Offset.hours(5)));
   expect('UTC+05', zone.id);
 }

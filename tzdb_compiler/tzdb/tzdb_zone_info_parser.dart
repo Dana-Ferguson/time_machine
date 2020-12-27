@@ -54,7 +54,7 @@ class TzdbZoneInfoParser {
   ///
   /// <param name='tokens'>The tokens.</param>
   /// <param name='name'>The name of the expected value, for use in the exception if no value is available.</param>
-  String _nextOptional(Tokens tokens, String name) => ParserHelper.ParseOptional(_nextString(tokens, name));
+  String? _nextOptional(Tokens tokens, String name) => ParserHelper.ParseOptional(_nextString(tokens, name));
 
   /// Returns the next string from the token stream.
   ///
@@ -65,7 +65,7 @@ class TzdbZoneInfoParser {
       // InvalidDataException
       throw Exception('Missing zone info token: $name');
     }
-    return tokens.nextToken(name);
+    return tokens.nextToken(name)!;
   }
 
   /// Parses the next string from the token stream as a year.
@@ -75,7 +75,7 @@ class TzdbZoneInfoParser {
   static int _nextYear(Tokens tokens, int defaultValue) {
     int result = defaultValue;
     if (tokens.tryNextToken()) {
-      result = ParserHelper.ParseYear(tokens.tryNextTokenResult, defaultValue);
+      result = ParserHelper.ParseYear(tokens.tryNextTokenResult!, defaultValue);
     }
     return result;
   }
@@ -88,13 +88,13 @@ class TzdbZoneInfoParser {
   void parser(List<int> inputBytes, TzdbDatabase database) {
     var text = utf8.decode(inputBytes);
 
-    String currentZone;
+    String? currentZone;
     for (var line in LineSplitter.split(text)) {
       currentZone = _parseLine(line, currentZone, database);
     }
   }
 
-  var _isLetter = RegExp('[a-zA-Z]');
+  final _isLetter = RegExp('[a-zA-Z]');
 
   /// Parses the ZoneYearOffset for a rule or zone. This is something like '3rd Sunday of October at 2am'.
   ///
@@ -150,7 +150,8 @@ class TzdbZoneInfoParser {
 
       if (tokens.hasNextToken || forRule) {
         var atTime = _nextString(tokens, 'AT');
-        if (!(atTime == null || atTime.isEmpty)) {
+        // if (!(atTime == null || atTime.isEmpty)) {
+        if (atTime.isNotEmpty) {
           if (_isLetter.hasMatch(atTime[atTime.length - 1])) {
             String zoneCharacter = atTime[atTime.length - 1];
             mode = _convertModeCharacter(zoneCharacter);
@@ -187,7 +188,7 @@ class TzdbZoneInfoParser {
   /// </summary>
   /// <param name='text'>The text.</param>
   static int _parseDayOfWeek(String text) {
-    Preconditions.checkArgument(!(text == null || text.isEmpty), 'text', "Value must not be empty or null");
+    Preconditions.checkArgument(text.isNotEmpty, 'text', "Value must not be empty or null");
     int index = _daysOfWeek.indexOf(text, 1);
     if (index == -1) {
       // InvalidDataException
@@ -226,14 +227,14 @@ class TzdbZoneInfoParser {
   /// <param name='line'>The line to parse.</param>
   /// <param name='database'>The database to fill.</param>
   /// <return>The zone name just parsed, if any - so that it can be passed into the next call.</return>
-  String _parseLine(String line, String previousZone, TzdbDatabase database) {
+  String? _parseLine(String line, String? previousZone, TzdbDatabase database) {
     // Trim end-of-line comments
     int index = line.indexOf('#');
     if (index >= 0) {
       line = line.substring(0, index);
     }
     line = line.trimRight();
-    if (line.length == 0) {
+    if (line.isEmpty) {
       // We can still continue with the previous zone
       return previousZone;
     }
@@ -287,7 +288,8 @@ class TzdbZoneInfoParser {
   /// <returns>The month number in the range 1 to 12.</returns>
   /// <exception cref='InvalidDataException'>The month name can't be parsed</exception>
   static int parseMonth(String text) {
-    Preconditions.checkArgument(!(text == null || text.isEmpty), 'text', "Value must not be empty or null");
+    // Preconditions.checkArgument(!(text == null || text.isEmpty), 'text', "Value must not be empty or null");
+    Preconditions.checkArgument(text.isNotEmpty, 'text', "Value must not be empty");
     int index = _shortMonths.indexOf(text, 1);
     if (index == -1) {
       index = _longMonths.indexOf(text, 1);
@@ -326,7 +328,7 @@ class TzdbZoneInfoParser {
     var type = _nextOptional(tokens, 'Type');
     var yearOffset = parseDateTimeOfYear(tokens, true);
     var savings = _nextOffset(tokens, 'SaveMillis');
-    var daylightSavingsIndicator = _nextOptional(tokens, 'LetterS');
+    var daylightSavingsIndicator = _nextOptional(tokens, 'LetterS')!;
     // The name of the zone recurrence is currently the name of the rule. Later (in ZoneRule.GetRecurrences)
     // it will be replaced with the formatted name. It's not ideal, but it avoids a lot of duplication.
     var recurrence = ZoneRecurrence(name, savings, yearOffset, fromYear, toYear);

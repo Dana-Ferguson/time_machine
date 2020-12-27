@@ -44,17 +44,16 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   static /*final*/ List<int> _yearStartDays = _genNumbers() ?? _yearStartDays;
 
   // todo: is this too cheesy?
-  static Object _genNumbers() {
+  static List<int>? _genNumbers() {
     // byte[] data = Convert.FromBase64String(GeneratedData);
     var data = base64.decode(_generatedData);
-    _monthLengths = List<int>(data.length ~/ 2); // new ushort[data.Length / 2];
 
-    for (int i = 0; i < _monthLengths.length; i++) {
-      _monthLengths[i] = /*(ushort)*/((data[i * 2] << 8) | (data[i * 2 + 1]));
-    }
+    _monthLengths = List<int>.generate(data.length ~/ 2,
+      (int i) => /*(ushort)*/((data[i * 2] << 8) | (data[i * 2 + 1]))
+    ); // new ushort[data.Length / 2];
 
-    _yearLengths = List<int>(_monthLengths.length);
-    _yearStartDays = List<int>(_monthLengths.length);
+    _yearLengths = List<int>.generate(_monthLengths.length, (_) => 0);
+    _yearStartDays = List<int>.generate(_monthLengths.length, (_) => 0);
 
     // Populate arrays from index 1.
     int totalDays = 0;

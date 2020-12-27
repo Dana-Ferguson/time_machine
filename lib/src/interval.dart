@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 // import 'package:quiver_hashcode/hashcode.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class IInterval {
   static Instant rawEnd(Interval interval) => interval._rawEnd;
 }
@@ -36,7 +36,7 @@ class Interval {
   /// * [end]: The end [Instant].
   ///
   /// * [ArgumentOutOfRangeException]: [end] is earlier than [start].
-  Interval(Instant start, Instant end)
+  Interval(Instant? start, Instant? end)
       : _start = start ?? IInstant.beforeMinValue,
         _end = end ?? IInstant.afterMaxValue {
     if (_end < _start) {
@@ -135,5 +135,6 @@ class Interval {
   }
 
   /// Implements the operator ==.
+  @override
   bool operator ==(dynamic other) => other is Interval && _start == other._start && _end == other._end;
 }

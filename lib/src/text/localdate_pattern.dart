@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class LocalDatePatterns {
   /// Class whose existence is solely to avoid type initialization order issues, most of which stem
   /// from needing TimeFormatInfo.InvariantInfo...
@@ -18,7 +18,7 @@ abstract class LocalDatePatterns {
   static IPartialPattern<LocalDate> underlyingPattern(LocalDatePattern localDatePattern) => localDatePattern._underlyingPattern;
 
   // formatInfo.dateTimeFormat.longDatePattern
-  static String format(LocalDate localDate, String patternText, Culture culture) =>
+  static String format(LocalDate localDate, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .localDatePatternParser
@@ -60,6 +60,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<LocalDate> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given local date as text according to the rules of this pattern.
@@ -67,6 +68,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   /// * [value]: The local date to format.
   ///
   /// Returns: The local date formatted according to this pattern.
+  @override
   String format(LocalDate value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -76,6 +78,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   /// * [builder]: The `StringBuilder` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(LocalDate value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   // todo: to factory... or merge with default constructor?
@@ -113,7 +116,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   /// Returns: A pattern for parsing and formatting local dates.
   ///
   /// * [InvalidPatternError]: The pattern text was invalid.
-  static LocalDatePattern createWithCulture(String patternText, Culture culture, [LocalDate templateValue]) =>
+  static LocalDatePattern createWithCulture(String patternText, Culture culture, [LocalDate? templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), templateValue ?? LocalDatePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

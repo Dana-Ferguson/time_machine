@@ -12,7 +12,7 @@ import 'missing_token_error.dart';
 /// </remarks>
 class Tokens {
   /// Represents an empty token list.
-  static final List<String> _noTokens = List<String>(0);
+  static final List<String> _noTokens = List<String>.filled(0, '');
 
   /// The list of words. This will never be null but may be empty.
   final List<String> _words;
@@ -37,7 +37,7 @@ class Tokens {
   /// <param name='name'>The name of the token. Used in the exception to identify the missing token.</param>
   /// <returns>The next token.</returns>
   /// <exception cref='MissingTokenException'>Thrown if there is no next token.</exception>
-  String nextToken(String name) {
+  String? nextToken(String name) {
     if (tryNextToken()) {
       return tryNextTokenResult;
     }
@@ -57,7 +57,7 @@ class Tokens {
       return Tokens._(_noTokens);
     }
     // Primitive parser, but we need to handle double quotes.
-    var list = List<String>();
+    var list = <String>[];
     var currentWord = StringBuffer();
     bool inQuotes = false;
     bool lastCharacterWasWhitespace = false;
@@ -98,9 +98,9 @@ class Tokens {
   }
 
   // bool tryNextToken(out String result)
-  String _tryNextTokenResult;
+  String? _tryNextTokenResult;
 
-  String get tryNextTokenResult => _tryNextTokenResult;
+  String? get tryNextTokenResult => _tryNextTokenResult;
 
   /// Tries to get the next token.
   ///

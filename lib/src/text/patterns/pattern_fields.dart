@@ -11,7 +11,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,
 /// due to concepts such as 'sign'.
-@internal
+// @internal
 @immutable
 class PatternFields {
   final int _value;
@@ -71,9 +71,9 @@ class PatternFields {
   static const PatternFields allTimeFields = const PatternFields(2097278);
   static const PatternFields allDateFields = const PatternFields(1113984);
 
-  @override get hashCode => _value.hashCode;
+  @override int get hashCode => _value.hashCode;
 
-  @override operator ==(dynamic other) => other is PatternFields && other._value == _value || other is int && other == _value;
+  @override bool operator ==(dynamic other) => other is PatternFields && other._value == _value || other is int && other == _value;
 
   const PatternFields(this._value);
 
@@ -90,7 +90,7 @@ class PatternFields {
   @override
   String toString() => _nameMap[this] ?? 'undefined';
 
-  PatternFields parse(String text) {
+  PatternFields? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];

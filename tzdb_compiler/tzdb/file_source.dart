@@ -34,7 +34,7 @@ class FileSource {
     });
 
     return FileSource._(entries.keys.toList(),
-            (String file) => entries[file], fullOrigin);
+            (String file) => entries[file]!, fullOrigin);
   }
 
   static FileSource fromDirectory(String path) {

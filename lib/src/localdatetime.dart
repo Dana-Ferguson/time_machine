@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 // TODO(feature): Calendar-neutral comparer.
 
-@internal
+// @internal
 abstract class ILocalDateTime {
   static LocalInstant toLocalInstant(LocalDateTime localDateTime) => localDateTime._toLocalInstant();
   static LocalDateTime fromInstant(LocalInstant localInstant) => LocalDateTime._localInstant(localInstant);
@@ -59,7 +59,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date/time.
   ///
   /// see: [LocalTime] for potential future API change
-  LocalDateTime(int year, int month, int day, int hour, int minute, int second, {int ms, int us, int ns, CalendarSystem calendar})
+  LocalDateTime(int year, int month, int day, int hour, int minute, int second, {int? ms, int? us, int? ns, CalendarSystem? calendar})
       : this.localDateAtTime(LocalDate(year, month, day, calendar), LocalTime(hour, minute, second, ms:ms, us:us, ns:ns));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
 
@@ -80,13 +80,9 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [calendar]: The calendar system to convert into, defaults to [LocalDateTime] in the ISO calendar.
   ///
   /// Returns: A new [LocalDateTime] with the same values as the specified [DateTime].
-  factory LocalDateTime.dateTime(DateTime dateTime, [CalendarSystem calendar]) {
+  factory LocalDateTime.dateTime(DateTime dateTime, [CalendarSystem? calendar]) {
     int ns;
     int days;
-
-    if (dateTime == null) {
-      return null;
-    }
 
     if (Platform.isWeb) {
       var ms = dateTime.millisecondsSinceEpoch + dateTime.timeZoneOffset.inMilliseconds;
@@ -234,6 +230,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [other]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
+  @override
   bool operator ==(dynamic other) => other is LocalDateTime && equals(other);
 
   /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
@@ -327,7 +324,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// * [ArgumentError]: The calendar system of [other] is not the
   /// same as the calendar system of this value.
-  int compareTo(LocalDateTime other) {
+  @override
+  int compareTo(LocalDateTime? other) {
     // This will check calendars...
     if (other == null) return 1;
     int dateComparison = calendarDate.compareTo(other.calendarDate);
@@ -693,6 +691,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       LocalDateTimePatterns.format(this, patternText, culture);
 }

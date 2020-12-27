@@ -17,14 +17,14 @@ typedef _offsetAggregator = Offset Function(Offset x, Offset y);
 /// container for the initial zone intervals and a pointer to the time zone that handles all of
 /// the rest until the end of time.
 @immutable // todo: we need immutable lists?
-@internal
+// @internal
 class PrecalculatedDateTimeZone extends DateTimeZone {
   final List<ZoneInterval> _periods;
-  final ZoneIntervalMapWithMinMax _tailZone;
+  final ZoneIntervalMapWithMinMax? _tailZone;
 
   /// The first instant covered by the tail zone, or Instant.AfterMaxValue if there's no tail zone.
   final Instant _tailZoneStart;
-  final ZoneInterval _firstTailZoneInterval;
+  final ZoneInterval? _firstTailZoneInterval;
 
   PrecalculatedDateTimeZone._(String id, this._periods, this._tailZone, this._firstTailZoneInterval, this._tailZoneStart)
       : super(id, false, _computeOffset(_periods, _tailZone, Offset.min), _computeOffset(_periods, _tailZone, Offset.max));
@@ -35,8 +35,8 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   /// [intervals]: The intervals before the tail zone.
   /// [tailZone]: The tail zone - which can be any IZoneIntervalMap for normal operation,
   /// but must be a StandardDaylightAlternatingMap if the result is to be serialized.
-  @visibleForTesting
-  factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax tailZone) {
+  // @visibleForTesting
+  factory PrecalculatedDateTimeZone(String id, List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax? tailZone) {
     // We want this to be AfterMaxValue for tail-less zones.
     var tailZoneStart = IZoneInterval.rawEnd(intervals[intervals.length - 1]);
     // Cache a 'clamped' zone interval for use at the start of the tail zone. (if (tailZone != null))
@@ -58,8 +58,8 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
   ///
   /// This is only called from the constructors, but is @internal to make it easier to test.
   /// [ArgumentException]: The periods specified are invalid.
-  static void validatePeriods(List<ZoneInterval> periods, ZoneIntervalMap tailZone) {
-    Preconditions.checkArgument(periods.length > 0, 'periods', "No periods specified in precalculated time zone");
+  static void validatePeriods(List<ZoneInterval> periods, ZoneIntervalMap? tailZone) {
+    Preconditions.checkArgument(periods.isNotEmpty, 'periods', "No periods specified in precalculated time zone");
     Preconditions.checkArgument(!periods[0].hasStart, 'periods', "Periods in precalculated time zone must start with the beginning of time");
     for (int i = 0; i < periods.length - 1; i++) {
       // Safe to use End here: there can't be a period *after* an endless one. Likewise it's safe to use Start on the next
@@ -79,8 +79,8 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
     if (_tailZone != null && instant >= _tailZoneStart) {
       // Clamp the tail zone interval to start at the end of our final period, if necessary, so that the
       // join is seamless.
-      ZoneInterval intervalFromTailZone = _tailZone.getZoneInterval(instant);
-      return IZoneInterval.rawStart(intervalFromTailZone) < _tailZoneStart ? _firstTailZoneInterval : intervalFromTailZone;
+      ZoneInterval intervalFromTailZone = _tailZone!.getZoneInterval(instant);
+      return IZoneInterval.rawStart(intervalFromTailZone) < _tailZoneStart ? _firstTailZoneInterval! : intervalFromTailZone;
     }
 
     int lower = 0; // Inclusive
@@ -172,9 +172,9 @@ class PrecalculatedDateTimeZone extends DateTimeZone {
 
   /// Reasonably simple way of computing the maximum/minimum offset
   /// from either periods or transitions, with or without a tail zone.
-  static Offset _computeOffset(List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax tailZone, _offsetAggregator aggregator) {
+  static Offset _computeOffset(List<ZoneInterval> intervals, ZoneIntervalMapWithMinMax? tailZone, _offsetAggregator aggregator) {
     Preconditions.checkNotNull(intervals, 'intervals');
-    Preconditions.checkArgument(intervals.length > 0, 'intervals', "No intervals specified");
+    Preconditions.checkArgument(intervals.isNotEmpty, 'intervals', "No intervals specified");
     Offset ret = intervals[0].wallOffset;
     for (int i = 1; i < intervals.length; i++) {
       ret = aggregator(ret, intervals[i].wallOffset);

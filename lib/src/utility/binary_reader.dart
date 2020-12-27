@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: collate into an input and output folder
-@internal
+// @internal
 class BinaryReader {
   // todo: should this be private?
   final ByteData binary;
@@ -80,7 +80,7 @@ class BinaryReader {
   }
 
   List<String> readStringList() {
-    var tokens = List<String>();
+    var tokens = <String>[];
     var count = read7BitEncodedInt();
     for (int i = 0; i < count; i++) {
       tokens.add(readString());

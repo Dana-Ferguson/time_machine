@@ -222,12 +222,12 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   {
     var date = AnnualDate(8, 23);
     // using (CultureSaver.SetTestCultures(TestCultures.FrFr))
-    Culture.current = TestCultures.getCulture('fr-FR');
+    Culture.current = TestCultures.getCulture('fr-FR')!;
     var pattern = AnnualDatePattern.createWithCurrentCulture('MM/dd');
     expect('08/23', pattern.format(date));
 
     // using (CultureSaver.SetTestCultures(TestCultures.FrCa))
-    Culture.current = TestCultures.getCulture('fr-CA');
+    Culture.current = TestCultures.getCulture('fr-CA')!;
     pattern = AnnualDatePattern.createWithCurrentCulture('MM/dd');
     expect('08-23', pattern.format(date));
   }
@@ -237,7 +237,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   Future CreateWithCulture(String cultureId, String expected) async
   {
     var date = AnnualDate(8, 23);
-    var culture = TestCultures.getCulture(cultureId);
+    var culture = TestCultures.getCulture(cultureId)!;
     var pattern = AnnualDatePattern.createWithCulture('MM/dd', culture);
     expect(expected, pattern.format(date));
   }
@@ -248,7 +248,7 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
   {
     var date = AnnualDate(8, 23);
     var template = AnnualDate(5, 3);
-    var culture = TestCultures.getCulture(cultureId);
+    var culture = TestCultures.getCulture(cultureId)!;
     // Check the culture is still used
     var pattern1 = AnnualDatePattern.createWithCulture('MM/dd', culture, template);
     expect(expected, pattern1.format(date));
@@ -260,8 +260,8 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     expect(AnnualDate(8, 3), parsed);
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(AnnualDatePattern.iso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(AnnualDatePattern.iso);
 }
 
 class Data extends PatternTestData<AnnualDate> {
@@ -271,9 +271,7 @@ class Data extends PatternTestData<AnnualDate> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([AnnualDate value]) : super(value ?? AnnualDatePatterns.defaultTemplateValue)
-  {
-  }
+  Data([AnnualDate? value]) : super(value ?? AnnualDatePatterns.defaultTemplateValue);
 
   Data.monthDay(int month, int day) : super(AnnualDate(month, day));
 

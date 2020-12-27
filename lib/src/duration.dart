@@ -8,7 +8,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class ITime {
   // This is 104249991 days
   static const int maxDays = maxMillis ~/ TimeConstants.millisecondsPerDay; // (1 << 24) - 1;
@@ -246,9 +246,9 @@ abstract class Time implements Comparable<Time> {
   //Time get timeOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
-  @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
+  @override int get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
 
-  @override String toString([String patternText, Culture culture]) => TimePatterns.format(this, patternText, culture);
+  @override String toString([String? patternText, Culture? culture]) => TimePatterns.format(this, patternText, culture);
 
   Time operator +(Time other) => add(other);
 
@@ -318,7 +318,8 @@ abstract class Time implements Comparable<Time> {
 
   bool equals(Time other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 
-  int compareTo(Time other) {
+  @override
+  int compareTo(Time? other) {
     if (other == null) return 1;
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
@@ -343,11 +344,14 @@ abstract class Time implements Comparable<Time> {
 
 class MillisecondTime extends Time {
   // 285420 years max (unlimited on VM)
+  @override
   final int _milliseconds;
 
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
+  @override
   final int _nanosecondsInterval;
 
+  // ignore: unused_field
   static const int _minNano = 0;
 
   const MillisecondTime(this._milliseconds, this._nanosecondsInterval) : super._();
@@ -385,7 +389,7 @@ class NanosecondTime extends Time {
 
   @override bool get canNanosecondsBeInteger => true;
 
-  @override int compareTo(Time other) {
+  @override int compareTo(Time? other) {
     if (other == null) return 1;
     if (other.canNanosecondsBeInteger) {
       return _nanoseconds.compareTo(other.inNanoseconds);

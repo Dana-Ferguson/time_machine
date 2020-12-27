@@ -23,7 +23,7 @@ class DateTimeFormat {
   final List<String> abbreviatedDayNames;
   final List<String> dayNames;
   final List<String> monthNames;
-  final List<String> abbreviatedMonthNames;
+  late final List<String> abbreviatedMonthNames;
   final List<String> monthGenitiveNames;
   final List<String> abbreviatedMonthGenitiveNames;
 
@@ -68,29 +68,29 @@ class DateTimeFormat {
 }
 
 class DateTimeFormatBuilder {
-  String amDesignator;
-  String pmDesignator;
+  late String amDesignator;
+  late String pmDesignator;
 
-  String timeSeparator;
-  String dateSeparator;
+  late String timeSeparator;
+  late String dateSeparator;
 
-  List<String> abbreviatedDayNames;
-  List<String> dayNames;
-  List<String> monthNames;
-  List<String> abbreviatedMonthNames;
-  List<String> monthGenitiveNames;
-  List<String> abbreviatedMonthGenitiveNames;
+  late List<String> abbreviatedDayNames;
+  late List<String> dayNames;
+  late List<String> monthNames;
+  late List<String> abbreviatedMonthNames;
+  late List<String> monthGenitiveNames;
+  late List<String> abbreviatedMonthGenitiveNames;
 
   // BCL Calendar Class
-  CalendarType calendar;
+  late CalendarType calendar;
 
-  List<String> eraNames;
+  late List<String> eraNames;
 
-  String fullDateTimePattern;
-  String shortDatePattern;
-  String longDatePattern;
-  String shortTimePattern;
-  String longTimePattern;
+  late String fullDateTimePattern;
+  late String shortDatePattern;
+  late String longDatePattern;
+  late String shortTimePattern;
+  late String longTimePattern;
 
   DateTimeFormat Build() =>
       DateTimeFormat(
@@ -112,7 +112,7 @@ class DateTimeFormatBuilder {
           shortTimePattern,
           longTimePattern);
 
-  DateTimeFormatBuilder([DateTimeFormat info]) {
+  DateTimeFormatBuilder([DateTimeFormat? info]) {
     if (info == null) return;
     amDesignator = info.amDesignator;
     pmDesignator = info.pmDesignator;

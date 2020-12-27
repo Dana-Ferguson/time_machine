@@ -5,7 +5,7 @@ class MissingTokenError extends Error {
   /// <param name='name'>The name.</param>
   /// <param name='message'>The message.</param>
   // 'Missing token ' + name
-  MissingTokenError(this.name, [String message = null]) :
+  MissingTokenError(this.name, [String? message]) :
         message = message ?? 'Missing token $name';
 
   /// Gets or sets the name of the missing token

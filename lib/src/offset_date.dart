@@ -107,12 +107,13 @@ class OffsetDate
   /// * [right]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
+  @override
   bool operator ==(dynamic right) => right is OffsetDate && equals(right);
 
   /// Returns a [String] that represents this instance.
   ///
   /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetDatePatterns.format(this, patternText, culture);
 }

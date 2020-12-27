@@ -31,15 +31,15 @@ void Addition_TruncatesOnShortMonth()
   expect(expected, start + period);
 }
 
-@Test()
-void Addition_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalDate date = LocalDate(2010, 1, 1);
-  // Call to ToString just to make it a valid statement
-  // Assert.Throws<ArgumentNullException>
-  Period p;
-  expect(() => (date + p).toString(), throwsArgumentError);
-}
+// @Test()
+// void Addition_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalDate date = LocalDate(2010, 1, 1);
+//   // Call to ToString just to make it a valid statement
+//   // Assert.Throws<ArgumentNullException>
+//   Period p;
+//   expect(() => (date + p).toString(), throwsArgumentError);
+// }
 
 @Test()
 void Subtraction_WithPeriod()
@@ -59,15 +59,15 @@ void Subtraction_TruncatesOnShortMonth()
   expect(expected, start - period);
 }
 
-@Test()
-void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalDate date = LocalDate(2010, 1, 1);
-  // Call to ToString just to make it a valid statement
-  // Assert.Throws<ArgumentNullException>
-  Period p;
-  expect(() => (date - p).toString(), willThrow<ArgumentError>());
-}
+// @Test()
+// void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalDate date = LocalDate(2010, 1, 1);
+//   // Call to ToString just to make it a valid statement
+//   // Assert.Throws<ArgumentNullException>
+//   Period p;
+//   expect(() => (date - p).toString(), willThrow<ArgumentError>());
+// }
 
 @Test()
 void Addition_PeriodWithTime()

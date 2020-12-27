@@ -34,7 +34,7 @@ class _TimeComponentsBetweenResult {
   _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
-@internal
+// @internal
 abstract class IPeriod {
   static int daysBetween(LocalDate start, LocalDate end) => Period._daysBetween(start, end);
 
@@ -502,7 +502,7 @@ class Period {
     return LocalDateTime.localDateAtTime(date.addDays(calc.extraDays), calc.localTime);
   }
 
-  static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
+  static final Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
     PeriodUnits.years: (start, end) => Period(years: DatePeriodFields.yearsField.unitsBetween(start, end)),
     PeriodUnits.months: (start, end) => Period(months: DatePeriodFields.monthsField.unitsBetween(start, end)),
     PeriodUnits.weeks: (start, end) => Period(weeks: DatePeriodFields.weeksField.unitsBetween(start, end)),
@@ -545,7 +545,7 @@ class Period {
     return Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
-  static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
+  static final Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
     PeriodUnits.hours: (remaining) => Period(hours: remaining ~/ TimeConstants.nanosecondsPerHour),
     PeriodUnits.minutes: (remaining) => Period(minutes: remaining ~/ TimeConstants.nanosecondsPerMinute),
     PeriodUnits.seconds: (remaining) => Period(seconds: remaining ~/ TimeConstants.nanosecondsPerSecond),
@@ -722,7 +722,7 @@ class Period {
   ///
   /// [other]: The period to compare this one with.
   /// Returns: True if this period has the same values for the same properties as the one specified.
-  bool equals(Period other) =>
+  bool equals(Period? other) =>
       other != null &&
           years == other.years &&
           months == other.months &&
@@ -735,6 +735,7 @@ class Period {
           microseconds == other.microseconds &&
           nanoseconds == other.nanoseconds;
 
+  @override
   bool operator==(dynamic other) => other is Period && equals(other);
 }
 
@@ -743,10 +744,9 @@ class Period {
 @private class NormalizingPeriodEqualityComparer {
   @internal static final NormalizingPeriodEqualityComparer instance = NormalizingPeriodEqualityComparer._();
 
-  NormalizingPeriodEqualityComparer._() {
-  }
+  NormalizingPeriodEqualityComparer._();
 
-  bool equals(Period x, Period y) {
+  bool equals(Period? x, Period? y) {
     if (identical(x, y)) {
       return true;
     }
@@ -770,7 +770,7 @@ class _PeriodComparer // implements Comparer<Period>
 
   _PeriodComparer(this._baseDateTime);
 
-  int compare(Period x, Period y) {
+  int compare(Period? x, Period? y) {
     if (identical(x, y)) {
       return 0;
     }

@@ -466,7 +466,7 @@ void SafePlus_NormalTime()
 @TestCase(const [1, -1, 0])
 @TestCase(const [1, -2, null])
 @TestCase(const [2, 1, 3])
-void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
+void SafePlus_NearStartOfTime(int? initialOffset, int offsetToAdd, int? finalOffset) {
   var start = initialOffset == null
       ? IInstant.beforeMinValue
       : Instant.minValue + Time(hours: initialOffset);
@@ -485,7 +485,7 @@ void SafePlus_NearStartOfTime(int initialOffset, int offsetToAdd, int finalOffse
 @TestCase(const [-1, 1, 0])
 @TestCase(const [-1, 2, null])
 @TestCase(const [-2, -1, -3])
-void SafePlus_NearEndOfTime(int initialOffset, int offsetToAdd, int finalOffset) {
+void SafePlus_NearEndOfTime(int? initialOffset, int offsetToAdd, int? finalOffset) {
   var start = initialOffset == null
       ? IInstant.afterMaxValue
       : Instant.maxValue + Time(hours: initialOffset);

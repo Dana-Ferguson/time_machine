@@ -13,7 +13,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// often it's consulted).
 class FakeClock extends Clock {
   // private readonly object mutex = new object();
-  Instant _now;
+  late Instant _now;
   Time _autoAdvance = Time.zero;
 
   /// Creates a fake clock initially set to the given instant. The clock will advance by the given duration on
@@ -114,6 +114,7 @@ class FakeClock extends Clock {
   /// call to this method will advance the current time by that value.
   ///
   /// Returns: The 'current time' from this (fake) clock.
+  @override
   Instant getCurrentInstant() {
     // lock (mutex)
     {
@@ -134,6 +135,6 @@ class FakeClock extends Clock {
   /// <seealso cref='GetCurrentInstant'/>
   Time get AutoAdvance => _autoAdvance;
 
-  void set AutoAdvance(Time value) => _autoAdvance = value;
+  set AutoAdvance(Time value) => _autoAdvance = value;
 }
 

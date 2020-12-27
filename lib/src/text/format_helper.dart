@@ -6,7 +6,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 ///   Provides helper methods for formatting values using pattern strings.
-@internal
+// @internal
 abstract class FormatHelper {
   // '0': 48; '9': 57
   static const int _zeroCodeUnit = 48;
@@ -130,7 +130,7 @@ abstract class FormatHelper {
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = List<String>(_maximumPaddingLength);
+    var digits = List<String>.generate(_maximumPaddingLength, (_) => '');
     int pos = _maximumPaddingLength;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
@@ -202,7 +202,7 @@ abstract class FormatHelper {
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = List<String>(_maximumPaddingLength);
+    var digits = List<String>.generate(_maximumPaddingLength, (_) => '');
     int pos = _maximumPaddingLength;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
@@ -344,7 +344,7 @@ abstract class FormatHelper {
       return;
     }
 
-    var digits = List<String>(_maximumInt64Length);
+    var digits = List<String>.generate(_maximumInt64Length, (_) => '');
     int pos = _maximumInt64Length;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));

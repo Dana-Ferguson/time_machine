@@ -23,7 +23,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// Finally the [Mode] property deterines whether the [timeOfDay] value
 /// is added to the calculated offset to generate an offset within the day.
 @immutable
-@internal
+// @internal
 class ZoneYearOffset {
   /// An offset that specifies the beginning of the year.
   static final ZoneYearOffset StartOfYear = ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);
@@ -93,7 +93,7 @@ class ZoneYearOffset {
   /// [other]: An object to compare with this object.
   ///
   /// true if the current object is equal to the [other] parameter; otherwise, false.
-  bool equals(ZoneYearOffset other) {
+  bool equals(ZoneYearOffset? other) {
     if (null == other) {
       return false;
     }
@@ -109,6 +109,7 @@ class ZoneYearOffset {
         _addDay == other._addDay;
   }
 
+  @override
   bool operator==(dynamic other) => other is ZoneYearOffset && equals(other);
 
   // todo: timeOfDay:{5:r} <-- recreate the format?

@@ -62,7 +62,7 @@ class AddTimeCalc {
 /// finding the object etc. It turned out to make about 10% difference, at the cost of quite a bit
 /// of code elegance.
 @immutable
-@internal
+// @internal
 class TimePeriodField
 {
   static final TimePeriodField nanoseconds = TimePeriodField._(1);

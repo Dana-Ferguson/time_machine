@@ -75,7 +75,7 @@ void SafeMinus_NormalTime()
 @TestCase(const [1, 1, 0])
 @TestCase(const [1, 2, null])
 @TestCase(const [2, 1, 1])
-void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
+void SafeMinus_NearStartOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.beforeMinValue
       : IInstant.plusOffset(Instant.minValue, Offset.hours(initialOffset));
@@ -94,7 +94,7 @@ void SafeMinus_NearStartOfTime(int initialOffset, int offsetToSubtract, int fina
 @TestCase(const [-1, -1, 0])
 @TestCase(const [-1, -2, null])
 @TestCase(const [-2, -1, -1])
-void SafeMinus_NearEndOfTime(int initialOffset, int offsetToSubtract, int finalOffset) {
+void SafeMinus_NearEndOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.afterMaxValue
       : IInstant.plusOffset(Instant.maxValue, Offset.hours(initialOffset));

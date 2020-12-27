@@ -12,7 +12,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// The core of date calculations in Time Machine. This class *only* cares about absolute years, and only
 /// dates - it has no time aspects at all, nor era-related aspects.
 // todo: IComparer<YearMonthDay>
-@internal
+// @internal
 abstract class YearMonthDayCalculator {
   /// Cache to speed up working out when a particular year starts.
   /// See the [YearStartCacheEntry] documentation and [GetStartOfYearInDays]

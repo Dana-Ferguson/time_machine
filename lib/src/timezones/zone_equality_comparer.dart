@@ -79,8 +79,8 @@ class ZoneEqualityComparerOptions {
   /// The combination of all available match options.
   static const ZoneEqualityComparerOptions strictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
 
-  @override get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
+  @override int get hashCode => _value.hashCode;
+  @override bool operator ==(dynamic other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
 
   const ZoneEqualityComparerOptions(this._value);
 
@@ -106,7 +106,7 @@ class ZoneEqualityComparerOptions {
   @override
   String toString() => _nameMap[this] ?? 'undefined';
 
-  ZoneEqualityComparerOptions parse(String text) {
+  ZoneEqualityComparerOptions? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];
@@ -197,7 +197,7 @@ class ZoneEqualityComparer {
   /// [x]: The first [DateTimeZone] to compare.
   /// [y]: The second [DateTimeZone] to compare.
   /// Returns: `true` if the specified time zones are equal under the options and interval of this comparer; otherwise, `false`.
-  bool equals(DateTimeZone x, DateTimeZone y) {
+  bool equals(DateTimeZone? x, DateTimeZone? y) {
     if (identical(x, y)) {
       return true;
     }
@@ -269,7 +269,7 @@ class ZoneIntervalEqualityComparer {
 
   Iterable<ZoneInterval> coalesceIntervals(Iterable<ZoneInterval> zoneIntervals) sync*
   {
-    ZoneInterval current;
+    ZoneInterval? current;
     for (var zoneInterval in zoneIntervals) {
       if (current == null) {
         current = zoneInterval;

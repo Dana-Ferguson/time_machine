@@ -16,7 +16,7 @@ Future main() async {
 class Data extends PatternTestData<Period> {
   @override Period get defaultTemplate => Period(days: 0);
 
-  Data([Period value]) : super(value ?? Period(days: 0)) {
+  Data([Period? value]) : super(value ?? Period(days: 0)) {
     this.standardPattern = PeriodPattern.roundtrip;
   }
 
@@ -24,5 +24,5 @@ class Data extends PatternTestData<Period> {
 
   @internal
   @override
-  IPattern<Period> CreatePattern() => standardPattern;
+  IPattern<Period> CreatePattern() => standardPattern!;
 }

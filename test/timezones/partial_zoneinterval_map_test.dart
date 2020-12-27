@@ -16,9 +16,9 @@ Future main() async {
 }
 
 Future setup() async {
-  ExpectedZone = (MtdtzBuilder.withName(-2, 'Start')
-    ..Add(Instants['C'], 2, 1, "Middle")
-    ..Add(Instants['G'], 1, 0, "End")
+  expectedZone = (MtdtzBuilder.withName(-2, 'Start')
+    ..Add(instants['C']!, 2, 1, "Middle")
+    ..Add(instants['G']!, 1, 0, "End")
   ).Build();
 }
 
@@ -26,7 +26,7 @@ Future setup() async {
 // apart, but nothing in these tests actually cares.
 // Various tests use a time zone with transitions at C and G.
 // Using letter is (IMO) slightly more readable than just having an array and using indexes.
-Map<String /*char*/, Instant> Instants =
+Map<String /*char*/, Instant> instants =
 {
   'A': Instant.utc(2000, 1, 1, 0, 0),
   'B': Instant.utc(2001, 1, 1, 0, 0),
@@ -39,7 +39,7 @@ Map<String /*char*/, Instant> Instants =
   'I': Instant.utc(2008, 1, 1, 0, 0),
 };
 
-DateTimeZone ExpectedZone;
+late DateTimeZone expectedZone;
 
 // This is just a variety of interesting tests, hopefully covering everything we need. Imagine a time line,
 // and the letters in the string break it up into partial maps (all based on the original zone). We should
@@ -64,25 +64,25 @@ DateTimeZone ExpectedZone;
 @TestCase(const ['DEF'])
 @TestCase(const ['ABCDEFGHI'])
 void ConvertToFullMap(String intervalBreaks) {
-  var maps = List<PartialZoneIntervalMap>();
+  var maps = <PartialZoneIntervalMap>[];
   // We just reuse ExpectedZone as the IZoneIntervalMap; PartialZoneIntervalMap itself will clamp the ends.
   var current = IInstant.beforeMinValue;
-  for (var instant in intervalBreaks.codeUnits.map((c) => Instants[String.fromCharCode(c)])) {
-    maps.add(PartialZoneIntervalMap(current, instant, ExpectedZone));
+  for (var instant in intervalBreaks.codeUnits.map((c) => instants[String.fromCharCode(c)]!)) {
+    maps.add(PartialZoneIntervalMap(current, instant, expectedZone));
     current = instant;
   }
-  maps.add(PartialZoneIntervalMap(current, IInstant.afterMaxValue, ExpectedZone));
+  maps.add(PartialZoneIntervalMap(current, IInstant.afterMaxValue, expectedZone));
 
   var converted = PartialZoneIntervalMap.convertToFullMap(maps);
   // CollectionAssert.AreEqual(
-  expect(GetZoneIntervals(ExpectedZone), GetZoneIntervals(converted));
+  expect(getZoneIntervals(expectedZone), getZoneIntervals(converted));
 }
 
 // TODO: Consider making this part of the NodaTime assembly.
 // It's just a copy from DateTimeZone, with the interval taken out.
 // It could be an extension method on IZoneIntervalMap, with optional interval.
 // On the other hand, IZoneIntervalMap is internal, so it would only be used by us.
-Iterable<ZoneInterval> GetZoneIntervals(ZoneIntervalMap map) sync*
+Iterable<ZoneInterval> getZoneIntervals(ZoneIntervalMap map) sync*
 {
   var current = Instant.minValue;
   while (current < IInstant.afterMaxValue)

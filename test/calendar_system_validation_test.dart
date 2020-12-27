@@ -108,19 +108,19 @@ void GetAbsoluteYear_InvalidEra()
   TestHelper.AssertInvalid2<int, Era, int>(Iso.getAbsoluteYear, 1, Era.annoPersico);
 }
 
-@Test()
-void GetAbsoluteYear_NullEra()
-{
-  Era i;
-  TestHelper.AssertArgumentNull2<int, Era, int>(Iso.getAbsoluteYear, 1, i);
-}
+// @Test()
+// void GetAbsoluteYear_NullEra()
+// {
+//   Era i;
+//   TestHelper.AssertArgumentNull2<int, Era, int>(Iso.getAbsoluteYear, 1, i);
+// }
 
-@Test()
-void GetMinYearOfEra_NullEra()
-{
-  Era i;
-  TestHelper.AssertArgumentNull<Era, int>(Iso.getMinYearOfEra, i);
-}
+// @Test()
+// void GetMinYearOfEra_NullEra()
+// {
+//   Era i;
+//   TestHelper.AssertArgumentNull<Era, int>(Iso.getMinYearOfEra, i);
+// }
 
 @Test()
 void GetMinYearOfEra_InvalidEra()
@@ -128,12 +128,12 @@ void GetMinYearOfEra_InvalidEra()
   TestHelper.AssertInvalid<Era, int>(Iso.getMinYearOfEra, Era.annoPersico);
 }
 
-@Test()
-void GetMaxYearOfEra_NullEra()
-{
-  Era i;
-  TestHelper.AssertArgumentNull<Era, int>(Iso.getMaxYearOfEra, i);
-}
+// @Test()
+// void GetMaxYearOfEra_NullEra()
+// {
+//   Era i;
+//   TestHelper.AssertArgumentNull<Era, int>(Iso.getMaxYearOfEra, i);
+// }
 
 @Test()
 void GetMaxYearOfEra_InvalidEra()

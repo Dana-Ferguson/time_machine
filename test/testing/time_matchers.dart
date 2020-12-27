@@ -13,9 +13,9 @@ Matcher instantIsCloseTo(Instant value) => InstantIsCloseTo(value, Time.epsilon)
 DateTimeZone Uncached(DateTimeZone zone)
 {
   // 'as' will return 'null' in C#, throws exception in Dart
-  if (zone is! CachedDateTimeZone) return zone;
+  if (zone is! CachedDateTimeZone?) return zone;
 
-  var cached = zone as CachedDateTimeZone;
+  CachedDateTimeZone? cached = zone as CachedDateTimeZone?;
   return cached == null ? zone : cached.timeZone;
 }
 
@@ -31,6 +31,7 @@ class InstantIsCloseTo extends Matcher {
 
   const InstantIsCloseTo(this._value, this._delta);
 
+  @override
   bool matches(item, Map matchState) {
     if (item is Instant) {
       var diff = (item > _value) ? _value.timeUntil(item) : item.timeUntil(_value);
@@ -41,12 +42,14 @@ class InstantIsCloseTo extends Matcher {
     }
   }
 
+  @override
   Description describe(Description description) => description
       .add('a Instant value within ')
       .addDescriptionOf(_delta)
       .add(' of ')
       .addDescriptionOf(_value);
 
+  @override
   Description describeMismatch(
       item, Description mismatchDescription, Map matchState, bool verbose) {
     if (item is Instant) {

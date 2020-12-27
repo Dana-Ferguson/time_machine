@@ -24,12 +24,15 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
   Future<DateTimeZoneProvider> ToProvider() => DateTimeZoneCache.getCache(this);
 
   /// <inheritdoc />
+  @override
   Future<Iterable<String>> getIds() => Future.value(_zones.keys);
 
   /// <inheritdoc />
+  @override
   final Future<String> versionId;
 
   /// <inheritdoc />
+  @override
   Future<DateTimeZone> forId(String id) {
     Preconditions.checkNotNull(id, 'id');
     var zone = _zones[id];
@@ -46,7 +49,8 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String get systemDefaultId {
+  @override
+  String? get systemDefaultId {
     return null;
     //String id = TimeZoneInfo.Local.Id;
     // We don't care about the return value of TryGetValue - if it's false,
@@ -69,8 +73,8 @@ class FakeDateTimeZoneSource extends DateTimeZoneSource {
 /// Builder for [FakeDateTimeZoneSource], allowing the built object to
 /// be immutable, but constructed via object/collection initializers.
 class FakeDateTimeZoneSourceBuilder {
-  final Map<String, String> _bclIdsToZoneIds = Map<String, String>();
-  final List<DateTimeZone> _zones = List<DateTimeZone>();
+  final Map<String, String> _bclIdsToZoneIds = <String, String>{};
+  final List<DateTimeZone> _zones = <DateTimeZone>[];
 
   /// Gets the dictionary mapping BCL [TimeZoneInfo] IDs to the canonical IDs
   /// served within the provider being built.
@@ -84,7 +88,7 @@ class FakeDateTimeZoneSourceBuilder {
   List<DateTimeZone> get Zones => _zones;
 
   /// Gets the version ID to advertise; defaults to 'TestZones'.
-  String VersionId;
+  late String VersionId;
 
   /// Creates a new builder.
   FakeDateTimeZoneSourceBuilder([List<DateTimeZone> zones = const []]) {

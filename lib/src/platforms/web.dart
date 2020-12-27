@@ -41,14 +41,14 @@ Future<List<int>> _readAsBytes(Uri uri) async {
     return _httpGetBytes(uri);
   }
   if (uri.scheme == 'data') {
-    return uri.data.contentAsBytes();
+    return uri.data!.contentAsBytes();
   }
   throw UnsupportedError('Unsupported scheme: $uri');
 }
 
 @ddcSupportHack
 /// Reads the bytes of a URI as a string.
-Future<String> _readAsString(Uri uri, Encoding encoding) async {
+Future<String> _readAsString(Uri uri, Encoding? encoding) async {
   if (uri.scheme == 'http' || uri.scheme == "https") {
     // Fetch as string if the encoding is expected to be understood,
     // otherwise fetch as bytes and do decoding using the encoding.
@@ -58,7 +58,7 @@ Future<String> _readAsString(Uri uri, Encoding encoding) async {
     return HttpRequest.getString(uri.toString());
   }
   if (uri.scheme == 'data') {
-    return uri.data.contentAsString(encoding: encoding);
+    return uri.data!.contentAsString(encoding: encoding);
   }
   throw UnsupportedError('Unsupported scheme: $uri');
 }
@@ -112,27 +112,27 @@ class TimeMachine {
     // Default Culture
     var cultureId = _locale;
     var culture = await Cultures.getCulture(cultureId);
-    ICultures.currentCulture = culture;
+    ICultures.currentCulture = culture!;
     // todo: remove Culture.currentCulture
 
     // todo: set default calendar from [_calendar]
   }
 
-  static String _timeZoneId;
-  static String _locale;
+  static late String _timeZoneId;
+  static late String _locale;
   // ignore: unused_field
-  static String _numberingSystem;
+  static late String _numberingSystem;
   // ignore: unused_field
-  static String _calendar;
+  static late String _calendar;
   // ignore: unused_field
-  static String _yearFormat;
+  static late String _yearFormat;
   // ignore: unused_field
-  static String _monthFormat;
+  static late String _monthFormat;
   // ignore: unused_field
-  static String _dayFormat;
+  static late String _dayFormat;
 
   // {locale: en-US, numberingSystem: latn, calendar: gregory, timeZone: America/New_York, year: numeric, month: numeric, day: numeric}
-  static _readIntlObject() {
+  static void _readIntlObject() {
     try {
       JsObject options = context['Intl']
           .callMethod('DateTimeFormat')

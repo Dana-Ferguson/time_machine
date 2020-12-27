@@ -16,6 +16,7 @@ class SingleZoneIntervalMap implements ZoneIntervalMap {
 
   SingleZoneIntervalMap(this._interval);
 
+  @override
   ZoneInterval getZoneInterval(Instant instant) => _interval;
 }
 

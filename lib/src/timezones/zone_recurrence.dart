@@ -14,7 +14,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// before the time zones were normalized (i.e. when they were still tightly longitude-based,
 /// with multiple towns in the same country observing different times).
 @immutable
-@internal
+// @internal
 class ZoneRecurrence {
   final LocalInstant _maxLocalInstant;
   final LocalInstant _minLocalInstant;
@@ -36,8 +36,8 @@ class ZoneRecurrence {
   /// [fromYear]: The first year in which this recurrence is valid
   /// [toYear]: The last year in which this recurrence is valid
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
-      : this._minLocalInstant = fromYear == Platform.int32MinValue ? LocalInstant.beforeMinValue : yearOffset?.getOccurrenceForYear(fromYear),
-        this._maxLocalInstant = toYear == Platform.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset?.getOccurrenceForYear(toYear) {
+      : this._minLocalInstant = fromYear == Platform.int32MinValue ? LocalInstant.beforeMinValue : yearOffset.getOccurrenceForYear(fromYear),
+        this._maxLocalInstant = toYear == Platform.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset.getOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 
@@ -64,7 +64,7 @@ class ZoneRecurrence {
   ///
   /// true if the current object is equal to the [other] parameter;
   /// otherwise, false.
-  bool equals(ZoneRecurrence other) {
+  bool equals(ZoneRecurrence? other) {
     if (null == other) {
       return false;
     }
@@ -74,6 +74,7 @@ class ZoneRecurrence {
     return savings == other.savings && fromYear == other.fromYear && toYear == other.toYear && name == other.name && yearOffset.equals(other.yearOffset);
   }
 
+  @override
   bool operator==(dynamic other) => other is ZoneRecurrence && equals(other);
 
   /// Returns the first transition which occurs strictly after the given instant.
@@ -88,7 +89,7 @@ class ZoneRecurrence {
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The next transition, or null if there is no next transition. The transition may be
   /// infinite, i.e. after the end of representable time.
-  Transition next(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition? next(Instant instant, Offset standardOffset, Offset previousSavings) {
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
@@ -146,7 +147,7 @@ class ZoneRecurrence {
   /// [previousSavings]: The [Offset] savings adjustment at the given Instant.
   /// The previous transition, or null if there is no previous transition. The transition may be
   /// infinite, i.e. before the start of representable time.
-  Transition previousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
+  Transition? previousOrSame(Instant instant, Offset standardOffset, Offset previousSavings) {
     Offset ruleOffset = yearOffset.getRuleOffset(standardOffset, previousSavings);
     Offset newOffset = standardOffset + savings;
 
@@ -207,7 +208,7 @@ class ZoneRecurrence {
 
   /// Piggy-backs onto Next, but fails with an InvalidOperationException if there's no such transition.
   Transition nextOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Transition next = this.next(instant, standardOffset, previousSavings);
+    Transition? next = this.next(instant, standardOffset, previousSavings);
     if (next == null) {
       throw StateError(
           'Time Machine bug or bad data: Expected a transition later than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this');
@@ -217,7 +218,7 @@ class ZoneRecurrence {
 
   /// Piggy-backs onto PreviousOrSame, but fails with a descriptive InvalidOperationException if there's no such transition.
   Transition previousOrSameOrFail(Instant instant, Offset standardOffset, Offset previousSavings) {
-    Transition previous = previousOrSame(instant, standardOffset, previousSavings);
+    Transition? previous = previousOrSame(instant, standardOffset, previousSavings);
     if (previous == null) {
       throw StateError(
           'Time Machine bug or bad data: Expected a transition earlier than $instant; standard offset = $standardOffset; previousSavings = $previousSavings; recurrence = $this');

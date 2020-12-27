@@ -12,7 +12,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// have ref parameters indicating failures, unlike subclasses. This class is used as the basis for both
 /// value and pattern parsing, so can make no judgement about what's wrong (i.e. it wouldn't know what
 /// type of failure to indicate). Instead, methods return Boolean values to indicate success or failure.
-@internal
+// @internal
 abstract class TextCursor {
   /// Gets the length of the string being parsed.
   final int length;
@@ -31,7 +31,7 @@ abstract class TextCursor {
   }
 
   /// Gets the current character.
-  String _current;
+  late String _current;
   String get current => _current;
 
   /// Gets a value indicating whether this instance has more characters.
@@ -43,7 +43,7 @@ abstract class TextCursor {
 
   /// Gets the current index into the string being parsed.
   // todo: { get; private set; }
-  int index;
+  late int index;
 
   /// Gets the remainder the string that has not been parsed yet.
   String get remainder => value.substring(index);

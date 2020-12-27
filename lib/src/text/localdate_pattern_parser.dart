@@ -39,9 +39,10 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<LocalDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDatePattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -49,10 +50,11 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
       // todo: do we want this functionality? (this was similar to the BCL support patterns
       // -- except it hits up dateTimeFormat stuff -- is there a different way this could or should be accessed?
       var patternCharacter = patternText[0];
-      patternText = _expandStandardFormatPattern(patternText, formatInfo);
-      if (patternText == null) {
+      String? newPatternText = _expandStandardFormatPattern(patternText, formatInfo);
+      if (newPatternText == null) {
         throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDate']);
       }
+      patternText = newPatternText;
     }
 
     var patternBuilder = SteppedPatternBuilder<LocalDate, LocalDateParseBucket>(formatInfo,
@@ -62,7 +64,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
     return patternBuilder.build(_templateValue);
   }
 
-  String _expandStandardFormatPattern(String patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String? _expandStandardFormatPattern(String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'd':
         return formatInfo.dateTimeFormat.shortDatePattern;
@@ -78,7 +80,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
 // todo: was a sub class of LocalDatePatternParser
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-@internal
+// @internal
 class LocalDateParseBucket extends ParseBucket<LocalDate> {
   final LocalDate templateValue;
 
@@ -91,12 +93,11 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
   int dayOfMonth = 0;
   int dayOfWeek = 0;
 
-  LocalDateParseBucket(this.templateValue) {
+  LocalDateParseBucket(this.templateValue) :
     // Only fetch this once.
     this.calendar = templateValue.calendar;
-  }
 
-  ParseResult<TResult> parseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
+  ParseResult<TResult>? parseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
     var compareInfo = formatInfo.compareInfo;
     for (var era in calendar.eras) {
       for (String eraName in formatInfo.getEraNames(era)) {
@@ -109,14 +110,14 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
     return IParseResult.mismatchedText<TResult>(cursor, 'g');
   }
 
-  @internal
+  // @internal
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedDate)) {
       return ParseResult.forValue<LocalDate>(LocalDate(year, monthOfYearNumeric, dayOfMonth, calendar));
     }
     // This will set Year if necessary
-    ParseResult<LocalDate> failure = _determineYear(usedFields, text);
+    ParseResult<LocalDate>? failure = _determineYear(usedFields, text);
     if (failure != null) {
       return failure;
     }
@@ -162,7 +163,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
   /// and if the template value isn't in the first century already.
   ///
   /// Phew.
-  ParseResult<LocalDate> _determineYear(PatternFields usedFields, String text) {
+  ParseResult<LocalDate>? _determineYear(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.year)) {
       if (year > calendar.maxYear || year < calendar.minYear) {
         return IParseResult.fieldValueOutOfRangePostParse<LocalDate>(text, year, 'u', 'LocalDate');
@@ -216,7 +217,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
   //static const PatternFields monthOfYearText = const PatternFields(1 << 11);
   static const PatternFields _monthOfYearText_booleanOR_monthOfYearText = const PatternFields(1 << 11 | 1 << 10);
 
-  ParseResult<LocalDate> _determineMonth(PatternFields usedFields, String text) {
+  ParseResult<LocalDate>? _determineMonth(PatternFields usedFields, String text) {
     var x = usedFields & (PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText);
     if (x ==  PatternFields.monthOfYearNumeric) {
     // No-op

@@ -35,6 +35,7 @@ class SimpleWeekYearRule implements WeekYearRule {
   }
 
   /// <inheritdoc />
+  @override
   LocalDate getLocalDate(int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek, CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
     _validateWeekYear(weekYear, calendar);
@@ -76,6 +77,7 @@ class SimpleWeekYearRule implements WeekYearRule {
   }
 
   /// <inheritdoc />
+  @override
   int getWeekOfWeekYear(LocalDate date) {
     YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(date);
     YearMonthDayCalculator yearMonthDayCalculator = ICalendarSystem.yearMonthDayCalculator(date.calendar);
@@ -93,6 +95,7 @@ class SimpleWeekYearRule implements WeekYearRule {
   }
 
   /// <inheritdoc />
+  @override
   int getWeeksInWeekYear(int weekYear, CalendarSystem calendar) {
     Preconditions.checkNotNull(calendar, 'calendar');
     YearMonthDayCalculator yearMonthDayCalculator = ICalendarSystem.yearMonthDayCalculator(calendar);
@@ -119,6 +122,7 @@ class SimpleWeekYearRule implements WeekYearRule {
   }
 
   /// <inheritdoc />
+  @override
   int getWeekYear(LocalDate date) {
     YearMonthDay yearMonthDay = ILocalDate.yearMonthDay(date);
     YearMonthDayCalculator yearMonthDayCalculator = ICalendarSystem.yearMonthDayCalculator(date.calendar);

@@ -5,9 +5,14 @@ include: package:pedantic/analysis_options.yaml
 
 # For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
 # Uncomment to specify additional rules.
-# linter:
-#   rules:
-#     - camel_case_types
+linter:
+  rules:
+    unnecessary_const: false
+    omit_local_variable_types: false
+    curly_braces_in_flow_control_structures: false
+    prefer_single_quotes: false
+    unnecessary_this: false
+    library_prefixes: false
 
 analyzer:
 #   exclude:

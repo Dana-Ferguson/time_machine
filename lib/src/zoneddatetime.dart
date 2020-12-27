@@ -15,7 +15,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 // Note: documentation that refers to the LocalDateTime type within this class must use the fully-qualified
 // reference to avoid being resolved to the LocalDateTime property instead.
 
-@internal
+// @internal
 abstract class IZonedDateTime {
   static ZonedDateTime trusted(OffsetDateTime offsetDateTime, DateTimeZone zone) => ZonedDateTime._(offsetDateTime, zone);
 }
@@ -49,7 +49,7 @@ class ZonedDateTime {
   /// * [instant]: The instant.
   /// * [zone]: The time zone.
   /// * [calendar]: The calendar system, defaulting to ISO.
-  factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone zone, CalendarSystem calendar]) {
+  factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone? zone, CalendarSystem? calendar]) {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
@@ -419,11 +419,11 @@ class ZonedDateTime {
   /// or null to use the default format pattern ('G').
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       ZonedDateTimePatterns.format(this, patternText, culture);
 
   @ddcSupportHack
-  String toStringDDC([String patternText, Culture culture]) =>
+  String toStringDDC([String? patternText, Culture? culture]) =>
       ZonedDateTimePatterns.format(this, patternText, culture);
 
   /// Constructs a [DateTime] from this [ZonedDateTime] which has a

@@ -5,14 +5,14 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-@internal
+// @internal
 abstract class LocalTimePatterns {
   // todo: we may not need _Patterns classes for our Dart port
   /// Class whose existence is solely to avoid type initialization order issues, most of which stem
   /// from needing TimeFormatInfo.InvariantInfo...
   static final LocalTimePattern extendedIsoPatternImpl = LocalTimePattern.createWithInvariantCulture("HH':'mm':'ss;FFFFFFFFF");
 
-  static String format(LocalTime localTime, String patternText, Culture culture) =>
+  static String format(LocalTime localTime, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .localTimePatternParser
@@ -59,6 +59,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<LocalTime> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given local time as text according to the rules of this pattern.
@@ -66,6 +67,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// * [value]: The local time to format.
   ///
   /// Returns: The local time formatted according to this pattern.
+  @override
   String format(LocalTime value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -75,6 +77,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// * [builder]: The `StringBuilder` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(LocalTime value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
@@ -112,7 +115,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// Returns: A pattern for parsing and formatting local times.
   ///
   /// * [InvalidPatternError]: The pattern text was invalid.
-  static LocalTimePattern createWithCulture(String patternText, Culture culture, [LocalTime templateValue]) =>
+  static LocalTimePattern createWithCulture(String patternText, Culture culture, [LocalTime? templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), templateValue ?? LocalTime.midnight);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

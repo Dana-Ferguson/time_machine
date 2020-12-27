@@ -5,7 +5,7 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
 import 'package:test/test.dart';
-import 'package:matcher/matcher.dart';
+// import 'package:matcher/matcher.dart';
 
 import '../time_machine_testing.dart';
 import 'pattern_test_data.dart';
@@ -61,13 +61,13 @@ abstract class PatternTestBase<T>
     expect(value, parseResult.value);
   }
 
-  void AssertParseNull(IPattern<T> pattern)
-  {
-    var result = pattern.parse(null);
-    expect(result.success, isFalse);
-    // Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
-    expect(result.error, TypeMatcher<ArgumentError>());
-  }
+  // void AssertParseNull(IPattern<T> pattern)
+  // {
+  //   var result = pattern.parse(null);
+  //   expect(result.success, isFalse);
+  //   // Assert.IsInstanceOf<ArgumentNullException>(result.Exception);
+  //   expect(result.error, TypeMatcher<ArgumentError>());
+  // }
 }
 
 

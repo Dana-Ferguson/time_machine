@@ -15,11 +15,11 @@ import 'dart:isolate' show Isolate;
 
 class _VirtualMachineIO implements PlatformIO {
   @override
-  Future<ByteData> getBinary(String path, String filename) async {
+  Future<ByteData> getBinary(String path, String? filename) async {
     if (filename == null) return ByteData(0);
 
     var resource = Uri.parse('package:time_machine/data/$path/$filename');
-    var resolved = await Isolate.resolvePackageUri(resource);
+    final Uri resolved = (await Isolate.resolvePackageUri(resource))!;
     var binary = ByteData.view(Int8List.fromList(await io.File.fromUri(resolved).readAsBytes()).buffer);
     return binary;
   }
@@ -28,7 +28,7 @@ class _VirtualMachineIO implements PlatformIO {
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
     var resource = Uri.parse('package:time_machine/data/$path/$filename');
-    var resolved = await Isolate.resolvePackageUri(resource);
+    final Uri resolved = (await Isolate.resolvePackageUri(resource))!;
     return json.decode(await io.File.fromUri(resolved).readAsString());
   }
 }
@@ -39,7 +39,7 @@ class _FlutterMachineIO implements PlatformIO {
   _FlutterMachineIO(this._rootBundle);
 
   @override
-  Future<ByteData> getBinary(String path, String filename) async {
+  Future<ByteData> getBinary(String path, String? filename) async {
     if (filename == null) return ByteData(0);
 
     ByteData byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
@@ -74,7 +74,7 @@ class TimeMachine  {
   static bool _longIdNames = false;
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
-  static Future initialize(String timeZoneOverride) async {
+  static Future initialize(String? timeZoneOverride) async {
     Platform.startVM();
 
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
@@ -91,12 +91,12 @@ class TimeMachine  {
 
     var local = timeZoneOverride != null ? await tzdb.getZoneOrNull(timeZoneOverride) : await _figureOutTimeZone(tzdb);
     // todo: cache local more directly? (this is indirect caching)
-    TzdbIndex.localId = local.id;
+    TzdbIndex.localId = local!.id;
 
     // Default Culture
     var cultureId = io.Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
-    var culture = await Cultures.getCulture(cultureId);
-    ICultures.currentCulture = culture;
+    Culture? culture = await Cultures.getCulture(cultureId);
+    ICultures.currentCulture = culture!;
     // todo: remove Culture.currentCulture
   }
 
@@ -105,7 +105,7 @@ class TimeMachine  {
   /// with known timezones and narrow down which timezone the local computer is in.
   ///
   /// note: during testing, bugs were found with dart's zone interval id -- it sometimes does daylight savings when it didn't exist
-  static Future<DateTimeZone> _figureOutTimeZone(DateTimeZoneProvider provider, [bool strict = false]) async {
+  static Future<DateTimeZone?> _figureOutTimeZone(DateTimeZoneProvider provider, [bool strict = false]) async {
     var zones = <DateTimeZone>[];
     // load all the timezones; todo: fast_cache method
     for (var id in provider.ids) {
@@ -122,7 +122,7 @@ class TimeMachine  {
       _longIdNames = true;
     }
 
-    var lessZones = List<DateTimeZone>();
+    var lessZones = <DateTimeZone>[];
     for (var zone in zones) {
       // first pass; todo: identify special instants with a high amount of diversity among timezones so we can get a better first pass
       if (_isTheSame(nowDateTime, zone.getZoneInterval(nowInstant))) {
@@ -157,7 +157,7 @@ class TimeMachine  {
         }
 
         // i++;
-        if (badZones.length != 0) {
+        if (badZones.isNotEmpty) {
           var lastZone = zones.last;
 
           // print('$i :: $badZones');
@@ -231,14 +231,14 @@ class TimeMachine  {
     throw StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
   }
 
-  static Map<String, String> _windowsZones;
-  static Future windowsZoneToCldrZone(String id) async {
+  static Map<String, String>? _windowsZones;
+  static Future<String> windowsZoneToCldrZone(String id) async {
     if (_windowsZones == null) {
       var file = io.File('${io.Directory.current.path}/lib/data/zones.json');
       _windowsZones = json.decode(await file.readAsString());
     }
 
-    return _windowsZones[id];
+    return _windowsZones![id]!;
   }
 
   // ignore: unused_field

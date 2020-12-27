@@ -10,6 +10,7 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
 @internal class YearsPeriodField implements IDatePeriodField {
   YearsPeriodField();
 
+  @override
   LocalDate add(LocalDate localDate, int value) {
     if (value == 0) {
       return localDate;
@@ -23,6 +24,7 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
     return ILocalDate.trusted(calculator.setYear(yearMonthDay, currentYear + value).withCalendarOrdinal(ICalendarSystem.ordinal(calendar)));
   }
 
+  @override
   int unitsBetween(LocalDate start, LocalDate end) {
     int diff = end.year - start.year;
 

@@ -14,31 +14,31 @@ Future main() async {
   await runTests();
 }
 
-final ZoneInterval FirstInterval =
+final ZoneInterval firstInterval =
 IZoneInterval.newZoneInterval('First', IInstant.beforeMinValue, Instant.utc(2000, 3, 10, 10, 0), Offset.hours(3), Offset.zero);
 
 // Note that this is effectively UTC +3 + 1 hour DST.
-final ZoneInterval SecondInterval =
-IZoneInterval.newZoneInterval('Second', FirstInterval.end, Instant.utc(2000, 9, 15, 5, 0), Offset.hours(4), Offset.hours(1));
+final ZoneInterval secondInterval =
+IZoneInterval.newZoneInterval('Second', firstInterval.end, Instant.utc(2000, 9, 15, 5, 0), Offset.hours(4), Offset.hours(1));
 
-final ZoneInterval ThirdInterval =
-IZoneInterval.newZoneInterval('Third', SecondInterval.end, Instant.utc(2005, 1, 20, 8, 0), Offset.hours(-5), Offset.zero);
+final ZoneInterval thirdInterval =
+IZoneInterval.newZoneInterval('Third', secondInterval.end, Instant.utc(2005, 1, 20, 8, 0), Offset.hours(-5), Offset.zero);
 
-final ZoneRecurrence Winter = ZoneRecurrence('Winter', Offset.zero,
+final ZoneRecurrence winter = ZoneRecurrence('Winter', Offset.zero,
 ZoneYearOffset(TransitionMode.wall, 10, 5, 0, false, LocalTime(2, 0, 0)), 1960, Platform.int32MaxValue);
 
-final ZoneRecurrence Summer = ZoneRecurrence('Summer', Offset.hours(1),
+final ZoneRecurrence summer = ZoneRecurrence('Summer', Offset.hours(1),
 ZoneYearOffset(TransitionMode.wall, 3, 10, 0, false, LocalTime(1, 0, 0)), 1960, Platform.int32MaxValue);
 
-final StandardDaylightAlternatingMap TailZone =
-StandardDaylightAlternatingMap(Offset.hours(-6), Winter, Summer);
+final StandardDaylightAlternatingMap tailZone =
+StandardDaylightAlternatingMap(Offset.hours(-6), winter, summer);
 
 // We don't actually want an interval from the beginning of time when we ask our composite time zone for an interval
 // - because that could give the wrong idea. So we clamp it at the end of the precalculated interval.
-final ZoneInterval ClampedTailZoneInterval = IZoneInterval.withStart(TailZone.getZoneInterval(ThirdInterval.end), ThirdInterval.end);
+final ZoneInterval clampedTailZoneInterval = IZoneInterval.withStart(tailZone.getZoneInterval(thirdInterval.end), thirdInterval.end)!;
 
 final PrecalculatedDateTimeZone TestZone =
-PrecalculatedDateTimeZone('Test', [ FirstInterval, SecondInterval, ThirdInterval ], TailZone);
+PrecalculatedDateTimeZone('Test', [ firstInterval, secondInterval, thirdInterval ], tailZone);
 
 @Test()
 void MinMaxOffsets()
@@ -52,7 +52,7 @@ void MinMaxOffsetsWithOtherTailZone()
 {
   var tailZone = FixedDateTimeZone.forIdOffset('TestFixed', Offset.hours(8));
   var testZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
+      [ firstInterval, secondInterval, thirdInterval ], tailZone);
   expect(Offset.hours(-5), testZone.minOffset);
   expect(Offset.hours(8), testZone.maxOffset);
 }
@@ -61,8 +61,8 @@ void MinMaxOffsetsWithOtherTailZone()
 void MinMaxOffsetsWithNullTailZone()
 {
   var testZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval,
-      IZoneInterval.newZoneInterval('Last', ThirdInterval.end, IInstant.afterMaxValue, Offset.zero, Offset.zero) ], null);
+      [ firstInterval, secondInterval, thirdInterval,
+      IZoneInterval.newZoneInterval('Last', thirdInterval.end, IInstant.afterMaxValue, Offset.zero, Offset.zero) ], null);
   expect(Offset.hours(-5), testZone.minOffset);
   expect(Offset.hours(4), testZone.maxOffset);
 }
@@ -70,58 +70,58 @@ void MinMaxOffsetsWithNullTailZone()
 @Test()
 void GetZoneIntervalInstant_End()
 {
-  expect(SecondInterval, TestZone.getZoneInterval(SecondInterval.end - Time.epsilon));
+  expect(secondInterval, TestZone.getZoneInterval(secondInterval.end - Time.epsilon));
 }
 
 @Test()
 void GetZoneIntervalInstant_Start()
 {
-  expect(SecondInterval, TestZone.getZoneInterval(SecondInterval.start));
+  expect(secondInterval, TestZone.getZoneInterval(secondInterval.start));
 }
 
 @Test()
 void GetZoneIntervalInstant_FinalInterval_End()
 {
-  expect(ThirdInterval, TestZone.getZoneInterval(ThirdInterval.end - Time.epsilon));
+  expect(thirdInterval, TestZone.getZoneInterval(thirdInterval.end - Time.epsilon));
 }
 
 @Test()
 void GetZoneIntervalInstant_FinalInterval_Start()
 {
-  expect(ThirdInterval, TestZone.getZoneInterval(ThirdInterval.start));
+  expect(thirdInterval, TestZone.getZoneInterval(thirdInterval.start));
 }
 
 @Test()
 void GetZoneIntervalInstant_TailZone()
 {
-  expect(ClampedTailZoneInterval, TestZone.getZoneInterval(ThirdInterval.end));
+  expect(clampedTailZoneInterval, TestZone.getZoneInterval(thirdInterval.end));
 }
 
 @Test()
 void MapLocal_UnambiguousInPrecalculated()
 {
-  CheckMapping(LocalDateTime(2000, 6, 1, 0, 0, 0), SecondInterval, SecondInterval, 1);
+  CheckMapping(LocalDateTime(2000, 6, 1, 0, 0, 0), secondInterval, secondInterval, 1);
 }
 
 @Test()
 void MapLocal_UnambiguousInTailZone()
 {
-  CheckMapping(LocalDateTime(2005, 2, 1, 0, 0, 0), ClampedTailZoneInterval, ClampedTailZoneInterval, 1);
+  CheckMapping(LocalDateTime(2005, 2, 1, 0, 0, 0), clampedTailZoneInterval, clampedTailZoneInterval, 1);
 }
 
 @Test()
 void MapLocal_AmbiguousWithinPrecalculated()
 {
   // Transition from +4 to -5 has a 9 hour ambiguity
-  CheckMapping(ThirdInterval.isoLocalStart, SecondInterval, ThirdInterval, 2);
+  CheckMapping(thirdInterval.isoLocalStart, secondInterval, thirdInterval, 2);
 }
 
 @Test()
 void MapLocal_AmbiguousAroundTailZoneTransition()
 {
   // Transition from -5 to -6 has a 1 hour ambiguity
-  // CheckMapping(ThirdInterval.IsoLocalEnd.PlusNanoseconds(-1L), ThirdInterval, ClampedTailZoneInterval, 2);
-  CheckMapping(ThirdInterval.isoLocalEnd.addNanoseconds(-1), ThirdInterval, ClampedTailZoneInterval, 2);
+  // CheckMapping(thirdInterval.IsoLocalEnd.PlusNanoseconds(-1L), thirdInterval, clampedTailZoneInterval, 2);
+  CheckMapping(thirdInterval.isoLocalEnd.addNanoseconds(-1), thirdInterval, clampedTailZoneInterval, 2);
 }
 
 @Test()
@@ -132,12 +132,12 @@ void MapLocal_AmbiguousButTooEarlyInTailZoneTransition()
   // A local instant of one hour before after the transition from the precalculated zone (which is -5)
   // will therefore be ambiguous, but the resulting instants from the ambiguity occur
   // before our transition into the tail zone, so are ignored.
-  var tailZone = SingleTransitionDateTimeZone.around(ThirdInterval.end + Time(hours: 1), 10, 8);
+  var tailZone = SingleTransitionDateTimeZone.around(thirdInterval.end + Time(hours: 1), 10, 8);
   var gapZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(-1));
-  expect(ThirdInterval, mapping.earlyInterval);
-  expect(ThirdInterval, mapping.lateInterval);
+      [ firstInterval, secondInterval, thirdInterval ], tailZone);
+  var mapping = gapZone.mapLocal(thirdInterval.isoLocalEnd.addHours(-1));
+  expect(thirdInterval, mapping.earlyInterval);
+  expect(thirdInterval, mapping.lateInterval);
   expect(1, mapping.count);
 }
 
@@ -145,8 +145,8 @@ void MapLocal_AmbiguousButTooEarlyInTailZoneTransition()
 void MapLocal_GapWithinPrecalculated()
 {
   // Transition from +3 to +4 has a 1 hour gap
-  expect(FirstInterval.isoLocalEnd < SecondInterval.isoLocalStart, isTrue);
-  CheckMapping(FirstInterval.isoLocalEnd, FirstInterval, SecondInterval, 0);
+  expect(firstInterval.isoLocalEnd < secondInterval.isoLocalStart, isTrue);
+  CheckMapping(firstInterval.isoLocalEnd, firstInterval, secondInterval, 0);
 }
 
 @Test()
@@ -158,10 +158,10 @@ void MapLocal_SingleIntervalAroundTailZoneTransition()
   // and can therefore be ignored, resulting in an overall unambiguous time.
   var tailZone = FixedDateTimeZone.forOffset(Offset.hours(5));
   var gapZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(-1));
-  expect(ThirdInterval, mapping.earlyInterval);
-  expect(ThirdInterval, mapping.lateInterval);
+      [ firstInterval, secondInterval, thirdInterval ], tailZone);
+  var mapping = gapZone.mapLocal(thirdInterval.isoLocalEnd.addHours(-1));
+  expect(thirdInterval, mapping.earlyInterval);
+  expect(thirdInterval, mapping.lateInterval);
   expect(1, mapping.count);
 }
 
@@ -174,11 +174,11 @@ void MapLocal_GapAroundTailZoneTransition()
   // and can therefore be ignored, resulting in an overall gap.
   var tailZone = FixedDateTimeZone.forOffset(Offset.hours(5));
   var gapZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd);
-  expect(ThirdInterval, mapping.earlyInterval);
+      [ firstInterval, secondInterval, thirdInterval ], tailZone);
+  var mapping = gapZone.mapLocal(thirdInterval.isoLocalEnd);
+  expect(thirdInterval, mapping.earlyInterval);
   expect(mapping.lateInterval,
-      IZoneInterval.newZoneInterval('UTC+05', ThirdInterval.end, IInstant.afterMaxValue, Offset.hours(5), Offset.zero));
+      IZoneInterval.newZoneInterval('UTC+05', thirdInterval.end, IInstant.afterMaxValue, Offset.hours(5), Offset.zero));
   expect(0, mapping.count);
 }
 
@@ -189,12 +189,12 @@ void MapLocal_GapAroundAndInTailZoneTransition()
   // the transition *to* the tail zone from the precalculated zone.
   // A local time of one hour after the transition from the precalculated zone (which is -5)
   // will therefore be in the gap.
-  var tailZone = SingleTransitionDateTimeZone.around(ThirdInterval.end + Time(hours: 1), -10, 5);
+  var tailZone = SingleTransitionDateTimeZone.around(thirdInterval.end + Time(hours: 1), -10, 5);
   var gapZone = PrecalculatedDateTimeZone('Test',
-      [ FirstInterval, SecondInterval, ThirdInterval ], tailZone);
-  var mapping = gapZone.mapLocal(ThirdInterval.isoLocalEnd.addHours(1));
-  expect(ThirdInterval, mapping.earlyInterval);
-  expect(IZoneInterval.newZoneInterval('Single-Early', ThirdInterval.end, tailZone.Transition, Offset.hours(-10), Offset.zero),
+      [ firstInterval, secondInterval, thirdInterval ], tailZone);
+  var mapping = gapZone.mapLocal(thirdInterval.isoLocalEnd.addHours(1));
+  expect(thirdInterval, mapping.earlyInterval);
+  expect(IZoneInterval.newZoneInterval('Single-Early', thirdInterval.end, tailZone.Transition, Offset.hours(-10), Offset.zero),
       mapping.lateInterval);
   expect(0, mapping.count);
 }

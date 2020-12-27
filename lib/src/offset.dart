@@ -170,6 +170,7 @@ class Offset implements Comparable<Offset> {
   /// * [other]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
+  @override
   bool operator ==(dynamic other) => other is Offset && equals(other);
 
 
@@ -221,7 +222,8 @@ class Offset implements Comparable<Offset> {
   ///   | < 0      | This object is less than the [other] parameter. |
   ///   | 0      | This object is equal to [other].      |
   ///   | > 0 | This object is greater than [other].      |
-  int compareTo(Offset other) => other == null ? 1 : inSeconds.compareTo(other.inSeconds);
+  @override
+  int compareTo(Offset? other) => other == null ? 1 : inSeconds.compareTo(other.inSeconds);
 
   /// Indicates whether the current object is equal to another object of the same type.
   ///
@@ -238,7 +240,7 @@ class Offset implements Comparable<Offset> {
   ///
   /// The value of the current instance in the default format pattern ('g'), using the current isolate's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetPatterns.format(this, patternText, culture);
 
   /// Returns an offset for the given seconds value, which may be negative.
