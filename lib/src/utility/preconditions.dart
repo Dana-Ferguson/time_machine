@@ -32,8 +32,8 @@ class Preconditions {
   // Note: this overload exists for performance reasons. It would be reasonable to call the
   // version using 'long' values, but we'd incur conversions on every call. This method
   // may well be called very often.
-  static void checkArgumentRange(String paramName, num? value, num minInclusive, num maxInclusive) {
-    if (value == null || value < minInclusive || value > maxInclusive) {
+  static void checkArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
+    if (value < minInclusive || value > maxInclusive) {
       throw RangeError.range(value, minInclusive, maxInclusive, paramName);
     }
   }
