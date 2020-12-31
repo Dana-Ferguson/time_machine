@@ -33,11 +33,10 @@ dev_dependencies:
 dependency_overrides:
   # http:
   #   git: https://github.com/dart-lang/http.git
-  args:
-    git: https://github.com/dart-lang/args.git
   archive:
     git: https://github.com/brendan-duncan/archive.git
-    
+  args: ^2.0.0-nullsafety.0 
+
 
 # Flutter Testing
 #  test: "^0.12.3"
