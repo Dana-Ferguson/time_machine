@@ -41,7 +41,7 @@ class DayOfWeek {
   const DayOfWeek(this._value);
 
   @override int get hashCode => _value.hashCode;
-  @override operator ==(dynamic other) => other is DayOfWeek && other._value == _value || other is int && other == _value;
+  @override bool operator  ==(dynamic other) => other is DayOfWeek && other._value == _value || other is int && other == _value;
 
   bool operator <(DayOfWeek other) => _value < other._value;
   bool operator <=(DayOfWeek other) => _value <= other._value;
