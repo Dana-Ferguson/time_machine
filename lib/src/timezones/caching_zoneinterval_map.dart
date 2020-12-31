@@ -49,7 +49,7 @@ class _HashArrayCache implements ZoneIntervalMap {
   /// converts an instant into a number of 32 day periods.
   static const int _periodShift = 5;
 
-  final List<_HashCacheNode?> _instantCache = List<_HashCacheNode?>.generate(_cacheSize, (_) => null);
+  final List<_HashCacheNode?> _instantCache = List<_HashCacheNode?>.filled(_cacheSize, null);
   final ZoneIntervalMap _map;
 
   _HashArrayCache(this._map) {

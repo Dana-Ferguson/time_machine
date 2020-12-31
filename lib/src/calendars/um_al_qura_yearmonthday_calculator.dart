@@ -52,8 +52,8 @@ class UmAlQuraYearMonthDayCalculator extends RegularYearMonthDayCalculator {
       (int i) => /*(ushort)*/((data[i * 2] << 8) | (data[i * 2 + 1]))
     ); // new ushort[data.Length / 2];
 
-    _yearLengths = List<int>.generate(_monthLengths.length, (_) => 0);
-    _yearStartDays = List<int>.generate(_monthLengths.length, (_) => 0);
+    _yearLengths = List<int>.filled(_monthLengths.length, 0);
+    _yearStartDays = List<int>.filled(_monthLengths.length, 0);
 
     // Populate arrays from index 1.
     int totalDays = 0;

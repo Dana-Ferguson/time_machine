@@ -17,8 +17,8 @@ class _Constructor {
   static List<List<int>> _gregorianYearMonthDayCalculator_Init() {
     if (_gregorianYearMonthDayCalculator_Initialized != null) return _gregorianYearMonthDayCalculator_Initialized!;
 
-    var _monthStartDays = List<int>.generate((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1, (_) => 0);
-    var _yearStartDays = List<int>.generate(_lastOptimizedYear + 1 - _firstOptimizedYear, (_) => 0);
+    var _monthStartDays = List<int>.filled((_lastOptimizedYear + 1 - _firstOptimizedYear) * 12 + 1, 0);
+    var _yearStartDays = List<int>.filled(_lastOptimizedYear + 1 - _firstOptimizedYear, 0);
 
     // It's generally a really bad idea to create an instance before the static initializer
     // has completed, but we know its safe because we're only using a very restricted set of methods.

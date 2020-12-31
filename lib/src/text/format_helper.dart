@@ -130,7 +130,7 @@ abstract class FormatHelper {
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = List<String>.generate(_maximumPaddingLength, (_) => '');
+    var digits = List<String>.filled(_maximumPaddingLength, '');
     int pos = _maximumPaddingLength;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
@@ -202,7 +202,7 @@ abstract class FormatHelper {
     }
 
     // Unfortunate, but never mind - let's go the whole hog...
-    var digits = List<String>.generate(_maximumPaddingLength, (_) => '');
+    var digits = List<String>.filled(_maximumPaddingLength, '');
     int pos = _maximumPaddingLength;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));
@@ -344,7 +344,7 @@ abstract class FormatHelper {
       return;
     }
 
-    var digits = List<String>.generate(_maximumInt64Length, (_) => '');
+    var digits = List<String>.filled(_maximumInt64Length, '');
     int pos = _maximumInt64Length;
     do {
       digits[--pos] = String.fromCharCode(_zeroCodeUnit + (value % 10));

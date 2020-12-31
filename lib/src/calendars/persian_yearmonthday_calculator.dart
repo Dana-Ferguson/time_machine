@@ -29,7 +29,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
 
   static List<int> _generateTotalDaysByMonth() {
     int days = 0;
-    var totalDaysByMonth = List<int>.generate(13, (_) => 0);
+    var totalDaysByMonth = List<int>.filled(13, 0);
     for (int i = 1; i <= 12; i++) {
       totalDaysByMonth[i] = days;
       int daysInMonth = i <= 6 ? 31 : 30;
@@ -43,7 +43,7 @@ abstract class PersianYearMonthDayCalculator extends RegularYearMonthDayCalculat
   }
 
   List<int> _generateStartOfYearInDaysCache() {
-    var startOfYearInDaysCache = List<int>.generate(maxYear + 2, (_) => 0);
+    var startOfYearInDaysCache = List<int>.filled(maxYear + 2, 0);
     int startOfYear = daysAtStartOfYear1 - getDaysInYear(0);
     for (int year = 0; year <= maxYear + 1; year++) {
       startOfYearInDaysCache[year] = startOfYear;

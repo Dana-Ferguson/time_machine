@@ -57,7 +57,7 @@ class YearStartCacheEntryVM {
   YearStartCacheEntryVM(int year, int days) : _value = (days << _entryValidationBits) | _getValidator(year);
 
   static List<YearStartCacheEntry> createCache() {
-    return List<YearStartCacheEntry>.generate(_cacheSize, (int _) => YearStartCacheEntry._invalid);
+    return List<YearStartCacheEntry>.filled(_cacheSize, YearStartCacheEntry._invalid);
   }
 
   /// Returns the validator to use for a given year, a non-negative number containing at most
@@ -109,7 +109,7 @@ class YearStartCacheEntry {
   YearStartCacheEntry(this.year, this.days);
 
   static List<YearStartCacheEntry> createCache() {
-    return List<YearStartCacheEntry>.generate(_cacheSize, (int _) => YearStartCacheEntry._invalid);
+    return List<YearStartCacheEntry>.filled(_cacheSize, YearStartCacheEntry._invalid);
   }
 
   /// Returns the validator to use for a given year, a non-negative number containing at most

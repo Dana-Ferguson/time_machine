@@ -125,7 +125,7 @@ class CalendarSystem {
 
   // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
   static final CalendarSystem _isoCalendarSystem = _generateIsoCalendarSystem();
-  static final List<CalendarSystem?> _calendarByOrdinal = List<CalendarSystem?>.generate(CalendarOrdinal.size.value, (int index) => null);
+  static final List<CalendarSystem?> _calendarByOrdinal = List<CalendarSystem?>.filled(CalendarOrdinal.size.value, null);
 
   // this was a static constructor
   static CalendarSystem _generateIsoCalendarSystem() {
