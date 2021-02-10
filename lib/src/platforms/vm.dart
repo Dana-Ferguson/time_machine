@@ -57,7 +57,7 @@ class _FlutterMachineIO implements PlatformIO {
 Future initialize(Map args) {
   String timeZoneOverride = args['timeZone'];
 
-  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
+  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia || io.Platform.isMacOS || io.Platform.isWindows || io.Platform.isLinux) {
     if (args == null || args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
     PlatformIO.local = _FlutterMachineIO(args['rootBundle']);

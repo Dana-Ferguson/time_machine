@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.17
+- Support for Flutter on Windows, Linux and MacOS
+
 ## 0.9.16
 - Update TZDB to 2020d.
 - Fixed loading issues with web, flutter web, and flutter.
