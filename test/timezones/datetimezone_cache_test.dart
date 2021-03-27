@@ -259,7 +259,7 @@ void Tzdb_Indexer_AllIds()
 
 
 class TestDateTimeZoneSource extends DateTimeZoneSource {
-  late String LastRequestedId;
+  String? LastRequestedId;
   final List<String> ids;
 
   TestDateTimeZoneSource(this.ids) {
