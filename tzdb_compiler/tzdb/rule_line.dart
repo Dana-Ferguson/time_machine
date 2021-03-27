@@ -97,9 +97,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   @override String toString() {
     var builder = StringBuffer();
     builder.write(_recurrence);
-    if (_daylightSavingsIndicator != null) {
-      builder..write(" \"")..write(_daylightSavingsIndicator)..write("\"");
-    }
+    builder..write(" \"")..write(_daylightSavingsIndicator)..write("\"");
     return builder.toString();
   }
 }

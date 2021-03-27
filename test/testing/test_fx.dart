@@ -63,7 +63,7 @@ Future runTests() async {
 
     for (DeclarationMirror declaration in lib.declarations.values) {
       if (testGenTest && declaration is MethodMirror && _nameOf(declaration) == 'setup') _setupMethod = true;
-      if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
+      if (declaration.metadata.isEmpty) continue;
 
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
       if (test.isEmpty) continue;
@@ -74,8 +74,8 @@ Future runTests() async {
       if (testName == null) {
         var libSimpleName= _stripSymbol(lib.simpleName);
         var sb = StringBuffer();
-        if (libSimpleName?.isNotEmpty ?? false) sb..write(libSimpleName)..write('.');
-        sb..write(_stripSymbol(declaration.simpleName));
+        if (libSimpleName.isNotEmpty) sb..write(libSimpleName)..write('.');
+        sb.write(_stripSymbol(declaration.simpleName));
         testName = sb.toString();
       }
 
@@ -155,7 +155,8 @@ void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [
 
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
   isFuture = true; // note: this is an override
-  if (isFuture) sb.write('async => await '); else sb.write('=> ');
+  if (isFuture) sb.write('async => await ');
+  //  else sb.write('=> ');
 
   if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
 
@@ -187,16 +188,13 @@ bool _setupMethod = false;
 
 String _printNewObject(Object obj) {
   var sb = StringBuffer();
-  if (obj == null) {
-    sb..write('null');
-  }
-  else if (obj is String) {
+if (obj is String) {
     // todo: I need to scape this?
     sb..write("'")..write(_escapeText(obj))..write("'");
   }
   else if (obj is Culture) {
     var name = obj.name;
-    if (name == '' || name == null) {
+    if (name == '') {
       sb.write('null');
     }
     else if (name == 'AwkwardAmPmDesignatorCulture') {
@@ -246,17 +244,17 @@ String _printNewObject(Object obj) {
       sb.write("new Culture('ampmDesignators'/*Culture.invariantCultureId*/, (new DateTimeFormatInfoBuilder.invariantCulture()..amDesignator = '${obj
           .dateTimeFormat.amDesignator}'..pmDesignator = '${obj.dateTimeFormat.pmDesignator}').Build())");
     }
-    else sb.write('await Cultures.getCulture("${name}")');
+    else sb.write('await Cultures.getCulture("$name")');
   }
   else if (obj is PatternTestData) {
     sb.write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})');
     if (obj.defaultTemplate != null) sb.write('..defaultTemplate =${_printNewObject(obj.defaultTemplate)}');
-    if (obj.culture != null) sb.write('..culture = ${_printNewObject(obj.culture)}');
+    sb.write('..culture = ${_printNewObject(obj.culture)}');
     if (obj.standardPattern != null) sb.write('..standardPattern =${obj.standardPatternCode}');
-    if (obj.pattern != null) sb.write('..pattern =${_printNewObject(obj.pattern)}');
-    if (obj.text != null) sb.write('..text =${_printNewObject(obj.text)}');
+    sb.write('..pattern =${_printNewObject(obj.pattern)}');
+    sb.write('..text =${_printNewObject(obj.text)}');
     if (obj.template != null) sb.write('..template =${_printNewObject(obj.template)}');
-    if (obj.description != null) sb.write('..description =${_printNewObject(obj.description)}');
+    sb.write('..description =${_printNewObject(obj.description)}');
     if (obj.message != null) sb.write('..message =${_printNewObject(obj.message!)}');
     if (obj.parameters.isNotEmpty) sb.write('..parameters.addAll(${_printNewObject(obj.parameters)})');
     ;
@@ -373,7 +371,7 @@ String _printNewObject(Object obj) {
     sb.write('new PeriodUnits(${obj.value})');
   }
   else {
-    sb..write('"Type = ${obj.runtimeType}; toString = ${obj.toString()}"');
+    sb.write('"Type = ${obj.runtimeType}; toString = ${obj.toString()}"');
   }
 
   // sb.write('/*${obj.runtimeType}*/');
@@ -451,7 +449,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
   if (testGenTest)
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
-    _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
+    _gen_sb_methodCalls.write('  var $_classVarName = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
   }
   var declarations = <DeclarationMirror>[...classMirror.declarations.values];
   while (classMirror.superclass != null) {
@@ -461,7 +459,7 @@ Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, St
 
   for(DeclarationMirror declaration in declarations) {
     if (declaration is MethodMirror && declaration.metadata.any((m) => m.reflectee is Test)) {
-      if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
+      if (declaration.metadata.isEmpty) continue;
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
       if (test.isEmpty) continue;
 

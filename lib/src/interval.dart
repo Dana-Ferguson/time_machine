@@ -94,7 +94,7 @@ class Interval {
   ///
   /// true if the value of this instant is equal to the value of the <paramref name='other' /> parameter;
   /// otherwise, false.
-  bool equals(Interval other) => other != null && _start == other._start && _end == other._end;
+  bool equals(Interval other) => identical(this, other) || _start == other._start && _end == other._end;
 
   /// Returns true if this Interval overlaps the [other] Interval.
   ///

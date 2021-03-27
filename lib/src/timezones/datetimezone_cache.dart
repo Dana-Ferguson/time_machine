@@ -67,9 +67,6 @@ class DateTimeZoneCache extends DateTimeZoneProvider {
     var cache = DateTimeZoneCache._(source, ids, VersionId);
     // Populate the dictionary with null values meaning "the ID is valid, we haven't fetched the zone yet".
     for (String id in ids) {
-      if (id == null) {
-        throw InvalidDateTimeZoneSourceError('Source-returned ID sequence contained a null reference');
-      }
       cache._timeZoneMap[id] = null;
     }
     return cache;

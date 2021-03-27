@@ -23,7 +23,7 @@ abstract class DateTimeZoneProviders {
 
   static Future<DateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(TzdbDateTimeZoneSource());
 
-  static late DateTimeZoneProvider _defaultProvider;
+  static DateTimeZoneProvider? _defaultProvider;
   /// This is the default [DateTimeZoneProvider] for the currently loaded TimeMachine.
   /// It will be used internally where-ever timezone support is needed when no provider is provided,
   static DateTimeZoneProvider? get defaultProvider => _defaultProvider;

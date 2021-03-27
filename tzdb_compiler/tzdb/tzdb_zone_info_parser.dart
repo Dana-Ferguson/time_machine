@@ -255,7 +255,7 @@ class TzdbZoneInfoParser {
         database.addZone(parseZone(name, tokens));
         return name;
       default:
-        if (keyword == null || keyword.isEmpty) {
+        if (keyword.isEmpty) {
           if (previousZone == null) {
             // InvalidDataException
             throw Exception('Zone continuation provided with no previous zone line');

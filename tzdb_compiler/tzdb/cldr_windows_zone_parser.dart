@@ -281,9 +281,9 @@ class CldrWindowsZonesParser
   {
     var mapZones = _mapZones(document);
     var windowsZonesVersion = _findVersion(document);
-    var tzdbVersion = document.findElements('windowsZones')?.first?.findElements('mapTimezones')?.first?.getAttribute('typeVersion') ?? '';
+    var tzdbVersion = document.findElements('windowsZones').first.findElements('mapTimezones').first.getAttribute('typeVersion') ?? '';
     // todo: var _tzdbVersion = document.rootElement.('windowsZones')?.Element("mapTimezones")?.Attribute("typeVersion")?.Value ?? "";
-    var windowsVersion = document.findElements('windowsZones')?.first?.findElements('mapTimezones')?.first?.getAttribute('typeVersion') ?? '';
+    var windowsVersion = document.findElements('windowsZones').first.findElements('mapTimezones').first.getAttribute('typeVersion') ?? '';
     // todo: var windowsVersion = document.Root.Element('windowsZones')?.Element("mapTimezones")?.Attribute("otherVersion")?.Value ?? "";
     return WindowsZones(windowsZonesVersion, tzdbVersion, windowsVersion, mapZones);
   }

@@ -36,5 +36,5 @@ class SkippedTimeError extends Error {
   /// * [localDateTime]: The local date/time which is skipped in the specified time zone.
   /// * [zone]: The time zone in which the local date/time does not exist.
   SkippedTimeError(this.localDateTime, this.zone)
-      : message = "Local time $localDateTime is invalid in time zone ${zone?.id ?? 'null'}";
+      : message = "Local time $localDateTime is invalid in time zone ${zone.id}";
 }

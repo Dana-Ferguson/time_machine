@@ -293,18 +293,18 @@ abstract class Time implements Comparable<Time> {
   bool operator ==(dynamic other) => other is Time && equals(other);
 
   bool operator >=(Time other) =>
-      other == null ? true : (_milliseconds > other._milliseconds) ||
+      (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval >= other._nanosecondsInterval);
 
   bool operator <=(Time other) =>
-      other == null ? false : (_milliseconds < other._milliseconds) ||
+      (_milliseconds < other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval <= other._nanosecondsInterval);
 
   bool operator >(Time other) =>
-      other == null ? true : (_milliseconds > other._milliseconds) ||
+      (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval > other._nanosecondsInterval);
 
-  bool operator <(Time other) => other == null ? false : (_milliseconds < other._milliseconds) ||
+  bool operator <(Time other) => (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
 
 

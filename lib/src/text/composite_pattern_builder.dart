@@ -88,7 +88,10 @@ class _CompositePattern<T> implements IPartialPattern<T> {
   @override
   ParseResult<T> parsePartial(ValueCursor cursor) {
     int index = cursor.index;
-    for (IPartialPattern<T> pattern in _patterns as Iterable<IPartialPattern<T>>) {
+    for (IPattern<T> pattern in _patterns) {
+      if (pattern is! IPartialPattern<T>) {
+        throw Exception('not a partial pattern');
+      }
       cursor.move(index);
       ParseResult<T> result = pattern.parsePartial(cursor);
       if (result.success || !IParseResult.continueAfterErrorWithMultipleFormats(result)) {

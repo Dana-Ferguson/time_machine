@@ -247,7 +247,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentError]: The calendar system of [other] is not the same
   /// as the calendar of [this].
   bool operator <(LocalDateTime other) {
-    if (other == null) return false;
     Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(other) < 0;
   }
@@ -266,7 +265,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentError]: The calendar system of [other] is not the same
   /// as the calendar of [this].
   bool operator <=(LocalDateTime other) {
-    if (other == null) return false;
     Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(other) <= 0;
   }
@@ -285,7 +283,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentError]: The calendar system of [other] is not the same
   /// as the calendar of [this].
   bool operator >(LocalDateTime other) {
-    if (other == null) return true;
     Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(other) > 0;
   }
@@ -304,7 +301,6 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   /// * [ArgumentError]: The calendar system of [other] is not the same
   /// as the calendar of [this].
   bool operator >=(LocalDateTime other) {
-    if (other == null) return true;
     // todo: what variable should these checkArgument's give?
     Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
     return compareTo(other) >= 0;

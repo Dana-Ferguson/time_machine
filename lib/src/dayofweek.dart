@@ -52,7 +52,7 @@ class DayOfWeek {
   int operator +(DayOfWeek other) => _value + other._value;
 
   @override
-  String toString() => _stringRepresentations[_value] ?? 'undefined';
+  String toString() => _stringRepresentations[_value];
 
   DayOfWeek? parse(String text) {
     var token = text.trim().toLowerCase();

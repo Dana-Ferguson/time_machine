@@ -216,7 +216,7 @@ class ZoneInterval {
   /// Returns a [String] that represents this instance.
   ///
   /// A [String] that represents this instance.
-  @override String toString() => '${name}: [$_rawStart, $_rawEnd) $wallOffset ($savings)';
+  @override String toString() => '$name: [$_rawStart, $_rawEnd) $wallOffset ($savings)';
 
 // @override String toString() => '${name}: [$RawStart, $RawEnd) $wallOffset ($savings)';
 // @override String toString() => '${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)';

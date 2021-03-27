@@ -88,7 +88,7 @@ abstract class DateTimeZoneProvider {
   /// in the same order in which the IDs are returned by the provider.
   Future<Iterable<DateTimeZone>> getAllZones() async {
     // var ids = await GetIds();
-    var futureZones = ids!.map((id) => this[id]);
+    var futureZones = ids.map((id) => this[id]);
     return await Future.wait(futureZones);
   }
 

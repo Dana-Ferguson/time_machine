@@ -55,10 +55,10 @@ class _FlutterMachineIO implements PlatformIO {
 }
 
 Future initialize(Map args) {
-  String timeZoneOverride = args['timeZone'];
+  String? timeZoneOverride = args['timeZone'];
 
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
-    if (args == null || args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+    if (args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
     PlatformIO.local = _FlutterMachineIO(args['rootBundle']);
   }
@@ -94,7 +94,7 @@ class TimeMachine  {
     TzdbIndex.localId = local!.id;
 
     // Default Culture
-    var cultureId = io.Platform.localeName?.split('.')?.first?.replaceAll('_', '-') ?? 'en-US';
+    var cultureId = io.Platform.localeName.split('.').first.replaceAll('_', '-');
     Culture? culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture!;
     // todo: remove Culture.currentCulture

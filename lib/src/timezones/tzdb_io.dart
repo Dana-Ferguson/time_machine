@@ -31,7 +31,7 @@ class TzdbIndex {
     var jsonMap = <String, String>{IDateTimeZone.utcId: ''};
     var cache = <String, DateTimeZone>{};
 
-    var binary = await PlatformIO.local!.getBinary('tzdb', 'tzdb.bin');
+    var binary = await PlatformIO.local.getBinary('tzdb', 'tzdb.bin');
     var reader = DateTimeZoneReader(binary);
 
     while (reader.isMore) {

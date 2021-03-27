@@ -22,28 +22,28 @@ abstract class PatternTestBase<T>
   @TestCaseSource(#InvalidPatternData)
   void InvalidPatterns(PatternTestData<T> data)
   {
-    data?.TestInvalidPattern();
+    data.TestInvalidPattern();
   }
 
   @Test()
   @TestCaseSource(#ParseFailureData)
   void ParseFailures(PatternTestData<T> data)
   {
-    data?.TestParseFailure();
+    data.TestParseFailure();
   }
 
   @Test()
   @TestCaseSource(#ParseData)
   void Parse(PatternTestData<T> data)
   {
-    data?.TestParse();
+    data.TestParse();
   }
 
   @Test()
   @TestCaseSource(#FormatData)
   void Format(PatternTestData<T> data)
   {
-    data?.TestFormat();
+    data.TestFormat();
   }
 
   // Testing this for every item is somewhat overkill, but not too slow.
@@ -51,7 +51,7 @@ abstract class PatternTestBase<T>
   @TestCaseSource(#FormatData)
   void AppendFormat(PatternTestData<T> data)
   {
-    data?.TestAppendFormat();
+    data.TestAppendFormat();
   }
 
   void AssertRoundTrip(T value, IPattern<T> pattern)

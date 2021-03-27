@@ -98,7 +98,7 @@ class ZoneLine {
     builder..write(name)..write(' ');
     builder..write(standardOffset)..write(' ');
     builder..write(ParserHelper.formatOptional(rules))..write(' ');
-    builder..write(format);
+    builder.write(format);
     if (untilYear != Platform.int32MaxValue) {
       builder..write(' ')..write(untilYear.toString().padLeft(4, '0'))..write(" ")..write(untilYearOffset);
     }

@@ -27,10 +27,11 @@ abstract class PatternTestData<T> {
   @internal late String standardPatternCode;
 
   /// Pattern text.
-  @internal late String pattern;
+  @internal String pattern = '***undefined pattern***';
 
   /// String value to be parsed, and expected result of formatting.
-  @internal late String text;
+  @internal String text = '***undefined text***';
+
 
   /// Template value to specify in the pattern
   @internal late T template;
@@ -129,7 +130,7 @@ abstract class PatternTestData<T> {
       // Expected... now let's check the message *starts* with the right part.
       // We're not currently validating the bit that reproduces the bad value.
       assert(e.message.startsWith(expectedMessage),
-      "Expected message to start with \n'${expectedMessage}'; was actually \n'${e.message}'");
+      "Expected message to start with \n'$expectedMessage'; was actually \n'${e.message}'");
     }
   }
 
@@ -141,9 +142,6 @@ abstract class PatternTestData<T> {
       builder.write('Text=$text; ');
       if (culture != Culture.invariant) {
         builder.write('Culture=$culture; ');
-      }
-      if (description != null) {
-        builder.write('Description=$description; ');
       }
       // if (!Template.Equals(DefaultTemplate)) {
       if (template != defaultTemplate) {
@@ -164,7 +162,7 @@ abstract class PatternTestData<T> {
     }
     on FormatException // catch ()
         {
-      throw FormatException("Failed to format String '${message}' with ${parameters.length} parameters");
+      throw FormatException("Failed to format String '$message' with ${parameters.length} parameters");
     }
   }
 }

@@ -12,6 +12,7 @@ import 'package:test/test.dart';
 import 'time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
   await runTests();
 }
 

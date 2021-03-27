@@ -66,7 +66,6 @@ Future<String> _readAsString(Uri uri, Encoding? encoding) async {
 class _WebMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
-    if (filename == null) return ByteData(0);
 
     // var resource = new Resource('packages/time_machine/data/$path/$filename');
     // // todo: probably a better way to do this

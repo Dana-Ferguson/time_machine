@@ -124,7 +124,7 @@ class FakeDateTimeZoneSourceBuilder {
     _bclIdsToZoneIds.forEach((key, value) {
       Preconditions.checkNotNull(value, 'value');
       if (!zoneMap.containsKey(value)) {
-        throw StateError('Mapping for BCL ${key}/${value} has no corresponding zone.');
+        throw StateError('Mapping for BCL $key/$value has no corresponding zone.');
       }
     });
 

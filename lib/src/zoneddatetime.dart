@@ -74,7 +74,7 @@ class ZonedDateTime {
     Offset correctOffset = zone.getUtcOffset(candidateInstant);
     // Not using Preconditions, to avoid building the string unnecessarily.
     if (correctOffset != offset) {
-      throw ArgumentError('Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset');
+      throw ArgumentError('Offset $offset is invalid for local date and time $localDateTime in time zone ${zone.id} offset');
     }
     var offsetDateTime = OffsetDateTime(localDateTime, offset);
     return ZonedDateTime._(offsetDateTime, zone);
