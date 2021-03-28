@@ -150,11 +150,11 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
     addParseAction((ValueCursor cursor, TBucket bucket) {
       int startingIndex = cursor.index;
-      int value = cursor.parseInt64Digits(minimumDigits, maximumDigits)!;
-      // if (value == null) {
-      //   cursor.move(startingIndex);
-      //   return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
-      // }
+      int? value = cursor.parseInt64Digits(minimumDigits, maximumDigits);
+      if (value == null) {
+        cursor.move(startingIndex);
+        return IParseResult.mismatchedNumber<TResult>(cursor, stringFilled(patternChar, minimumDigits));
+      }
       if (value < minimumValue || value > maximumValue) {
         cursor.move(startingIndex);
         return IParseResult.fieldValueOutOfRange<TResult>(cursor, value, patternChar, TResult.toString());
