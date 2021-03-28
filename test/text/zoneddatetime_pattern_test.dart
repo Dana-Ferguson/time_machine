@@ -34,6 +34,7 @@ late DateTimeZoneProvider tzdb;
 late DateTimeZone france;
 late DateTimeZone athens;
 late DateTimeZone etcGMT_12;
+late DateTimeZoneProvider etcGMT_12_tzdb;
 
 Future main() async {
   await TimeMachine.initialize();
@@ -51,6 +52,7 @@ Future setup() async {
 
   // todo: implement CanonicalIdMap
   etcGMT_12 = FixedDateTimeZone('Etc/GMT-12', Offset.hours(12), '+12');
+  etcGMT_12_tzdb = await FakeDateTimeZoneSourceBuilder([etcGMT_12]).Build().ToProvider();
 }
 
 @Test()
@@ -689,7 +691,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         etcGMT_12)
       ..text = '1906-08-29T20:58:32 Etc/GMT-12 (+12)'
       ..pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'"
-      ..ZoneProvider = tzdb,
+      ..ZoneProvider = etcGMT_12_tzdb,
 
     // Fields not otherwise covered (according to tests running on AppVeyor...)
     Data(MsdnStandardExample)
