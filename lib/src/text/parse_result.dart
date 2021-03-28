@@ -130,7 +130,7 @@ class ParseResult<T> {
       ParseResult<T>._error(Preconditions.checkNotNull(errorProvider, 'errorProvider'), false);
 }
 
-// @internal
+@internal
 abstract class IParseResult {
   static bool continueAfterErrorWithMultipleFormats(ParseResult result) => result._continueAfterErrorWithMultipleFormats;
 

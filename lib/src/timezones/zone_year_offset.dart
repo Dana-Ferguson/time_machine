@@ -23,7 +23,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// Finally the [Mode] property deterines whether the [timeOfDay] value
 /// is added to the calculated offset to generate an offset within the day.
 @immutable
-// @internal
+@internal
 class ZoneYearOffset {
   /// An offset that specifies the beginning of the year.
   static final ZoneYearOffset StartOfYear = ZoneYearOffset(TransitionMode.wall, 1, 1, 0, false, LocalTime.midnight);

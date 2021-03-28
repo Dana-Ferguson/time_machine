@@ -9,7 +9,7 @@ import 'dart:collection';
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/platforms/platform_io.dart';
 
-// @internal
+@internal
 class CultureLoader {
   static Future<CultureLoader> load() async {
     var map = await _loadCultureMapping();

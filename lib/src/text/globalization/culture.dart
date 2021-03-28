@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// @internal
+@internal
 abstract class ICultures {
   static set currentCulture(Culture value) { Cultures._currentCulture = value; }
   static void loadAllCulturesInformation_SetFlag() {

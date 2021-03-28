@@ -11,7 +11,7 @@ import 'package:time_machine/src/calendars/time_machine_calendars.dart';
 /// YearMonthDay arguments can be assumed to be valid for the relevant calendar,
 /// but other arguments should be validated. (Eras should be validated for nullity as well
 /// as for the presence of a particular era.)
-// @internal
+@internal
 abstract class EraCalculator
 {
   final Iterable<Era> eras;

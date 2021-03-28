@@ -11,7 +11,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// Benchmarking shows that a delegate may be slightly faster here, but the difference
 /// isn't very significant even for very fast calls (cache hits). The interface ends up
 /// feeling slightly cleaner elsewhere in the code.
-// @internal
+@internal
 @interface
 abstract class ZoneIntervalMap
 {
@@ -20,7 +20,7 @@ abstract class ZoneIntervalMap
 
 // This is slightly ugly, but it allows us to use any time zone as the tail
 // zone for PrecalculatedDateTimeZone, which is handy for testing.
-// @internal
+@internal
 @interface
 abstract class ZoneIntervalMapWithMinMax extends ZoneIntervalMap
 {

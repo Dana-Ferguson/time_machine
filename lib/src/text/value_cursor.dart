@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/text/time_machine_text.dart';
 
-// @internal
+@internal
 class ValueCursor extends TextCursor {
   // '0': 48; '9': 57
   static const int _zeroCodeUnit = 48;

@@ -29,7 +29,7 @@ class _MonthFormatActionHolder<TResult, TBucket extends ParseBucket<TResult>> ex
 
 /// Common methods used when parsing dates - these are used from both LocalDateTimePatternParser
 /// and LocalDatePatternParser.
-// @internal
+@internal
 abstract class DatePatternHelper {
   /// Creates a character handler for the year-of-era specifier (y).
   static CharacterHandler<TResult, TBucket> createYearOfEraHandler<TResult, TBucket extends ParseBucket<TResult>>

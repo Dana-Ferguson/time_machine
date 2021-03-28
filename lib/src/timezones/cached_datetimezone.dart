@@ -19,7 +19,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 /// was more effort than it was worth to update. The mechanism is still available for future
 /// expansion though.
 // sealed
-// @internal
+@internal
 class CachedDateTimeZone extends DateTimeZone {
   final ZoneIntervalMap _map;
 

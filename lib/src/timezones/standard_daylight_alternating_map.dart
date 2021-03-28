@@ -35,7 +35,7 @@ class _TransitionRecurrenceResult {
 /// only be used as part of a zone which will only ask it for values within the right
 /// portion of the timeline.
 @immutable
-// @internal
+@internal
 class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   final Offset _standardOffset;
   final ZoneRecurrence _standardRecurrence;

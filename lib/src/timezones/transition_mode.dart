@@ -7,7 +7,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 
 /// Specifies how transitions are calculated. Whether relative to UTC, the time zones standard
 /// offset, or the wall (or daylight savings) offset.
-// @internal
+@internal
 class TransitionMode {
   final int _value;
 

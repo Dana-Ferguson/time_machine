@@ -114,7 +114,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
   }
 }
 
-// @internal
+@internal
 class LocalDateTimeParseBucket extends ParseBucket<LocalDateTime> {
   final /*LocalDatePatternParser.*/LocalDateParseBucket date;
   final /*LocalTimePatternParser.*/LocalTimeParseBucket time;

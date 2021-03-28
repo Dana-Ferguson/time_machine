@@ -34,7 +34,7 @@ class _TimeComponentsBetweenResult {
   _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
-// @internal
+@internal
 abstract class IPeriod {
   static int daysBetween(LocalDate start, LocalDate end) => Period._daysBetween(start, end);
 

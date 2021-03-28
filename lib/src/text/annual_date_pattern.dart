@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// todo: investigate, probably not needed for Dart
 /// Class whose existence is solely to avoid type initialization order issues, most of which stem
 /// from needing TimeFormatInfo.InvariantInfo...
-// @internal
+@internal
 abstract class AnnualDatePatterns {
   static AnnualDatePattern create(String patternText, TimeMachineFormatInfo formatInfo, AnnualDate templateValue) =>
       AnnualDatePattern._create(patternText, formatInfo, templateValue);

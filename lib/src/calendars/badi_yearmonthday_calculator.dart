@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 /// See [CalendarSystem.badi] for details about the Badíʿ calendar.
-// @internal
+@internal
 class BadiYearMonthDayCalculator extends YearMonthDayCalculator {
 // named constants to avoid use of raw numbers in the code
   static const int _averageDaysPer10Years = 3652; // Ideally 365.2425 per year...

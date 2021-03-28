@@ -10,7 +10,7 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 
 
 /// A pattern parser for a single format info, which caches patterns by text/style.
-// @internal
+@internal
 class FixedFormatInfoPatternParser<T> {
   // It would be unusual to have more than 50 different patterns for a specific culture
   // within a real app.

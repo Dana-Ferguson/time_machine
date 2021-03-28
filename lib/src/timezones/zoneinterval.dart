@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: thought: should I adopt the *of() Pattern from flutter?
-// @internal
+@internal
 abstract class IZoneInterval {
   static Instant rawStart(ZoneInterval zoneInterval) => zoneInterval._rawStart;
   static Instant rawEnd(ZoneInterval zoneInterval) => zoneInterval._rawEnd;

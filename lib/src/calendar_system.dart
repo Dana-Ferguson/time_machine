@@ -5,7 +5,7 @@
 import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
-// @internal
+@internal
 abstract class ICalendarSystem {
   /// Fetches a calendar system by its ordinal value, constructing it if necessary.
   static CalendarSystem forOrdinal(CalendarOrdinal ordinal) {

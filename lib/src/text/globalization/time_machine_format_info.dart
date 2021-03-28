@@ -20,7 +20,7 @@ import 'package:time_machine/src/text/globalization/time_machine_globalization.d
 /// [Culture] itself may be mutable. If the [Culture] is mutated after initialization, results are not
 /// guaranteed: some aspects of the [Culture] may be extracted at initialization time, others may be
 /// extracted on first demand but cached, and others may be extracted on-demand each time.
-// @internal
+@internal
 class TimeMachineFormatInfo {
   // todo: remove for Dart
   // Names that we can use to check for broken Mono behaviour.

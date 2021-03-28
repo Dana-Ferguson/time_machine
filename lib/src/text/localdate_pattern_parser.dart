@@ -80,7 +80,7 @@ class LocalDatePatternParser implements IPatternParser<LocalDate> {
 // todo: was a sub class of LocalDatePatternParser
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-// @internal
+@internal
 class LocalDateParseBucket extends ParseBucket<LocalDate> {
   final LocalDate templateValue;
 
@@ -110,7 +110,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
     return IParseResult.mismatchedText<TResult>(cursor, 'g');
   }
 
-  // @internal
+  @internal
   @override
   ParseResult<LocalDate> calculateValue(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.embeddedDate)) {

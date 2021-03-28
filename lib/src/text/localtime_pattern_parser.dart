@@ -79,7 +79,7 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
 
 /// Bucket to put parsed values in, ready for later result calculation. This type is also used
 /// by LocalDateTimePattern to store and calculate values.
-// @internal
+@internal
 class LocalTimeParseBucket extends ParseBucket<LocalTime> {
   final LocalTime templateValue;
 

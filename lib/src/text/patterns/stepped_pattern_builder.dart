@@ -1,6 +1,7 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
+import 'package:meta/meta.dart';
 
 import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:time_machine/src/utility/time_machine_utilities.dart';
@@ -22,7 +23,7 @@ class _FindLongestMatchCursor {
 
 /// Builder for a pattern which implements parsing and formatting as a sequence of steps applied
 /// in turn.
-// @internal
+@internal
 class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   static const int _aCodeUnit = 97;
   static const int _zCodeUnit = 122;
@@ -196,7 +197,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
   }
 
 // ParseResult<TResult> ParseAction<TResult, TBucket extends ParseBucket<TResult>>(ValueCursor cursor, TBucket bucket);
-// internal void AddParseAction(ParseAction parseAction) => parseActions.Add(parseAction);
+// @internal void AddParseAction(ParseAction parseAction) => parseActions.Add(parseAction);
 
 
   /// Adds text which must be matched exactly when parsing, and appended directly when formatting.
@@ -500,7 +501,7 @@ class SteppedPatternBuilder<TResult, TBucket extends ParseBucket<TResult>> {
 
 // todo: this was a C# hack ... it was inside SteppedPatternBuilder original ... this hack is messy
 /// Hack to handle genitive month names - we only know what we need to do *after* we've parsed the whole pattern.
-// @internal
+@internal
 abstract class IPostPatternParseFormatAction<TResult>
 {
   Function(TResult, StringBuffer) buildFormatAction(PatternFields finalFields);

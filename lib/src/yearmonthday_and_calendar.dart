@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 // This is a Year - Month - Day - Calendar TUPLE -- this not actually a Calendar;
 // todo: test bit packing
-// @internal
+@internal
 class YearMonthDayCalendar {
   // These constants are internal so they can be used in YearMonthDay
   static const int calendarBits = 6; // Up to 64 calendars.

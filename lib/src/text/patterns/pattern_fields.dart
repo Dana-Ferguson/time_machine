@@ -11,7 +11,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 /// by all parser types for simplicity, although most fields aren't used by most parsers.
 /// Pattern fields don't necessarily have corresponding duration or date/time fields,
 /// due to concepts such as 'sign'.
-// @internal
+@internal
 @immutable
 class PatternFields {
   final int _value;

@@ -3,6 +3,7 @@
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
 // import 'package:time_machine/src/time_machine_internal.dart';
 import 'dart:collection';
+import 'package:meta/meta.dart';
 
 /// Implements a thread-safe cache of a fixed size, with a single computation function.
 /// (That happens to be all we need at the time of writing.)
@@ -12,7 +13,7 @@ import 'dart:collection';
 ///
 /// [TKey]: Type of key
 /// [TValue]: Type of value
-// @internal
+@internal
 class Cache<TKey, TValue> {
   final int _size;
   // @private final object mutex = new object();

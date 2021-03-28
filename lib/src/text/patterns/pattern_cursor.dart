@@ -8,7 +8,7 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 
 
 /// Extends [TextCursor] to simplify parsing patterns such as 'uuuu-MM-dd'.
-// @internal
+@internal
 class PatternCursor extends TextCursor {
   /// The character signifying the start of an embedded pattern.
   static const String embeddedPatternStart = '<';

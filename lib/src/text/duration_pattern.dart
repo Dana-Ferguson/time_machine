@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:time_machine/src/time_machine_internal.dart';
 
 // Nested class for ease of type initialization
-// @internal
+@internal
 abstract class TimePatterns {
   static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture('-D:hh:mm:ss.FFFFFFFFF');
   static String format(Time time, String? patternText, Culture? culture) =>

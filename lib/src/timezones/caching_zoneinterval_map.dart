@@ -9,7 +9,7 @@ import 'package:time_machine/src/utility/time_machine_utilities.dart';
 import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 /// Helper methods for creating IZoneIntervalMaps which cache results.
-// @internal
+@internal
 abstract class CachingZoneIntervalMap
 {
 // Currently the only implementation is HashArrayCache. This container class is mostly for historical

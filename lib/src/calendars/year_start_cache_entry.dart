@@ -82,7 +82,7 @@ class YearStartCacheEntryVM {
   int get startOfYearDays => _value >> _entryValidationBits;
 }
 
-// @internal
+@internal
 class YearStartCacheEntry {
   static const int _cacheIndexBits = 10;
   static const int _cacheIndexMask = 1023; // _cacheSize - 1;
