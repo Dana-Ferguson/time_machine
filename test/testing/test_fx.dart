@@ -27,9 +27,9 @@ StringBuffer _gen_sb_methodCalls = StringBuffer();
 String _testFilePath = 'unknown_test.dart';
 
 Iterable<TestCase> toTestCases(TestCaseSource testCaseSource, ObjectMirror mirror) {
-  var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable;
+  var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable?;
 
-  if (argumentsSource.isEmpty) return const [];
+  if (argumentsSource == null || argumentsSource.isEmpty) return const [];
   var testCases = <TestCase>[];
 
   for (var arguments in argumentsSource) {
@@ -434,7 +434,11 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
         });
       }
       else {
-        test(name, () => mirror.invoke(method.simpleName, testCase.arguments.toList()));
+        final argsList = testCase.arguments.toList();
+        final singleNullArg = argsList.length == 1 && argsList.first == null;
+        if (!singleNullArg) {
+          test(name, () => mirror.invoke(method.simpleName, argsList));
+        }
       }
     }
   }
