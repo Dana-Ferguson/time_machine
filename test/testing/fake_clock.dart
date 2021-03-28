@@ -133,8 +133,10 @@ class FakeClock extends Clock {
   /// The value could even be negative, to simulate particularly odd system clock effects.
   ///
   /// <seealso cref='GetCurrentInstant'/>
+  // ignore: unnecessary_getters_setters
   Time get AutoAdvance => _autoAdvance;
 
+  // ignore: unnecessary_getters_setters
   set AutoAdvance(Time value) => _autoAdvance = value;
 }
 
