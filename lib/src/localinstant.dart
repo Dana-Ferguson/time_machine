@@ -84,7 +84,7 @@ class LocalInstant {
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic right) => right is LocalInstant && _time == right._time;
+  bool operator ==(Object right) => right is LocalInstant && _time == right._time;
 
   /// Equivalent to [Instant.safePlus], but in the opposite direction.
   Instant safeMinus(Offset offset) {

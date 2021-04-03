@@ -74,7 +74,7 @@ class YearMonthDayCalendar {
   String toString() => YearMonthDay(year, month, day).toString() + '-$calendarOrdinal';
 
   @override
-  bool operator ==(dynamic rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;
+  bool operator ==(Object rhs) => rhs is YearMonthDayCalendar ? yearMonthDay == rhs.yearMonthDay && calendarOrdinal == rhs.calendarOrdinal : false;
 
   @override
   int get hashCode => hash2(yearMonthDay.hashCode, calendarOrdinal.hashCode);

@@ -147,7 +147,7 @@ class TzdbZone1970LocationCountry {
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
   bool equals(TzdbZone1970LocationCountry? other) => other != null && other.code == code && other.name == name;
 
-  @override bool operator==(dynamic other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
+  @override bool operator==(Object other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
 
   /// Returns a hash code for this country.
   @override int get hashCode => hash2(name, code);

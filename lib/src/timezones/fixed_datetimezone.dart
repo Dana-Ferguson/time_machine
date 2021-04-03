@@ -139,7 +139,7 @@ class FixedDateTimeZone extends DateTimeZone {
           name == other.name;
 
   @override
-  bool operator ==(dynamic other) => other is FixedDateTimeZone && equals(other);
+  bool operator ==(Object other) => other is FixedDateTimeZone && equals(other);
 
   /// Computes the hash code for this instance.
   ///

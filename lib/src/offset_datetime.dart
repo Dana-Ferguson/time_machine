@@ -384,7 +384,7 @@ class OffsetDateTime {
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
+  bool operator ==(Object right) => right is OffsetDateTime && equals(right);
 }
 
 // todo: very unsure about what to do with these

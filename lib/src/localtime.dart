@@ -256,7 +256,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two times are the same; false otherwise
-  @override bool operator ==(dynamic other) => other is LocalTime && this.timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
+  @override bool operator ==(Object other) => other is LocalTime && this.timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly earlier than the right
   /// one.

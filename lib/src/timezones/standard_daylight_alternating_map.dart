@@ -82,7 +82,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
           _standardRecurrence.equals(other._standardRecurrence);
 
   @override
-  bool operator==(dynamic other) => other is StandardDaylightAlternatingMap && equals(other);
+  bool operator==(Object other) => other is StandardDaylightAlternatingMap && equals(other);
 
   @override int get hashCode => hash3(_standardOffset, _dstRecurrence, _standardRecurrence);
 

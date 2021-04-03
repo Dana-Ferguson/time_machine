@@ -108,7 +108,7 @@ class OffsetDate
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic right) => right is OffsetDate && equals(right);
+  bool operator ==(Object right) => right is OffsetDate && equals(right);
 
   /// Returns a [String] that represents this instance.
   ///

@@ -103,7 +103,7 @@ class AnnualDate implements Comparable<AnnualDate> {
   ///
   /// Returns: True if the two dates are the same; false otherwise
   @override
-  bool operator ==(dynamic rhs) => rhs is AnnualDate && _value == rhs._value;
+  bool operator ==(Object rhs) => rhs is AnnualDate && _value == rhs._value;
 
   /// Compares two annual dates to see if the left one is strictly earlier than the right
   /// one.

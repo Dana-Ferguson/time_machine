@@ -208,7 +208,7 @@ class ZoneInterval {
         && wallOffset == other.wallOffset && savings == other.savings;
   }
 
-  @override bool operator==(dynamic other) => other is ZoneInterval ? equals(other) : false;
+  @override bool operator==(Object other) => other is ZoneInterval ? equals(other) : false;
 
   /// Serves as a hash function for a particular type.
   @override int get hashCode => hashObjects([name, _rawStart, _rawEnd, wallOffset, savings]);

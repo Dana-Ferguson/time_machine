@@ -75,7 +75,7 @@ class PeriodUnits {
   static const PeriodUnits allUnits = const PeriodUnits(1023); // union(const [years, months, weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
 
   @override int get hashCode => _value.hashCode;
-  @override bool operator ==(dynamic other) =>
+  @override bool operator ==(Object other) =>
       (other is PeriodUnits && other._value == _value)
           || (other is int && other == _value);
 

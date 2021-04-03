@@ -57,7 +57,7 @@ class ZoneLine {
     return result;
   }
 
-  @override bool operator ==(dynamic other) => other is ZoneLine && equals(other);
+  @override bool operator ==(Object other) => other is ZoneLine && equals(other);
 
 // #endregion
 

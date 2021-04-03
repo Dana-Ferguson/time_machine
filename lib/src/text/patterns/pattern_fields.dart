@@ -73,7 +73,7 @@ class PatternFields {
 
   @override int get hashCode => _value.hashCode;
 
-  @override bool operator ==(dynamic other) => other is PatternFields && other._value == _value || other is int && other == _value;
+  @override bool operator ==(Object other) => other is PatternFields && other._value == _value || other is int && other == _value;
 
   const PatternFields(this._value);
 

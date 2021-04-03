@@ -55,7 +55,7 @@ class CalendarOrdinal {
   const CalendarOrdinal(this._value);
 
   @override int get hashCode => _value.hashCode;
-  @override bool operator ==(dynamic other) => other is CalendarOrdinal && other._value == _value || other is int && other == _value;
+  @override bool operator ==(Object other) => other is CalendarOrdinal && other._value == _value || other is int && other == _value;
 
   bool operator <(CalendarOrdinal other) => _value < other._value;
   bool operator <=(CalendarOrdinal other) => _value <= other._value;

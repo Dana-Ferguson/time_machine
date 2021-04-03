@@ -231,7 +231,7 @@ class LocalDateTime implements Comparable<LocalDateTime> {
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic other) => other is LocalDateTime && equals(other);
+  bool operator ==(Object other) => other is LocalDateTime && equals(other);
 
   /// Compares two LocalDateTime values to see if the left one is strictly earlier than the right
   /// one.

@@ -736,7 +736,7 @@ class Period {
           nanoseconds == other.nanoseconds;
 
   @override
-  bool operator==(dynamic other) => other is Period && equals(other);
+  bool operator==(Object other) => other is Period && equals(other);
 }
 
 // todo: why is this private, it's used in period_tests?

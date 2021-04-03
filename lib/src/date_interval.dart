@@ -50,7 +50,7 @@ class DateInterval {
   ///
   /// Returns: True if the two date intervals have the same properties; false otherwise.
   @override
-  bool operator ==(dynamic rhs) => rhs is DateInterval && start == rhs.start && end == rhs.end;
+  bool operator ==(Object rhs) => rhs is DateInterval && start == rhs.start && end == rhs.end;
 
 
   /// Compares the given date interval for equality with this one.

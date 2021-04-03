@@ -49,7 +49,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
 
 // #region Operator overloads
   /// Implements the operator ==.
-  @override bool operator ==(dynamic other) => other is RuleLine && equals(other);
+  @override bool operator ==(Object other) => other is RuleLine && equals(other);
 
   /// <summary>
   /// Retrieves the recurrence, after applying the specified name format.

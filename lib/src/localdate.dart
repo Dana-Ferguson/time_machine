@@ -241,7 +241,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
   @override
-  bool operator ==(dynamic other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool operator ==(Object other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Adds the specified period to this date. Fluent alternative to `operator+()`.
   ///

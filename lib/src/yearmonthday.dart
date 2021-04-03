@@ -55,7 +55,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   int get hashCode => hash3(year, month, day);
 
   @override
-  bool operator==(dynamic other) => other is YearMonthDay ? (year == other.year && month == other.month && day == other.day) : false;
+  bool operator==(Object other) => other is YearMonthDay ? (year == other.year && month == other.month && day == other.day) : false;
 
   bool operator <(YearMonthDay? other) {
     if (other == null) return false;
@@ -176,7 +176,7 @@ class YearMonthDayVM implements Comparable<YearMonthDay> {
 
   int get hashCode => _value.hashCode;
 
-  bool operator ==(dynamic rhs) => rhs is YearMonthDay ? _value == rhs._value : false;
+  bool operator ==(Object rhs) => rhs is YearMonthDay ? _value == rhs._value : false;
 
 //@override
 //bool operator !=(YearMonthDay rhs) => _value != rhs._value;

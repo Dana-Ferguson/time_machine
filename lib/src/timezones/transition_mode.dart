@@ -39,7 +39,7 @@ class TransitionMode {
   int operator +(TransitionMode other) => _value + other._value;
 
   @override
-  bool operator ==(dynamic other) => other is TransitionMode && other._value == _value;
+  bool operator ==(Object other) => other is TransitionMode && other._value == _value;
   @override
   int get hashCode => _value.hashCode;
 

@@ -110,7 +110,7 @@ class ZoneYearOffset {
   }
 
   @override
-  bool operator==(dynamic other) => other is ZoneYearOffset && equals(other);
+  bool operator==(Object other) => other is ZoneYearOffset && equals(other);
 
   // todo: timeOfDay:{5:r} <-- recreate the format?
   @override String toString() =>

@@ -290,7 +290,7 @@ abstract class Time implements Comparable<Time> {
   Time _plusSmallNanoseconds(int nanoseconds) => Time._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
-  bool operator ==(dynamic other) => other is Time && equals(other);
+  bool operator ==(Object other) => other is Time && equals(other);
 
   bool operator >=(Time other) =>
       (_milliseconds > other._milliseconds) ||

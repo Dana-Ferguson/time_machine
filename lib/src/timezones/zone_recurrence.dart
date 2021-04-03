@@ -75,7 +75,7 @@ class ZoneRecurrence {
   }
 
   @override
-  bool operator==(dynamic other) => other is ZoneRecurrence && equals(other);
+  bool operator==(Object other) => other is ZoneRecurrence && equals(other);
 
   /// Returns the first transition which occurs strictly after the given instant.
   ///

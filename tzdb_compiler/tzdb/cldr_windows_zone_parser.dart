@@ -118,7 +118,7 @@ class MapZone // : IEquatable<MapZone>
     }
   }
 
-  @override bool operator ==(dynamic other) {
+  @override bool operator ==(Object other) {
     if (other is MapZone &&
         windowsId == other.windowsId &&
         territory == other.territory) {

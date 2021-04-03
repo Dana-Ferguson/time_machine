@@ -136,5 +136,5 @@ class Interval {
 
   /// Implements the operator ==.
   @override
-  bool operator ==(dynamic other) => other is Interval && _start == other._start && _end == other._end;
+  bool operator ==(Object other) => other is Interval && _start == other._start && _end == other._end;
 }

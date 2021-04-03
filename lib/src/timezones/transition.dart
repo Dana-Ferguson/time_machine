@@ -27,7 +27,7 @@ class Transition {
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic right) => right is Transition && equals(right);
+  bool operator ==(Object right) => right is Transition && equals(right);
 
   /// Returns a hash code for this instance.
   ///

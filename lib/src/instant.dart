@@ -102,7 +102,7 @@ class Instant implements Comparable<Instant> {
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
 
   @override int get hashCode => timeSinceEpoch.hashCode;
-  @override bool operator==(dynamic other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
+  @override bool operator==(Object other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
 
   Instant operator+(Time time) => this.add(time);
   Instant operator-(Time time) => this.subtract(time);

@@ -171,7 +171,7 @@ class Offset implements Comparable<Offset> {
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic other) => other is Offset && equals(other);
+  bool operator ==(Object other) => other is Offset && equals(other);
 
 
   /// Implements the operator &lt; (less than).

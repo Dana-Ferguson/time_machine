@@ -82,7 +82,7 @@ class OffsetTime {
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
   @override
-  bool operator ==(dynamic right) => right is OffsetTime && equals(right);
+  bool operator ==(Object right) => right is OffsetTime && equals(right);
 
   /// Formats the value of the current instance using the specified pattern.
   ///

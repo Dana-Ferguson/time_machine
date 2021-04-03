@@ -80,7 +80,7 @@ class ZoneEqualityComparerOptions {
   static const ZoneEqualityComparerOptions strictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
 
   @override int get hashCode => _value.hashCode;
-  @override bool operator ==(dynamic other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
+  @override bool operator ==(Object other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;
 
   const ZoneEqualityComparerOptions(this._value);
 

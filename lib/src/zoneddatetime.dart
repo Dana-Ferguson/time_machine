@@ -300,7 +300,7 @@ class ZonedDateTime {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two operands are equal according to [Equals(ZonedDateTime)]; false otherwise
-  @override bool operator ==(dynamic other) => other is ZonedDateTime && equals(other);
+  @override bool operator ==(Object other) => other is ZonedDateTime && equals(other);
 
   /// Adds a duration to a zoned date and time.
   ///
