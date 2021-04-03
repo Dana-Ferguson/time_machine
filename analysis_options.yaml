@@ -7,12 +7,40 @@ include: package:pedantic/analysis_options.yaml
 # Uncomment to specify additional rules.
 linter:
   rules:
-    unnecessary_const: false
-    omit_local_variable_types: false
-    curly_braces_in_flow_control_structures: false
-    prefer_single_quotes: false
-    unnecessary_this: false
-    library_prefixes: false
+    unnecessary_const: false  # 950
+    omit_local_variable_types: false  # 1000+
+    curly_braces_in_flow_control_structures: false  # 29
+    prefer_single_quotes: false  # 595
+    unnecessary_this: false  # 52
+    library_prefixes: false  # 5
+    avoid_equals_and_hash_code_on_mutable_classes: false  # 14
+    prefer_const_constructors: false  # 218
+    prefer_const_constructors_in_immutables: false  # 32
+    prefer_const_declarations: false  # 6
+    prefer_interpolation_to_compose_strings: false  # 24
+    use_is_even_rather_than_modulo: false  # 2
+
+    no_logic_in_create_state: true
+    annotate_overrides: true
+    avoid_implementing_value_types: true
+    avoid_null_checks_in_equality_operators: true
+    avoid_type_to_string: true
+    do_not_use_environment: true
+    hash_and_equals: true
+    implementation_imports: true
+    no_adjacent_strings_in_list: true
+    missing_whitespace_between_adjacent_strings: true
+    no_duplicate_case_values: true
+    no_runtimeType_toString: true
+    prefer_adjacent_string_concatenation: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_is_empty: true
+    prefer_is_not_empty: true
+    prefer_is_not_operator: true
+    prefer_iterable_whereType: true
+    use_key_in_widget_constructors: true
+    use_string_buffers: true
+    valid_regexps: true
 
 analyzer:
 #   exclude:
