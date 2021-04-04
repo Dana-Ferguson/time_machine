@@ -43,10 +43,7 @@ class ZoneLine {
   ///   true if the current object is equal to the <paramref name = 'other' /> parameter;
   ///   otherwise, false.
   /// </returns>
-  bool equals(ZoneLine? other) {
-    if (other == null) {
-      return false;
-    }
+  bool equals(ZoneLine other) {
     if (identical(this, other)) {
       return true;
     }

@@ -54,13 +54,6 @@ void Equals_DifferentCalendars()
 }
 
 @Test()
-void Equals_DifferentToNull()
-{
-  LocalDate date = LocalDate(2011, 1, 2);
-  expect(date.equals(null), isFalse);
-}
-
-@Test()
 void Equals_DifferentToOtherType()
 {
   LocalDate date = LocalDate(2011, 1, 2);

@@ -440,9 +440,6 @@ void Equality_WhenUnequal()
   expect(Period(hours: 10).equals(Period(hours: 20)), isFalse);
   expect(Period(minutes: 15).equals(Period(seconds: 15)), isFalse);
   expect(Period(hours: 1).equals(Period(minutes: 60)), isFalse);
-  // expect(new Period.fromHours(1).Equals(new Object()), isFalse);
-  expect(Period(hours: 1).equals(null), isFalse);
-// expect(new Period.fromHours(1).Equals(null), isFalse);
 }
 
 @Test()
@@ -777,22 +774,6 @@ void ToDuration_Overflow()
 //  Period period = new Period.fromSeconds(Utility.int64MaxValue) + new Period.fromMinutes(Utility.int64MinValue ~/ 60);
 //  expect(() => period.ToSpan(), throwsStateError);
 //}
-
-@Test()
-void NormalizingEqualityComparer_NullToNonNull()
-{
-  Period period = Period(years: 1);
-  //expect(Period.NormalizingEqualityComparer.Instance.Equals(period, null), isFalse);
-  //expect(Period.NormalizingEqualityComparer.Instance.Equals(null, period), isFalse);
-  expect(NormalizingPeriodEqualityComparer.instance.equals(period, null), isFalse);
-  expect(NormalizingPeriodEqualityComparer.instance.equals(null, period), isFalse);
-}
-
-@Test()
-void NormalizingEqualityComparer_NullToNull()
-{
-  expect(NormalizingPeriodEqualityComparer.instance.equals(null, null), isTrue);
-}
 
 @Test()
 void NormalizingEqualityComparer_PeriodToItself()

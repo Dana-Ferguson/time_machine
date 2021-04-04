@@ -132,8 +132,7 @@ class FixedDateTimeZone extends DateTimeZone {
   /// [other]: Another object to compare to.
   ///
   /// Returns: True if the specified value is a [FixedDateTimeZone] with the same name, ID and offset; otherwise, false.
-  bool equals(FixedDateTimeZone? other) =>
-      other != null &&
+  bool equals(FixedDateTimeZone other) =>
           offset == other.offset &&
           id == other.id &&
           name == other.name;

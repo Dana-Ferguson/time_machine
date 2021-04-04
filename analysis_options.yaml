@@ -18,8 +18,8 @@ linter:
     prefer_const_constructors_in_immutables: false  # 32
     prefer_const_declarations: false  # 6
     prefer_interpolation_to_compose_strings: false  # 24
-    use_is_even_rather_than_modulo: false  # 2
-
+    
+    use_is_even_rather_than_modulo: true
     no_logic_in_create_state: true
     annotate_overrides: true
     avoid_implementing_value_types: true

@@ -75,8 +75,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
     return StandardDaylightAlternatingMap._(standardOffset, standard, dst);
   }
 
-  bool equals(StandardDaylightAlternatingMap? other) =>
-      other != null &&
+  bool equals(StandardDaylightAlternatingMap other) =>
           _standardOffset == other._standardOffset &&
           _dstRecurrence.equals(other._dstRecurrence) &&
           _standardRecurrence.equals(other._standardRecurrence);

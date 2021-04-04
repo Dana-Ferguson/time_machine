@@ -722,8 +722,7 @@ class Period {
   ///
   /// [other]: The period to compare this one with.
   /// Returns: True if this period has the same values for the same properties as the one specified.
-  bool equals(Period? other) =>
-      other != null &&
+  bool equals(Period other) =>
           years == other.years &&
           months == other.months &&
           weeks == other.weeks &&
@@ -746,12 +745,9 @@ class Period {
 
   NormalizingPeriodEqualityComparer._();
 
-  bool equals(Period? x, Period? y) {
+  bool equals(Period x, Period y) {
     if (identical(x, y)) {
       return true;
-    }
-    if (x == null || y == null) {
-      return false;
     }
     return x.normalize().equals(y.normalize());
   }

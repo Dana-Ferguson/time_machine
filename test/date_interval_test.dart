@@ -135,16 +135,6 @@ void Equals_DifferentEnd()
 }
 
 @Test()
-void Equals_DifferentToNull()
-{
-  LocalDate start = LocalDate(2000, 1, 1);
-  LocalDate end = LocalDate(2001, 6, 19);
-  var interval = DateInterval(start, end);
-
-  expect(interval.equals(null), isFalse);
-}
-
-@Test()
 void Equals_DifferentToOtherType()
 {
   LocalDate start = LocalDate(2000, 1, 1);

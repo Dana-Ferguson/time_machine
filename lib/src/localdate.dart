@@ -425,7 +425,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [other]: The value to compare this date with.
   ///
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool equals(LocalDate? other) => other != null && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool equals(LocalDate other) => this._yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.

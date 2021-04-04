@@ -197,17 +197,13 @@ class ZoneEqualityComparer {
   /// [x]: The first [DateTimeZone] to compare.
   /// [y]: The second [DateTimeZone] to compare.
   /// Returns: `true` if the specified time zones are equal under the options and interval of this comparer; otherwise, `false`.
-  bool equals(DateTimeZone? x, DateTimeZone? y) {
+  bool equals(DateTimeZone x, DateTimeZone y) {
     if (identical(x, y)) {
       return true;
     }
 
     if (x == y) {
       return true;
-    }
-
-    if (x == null || y == null) {
-      return false;
     }
 
     // If we ever need to port this to a platform which doesn't support LINQ,

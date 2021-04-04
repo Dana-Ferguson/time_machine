@@ -93,10 +93,7 @@ class ZoneYearOffset {
   /// [other]: An object to compare with this object.
   ///
   /// true if the current object is equal to the [other] parameter; otherwise, false.
-  bool equals(ZoneYearOffset? other) {
-    if (null == other) {
-      return false;
-    }
+  bool equals(ZoneYearOffset other) {
     if (identical(this, other)) {
       return true;
     }

@@ -152,15 +152,6 @@ Future ReferenceComparison() async
 }
 
 @Test()
-Future NullComparison() async
-{
-  var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
-  var zone = await (await DateTimeZoneProviders.tzdb)['Europe/London'];
-  expect(comparer.equals(zone, null), isFalse);
-  expect(comparer.equals(null, zone), isFalse);
-}
-
-@Test()
 void InvalidOptions()
 {
   var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));

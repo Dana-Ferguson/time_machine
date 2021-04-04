@@ -64,10 +64,7 @@ class ZoneRecurrence {
   ///
   /// true if the current object is equal to the [other] parameter;
   /// otherwise, false.
-  bool equals(ZoneRecurrence? other) {
-    if (null == other) {
-      return false;
-    }
+  bool equals(ZoneRecurrence other) {
     if (identical(this, other)) {
       return true;
     }

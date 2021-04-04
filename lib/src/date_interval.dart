@@ -60,7 +60,7 @@ class DateInterval {
   /// * [other]: The date interval to compare this one with.
   ///
   /// Returns: True if this date interval has the same same start and end date as the one specified.
-  bool equals(DateInterval? other) => this == other;
+  bool equals(DateInterval other) => this == other;
 
   /// Checks whether the given date is within this date interval. This requires
   /// that the date is not earlier than the start date, and not later than the end

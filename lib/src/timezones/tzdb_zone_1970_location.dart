@@ -145,7 +145,7 @@ class TzdbZone1970LocationCountry {
   ///
   /// [other]: The country to compare with this one.
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
-  bool equals(TzdbZone1970LocationCountry? other) => other != null && other.code == code && other.name == name;
+  bool equals(TzdbZone1970LocationCountry other) => other.code == code && other.name == name;
 
   @override bool operator==(Object other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
 
