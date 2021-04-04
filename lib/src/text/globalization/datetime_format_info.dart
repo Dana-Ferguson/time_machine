@@ -134,8 +134,8 @@ class DateTimeFormatBuilder {
   }
 
   // Month's have a blank entry at the end
-  static final List<String> _invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
-  static final List<String> _invariantAbbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
+  static const List<String> _invariantMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
+  static const List<String> _invariantAbbreviatedMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
 
   DateTimeFormatBuilder.invariant()
       : amDesignator = 'AM',
