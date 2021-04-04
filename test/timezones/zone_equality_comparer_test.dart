@@ -155,7 +155,7 @@ Future ReferenceComparison() async
 void InvalidOptions()
 {
   var comparer = ZoneEqualityComparer.forInterval(Interval(Instants[0], Instants[2]));
-  expect(() => comparer.withOptions(ZoneEqualityComparerOptions(9999)), throwsArgumentError);
+  expect(() => comparer.withOptions(const ZoneEqualityComparerOptions(9999)), throwsArgumentError);
 }
 
 void AssertEqual(DateTimeZone first, DateTimeZone second,

@@ -401,7 +401,7 @@ final LocalDate TestDate3_168_Ayyam_5 = CreateBadiDate(168, AyyamiHaMonth, 5);
 void BetweenLocalDates_InvalidUnits()
 {
   expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.none), throwsArgumentError);
-  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits(-1)), throwsArgumentError);
+  expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, const PeriodUnits(-1)), throwsArgumentError);
   expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.allTimeUnits), throwsArgumentError);
   expect(() => Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4, PeriodUnits.years | PeriodUnits.hours), throwsArgumentError);
 }
@@ -411,7 +411,7 @@ void SetYear()
 {
   // crafted to test SetYear with 0
   var d1 = CreateBadiDate(180, 1, 1);
-  LocalDate result = d1 + Period(years: 0);
+  LocalDate result = d1 + const Period(years: 0);
   expect(180, result.year);
 }
 
@@ -419,7 +419,7 @@ void SetYear()
 void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults()
 {
   Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate1_167_6_7);
-  Period expected = Period(days: 11);
+  Period expected = const Period(days: 11);
   expect(expected, actual);
 }
 
@@ -427,7 +427,7 @@ void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults()
 void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults_2()
 {
   Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate2_167_Ayyam_4);
-  Period expected = Period(months: 13) + Period(days: 8);
+  Period expected = const Period(months: 13) + const Period(days: 8);
   expect(expected, actual);
 }
 
@@ -435,7 +435,7 @@ void BetweenLocalDates_MovingForwardNoLeapYears_WithExactResults_2()
 void BetweenLocalDates_MovingForwardInLeapYear_WithExactResults()
 {
   Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5);
-  Period expected = Period(years: 1) + Period(months: 13) + Period(days: 9);
+  Period expected = const Period(years: 1) + const Period(months: 13) + const Period(days: 9);
   expect(expected, actual);
 }
 
@@ -443,7 +443,7 @@ void BetweenLocalDates_MovingForwardInLeapYear_WithExactResults()
 void BetweenLocalDates_MovingBackwardNoLeapYears_WithExactResults()
 {
   Period actual = Period.differenceBetweenDates(TestDate2_167_Ayyam_4, TestDate1_167_5_15);
-  Period expected = Period(months: -13) + Period(days: -8);
+  Period expected = const Period(months: -13) + const Period(days: -8);
   expect(expected, actual);
 }
 
@@ -454,7 +454,7 @@ void BetweenLocalDates_MovingBackward_WithExactResults()
   // but system first moves back a year, and in that year, the last day of Ayyam-i-Ha is day 4
   // from there, it is -13m -8d
 
-  Period expected = Period(years: -1) + Period(months: -13) + Period(days: -8);
+  Period expected = const Period(years: -1) + const Period(months: -13) + const Period(days: -8);
   Period actual = Period.differenceBetweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15);
   expect(expected, actual);
 }
@@ -463,7 +463,7 @@ void BetweenLocalDates_MovingBackward_WithExactResults()
 void BetweenLocalDates_MovingForward_WithJustMonths()
 {
   Period actual = Period.differenceBetweenDates(TestDate1_167_5_15, TestDate3_168_Ayyam_5, PeriodUnits.months);
-  Period expected = Period(months: 32);
+  Period expected = const Period(months: 32);
   expect(expected, actual);
 }
 
@@ -471,7 +471,7 @@ void BetweenLocalDates_MovingForward_WithJustMonths()
 void BetweenLocalDates_MovingBackward_WithJustMonths()
 {
   Period actual = Period.differenceBetweenDates(TestDate3_168_Ayyam_5, TestDate1_167_5_15, PeriodUnits.months);
-  Period expected = Period(months: -32);
+  Period expected = const Period(months: -32);
   expect(expected, actual);
 }
 
@@ -482,8 +482,8 @@ void BetweenLocalDates_AsymmetricForwardAndBackward()
   LocalDate d2 = CreateBadiDate(167, 1, 10);
 
   // spanning Ayyam-i-Ha - not counted as a month
-  expect(Period(months: 2) + Period(days: 6), Period.differenceBetweenDates(d1, d2));
-  expect(Period(months: -2) + Period(days: -6), Period.differenceBetweenDates(d2, d1));
+  expect(const Period(months: 2) + const Period(days: 6), Period.differenceBetweenDates(d1, d2));
+  expect(const Period(months: -2) + const Period(days: -6), Period.differenceBetweenDates(d2, d1));
 }
 
 @Test()
@@ -491,8 +491,8 @@ void BetweenLocalDates_EndOfMonth()
 {
   LocalDate d1 = CreateBadiDate(171, 5, 19);
   LocalDate d2 = CreateBadiDate(171, 6, 19);
-  expect(Period(months: 1), Period.differenceBetweenDates(d1, d2));
-  expect(Period(months: -1), Period.differenceBetweenDates(d2, d1));
+  expect(const Period(months: 1), Period.differenceBetweenDates(d1, d2));
+  expect(const Period(months: -1), Period.differenceBetweenDates(d2, d1));
 }
 
 @Test()
@@ -504,7 +504,7 @@ void BetweenLocalDates_OnLeapYear()
   expect('168-0-4', AsBadiString(d1));
   expect('169-0-3', AsBadiString(d2));
 
-  expect(Period(months: 19) + Period(days: 18), Period.differenceBetweenDates(d1, d2));
+  expect(const Period(months: 19) + const Period(days: 18), Period.differenceBetweenDates(d1, d2));
 }
 
 @Test()
@@ -512,8 +512,8 @@ void BetweenLocalDates_AfterLeapYear()
 {
   LocalDate d1 = CreateBadiDate(180, 19, 5);
   LocalDate d2 = CreateBadiDate(181, 19, 5);
-  expect(Period(years: 1), Period.differenceBetweenDates(d1, d2));
-  expect(Period(years: -1), Period.differenceBetweenDates(d2, d1));
+  expect(const Period(years: 1), Period.differenceBetweenDates(d1, d2));
+  expect(const Period(years: -1), Period.differenceBetweenDates(d2, d1));
 }
 
 
@@ -521,7 +521,7 @@ void BetweenLocalDates_AfterLeapYear()
 void Addition_DayCrossingMonthBoundary()
 {
   LocalDate start = CreateBadiDate(182, 4, 13);
-  LocalDate result = start + Period(days: 10);
+  LocalDate result = start + const Period(days: 10);
   expect(CreateBadiDate(182, 5, 4), result);
 }
 
@@ -530,10 +530,10 @@ void Addition()
 {
   var start = CreateBadiDate(182, 1, 1);
 
-  var result = start + Period(days: 3);
+  var result = start + const Period(days: 3);
   expect(CreateBadiDate(182, 1, 4), result);
 
-  result = start + Period(days: 20);
+  result = start + const Period(days: 20);
   expect(CreateBadiDate(182, 2, 2), result);
 }
 
@@ -542,7 +542,7 @@ void Addition_DayCrossingMonthBoundaryFromAyyamiHa()
 {
   var start = CreateBadiDate(182, AyyamiHaMonth, 3);
 
-  var result = start + Period(days: 10);
+  var result = start + const Period(days: 10);
   // in 182, Ayyam-i-Ha has 5 days
   expect(CreateBadiDate(182, 19, 8), result);
 }
@@ -551,7 +551,7 @@ void Addition_DayCrossingMonthBoundaryFromAyyamiHa()
 void Addition_OneYearOnLeapDay()
 {
   LocalDate start = CreateBadiDate(182, AyyamiHaMonth, 5);
-  LocalDate result = start + Period(years: 1);
+  LocalDate result = start + const Period(years: 1);
   // Ayyam-i-Ha 5 becomes Ayyam-i-Ha 4
   expect(CreateBadiDate(183, AyyamiHaMonth, 4), result);
 }
@@ -560,7 +560,7 @@ void Addition_OneYearOnLeapDay()
 void Addition_FiveYearsOnLeapDay()
 {
   LocalDate start = CreateBadiDate(182, AyyamiHaMonth, 5);
-  LocalDate result = start + Period(years: 5);
+  LocalDate result = start + const Period(years: 5);
   expect(CreateBadiDate(187, AyyamiHaMonth, 5), result);
 }
 
@@ -568,7 +568,7 @@ void Addition_FiveYearsOnLeapDay()
 void Addition_YearMonthDay()
 {
   // One year, one month, two days
-  Period period = Period(years: 1) + Period(months: 1) + Period(days: 2);
+  Period period = const Period(years: 1) + const Period(months: 1) + const Period(days: 2);
   LocalDate start = CreateBadiDate(171, 1, 19);
   // Periods are added in order, so this becomes...
   // Add one year: 172.1.19

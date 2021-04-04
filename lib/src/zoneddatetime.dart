@@ -515,7 +515,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
 /// Implementation for [Comparer.Local].
 class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
+  static const ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
 
   const _ZonedDateTimeLocalComparer._() : super._();
 
@@ -534,7 +534,7 @@ class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
 
 /// Implementation for [Comparer.Instant].
 class _ZonedDateTimeInstantComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
+  static const ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
 
   const _ZonedDateTimeInstantComparer._() : super._();
 

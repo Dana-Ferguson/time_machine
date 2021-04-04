@@ -75,7 +75,7 @@ void Comparisons(String smallerText, String greaterText)
 @Test()
 void YearMonthDayToString()
 {
-  var ymd = YearMonthDay(2017, 8, 25);
+  var ymd = const YearMonthDay(2017, 8, 25);
   expect('2017-08-25', ymd.toString());
 }
 

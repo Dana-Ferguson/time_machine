@@ -9,8 +9,8 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
 @internal
 abstract class DatePeriodFields
 {
-  static final IDatePeriodField daysField = FixedLengthDatePeriodField(1);
-  static final IDatePeriodField weeksField = FixedLengthDatePeriodField(7);
-  static final IDatePeriodField monthsField = MonthsPeriodField();
-  static final IDatePeriodField yearsField = YearsPeriodField();
+  static const IDatePeriodField daysField = FixedLengthDatePeriodField(1);
+  static const IDatePeriodField weeksField = FixedLengthDatePeriodField(7);
+  static const IDatePeriodField monthsField = MonthsPeriodField();
+  static const IDatePeriodField yearsField = YearsPeriodField();
 }

@@ -115,6 +115,6 @@ class _CompositePattern<T> implements IPartialPattern<T> {
         return _patterns[i];
       }
     }
-    throw FormatException('Composite pattern was unable to format value using any of the provided patterns.');
+    throw const FormatException('Composite pattern was unable to format value using any of the provided patterns.');
   }
 }

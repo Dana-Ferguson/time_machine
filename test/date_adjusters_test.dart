@@ -119,7 +119,7 @@ void Month_InvalidAdjustment()
 @Test()
 void IsoDayOfWeekAdjusters_Invalid()
 {
-  var invalid = DayOfWeek (10); //IsoDayOfWeek) 10;
+  var invalid = const DayOfWeek (10); //IsoDayOfWeek) 10;
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Next(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.NextOrSame(invalid));
   //Assert.Throws<ArgumentOutOfRangeException>(() => DateAdjusters.Previous(invalid));

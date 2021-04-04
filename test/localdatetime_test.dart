@@ -43,7 +43,7 @@ void ToDateTimeUnspecified()
 void PeriodUntilSince() {
   var start = LocalDateTime(2011, 3, 5, 1, 0, 0);
   var end = LocalDateTime(2012, 2, 4, 5, 1, 1);
-  var delta = Period(months: 10, days: 30, hours: 4, minutes: 1, seconds: 1);
+  var delta = const Period(months: 10, days: 30, hours: 4, minutes: 1, seconds: 1);
 
   expect(LocalDateTime.difference(end, start), delta);
   expect(end.periodSince(start), delta);
@@ -61,7 +61,7 @@ void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
     var ldt = LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
     var expected = DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
-        .add(Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
+        .add(const Duration(milliseconds: TimeConstants.millisecondsPerSecond - 1));
     var actual = ldt.toDateTimeLocal();
     expect(actual, expected);
   }
@@ -69,7 +69,7 @@ void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
     var ldt = LocalDateTime(year, 1, 1, 13, 15, 55).addNanoseconds(
         TimeConstants.nanosecondsPerSecond - 1); //.PlusNanoseconds(TimeConstants.nanosecondsPerSecond - 1);
     var expected = DateTime(year, 1, 1, 13, 15, 55 /*, DateTimeKind.Unspecified*/)
-        .add(Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
+        .add(const Duration(microseconds: TimeConstants.microsecondsPerSecond - 1));
     var actual = ldt.toDateTimeLocal();
     expect(actual, expected);
   }

@@ -391,7 +391,7 @@ class OffsetDateTime {
 
 /// Implementation for [Comparer.Local]
 class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
+  static const OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
 
   const _OffsetDateTimeLocalComparer._() : super._();
 
@@ -489,7 +489,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
 /// Implementation for [Comparer.Instant].
 class _OffsetDateTimeInstantComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
+  static const OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
 
   const _OffsetDateTimeInstantComparer._() : super._();
 

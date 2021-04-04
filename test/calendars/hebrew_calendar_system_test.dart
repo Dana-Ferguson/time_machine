@@ -188,7 +188,7 @@ void DayOfYearAndReverse(HebrewMonthNumbering numbering)
 void GetDaysSinceEpoch()
 {
   var calculator = HebrewYearMonthDayCalculator(HebrewMonthNumbering.scriptural);
-  var unixEpoch = YearMonthDay(5730, 10, 23);
+  var unixEpoch = const YearMonthDay(5730, 10, 23);
   expect(0, calculator.getDaysSinceEpoch(unixEpoch));
 }
 
@@ -200,7 +200,7 @@ void DaysAtStartOfYear()
   expect(-110, calculator.getStartOfYearInDays(5730));
   expect(273, calculator.getStartOfYearInDays(5731));
   expect(-140735, calculator.getStartOfYearInDays(5345));
-  expect(YearMonthDay(5345, 1, 1), calculator.getYearMonthDayFromDaysSinceEpoch(-140529));
+  expect(const YearMonthDay(5345, 1, 1), calculator.getYearMonthDayFromDaysSinceEpoch(-140529));
 }
 
 @Test()

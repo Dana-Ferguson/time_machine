@@ -449,7 +449,7 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
 Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, String testGroupName) {
   var futures = <Future>[];
 
-  var instance = classMirror.newInstance(Symbol(''), []);
+  var instance = classMirror.newInstance(const Symbol(''), []);
   if (testGenTest)
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();

@@ -20,7 +20,7 @@ void AllYears()
   // Range of years we actually care about. We support more, but that's okay.
   for (int year = -9999; year <= 9999; year++)
   {
-    var ymdc = YearMonthDayCalendar(year, 5, 20, CalendarOrdinal(0));
+    var ymdc = YearMonthDayCalendar(year, 5, 20, const CalendarOrdinal(0));
     expect(year, ymdc.year);
     expect(5, ymdc.month);
     expect(20, ymdc.day);
