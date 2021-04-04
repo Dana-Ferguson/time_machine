@@ -20,8 +20,10 @@ class ParseResult<T> {
   final Error Function()? _errorProvider;
   final bool _continueAfterErrorWithMultipleFormats;
 
+  // ignore: prefer_const_constructors_in_immutables
   ParseResult._error(this._errorProvider, this._continueAfterErrorWithMultipleFormats);
 
+  // ignore: prefer_const_constructors_in_immutables
   ParseResult._(this._value)
       : _errorProvider = null,
         _continueAfterErrorWithMultipleFormats = false;
