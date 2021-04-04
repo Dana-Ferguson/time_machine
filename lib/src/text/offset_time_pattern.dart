@@ -69,7 +69,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// in the pattern are taken from the template.
   final OffsetTime templateValue;
 
-  OffsetTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
+  const OffsetTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

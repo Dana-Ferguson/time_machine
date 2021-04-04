@@ -14,7 +14,8 @@ linter:
     unnecessary_this: false  # 52
     library_prefixes: false  # 5
     prefer_const_constructors: false  # 218
-    prefer_const_constructors_in_immutables: false  # 32
+    # prefer_const_constructors_in_immutables: false  # 32
+    prefer_const_constructors_in_immutables: true
     prefer_interpolation_to_compose_strings: false  # 24
     
     avoid_equals_and_hash_code_on_mutable_classes: true

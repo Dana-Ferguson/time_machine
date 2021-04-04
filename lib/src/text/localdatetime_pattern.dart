@@ -78,7 +78,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// implementing an internal interface.
   final IPartialPattern<LocalDateTime> _underlyingPattern;
 
-  LocalDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
+  const LocalDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

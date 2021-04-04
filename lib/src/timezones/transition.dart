@@ -17,7 +17,7 @@ class Transition {
   /// The offset from the time when this transition occurs until the next transition.
   final Offset newOffset;
 
-  Transition(this.instant, this.newOffset);
+  const Transition(this.instant, this.newOffset);
 
   bool equals(Transition other) => instant == other.instant && newOffset == other.newOffset;
 

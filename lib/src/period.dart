@@ -17,7 +17,7 @@ class _DateComponentsBetweenResult {
   final int weeks;
   final int days;
 
-  _DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
+  const _DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
 }
 
 // @private static void TimeComponentsBetween(int totalNanoseconds, PeriodUnits units,
@@ -31,7 +31,7 @@ class _TimeComponentsBetweenResult {
   final int microseconds;
   final int nanoseconds;
 
-  _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
+  const _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
 @internal

@@ -41,7 +41,7 @@ class ZonedDateTime {
   final DateTimeZone zone;
 
   /// Internal constructor from pre-validated values.
-  ZonedDateTime._(this._offsetDateTime, this.zone);
+  const ZonedDateTime._(this._offsetDateTime, this.zone);
 
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
@@ -483,7 +483,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
   /// Internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  ZonedDateTimeComparer._();
+  const ZonedDateTimeComparer._();
 
   /// Compares two [ZonedDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
@@ -517,7 +517,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
   static final ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
 
-  _ZonedDateTimeLocalComparer._() : super._();
+  const _ZonedDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>
@@ -536,7 +536,7 @@ class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
 class _ZonedDateTimeInstantComparer extends ZonedDateTimeComparer {
   static final ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
 
-  _ZonedDateTimeInstantComparer._() : super._();
+  const _ZonedDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>

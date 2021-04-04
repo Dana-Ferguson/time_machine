@@ -14,7 +14,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 class SingleZoneIntervalMap implements ZoneIntervalMap {
   final ZoneInterval _interval;
 
-  SingleZoneIntervalMap(this._interval);
+  const SingleZoneIntervalMap(this._interval);
 
   @override
   ZoneInterval getZoneInterval(Instant instant) => _interval;

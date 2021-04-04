@@ -63,7 +63,8 @@ class LocalDateTime implements Comparable<LocalDateTime> {
       : this.localDateAtTime(LocalDate(year, month, day, calendar), LocalTime(hour, minute, second, ms:ms, us:us, ns:ns));
   // (year, month day, hour, minute) are basically required, but if we name a few of them, we should probably name them all?
 
-  @wasInternal LocalDateTime.localDateAtTime(this.calendarDate, this.clockTime);
+  @wasInternal
+  const LocalDateTime.localDateAtTime(this.calendarDate, this.clockTime);
 
   /// Produces a [LocalDateTime] based on your [Clock.current] and your [DateTimeZone.local].
   ///

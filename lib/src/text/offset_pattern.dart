@@ -38,7 +38,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// implementing an @internal interface.
   final IPartialPattern<Offset> _underlyingPattern;
 
-  OffsetPattern._(this.patternText, this._underlyingPattern);
+  const OffsetPattern._(this.patternText, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

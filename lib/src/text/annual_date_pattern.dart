@@ -49,7 +49,7 @@ class AnnualDatePattern implements IPattern<AnnualDate> {
   /// in the pattern are taken from the template.
   final AnnualDate templateValue;
 
-  AnnualDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
+  const AnnualDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

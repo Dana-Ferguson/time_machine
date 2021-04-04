@@ -88,7 +88,7 @@ class MapZone // : IEquatable<MapZone>
   /// <summary>
   /// Private constructor to avoid unnecessary list copying (and validation) when deserializing.
   /// </summary>
-  MapZone._(this.windowsId, this.territory, this.tzdbIds);
+  const MapZone._(this.windowsId, this.territory, this.tzdbIds);
 
   /// <summary>
   /// Reads a mapping from a reader.

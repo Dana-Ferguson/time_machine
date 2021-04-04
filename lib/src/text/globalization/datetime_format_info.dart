@@ -23,7 +23,7 @@ class DateTimeFormat {
   final List<String> abbreviatedDayNames;
   final List<String> dayNames;
   final List<String> monthNames;
-  late final List<String> abbreviatedMonthNames;
+  final List<String> abbreviatedMonthNames;
   final List<String> monthGenitiveNames;
   final List<String> abbreviatedMonthGenitiveNames;
 
@@ -46,7 +46,7 @@ class DateTimeFormat {
 
   factory DateTimeFormat.invariantCulture() => DateTimeFormatBuilder.invariant().Build();
 
-  DateTimeFormat(
+  const DateTimeFormat(
       this.amDesignator,
       this.pmDesignator,
       this.timeSeparator,

@@ -22,7 +22,7 @@ class OffsetDate
   ///
   /// * [date]: The date part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetDate(this.calendarDate, this.offset);
+  const OffsetDate(this.calendarDate, this.offset);
 
   /// Gets the calendar system associated with this offset date.
   CalendarSystem get calendar => calendarDate.calendar;

@@ -31,7 +31,7 @@ class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
   ///
   /// <param name='recurrence'>The recurrence definition of this rule.</param>
   /// <param name='daylightSavingsIndicator'>The daylight savings indicator letter for time zone names.</param>
-  RuleLine(this._recurrence, this._daylightSavingsIndicator, this.type);
+  const RuleLine(this._recurrence, this._daylightSavingsIndicator, this.type);
 
 // #region IEquatable<ZoneRule> Members
   /// <summary>

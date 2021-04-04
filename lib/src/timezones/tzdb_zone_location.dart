@@ -43,7 +43,7 @@ class TzdbZoneLocation
   final String comment;
 
   // TzdbZone1970Location._(this.Comment, this.Countries, this.latitudeSeconds, this.longitudeSeconds, this.ZoneId);
-  TzdbZoneLocation._(this.comment, this.countryCode, this.countryName, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
+  const TzdbZoneLocation._(this.comment, this.countryCode, this.countryName, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///

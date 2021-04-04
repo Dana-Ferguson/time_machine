@@ -393,7 +393,7 @@ class OffsetDateTime {
 class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
   static final OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
 
-  _OffsetDateTimeLocalComparer._() : super._();
+  const _OffsetDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
@@ -446,7 +446,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
   /// internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  OffsetDateTimeComparer._();
+  const OffsetDateTimeComparer._();
 
   /// Compares two [OffsetDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
@@ -491,7 +491,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 class _OffsetDateTimeInstantComparer extends OffsetDateTimeComparer {
   static final OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
 
-  _OffsetDateTimeInstantComparer._() : super._();
+  const _OffsetDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) =>

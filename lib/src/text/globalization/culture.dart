@@ -59,7 +59,7 @@ class Culture {
         compareInfo = null
   ;
 
-  Culture(this.name, this.dateTimeFormat) : compareInfo = null;
+  const Culture(this.name, this.dateTimeFormat) : compareInfo = null;
 
   @override String toString() => name;
 }

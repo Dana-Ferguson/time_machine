@@ -46,7 +46,7 @@ class TzdbZone1970Location {
   /// This will return an empty string if no comment was provided in the original data.
   final String comment;
 
-  TzdbZone1970Location._(this.comment, this.countries, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
+  const TzdbZone1970Location._(this.comment, this.countries, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///

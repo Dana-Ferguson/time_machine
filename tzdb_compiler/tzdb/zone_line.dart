@@ -15,7 +15,7 @@ class ZoneLine {
   static final OffsetPattern _percentZPattern = OffsetPattern.createWithInvariantCulture('i');
 
   /// Initializes a new instance of the [ZoneLine] class.
-  ZoneLine(this.name, this.standardOffset, this.rules, this.format, this.untilYear, this.untilYearOffset);
+  const ZoneLine(this.name, this.standardOffset, this.rules, this.format, this.untilYear, this.untilYearOffset);
 
   final ZoneYearOffset untilYearOffset;
 

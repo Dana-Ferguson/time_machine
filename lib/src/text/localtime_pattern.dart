@@ -49,7 +49,7 @@ class LocalTimePattern implements IPattern<LocalTime> {
   /// in the pattern are taken from the template.
   final LocalTime templateValue;
 
-  LocalTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
+  const LocalTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

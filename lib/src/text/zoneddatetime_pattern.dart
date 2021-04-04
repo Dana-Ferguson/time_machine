@@ -66,7 +66,7 @@ class ZonedDateTimePattern implements IPattern<ZonedDateTime> {
   /// only be used for formatting (not parsing).
   final DateTimeZoneProvider? zoneProvider;
 
-  ZonedDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this.resolver, this.zoneProvider, this._pattern);
+  const ZonedDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this.resolver, this.zoneProvider, this._pattern);
 
   // todo: transform to ParseAsync and ParseSync?
   /// Parses the given text value according to the rules of this pattern.

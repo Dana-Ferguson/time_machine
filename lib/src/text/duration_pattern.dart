@@ -29,7 +29,7 @@ class TimePattern implements IPattern<Time> {
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
-  TimePattern._(this.patternText, this._pattern);
+  const TimePattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

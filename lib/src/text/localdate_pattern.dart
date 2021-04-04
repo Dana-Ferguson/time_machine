@@ -50,7 +50,7 @@ class LocalDatePattern implements IPattern<LocalDate> {
   /// in the pattern are taken from the template.
   final LocalDate templateValue;
 
-  LocalDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
+  const LocalDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

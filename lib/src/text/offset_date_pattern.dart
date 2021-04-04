@@ -55,7 +55,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   /// in the pattern are taken from the template.
   final OffsetDate templateValue;
 
-  OffsetDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
+  const OffsetDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

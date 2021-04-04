@@ -47,7 +47,7 @@ class StandardDaylightAlternatingMap implements ZoneIntervalMapWithMinMax  {
   @override
   Offset get maxOffset => Offset.max(_standardOffset, _standardOffset + _dstRecurrence.savings);
 
-  StandardDaylightAlternatingMap._(this._standardOffset, this._standardRecurrence, this._dstRecurrence);
+  const StandardDaylightAlternatingMap._(this._standardOffset, this._standardRecurrence, this._dstRecurrence);
 
   /// Initializes a new instance of the [StandardDaylightAlternatingMap] class.
   ///

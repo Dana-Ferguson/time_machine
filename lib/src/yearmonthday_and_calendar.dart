@@ -29,7 +29,7 @@ class YearMonthDayCalendar {
   // final int _value;
   final YearMonthDay yearMonthDay;
 
-  YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
+  const YearMonthDayCalendar.ymd(this.yearMonthDay, this.calendarOrdinal);
 // : _value = (yearMonthDay << calendarBits) | calendarOrdinal.value;
 
 

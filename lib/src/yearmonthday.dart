@@ -14,7 +14,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   final int day;
 
   /// Constructs a new value for the given year, month and day. No validation is performed.
-  YearMonthDay(this.year, this.month, this.day);
+  const YearMonthDay(this.year, this.month, this.day);
 
   // Just for testing purposes...
   static YearMonthDay parse(String text) {

@@ -20,7 +20,7 @@ class LocalInstant {
   /// Elapsed time since the local 1970-01-01T00:00:00.
   final Time _time;
 
-  LocalInstant._ (this._time);
+  const LocalInstant._ (this._time);
 
   /// Constructor which should *only* be used to construct the invalid instances.
   factory LocalInstant._trusted(int days, {required bool deliberatelyInvalid})

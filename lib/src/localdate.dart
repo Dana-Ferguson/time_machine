@@ -25,7 +25,7 @@ class LocalDate implements Comparable<LocalDate> {
   static LocalDate get minIsoValue => LocalDate._trusted(YearMonthDayCalendar(GregorianYearMonthDayCalculator.minGregorianYear, 1, 1, CalendarOrdinal.iso));
 
   /// Constructs an instance from values which are assumed to already have been validated.
-  LocalDate._trusted(this._yearMonthDayCalendar);
+  const LocalDate._trusted(this._yearMonthDayCalendar);
 
   /// Constructs an instance from the number of days since the unix epoch, in the specified
   /// or ISO calendar system.

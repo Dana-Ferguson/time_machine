@@ -42,7 +42,7 @@ class InstantPattern implements IPattern<Instant> {
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
-  InstantPattern._(this.patternText, this._pattern);
+  const InstantPattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///

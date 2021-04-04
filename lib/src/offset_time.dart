@@ -18,7 +18,7 @@ class OffsetTime {
   ///
   /// * [time]: The time part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetTime(this.clockTime, this.offset);
+  const OffsetTime(this.clockTime, this.offset);
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
   int get hourOfDay => clockTime.timeSinceMidnight.hourOfDay;
