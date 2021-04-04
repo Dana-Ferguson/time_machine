@@ -36,8 +36,8 @@ class ZoneRecurrence {
   /// [fromYear]: The first year in which this recurrence is valid
   /// [toYear]: The last year in which this recurrence is valid
   ZoneRecurrence(this.name, this.savings, this.yearOffset, this.fromYear, this.toYear)
-      : this._minLocalInstant = fromYear == Platform.int32MinValue ? LocalInstant.beforeMinValue : yearOffset.getOccurrenceForYear(fromYear),
-        this._maxLocalInstant = toYear == Platform.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset.getOccurrenceForYear(toYear) {
+      : _minLocalInstant = fromYear == Platform.int32MinValue ? LocalInstant.beforeMinValue : yearOffset.getOccurrenceForYear(fromYear),
+        _maxLocalInstant = toYear == Platform.int32MaxValue ? LocalInstant.afterMaxValue : yearOffset.getOccurrenceForYear(toYear) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(yearOffset, 'yearOffset');
 

@@ -62,13 +62,13 @@ class PartialZoneIntervalMap
   /// Returns a partial zone interval map equivalent to this one, but with the given start point.
   PartialZoneIntervalMap withStart(Instant start)
   {
-    return PartialZoneIntervalMap(start, this.end, this._map);
+    return PartialZoneIntervalMap(start, end, _map);
   }
 
   /// Returns a partial zone interval map equivalent to this one, but with the given end point.
   PartialZoneIntervalMap withEnd(Instant end)
   {
-    return PartialZoneIntervalMap(this.start, end, this._map);
+    return PartialZoneIntervalMap(start, end, _map);
   }
 
   /// Converts a sequence of PartialZoneIntervalMaps covering the whole time line into an IZoneIntervalMap.

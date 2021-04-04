@@ -104,8 +104,8 @@ class Instant implements Comparable<Instant> {
   @override int get hashCode => timeSinceEpoch.hashCode;
   @override bool operator==(Object other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
 
-  Instant operator+(Time time) => this.add(time);
-  Instant operator-(Time time) => this.subtract(time);
+  Instant operator+(Time time) => add(time);
+  Instant operator-(Time time) => subtract(time);
   Instant add(Time time) => Instant.epochTime(timeSinceEpoch + time);
   Instant subtract(Time time) => Instant.epochTime(timeSinceEpoch - time);
 

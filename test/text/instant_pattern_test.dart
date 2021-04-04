@@ -145,7 +145,7 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 /*protected*/ @override Instant get defaultTemplate => TimeConstants.unixEpoch;
 
   Data([Instant? value]) : super(value ?? TimeConstants.unixEpoch) {
-    this.text = '';
+    text = '';
   }
 
   Data.fromUtc(int year, int month, int day, int hour, int minute, int second)

@@ -677,7 +677,7 @@ class Period {
   Period normalize() {
     // Simplest way to normalize: grab all the fields up to 'week' and
     // sum them.
-    int totalNanoseconds = this._totalNanoseconds;
+    int totalNanoseconds = _totalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
 
     int hours, minutes, seconds, milliseconds, nanoseconds;
@@ -697,8 +697,8 @@ class Period {
       nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
-    return Period(years: this.years,
-        months: this.months,
+    return Period(years: years,
+        months: months,
         weeks: 0 /* weeks */,
         days: days,
         hours: hours,

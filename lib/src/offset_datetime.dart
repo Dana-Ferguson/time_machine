@@ -290,7 +290,7 @@ class OffsetDateTime {
   ///
   /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
-      this.localDateTime.equals(other.localDateTime) && this.offset.equals(other.offset);
+      localDateTime.equals(other.localDateTime) && offset.equals(other.offset);
 
   /// Returns a [String] that represents this instance.
   ///

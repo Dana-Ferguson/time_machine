@@ -28,8 +28,8 @@ class Cache<TKey, TValue> {
         //      {bool equals(K key1, K key2),
         //      int hashCode(K key),
         //      bool isValidKey(potentialKey)});
-        this._dictionary = <TKey,TValue>{}, // Map<TKey,TValue>(/*keyComparer*/),
-        this._keyList = Queue<TKey>();
+        _dictionary = <TKey,TValue>{}, // Map<TKey,TValue>(/*keyComparer*/),
+        _keyList = Queue<TKey>();
 
   /// Fetches a value from the cache, populating it if necessary.
   ///

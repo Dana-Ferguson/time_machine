@@ -24,7 +24,7 @@ class FakeClock extends Clock {
   /// <seealso cref='AutoAdvance'/>
   FakeClock(Instant initial, [Time autoAdvance = Time.zero]) {
     _now = initial;
-    this._autoAdvance = autoAdvance;
+    autoAdvance = autoAdvance;
   }
 
   /// Returns a fake clock initially set to the given year/month/day/time in UTC in the ISO calendar.

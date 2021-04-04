@@ -34,7 +34,7 @@ class DateTimeFormat {
   final List<String> eraNames;
   String getEraName(int era) {
     if (era == 0) throw UnimplementedError('Calendar.CurrentEraValue not implemented.');
-    if (--era < this.eraNames.length && era >= 0) return eraNames[era];
+    if (--era < eraNames.length && era >= 0) return eraNames[era];
     throw ArgumentError.value(era, 'era');
   }
 

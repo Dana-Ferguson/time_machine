@@ -35,7 +35,7 @@ class PeriodPattern implements IPattern<Period> {
 
   final IPattern<Period> _pattern;
 
-  PeriodPattern._(IPattern<Period> pattern) : this._pattern = Preconditions.checkNotNull(pattern, 'pattern');
+  PeriodPattern._(IPattern<Period> pattern) : _pattern = Preconditions.checkNotNull(pattern, 'pattern');
 
   /// Parses the given text value according to the rules of this pattern.
   ///

@@ -256,7 +256,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two times are the same; false otherwise
-  @override bool operator ==(Object other) => other is LocalTime && this.timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
+  @override bool operator ==(Object other) => other is LocalTime && timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly earlier than the right
   /// one.
@@ -265,7 +265,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly earlier than [other], false otherwise.
-  bool operator <(LocalTime other) => this.timeSinceMidnight.inNanoseconds < other.timeSinceMidnight.inNanoseconds;
+  bool operator <(LocalTime other) => timeSinceMidnight.inNanoseconds < other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
   /// one.
@@ -274,7 +274,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is earlier than or equal to [other], false otherwise.
-  bool operator <=(LocalTime other) => this.timeSinceMidnight.inNanoseconds <= other.timeSinceMidnight.inNanoseconds;
+  bool operator <=(LocalTime other) => timeSinceMidnight.inNanoseconds <= other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly later than the right
   /// one.
@@ -283,7 +283,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly later than [other], false otherwise.
-  bool operator >(LocalTime other) => this.timeSinceMidnight.inNanoseconds > other.timeSinceMidnight.inNanoseconds;
+  bool operator >(LocalTime other) => timeSinceMidnight.inNanoseconds > other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is later than or equal to the right
   /// one.
@@ -292,7 +292,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is later than or equal to [other], false otherwise.
-  bool operator >=(LocalTime other) => this.timeSinceMidnight.inNanoseconds >= other.timeSinceMidnight.inNanoseconds;
+  bool operator >=(LocalTime other) => timeSinceMidnight.inNanoseconds >= other.timeSinceMidnight.inNanoseconds;
 
   /// Indicates whether this time is earlier, later or the same as another one.
   ///

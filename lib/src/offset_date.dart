@@ -55,7 +55,7 @@ class OffsetDate
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetDate` for the same date, but with the specified UTC offset.
-  OffsetDate withOffset(Offset offset) => OffsetDate(this.calendarDate, offset);
+  OffsetDate withOffset(Offset offset) => OffsetDate(calendarDate, offset);
 
   /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
   ///

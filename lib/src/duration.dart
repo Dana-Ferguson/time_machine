@@ -374,7 +374,7 @@ class NanosecondTime extends Time {
   @override int get _nanosecondsInterval => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerMillisecond);
 
   NanosecondTime(this._nanoseconds) : super._() {
-    assert(this._nanoseconds >= Platform.intMinValue && this._nanoseconds <= Platform.intMaxValue);
+    assert(_nanoseconds >= Platform.intMinValue && _nanoseconds <= Platform.intMaxValue);
   }
 
   @override Time operator -() => NanosecondTime(-_nanoseconds);

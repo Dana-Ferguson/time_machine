@@ -95,14 +95,14 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
 
   LocalDateParseBucket(this.templateValue) :
     // Only fetch this once.
-    this.calendar = templateValue.calendar;
+    calendar = templateValue.calendar;
 
   ParseResult<TResult>? parseEra<TResult>(TimeMachineFormatInfo formatInfo, ValueCursor cursor) {
     var compareInfo = formatInfo.compareInfo;
     for (var era in calendar.eras) {
       for (String eraName in formatInfo.getEraNames(era)) {
         if (cursor.matchCaseInsensitive(eraName, compareInfo, true)) {
-          this._era = era;
+          _era = era;
           return null;
         }
       }

@@ -241,7 +241,7 @@ class LocalDate implements Comparable<LocalDate> {
   ///
   /// Returns: True if the two dates are the same and in the same calendar; false otherwise
   @override
-  bool operator ==(Object other) => other is LocalDate && this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool operator ==(Object other) => other is LocalDate && _yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Adds the specified period to this date. Fluent alternative to `operator+()`.
   ///
@@ -303,8 +303,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// as the calendar of [this].
   bool operator <(LocalDate other)
   {
-    Preconditions.checkArgument(this.calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.compareTo(other) < 0;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) < 0;
   }
 
   /// Compares two dates to see if the left one is earlier than or equal to the right
@@ -322,8 +322,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// as the calendar of [this].
   bool operator <=(LocalDate other)
   {
-    Preconditions.checkArgument(this.calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.compareTo(other) <= 0;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) <= 0;
   }
 
   /// Compares two dates to see if the left one is strictly later than the right
@@ -341,8 +341,8 @@ class LocalDate implements Comparable<LocalDate> {
   /// as the calendar of [this].
   bool operator >(LocalDate other)
   {
-    Preconditions.checkArgument(this.calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
-    return this.compareTo(other) > 0;
+    Preconditions.checkArgument(calendar == other.calendar, 'rhs', "Only values in the same calendar can be compared");
+    return compareTo(other) > 0;
   }
 
   /// Compares two dates to see if the left one is later than or equal to the right
@@ -425,7 +425,7 @@ class LocalDate implements Comparable<LocalDate> {
   /// * [other]: The value to compare this date with.
   ///
   /// Returns: True if the given value is another local date equal to this one; false otherwise.
-  bool equals(LocalDate other) => this._yearMonthDayCalendar == other._yearMonthDayCalendar;
+  bool equals(LocalDate other) => _yearMonthDayCalendar == other._yearMonthDayCalendar;
 
   /// Resolves this local date into a [ZonedDateTime] in the given time zone representing the
   /// start of this date in the given zone.

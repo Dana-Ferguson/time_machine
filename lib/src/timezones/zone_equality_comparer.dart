@@ -189,7 +189,7 @@ class ZoneEqualityComparer {
   /// [ArgumentOutOfRangeException]: The specified options are invalid.
   /// Returns: A comparer operating over the same interval as this one, but with the given set of options.
   ZoneEqualityComparer withOptions(ZoneEqualityComparerOptions options) {
-    return this._options == options ? this : ZoneEqualityComparer._(this._interval, options);
+    return _options == options ? this : ZoneEqualityComparer._(_interval, options);
   }
 
   /// Compares two time zones for equality according to the options and interval provided to this comparer.

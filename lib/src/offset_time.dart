@@ -43,7 +43,7 @@ class OffsetTime {
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetTime` for the same date, but with the specified UTC offset.
-  OffsetTime withOffset(Offset offset) => OffsetTime(this.clockTime, offset);
+  OffsetTime withOffset(Offset offset) => OffsetTime(clockTime, offset);
 
   /// Returns this offset time-of-day, with the given date adjuster applied to it, maintaining the existing offset.
   ///

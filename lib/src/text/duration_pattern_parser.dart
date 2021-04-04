@@ -157,7 +157,7 @@ class _TimeParseBucket extends ParseBucket<Time> {
   BigInt _currentNanos = BigInt.zero;
 
   void addNanoseconds(int nanoseconds) {
-    this._currentNanos += BigInt.from(nanoseconds);
+    _currentNanos += BigInt.from(nanoseconds);
   }
 
   void addDays(int days) {

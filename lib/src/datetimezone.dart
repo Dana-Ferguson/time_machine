@@ -102,10 +102,10 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// * [minOffset]: Minimum offset applied within this zone
   /// * [maxOffset]: Maximum offset applied within this zone
   @protected DateTimeZone(String id, bool isFixed, Offset minOffset, Offset maxOffset)
-      : this.id = Preconditions.checkNotNull(id, 'id'),
-        this._isFixed = isFixed,
-        this.minOffset = minOffset,
-        this.maxOffset = maxOffset;
+      : id = Preconditions.checkNotNull(id, 'id'),
+        _isFixed = isFixed,
+        minOffset = minOffset,
+        maxOffset = maxOffset;
 
   /// Get the provider's ID for the time zone.
   ///

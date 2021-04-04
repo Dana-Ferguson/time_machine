@@ -93,7 +93,7 @@ class FakeDateTimeZoneSourceBuilder {
   /// Creates a new builder.
   FakeDateTimeZoneSourceBuilder([List<DateTimeZone> zones = const []]) {
     VersionId = 'TestZones';
-    this._zones.addAll(zones);
+    _zones.addAll(zones);
   }
 
   /// Adds a time zone to the builder.

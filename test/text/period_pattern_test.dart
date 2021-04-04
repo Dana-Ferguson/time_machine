@@ -17,7 +17,7 @@ class Data extends PatternTestData<Period> {
   @override Period get defaultTemplate => Period(days: 0);
 
   Data([Period? value]) : super(value ?? Period(days: 0)) {
-    this.standardPattern = PeriodPattern.roundtrip;
+    standardPattern = PeriodPattern.roundtrip;
   }
 
   Data.builder(PeriodBuilder builder) : this(builder.build());

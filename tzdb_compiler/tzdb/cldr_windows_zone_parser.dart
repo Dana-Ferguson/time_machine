@@ -244,7 +244,7 @@ class WindowsZones {
 
   WindowsZones._(this.version, this.tzdbVersion, this.windowsVersion,
       this.mapZones) :
-        this.primaryMapping = {
+        primaryMapping = {
           for (var z in mapZones.where((z) => z.territory == MapZone.primaryTerritory))
             z.windowsId : z.tzdbIds.single
         };
