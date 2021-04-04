@@ -10,7 +10,7 @@ import 'src/platforms/platform_io.dart'
   // or at lest it seemed it should be, when I tried `dart.library.js` in chrome, it failed to evaluate to true
   if (dart.library.html) 'src/platforms/web.dart'
   if (dart.library.io) 'src/platforms/vm.dart'
-as timeMachine;
+as time_machine;
 
 export 'src/calendar_system.dart' show CalendarSystem;
 
@@ -97,6 +97,6 @@ abstract class TimeMachine {
   static Future initialize([Map args = const {}]) {
     if (_initialized) return Future.sync(() => null);
     _initialized = true;
-    return timeMachine.initialize(args);
+    return time_machine.initialize(args);
   }
 }

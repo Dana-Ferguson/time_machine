@@ -7,14 +7,14 @@ import 'package:matcher/matcher.dart';
 import 'test_helper_interface.dart'
   if (dart.library.html) 'test_helper_without_mirrors.dart'
   if (dart.library.io) 'test_helper_with_mirrors.dart'
-as helpingMachine;
+as helping_machine;
 
 late Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction;
 late Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction;
 late Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction;
 
 void setFunctions() {
-  helpingMachine.setFunctions();
+  helping_machine.setFunctions();
 }
 
 /// Provides methods to help run tests for some of the system interfaces and object support.

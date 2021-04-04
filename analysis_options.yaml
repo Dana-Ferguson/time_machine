@@ -10,9 +10,9 @@ linter:
     omit_local_variable_types: false  # 1000+
     curly_braces_in_flow_control_structures: false  # 29
     prefer_single_quotes: false  # 595
-    library_prefixes: false  # 5
     prefer_interpolation_to_compose_strings: false  # 24
     
+    library_prefixes: true
     unnecessary_const: true
     prefer_const_constructors: true
     unnecessary_this: true
