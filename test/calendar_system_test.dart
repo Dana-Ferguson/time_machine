@@ -15,7 +15,7 @@ final Iterable<String> SupportedIds = CalendarSystem.ids.toList();
 final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
-@TestCaseSource(const Symbol('SupportedCalendars'))
+@TestCaseSource(Symbol('SupportedCalendars'))
 void MaxDate(CalendarSystem calendar)
 {
   // Construct the largest LocalDate we can, and validate that all the properties can be fetched without
@@ -24,7 +24,7 @@ void MaxDate(CalendarSystem calendar)
 }
 
 @Test()
-@TestCaseSource(const Symbol('SupportedCalendars'))
+@TestCaseSource(Symbol('SupportedCalendars'))
 void MinDate(CalendarSystem calendar)
 {
   // Construct the smallest LocalDate we can, and validate that all the properties can be fetched without

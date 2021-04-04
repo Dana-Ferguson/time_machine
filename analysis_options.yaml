@@ -7,13 +7,13 @@ include: package:pedantic/analysis_options.yaml
 # Uncomment to specify additional rules.
 linter:
   rules:
-    unnecessary_const: false  # 950
     omit_local_variable_types: false  # 1000+
     curly_braces_in_flow_control_structures: false  # 29
     prefer_single_quotes: false  # 595
     library_prefixes: false  # 5
     prefer_interpolation_to_compose_strings: false  # 24
     
+    unnecessary_const: true
     prefer_const_constructors: true
     unnecessary_this: true
     prefer_const_constructors_in_immutables: true

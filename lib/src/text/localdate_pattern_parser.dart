@@ -215,7 +215,7 @@ class LocalDateParseBucket extends ParseBucket<LocalDate> {
 
   //static const PatternFields monthOfYearNumeric = const PatternFields(1 << 10);
   //static const PatternFields monthOfYearText = const PatternFields(1 << 11);
-  static const PatternFields _monthOfYearText_booleanOR_monthOfYearText = const PatternFields(1 << 11 | 1 << 10);
+  static const PatternFields _monthOfYearText_booleanOR_monthOfYearText = PatternFields(1 << 11 | 1 << 10);
 
   ParseResult<LocalDate>? _determineMonth(PatternFields usedFields, String text) {
     var x = usedFields & (PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText);

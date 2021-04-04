@@ -31,15 +31,15 @@ void DefaultConstructor()
 @Test()
 // todo: this doesn't work so well, because the `%` operation fails here, see Duration.Dart#L128 :: nanoseconds = nanoseconds % TimeConstants.nanosecondsPerMillisecond;
 // @TestCase(const [Platform.int64MinValue])
-@TestCase(const [-TimeConstants.nanosecondsPerDay - 1])
-@TestCase(const [-TimeConstants.nanosecondsPerDay])
-@TestCase(const [-TimeConstants.nanosecondsPerDay + 1])
-@TestCase(const [-1])
-@TestCase(const [0])
-@TestCase(const [1])
-@TestCase(const [TimeConstants.nanosecondsPerDay - 1])
-@TestCase(const [TimeConstants.nanosecondsPerDay])
-@TestCase(const [TimeConstants.nanosecondsPerDay + 1])
+@TestCase([-TimeConstants.nanosecondsPerDay - 1])
+@TestCase([-TimeConstants.nanosecondsPerDay])
+@TestCase([-TimeConstants.nanosecondsPerDay + 1])
+@TestCase([-1])
+@TestCase([0])
+@TestCase([1])
+@TestCase([TimeConstants.nanosecondsPerDay - 1])
+@TestCase([TimeConstants.nanosecondsPerDay])
+@TestCase([TimeConstants.nanosecondsPerDay + 1])
 void Int64Conversions(int int64Nanos)
 {
   var nanoseconds = NanosecondTime(int64Nanos);
@@ -67,9 +67,9 @@ void ConstituentParts_Negative()
 }
 
 @Test()
-@TestCase(const [1, 100, 2, 200, 3, 300])
-@TestCase(const [1, TimeConstants.nanosecondsPerDay - 5, 3, 100, 5, 95], 'Overflow')
-@TestCase(const [1, 10, -1, TimeConstants.nanosecondsPerDay - 100, 0, TimeConstants.nanosecondsPerDay - 90], 'Underflow')
+@TestCase([1, 100, 2, 200, 3, 300])
+@TestCase([1, TimeConstants.nanosecondsPerDay - 5, 3, 100, 5, 95], 'Overflow')
+@TestCase([1, 10, -1, TimeConstants.nanosecondsPerDay - 100, 0, TimeConstants.nanosecondsPerDay - 90], 'Underflow')
 void Addition_Subtraction(int leftDays, int leftNanos,
     int rightDays, int rightNanos,
     int resultDays, int resultNanos)
@@ -116,12 +116,12 @@ void Comparison()
 }
 
 @Test()
-@TestCase(const [1, 5, 2, 2, 10], 'Small, positive')
-@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 10, 2, -1, TimeConstants.nanosecondsPerDay - 20], 'Small, negative')
-@TestCase(const [365000, 1, 2, 365000 * 2, 2], 'More than 2^63 nanos before multiplication')
-@TestCase(const [1000, 1, 365, 365000, 365], 'More than 2^63 nanos after multiplication')
-@TestCase(const [1000, 1, -365, -365001, TimeConstants.nanosecondsPerDay - 365], 'Less than -2^63 nanos after multiplication')
-@TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 1, 0], 'Large scalar')
+@TestCase([1, 5, 2, 2, 10], 'Small, positive')
+@TestCase([-1, TimeConstants.nanosecondsPerDay - 10, 2, -1, TimeConstants.nanosecondsPerDay - 20], 'Small, negative')
+@TestCase([365000, 1, 2, 365000 * 2, 2], 'More than 2^63 nanos before multiplication')
+@TestCase([1000, 1, 365, 365000, 365], 'More than 2^63 nanos after multiplication')
+@TestCase([1000, 1, -365, -365001, TimeConstants.nanosecondsPerDay - 365], 'Less than -2^63 nanos after multiplication')
+@TestCase([0, 1, TimeConstants.nanosecondsPerDay, 1, 0], 'Large scalar')
 void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedDays, int expectedNanoOfDay)
 {
   var _start = Time(days: startDays, nanoseconds: startNanoOfDay);
@@ -133,9 +133,9 @@ void Multiplication(int startDays, int startNanoOfDay, int scalar, int expectedD
 }
 
 @Test()
-@TestCase(const [0, 0, 0, 0])
-@TestCase(const [1, 0, -1, 0])
-@TestCase(const [0, 500, -1, TimeConstants.nanosecondsPerDay - 500])
+@TestCase([0, 0, 0, 0])
+@TestCase([1, 0, -1, 0])
+@TestCase([0, 500, -1, TimeConstants.nanosecondsPerDay - 500])
 void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expectedNanoOfDay)
 {
   var start = NanosecondTime(Time(days: startDays, nanoseconds: startNanoOfDay).inNanoseconds);
@@ -147,24 +147,24 @@ void UnaryNegation(int startDays, int startNanoOfDay, int expectedDays, int expe
 
 @Test()
 // Test cases around 0
-@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 0])
-@TestCase(const [0, 0, TimeConstants.nanosecondsPerDay, 0, 0])
-@TestCase(const [0, 1, TimeConstants.nanosecondsPerDay, 0, 0])
+@TestCase([-1, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 0])
+@TestCase([0, 0, TimeConstants.nanosecondsPerDay, 0, 0])
+@TestCase([0, 1, TimeConstants.nanosecondsPerDay, 0, 0])
 
 // Test cases around dividing -1 day by 'nanos per day'
-@TestCase(const [-2, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
-@TestCase(const [-1, 0, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
-@TestCase(const [-1, 1, TimeConstants.nanosecondsPerDay, 0, 0])
+@TestCase([-2, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
+@TestCase([-1, 0, TimeConstants.nanosecondsPerDay, -1, TimeConstants.nanosecondsPerDay - 1]) // -1ns
+@TestCase([-1, 1, TimeConstants.nanosecondsPerDay, 0, 0])
 
 // Test cases around dividing 1 day by 'nanos per day'
-@TestCase(const [0, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 0])
-@TestCase(const [1, 0, TimeConstants.nanosecondsPerDay, 0, 1])
-@TestCase(const [1, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 1])
-@TestCase(const [10, 20, 5, 2, 4])
+@TestCase([0, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 0])
+@TestCase([1, 0, TimeConstants.nanosecondsPerDay, 0, 1])
+@TestCase([1, TimeConstants.nanosecondsPerDay - 1, TimeConstants.nanosecondsPerDay, 0, 1])
+@TestCase([10, 20, 5, 2, 4])
 
 // Large value, which will use decimal arithmetic
 // On VM (max: 106751 days) this will be NanosecondTime; on JS (max:52 days) this will be Time
-@TestCase(const [365000, 3000, 1000, 365, 3])
+@TestCase([365000, 3000, 1000, 365, 3])
 void Division(int startDays, int startNanoOfDay, int divisor, int expectedDays, int expectedNanoOfDay)
 {
   var _start = Time(days: startDays, nanoseconds: startNanoOfDay);

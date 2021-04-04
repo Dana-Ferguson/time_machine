@@ -14,20 +14,20 @@ class TransitionMode {
 
   int get value => _value;
 
-  static const List<String> _stringRepresentations = const [
+  static const List<String> _stringRepresentations = [
     'Utc', 'Wall', 'Standard'
   ];
 
-  static const List<TransitionMode> _isoConstants = const [
+  static const List<TransitionMode> _isoConstants = [
     utc, wall, standard
   ];
 
   /// Calculate transitions against UTC.
-  static const TransitionMode utc = const TransitionMode(0);
+  static const TransitionMode utc = TransitionMode(0);
   /// Calculate transitions against wall offset.
-  static const TransitionMode wall = const TransitionMode(1);
+  static const TransitionMode wall = TransitionMode(1);
   /// Calculate transitions against standard offset.
-  static const TransitionMode standard = const TransitionMode(2);
+  static const TransitionMode standard = TransitionMode(2);
 
   const TransitionMode(this._value);
 

@@ -232,8 +232,8 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     expect('08-23', pattern.format(date));
   }
 
-  @TestCase(const ['fr-FR', "08/23"])
-  @TestCase(const ['fr-CA', "08-23"])
+  @TestCase(['fr-FR', "08/23"])
+  @TestCase(['fr-CA', "08-23"])
   Future CreateWithCulture(String cultureId, String expected) async
   {
     var date = AnnualDate(8, 23);
@@ -242,8 +242,8 @@ class AnnualDatePatternTest extends PatternTestBase<AnnualDate> {
     expect(expected, pattern.format(date));
   }
 
-  @TestCase(const ['fr-FR', "08/23"])
-  @TestCase(const ['fr-CA', "08-23"])
+  @TestCase(['fr-FR', "08/23"])
+  @TestCase(['fr-CA', "08-23"])
   Future CreateWithCultureAndTemplateValue(String cultureId, String expected) async
   {
     var date = AnnualDate(8, 23);

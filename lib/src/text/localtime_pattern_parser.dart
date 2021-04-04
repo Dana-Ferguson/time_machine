@@ -126,7 +126,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);
   //static const PatternFields amPm = const PatternFields(1 << 6);
-  static const PatternFields _hours12_booleanOR_amPm = const PatternFields(1 << 1 | 1 << 6);
+  static const PatternFields _hours12_booleanOR_amPm = PatternFields(1 << 1 | 1 << 6);
 
   ParseResult<int> _determineHour(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.hours24)) {

@@ -16,51 +16,51 @@ Future main() async {
 }
 
 @Test()
-@TestCase(const [-1, 0])
-@TestCase(const [24, 0])
-@TestCase(const [0, -1])
-@TestCase(const [0, 60])
+@TestCase([-1, 0])
+@TestCase([24, 0])
+@TestCase([0, -1])
+@TestCase([0, 60])
 void InvalidConstructionToMinute(int hour, int minute)
 {
   expect(() => LocalTime(hour, minute, 0), throwsRangeError);
 }
 
 @Test()
-@TestCase(const [-1, 0, 0])
-@TestCase(const [24, 0, 0])
-@TestCase(const [0, -1, 0])
-@TestCase(const [0, 60, 0])
-@TestCase(const [0, 0, 60])
-@TestCase(const [0, 0, -1])
+@TestCase([-1, 0, 0])
+@TestCase([24, 0, 0])
+@TestCase([0, -1, 0])
+@TestCase([0, 60, 0])
+@TestCase([0, 0, 60])
+@TestCase([0, 0, -1])
 void InvalidConstructionToSecond(int hour, int minute, int second)
 {
   expect(() => LocalTime(hour, minute, second), throwsRangeError);
 }
 
 @Test()
-@TestCase(const [-1, 0, 0, 0])
-@TestCase(const [24, 0, 0, 0])
-@TestCase(const [0, -1, 0, 0])
-@TestCase(const [0, 60, 0, 0])
-@TestCase(const [0, 0, 60, 0])
-@TestCase(const [0, 0, -1, 0])
-@TestCase(const [0, 0, 0, -1])
-@TestCase(const [0, 0, 0, 1000])
+@TestCase([-1, 0, 0, 0])
+@TestCase([24, 0, 0, 0])
+@TestCase([0, -1, 0, 0])
+@TestCase([0, 60, 0, 0])
+@TestCase([0, 0, 60, 0])
+@TestCase([0, 0, -1, 0])
+@TestCase([0, 0, 0, -1])
+@TestCase([0, 0, 0, 1000])
 void InvalidConstructionToMillisecond(int hour, int minute, int second, int millisecond)
 {
   expect(() => LocalTime(hour, minute, second, ms:millisecond), throwsRangeError);
 }
 
 @Test()
-@TestCase(const [-1, 0, 0, 0, 0])
-@TestCase(const [24, 0, 0, 0, 0])
-@TestCase(const [0, -1, 0, 0, 0])
-@TestCase(const [0, 60, 0, 0, 0])
-@TestCase(const [0, 0, 60, 0, 0])
-@TestCase(const [0, 0, -1, 0, 0])
-@TestCase(const [0, 0, 0, -1, 0])
+@TestCase([-1, 0, 0, 0, 0])
+@TestCase([24, 0, 0, 0, 0])
+@TestCase([0, -1, 0, 0, 0])
+@TestCase([0, 60, 0, 0, 0])
+@TestCase([0, 0, 60, 0, 0])
+@TestCase([0, 0, -1, 0, 0])
+@TestCase([0, 0, 0, -1, 0])
 // @TestCase(const [0, 0, 0, 1000, 0]) -- removed since we're just merging milliseconds + nanoseconds
-@TestCase(const [0, 0, 0, 0, -1])
+@TestCase([0, 0, 0, 0, -1])
 // @TestCase(const [0, 0, 0, 0, TimeConstants.ticksPerMillisecond]) -- removed since we're just merging milliseconds + nanoseconds
 void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int second, int millisecond, int tick)
 {
@@ -69,14 +69,14 @@ void FromHourMinuteSecondMillisecondTick_Invalid(int hour, int minute, int secon
 }
 
 @Test()
-@TestCase(const [-1, 0, 0, 0])
-@TestCase(const [24, 0, 0, 0])
-@TestCase(const [0, -1, 0, 0])
-@TestCase(const [0, 60, 0, 0])
-@TestCase(const [0, 0, 60, 0])
-@TestCase(const [0, 0, -1, 0])
-@TestCase(const [0, 0, 0, -1])
-@TestCase(const [0, 0, 0, TimeConstants.nanosecondsPerSecond])
+@TestCase([-1, 0, 0, 0])
+@TestCase([24, 0, 0, 0])
+@TestCase([0, -1, 0, 0])
+@TestCase([0, 60, 0, 0])
+@TestCase([0, 0, 60, 0])
+@TestCase([0, 0, -1, 0])
+@TestCase([0, 0, 0, -1])
+@TestCase([0, 0, 0, TimeConstants.nanosecondsPerSecond])
 void FromHourMinuteSecondNanosecond_Invalid(int hour, int minute, int second, int nanosecond)
 {
   expect(() => LocalTime(hour, minute, second, ns: nanosecond), throwsRangeError);

@@ -41,11 +41,11 @@ void MinusOffset_Zero_IsNeutralElement()
 }
 
 @Test()
-@TestCase(const [0, 0, '1970-01-01T00:00:00 LOC'])
-@TestCase(const [0, 1, '1970-01-01T00:00:00.000000001 LOC'])
-@TestCase(const [0, 1000, '1970-01-01T00:00:00.000001 LOC'])
-@TestCase(const [0, 1000000, '1970-01-01T00:00:00.001 LOC'])
-@TestCase(const [-1, TimeConstants.nanosecondsPerDay - 1, '1969-12-31T23:59:59.999999999 LOC'])
+@TestCase([0, 0, '1970-01-01T00:00:00 LOC'])
+@TestCase([0, 1, '1970-01-01T00:00:00.000000001 LOC'])
+@TestCase([0, 1000, '1970-01-01T00:00:00.000001 LOC'])
+@TestCase([0, 1000000, '1970-01-01T00:00:00.001 LOC'])
+@TestCase([-1, TimeConstants.nanosecondsPerDay - 1, '1969-12-31T23:59:59.999999999 LOC'])
 void ToString_Valid(int day, int nanoOfDay, String expectedText)
 {
   var localInstant = LocalInstant.daysNanos(day, nanoOfDay);
@@ -70,12 +70,12 @@ void SafeMinus_NormalTime()
 
 // A null offset indicates 'BeforeMinValue'. Otherwise, MinValue.Plus(offset)
 @Test()
-@TestCase(const [null, 0, null])
-@TestCase(const [null, 1, null])
-@TestCase(const [null, -1, null])
-@TestCase(const [1, 1, 0])
-@TestCase(const [1, 2, null])
-@TestCase(const [2, 1, 1])
+@TestCase([null, 0, null])
+@TestCase([null, 1, null])
+@TestCase([null, -1, null])
+@TestCase([1, 1, 0])
+@TestCase([1, 2, null])
+@TestCase([2, 1, 1])
 void SafeMinus_NearStartOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.beforeMinValue
@@ -89,12 +89,12 @@ void SafeMinus_NearStartOfTime(int? initialOffset, int offsetToSubtract, int? fi
 
 // A null offset indicates 'AfterMaxValue'. Otherwise, MaxValue.Plus(offset)
 @Test()
-@TestCase(const [null, 0, null])
-@TestCase(const [null, 1, null])
-@TestCase(const [null, -1, null])
-@TestCase(const [-1, -1, 0])
-@TestCase(const [-1, -2, null])
-@TestCase(const [-2, -1, -1])
+@TestCase([null, 0, null])
+@TestCase([null, 1, null])
+@TestCase([null, -1, null])
+@TestCase([-1, -1, 0])
+@TestCase([-1, -2, null])
+@TestCase([-2, -1, -1])
 void SafeMinus_NearEndOfTime(int? initialOffset, int offsetToSubtract, int? finalOffset) {
   var start = initialOffset == null
       ? LocalInstant.afterMaxValue

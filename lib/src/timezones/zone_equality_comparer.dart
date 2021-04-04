@@ -41,12 +41,12 @@ class ZoneEqualityComparerOptions {
 
   int get value => _value;
 
-  static const List<String> _stringRepresentations = const [
+  static const List<String> _stringRepresentations = [
     'OnlyMatchWallOffset', 'MatchOffsetComponents', 'MatchNames',
     'MatchAllTransitions', 'MatchStartAndEndTransitions', 'StrictestMatch'
   ];
 
-  static const List<ZoneEqualityComparerOptions> _isoConstants = const [
+  static const List<ZoneEqualityComparerOptions> _isoConstants = [
     onlyMatchWallOffset, matchOffsetComponents, matchNames,
     matchAllTransitions, matchStartAndEndTransitions, strictestMatch
   ];
@@ -61,23 +61,23 @@ class ZoneEqualityComparerOptions {
   /// The default comparison, which only cares about the wall offset at any particular
   /// instant, within the interval of the comparer. In other words, if [DateTimeZone.getUtcOffset]
   /// returns the same value for all instants in the interval, the comparer will consider the zones to be equal.
-  static const ZoneEqualityComparerOptions onlyMatchWallOffset = const ZoneEqualityComparerOptions(0);
+  static const ZoneEqualityComparerOptions onlyMatchWallOffset = ZoneEqualityComparerOptions(0);
   /// Instead of only comparing wall offsets, the standard/savings split is also considered. So when this
   /// option is used, two zones which both have a wall offset of +2 at one instant would be considered
   /// unequal if one of those offsets was +1 standard, +1 savings and the other was +2 standard with no daylight
   /// saving.
-  static const ZoneEqualityComparerOptions matchOffsetComponents = const ZoneEqualityComparerOptions(1 << 0);
+  static const ZoneEqualityComparerOptions matchOffsetComponents = ZoneEqualityComparerOptions(1 << 0);
   /// Compare the names of zone intervals as well as offsets.
-  static const ZoneEqualityComparerOptions matchNames = const ZoneEqualityComparerOptions(1 << 1);
+  static const ZoneEqualityComparerOptions matchNames = ZoneEqualityComparerOptions(1 << 1);
   /// This option prevents adjacent zone intervals from being coalesced, even if they are otherwise considered
   /// equivalent according to other options.
-  static const ZoneEqualityComparerOptions matchAllTransitions = const ZoneEqualityComparerOptions(1 << 2);
+  static const ZoneEqualityComparerOptions matchAllTransitions = ZoneEqualityComparerOptions(1 << 2);
   /// Includes the transitions into the first zone interval and out of the
   /// last zone interval as part of the comparison, even if they do not affect
   /// the offset or name for any instant within the operating interval.
-  static const ZoneEqualityComparerOptions matchStartAndEndTransitions = const ZoneEqualityComparerOptions(1 << 3);
+  static const ZoneEqualityComparerOptions matchStartAndEndTransitions = ZoneEqualityComparerOptions(1 << 3);
   /// The combination of all available match options.
-  static const ZoneEqualityComparerOptions strictestMatch = const ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
+  static const ZoneEqualityComparerOptions strictestMatch = ZoneEqualityComparerOptions(0 | 1 << 0 | 1 << 1 | 1 << 2 | 1 << 3);
 
   @override int get hashCode => _value.hashCode;
   @override bool operator ==(Object other) => other is ZoneEqualityComparerOptions && other._value == _value || other is int && other == _value;

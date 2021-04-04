@@ -140,12 +140,12 @@ void PlusWeeks_Simple()
 }
 
 @Test()
-@TestCase(const [-9998, 1, 1, -1])
-@TestCase(const [-9996, 1, 1, -1000])
-@TestCase(const [9999, 12, 31, 1])
-@TestCase(const [9997, 12, 31, 1000])
-@TestCase(const [2000, 1, 1, Platform.int32MaxValue])
-@TestCase(const [1, 1, 1, Platform.int32MinValue])
+@TestCase([-9998, 1, 1, -1])
+@TestCase([-9996, 1, 1, -1000])
+@TestCase([9999, 12, 31, 1])
+@TestCase([9997, 12, 31, 1000])
+@TestCase([2000, 1, 1, Platform.int32MaxValue])
+@TestCase([1, 1, 1, Platform.int32MinValue])
 void PlusDays_OutOfRange(int year, int month, int day, int days)
 {
   var start = LocalDate(year, month, day);
@@ -155,16 +155,16 @@ void PlusDays_OutOfRange(int year, int month, int day, int days)
 // Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
 // The tests are picked somewhat arbitrarily...
-@TestCase(const [10, DayOfWeek.wednesday, 16])
-@TestCase(const [10, DayOfWeek.friday, 11])
-@TestCase(const [10, DayOfWeek.thursday, 17])
-@TestCase(const [11, DayOfWeek.wednesday, 16])
-@TestCase(const [11, DayOfWeek.thursday, 17])
-@TestCase(const [11, DayOfWeek.friday, 18])
-@TestCase(const [11, DayOfWeek.saturday, 12])
-@TestCase(const [11, DayOfWeek.sunday, 13])
-@TestCase(const [12, DayOfWeek.friday, 18])
-@TestCase(const [13, DayOfWeek.friday, 18])
+@TestCase([10, DayOfWeek.wednesday, 16])
+@TestCase([10, DayOfWeek.friday, 11])
+@TestCase([10, DayOfWeek.thursday, 17])
+@TestCase([11, DayOfWeek.wednesday, 16])
+@TestCase([11, DayOfWeek.thursday, 17])
+@TestCase([11, DayOfWeek.friday, 18])
+@TestCase([11, DayOfWeek.saturday, 12])
+@TestCase([11, DayOfWeek.sunday, 13])
+@TestCase([12, DayOfWeek.friday, 18])
+@TestCase([13, DayOfWeek.friday, 18])
 void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDate start = LocalDate(2011, 11, dayOfMonth);
@@ -174,9 +174,9 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   expect(target.dayOfMonth, expectedResult);
 }
 
-@TestCase(const [0])
-@TestCase(const [-1])
-@TestCase(const [8])
+@TestCase([0])
+@TestCase([-1])
+@TestCase([8])
 void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDate start = LocalDate(2011, 1, 1);
@@ -185,16 +185,16 @@ void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 
 // Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
-@TestCase(const [10, DayOfWeek.wednesday, 9])
-@TestCase(const [10, DayOfWeek.friday, 4])
-@TestCase(const [10, DayOfWeek.thursday, 3])
-@TestCase(const [11, DayOfWeek.wednesday, 9])
-@TestCase(const [11, DayOfWeek.thursday, 10])
-@TestCase(const [11, DayOfWeek.friday, 4])
-@TestCase(const [11, DayOfWeek.saturday, 5])
-@TestCase(const [11, DayOfWeek.sunday, 6])
-@TestCase(const [12, DayOfWeek.friday, 11])
-@TestCase(const [13, DayOfWeek.friday, 11])
+@TestCase([10, DayOfWeek.wednesday, 9])
+@TestCase([10, DayOfWeek.friday, 4])
+@TestCase([10, DayOfWeek.thursday, 3])
+@TestCase([11, DayOfWeek.wednesday, 9])
+@TestCase([11, DayOfWeek.thursday, 10])
+@TestCase([11, DayOfWeek.friday, 4])
+@TestCase([11, DayOfWeek.saturday, 5])
+@TestCase([11, DayOfWeek.sunday, 6])
+@TestCase([12, DayOfWeek.friday, 11])
+@TestCase([13, DayOfWeek.friday, 11])
 void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDate start = LocalDate(2011, 11, dayOfMonth);
@@ -204,9 +204,9 @@ void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   expect(target.dayOfMonth, expectedResult);
 }
 
-@TestCase(const [0])
-@TestCase(const [-1])
-@TestCase(const [8])
+@TestCase([0])
+@TestCase([-1])
+@TestCase([8])
 void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDate start = LocalDate(2011, 1, 1);

@@ -244,7 +244,7 @@ class TimeMachine  {
   // ignore: unused_field
   static const int _minZoneLongIdLength = 9;
   static const int _maxZoneShortIdLength = 5;
-  static const Map<String, String> _zoneIdMap = const {
+  static const Map<String, String> _zoneIdMap = {
     'Australian Central Daylight Savings Time': "ACDT",
     'Australian Central Standard Time': "ACST",
     'Acre Time': "ACT",

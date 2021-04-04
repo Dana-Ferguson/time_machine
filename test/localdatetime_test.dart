@@ -52,9 +52,9 @@ void PeriodUntilSince() {
 }
 
 @Test()
-@TestCase(const [100])
-@TestCase(const [1900])
-@TestCase(const [2900])
+@TestCase([100])
+@TestCase([1900])
+@TestCase([2900])
 void ToDateTimeUnspecified_TruncatesTowardsStartOfTime(int year)
 {
   if (Platform.isWeb) {

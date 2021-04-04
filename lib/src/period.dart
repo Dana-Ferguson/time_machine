@@ -78,7 +78,7 @@ class Period {
   // but without the hit of having to catch the exception...
 
   /// A period containing only zero-valued properties.
-  static const Period zero = const Period();
+  static const Period zero = Period();
 
 
   /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.

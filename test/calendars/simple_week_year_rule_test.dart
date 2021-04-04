@@ -75,13 +75,13 @@ void OutOfRange_ValidWeekYearAndWeek_TooLate()
 
 // Tests ported from IsoCalendarSystemTest and LocalDateTest.Construction
 @Test()
-@TestCase(const [2011, 1, 1, 2010, 52, DayOfWeek.saturday])
-@TestCase(const [2012, 12, 31, 2013, 1, DayOfWeek.monday])
-@TestCase(const [1960, 1, 19, 1960, 3, DayOfWeek.tuesday])
-@TestCase(const [2012, 10, 19, 2012, 42, DayOfWeek.friday])
-@TestCase(const [2011, 1, 1, 2010, 52, DayOfWeek.saturday])
-@TestCase(const [2012, 12, 31, 2013, 1, DayOfWeek.monday])
-@TestCase(const [2005, 1, 2, 2004, 53, DayOfWeek.sunday])
+@TestCase([2011, 1, 1, 2010, 52, DayOfWeek.saturday])
+@TestCase([2012, 12, 31, 2013, 1, DayOfWeek.monday])
+@TestCase([1960, 1, 19, 1960, 3, DayOfWeek.tuesday])
+@TestCase([2012, 10, 19, 2012, 42, DayOfWeek.friday])
+@TestCase([2011, 1, 1, 2010, 52, DayOfWeek.saturday])
+@TestCase([2012, 12, 31, 2013, 1, DayOfWeek.monday])
+@TestCase([2005, 1, 2, 2004, 53, DayOfWeek.sunday])
 void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
 {
   var date = LocalDate(year, month, day);
@@ -93,17 +93,17 @@ void WeekYearDifferentToYear(int year, int month, int day, int weekYear, int wee
 
 // Ported from CalendarSystemTest.Validation
 @Test()
-@TestCase(const [2009, 53])
-@TestCase(const [2010, 52])
-@TestCase(const [2011, 52])
-@TestCase(const [2012, 52])
-@TestCase(const [2013, 52])
-@TestCase(const [2014, 52])
-@TestCase(const [2015, 53])
-@TestCase(const [2016, 52])
-@TestCase(const [2017, 52])
-@TestCase(const [2018, 52])
-@TestCase(const [2019, 52])
+@TestCase([2009, 53])
+@TestCase([2010, 52])
+@TestCase([2011, 52])
+@TestCase([2012, 52])
+@TestCase([2013, 52])
+@TestCase([2014, 52])
+@TestCase([2015, 53])
+@TestCase([2016, 52])
+@TestCase([2017, 52])
+@TestCase([2018, 52])
+@TestCase([2019, 52])
 void GetWeeksInWeekYear(int weekYear, int expectedResult)
 {
   expect(expectedResult, WeekYearRules.iso.getWeeksInWeekYear(weekYear, CalendarSystem.iso));
@@ -112,17 +112,17 @@ void GetWeeksInWeekYear(int weekYear, int expectedResult)
 // Ported from LocalDateTest.BasicProperties
 // See http://stackoverflow.com/questions/8010125
 @Test()
-@TestCase(const [2007, 12, 31, 1])
-@TestCase(const [2008, 1, 6, 1])
-@TestCase(const [2008, 1, 7, 2])
-@TestCase(const [2008, 12, 28, 52])
-@TestCase(const [2008, 12, 29, 1])
-@TestCase(const [2009, 1, 4, 1])
-@TestCase(const [2009, 1, 5, 2])
-@TestCase(const [2009, 12, 27, 52])
-@TestCase(const [2009, 12, 28, 53])
-@TestCase(const [2010, 1, 3, 53])
-@TestCase(const [2010, 1, 4, 1])
+@TestCase([2007, 12, 31, 1])
+@TestCase([2008, 1, 6, 1])
+@TestCase([2008, 1, 7, 2])
+@TestCase([2008, 12, 28, 52])
+@TestCase([2008, 12, 29, 1])
+@TestCase([2009, 1, 4, 1])
+@TestCase([2009, 1, 5, 2])
+@TestCase([2009, 12, 27, 52])
+@TestCase([2009, 12, 28, 53])
+@TestCase([2010, 1, 3, 53])
+@TestCase([2010, 1, 4, 1])
 void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekOfWeekYear)
 {
   var date = LocalDate(year, month, day);
@@ -130,13 +130,13 @@ void WeekOfWeekYear_ComparisonWithOracle(int year, int month, int day, int weekO
 }
 
 @Test()
-@TestCase(const [2000, DayOfWeek.saturday, 2])
-@TestCase(const [2001, DayOfWeek.monday, 7])
-@TestCase(const [2002, DayOfWeek.tuesday, 6])
-@TestCase(const [2003, DayOfWeek.wednesday, 5])
-@TestCase(const [2004, DayOfWeek.thursday, 4])
-@TestCase(const [2005, DayOfWeek.saturday, 2])
-@TestCase(const [2006, DayOfWeek.sunday, 1])
+@TestCase([2000, DayOfWeek.saturday, 2])
+@TestCase([2001, DayOfWeek.monday, 7])
+@TestCase([2002, DayOfWeek.tuesday, 6])
+@TestCase([2003, DayOfWeek.wednesday, 5])
+@TestCase([2004, DayOfWeek.thursday, 4])
+@TestCase([2005, DayOfWeek.saturday, 2])
+@TestCase([2006, DayOfWeek.sunday, 1])
 void Gregorian(int year, DayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekForSameWeekYear)
 {
   var startOfCalendarYear = LocalDate(year, 1, 1);
@@ -162,10 +162,10 @@ void Gregorian(int year, DayOfWeek firstDayOfYear, int maxMinDaysInFirstWeekForS
 // which distinguish our ISO option from the BCL. When we implement the BCL equivalents, we should have similar
 // tests there...
 @Test()
-@TestCase(const [2000, 12, 31, 2000, 52, DayOfWeek.sunday])
-@TestCase(const [2001, 1, 1, 2001, 1, DayOfWeek.monday])
-@TestCase(const [2005, 1, 1, 2004, 53, DayOfWeek.saturday])
-@TestCase(const [2007, 12, 31, 2008, 1, DayOfWeek.monday])
+@TestCase([2000, 12, 31, 2000, 52, DayOfWeek.sunday])
+@TestCase([2001, 1, 1, 2001, 1, DayOfWeek.monday])
+@TestCase([2005, 1, 1, 2004, 53, DayOfWeek.saturday])
+@TestCase([2007, 12, 31, 2008, 1, DayOfWeek.monday])
 void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWeek dayOfWeek)
 {
   var viaCalendar = LocalDate(year, month, day);
@@ -179,17 +179,17 @@ void Iso(int year, int month, int day, int weekYear, int weekOfWeekYear, DayOfWe
 
 /// Just a sample test of not using the Gregorian/ISO calendar system.
 @Test()
-@TestCase(const [5400, DayOfWeek.thursday, 1639, 9, 29, 51, 5400, 1])
-@TestCase(const [5401, DayOfWeek.monday, 1640, 9, 17, 50, 5401, 1])
-@TestCase(const [5402, DayOfWeek.thursday, 1641, 9, 5, 55, 5402, 1])
-@TestCase(const [5403, DayOfWeek.thursday, 1642, 9, 25, 51, 5403, 1])
-@TestCase(const [5404, DayOfWeek.monday, 1643, 9, 14, 55, 5404, 1])
-@TestCase(const [5405, DayOfWeek.saturday, 1644, 10, 1, 50, 5404, 55])
-@TestCase(const [5406, DayOfWeek.thursday, 1645, 9, 21, 51, 5406, 1])
-@TestCase(const [5407, DayOfWeek.monday, 1646, 9, 10, 55, 5407, 1])
-@TestCase(const [5408, DayOfWeek.monday, 1647, 9, 30, 50, 5408, 1])
-@TestCase(const [5409, DayOfWeek.thursday, 1648, 9, 17, 51, 5409, 1])
-@TestCase(const [5410, DayOfWeek.tuesday, 1649, 9, 7, 55, 5410, 1])
+@TestCase([5400, DayOfWeek.thursday, 1639, 9, 29, 51, 5400, 1])
+@TestCase([5401, DayOfWeek.monday, 1640, 9, 17, 50, 5401, 1])
+@TestCase([5402, DayOfWeek.thursday, 1641, 9, 5, 55, 5402, 1])
+@TestCase([5403, DayOfWeek.thursday, 1642, 9, 25, 51, 5403, 1])
+@TestCase([5404, DayOfWeek.monday, 1643, 9, 14, 55, 5404, 1])
+@TestCase([5405, DayOfWeek.saturday, 1644, 10, 1, 50, 5404, 55])
+@TestCase([5406, DayOfWeek.thursday, 1645, 9, 21, 51, 5406, 1])
+@TestCase([5407, DayOfWeek.monday, 1646, 9, 10, 55, 5407, 1])
+@TestCase([5408, DayOfWeek.monday, 1647, 9, 30, 50, 5408, 1])
+@TestCase([5409, DayOfWeek.thursday, 1648, 9, 17, 51, 5409, 1])
+@TestCase([5410, DayOfWeek.tuesday, 1649, 9, 7, 55, 5410, 1])
 void HebrewCalendar(int year, DayOfWeek expectedFirstDay,
     int isoYear, int isoMonth, int isoDay, // Mostly for documentation
     int expectedWeeks, int expectedWeekYearOfFirstDay, int expectedWeekOfWeekYearOfFirstDay)
@@ -217,11 +217,11 @@ void HebrewCalendar(int year, DayOfWeek expectedFirstDay,
 // Jan 1st 2016 = IsoDayOfWeek.friday
 // Jan 1st 2017 = Sunday
 @Test()
-@TestCase(const [1, DayOfWeek.wednesday, 2015, 2, DayOfWeek.friday, 2015, 1, 9])
-@TestCase(const [7, DayOfWeek.wednesday, 2015, 2, DayOfWeek.friday, 2015, 1, 16])
-@TestCase(const [1, DayOfWeek.wednesday, 2015, 1, DayOfWeek.wednesday, 2014, 12, 31])
-@TestCase(const [3, DayOfWeek.friday, 2016, 1, DayOfWeek.friday, 2016, 1, 1])
-@TestCase(const [3, DayOfWeek.friday, 2017, 1, DayOfWeek.friday, 2016, 12, 30])
+@TestCase([1, DayOfWeek.wednesday, 2015, 2, DayOfWeek.friday, 2015, 1, 9])
+@TestCase([7, DayOfWeek.wednesday, 2015, 2, DayOfWeek.friday, 2015, 1, 16])
+@TestCase([1, DayOfWeek.wednesday, 2015, 1, DayOfWeek.wednesday, 2014, 12, 31])
+@TestCase([3, DayOfWeek.friday, 2016, 1, DayOfWeek.friday, 2016, 1, 1])
+@TestCase([3, DayOfWeek.friday, 2017, 1, DayOfWeek.friday, 2016, 12, 30])
 // We might want to add more tests here...
 void NonMondayFirstDayOfWeek(int minDaysInFirstWeek, DayOfWeek firstDayOfWeek,
     int weekYear, int week, DayOfWeek dayOfWeek,

@@ -90,16 +90,16 @@ abstract class Time implements Comparable<Time> {
 
   static const int _minNano = 0;
 
-  static const Time zero = const MillisecondTime(0, 0);
+  static const Time zero = MillisecondTime(0, 0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static const Time epsilon = const MillisecondTime(0, 1);
+  static const Time epsilon = MillisecondTime(0, 1);
   // oneNanosecond is constant forever -- in theory, epsilon will change if we go beyond nanosecond precision.
-  static const Time oneNanosecond = const MillisecondTime(0, 1);
-  static const Time oneMicrosecond = const MillisecondTime(0, TimeConstants.nanosecondsPerMicrosecond);
-  static const Time oneMillisecond = const MillisecondTime(1, 0);
-  static const Time oneSecond = const MillisecondTime(TimeConstants.millisecondsPerSecond, 0);
-  static const Time oneDay = const MillisecondTime(TimeConstants.millisecondsPerDay, 0);
-  static const Time oneWeek = const MillisecondTime(TimeConstants.millisecondsPerWeek, 0);
+  static const Time oneNanosecond = MillisecondTime(0, 1);
+  static const Time oneMicrosecond = MillisecondTime(0, TimeConstants.nanosecondsPerMicrosecond);
+  static const Time oneMillisecond = MillisecondTime(1, 0);
+  static const Time oneSecond = MillisecondTime(TimeConstants.millisecondsPerSecond, 0);
+  static const Time oneDay = MillisecondTime(TimeConstants.millisecondsPerDay, 0);
+  static const Time oneWeek = MillisecondTime(TimeConstants.millisecondsPerWeek, 0);
 
   // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)

@@ -122,10 +122,10 @@ void BetweenLocalDates_DifferentCalendarSystems_Throws()
 }
 
 @Test()
-@TestCase(const ['2016-05-16', "2019-03-13", PeriodUnits.years, 2])
-@TestCase(const ['2016-05-16', "2017-07-13", PeriodUnits.months, 13])
-@TestCase(const ['2016-05-16', "2016-07-13", PeriodUnits.weeks, 8])
-@TestCase(const ['2016-05-16', "2016-07-13", PeriodUnits.days, 58])
+@TestCase(['2016-05-16', "2019-03-13", PeriodUnits.years, 2])
+@TestCase(['2016-05-16', "2017-07-13", PeriodUnits.months, 13])
+@TestCase(['2016-05-16', "2016-07-13", PeriodUnits.weeks, 8])
+@TestCase(['2016-05-16', "2016-07-13", PeriodUnits.days, 58])
 void BetweenLocalDates_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue)
 {
   var start = LocalDatePattern.iso.parse(startText).value;
@@ -283,12 +283,12 @@ void BetweenLocalTimes_InvalidUnits()
 }
 
 @Test()
-@TestCase(const ['01:02:03', "05:00:00", PeriodUnits.hours, 3])
-@TestCase(const ['01:02:03', "03:00:00", PeriodUnits.minutes, 117])
-@TestCase(const ['01:02:03', "01:05:02", PeriodUnits.seconds, 179])
-@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.milliseconds, 1123])
-@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.microseconds, 1123400])
-@TestCase(const ['01:02:03', "01:02:04.1234", PeriodUnits.nanoseconds,  1123400000])
+@TestCase(['01:02:03', "05:00:00", PeriodUnits.hours, 3])
+@TestCase(['01:02:03', "03:00:00", PeriodUnits.minutes, 117])
+@TestCase(['01:02:03', "01:05:02", PeriodUnits.seconds, 179])
+@TestCase(['01:02:03', "01:02:04.1234", PeriodUnits.milliseconds, 1123])
+@TestCase(['01:02:03', "01:02:04.1234", PeriodUnits.microseconds, 1123400])
+@TestCase(['01:02:03', "01:02:04.1234", PeriodUnits.nanoseconds,  1123400000])
 void BetweenLocalTimes_SingleUnit(String startText, String endText, PeriodUnits units, int expectedValue) {
   var start = LocalTimePattern.extendedIso
       .parse(startText)
@@ -443,16 +443,16 @@ void Equality_WhenUnequal()
 }
 
 @Test()
-@TestCase(const [PeriodUnits.years, false])
-@TestCase(const [PeriodUnits.weeks, false])
-@TestCase(const [PeriodUnits.months, false])
-@TestCase(const [PeriodUnits.days, false])
-@TestCase(const [PeriodUnits.hours, true])
-@TestCase(const [PeriodUnits.minutes, true])
-@TestCase(const [PeriodUnits.seconds, true])
-@TestCase(const [PeriodUnits.milliseconds, true])
-@TestCase(const [PeriodUnits.microseconds, true])
-@TestCase(const [PeriodUnits.nanoseconds, true])
+@TestCase([PeriodUnits.years, false])
+@TestCase([PeriodUnits.weeks, false])
+@TestCase([PeriodUnits.months, false])
+@TestCase([PeriodUnits.days, false])
+@TestCase([PeriodUnits.hours, true])
+@TestCase([PeriodUnits.minutes, true])
+@TestCase([PeriodUnits.seconds, true])
+@TestCase([PeriodUnits.milliseconds, true])
+@TestCase([PeriodUnits.microseconds, true])
+@TestCase([PeriodUnits.nanoseconds, true])
 void HasTimeComponent_SingleValued(PeriodUnits unit, bool hasTimeComponent) {
   var period = (PeriodBuilder()
     ..[unit] = 1).build();
@@ -460,16 +460,16 @@ void HasTimeComponent_SingleValued(PeriodUnits unit, bool hasTimeComponent) {
 }
 
 @Test()
-@TestCase(const [PeriodUnits.years, true])
-@TestCase(const [PeriodUnits.weeks, true])
-@TestCase(const [PeriodUnits.months, true])
-@TestCase(const [PeriodUnits.days, true])
-@TestCase(const [PeriodUnits.hours, false])
-@TestCase(const [PeriodUnits.minutes, false])
-@TestCase(const [PeriodUnits.seconds, false])
-@TestCase(const [PeriodUnits.milliseconds, false])
-@TestCase(const [PeriodUnits.microseconds, false])
-@TestCase(const [PeriodUnits.nanoseconds, false])
+@TestCase([PeriodUnits.years, true])
+@TestCase([PeriodUnits.weeks, true])
+@TestCase([PeriodUnits.months, true])
+@TestCase([PeriodUnits.days, true])
+@TestCase([PeriodUnits.hours, false])
+@TestCase([PeriodUnits.minutes, false])
+@TestCase([PeriodUnits.seconds, false])
+@TestCase([PeriodUnits.milliseconds, false])
+@TestCase([PeriodUnits.microseconds, false])
+@TestCase([PeriodUnits.nanoseconds, false])
 void HasDateComponent_SingleValued(PeriodUnits unit, bool hasDateComponent)
 {
   var period = (PeriodBuilder()..[unit] = 1).build();
@@ -859,7 +859,7 @@ void Comparer_NonDurationablePeriods()
 
 @Test()
 // [TestCaseSource(nameof(AllPeriodUnits))]
-@TestCaseSource(const Symbol('AllPeriodUnits'))
+@TestCaseSource(Symbol('AllPeriodUnits'))
 void Between_ExtremeValues(PeriodUnits units)
 {
   // We can't use None, and Nanoseconds will *correctly* overflow.
@@ -881,10 +881,10 @@ void Between_ExtremeValues_Overflow()
 }
 
 @Test()
-@TestCase(const ['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.years, 1, 0])
-@TestCase(const ['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.months, 12, -11])
-@TestCase(const ['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.days, 1, -1])
-@TestCase(const ['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
+@TestCase(['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.years, 1, 0])
+@TestCase(['2015-02-28T16:00:00', "2016-02-29T08:00:00", PeriodUnits.months, 12, -11])
+@TestCase(['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.days, 1, -1])
+@TestCase(['2014-01-01T16:00:00', "2014-01-03T08:00:00", PeriodUnits.hours, 40, -40])
 void Between_LocalDateTime_AwkwardTimeOfDayWithSingleUnit(String startText, String endText, PeriodUnits units, int expectedForward, int expectedBackward)
 {
   LocalDateTime start = LocalDateTimePattern.extendedIso.parse(startText).value;

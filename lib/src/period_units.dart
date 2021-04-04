@@ -14,14 +14,14 @@ class PeriodUnits {
 
   int get value => _value;
 
-  static const List<String> _stringRepresentations = const [
+  static const List<String> _stringRepresentations = [
     'None', 'Years', 'Months', 'Weeks', 'Days', 'AllDateUnits',
     'YearMonthDay', 'Hours', 'Minutes', 'Seconds', 'Milliseconds',
     'Microseconds', 'Nanoseconds', 'HourMinuteSecond', 'AllTimeUnits',
     'DateAndTime', 'AllUnits'
   ];
 
-  static const List<PeriodUnits> _isoConstants = const [
+  static const List<PeriodUnits> _isoConstants = [
     none, years, months, weeks, days, allDateUnits, yearMonthDay, hours,
     minutes, seconds, milliseconds, microseconds, nanoseconds, hourMinuteSecond, allTimeUnits,
     dateAndTime, allUnits
@@ -40,39 +40,39 @@ class PeriodUnits {
 
 
   /// Value indicating no units - an empty period
-  static const PeriodUnits none = const PeriodUnits(0);
+  static const PeriodUnits none = PeriodUnits(0);
   /// Years element within a [period]
-  static const PeriodUnits years = const PeriodUnits(1);
+  static const PeriodUnits years = PeriodUnits(1);
   /// Months element within a [period]
-  static const PeriodUnits months = const PeriodUnits(2);
+  static const PeriodUnits months = PeriodUnits(2);
   /// Weeks element within a [period]
-  static const PeriodUnits weeks = const PeriodUnits(4);
+  static const PeriodUnits weeks = PeriodUnits(4);
   /// Days element within a [period]
-  static const PeriodUnits days = const PeriodUnits(8);
+  static const PeriodUnits days = PeriodUnits(8);
   /// Compound value representing the combination of [years], [months], [weeks] and [days]
-  static const PeriodUnits allDateUnits = const PeriodUnits(15); // union(const [years, months, weeks, days]);
+  static const PeriodUnits allDateUnits = PeriodUnits(15); // union(const [years, months, weeks, days]);
   /// Compound value representing the combination of [years], [months] and [days]
-  static const PeriodUnits yearMonthDay = const PeriodUnits(11); // union(const [years, months, days]);
+  static const PeriodUnits yearMonthDay = PeriodUnits(11); // union(const [years, months, days]);
   /// Hours element within a [period]
-  static const PeriodUnits hours = const PeriodUnits(16);
+  static const PeriodUnits hours = PeriodUnits(16);
   /// Minutes element within a [period]
-  static const PeriodUnits minutes = const PeriodUnits(32);
+  static const PeriodUnits minutes = PeriodUnits(32);
   /// Seconds element within a [period]
-  static const PeriodUnits seconds = const PeriodUnits(64);
+  static const PeriodUnits seconds = PeriodUnits(64);
   /// Milliseconds element within a [period]
-  static const PeriodUnits milliseconds = const PeriodUnits(128);
+  static const PeriodUnits milliseconds = PeriodUnits(128);
   /// Tick element within a [period]
-  static const PeriodUnits microseconds = const PeriodUnits(256);
+  static const PeriodUnits microseconds = PeriodUnits(256);
   /// Nanoseconds element within a [period]
-  static const PeriodUnits nanoseconds = const PeriodUnits(512);
+  static const PeriodUnits nanoseconds = PeriodUnits(512);
   /// Compound value representing the combination of [hours], [minutes] and [seconds]
-  static const PeriodUnits hourMinuteSecond = const PeriodUnits(112); // union(const [hours, minutes, seconds]);
+  static const PeriodUnits hourMinuteSecond = PeriodUnits(112); // union(const [hours, minutes, seconds]);
   /// Compound value representing the combination of all time elements
-  static const PeriodUnits allTimeUnits = const PeriodUnits(1008); // union(const [hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
+  static const PeriodUnits allTimeUnits = PeriodUnits(1008); // union(const [hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
   /// Compound value representing the combination of all possible elements except weeks
-  static const PeriodUnits dateAndTime = const PeriodUnits(1019); // union(const [years, months, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
+  static const PeriodUnits dateAndTime = PeriodUnits(1019); // union(const [years, months, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
   /// Compound value representing the combination of all possible elements
-  static const PeriodUnits allUnits = const PeriodUnits(1023); // union(const [years, months, weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
+  static const PeriodUnits allUnits = PeriodUnits(1023); // union(const [years, months, weeks, days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds]);
 
   @override int get hashCode => _value.hashCode;
   @override bool operator ==(Object other) =>

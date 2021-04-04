@@ -12,32 +12,32 @@ class DayOfWeek {
 
   int get value => _value;
 
-  static const List<String> _stringRepresentations = const [
+  static const List<String> _stringRepresentations = [
     'None', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
   ];
 
-  static const List<DayOfWeek> _isoConstants = const [
+  static const List<DayOfWeek> _isoConstants = [
     none, monday, tuesday, wednesday, thursday, friday, saturday, sunday
   ];
 
   /// Value indicating no day of the week; this will never be returned
   /// by any IsoDayOfWeek property, and is not valid as an argument to
   /// any method.
-  static const DayOfWeek none = const DayOfWeek(0);
+  static const DayOfWeek none = DayOfWeek(0);
   /// Value representing Monday (1).
-  static const DayOfWeek monday = const DayOfWeek(1);
+  static const DayOfWeek monday = DayOfWeek(1);
   /// Value representing Tuesday (2).
-  static const DayOfWeek tuesday = const DayOfWeek(2);
+  static const DayOfWeek tuesday = DayOfWeek(2);
   /// Value representing Wednesday (3).
-  static const DayOfWeek wednesday = const DayOfWeek(3);
+  static const DayOfWeek wednesday = DayOfWeek(3);
   /// Value representing Thursday (4).
-  static const DayOfWeek thursday = const DayOfWeek(4);
+  static const DayOfWeek thursday = DayOfWeek(4);
   /// Value representing Friday (5).
-  static const DayOfWeek friday = const DayOfWeek(5);
+  static const DayOfWeek friday = DayOfWeek(5);
   /// Value representing Saturday (6).
-  static const DayOfWeek saturday = const DayOfWeek(6);
+  static const DayOfWeek saturday = DayOfWeek(6);
   /// Value representing Sunday (7).
-  static const DayOfWeek sunday = const DayOfWeek(7);
+  static const DayOfWeek sunday = DayOfWeek(7);
 
   const DayOfWeek(this._value);
 

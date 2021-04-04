@@ -22,11 +22,11 @@ final Instant negativeFiftyMillion = IInstant.untrusted(Time(nanoseconds: -50000
 
 @Test()
 // Gregorian calendar: 1957-10-04
-@TestCase(const [2436116.31, 1957, 9, 21, 19, 26, 24], 'Sample from Astronomical Algorithms 2nd Edition, chapter 7')
+@TestCase([2436116.31, 1957, 9, 21, 19, 26, 24], 'Sample from Astronomical Algorithms 2nd Edition, chapter 7')
 // Gregorian calendar: 2013-01-01
-@TestCase(const [2456293.520833, 2012, 12, 19, 0, 30, 0], 'Sample from Wikipedia')
-@TestCase(const [1842713.0, 333, 1, 27, 12, 0, 0], 'Another sample from Astronomical Algorithms 2nd Edition, chapter 7')
-@TestCase(const [0.0, -4712, 1, 1, 12, 0, 0], 'Julian epoch')
+@TestCase([2456293.520833, 2012, 12, 19, 0, 30, 0], 'Sample from Wikipedia')
+@TestCase([1842713.0, 333, 1, 27, 12, 0, 0], 'Another sample from Astronomical Algorithms 2nd Edition, chapter 7')
+@TestCase([0.0, -4712, 1, 1, 12, 0, 0], 'Julian epoch')
 void JulianDateConversions(double julianDate, int year, int month, int day, int hour, int minute, int second) {
   // When dealing with floating point binary data, if we're accurate to 50 milliseconds, that's fine...
   // (0.000001 days = ~86ms, as a guide to the scale involved...)
@@ -164,17 +164,17 @@ void FromUnixTimeSeconds_TooSmall()
 }
 
 @Test()
-@TestCase(const [-1500, -2])
-@TestCase(const [-1001, -2])
-@TestCase(const [-1000, -1])
-@TestCase(const [-999, -1])
-@TestCase(const [-500, -1])
-@TestCase(const [0, 0])
-@TestCase(const [500, 0])
-@TestCase(const [999, 0])
-@TestCase(const [1000, 1])
-@TestCase(const [1001, 1])
-@TestCase(const [1500, 1])
+@TestCase([-1500, -2])
+@TestCase([-1001, -2])
+@TestCase([-1000, -1])
+@TestCase([-999, -1])
+@TestCase([-500, -1])
+@TestCase([0, 0])
+@TestCase([500, 0])
+@TestCase([999, 0])
+@TestCase([1000, 1])
+@TestCase([1001, 1])
+@TestCase([1500, 1])
 void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 {
   var instant = Instant.fromEpochMilliseconds(milliseconds);
@@ -182,17 +182,17 @@ void ToUnixTimeSeconds(int milliseconds, int expectedSeconds)
 }
 
 @Test()
-@TestCase(const [-15000, -2])
-@TestCase(const [-10001, -2])
-@TestCase(const [-10000, -1])
-@TestCase(const [-9999, -1])
-@TestCase(const [-5000, -1])
-@TestCase(const [0, 0])
-@TestCase(const [5000, 0])
-@TestCase(const [9999, 0])
-@TestCase(const [10000, 1])
-@TestCase(const [10001, 1])
-@TestCase(const [15000, 1])
+@TestCase([-15000, -2])
+@TestCase([-10001, -2])
+@TestCase([-10000, -1])
+@TestCase([-9999, -1])
+@TestCase([-5000, -1])
+@TestCase([0, 0])
+@TestCase([5000, 0])
+@TestCase([9999, 0])
+@TestCase([10000, 1])
+@TestCase([10001, 1])
+@TestCase([15000, 1])
 void ToUnixTimeMilliseconds(int ticks, int expectedMilliseconds)
 {
   // todo: rework this test
@@ -344,14 +344,14 @@ void DefaultConstructor()
 }
 
 @Test()
-@TestCase(const [-101, -2])
-@TestCase(const [-100, -1])
-@TestCase(const [-99, -1])
-@TestCase(const [-1, -1])
-@TestCase(const [0, 0])
-@TestCase(const [99, 0])
-@TestCase(const [100, 1])
-@TestCase(const [101, 1])
+@TestCase([-101, -2])
+@TestCase([-100, -1])
+@TestCase([-99, -1])
+@TestCase([-1, -1])
+@TestCase([0, 0])
+@TestCase([99, 0])
+@TestCase([100, 1])
+@TestCase([101, 1])
 void TicksTruncatesDown(int nanoseconds, int expectedTicks)
 {
   Time nanos = Time(nanoseconds: nanoseconds);
@@ -460,12 +460,12 @@ void SafePlus_NormalTime()
 }
 
 @Test()
-@TestCase(const [null, 0, null])
-@TestCase(const [null, 1, null])
-@TestCase(const [null, -1, null])
-@TestCase(const [1, -1, 0])
-@TestCase(const [1, -2, null])
-@TestCase(const [2, 1, 3])
+@TestCase([null, 0, null])
+@TestCase([null, 1, null])
+@TestCase([null, -1, null])
+@TestCase([1, -1, 0])
+@TestCase([1, -2, null])
+@TestCase([2, 1, 3])
 void SafePlus_NearStartOfTime(int? initialOffset, int offsetToAdd, int? finalOffset) {
   var start = initialOffset == null
       ? IInstant.beforeMinValue
@@ -479,12 +479,12 @@ void SafePlus_NearStartOfTime(int? initialOffset, int offsetToAdd, int? finalOff
 
 // A null offset indicates 'AfterMaxValue'. Otherwise, MaxValue.Plus(offset)
 @Test()
-@TestCase(const [null, 0, null])
-@TestCase(const [null, 1, null])
-@TestCase(const [null, -1, null])
-@TestCase(const [-1, 1, 0])
-@TestCase(const [-1, 2, null])
-@TestCase(const [-2, -1, -3])
+@TestCase([null, 0, null])
+@TestCase([null, 1, null])
+@TestCase([null, -1, null])
+@TestCase([-1, 1, 0])
+@TestCase([-1, 2, null])
+@TestCase([-2, -1, -3])
 void SafePlus_NearEndOfTime(int? initialOffset, int offsetToAdd, int? finalOffset) {
   var start = initialOffset == null
       ? IInstant.afterMaxValue
@@ -498,11 +498,11 @@ void SafePlus_NearEndOfTime(int? initialOffset, int offsetToAdd, int? finalOffse
 }
 
 @Test()
-@TestCase(const [0])
-@TestCase(const [-1])
-@TestCase(const [1])
-@TestCase(const [123456789])
-@TestCase(const [-123456789])
+@TestCase([0])
+@TestCase([-1])
+@TestCase([1])
+@TestCase([123456789])
+@TestCase([-123456789])
 void InstantEpochConstructors(int value) {
   expect(Instant.fromEpochSeconds(value).epochSeconds, value);
   expect(Instant.fromEpochMilliseconds(value).epochMilliseconds, value);

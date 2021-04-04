@@ -42,7 +42,7 @@ class Instant implements Comparable<Instant> {
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
   static final Instant maxValue = Instant._trusted(Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
-  static const Instant unixEpoch = const Instant._trusted(Time.zero);
+  static const Instant unixEpoch = Instant._trusted(Time.zero);
 
   final Time timeSinceEpoch;
 
