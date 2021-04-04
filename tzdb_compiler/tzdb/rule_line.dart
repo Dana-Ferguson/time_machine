@@ -7,6 +7,7 @@ import 'zone_line.dart';
 /// <remarks>
 /// Immutable, threadsafe.
 /// </remarks>
+@immutable
 class RuleLine // implements Comparable<RuleLine> // IEquatable<RuleLine>
 {
   /// The string to replace '%s' with (if any) when formatting the zone name key.

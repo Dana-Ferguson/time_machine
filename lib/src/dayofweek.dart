@@ -6,6 +6,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 /// Equates the days of the week with their numerical value according to
 /// ISO-8601.
+@immutable
 class DayOfWeek {
   final int _value;
 

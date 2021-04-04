@@ -10,6 +10,7 @@ import 'zone_rule_set.dart';
 /// Immutable, thread-safe
 /// </remarks>
 // todo: internal
+@immutable
 class ZoneLine {
   static final OffsetPattern _percentZPattern = OffsetPattern.createWithInvariantCulture('i');
 
