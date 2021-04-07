@@ -258,8 +258,8 @@ class SpanPatternTest extends PatternTestBase<Time> {
   @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
-  @Test()
-  void ParseNull() => AssertParseNull(TimePattern.roundtrip);
+  // @Test()
+  // void ParseNull() => AssertParseNull(TimePattern.roundtrip);
 
   @Test()
   void WithCulture() {

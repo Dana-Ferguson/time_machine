@@ -63,7 +63,7 @@ abstract class ParserHelper {
   /// Formats the optional.
   ///
   /// <param name='value'>The value.</param>
-  static String formatOptional(String value) => value ?? '-';
+  static String formatOptional(String? value) => value ?? '-';
 
   /// Parses the given text for an integer. Leading and trailing white space is ignored.
   ///
@@ -71,7 +71,7 @@ abstract class ParserHelper {
   /// <param name='defaultValue'>The default value to use if the number cannot be parsed.</param>
   /// <returns>An integer.</returns>
   /// <exception cref='FormatException'>If the text is not a valid integer.</exception>
-  static int parseInteger(String text, int defaultValue) {
+  static int parseInteger(String? text, int defaultValue) {
     if (text == null) return defaultValue;
     return int.tryParse(text) ?? defaultValue;
   }
@@ -124,7 +124,7 @@ abstract class ParserHelper {
   ///
   /// <param name='text'>The value to parse.</param>
   /// <returns>The input string or null.</returns>
-  static String ParseOptional(String text) {
+  static String? ParseOptional(String text) {
     Preconditions.checkNotNull(text, 'text');
     return text == '-' ? null : text;
   }

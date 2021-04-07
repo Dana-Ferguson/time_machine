@@ -1,8 +1,8 @@
 import 'package:time_machine/src/time_machine_internal.dart';
 
-import 'datetimezone_builder.dart';
-import 'rule_line.dart';
-import 'zone_line.dart';
+// import 'datetimezone_builder.dart';
+// import 'rule_line.dart';
+// import 'zone_line.dart';
 import 'cldr_windows_zone_parser.dart';
 import 'tzdb_database.dart';
 
@@ -79,13 +79,13 @@ class TzdbStreamWriter {
     fields.addField(TzdbStreamFieldId.tzdbVersion, null).writer.writeString(database.version);
 
     // Normalize the aliases
-    var timeZoneMap = Map<String, String>();
+    var timeZoneMap = <String, String>{};
     for (var key in database.aliases.keys)
     {
-      var value = database.aliases[key];
+      var value = database.aliases[key]!;
       while (database.aliases.containsKey(value))
       {
-        value = database.aliases[value];
+        value = database.aliases[value]!;
       }
       timeZoneMap[key] = value;
     }
@@ -97,7 +97,7 @@ class TzdbStreamWriter {
     // Additional names from Windows Standard Name to canonical ID, used in Noda Time 1.x BclDateTimeZone, when we
     // didn't have access to TimeZoneInfo.Id.
     fields.addField(TzdbStreamFieldId.windowsAdditionalStandardNameToIdMapping, stringPool).writer.writeDictionary
-      (Map.fromEntries(additionalWindowsNameToIdMappings.entries.toList().map((entry) => MapEntry(entry.key, cldrWindowsZones.primaryMapping[entry.value]))));
+      (Map.fromEntries(additionalWindowsNameToIdMappings.entries.toList().map((entry) => MapEntry(entry.key, cldrWindowsZones.primaryMapping[entry.value]!))));
 
     // Zone locations, if any.
     var zoneLocations = database.zoneLocations;
@@ -140,12 +140,12 @@ class TzdbStreamWriter {
   {
     writer.writeString(zone.id);
     // For cached zones, simply uncache first.
-    var cachedZone = zone as CachedDateTimeZone;
+    var cachedZone = zone as CachedDateTimeZone?;
     if (cachedZone != null)
     {
       zone = cachedZone.timeZone;
     }
-    var fixedZone = zone as FixedDateTimeZone;
+    var fixedZone = zone as FixedDateTimeZone?;
     if (fixedZone != null)
     {
       writer.writeUint8(/*DateTimeZoneWriter.*/DateTimeZoneType.fixed);
@@ -153,7 +153,7 @@ class TzdbStreamWriter {
     }
     else
     {
-      var precalculatedZone = zone as PrecalculatedDateTimeZone;
+      var precalculatedZone = zone as PrecalculatedDateTimeZone?;
       if (precalculatedZone != null)
       {
         writer.writeUint8(/*DateTimeZoneWriter.*/DateTimeZoneType.precalculated);
@@ -172,8 +172,8 @@ class TzdbStreamWriter {
   /// </summary>
   static List<String> _createOptimizedStringPool(
       Iterable<DateTimeZone> zones,
-      Iterable<TzdbZoneLocation> zoneLocations,
-      Iterable<TzdbZone1970Location> zone1970Locations,
+      Iterable<TzdbZoneLocation>? zoneLocations,
+      Iterable<TzdbZone1970Location>? zone1970Locations,
       WindowsZones cldrWindowsZones)
   {
     var optimizingWriter = _StringPoolOptimizingFakeWriter();
@@ -208,14 +208,14 @@ class TzdbStreamWriter {
 /// </summary>
 class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
 {
-  final List<String> _allStrings = List<String>();
+  final List<String> _allStrings = <String>[];
 
   List<String> createPool()  {
     // _allStrings.GroupBy(x => x);
     var map = <String, int>{};
 
     _allStrings.forEach((text) {
-      if (map.containsKey(text)) map[text] = map[text] + 1;
+      if (map.containsKey(text)) map[text] = map[text]! + 1;
       else map[text] = 1;
     });
 
@@ -227,6 +227,7 @@ class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
     return items.map((i) => i.key).toList();
   }
 
+  @override
   void writeString(String value)
   {
     _allStrings.add(value);
@@ -240,6 +241,7 @@ class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
   void WriteSignedCount(int count) { }
   void WriteZoneIntervalTransition(Instant previous, Instant value) {}*/
 
+  @override
   void writeDictionary(Map<String, String> dictionary)
   {
     dictionary.forEach((key, value) {
@@ -248,7 +250,7 @@ class _StringPoolOptimizingFakeWriter implements IDateTimeZoneWriter
     });
   }
 
-  @override Future close() { return null;}
+  @override Future? close() { return null;}
   @override void write7BitEncodedInt(int value) { }
   @override void writeBool(bool value) { }
   @override void writeInt32(int value) { }
@@ -269,9 +271,10 @@ class _FieldData {
 
   _FieldData._(this.fieldId, this.stream, this.writer);
 
-  factory _FieldData(TzdbStreamFieldId fieldId, List<String> stringPool) {
+  factory _FieldData(TzdbStreamFieldId fieldId, List<String>? stringPool) {
     var stream = MemoryStream();
-    var writer = DateTimeZoneWriter(BinaryWriter(stream), stringPool);
+    // var writer = DateTimeZoneWriter(BinaryWriter(stream), stringPool);
+    var writer = DateTimeZoneWriter(BinaryWriter(stream));
     return _FieldData._(fieldId, stream, writer);
   }
 
@@ -292,7 +295,7 @@ class _FieldCollection
 {
   final List<_FieldData> fields = [];
 
-  _FieldData addField(TzdbStreamFieldId fieldNumber, List<String> stringPool)
+  _FieldData addField(TzdbStreamFieldId fieldNumber, List<String>? stringPool)
   {
     var ret = _FieldData(fieldNumber, stringPool);
     fields.add(ret);

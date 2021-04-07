@@ -13,17 +13,17 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-Iterable<DateTimeZone> AllTzdbZones;
+late Iterable<DateTimeZone> allTzdbZones;
 
 Future main() async {
   await TimeMachine.initialize();
-  AllTzdbZones = await (await DateTimeZoneProviders.tzdb).getAllZones();
+  allTzdbZones = await (await DateTimeZoneProviders.tzdb).getAllZones();
 
   await runTests();
 }
 
 @Test()
-@TestCaseSource(#AllTzdbZones)
+@TestCaseSource(#allTzdbZones)
 void AllZonesStartAndEndOfTime(DateTimeZone zone)
 {
   var firstInterval = zone.getZoneInterval(Instant.minValue);

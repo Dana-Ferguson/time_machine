@@ -3,9 +3,9 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'datetimezone_builder.dart';
 import 'rule_line.dart';
 import 'zone_line.dart';
-import 'cldr_windows_zone_parser.dart';
-import 'tzdb_stream_writer.dart';
-import 'utility/binary_writer.dart';
+// import 'cldr_windows_zone_parser.dart';
+// import 'tzdb_stream_writer.dart';
+// import 'utility/binary_writer.dart';
 
 /// Provides a container for the definitions parsed from the TZDB zone info files.
 class TzdbDatabase {
@@ -22,26 +22,26 @@ class TzdbDatabase {
   final Map<String, List<RuleLine>> rules = {};
 
   /// A list of the zone locations known to this database from zone.tab.
-  List<TzdbZoneLocation> zoneLocations;
+  List<TzdbZoneLocation>? zoneLocations;
 
   /// A list of the zone locations known to this database from zone1970.tab.
-  List<TzdbZone1970Location> zone1970Locations;
+  List<TzdbZone1970Location>? zone1970Locations;
 
   /// Initializes a new instance of the [TzdbDatabase] class.
   TzdbDatabase(this.version);
 
   /// Returns the data in this database as a [TzdbDateTimeZoneSource] with no
   /// Windows mappings.
-  TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource() {
-    var ms = MemoryStream();
-    var writer = TzdbStreamWriter();
-    writer.write(this,
-        WindowsZones('n/a', version, "n/a", <MapZone>[]), // No Windows mappings,
-        Map<String, String>(), // No additional name-to-id mappings
-        BinaryWriter(ms));
-    ms.position = 0;
-    return TzdbDateTimeZoneSource.FromStream(ms);
-  }
+  // TzdbDateTimeZoneSource ToTzdbDateTimeZoneSource() {
+  //   var ms = MemoryStream();
+  //   var writer = TzdbStreamWriter();
+  //   writer.write(this,
+  //       WindowsZones('n/a', version, "n/a", <MapZone>[]), // No Windows mappings,
+  //       <String, String>{}, // No additional name-to-id mappings
+  //       BinaryWriter(ms));
+  //   ms.position = 0;
+  //   return TzdbDateTimeZoneSource.FromStream(ms);
+  // }
 
   /// Adds the given zone alias to the database.
   ///
@@ -57,7 +57,7 @@ class TzdbDatabase {
   /// <param name='rule'>The rule to add.</param>
   void addRule(RuleLine rule) {
     rules.putIfAbsent(rule.name, () => []);
-    rules[rule.name].add(rule);
+    rules[rule.name]!.add(rule);
   }
 
   /// Adds the given zone line to the database, creating a new list for
@@ -66,7 +66,7 @@ class TzdbDatabase {
   /// <param name='zone'>The zone to add.</param>
   void addZone(ZoneLine zone) {
     zones.putIfAbsent(zone.name, () => []);
-    zones[zone.name].add(zone);
+    zones[zone.name]!.add(zone);
   }
 
   /// Converts a single zone into a DateTimeZone. As well as for testing purposes,
@@ -77,16 +77,16 @@ class TzdbDatabase {
     String zoneListKey = zoneId;
     // Recursively resolve aliases
     while (aliases.containsKey(zoneListKey)) {
-      zoneListKey = aliases[zoneListKey];
+      zoneListKey = aliases[zoneListKey]!;
     }
-    return _createTimeZone(zoneId, zones[zoneListKey]);
+    return _createTimeZone(zoneId, zones[zoneListKey]!);
   }
 
   /// Converts each zone in the database into a DateTimeZone.
   Iterable<DateTimeZone> generateDateTimeZones() sync* {
     var zoneKeys = zones.keys.toList()..sort();
     for(var key in zoneKeys) {
-      yield _createTimeZone(key, zones[key]);
+      yield _createTimeZone(key, zones[key]!);
     }
   }
 

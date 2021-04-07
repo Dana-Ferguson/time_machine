@@ -14,10 +14,10 @@ Future main() async {
 }
 
 @Test()
-@TestCase(const [1620], 'Leap year in non-optimized period')
-@TestCase(const [1621], 'Non-leap year in non-optimized period')
-@TestCase(const [1980], 'Leap year in optimized period')
-@TestCase(const [1981], 'Non-leap year in optimized period')
+@TestCase([1620], 'Leap year in non-optimized period')
+@TestCase([1621], 'Non-leap year in non-optimized period')
+@TestCase([1980], 'Leap year in optimized period')
+@TestCase([1981], 'Non-leap year in optimized period')
 void Constructor_WithDays(int year)
 {
   LocalDate start = LocalDate(year, 1, 1);
@@ -29,10 +29,10 @@ void Constructor_WithDays(int year)
 }
 
 @Test()
-@TestCase(const [1620], 'Leap year in non-optimized period')
-@TestCase(const [1621], 'Non-leap year in non-optimized period')
-@TestCase(const [1980], 'Leap year in optimized period')
-@TestCase(const [1981], 'Non-leap year in optimized period')
+@TestCase([1620], 'Leap year in non-optimized period')
+@TestCase([1621], 'Non-leap year in non-optimized period')
+@TestCase([1980], 'Leap year in optimized period')
+@TestCase([1981], 'Non-leap year in optimized period')
 void Constructor_WithDaysAndCalendar(int year)
 {
   LocalDate start = LocalDate(year, 1, 1);
@@ -69,13 +69,13 @@ void Constructor_PropertiesRoundTrip_CustomCalendar()
 }
 
 @Test()
-@TestCase(const [GregorianYearMonthDayCalculator.maxGregorianYear + 1, 1, 1])
-@TestCase(const [GregorianYearMonthDayCalculator.minGregorianYear - 1, 1, 1])
-@TestCase(const [2010, 13, 1])
-@TestCase(const [2010, 0, 1])
-@TestCase(const [2010, 1, 100])
-@TestCase(const [2010, 2, 30])
-@TestCase(const [2010, 1, 0])
+@TestCase([GregorianYearMonthDayCalculator.maxGregorianYear + 1, 1, 1])
+@TestCase([GregorianYearMonthDayCalculator.minGregorianYear - 1, 1, 1])
+@TestCase([2010, 13, 1])
+@TestCase([2010, 0, 1])
+@TestCase([2010, 1, 100])
+@TestCase([2010, 2, 30])
+@TestCase([2010, 1, 0])
 void Constructor_Invalid(int year, int month, int day)
 {
   // Assert.Throws<ArgumentOutOfRangeException>
@@ -83,13 +83,13 @@ void Constructor_Invalid(int year, int month, int day)
 }
 
 @Test()
-@TestCase(const [GregorianYearMonthDayCalculator.maxGregorianYear + 1, 1, 1])
-@TestCase(const [GregorianYearMonthDayCalculator.minGregorianYear - 1, 1, 1])
-@TestCase(const [2010, 13, 1])
-@TestCase(const [2010, 0, 1])
-@TestCase(const [2010, 1, 100])
-@TestCase(const [2010, 2, 30])
-@TestCase(const [2010, 1, 0])
+@TestCase([GregorianYearMonthDayCalculator.maxGregorianYear + 1, 1, 1])
+@TestCase([GregorianYearMonthDayCalculator.minGregorianYear - 1, 1, 1])
+@TestCase([2010, 13, 1])
+@TestCase([2010, 0, 1])
+@TestCase([2010, 1, 100])
+@TestCase([2010, 2, 30])
+@TestCase([2010, 1, 0])
 void Constructor_Invalid_WithCalendar(int year, int month, int day)
 {
   // Assert.Throws<ArgumentOutOfRangeException>
@@ -142,13 +142,13 @@ void FromWeekYearWeekAndDay_InvalidWeek53()
 }
 
 @Test()
-@TestCase(const [2014, 8, 3, DayOfWeek.sunday, 17])
-@TestCase(const [2014, 8, 3, DayOfWeek.friday, 15])
+@TestCase([2014, 8, 3, DayOfWeek.sunday, 17])
+@TestCase([2014, 8, 3, DayOfWeek.friday, 15])
 // Needs 'rewind' logic as August 1st 2014 is a Friday
-@TestCase(const [2014, 8, 3, DayOfWeek.thursday, 21])
-@TestCase(const [2014, 8, 5, DayOfWeek.sunday, 31])
+@TestCase([2014, 8, 3, DayOfWeek.thursday, 21])
+@TestCase([2014, 8, 5, DayOfWeek.sunday, 31])
 // Only 4 Mondays in August in 2014.
-@TestCase(const [2014, 8, 5, DayOfWeek.monday, 25])
+@TestCase([2014, 8, 5, DayOfWeek.monday, 25])
 void FromYearMonthWeekAndDay(int year, int month, int occurrence, DayOfWeek dayOfWeek, int expectedDay)
 {
   var date = LocalDate.onDayOfWeekInMonth(year, month, occurrence, dayOfWeek);

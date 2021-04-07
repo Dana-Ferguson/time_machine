@@ -18,10 +18,11 @@ Future main() async {
 }
 
 Future setup() async {
-  timeZone = CachedDateTimeZone.forZone(await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles']);
+  // NB: may be an invalid work if dateTimeZone._isFixed
+  timeZone = CachedDateTimeZone.forZone(await (await DateTimeZoneProviders.tzdb)['America/Los_Angeles']) as CachedDateTimeZone;
 }
 
-CachedDateTimeZone timeZone; // = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb['America/Los_Angeles'];
+late CachedDateTimeZone timeZone; // = (CachedDateTimeZone) DateTimeZoneProviders.Tzdb['America/Los_Angeles'];
 Instant summer = Instant.utc(2010, 6, 1, 0, 0);
 
 @Test()

@@ -9,9 +9,9 @@ import 'package:time_machine/src/time_machine_internal.dart';
 /// from needing TimeMachineFormatInfo.InvariantInfo...
 @internal
 class OffsetTimePatterns {
-  //static OffsetTimePattern _GeneralIsoPatternImpl;
-  //@internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
-  //    "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
+  // static OffsetTimePattern _GeneralIsoPatternImpl;
+  // @internal static OffsetTimePattern get GeneralIsoPatternImpl => _GeneralIsoPatternImpl ??= OffsetTimePattern.Create(
+    //  "HH':'mm':'sso<G>", NodaFormatInfo.InvariantInfo, OffsetTimePattern.DefaultTemplateValue);
 
   static final OffsetTimePattern generalIsoPatternImpl = OffsetTimePattern._create(
       "HH':'mm':'sso<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
@@ -19,7 +19,7 @@ class OffsetTimePatterns {
       "HH':'mm':'ss;FFFFFFFFFo<G>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
   static final OffsetTimePattern rfc3339PatternImpl = OffsetTimePattern._create(
       "HH':'mm':'ss;FFFFFFFFFo<Z+HH:mm>", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
-  static String format(OffsetTime offsetTime, String patternText, Culture culture) =>
+  static String format(OffsetTime offsetTime, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .offsetTimePatternParser
@@ -69,7 +69,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// in the pattern are taken from the template.
   final OffsetTime templateValue;
 
-  OffsetTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
+  const OffsetTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -79,6 +79,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<OffsetTime> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned time as text according to the rules of this pattern.
@@ -86,6 +87,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// * [value]: The zoned time to format.
   ///
   /// Returns: The zoned time formatted according to this pattern.
+  @override
   String format(OffsetTime value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -95,6 +97,7 @@ class OffsetTimePattern implements IPattern<OffsetTime> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(OffsetTime value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.

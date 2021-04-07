@@ -7,7 +7,7 @@
 class InvalidTimeDataError extends Error
 {
   final String message;
-  final Error error;
+  final Error? error;
 
   /// Creates an instance with the given message.
   ///

@@ -49,7 +49,7 @@ class _HashArrayCache implements ZoneIntervalMap {
   /// converts an instant into a number of 32 day periods.
   static const int _periodShift = 5;
 
-  final List<_HashCacheNode> _instantCache = List<_HashCacheNode>(_cacheSize);
+  final List<_HashCacheNode?> _instantCache = List<_HashCacheNode?>.filled(_cacheSize, null);
   final ZoneIntervalMap _map;
 
   _HashArrayCache(this._map) {
@@ -62,19 +62,23 @@ class _HashArrayCache implements ZoneIntervalMap {
   ///
   /// [instant]: The Instant to test.
   /// Returns: The defined ZoneOffsetPeriod or null.
+  @override
   ZoneInterval getZoneInterval(Instant instant) {
     int period = safeRightShift(instant.epochDay, _periodShift);
     int index = period & _cachePeriodMask;
-    var node = _instantCache[index];
-    if (node == null || node.period != period) {
+    _HashCacheNode? cachedNode = _instantCache[index];
+    _HashCacheNode node;
+    if (cachedNode == null || cachedNode.period != period) {
       node = _HashCacheNode.createNode(period, _map);
       _instantCache[index] = node;
+    } else {
+      node = cachedNode;
     }
 
     // Note: moving this code into an instance method in HashCacheNode makes a surprisingly
     // large performance difference.
     while (node.previous != null && IZoneInterval.rawStart(node.interval) > instant) {
-      node = node.previous;
+      node = node.previous!;
     }
     return node.interval;
   }
@@ -90,7 +94,7 @@ class _HashCacheNode {
 
   final int period;
 
-  final _HashCacheNode previous;
+  final _HashCacheNode? previous;
 
   /// Creates a hash table node with all the information for this period.
   /// We start off by finding the interval for the start of the period, and

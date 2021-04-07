@@ -18,9 +18,10 @@ class InstantPatternParser implements IPatternParser<Instant> {
   static const String beforeMinValueText = 'StartOfTime';
   static const String afterMaxValueText = 'EndOfTime';
 
+  @override
   IPattern<Instant> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -50,6 +51,7 @@ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
 
   _LocalDateTimePatternAdapter(this._pattern);
 
+  @override
   String format(Instant value) =>
   // We don't need to be able to parse before-min/after-max values, but it's convenient to be
   // able to format them - mostly for the sake of testing (but also for ZoneInterval).
@@ -59,11 +61,13 @@ class _LocalDateTimePatternAdapter implements IPattern<Instant> {
       : value == IInstant.beforeMinValue ? InstantPatternParser.beforeMinValueText
       : InstantPatternParser.afterMaxValueText;
 
+  @override
   StringBuffer appendFormat(Instant value, StringBuffer builder) =>
       _pattern.appendFormat(value
           .inUtc()
           .localDateTime, builder);
 
+  @override
   ParseResult<Instant> parse(String text) =>
       _pattern
           .parse(text)

@@ -10,6 +10,7 @@ import 'package:matcher/matcher.dart';
 import 'time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
   await runTests();
 }
 

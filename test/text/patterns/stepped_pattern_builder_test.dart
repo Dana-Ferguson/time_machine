@@ -66,10 +66,10 @@ void AppendFormat()
 }
 
 @Test()
-@TestCase(const ['aBaB', true])
-@TestCase(const ['aBAB', false]) // Case-sensitive
-@TestCase(const ['<aBaB', false]) // < is reserved
-@TestCase(const ['aBaB>', false]) // > is reserved
+@TestCase(['aBaB', true])
+@TestCase(['aBAB', false]) // Case-sensitive
+@TestCase(['<aBaB', false]) // < is reserved
+@TestCase(['aBaB>', false]) // > is reserved
 void UnhandledLiteral(String text, bool valid) {
   CharacterHandler<LocalDate, SampleBucket> handler = (PatternCursor x, SteppedPatternBuilder<LocalDate, SampleBucket> y) => null; // = delegate { };
   var handlers = Map<String, CharacterHandler<LocalDate, SampleBucket>>.from(

@@ -19,7 +19,7 @@ Future main() async {
 @Test()
 Future TzdbProviderUsesTzdbSource () async
 {
-  expect((await DateTimeZoneProviders.tzdb).versionId.startsWith('TZDB: '), isTrue);
+  expect((await DateTimeZoneProviders.tzdb).versionId?.startsWith('TZDB: '), isTrue);
 }
 
 @Test()

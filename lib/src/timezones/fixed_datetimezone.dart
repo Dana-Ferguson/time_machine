@@ -65,7 +65,7 @@ class FixedDateTimeZone extends DateTimeZone {
   ///
   /// [id]: ID
   /// Returns: The parsed time zone, or null if the ID doesn't match.
-  static DateTimeZone getFixedZoneOrNull(String id) {
+  static DateTimeZone? getFixedZoneOrNull(String id) {
     if (!id.startsWith(IDateTimeZone.utcId)) {
       return null;
     }
@@ -133,12 +133,12 @@ class FixedDateTimeZone extends DateTimeZone {
   ///
   /// Returns: True if the specified value is a [FixedDateTimeZone] with the same name, ID and offset; otherwise, false.
   bool equals(FixedDateTimeZone other) =>
-      other != null &&
           offset == other.offset &&
           id == other.id &&
           name == other.name;
 
-  bool operator ==(dynamic other) => other is FixedDateTimeZone && equals(other);
+  @override
+  bool operator ==(Object other) => other is FixedDateTimeZone && equals(other);
 
   /// Computes the hash code for this instance.
   ///

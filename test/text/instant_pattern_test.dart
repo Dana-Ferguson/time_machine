@@ -54,17 +54,17 @@ class InstantPatternTest extends PatternTestBase<Instant> {
   @internal List<Data> ParseFailureData = [
     Data()
       ..text = 'rubbish'
-      .. pattern = "yyyyMMdd'T'HH:mm:ss"
+      ..pattern = "yyyyMMdd'T'HH:mm:ss"
       ..message = TextErrorMessages.mismatchedNumber
       ..parameters.addAll(['yyyy']),
     Data()
       ..text = '17 6'
-      .. pattern = 'HH h'
+      ..pattern = 'HH h'
       ..message = TextErrorMessages.inconsistentValues2
       ..parameters.addAll(['H', 'h', 'LocalTime']),
     Data()
       ..text = '17 AM'
-      .. pattern = 'HH tt'
+      ..pattern = 'HH tt'
       ..message = TextErrorMessages.inconsistentValues2
       ..parameters.addAll(['H', 't', 'LocalTime']),
   ];
@@ -100,8 +100,8 @@ class InstantPatternTest extends PatternTestBase<Instant> {
     expect('12.34.56', text);
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(InstantPattern.general);
+  // @Test()
+  // void ParseNull() => AssertParseNull(InstantPattern.general);
 
   /// Common test data for both formatting and parsing. A test should be placed here unless is truly
   /// cannot be run both ways. This ensures that as many round-trip type tests are performed as possible.
@@ -144,7 +144,9 @@ class InstantPatternTest extends PatternTestBase<Instant> {
 /*sealed*/ class Data extends PatternTestData<Instant> {
 /*protected*/ @override Instant get defaultTemplate => TimeConstants.unixEpoch;
 
-  Data([Instant value]) : super(value ?? TimeConstants.unixEpoch);
+  Data([Instant? value]) : super(value ?? TimeConstants.unixEpoch) {
+    text = '';
+  }
 
   Data.fromUtc(int year, int month, int day, int hour, int minute, int second)
       : this(Instant.utc(year, month, day, hour, minute, second));

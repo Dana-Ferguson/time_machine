@@ -21,20 +21,20 @@ import 'test_fx_attributes.dart';
 // Transformers are dead in 2.0, long live build.yaml???
 // #feature: I would love if I could drop a comment right above this like `#var_color:F3D4D2` and then this variable gets a special color;
 const bool testGenTest = false;
-String _classVarName;
+String? _classVarName;
 StringBuffer _gen_sb_imports = StringBuffer();
 StringBuffer _gen_sb_methodCalls = StringBuffer();
 String _testFilePath = 'unknown_test.dart';
 
 Iterable<TestCase> toTestCases(TestCaseSource testCaseSource, ObjectMirror mirror) {
-  var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable;
+  var argumentsSource = mirror.getField(testCaseSource.source).reflectee as Iterable?;
 
-  if (argumentsSource.isEmpty) return const [];
-  var testCases = List<TestCase>();
+  if (argumentsSource == null || argumentsSource.isEmpty) return const [];
+  var testCases = <TestCase>[];
 
   for (var arguments in argumentsSource) {
     if (arguments is TestCaseData) {
-      if (arguments.arguments is List) testCases.add(TestCase(arguments.arguments, arguments.name));
+      if (arguments.arguments is List) testCases.add(TestCase(arguments.arguments as Iterable, arguments.name));
       else testCases.add(TestCase([arguments.arguments], arguments.name));
     }
     else if (arguments is List) testCases.add(TestCase(arguments));
@@ -56,14 +56,14 @@ Future runTests() async {
       .libraries.values.where((lib) => lib.uri.scheme == 'file' && lib.uri.path.endsWith('_test.dart'))
       .toList(growable: false);
 
-  var futures = List<Future>();
+  var futures = <Future>[];
 
   for (var lib in testLibs) {
     if (testGenTest) _printImport(lib.uri);
 
     for (DeclarationMirror declaration in lib.declarations.values) {
       if (testGenTest && declaration is MethodMirror && _nameOf(declaration) == 'setup') _setupMethod = true;
-      if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
+      if (declaration.metadata.isEmpty) continue;
 
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
       if (test.isEmpty) continue;
@@ -74,8 +74,8 @@ Future runTests() async {
       if (testName == null) {
         var libSimpleName= _stripSymbol(lib.simpleName);
         var sb = StringBuffer();
-        if (libSimpleName?.isNotEmpty ?? false) sb..write(libSimpleName)..write('.');
-        sb..write(_stripSymbol(declaration.simpleName));
+        if (libSimpleName.isNotEmpty) sb..write(libSimpleName)..write('.');
+        sb.write(_stripSymbol(declaration.simpleName));
         testName = sb.toString();
       }
 
@@ -150,12 +150,13 @@ void _printImport(Uri uri) {
   _testFilePath = '/' + path.takeWhile((p) => p != 'test').join('/') + '/test/test_gen/' + path.last;
 }
 
-void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase testCase]) {
+void _printTestCall(ObjectMirror mirror, MethodMirror method, String testName, [TestCase? testCase]) {
   var sb = _gen_sb_methodCalls..write("  test('$testName', () ");
 
   var isFuture = method.returnType.hasReflectedType && method.returnType.reflectedType == Future;
   isFuture = true; // note: this is an override
-  if (isFuture) sb.write('async => await '); else sb.write('=> ');
+  if (isFuture) sb.write('async => await ');
+  //  else sb.write('=> ');
 
   if (_classVarName != null/*mirror is ClassMirror*/) sb..write(_classVarName)..write('.');
 
@@ -187,16 +188,13 @@ bool _setupMethod = false;
 
 String _printNewObject(Object obj) {
   var sb = StringBuffer();
-  if (obj == null) {
-    sb..write('null');
-  }
-  else if (obj is String) {
+if (obj is String) {
     // todo: I need to scape this?
     sb..write("'")..write(_escapeText(obj))..write("'");
   }
   else if (obj is Culture) {
     var name = obj.name;
-    if (name == '' || name == null) {
+    if (name == '') {
       sb.write('null');
     }
     else if (name == 'AwkwardAmPmDesignatorCulture') {
@@ -246,18 +244,18 @@ String _printNewObject(Object obj) {
       sb.write("new Culture('ampmDesignators'/*Culture.invariantCultureId*/, (new DateTimeFormatInfoBuilder.invariantCulture()..amDesignator = '${obj
           .dateTimeFormat.amDesignator}'..pmDesignator = '${obj.dateTimeFormat.pmDesignator}').Build())");
     }
-    else sb.write('await Cultures.getCulture("${name}")');
+    else sb.write('await Cultures.getCulture("$name")');
   }
   else if (obj is PatternTestData) {
     sb.write('new ${obj.runtimeType}(${_printNewObject(obj.Value)})');
     if (obj.defaultTemplate != null) sb.write('..defaultTemplate =${_printNewObject(obj.defaultTemplate)}');
-    if (obj.culture != null) sb.write('..culture = ${_printNewObject(obj.culture)}');
+    sb.write('..culture = ${_printNewObject(obj.culture)}');
     if (obj.standardPattern != null) sb.write('..standardPattern =${obj.standardPatternCode}');
-    if (obj.pattern != null) sb.write('..pattern =${_printNewObject(obj.pattern)}');
-    if (obj.text != null) sb.write('..text =${_printNewObject(obj.text)}');
+    sb.write('..pattern =${_printNewObject(obj.pattern)}');
+    sb.write('..text =${_printNewObject(obj.text)}');
     if (obj.template != null) sb.write('..template =${_printNewObject(obj.template)}');
-    if (obj.description != null) sb.write('..description =${_printNewObject(obj.description)}');
-    if (obj.message != null) sb.write('..message =${_printNewObject(obj.message)}');
+    sb.write('..description =${_printNewObject(obj.description)}');
+    if (obj.message != null) sb.write('..message =${_printNewObject(obj.message!)}');
     if (obj.parameters.isNotEmpty) sb.write('..parameters.addAll(${_printNewObject(obj.parameters)})');
     ;
   }
@@ -373,7 +371,7 @@ String _printNewObject(Object obj) {
     sb.write('new PeriodUnits(${obj.value})');
   }
   else {
-    sb..write('"Type = ${obj.runtimeType}; toString = ${obj.toString()}"');
+    sb.write('"Type = ${obj.runtimeType}; toString = ${obj.toString()}"');
   }
 
   // sb.write('/*${obj.runtimeType}*/');
@@ -390,7 +388,7 @@ String _escapeText(String text) {
 }
 
 Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testName) {
-  var futures = List<Future>();
+  var futures = <Future>[];
 
   var testCases = method
       .metadata
@@ -431,12 +429,16 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
         //futures.add(returnMirror.reflectee);
 
         test(name, () async {
-          var returnMirror = mirror.invoke(method.simpleName, testCase.arguments);
+          var returnMirror = mirror.invoke(method.simpleName, testCase.arguments.toList());
           await returnMirror.reflectee;
         });
       }
       else {
-        test(name, () => mirror.invoke(method.simpleName, testCase.arguments));
+        final argsList = testCase.arguments.toList();
+        final singleNullArg = argsList.length == 1 && argsList.first == null;
+        if (!singleNullArg) {
+          test(name, () => mirror.invoke(method.simpleName, argsList));
+        }
       }
     }
   }
@@ -445,23 +447,23 @@ Iterable<Future> _runTest(ObjectMirror mirror, MethodMirror method, String testN
 }
 
 Iterable<Future> _runTestsInClass(LibraryMirror lib, ClassMirror classMirror, String testGroupName) {
-  var futures = List<Future>();
+  var futures = <Future>[];
 
-  var instance = classMirror.newInstance(Symbol(''), []);
+  var instance = classMirror.newInstance(const Symbol(''), []);
   if (testGenTest)
   {
     _classVarName = _stripSymbol(classMirror.simpleName).toLowerCase();
-    _gen_sb_methodCalls..write('  var ${_classVarName} = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
+    _gen_sb_methodCalls.write('  var $_classVarName = new ${_stripSymbol(classMirror.simpleName)}();\n\n');
   }
-  var declarations = List<DeclarationMirror>()..addAll(classMirror.declarations.values);
+  var declarations = <DeclarationMirror>[...classMirror.declarations.values];
   while (classMirror.superclass != null) {
-    classMirror = classMirror.superclass;
+    classMirror = classMirror.superclass!;
     declarations.addAll(classMirror.declarations.values);
   }
 
   for(DeclarationMirror declaration in declarations) {
     if (declaration is MethodMirror && declaration.metadata.any((m) => m.reflectee is Test)) {
-      if (declaration.metadata == null || declaration.metadata.isEmpty) continue;
+      if (declaration.metadata.isEmpty) continue;
       var test = declaration.metadata.where((m) => m.reflectee is Test).map((m) => m.reflectee as Test).toList(growable: false);
       if (test.isEmpty) continue;
 

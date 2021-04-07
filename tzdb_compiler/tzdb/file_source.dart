@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:archive/archive.dart';
-import 'package:path/path.dart' as Path;
+import 'package:path/path.dart' as p;
 
 /// A random access collection of files.
 // todo: internal sealed
@@ -19,7 +19,7 @@ class FileSource {
 
   FileSource._(this.names, this._openFunction, String fullOrigin) :
         // Path.GetFileName(fullOrigin);
-        origin = Path.basename(fullOrigin);
+        origin = p.basename(fullOrigin);
 
   List<int> open(String name) => _openFunction(name);
 
@@ -34,16 +34,16 @@ class FileSource {
     });
 
     return FileSource._(entries.keys.toList(),
-            (String file) => entries[file], fullOrigin);
+            (String file) => entries[file]!, fullOrigin);
   }
 
   static FileSource fromDirectory(String path) {
     // .Select(p => Path.GetFileName(p)).ToList()
-    var files = Directory(path).listSync().map((f) => Path.basename(f.path)).toList();
+    var files = Directory(path).listSync().map((f) => p.basename(f.path)).toList();
 
     // todo: I don't understand that last argument
     File(path).readAsBytesSync();
-    return FileSource._(files, (file) => File(Path.join(path, file)).readAsBytesSync(), Path.basename(path));
+    return FileSource._(files, (file) => File(p.join(path, file)).readAsBytesSync(), p.basename(path));
   }
 
   // todo: I think this works?

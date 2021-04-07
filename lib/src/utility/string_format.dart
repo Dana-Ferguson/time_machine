@@ -11,22 +11,22 @@ final _pattern = RegExp(_basicArgPattern);
 
 /// Simulates basic dotnet BCL string.Format functionality to ease porting. Invariant Culture only.
 String stringFormat(String text, [List<dynamic> args = const []]) {
-  if ((args?.length ?? 0) == 0) return text;
+  if (args.isEmpty) return text;
   return text.replaceAllMapped(_pattern, (match) => _replacer(match, args));
 }
 
 // todo: should probably throw some errors or something?
 String _replacer(Match match, List<dynamic> args) {
   var indexToken = match[1];
-  if (indexToken == null) return null;
+  if (indexToken == null) return '';
   var index = int.parse(indexToken);
 
   var formatToken = match[3];
   // Just ignoring them for now?
   if (formatToken != null) print('Found a formatToken: $formatToken');
 
-  if (args.length <= index) return null;
-  return args[index]?.toString();
+  if (args.length <= index) return '';
+  return args[index]!.toString();
 }
 
 String stringInsert(String text, int index, String value) {

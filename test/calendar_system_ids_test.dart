@@ -18,15 +18,15 @@ final Iterable<String> SupportedIds = CalendarSystem.ids.toList();
 final List<CalendarSystem> SupportedCalendars = SupportedIds.map(CalendarSystem.forId).toList();
 
 @Test()
-@TestCaseSource(const Symbol('SupportedIds'))
+@TestCaseSource(Symbol('SupportedIds'))
 void ValidId(String id)
 {
-  expect(CalendarSystem.forId(id), TypeMatcher<CalendarSystem>());
+  expect(CalendarSystem.forId(id), const TypeMatcher<CalendarSystem>());
 // Assert.IsInstanceOf<CalendarSystem>(CalendarSystem.ForId(id));
 }
 
 @Test()
-@TestCaseSource(const Symbol('SupportedIds'))
+@TestCaseSource(Symbol('SupportedIds'))
 void IdsAreCaseSensitive(String id)
 {
   expect(() => CalendarSystem.forId(id.toLowerCase()), throwsArgumentError);
@@ -75,7 +75,7 @@ void NoSubstrings()
 // Ordinals are similar enough to IDs to keep the tests in this file too...
 
 @Test()
-@TestCaseSource(const Symbol('SupportedCalendars'))
+@TestCaseSource(Symbol('SupportedCalendars'))
 void ForOrdinal_Roundtrip(CalendarSystem calendar)
 {
   expect(calendar, ICalendarSystem.forOrdinal(ICalendarSystem.ordinal(calendar)));
@@ -83,7 +83,7 @@ void ForOrdinal_Roundtrip(CalendarSystem calendar)
 }
 
 @Test()
-@TestCaseSource(const Symbol('SupportedCalendars'))
+@TestCaseSource(Symbol('SupportedCalendars'))
 void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 {
   var target = ICalendarSystem.forOrdinalUncached(ICalendarSystem.ordinal(calendar));
@@ -94,6 +94,6 @@ void ForOrdinalUncached_Roundtrip(CalendarSystem calendar)
 @Test()
 void ForOrdinalUncached_Invalid()
 {
-  expect(() => ICalendarSystem.forOrdinalUncached(CalendarOrdinal(9999)), throwsStateError);
+  expect(() => ICalendarSystem.forOrdinalUncached(const CalendarOrdinal(9999)), throwsStateError);
 // Assert.Throws<InvalidOperationException>(() => CalendarSystem.ForOrdinalUncached((CalendarOrdinal)9999));
 }

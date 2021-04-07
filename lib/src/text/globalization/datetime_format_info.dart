@@ -34,7 +34,7 @@ class DateTimeFormat {
   final List<String> eraNames;
   String getEraName(int era) {
     if (era == 0) throw UnimplementedError('Calendar.CurrentEraValue not implemented.');
-    if (--era < this.eraNames.length && era >= 0) return eraNames[era];
+    if (--era < eraNames.length && era >= 0) return eraNames[era];
     throw ArgumentError.value(era, 'era');
   }
 
@@ -46,7 +46,7 @@ class DateTimeFormat {
 
   factory DateTimeFormat.invariantCulture() => DateTimeFormatBuilder.invariant().Build();
 
-  DateTimeFormat(
+  const DateTimeFormat(
       this.amDesignator,
       this.pmDesignator,
       this.timeSeparator,
@@ -68,29 +68,29 @@ class DateTimeFormat {
 }
 
 class DateTimeFormatBuilder {
-  String amDesignator;
-  String pmDesignator;
+  late String amDesignator;
+  late String pmDesignator;
 
-  String timeSeparator;
-  String dateSeparator;
+  late String timeSeparator;
+  late String dateSeparator;
 
-  List<String> abbreviatedDayNames;
-  List<String> dayNames;
-  List<String> monthNames;
-  List<String> abbreviatedMonthNames;
-  List<String> monthGenitiveNames;
-  List<String> abbreviatedMonthGenitiveNames;
+  late List<String> abbreviatedDayNames;
+  late List<String> dayNames;
+  late List<String> monthNames;
+  late List<String> abbreviatedMonthNames;
+  late List<String> monthGenitiveNames;
+  late List<String> abbreviatedMonthGenitiveNames;
 
   // BCL Calendar Class
-  CalendarType calendar;
+  late CalendarType calendar;
 
-  List<String> eraNames;
+  late List<String> eraNames;
 
-  String fullDateTimePattern;
-  String shortDatePattern;
-  String longDatePattern;
-  String shortTimePattern;
-  String longTimePattern;
+  late String fullDateTimePattern;
+  late String shortDatePattern;
+  late String longDatePattern;
+  late String shortTimePattern;
+  late String longTimePattern;
 
   DateTimeFormat Build() =>
       DateTimeFormat(
@@ -112,7 +112,7 @@ class DateTimeFormatBuilder {
           shortTimePattern,
           longTimePattern);
 
-  DateTimeFormatBuilder([DateTimeFormat info]) {
+  DateTimeFormatBuilder([DateTimeFormat? info]) {
     if (info == null) return;
     amDesignator = info.amDesignator;
     pmDesignator = info.pmDesignator;
@@ -134,8 +134,8 @@ class DateTimeFormatBuilder {
   }
 
   // Month's have a blank entry at the end
-  static final List<String> _invariantMonthNames = const ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
-  static final List<String> _invariantAbbreviatedMonthNames = const ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
+  static const List<String> _invariantMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', ''];
+  static const List<String> _invariantAbbreviatedMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', ''];
 
   DateTimeFormatBuilder.invariant()
       : amDesignator = 'AM',

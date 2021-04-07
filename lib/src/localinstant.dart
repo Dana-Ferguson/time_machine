@@ -20,10 +20,10 @@ class LocalInstant {
   /// Elapsed time since the local 1970-01-01T00:00:00.
   final Time _time;
 
-  LocalInstant._ (this._time);
+  const LocalInstant._ (this._time);
 
   /// Constructor which should *only* be used to construct the invalid instances.
-  factory LocalInstant._trusted(int days, {bool deliberatelyInvalid})
+  factory LocalInstant._trusted(int days, {required bool deliberatelyInvalid})
   {
     return LocalInstant._(Time(days: days));
   }
@@ -83,7 +83,8 @@ class LocalInstant {
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is LocalInstant && _time == right._time;
+  @override
+  bool operator ==(Object right) => right is LocalInstant && _time == right._time;
 
   /// Equivalent to [Instant.safePlus], but in the opposite direction.
   Instant safeMinus(Offset offset) {

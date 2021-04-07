@@ -18,7 +18,7 @@ Future main() async {
 
 @Test()
 class ValueCursorTest extends TextCursorTestBase {
-  ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) =>
+  void ValidateCurrentCharacter(TextCursor cursor, int expectedCurrentIndex, String /*char*/ expectedCurrentCharacter) =>
       TextCursorTestBase.ValidateCurrentCharacter(cursor, expectedCurrentIndex, expectedCurrentCharacter);
 
   @internal
@@ -127,7 +127,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var value = ValueCursor('12');
     expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 12);
   }
@@ -137,7 +137,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var value = ValueCursor('1234');
     expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 12);
     ValidateCurrentCharacter(value, 2, '3');
@@ -148,7 +148,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var value = ValueCursor('1');
     value.moveNext();
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(actual, 1);
     TextCursorTestBase.ValidateEndOfString(value);
@@ -159,7 +159,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var value = ValueCursor('1abc');
     expect(value.moveNext(), isTrue);
     // expect(value.ParseDigits(1, 2, out int actual), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseDigits(1, 2), isNotNull);
     expect(1, actual);
     ValidateCurrentCharacter(value, 1, 'a');
@@ -196,7 +196,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64Digits_Maximum() {
     var value = ValueCursor('12');
     expect(value.moveNext(), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(12, actual);
   }
@@ -205,7 +205,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64Digits_MaximumMoreDigits() {
     var value = ValueCursor('1234');
     expect(value.moveNext(), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(12, actual);
     ValidateCurrentCharacter(value, 2, '3');
@@ -215,7 +215,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64Digits_Minimum() {
     var value = ValueCursor('1');
     value.moveNext();
-    int actual;
+    int? actual;
     expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(1, actual);
     TextCursorTestBase.ValidateEndOfString(value);
@@ -225,7 +225,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64Digits_MinimumNonDigits() {
     var value = ValueCursor('1abc');
     expect(value.moveNext(), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseInt64Digits(1, 2), isNotNull);
     expect(1, actual);
     ValidateCurrentCharacter(value, 1, 'a');
@@ -244,7 +244,7 @@ class ValueCursorTest extends TextCursorTestBase {
   void ParseInt64Digits_LargeNumber() {
     var value = ValueCursor('9999999999999');
     expect(value.moveNext(), isTrue);
-    int actual;
+    int? actual;
     expect(actual = value.parseInt64Digits(1, 13), isNotNull);
     expect(actual, 9999999999999 /*L*/);
     // Assert.Greater(9999999999999/*L*/, Utility.int32MaxValue);
@@ -443,7 +443,7 @@ class ValueCursorTest extends TextCursorTestBase {
     var result = value.parseInt64<String>('String');
     expect(result.success, isFalse);
     // Assert.IsInstanceOf<UnparsableValueException>(parseResult.Exception);
-    expect(result.error, TypeMatcher<UnparsableValueError>());
+    expect(result.error, const TypeMatcher<UnparsableValueError>());
     expect(0, value.index); // Cursor hasn't moved
   }
 }

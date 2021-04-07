@@ -29,11 +29,12 @@ final SingleTransitionDateTimeZone TestZone3 = SingleTransitionDateTimeZone.with
     Instant.utc(2010, 1, 1, 0, 0), Offset.hours(1), Offset.hours(2), 'abcd');
 
 
-DateTimeZoneProvider TestProvider;
-DateTimeZoneProvider Tzdb;
-DateTimeZone France;
-DateTimeZone Athens;
-DateTimeZone etcGMT_12;
+late DateTimeZoneProvider TestProvider;
+late DateTimeZoneProvider tzdb;
+late DateTimeZone france;
+late DateTimeZone athens;
+late DateTimeZone etcGMT_12;
+late DateTimeZoneProvider etcGMT_12_tzdb;
 
 Future main() async {
   await TimeMachine.initialize();
@@ -43,14 +44,15 @@ Future main() async {
 }
 
 Future setup() async {
-  Tzdb = await DateTimeZoneProviders.tzdb;
-  France = await Tzdb['Europe/Paris'];
-  Athens = await Tzdb['Europe/Athens'];
-  // etcGMT_12 = await Tzdb['Etc/GMT-12'];
+  tzdb = await DateTimeZoneProviders.tzdb;
+  france = await tzdb['Europe/Paris'];
+  athens = await tzdb['Europe/Athens'];
+  // etcGMT_12 = await tzdb['Etc/GMT-12'];
   TestProvider = await FakeDateTimeZoneSourceBuilder([TestZone1, TestZone2, TestZone3]).Build().ToProvider();
 
   // todo: implement CanonicalIdMap
   etcGMT_12 = FixedDateTimeZone('Etc/GMT-12', Offset.hours(12), '+12');
+  etcGMT_12_tzdb = await FakeDateTimeZoneSourceBuilder([etcGMT_12]).Build().ToProvider();
 }
 
 @Test()
@@ -222,10 +224,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
 
   @internal List<Data> ParseOnlyData = [
     // Template value time zone is from a different provider, but it's not part of the pattern.
-    Data.b(2013, 1, 13, 16, 2, France)
+    Data.b(2013, 1, 13, 16, 2, france)
       ..pattern = 'yyyy-MM-dd HH:mm'
       ..text = '2013-01-13 16:02'
-      ..template = TimeConstants.unixEpoch.inZone(France),
+      ..template = TimeConstants.unixEpoch.inZone(france),
 
     // Skipped value, resolver returns start of second interval
     Data(TestZone1.Transition.inZone(TestZone1))
@@ -301,7 +303,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = 'Wed 2011',
 
     // Time zone isn't in the provider
-    Data.b(2013, 1, 13, 16, 2, France)
+    Data.b(2013, 1, 13, 16, 2, france)
       ..pattern = 'yyyy-MM-dd HH:mm z'
       ..text = '2013-01-13 16:02 Europe/Paris',
 
@@ -311,15 +313,15 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = '2010-01-01 01:30',
 
     // Winter
-    Data.b(2013, 1, 13, 16, 2, France)
+    Data.b(2013, 1, 13, 16, 2, france)
       ..pattern = 'yyyy-MM-dd HH:mm x'
       ..text = '2013-01-13 16:02 CET',
     // Summer
-    Data.b(2013, 6, 13, 16, 2, France)
+    Data.b(2013, 6, 13, 16, 2, france)
       ..pattern = 'yyyy-MM-dd HH:mm x'
       ..text = '2013-06-13 16:02 CEST',
 
-    Data.b(2013, 6, 13, 16, 2, France)
+    Data.b(2013, 6, 13, 16, 2, france)
       ..ZoneProvider = null
       ..pattern = 'yyyy-MM-dd HH:mm z'
       ..text = '2013-06-13 16:02 Europe/Paris',
@@ -438,10 +440,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
       ..text = '2010-01-01 01:30 abc +02',
 
     // Specify the provider
-    Data.b(2013, 1, 13, 16, 2, France)
+    Data.b(2013, 1, 13, 16, 2, france)
       ..pattern = 'yyyy-MM-dd HH:mm z'
       ..text = '2013-01-13 16:02 Europe/Paris'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
 
     // Tests without zones, copied from LocalDateTimePatternTest
     // Calendar patterns are invariant
@@ -531,10 +533,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "ld<yyyy*MM*dd>'X'lt<HH_mm_ss> z o<g>"
       ..text = '2015*10*24X11_55_30 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -543,10 +545,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "lt<HH_mm_ss>'Y'ld<yyyy*MM*dd> z o<g>"
       ..text = '11_55_30Y2015*10*24 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -555,10 +557,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "l<HH_mm_ss'Y'yyyy*MM*dd> z o<g>"
       ..text = '11_55_30Y2015*10*24 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -567,10 +569,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "ld<d>'X'lt<HH_mm_ss> z o<g>"
       ..text = '10/24/2015X11_55_30 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -579,10 +581,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "ld<yyyy*MM*dd>'X'lt<T> z o<g>"
       ..text = '2015*10*24X11:55:30 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
 
     // Standard embedded patterns. Short time versions have a seconds value of 0 so they can round-trip.
     Data.e(
@@ -593,10 +595,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         90,
-        Athens)
+        athens)
       ..pattern = 'ld<D> lt<r> z o<g>'
       ..text = 'Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -605,10 +607,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         0,
         0,
-        Athens)
+        athens)
       ..pattern = 'l<f> z o<g>'
       ..text = 'Saturday, 24 October 2015 11:55 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -617,10 +619,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = 'l<F> z o<g>'
       ..text = 'Saturday, 24 October 2015 11:55:30 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -629,10 +631,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         0,
         0,
-        Athens)
+        athens)
       ..pattern = 'l<g> z o<g>'
       ..text = '10/24/2015 11:55 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -641,10 +643,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = 'l<G> z o<g>'
       ..text = '10/24/2015 11:55:30 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
 
     // Nested embedded patterns
     Data.e(
@@ -655,10 +657,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         90,
-        Athens)
+        athens)
       ..pattern = 'l<ld<D> lt<r>> z o<g>'
       ..text = 'Saturday, 24 October 2015 11:55:30.09 Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
     Data.e(
         2015,
         10,
@@ -667,10 +669,10 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         55,
         30,
         0,
-        Athens)
+        athens)
       ..pattern = "l<'X'lt<HH_mm_ss>'Y'ld<yyyy*MM*dd>'X'> z o<g>"
       ..text = 'X11_55_30Y2015*10*24X Europe/Athens +03'
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = tzdb,
 
     // Check that unquoted T still works.
     Data.c(2012, 1, 31, 17, 36, 45)
@@ -689,7 +691,7 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
         etcGMT_12)
       ..text = '1906-08-29T20:58:32 Etc/GMT-12 (+12)'
       ..pattern = "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFF z '('o<g>')'"
-      ..ZoneProvider = Tzdb,
+      ..ZoneProvider = etcGMT_12_tzdb,
 
     // Fields not otherwise covered (according to tests running on AppVeyor...)
     Data(MsdnStandardExample)
@@ -775,21 +777,21 @@ class ZonedDateTimePatternTest extends PatternTestBase<ZonedDateTime> {
     }
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider));
+  // @Test()
+  // void ParseNull() => AssertParseNull(ZonedDateTimePattern.extendedFormatOnlyIso.withZoneProvider(TestProvider));
 }
 
 /*sealed*/class Data extends PatternTestData<ZonedDateTime> {
 // Default to the start of the year 2000 UTC
 /*protected*/ @override ZonedDateTime get defaultTemplate => ZonedDateTimePatterns.defaultTemplateValue;
 
-  @internal ZoneLocalMappingResolver Resolver;
-  @internal DateTimeZoneProvider ZoneProvider;
+  @internal ZoneLocalMappingResolver? Resolver;
+  @internal DateTimeZoneProvider? ZoneProvider;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([ZonedDateTime value]) : super(value ?? ZonedDateTimePatterns.defaultTemplateValue) {
+  Data([ZonedDateTime? value]) : super(value ?? ZonedDateTimePatterns.defaultTemplateValue) {
     Resolver = Resolvers.strictResolver;
     ZoneProvider = TestProvider;
   }

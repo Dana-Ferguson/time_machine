@@ -46,8 +46,8 @@ void Call(Object ignored) {}
 void Index_Getter_InvalidUnits()
 {
   var builder = PeriodBuilder();
-  expect(() => Call(builder[PeriodUnits(0)]), throwsArgumentError);
-  expect(() => Call(builder[PeriodUnits(-1)]), throwsArgumentError);
+  expect(() => Call(builder[const PeriodUnits(0)]), throwsArgumentError);
+  expect(() => Call(builder[const PeriodUnits(-1)]), throwsArgumentError);
   expect(() => Call(builder[PeriodUnits.dateAndTime]), throwsArgumentError);
 }
 
@@ -81,8 +81,8 @@ void Indexer_Setter_ValidUnits() {
 void Index_Setter_InvalidUnits()
 {
   var builder = PeriodBuilder();
-  expect(() => builder[PeriodUnits(0)] = 1, throwsArgumentError);
-  expect(() => builder[PeriodUnits(-1)] = 1, throwsArgumentError);
+  expect(() => builder[const PeriodUnits(0)] = 1, throwsArgumentError);
+  expect(() => builder[const PeriodUnits(-1)] = 1, throwsArgumentError);
   expect(() => builder[PeriodUnits.dateAndTime] = 1, throwsArgumentError);
 }
 
@@ -90,7 +90,7 @@ void Index_Setter_InvalidUnits()
 void Build_SingleUnit() {
   Period period = (PeriodBuilder()
     ..hours = 10).build();
-  Period expected = Period(hours: 10);
+  Period expected = const Period(hours: 10);
   expect(expected, period);
 }
 
@@ -99,7 +99,7 @@ void Build_MultipleUnits() {
   Period period = (PeriodBuilder()
     ..days = 5
     ..minutes = -10).build();
-  Period expected = Period(days: 5) + Period(minutes: -10);
+  Period expected = const Period(days: 5) + const Period(minutes: -10);
   expect(expected, period);
 }
 

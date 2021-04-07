@@ -43,7 +43,7 @@ void GetZoneIntervals_InvalidOptions()
   var zone = DateTimeZone.utc;
   var interval = Interval(Instant.utc(2000, 1, 1, 0, 0), Instant.utc(2001, 1, 1, 0, 0));
   // Assert.Throws<ArgumentOutOfRangeException>(() => zone.GetZoneIntervals(interval, (ZoneEqualityComparer.Options) 1234567));
-  expect(() => zone.getZoneIntervalsOptions(interval, ZoneEqualityComparerOptions(1234567)), throwsArgumentError);
+  expect(() => zone.getZoneIntervalsOptions(interval, const ZoneEqualityComparerOptions(1234567)), throwsArgumentError);
 }
 
 @Test()

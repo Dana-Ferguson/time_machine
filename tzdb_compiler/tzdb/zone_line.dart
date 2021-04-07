@@ -10,11 +10,12 @@ import 'zone_rule_set.dart';
 /// Immutable, thread-safe
 /// </remarks>
 // todo: internal
+@immutable
 class ZoneLine {
   static final OffsetPattern _percentZPattern = OffsetPattern.createWithInvariantCulture('i');
 
   /// Initializes a new instance of the [ZoneLine] class.
-  ZoneLine(this.name, this.standardOffset, this.rules, this.format, this.untilYear, this.untilYearOffset);
+  const ZoneLine(this.name, this.standardOffset, this.rules, this.format, this.untilYear, this.untilYearOffset);
 
   final ZoneYearOffset untilYearOffset;
 
@@ -32,7 +33,7 @@ class ZoneLine {
 
   /// The name of the set of rules applicable to this zone line, or
   /// null for just standard time, or an offset for a 'fixed savings' rule.
-  final String rules;
+  final String? rules;
 
 // #region IEquatable<Zone> Members
 
@@ -44,9 +45,6 @@ class ZoneLine {
   ///   otherwise, false.
   /// </returns>
   bool equals(ZoneLine other) {
-    if (other == null) {
-      return false;
-    }
     if (identical(this, other)) {
       return true;
     }
@@ -57,7 +55,7 @@ class ZoneLine {
     return result;
   }
 
-  @override bool operator ==(dynamic other) => other is ZoneLine && equals(other);
+  @override bool operator ==(Object other) => other is ZoneLine && equals(other);
 
 // #endregion
 
@@ -92,12 +90,13 @@ class ZoneLine {
   /// <returns>
   ///   A <see cref='System.String' /> that represents this instance.
   /// </returns>
-  @override String toString() {
+  @override
+  String toString() {
     var builder = StringBuffer();
     builder..write(name)..write(' ');
     builder..write(standardOffset)..write(' ');
     builder..write(ParserHelper.formatOptional(rules))..write(' ');
-    builder..write(format);
+    builder.write(format);
     if (untilYear != Platform.int32MaxValue) {
       builder..write(' ')..write(untilYear.toString().padLeft(4, '0'))..write(" ")..write(untilYearOffset);
     }
@@ -112,8 +111,8 @@ class ZoneLine {
 
     // allRules.
     if (allRules.containsKey(rules)) {
-      var ruleSet = allRules[rules];
-      var _rules = List<ZoneRecurrence>();
+      var ruleSet = allRules[rules]!;
+      var _rules = <ZoneRecurrence>[];
       for (var zoneRecurrenceRules in ruleSet.map((x) => x.GetRecurrences(this))) {
         _rules.addAll(zoneRecurrenceRules);
       }
@@ -122,11 +121,11 @@ class ZoneLine {
     else {
       try {
         // Check if Rules actually just refers to a savings.
-        var savings = ParserHelper.parseOffset(rules);
+        var savings = ParserHelper.parseOffset(rules!);
         var name = formatName(savings, '');
         return ZoneRuleSet.named(name, standardOffset, savings, untilYear, untilYearOffset);
       }
-      catch (FormatException) {
+      on FormatException {
         throw ArgumentError(
             "Daylight savings rule name '$rules' for zone $name is neither a known ruleset nor a fixed offset");
       }

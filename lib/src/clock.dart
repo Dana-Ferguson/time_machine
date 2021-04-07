@@ -37,7 +37,7 @@ abstract class Clock
   /// * [calendar]: Calendar to use in the returned object.
   ///
   /// Returns: A [ZonedClock] with the given clock, time zone and calendar system.
-  ZonedClock inZone(DateTimeZone zone, [CalendarSystem calendar]) => ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
+  ZonedClock inZone(DateTimeZone zone, [CalendarSystem? calendar]) => ZonedClock(this, zone, calendar ?? CalendarSystem.iso);
 
   /// Constructs a [ZonedClock] from a clock (the target of the method),
   /// using the UTC time zone and ISO calendar system.

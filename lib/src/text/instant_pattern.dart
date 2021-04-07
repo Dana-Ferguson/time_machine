@@ -14,7 +14,7 @@ abstract class InstantPatterns {
 
   static IPattern<Instant> patternOf(InstantPattern instantPattern) => instantPattern._pattern;
 
-  static String format(Instant instant, String patternText, Culture culture) =>
+  static String format(Instant instant, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .instantPatternParser
@@ -42,7 +42,7 @@ class InstantPattern implements IPattern<Instant> {
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
-  InstantPattern._(this.patternText, this._pattern);
+  const InstantPattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -52,6 +52,7 @@ class InstantPattern implements IPattern<Instant> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<Instant> parse(String text) => _pattern.parse(text);
 
   /// Formats the given instant as text according to the rules of this pattern.
@@ -59,6 +60,7 @@ class InstantPattern implements IPattern<Instant> {
   /// * [value]: The instant to format.
   ///
   /// Returns: The instant formatted according to this pattern.
+  @override
   String format(Instant value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -68,6 +70,7 @@ class InstantPattern implements IPattern<Instant> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(Instant value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.

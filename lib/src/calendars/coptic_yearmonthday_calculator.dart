@@ -8,8 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal
 class CopticYearMonthDayCalculator extends FixedMonthYearMonthDayCalculator {
   CopticYearMonthDayCalculator()
-      : super(1, 9715, -615558) {
-  }
+      : super(1, 9715, -615558);
 
   @protected
   @override

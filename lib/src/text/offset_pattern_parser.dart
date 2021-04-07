@@ -39,11 +39,12 @@ class OffsetPatternParser implements IPatternParser<Offset> {
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
-  IPattern<Offset> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) => _parsePartialPattern(patternText, formatInfo);
+  @override
+  IPartialPattern<Offset> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) => _parsePartialPattern(patternText, formatInfo);
 
   IPartialPattern<Offset> _parsePartialPattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in OffsetPattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -131,10 +132,13 @@ class _ZPrefixPattern implements IPartialPattern<Offset> {
 
   _ZPrefixPattern(this._fullPattern);
 
+  @override
   ParseResult<Offset> parse(String text) => text == 'Z' ? ParseResult.forValue<Offset>(Offset.zero) : _fullPattern.parse(text);
 
+  @override
   String format(Offset value) => value == Offset.zero ? 'Z' : _fullPattern.format(value);
 
+  @override
   ParseResult<Offset> parsePartial(ValueCursor cursor) {
     if (cursor.current == 'Z') {
       cursor.moveNext();
@@ -143,6 +147,7 @@ class _ZPrefixPattern implements IPartialPattern<Offset> {
     return _fullPattern.parsePartial(cursor);
   }
 
+  @override
   StringBuffer appendFormat(Offset value, StringBuffer builder) {
     Preconditions.checkNotNull(builder, 'builder');
     return value == Offset.zero ? (builder..write('Z')) : _fullPattern.appendFormat(value, builder);

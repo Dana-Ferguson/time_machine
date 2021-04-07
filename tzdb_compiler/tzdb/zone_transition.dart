@@ -56,7 +56,7 @@ class ZoneTransition {
   /// <returns>
   /// <c>true</c> if this is a transition from the given transition; otherwise, <c>false</c>.
   /// </returns>
-  bool isTransitionFrom(ZoneTransition other) {
+  bool isTransitionFrom(ZoneTransition? other) {
     if (other == null) {
       return true;
     }

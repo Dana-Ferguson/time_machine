@@ -90,16 +90,16 @@ abstract class Time implements Comparable<Time> {
 
   static const int _minNano = 0;
 
-  static const Time zero = const MillisecondTime(0, 0);
+  static const Time zero = MillisecondTime(0, 0);
   /// Gets a [Time] value equal to 1 nanosecond; the smallest amount by which an instant can vary.
-  static const Time epsilon = const MillisecondTime(0, 1);
+  static const Time epsilon = MillisecondTime(0, 1);
   // oneNanosecond is constant forever -- in theory, epsilon will change if we go beyond nanosecond precision.
-  static const Time oneNanosecond = const MillisecondTime(0, 1);
-  static const Time oneMicrosecond = const MillisecondTime(0, TimeConstants.nanosecondsPerMicrosecond);
-  static const Time oneMillisecond = const MillisecondTime(1, 0);
-  static const Time oneSecond = const MillisecondTime(TimeConstants.millisecondsPerSecond, 0);
-  static const Time oneDay = const MillisecondTime(TimeConstants.millisecondsPerDay, 0);
-  static const Time oneWeek = const MillisecondTime(TimeConstants.millisecondsPerWeek, 0);
+  static const Time oneNanosecond = MillisecondTime(0, 1);
+  static const Time oneMicrosecond = MillisecondTime(0, TimeConstants.nanosecondsPerMicrosecond);
+  static const Time oneMillisecond = MillisecondTime(1, 0);
+  static const Time oneSecond = MillisecondTime(TimeConstants.millisecondsPerSecond, 0);
+  static const Time oneDay = MillisecondTime(TimeConstants.millisecondsPerDay, 0);
+  static const Time oneWeek = MillisecondTime(TimeConstants.millisecondsPerWeek, 0);
 
   // todo: we don't ever seem to check this, do we want to?
   /// Gets the maximum value supported by [Time]. (todo: is this okay for us? -- after the integer math on that division ... maybe??? maybe not???)
@@ -246,9 +246,9 @@ abstract class Time implements Comparable<Time> {
   //Time get timeOfFloorDay => new Time._ (_milliseconds - (floorDays * TimeConstants.millisecondsPerDay), _nanosecondsInterval);
 
   // todo: need to test that this is good -- should be
-  @override get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
+  @override int get hashCode => _milliseconds.hashCode ^ _nanosecondsInterval;
 
-  @override String toString([String patternText, Culture culture]) => TimePatterns.format(this, patternText, culture);
+  @override String toString([String? patternText, Culture? culture]) => TimePatterns.format(this, patternText, culture);
 
   Time operator +(Time other) => add(other);
 
@@ -290,21 +290,21 @@ abstract class Time implements Comparable<Time> {
   Time _plusSmallNanoseconds(int nanoseconds) => Time._untrusted(_milliseconds, _nanosecondsInterval + nanoseconds);
 
   @override
-  bool operator ==(dynamic other) => other is Time && equals(other);
+  bool operator ==(Object other) => other is Time && equals(other);
 
   bool operator >=(Time other) =>
-      other == null ? true : (_milliseconds > other._milliseconds) ||
+      (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval >= other._nanosecondsInterval);
 
   bool operator <=(Time other) =>
-      other == null ? false : (_milliseconds < other._milliseconds) ||
+      (_milliseconds < other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval <= other._nanosecondsInterval);
 
   bool operator >(Time other) =>
-      other == null ? true : (_milliseconds > other._milliseconds) ||
+      (_milliseconds > other._milliseconds) ||
           (_milliseconds == other._milliseconds && _nanosecondsInterval > other._nanosecondsInterval);
 
-  bool operator <(Time other) => other == null ? false : (_milliseconds < other._milliseconds) ||
+  bool operator <(Time other) => (_milliseconds < other._milliseconds) ||
       (_milliseconds == other._milliseconds && _nanosecondsInterval < other._nanosecondsInterval);
 
 
@@ -318,7 +318,8 @@ abstract class Time implements Comparable<Time> {
 
   bool equals(Time other) => _milliseconds == other._milliseconds && _nanosecondsInterval == other._nanosecondsInterval;
 
-  int compareTo(Time other) {
+  @override
+  int compareTo(Time? other) {
     if (other == null) return 1;
     int millisecondsComparison = _milliseconds.compareTo(other._milliseconds);
     return millisecondsComparison != 0 ? millisecondsComparison : _nanosecondsInterval.compareTo(other._nanosecondsInterval);
@@ -343,11 +344,14 @@ abstract class Time implements Comparable<Time> {
 
 class MillisecondTime extends Time {
   // 285420 years max (unlimited on VM)
+  @override
   final int _milliseconds;
 
   /// 0 to 999999 ~ 20 bits ~ 4 bytes on the VM
+  @override
   final int _nanosecondsInterval;
 
+  // ignore: unused_field
   static const int _minNano = 0;
 
   const MillisecondTime(this._milliseconds, this._nanosecondsInterval) : super._();
@@ -370,7 +374,7 @@ class NanosecondTime extends Time {
   @override int get _nanosecondsInterval => arithmeticMod(_nanoseconds, TimeConstants.nanosecondsPerMillisecond);
 
   NanosecondTime(this._nanoseconds) : super._() {
-    assert(this._nanoseconds >= Platform.intMinValue && this._nanoseconds <= Platform.intMaxValue);
+    assert(_nanoseconds >= Platform.intMinValue && _nanoseconds <= Platform.intMaxValue);
   }
 
   @override Time operator -() => NanosecondTime(-_nanoseconds);
@@ -385,7 +389,7 @@ class NanosecondTime extends Time {
 
   @override bool get canNanosecondsBeInteger => true;
 
-  @override int compareTo(Time other) {
+  @override int compareTo(Time? other) {
     if (other == null) return 1;
     if (other.canNanosecondsBeInteger) {
       return _nanoseconds.compareTo(other.inNanoseconds);

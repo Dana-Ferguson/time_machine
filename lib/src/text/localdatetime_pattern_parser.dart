@@ -62,9 +62,10 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<LocalDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalDateTimePattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -82,10 +83,11 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
       if (patternCharacter == 's') {
         return LocalDateTimePatterns.generalIsoPatternImpl;
       }
-      patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
-      if (patternText == null) {
+      String? newPatternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
+      if (newPatternText == null) {
         throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalDateTime']);
       }
+      patternText = newPatternText;
     }
 
     var patternBuilder = SteppedPatternBuilder<LocalDateTime, LocalDateTimeParseBucket>(formatInfo,
@@ -95,7 +97,7 @@ class LocalDateTimePatternParser implements IPatternParser<LocalDateTime> {
     return patternBuilder.build(_templateValueDate.at(_templateValueTime));
   }
 
-  String _expandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String? _expandStandardFormatPattern(/*char*/ String patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 'f':
         return formatInfo.dateTimeFormat.longDatePattern + ' ' + formatInfo.dateTimeFormat.shortTimePattern;

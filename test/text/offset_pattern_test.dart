@@ -660,8 +660,8 @@ class OffsetPatternTest extends PatternTestBase<Offset> {
     data.TestParsePartial();
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(OffsetPattern.generalInvariant);
+  // @Test()
+  // void ParseNull() => AssertParseNull(OffsetPattern.generalInvariant);
 
   /* -- It is very ignored here -- not even ported.
   @Test()

@@ -26,6 +26,7 @@ class ZonedClock extends Clock {
   }
 
   /// Returns the current instant provided by the underlying clock.
+  @override
   Instant getCurrentInstant() => _clock.getCurrentInstant();
 
   /// Returns the current instant provided by the underlying clock, adjusted

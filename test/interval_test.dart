@@ -112,11 +112,11 @@ void ToString_Infinite()
 }
 
 @Test()
-@TestCase(const ['1990-01-01T00:00:00Z', false], "Before interval")
-@TestCase(const ['2000-01-01T00:00:00Z', true], "Start of interval")
-@TestCase(const ['2010-01-01T00:00:00Z', true], "Within interval")
-@TestCase(const ['2020-01-01T00:00:00Z', false], "End instant of interval")
-@TestCase(const ['2030-01-01T00:00:00Z', false], "After interval")
+@TestCase(['1990-01-01T00:00:00Z', false], "Before interval")
+@TestCase(['2000-01-01T00:00:00Z', true], "Start of interval")
+@TestCase(['2010-01-01T00:00:00Z', true], "Within interval")
+@TestCase(['2020-01-01T00:00:00Z', false], "End instant of interval")
+@TestCase(['2030-01-01T00:00:00Z', false], "After interval")
 void Contains(String candidateText, bool expectedResult)
 {
   var start = Instant.utc(2000, 1, 1, 0, 0);
@@ -181,11 +181,11 @@ void Contains_EmptyInterval_MaxValue()
 }
 
 @Test()
-@TestCase(const ['2020-01-01T00:00:00Z', "2030-01-01T00:00:00Z", false], "0")
-@TestCase(const ['1910-01-01T00:00:00Z', "2000-01-01T00:00:00Z", false], "1")
-@TestCase(const ['1910-01-01T00:00:00Z', "2000-01-01T00:00:01Z", true], "2")
-@TestCase(const ['2020-01-01T00:00:00Z', "2030-01-01T00:00:01Z", false], "3")
-@TestCase(const ['2019-12-31T23:59:59Z', "2030-01-01T00:00:01Z", true], "4")
+@TestCase(['2020-01-01T00:00:00Z', "2030-01-01T00:00:00Z", false], "0")
+@TestCase(['1910-01-01T00:00:00Z', "2000-01-01T00:00:00Z", false], "1")
+@TestCase(['1910-01-01T00:00:00Z', "2000-01-01T00:00:01Z", true], "2")
+@TestCase(['2020-01-01T00:00:00Z', "2030-01-01T00:00:01Z", false], "3")
+@TestCase(['2019-12-31T23:59:59Z', "2030-01-01T00:00:01Z", true], "4")
 void Interval_Overlapping(String otherStart, String otherEnd, bool expectedResult) {
   var start = Instant.utc(2000, 1, 1, 0, 0);
   var end = Instant.utc(2020, 1, 1, 0, 0);

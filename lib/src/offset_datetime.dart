@@ -14,7 +14,7 @@ abstract class IOffsetDateTime {
   static OffsetDateTime lessTrust(LocalDate calendarDate, LocalTime clockTime, Offset offset) =>
       OffsetDateTime._lessTrust(calendarDate, clockTime, offset);
 
-  static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem calendar]) =>
+  static OffsetDateTime fromInstant(Instant instant, Offset offset, [CalendarSystem? calendar]) =>
       OffsetDateTime._fromInstant(instant, offset, calendar);
 
   // @deprecated
@@ -58,7 +58,7 @@ class OffsetDateTime {
   /// Optimized conversion from an Instant to an OffsetDateTime in the specified calendar.
   /// This is equivalent to `new OffsetDateTime(new LocalDateTime(instant.Plus(offset), calendar), offset)`
   /// but with less overhead.
-  factory OffsetDateTime._fromInstant(Instant instant, Offset offset, [CalendarSystem calendar])
+  factory OffsetDateTime._fromInstant(Instant instant, Offset offset, [CalendarSystem? calendar])
   {
     int days = instant.epochDay;
     int nanoOfDay = instant.epochDayTime.inNanoseconds + offset.inNanoseconds;
@@ -290,13 +290,13 @@ class OffsetDateTime {
   ///
   /// Returns: True if the given value is another offset date/time equal to this one; false otherwise.
   bool equals(OffsetDateTime other) =>
-      this.localDateTime.equals(other.localDateTime) && this.offset.equals(other.offset);
+      localDateTime.equals(other.localDateTime) && offset.equals(other.offset);
 
   /// Returns a [String] that represents this instance.
   ///
   /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetDateTimePatterns.format(this, patternText, culture);
 
   /// Adds a duration to an offset date and time.
@@ -383,16 +383,17 @@ class OffsetDateTime {
   /// * [right]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is OffsetDateTime && equals(right);
+  @override
+  bool operator ==(Object right) => right is OffsetDateTime && equals(right);
 }
 
 // todo: very unsure about what to do with these
 
 /// Implementation for [Comparer.Local]
 class _OffsetDateTimeLocalComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
+  static const OffsetDateTimeComparer _instance = _OffsetDateTimeLocalComparer._();
 
-  _OffsetDateTimeLocalComparer._() : super._();
+  const _OffsetDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) {
@@ -445,8 +446,7 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
   /// internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  OffsetDateTimeComparer._() {
-  }
+  const OffsetDateTimeComparer._();
 
   /// Compares two [OffsetDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
@@ -489,9 +489,9 @@ abstract class OffsetDateTimeComparer // implements Comparable<OffsetDateTime> /
 
 /// Implementation for [Comparer.Instant].
 class _OffsetDateTimeInstantComparer extends OffsetDateTimeComparer {
-  static final OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
+  static const OffsetDateTimeComparer _instance = _OffsetDateTimeInstantComparer._();
 
-  _OffsetDateTimeInstantComparer._() : super._();
+  const _OffsetDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(OffsetDateTime x, OffsetDateTime y) =>

@@ -122,7 +122,7 @@ abstract class DatePatternHelper {
         case 4:
           field = PatternFields.dayOfWeek;
           var format = builder.formatInfo;
-          List<String> textValues = count == 3 ? format.shortDayNames : format.longDayNames;
+          List<String?> textValues = count == 3 ? format.shortDayNames : format.longDayNames;
           builder.addParseLongestTextAction(pattern.current, dayOfWeekSetter, format.compareInfo, textValues);
           builder.addFormatAction((value, sb) => sb.write(textValues[dayOfWeekGetter(value)]));
           break;
@@ -141,7 +141,7 @@ abstract class DatePatternHelper {
       builder.addField(PatternFields.era, pattern.current);
       var formatInfo = builder.formatInfo;
 
-      _parseAction(cursor, bucket) {
+      ParseResult<TResult>? _parseAction(cursor, bucket) {
         var dateBucket = dateBucketFromBucket(bucket);
         return dateBucket.parseEra<TResult>(formatInfo, cursor);
       }

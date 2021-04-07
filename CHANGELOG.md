@@ -4,7 +4,6 @@
 - Update TZDB to 2020d.
 - Fixed loading issues with web, flutter web, and flutter.
 
-
 ## 0.9.15
 - :bug: fix related to #39
 
@@ -50,7 +49,7 @@
 
 ## 0.9.1
 - Continued the API normalization work; removed add*, minus* where it did not
- add any performance gains. `Time` `plus`\\`minus` --> `add`\\`subtract`, added an `abs` method. 
+ add any performance gains. `Time` `plus`\\`minus` --> `add`\\`subtract`, added an `abs` method.
 - `LocalDateTime`\\`LocalDate`\\`LocalTime` added `periodUntil`\\`periodSince`, removed `difference`, made static
  method `difference` from `differenceBetween`
   - same with `OffsetDateTime` except `time` vs `period`
@@ -75,13 +74,13 @@
 - Bugfix for Flutter.
 
 ## 0.8.3
-- Removed all the `Period.from*` constructors, added a named constructor, constructor 
+- Removed all the `Period.from*` constructors, added a named constructor, constructor
 `const Period({this.years: 0, this.months: 0, this.weeks: 0, this.days: 0,
 this.hours: 0, this.minutes: 0, this.seconds: 0,
 this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});` instead of `Period.fromYears(int years)`.
 - Moved collection: "^1.14.10" to collection: "^1.14.6" in order to satisfy Flutter unit testing requirements.
   time_machine can not be unit tested directly in flutter because of a breaking change between
-  matcher: ^0.12.2+1 and matcher: 0.12.3 with regards to `TypeMatcher` going from an abstract non-instanced class to a 
+  matcher: ^0.12.2+1 and matcher: 0.12.3 with regards to `TypeMatcher` going from an abstract non-instanced class to a
   regular instanced class. See [flutter_test/pubspec.yaml](https://github.com/flutter/flutter/blob/master/packages/flutter_test/pubspecz.yaml).
 
 ## 0.8.2
@@ -93,14 +92,14 @@ this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});` instead of `
 
 ## 0.8.0
 - Dart 2.0 ready to go. TimeMachine 0.7.1 was the last version that will work on Dart 1.24.3.
-  - Added a lot of BigInt code, there is no going back now. Added `Time.canNanosecondsBeInteger`, 
+  - Added a lot of BigInt code, there is no going back now. Added `Time.canNanosecondsBeInteger`,
   `Time.fromBigIntNanoseconds()`, `Time.totalNanosecondsAsBigInt`
   - The Dart2JS example compiled sized dropped by about 11%.
 
 ## 0.7.1
 - No more dart analysis errors on 1.24.3.
   - Refactored away the port-helper KeyValuePair and OutBox classes.
-  - Fixed (or annotated) all unused variables, fields, elements, and imports issues. 
+  - Fixed (or annotated) all unused variables, fields, elements, and imports issues.
 
 ## 0.7.0
 - Updated `LocalDateTime.at()` to reflect the LocalTime constructor update.
@@ -128,7 +127,6 @@ this.milliseconds: 0, this.microseconds: 0, this.nanoseconds: 0});` instead of `
 ## 0.4.1
 
 - Missed a logging reference (took it out).
-
 
 ## 0.4
 

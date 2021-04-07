@@ -102,10 +102,10 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// * [minOffset]: Minimum offset applied within this zone
   /// * [maxOffset]: Maximum offset applied within this zone
   @protected DateTimeZone(String id, bool isFixed, Offset minOffset, Offset maxOffset)
-      : this.id = Preconditions.checkNotNull(id, 'id'),
-        this._isFixed = isFixed,
-        this.minOffset = minOffset,
-        this.maxOffset = maxOffset;
+      : id = Preconditions.checkNotNull(id, 'id'),
+        _isFixed = isFixed,
+        minOffset = minOffset,
+        maxOffset = maxOffset;
 
   /// Get the provider's ID for the time zone.
   ///
@@ -123,10 +123,12 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
 
 
   /// Gets the least (most negative) offset within this time zone, over all time.
+  @override
   final Offset minOffset;
 
 
   /// Gets the greatest (most positive) offset within this time zone, over all time.
+  @override
   final Offset maxOffset;
 
   /// Returns the offset from UTC, where a positive duration indicates that local time is
@@ -151,6 +153,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Returns: The defined [TimeZones.ZoneInterval].
   ///
   /// see:[getZoneIntervals]
+  @override
   ZoneInterval getZoneInterval(Instant instant);
 
 
@@ -174,11 +177,11 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     // Most of the time we'll go into here... the local instant and the instant
     // are close enough that we've found the right instant.
     if (IZoneInterval.containsLocal(interval, localInstant)) {
-      ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
+      ZoneInterval? earlier = _getEarlierMatchingInterval(interval, localInstant);
       if (earlier != null) {
         return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, earlier, interval, 2);
       }
-      ZoneInterval later = _getLaterMatchingInterval(interval, localInstant);
+      ZoneInterval? later = _getLaterMatchingInterval(interval, localInstant);
       if (later != null) {
         return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, interval, later, 2);
       }
@@ -187,11 +190,11 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
     else {
       // Our first guess was wrong. Either we need to change interval by one (either direction)
       // or we're in a gap.
-      ZoneInterval earlier = _getEarlierMatchingInterval(interval, localInstant);
+      ZoneInterval? earlier = _getEarlierMatchingInterval(interval, localInstant);
       if (earlier != null) {
         return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, earlier, earlier, 1);
       }
-      ZoneInterval later = _getLaterMatchingInterval(interval, localInstant);
+      ZoneInterval? later = _getLaterMatchingInterval(interval, localInstant);
       if (later != null) {
         return IZoneLocalMapping.newZoneLocalMapping(this, localDateTime, later, later, 1);
       }
@@ -200,7 +203,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   }
 
   /// Returns the interval before this one, if it contains the given local instant, or null otherwise.
-  ZoneInterval _getEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant) {
+  ZoneInterval? _getEarlierMatchingInterval(ZoneInterval interval, LocalInstant localInstant) {
     // Micro-optimization to avoid fetching interval.Start multiple times. Seems
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the start of time, the next check will definitely evaluate to false.
@@ -220,7 +223,7 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
 
 
   /// Returns the next interval after this one, if it contains the given local instant, or null otherwise.
-  ZoneInterval _getLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant) {
+  ZoneInterval? _getLaterMatchingInterval(ZoneInterval interval, LocalInstant localInstant) {
     // Micro-optimization to avoid fetching interval.End multiple times. Seems
     // to give a performance improvement on x86 at least...
     // If the zone interval extends to the end of time, the next check will
@@ -274,11 +277,10 @@ abstract class DateTimeZone implements ZoneIntervalMapWithMinMax {
   /// Creates a fixed time zone for offsets -12 to +15 at every half hour,
   /// fixing the 0 offset as DateTimeZone.Utc.
   static List<DateTimeZone> _buildFixedZoneCache() {
-    List<DateTimeZone> ret = List<DateTimeZone>(_fixedZoneCacheSize);
-    for (int i = 0; i < _fixedZoneCacheSize; i++) {
-      int offsetSeconds = i * _fixedZoneCacheGranularitySeconds + _fixedZoneCacheMinimumSeconds;
-      ret[i] = FixedDateTimeZone.forOffset(Offset(offsetSeconds));
-    }
+    List<DateTimeZone> ret = List<DateTimeZone>.generate(
+      _fixedZoneCacheSize,
+      (int i) => FixedDateTimeZone.forOffset(Offset(i * _fixedZoneCacheGranularitySeconds + _fixedZoneCacheMinimumSeconds)),
+    );
     ret[-_fixedZoneCacheMinimumSeconds ~/ _fixedZoneCacheGranularitySeconds] = utc;
     return ret;
   }

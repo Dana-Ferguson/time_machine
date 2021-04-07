@@ -39,18 +39,20 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<LocalTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in LocalTimePattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
     if (patternText.length == 1) {
       String /*char*/ patternCharacter = patternText[0];
-      patternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
-      if (patternText == null) {
+      final expandedPatternText = _expandStandardFormatPattern(patternCharacter, formatInfo);
+      if (expandedPatternText == null) {
         throw IInvalidPatternError.format(TextErrorMessages.unknownStandardFormat, [patternCharacter, 'LocalTime']);
       }
+      patternText = expandedPatternText;
     }
 
     var patternBuilder = SteppedPatternBuilder<LocalTime, LocalTimeParseBucket>(formatInfo,
@@ -60,7 +62,7 @@ class LocalTimePatternParser implements IPatternParser<LocalTime> {
     return patternBuilder.build(_templateValue);
   }
 
-  String _expandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
+  String? _expandStandardFormatPattern(String /*char*/ patternCharacter, TimeMachineFormatInfo formatInfo) {
     switch (patternCharacter) {
       case 't':
         return formatInfo.dateTimeFormat.shortTimePattern;
@@ -124,7 +126,7 @@ class LocalTimeParseBucket extends ParseBucket<LocalTime> {
 
   //static const PatternFields hours12 = const PatternFields(1 << 1);
   //static const PatternFields amPm = const PatternFields(1 << 6);
-  static const PatternFields _hours12_booleanOR_amPm = const PatternFields(1 << 1 | 1 << 6);
+  static const PatternFields _hours12_booleanOR_amPm = PatternFields(1 << 1 | 1 << 6);
 
   ParseResult<int> _determineHour(PatternFields usedFields, String text) {
     if (usedFields.hasAny(PatternFields.hours24)) {

@@ -8,7 +8,7 @@
 class Preconditions {
   /// Returns the given argument after checking whether it's null. This is useful for putting
   /// nullity checks in parameters which are passed to base class constructors.
-  static T checkNotNull<T>(T argument, String paramName) // where T : class
+  static T checkNotNull<T>(T? argument, String paramName) // where T : class
   {
     if (argument == null) {
       throw ArgumentError.notNull(paramName);
@@ -32,8 +32,8 @@ class Preconditions {
   // Note: this overload exists for performance reasons. It would be reasonable to call the
   // version using 'long' values, but we'd incur conversions on every call. This method
   // may well be called very often.
-  static void checkArgumentRange(String paramName, num value, num minInclusive, num maxInclusive) {
-    if (value == null || value < minInclusive || value > maxInclusive) {
+  static void checkArgumentRange(String paramName, int value, int minInclusive, int maxInclusive) {
+    if (value < minInclusive || value > maxInclusive) {
       throw RangeError.range(value, minInclusive, maxInclusive, paramName);
     }
   }
@@ -55,13 +55,13 @@ class Preconditions {
   }
 
   // [ContractAnnotation('expression:false => halt')]
-  static void checkArgument(bool expression, String parameter, String message) {
+  static void checkArgument(bool? expression, String parameter, String message) {
     if (expression == null || !expression) {
       throw ArgumentError('$message (parameter name: $parameter)');
     }
   }
 
-  static void checkState(bool expression, String message) {
+  static void checkState(bool? expression, String message) {
     if (expression == null || !expression) {
       throw StateError(message);
     }

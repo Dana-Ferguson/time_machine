@@ -21,9 +21,9 @@ Future main() async {
 
   var sw = Stopwatch()..start();
   var ids = await Cultures.ids;
-  var allCultures = List<Culture>();
+  var allCultures = <Culture>[];
   for(var id in ids) {
-    allCultures.add(await Cultures.getCulture(id));
+    allCultures.add((await Cultures.getCulture(id))!);
   }
   for(var culture in allCultures) {
     for(var format in AllStandardPatterns) {
@@ -489,8 +489,8 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
     }*/
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(LocalDateTimePattern.extendedIso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(LocalDateTimePattern.extendedIso);
 
   /*
   @Test()
@@ -579,7 +579,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   }*/
 
   // Helper method to make it slightly easier for tests to skip 'bad' cultures.
-  @private LocalDateTimePattern CreatePatternOrNull(String patternText, Culture culture, LocalDateTime templateValue) {
+  @private LocalDateTimePattern? CreatePatternOrNull(String patternText, Culture culture, LocalDateTime templateValue) {
     try {
       return LocalDateTimePattern.createWithCulture(patternText, culture);
     }
@@ -599,7 +599,7 @@ class LocalDateTimePatternTest extends PatternTestBase<LocalDateTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDateTime value])
+  Data([LocalDateTime? value])
       : super(value ?? LocalDateTimePatterns.defaultTemplateValue);
 
   Data.ymd(int year, int month, int day, [int hour = 0, int minute = 0, int second = 0, int millis = 0])

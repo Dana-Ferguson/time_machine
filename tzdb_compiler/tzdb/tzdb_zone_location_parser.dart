@@ -9,7 +9,7 @@ abstract class TzdbZoneLocationParser {
     List<String> bits = line.split('\t');
     Preconditions.checkArgument(bits.length == 3 || bits.length == 4, 'line', "Line must have 3 or 4 tab-separated values");
     String countryCode = bits[0];
-    String countryName = countryMapping[countryCode];
+    String countryName = countryMapping[countryCode]!;
     List<int> latLong = _parseCoordinates(bits[1]);
     String zoneId = bits[2];
     String comment = bits.length == 4 ? bits[3] : '';

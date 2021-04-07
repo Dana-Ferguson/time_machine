@@ -83,7 +83,7 @@ class TzdbIndex {
     return _cache[zoneId] = _zoneFromBinary(await PlatformIO.local.getBinary('tzdb', '$filename.bin'));
   }
 
-  DateTimeZone getTimeZoneSync(String zoneId) {
+  DateTimeZone? getTimeZoneSync(String zoneId) {
     var zone = _cache[zoneId];
     if (zone != null) return zone;
 
@@ -112,8 +112,8 @@ class DateTimeZoneReader extends BinaryReader {
     bool endIsLong = (flag & (1 << 3)) != 0;
     bool hasStart = (flag & 1) == 1;
     bool hasEnd = (flag & 2) == 2;
-    int startSeconds;
-    int endSeconds;
+    int? startSeconds;
+    int? endSeconds;
 
     if (hasStart) {
       if (startIsLong) startSeconds = readInt64();
@@ -142,7 +142,7 @@ abstract class DateTimeZoneType
 @internal
 abstract class IDateTimeZoneWriter {
   void writeZoneInterval(ZoneInterval zoneInterval);
-  Future close();
+  Future? close();
   void write7BitEncodedInt(int value);
   void writeBool(bool value);
   void writeInt32(int value);

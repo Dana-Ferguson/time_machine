@@ -8,7 +8,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 class ZoneRuleSet {
   // Either rules or name+fixedSavings is specified.
   final List<ZoneRecurrence> _rules; // = new List<ZoneRecurrence>();
-  final String _name;
+  final String? _name;
   final Offset _fixedSavings;
   final int _upperYear;
   final ZoneYearOffset _upperYearOffset;
@@ -34,7 +34,7 @@ class ZoneRuleSet {
   ZoneInterval CreateFixedInterval(Instant start) {
     Preconditions.checkState(isFixed, 'Rule set is not fixed');
     var limit = GetUpperLimit(_fixedSavings);
-    return IZoneInterval.newZoneInterval(_name, start, limit, standardOffset + _fixedSavings, _fixedSavings);
+    return IZoneInterval.newZoneInterval(_name!, start, limit, standardOffset + _fixedSavings, _fixedSavings);
   }
 
   /// <summary>

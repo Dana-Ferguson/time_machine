@@ -69,7 +69,7 @@ abstract class TimePatternHelper
         pattern.moveNext();
         int count = pattern.getRepeatCount(maxCount);
         builder.addField(PatternFields.fractionalSeconds, pattern.current);
-        builder.addParseAction((ValueCursor valueCursor, ParseBucket bucket) {
+        builder.addParseAction((ValueCursor valueCursor, TBucket bucket) {
           // If the next token isn't a dot or comma, we assume
           // it's part of the next token in the pattern
           // todo: dart: look for this in other places; had to add 'valueCursor.Index >= valueCursor.Length' because our Match's stringOrdinalCompare doesn't work quite the same
@@ -78,7 +78,7 @@ abstract class TimePatternHelper
           }
 
           // If there *was* a decimal separator, we should definitely have a number.
-          int fractionalSeconds = valueCursor.parseFraction(count, maxCount, 1);
+          int? fractionalSeconds = valueCursor.parseFraction(count, maxCount, 1);
           // Last argument is 1 because we need at least one digit to be present after a decimal separator
           if (fractionalSeconds == null) {
             return IParseResult.mismatchedNumber<TResult>(valueCursor, stringFilled('F', count));
@@ -108,8 +108,8 @@ abstract class TimePatternHelper
       int count = pattern.getRepeatCount(maxCount);
       builder.addField(PatternFields.fractionalSeconds, pattern.current);
 
-      builder.addParseAction((ValueCursor str, ParseBucket bucket) {
-        int fractionalSeconds = str.parseFraction(count, maxCount, patternCharacter == 'f' ? count : 0);
+      builder.addParseAction((ValueCursor str, TBucket bucket) {
+        int? fractionalSeconds = str.parseFraction(count, maxCount, patternCharacter == 'f' ? count : 0);
         // If the pattern is 'f', we need exactly "count" digits. Otherwise ('F') we need
         // 'up to count' digits.
         if (fractionalSeconds == null) {
@@ -140,7 +140,7 @@ abstract class TimePatternHelper
       // If we don't have an AM or PM designator, we're nearly done. Set the AM/PM designator
       // to the special value of 2, meaning 'take it from the template'.
       if (amDesignator == '' && pmDesignator == "") {
-        _parseAction(str, bucket) {
+        Null _parseAction(ValueCursor str, TBucket bucket) {
           amPmSetter(bucket, 2);
           return null;
         }
@@ -157,7 +157,7 @@ abstract class TimePatternHelper
         return;
       }
 
-      CompareInfo compareInfo = builder.formatInfo.compareInfo;
+      CompareInfo? compareInfo = builder.formatInfo.compareInfo;
       // Single character designator
       if (count == 1) {
         // It's not entirely clear whether this is the right thing to do... there's no nice
@@ -204,7 +204,7 @@ abstract class TimePatternHelper
   static void _handleHalfAmPmDesignator<TResult, TBucket extends ParseBucket<TResult>>
       (int count, String specifiedDesignator, int specifiedDesignatorValue, int Function(TResult) hourOfDayGetter, Function(TBucket, int) amPmSetter,
       SteppedPatternBuilder<TResult, TBucket> builder) {
-    CompareInfo compareInfo = builder.formatInfo.compareInfo;
+    CompareInfo? compareInfo = builder.formatInfo.compareInfo;
     if (count == 1) {
       String abbreviation = specifiedDesignator.substring(0, 1);
 

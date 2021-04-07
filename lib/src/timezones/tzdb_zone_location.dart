@@ -43,7 +43,7 @@ class TzdbZoneLocation
   final String comment;
 
   // TzdbZone1970Location._(this.Comment, this.Countries, this.latitudeSeconds, this.longitudeSeconds, this.ZoneId);
-  TzdbZoneLocation._(this.comment, this.countryCode, this.countryName, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
+  const TzdbZoneLocation._(this.comment, this.countryCode, this.countryName, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///
@@ -63,7 +63,7 @@ class TzdbZoneLocation
     Preconditions.checkArgumentRange('longitudeSeconds', longitudeSeconds, -180 * 3600, 180 * 3600);
     var CountryName = Preconditions.checkNotNull(countryName, 'countryName');
     var CountryCode = Preconditions.checkNotNull(countryCode, 'countryCode');
-    Preconditions.checkArgument(CountryName.length > 0, 'countryName', "Country name cannot be empty");
+    Preconditions.checkArgument(CountryName.isNotEmpty, 'countryName', "Country name cannot be empty");
     Preconditions.checkArgument(CountryCode.length == 2, 'countryCode', "Country code must be two characters");
     var ZoneId = Preconditions.checkNotNull(zoneId, 'zoneId');
     var Comment = Preconditions.checkNotNull(comment, 'comment');

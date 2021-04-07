@@ -40,7 +40,7 @@ void Exception_Success()
 void Exception_Failure()
 {
   // Assert.IsInstanceOf<UnparsableValueError>(FailureResult.Exception);
-  expect(_failureResult.error, TypeMatcher<UnparsableValueError>());
+  expect(_failureResult.error, const TypeMatcher<UnparsableValueError>());
 }
 
 @Test()

@@ -18,7 +18,7 @@ class OffsetTime {
   ///
   /// * [time]: The time part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetTime(this.clockTime, this.offset);
+  const OffsetTime(this.clockTime, this.offset);
 
   /// Gets the hour of day of this offset time, in the range 0 to 23 inclusive.
   int get hourOfDay => clockTime.timeSinceMidnight.hourOfDay;
@@ -43,7 +43,7 @@ class OffsetTime {
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetTime` for the same date, but with the specified UTC offset.
-  OffsetTime withOffset(Offset offset) => OffsetTime(this.clockTime, offset);
+  OffsetTime withOffset(Offset offset) => OffsetTime(clockTime, offset);
 
   /// Returns this offset time-of-day, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -81,7 +81,8 @@ class OffsetTime {
   /// * [right]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is OffsetTime && equals(right);
+  @override
+  bool operator ==(Object right) => right is OffsetTime && equals(right);
 
   /// Formats the value of the current instance using the specified pattern.
   ///
@@ -92,6 +93,6 @@ class OffsetTime {
   ///
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetTimePatterns.format(this, patternText, culture);
 }

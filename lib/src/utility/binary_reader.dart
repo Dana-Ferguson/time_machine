@@ -80,7 +80,7 @@ class BinaryReader {
   }
 
   List<String> readStringList() {
-    var tokens = List<String>();
+    var tokens = <String>[];
     var count = read7BitEncodedInt();
     for (int i = 0; i < count; i++) {
       tokens.add(readString());

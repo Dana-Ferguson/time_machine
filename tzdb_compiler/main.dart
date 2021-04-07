@@ -4,16 +4,16 @@
 
 import 'dart:io';
 
-import 'package:time_machine/src/time_machine_internal.dart';
+// import 'package:time_machine/src/time_machine_internal.dart';
 import 'package:path/path.dart' as path;
 
 import 'compiler_options.dart';
 import 'tzdb/tzdb_zone_info_compiler.dart';
 import 'tzdb/cldr_windows_zone_parser.dart';
-import 'tzdb/tzdb_stream_writer.dart';
-import 'tzdb/named_id_mapping_support.dart';
+// import 'tzdb/tzdb_stream_writer.dart';
+// import 'tzdb/named_id_mapping_support.dart';
 
-import 'tzdb/utility/binary_writer.dart';
+// import 'tzdb/utility/binary_writer.dart';
 
 /// Main entry point for the time zone information compiler. In theory we could support
 /// multiple sources and formats but currently we only support one:
@@ -25,39 +25,40 @@ import 'tzdb/utility/binary_writer.dart';
 ///
 /// <param name='arguments'>The command line arguments. Each compiler defines its own.</param>
 /// <returns>0 for success, non-0 for error.</returns>
-main_old(List<String> args) {
-  CompilerOptions options = CompilerOptions(args);
+// int main_old(List<String> args) {
+//   CompilerOptions options = CompilerOptions(args);
 
-  var tzdbCompiler = TzdbZoneInfoCompiler();
-  var tzdb = tzdbCompiler.compile(options.sourceDirectoryName);
-  tzdb.logCounts();
-  if (options.zoneId != null) {
-    tzdb.generateDateTimeZone(options.zoneId);
-    return 0;
-  }
+//   var tzdbCompiler = TzdbZoneInfoCompiler();
+//   var tzdb = tzdbCompiler.compile(options.sourceDirectoryName);
+//   tzdb.logCounts();
+//   if (options.zoneId != null) {
+//     tzdb.generateDateTimeZone(options.zoneId!);
+//     return 0;
+//   }
 
-  var windowsZones = LoadWindowsZones(options, tzdb.version);
-  if (options.windowsOverride != null) {
-    var overrideFile = CldrWindowsZonesParser.parseFile(options.windowsOverride);
-    windowsZones = MergeWindowsZones(windowsZones, overrideFile);
-  }
-  LogWindowsZonesSummary(windowsZones);
-  var writer = TzdbStreamWriter();
+//   var windowsZones = LoadWindowsZones(options, tzdb.version);
+//   if (options.windowsOverride != null) {
+//     var overrideFile = CldrWindowsZonesParser.parseFile(options.windowsOverride!);
+//     windowsZones = MergeWindowsZones(windowsZones, overrideFile);
+//   }
+//   LogWindowsZonesSummary(windowsZones);
+//   var writer = TzdbStreamWriter();
 
-  var stream = BinaryWriter(CreateOutputStream(options));
-  {
-    writer.write(tzdb, windowsZones, NameIdMappingSupport.StandardNameToIdMap, stream);
-  }
-  stream.close();
+//   var stream = BinaryWriter(CreateOutputStream(options));
+//   {
+//     writer.write(tzdb, windowsZones, NameIdMappingSupport.StandardNameToIdMap, stream);
+//   }
+//   stream.close();
 
-  if (options.outputFileName != null) {
-    print('Reading generated data and validating...');
-    var source = Read(options);
-    throw Exception('need validation');
-    // source.validate();
-  }
-  return 0;
-}
+//   if (options.outputFileName != null) {
+//     print('Reading generated data and validating...');
+//     // ignore: unused_local_variable
+//     var source = Read(options);
+//     throw Exception('need validation');
+//     // source.validate();
+//   }
+//   return 0;
+// }
 
 void main(List<String> args) {
   // https://nodatime.org/tzdb/latest.txt --> https://nodatime.org/tzdb/tzdb2018g.nzd
@@ -76,6 +77,9 @@ void main(List<String> args) {
 /// </summary>
 WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion) {
   var mappingPath = options.windowsMapping;
+  if (mappingPath == null) {
+    throw Exception('No mappingPath was provided');
+  }
   if (File(mappingPath).existsSync()) {
     return CldrWindowsZonesParser.parseFile(mappingPath);
   }
@@ -87,7 +91,7 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
       .listSync()
       .where((f) => f is File && f.path.endsWith('.xml'))
       .toList();
-  if (xmlFiles.length == 0) {
+  if (xmlFiles.isEmpty) {
     throw Exception('$mappingPath does not contain any XML files');
   }
   var allFiles = xmlFiles
@@ -97,14 +101,14 @@ WindowsZones LoadWindowsZones(CompilerOptions options, String targetTzdbVersion)
 
   var versions = allFiles.map((z) => z.tzdbVersion).join(', ');
 
-  var bestFile = allFiles
-      .where((zones) => (zones.tzdbVersion.compareTo(targetTzdbVersion)) <= 0)
-      .first; // or default
-
-  if (bestFile == null) {
+  var potentiallyBestFiles = allFiles
+      .where((zones) => (zones.tzdbVersion.compareTo(targetTzdbVersion)) <= 0);
+  if (potentiallyBestFiles.isEmpty) {
     throw Exception(
         'No zones files suitable for version $targetTzdbVersion. Found versions targeting: [$versions]');
   }
+  var bestFile = potentiallyBestFiles.first;
+
   print("Picked Windows Zones with TZDB version ${bestFile
       .tzdbVersion} out of [$versions] as best match for $targetTzdbVersion");
   return bestFile;
@@ -129,16 +133,16 @@ IOSink CreateOutputStream(CompilerOptions options)
     return stdout; // new MemoryStream();
   }
 
-  String file = path.setExtension(options.outputFileName, 'nzd');
+  String file = path.setExtension(options.outputFileName!, 'nzd');
   return File(file).openWrite();
 }
 
-TzdbDateTimeZoneSource Read(CompilerOptions options)
-{
-  String file = path.setExtension(options.outputFileName, 'nzd');
-  var stream = File(file).openRead();
-  return TzdbDateTimeZoneSource.FromStream(stream);
-}
+// TzdbDateTimeZoneSource Read(CompilerOptions options)
+// {
+//   String file = path.setExtension(options.outputFileName!, 'nzd');
+//   var stream = File(file).openRead();
+//   return TzdbDateTimeZoneSource.FromStream(stream);
+// }
 
 /// Merge two WindowsZones objects together. The result has versions present in override,
 /// but falling back to the original for versions absent in the override. The set of MapZones
@@ -164,21 +168,20 @@ WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones override
       .windowsVersion : overrideZones.windowsVersion;
 
   // Work everything out using dictionaries, and then sort.
-  // todo: is there are type-safe version of this? (obj-literals & fromIterable) (looks like Dart-Dev's don't believe in 'em)
-  var mapZones = Map.fromIterable(originalZones.mapZones,
-      key: (mz) =>
+  Map<Map<String, String>, MapZone> mapZones = {
+    for (MapZone mz in originalZones.mapZones)
       {
-        'windowsId': (mz as MapZone).windowsId,
-        'territory': (mz as MapZone).territory
-      },
-      value: (mz) => mz);
+        'windowsId': mz.windowsId,
+        'territory': mz.territory,
+      }:mz
+  };
 
   for (var overrideMapZone in overrideZones.mapZones) {
     var key = {
       'windowsId': overrideMapZone.windowsId,
       'territory': overrideMapZone.territory
     };
-    if (overrideMapZone.tzdbIds.length == 0) {
+    if (overrideMapZone.tzdbIds.isEmpty) {
       mapZones.remove(key);
     }
     else {
@@ -191,11 +194,11 @@ WindowsZones MergeWindowsZones(WindowsZones originalZones, WindowsZones override
       .toList()
     ..sort((a, b) {
       // order by 'windowsId'
-      var cmp = a.key['windowsId'].compareTo(b.key['windowsId']);
+      var cmp = a.key['windowsId']!.compareTo(b.key['windowsId']!);
       if (cmp != 0) return cmp;
 
       // then by 'territory'
-      return a.key['territory'].compareTo(b.key['territory']);
+      return a.key['territory']!.compareTo(b.key['territory']!);
     }))
       .map((a) => a.value).toList();
 

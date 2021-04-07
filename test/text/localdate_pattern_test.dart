@@ -18,9 +18,11 @@ Future main() async {
 
 @Test()
 class LocalDatePatternTest extends PatternTestBase<LocalDate> {
-  @private final LocalDate SampleLocalDate = LocalDate(1976, 6, 19);
+  @private
+  final LocalDate SampleLocalDate = LocalDate(1976, 6, 19);
 
-  @internal final List<Data> InvalidPatternData = [
+  @internal
+  final List<Data> InvalidPatternData = [
     Data()
       ..pattern = ''
       ..message = TextErrorMessages.formatStringEmpty,
@@ -117,7 +119,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..parameters.addAll(['y', 3]),
   ];
 
-  @internal List<Data> ParseFailureData = [
+  @internal
+  List<Data> ParseFailureData = [
     Data()
       ..pattern = 'yyyy gg'
       ..text = '2011 NodaEra'
@@ -214,8 +217,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..text = '2015 01 01'
       ..message = TextErrorMessages.noMatchingCalendarSystem,
 
-  // Invalid year
-  /* todo: @SkipMe.unimplemented()
+    // Invalid year
+    /* todo: @SkipMe.unimplemented()
     new Data()
       ..Template = new LocalDate.forCalendar(1, 1, 1, CalendarSystem.IslamicBcl)
       ..Pattern = 'uuuu'
@@ -248,7 +251,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..message = TextErrorMessages.noMatchingCalendarSystem,
   ];
 
-  @internal List<Data> ParseOnlyData = [
+  @internal
+  List<Data> ParseOnlyData = [
     // Alternative era names
     Data.ymd(0, 10, 3)
       ..pattern = 'yyyy MM dd gg'
@@ -296,7 +300,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..culture = TestCultures.GenitiveNameTestCultureWithLeadingNames,
   ];
 
-  @internal List<Data> FormatOnlyData = [
+  @internal
+  List<Data> FormatOnlyData = [
     // Would parse back to 2011
     Data.ymd(1811, 7, 3)
       ..pattern = 'yy M d'
@@ -311,7 +316,8 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..text = '94 7 3',
   ];
 
-  @internal List<Data> FormatAndParseData = [
+  @internal
+  List<Data> FormatAndParseData = [
     // Standard patterns
     // Invariant culture uses the crazy MM/dd/yyyy format. Blech.
     Data.ymd(2011, 10, 20)
@@ -448,7 +454,7 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
     Data.ymd(2011, 10, 9)
       ..pattern = 'yyyy MM dd c'
       ..text = '2011 10 09 ISO',
-  /* todo: @SkipMe.unimplemented()
+    /* todo: @SkipMe.unimplemented()
     new Data.ymdc(2011, 10, 9, CalendarSystem.Coptic)
       ..Pattern = 'c uuuu MM dd'
       ..Text = 'Coptic 2011 10 09',
@@ -501,9 +507,13 @@ class LocalDatePatternTest extends PatternTestBase<LocalDate> {
       ..text = '-1234 01 02',
   ];
 
-  @internal Iterable<Data> get ParseData => [ParseOnlyData, FormatAndParseData].expand((x) => x);
+  @internal
+  Iterable<Data> get ParseData =>
+      [ParseOnlyData, FormatAndParseData].expand((x) => x);
 
-  @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
+  @internal
+  Iterable<Data> get FormatData =>
+      [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
   /*
 @Test()
@@ -523,9 +533,7 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
   @Test()
   void WithCalendar() {
     var pattern = LocalDatePattern.iso.withCalendar(CalendarSystem.coptic);
-    var value = pattern
-        .parse('0284-08-29')
-        .value;
+    var value = pattern.parse('0284-08-29').value;
     expect(LocalDate(284, 8, 29, CalendarSystem.coptic), value);
   }
 
@@ -541,8 +549,8 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
     expect('2017-08-23', pattern.format(date));
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(LocalDatePattern.iso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(LocalDatePattern.iso);
 
   /* ~ No BCL ~ todo: equivalent?
   @private void AssertBclNodaEquality(Culture culture, String patternText) {
@@ -572,17 +580,25 @@ AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortDatePattern);
 
 class Data extends PatternTestData<LocalDate> {
 // Default to the start of the year 2000.
-  @override LocalDate get defaultTemplate => LocalDatePatterns.defaultTemplateValue;
+  @override
+  LocalDate get defaultTemplate => LocalDatePatterns.defaultTemplateValue;
 
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  Data([LocalDate value]) : super(value ?? LocalDatePatterns.defaultTemplateValue);
+  Data([LocalDate? value])
+      : super(value ?? LocalDatePatterns.defaultTemplateValue) {
+    text = '';
+  }
 
-  Data.ymd(int year, int month, int day) : super(LocalDate(year, month, day));
+  Data.ymd(int year, int month, int day) : super(LocalDate(year, month, day)) {
+    text = '';
+  }
 
   Data.ymdc(int year, int month, int day, CalendarSystem calendar)
-      : super(LocalDate(year, month, day, calendar));
+      : super(LocalDate(year, month, day, calendar)) {
+    text = '';
+  }
 
   @internal
   @override
@@ -591,5 +607,3 @@ class Data extends PatternTestData<LocalDate> {
           .withTemplateValue(template)
           .withCulture(culture);
 }
-
-

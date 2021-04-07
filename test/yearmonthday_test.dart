@@ -10,6 +10,7 @@ import 'package:test/test.dart';
 import 'time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
   await runTests();
 }
 
@@ -53,14 +54,14 @@ void AllDays()
 }
 
 @Test()
-@TestCase(const ['1000-01-01', "1000-01-02"])
-@TestCase(const ['1000-01-01', "1000-02-01"])
-@TestCase(const ['999-16-64', "1000-01-01"])
-@TestCase(const ['-1-01-01', "-1-01-02"])
-@TestCase(const ['-1-01-01', "-1-02-01"])
-@TestCase(const ['-2-16-64', "-1-01-01"])
-@TestCase(const ['-1-16-64', "0-01-01"])
-@TestCase(const ['-1-16-64', "1-01-01"])
+@TestCase(['1000-01-01', "1000-01-02"])
+@TestCase(['1000-01-01', "1000-02-01"])
+@TestCase(['999-16-64', "1000-01-01"])
+@TestCase(['-1-01-01', "-1-01-02"])
+@TestCase(['-1-01-01', "-1-02-01"])
+@TestCase(['-2-16-64', "-1-01-01"])
+@TestCase(['-1-16-64', "0-01-01"])
+@TestCase(['-1-16-64', "1-01-01"])
 void Comparisons(String smallerText, String greaterText)
 {
   var smaller = YearMonthDay.parse(smallerText);
@@ -74,7 +75,7 @@ void Comparisons(String smallerText, String greaterText)
 @Test()
 void YearMonthDayToString()
 {
-  var ymd = YearMonthDay(2017, 8, 25);
+  var ymd = const YearMonthDay(2017, 8, 25);
   expect('2017-08-25', ymd.toString());
 }
 

@@ -35,7 +35,7 @@ class PeriodPattern implements IPattern<Period> {
 
   final IPattern<Period> _pattern;
 
-  PeriodPattern._(IPattern<Period> pattern) : this._pattern = Preconditions.checkNotNull(pattern, 'pattern');
+  PeriodPattern._(IPattern<Period> pattern) : _pattern = Preconditions.checkNotNull(pattern, 'pattern');
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -45,6 +45,7 @@ class PeriodPattern implements IPattern<Period> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<Period> parse(String text) => _pattern.parse(text);
 
   /// Formats the given period as text according to the rules of this pattern.
@@ -52,6 +53,7 @@ class PeriodPattern implements IPattern<Period> {
   /// * [value]: The period to format.
   ///
   /// Returns: The period formatted according to this pattern.
+  @override
   String format(Period value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -61,6 +63,7 @@ class PeriodPattern implements IPattern<Period> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(Period value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   static void _appendValue(StringBuffer builder, int value, String suffix) {
@@ -83,11 +86,12 @@ class PeriodPattern implements IPattern<Period> {
 }
 
 class _RoundtripPatternImpl implements IPattern<Period> {
-  ParseResult<Period> parse(String text) {
+  @override
+  ParseResult<Period> parse(String? text) {
     if (text == null) {
       return IParseResult.argumentNull<Period>('text');
     }
-    if (text.length == 0) {
+    if (text.isEmpty) {
       return IParseResult.valueStringEmpty.convertError();
     }
 
@@ -171,8 +175,10 @@ class _RoundtripPatternImpl implements IPattern<Period> {
     return ParseResult.forValue<Period>(builder.build());
   }
 
+  @override
   String format(Period value) => appendFormat(value, StringBuffer()).toString();
 
+  @override
   StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
@@ -196,11 +202,12 @@ class _RoundtripPatternImpl implements IPattern<Period> {
 
 class _NormalizingIsoPatternImpl implements IPattern<Period> {
   // TODO(misc): Tidy this up a *lot*.
-  ParseResult<Period> parse(String text) {
+  @override
+  ParseResult<Period> parse(String? text) {
     if (text == null) {
       return IParseResult.argumentNull<Period>('text');
     }
-    if (text.length == 0) {
+    if (text.isEmpty) {
       return IParseResult.valueStringEmpty.convertError();
     }
 
@@ -287,7 +294,7 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
         if (!valueCursor.moveNext()) {
           return IParseResult.missingNumber<Period>(valueCursor);
         }
-        int totalNanoseconds = valueCursor.parseFraction(9, 9, 1);
+        int? totalNanoseconds = valueCursor.parseFraction(9, 9, 1);
         // Can cope with at most 999999999 nanoseconds
         if (totalNanoseconds == null) {
           return IParseResult.missingNumber<Period>(valueCursor);
@@ -319,8 +326,10 @@ class _NormalizingIsoPatternImpl implements IPattern<Period> {
     return ParseResult.forValue<Period>(builder.build());
   }
 
+  @override
   String format(Period value) => appendFormat(value, StringBuffer()).toString();
 
+  @override
   StringBuffer appendFormat(Period value, StringBuffer builder) {
     Preconditions.checkNotNull(value, 'value');
     Preconditions.checkNotNull(builder, 'builder');
