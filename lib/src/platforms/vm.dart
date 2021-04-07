@@ -56,6 +56,7 @@ class _FlutterMachineIO implements PlatformIO {
 
 Future initialize(Map args) {
   String? timeZoneOverride = args['timeZone'];
+  String? cultureOverride = args['culture'];
 
   if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
     if (args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
@@ -67,14 +68,14 @@ Future initialize(Map args) {
     PlatformIO.local = _VirtualMachineIO();
   }
 
-  return TimeMachine.initialize(timeZoneOverride);
+  return TimeMachine.initialize(timeZoneOverride, cultureOverride);
 }
 
 class TimeMachine  {
   static bool _longIdNames = false;
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
-  static Future initialize(String? timeZoneOverride) async {
+  static Future initialize(String? timeZoneOverride, String? cultureOverride) async {
     Platform.startVM();
 
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
@@ -94,7 +95,7 @@ class TimeMachine  {
     TzdbIndex.localId = local!.id;
 
     // Default Culture
-    var cultureId = io.Platform.localeName.split('.').first.replaceAll('_', '-');
+    var cultureId = cultureOverride ?? io.Platform.localeName.split('.').first.replaceAll('_', '-');
     Culture? culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture!;
     // todo: remove Culture.currentCulture
