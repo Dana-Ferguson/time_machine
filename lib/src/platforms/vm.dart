@@ -58,7 +58,7 @@ Future initialize(Map args) {
   String? timeZoneOverride = args['timeZone'];
   String? cultureOverride = args['culture'];
 
-  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia) {
+  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia || io.Platform.isMacOS || io.Platform.isWindows || io.Platform.isLinux) {
     if (args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
     // Map IO functions
     PlatformIO.local = _FlutterMachineIO(args['rootBundle']);
