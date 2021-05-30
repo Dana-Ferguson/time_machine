@@ -18,7 +18,7 @@ abstract class OffsetDateTimePatterns {
   static final OffsetDateTimePattern fullRoundtripPatternImpl = OffsetDateTimePattern._create(
       "uuuu'-'MM'-'dd'T'HH':'mm':'ss;FFFFFFFFFo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
 
-  static String format(OffsetDateTime offsetDateTime, String patternText, Culture culture) =>
+  static String format(OffsetDateTime offsetDateTime, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .offsetDateTimePatternParser
@@ -79,7 +79,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   /// in the pattern are taken from the template.
   final OffsetDateTime templateValue;
 
-  OffsetDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
+  const OffsetDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -89,6 +89,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<OffsetDateTime> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned date/time as text according to the rules of this pattern.
@@ -96,6 +97,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   /// * [value]: The zoned date/time to format.
   ///
   /// Returns: The zoned date/time formatted according to this pattern.
+  @override
   String format(OffsetDateTime value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -105,6 +107,7 @@ class OffsetDateTimePattern implements IPattern<OffsetDateTime> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(OffsetDateTime value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.

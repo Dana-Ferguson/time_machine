@@ -21,7 +21,7 @@ DateTime UnixEpochDateTime = DateTime.utc(1970, 1, 1, 0, 0, 0);
 // This was when I was writing the tests, having finally made everything work - several thousand lines
 // of shockingly untested code.
 DateTime TimeOfGreatAchievement = DateTime.utc(2009, 11, 27, 18, 38, 25, 345)
-    .add(Duration(microseconds: extraMicroseconds)); // + TimeSpan.FromTicks(8765);
+    .add(const Duration(microseconds: extraMicroseconds)); // + TimeSpan.FromTicks(8765);
 
 CalendarSystem Iso = CalendarSystem.iso;
 

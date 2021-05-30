@@ -19,7 +19,7 @@ Future main() async {
 void Addition_WithPeriod()
 {
   LocalTime start = LocalTime(3, 30, 0);
-  Period period = Period(hours: 2) + Period(seconds: 1);
+  Period period = const Period(hours: 2) + const Period(seconds: 1);
   LocalTime expected = LocalTime(5, 30, 1);
   expect(expected, start + period);
 }
@@ -28,25 +28,25 @@ void Addition_WithPeriod()
 void Addition_WrapsAtMidnight()
 {
   LocalTime start = LocalTime(22, 0, 0);
-  Period period = Period(hours: 3);
+  Period period = const Period(hours: 3);
   LocalTime expected = LocalTime(1, 0, 0);
   expect(expected, start + period);
 }
 
-@Test()
-void Addition_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalTime date = LocalTime(12, 0, 0);
-  // Call to ToString just to make it a valid statement
-  Period period;
-  expect(() => (date + period).toString(), throwsArgumentError);
-}
+// @Test()
+// void Addition_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalTime date = LocalTime(12, 0, 0);
+//   // Call to ToString just to make it a valid statement
+//   Period period;
+//   expect(() => (date + period).toString(), throwsArgumentError);
+// }
 
 @Test()
 void Subtraction_WithPeriod()
 {
   LocalTime start = LocalTime(5, 30, 1);
-  Period period = Period(hours: 2) + Period(seconds: 1);
+  Period period = const Period(hours: 2) + const Period(seconds: 1);
   LocalTime expected = LocalTime(3, 30, 0);
   expect(expected, start - period);
 }
@@ -55,25 +55,25 @@ void Subtraction_WithPeriod()
 void Subtraction_WrapsAtMidnight()
 {
   LocalTime start = LocalTime(1, 0, 0);
-  Period period = Period(hours: 3);
+  Period period = const Period(hours: 3);
   LocalTime expected = LocalTime(22, 0, 0);
   expect(expected, start - period);
 }
 
-@Test()
-void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
-{
-  LocalTime date = LocalTime(12, 0, 0);
-  // Call to ToString just to make it a valid statement
-  Period period;
-  expect(() => (date - period).toString(), throwsArgumentError);
-}
+// @Test()
+// void Subtraction_WithNullPeriod_ThrowsArgumentNullException()
+// {
+//   LocalTime date = LocalTime(12, 0, 0);
+//   // Call to ToString just to make it a valid statement
+//   Period period;
+//   expect(() => (date - period).toString(), throwsArgumentError);
+// }
 
 @Test()
 void Addition_PeriodWithDate()
 {
   LocalTime time = LocalTime(20, 30, 0);
-  Period period = Period(days: 1);
+  Period period = const Period(days: 1);
   // Use method not operator here to form a valid statement
   expect(() => LocalTime.plus(time, period), throwsArgumentError);
 }
@@ -82,7 +82,7 @@ void Addition_PeriodWithDate()
 void Subtraction_PeriodWithTime()
 {
   LocalTime time = LocalTime(20, 30, 0);
-  Period period = Period(days: 1);
+  Period period = const Period(days: 1);
   // Use method not operator here to form a valid statement
   expect(() => LocalTime.minus(time, period), throwsArgumentError);
 }
@@ -91,7 +91,7 @@ void Subtraction_PeriodWithTime()
 void PeriodAddition_MethodEquivalents()
 {
   LocalTime start = LocalTime(20, 30, 0);
-  Period period = Period(hours: 3) + Period(minutes: 10);
+  Period period = const Period(hours: 3) + const Period(minutes: 10);
   expect(start + period, LocalTime.plus(start, period));
   expect(start + period, start.add(period));
 }
@@ -100,7 +100,7 @@ void PeriodAddition_MethodEquivalents()
 void PeriodSubtraction_MethodEquivalents()
 {
   LocalTime start = LocalTime(20, 30, 0);
-  Period period = Period(hours: 3) + Period(minutes: 10);
+  Period period = const Period(hours: 3) + const Period(minutes: 10);
   LocalTime end = start + period;
   expect(start - period, LocalTime.minus(start, period));
   expect(start - period, start.subtract(period));
@@ -189,7 +189,7 @@ void IComparableCompareTo_Null_Positive()
 {
   var instance = LocalTime(10, 30, 45);
   Comparable i_instance = instance;
-  Object arg;
+  Object? arg;
   var result = i_instance.compareTo(arg);
   expect(result,  greaterThan(0));
 }
@@ -205,7 +205,7 @@ void IComparableCompareTo_WrongType_ArgumentException()
   try {
     expect(() => i_instance.compareTo(arg), throwsA(TestFailure)); // throwsArgumentError);
   } catch (e) {
-    expect(e, TypeMatcher<TestFailure>());
+    expect(e, const TypeMatcher<TestFailure>());
   }
 }
 

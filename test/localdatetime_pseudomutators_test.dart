@@ -263,16 +263,16 @@ void Plus_FullPeriod() {
 // Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
 // The tests are picked somewhat arbitrarily...
-@TestCase(const [10, DayOfWeek.wednesday, 16])
-@TestCase(const [10, DayOfWeek.friday, 11])
-@TestCase(const [10, DayOfWeek.thursday, 17])
-@TestCase(const [11, DayOfWeek.wednesday, 16])
-@TestCase(const [11, DayOfWeek.thursday, 17])
-@TestCase(const [11, DayOfWeek.friday, 18])
-@TestCase(const [11, DayOfWeek.saturday, 12])
-@TestCase(const [11, DayOfWeek.sunday, 13])
-@TestCase(const [12, DayOfWeek.friday, 18])
-@TestCase(const [13, DayOfWeek.friday, 18])
+@TestCase([10, DayOfWeek.wednesday, 16])
+@TestCase([10, DayOfWeek.friday, 11])
+@TestCase([10, DayOfWeek.thursday, 17])
+@TestCase([11, DayOfWeek.wednesday, 16])
+@TestCase([11, DayOfWeek.thursday, 17])
+@TestCase([11, DayOfWeek.friday, 18])
+@TestCase([11, DayOfWeek.saturday, 12])
+@TestCase([11, DayOfWeek.sunday, 13])
+@TestCase([12, DayOfWeek.friday, 18])
+@TestCase([13, DayOfWeek.friday, 18])
 void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30).addNanoseconds(123456789);
@@ -283,9 +283,9 @@ void Next(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   expect(target.dayOfMonth, expectedResult);
 }
 
-@TestCase(const [0])
-@TestCase(const [-1])
-@TestCase(const [8])
+@TestCase([0])
+@TestCase([-1])
+@TestCase([8])
 void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDateTime start = LocalDateTime(2011, 1, 1, 15, 25, 30).addNanoseconds(123456789);
@@ -294,16 +294,16 @@ void Next_InvalidArgument(DayOfWeek targetDayOfWeek)
 
 // Each test case gives a day-of-month in November 2011 and a target 'next day of week';
 // the result is the next day-of-month in November 2011 with that target day.
-@TestCase(const [10, DayOfWeek.wednesday, 9])
-@TestCase(const [10, DayOfWeek.friday, 4])
-@TestCase(const [10, DayOfWeek.thursday, 3])
-@TestCase(const [11, DayOfWeek.wednesday, 9])
-@TestCase(const [11, DayOfWeek.thursday, 10])
-@TestCase(const [11, DayOfWeek.friday, 4])
-@TestCase(const [11, DayOfWeek.saturday, 5])
-@TestCase(const [11, DayOfWeek.sunday, 6])
-@TestCase(const [12, DayOfWeek.friday, 11])
-@TestCase(const [13, DayOfWeek.friday, 11])
+@TestCase([10, DayOfWeek.wednesday, 9])
+@TestCase([10, DayOfWeek.friday, 4])
+@TestCase([10, DayOfWeek.thursday, 3])
+@TestCase([11, DayOfWeek.wednesday, 9])
+@TestCase([11, DayOfWeek.thursday, 10])
+@TestCase([11, DayOfWeek.friday, 4])
+@TestCase([11, DayOfWeek.saturday, 5])
+@TestCase([11, DayOfWeek.sunday, 6])
+@TestCase([12, DayOfWeek.friday, 11])
+@TestCase([13, DayOfWeek.friday, 11])
 void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
 {
   LocalDateTime start = LocalDateTime(2011, 11, dayOfMonth, 15, 25, 30).addNanoseconds(123456789);
@@ -313,9 +313,9 @@ void Previous(int dayOfMonth, DayOfWeek targetDayOfWeek, int expectedResult)
   expect(target.dayOfMonth, expectedResult);
 }
 
-@TestCase(const [0])
-@TestCase(const [-1])
-@TestCase(const [8])
+@TestCase([0])
+@TestCase([-1])
+@TestCase([8])
 void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 {
   LocalDateTime start = LocalDateTime(2011, 1, 1, 15, 25, 30).addNanoseconds(123456789);
@@ -328,7 +328,7 @@ void Previous_InvalidArgument(DayOfWeek targetDayOfWeek)
 void Operator_MethodEquivalents()
 {
   LocalDateTime start = LocalDateTime(2011, 1, 1, 15, 25, 30).addNanoseconds(123456789);
-  Period period = Period(hours: 1) + Period(days: 1);
+  Period period = const Period(hours: 1) + const Period(days: 1);
   LocalDateTime end = start + period;
   expect(start + period, LocalDateTime.plus(start, period));
   expect(start + period, start.add(period));
@@ -356,10 +356,10 @@ void With_DateAdjuster()
 }
 
 @Test()
-@TestCase(const [-9998, 1, 1, -1])
-@TestCase(const [9999, 12, 31, 24])
-@TestCase(const [1970, 1, 1, Platform.int64MaxValue])
-@TestCase(const [1970, 1, 1, Platform.int64MinValue])
+@TestCase([-9998, 1, 1, -1])
+@TestCase([9999, 12, 31, 24])
+@TestCase([1970, 1, 1, Platform.int64MaxValue])
+@TestCase([1970, 1, 1, Platform.int64MinValue])
 void PlusHours_Overflow(int year, int month, int day, int hours)
 {
   TestHelper.AssertOverflow<int, LocalDateTime>(LocalDateTime(year, month, day, 0, 0, 01).addHours, hours);

@@ -12,5 +12,5 @@ class DateTimeZoneNotFoundError extends Error {
   /// [message]: The message for the exception.
   DateTimeZoneNotFoundError(this.message);
 
-  @override toString() => message;
+  @override String toString() => message;
 }

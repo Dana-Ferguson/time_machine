@@ -10,6 +10,7 @@ import 'package:test/test.dart';
 import 'time_machine_testing.dart';
 
 Future main() async {
+  await TimeMachine.initialize();
   await runTests();
 }
 
@@ -19,7 +20,7 @@ void AllYears()
   // Range of years we actually care about. We support more, but that's okay.
   for (int year = -9999; year <= 9999; year++)
   {
-    var ymdc = YearMonthDayCalendar(year, 5, 20, CalendarOrdinal(0));
+    var ymdc = YearMonthDayCalendar(year, 5, 20, const CalendarOrdinal(0));
     expect(year, ymdc.year);
     expect(5, ymdc.month);
     expect(20, ymdc.day);
@@ -84,8 +85,8 @@ void Equality()
 }
 
 @Test()
-@TestCase(const ['2017-08-21-Julian', 2017, 8, 21, CalendarOrdinal.julian])
-@TestCase(const ['-0005-08-21-Iso', -5, 8, 21, CalendarOrdinal.iso])
+@TestCase(['2017-08-21-Julian', 2017, 8, 21, CalendarOrdinal.julian])
+@TestCase(['-0005-08-21-Iso', -5, 8, 21, CalendarOrdinal.iso])
 void Parse(String text, int year, int month, int day, CalendarOrdinal calendar)
 {
   var value = YearMonthDayCalendar.Parse(text);

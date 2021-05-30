@@ -15,7 +15,7 @@ abstract class ICalendarSystem {
     if (ordinal == CalendarOrdinal.iso) {
       return CalendarSystem._isoCalendarSystem;
     }
-    CalendarSystem calendar = CalendarSystem._calendarByOrdinal[ordinal.value];
+    CalendarSystem? calendar = CalendarSystem._calendarByOrdinal[ordinal.value];
     if (calendar != null) {
       return calendar;
     }
@@ -125,7 +125,7 @@ class CalendarSystem {
 
   // While we could implement some of these as auto-props, it probably adds more confusion than convenience.
   static final CalendarSystem _isoCalendarSystem = _generateIsoCalendarSystem();
-  static final List<CalendarSystem> _calendarByOrdinal = List<CalendarSystem>(CalendarOrdinal.size.value);
+  static final List<CalendarSystem?> _calendarByOrdinal = List<CalendarSystem?>.filled(CalendarOrdinal.size.value, null);
 
   // this was a static constructor
   static CalendarSystem _generateIsoCalendarSystem() {
@@ -146,7 +146,7 @@ class CalendarSystem {
   /// * [NotSupportedException]: The calendar system with the specified ID is known, but not supported on this platform.
   static CalendarSystem forId(String id) {
     Preconditions.checkNotNull(id, 'id');
-    CalendarSystem Function() factory = _idToFactoryMap[id];
+    CalendarSystem Function()? factory = _idToFactoryMap[id];
     if (factory == null) {
       throw ArgumentError('No calendar system for ID {id} exists');
     }
@@ -681,14 +681,14 @@ class _IslamicCalendars {
     int i = leapYearPattern.index;
     int j = epoch.index;
 
-    if (_cache.containsKey(i) && _cache[i].containsKey(j)) return _cache[i][j];
+    if (_cache.containsKey(i) && _cache[i]!.containsKey(j)) return _cache[i]![j]!;
 
     var calculator = IslamicYearMonthDayCalculator(leapYearPattern, epoch);
     CalendarOrdinal ordinal = CalendarOrdinal(CalendarOrdinal.islamicAstronomicalBase15.value + i + j * 4);
     var calendar = CalendarSystem._singleEra(ordinal, CalendarSystem.getIslamicId(leapYearPattern, epoch), CalendarSystem._islamicName, calculator, Era.annoHegirae);
 
     if (!_cache.containsKey(i)) _cache[i] = {};
-    return _cache[i][j] = calendar;
+    return _cache[i]![j] = calendar;
   }
 }
 
@@ -705,8 +705,8 @@ class _MiscellaneousCalendars {
 }
 
 class _GregorianJulianCalendars {
-  static CalendarSystem _gregorian;
-  static CalendarSystem _julian;
+  static CalendarSystem? _gregorian;
+  static CalendarSystem? _julian;
 
   static CalendarSystem get gregorian => _gregorian ?? _init()[0];
   static CalendarSystem get julian => _julian ?? _init()[1];
@@ -719,7 +719,7 @@ class _GregorianJulianCalendars {
     _gregorian = CalendarSystem._(CalendarOrdinal.gregorian, CalendarSystem._gregorianId, CalendarSystem._gregorianName,
         CalendarSystem._isoCalendarSystem._yearMonthDayCalculator, CalendarSystem._isoCalendarSystem._eraCalculator);
 
-    return [_gregorian, _julian];
+    return [_gregorian!, _julian!];
   }
 }
 

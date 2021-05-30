@@ -75,14 +75,14 @@ class _Internal{
 // const Object internal = const _Internal();
 
 /// This was internal in Noda Time, but I'm considering keeping it public in Time Machine
-const Object wasInternal = const _Internal();
+const Object wasInternal = _Internal();
 
 /// This is a marker to ease in porting. When the port is finished, this should be removable without causing any errors.
 class _Private {
   const _Private();
 }
 
-const Object private = const _Private();
+const Object private = _Private();
 
 
 class _DDCSupportHack {
@@ -92,11 +92,11 @@ class _DDCSupportHack {
 // todo: make sure ddcSupportHack's have bad names -- so we can get a reverse Contagion effect
 /// DDC has some bugs -- and I want to reserve judgement until 2.0 stable
 /// 1) DDC can't @override methods without parameters with optional parameters, while Dart2JS and DartVM can.
-const Object ddcSupportHack = const _DDCSupportHack();
+const Object ddcSupportHack = _DDCSupportHack();
 
 /// This indicates that the class is meant to be used as an interface
 class _Interface {
   const _Interface();
 }
 
-const Object interface = const _Interface();
+const Object interface = _Interface();

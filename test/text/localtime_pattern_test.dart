@@ -26,7 +26,8 @@ Future setup() async {
   var sw = Stopwatch()..start();
   var ids = await Cultures.ids;
   for(var id in ids) {
-    _allCultures.add(await Cultures.getCulture(id));
+    Culture? culture = await Cultures.getCulture(id);
+    if (culture != null) _allCultures.add(culture);
   }
   print('Time to load cultures: ${sw.elapsedMilliseconds} ms;');
 }
@@ -957,8 +958,8 @@ class LocalTimePatternTest extends PatternTestBase<LocalTime> {
           ..pmDesignator = pmDesignator).Build());
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(LocalTimePattern.extendedIso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(LocalTimePattern.extendedIso);
 
   /*
   @Test()
@@ -991,15 +992,15 @@ void BclShortTimePatternGivesSameResultsInNoda(Culture culture)
 AssertBclNodaEquality(culture, culture.DateTimeFormat.ShortTimePattern);
 }*/
 
-  @Test()
-  void CreateWithInvariantCulture_NullPatternText() {
-    expect(() => LocalTimePattern.createWithInvariantCulture(null), throwsArgumentError);
-  }
+  // @Test()
+  // void CreateWithInvariantCulture_NullPatternText() {
+  //   expect(() => LocalTimePattern.createWithInvariantCulture(null), throwsArgumentError);
+  // }
 
-  @Test()
-  void Create_NullFormatInfo() {
-    expect(() => LocalTimePattern.createWithCulture('HH', null), throwsArgumentError);
-  }
+  // @Test()
+  // void Create_NullFormatInfo() {
+  //   expect(() => LocalTimePattern.createWithCulture('HH', null), throwsArgumentError);
+  // }
 
   @Test()
   void TemplateValue_DefaultsToMidnight() {
@@ -1068,15 +1069,13 @@ expect(SampleDateTime.toString(patternText, culture), pattern.Format(SampleLocal
   // Default to midnight
   /*protected*/ @override LocalTime get defaultTemplate => LocalTime.midnight;
 
-  Data([LocalTime value]) : super(value ?? LocalTime.midnight);
+  Data([LocalTime? value]) : super(value ?? LocalTime.midnight);
 
   Data.hms(int hours, int minutes, int seconds, [int milliseconds = 0, int ticksWithinMillisecond = 0])
       : super(LocalTime(hours, minutes, seconds, ns: milliseconds * TimeConstants.nanosecondsPerMillisecond + ticksWithinMillisecond * 100));
 
   Data.nano(int hours, int minutes, int seconds, int /*long*/ nanoOfSecond)
-      : super(LocalTime(hours, minutes, seconds).addNanoseconds(nanoOfSecond))
-  {
-  }
+      : super(LocalTime(hours, minutes, seconds).addNanoseconds(nanoOfSecond));
 
 
   @internal @override IPattern<LocalTime> CreatePattern() =>

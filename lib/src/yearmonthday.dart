@@ -7,13 +7,14 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 // todo: bit packing didn't work on JS -- I feel like it should though (getting the class functional now, will investigate later)
 @internal
+@immutable
 class YearMonthDay implements Comparable<YearMonthDay> {
   final int year;
   final int month;
   final int day;
 
   /// Constructs a new value for the given year, month and day. No validation is performed.
-  YearMonthDay(this.year, this.month, this.day);
+  const YearMonthDay(this.year, this.month, this.day);
 
   // Just for testing purposes...
   static YearMonthDay parse(String text) {
@@ -35,13 +36,14 @@ class YearMonthDay implements Comparable<YearMonthDay> {
   String toString() => '${StringFormatUtilities.zeroPadNumber(year, 4)}-${StringFormatUtilities.zeroPadNumber(month, 2)}-${StringFormatUtilities.zeroPadNumber(day, 2)}';
 
   YearMonthDayCalendar withCalendar(CalendarSystem calendar) =>
-      YearMonthDayCalendar.ymd(this, calendar == null ? 0 : ICalendarSystem.ordinal(calendar));
+      YearMonthDayCalendar.ymd(this, ICalendarSystem.ordinal(calendar));
 
   YearMonthDayCalendar withCalendarOrdinal(CalendarOrdinal calendarOrdinal) =>
       YearMonthDayCalendar.ymd(this, calendarOrdinal);
 
 
-  int compareTo(YearMonthDay other) {
+  @override
+  int compareTo(YearMonthDay? other) {
     if (other == null) return 1;
 
     int comparison;
@@ -50,11 +52,13 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return day.compareTo(other.day);
   }
 
+  @override
   int get hashCode => hash3(year, month, day);
 
-  bool operator==(dynamic other) => other is YearMonthDay ? (year == other.year && month == other.month && day == other.day) : false;
+  @override
+  bool operator==(Object other) => other is YearMonthDay ? (year == other.year && month == other.month && day == other.day) : false;
 
-  bool operator <(YearMonthDay other) {
+  bool operator <(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year < other.year) return true;
@@ -67,7 +71,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator <=(YearMonthDay other) {
+  bool operator <=(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year < other.year) return true;
@@ -80,7 +84,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator >(YearMonthDay other) {
+  bool operator >(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year > other.year) return true;
@@ -93,7 +97,7 @@ class YearMonthDay implements Comparable<YearMonthDay> {
     return false;
   }
 
-  bool operator >=(YearMonthDay other) {
+  bool operator >=(YearMonthDay? other) {
     if (other == null) return false;
 
     if (year > other.year) return true;
@@ -173,7 +177,7 @@ class YearMonthDayVM implements Comparable<YearMonthDay> {
 
   int get hashCode => _value.hashCode;
 
-  bool operator ==(dynamic rhs) => rhs is YearMonthDay ? _value == rhs._value : false;
+  bool operator ==(Object rhs) => rhs is YearMonthDay ? _value == rhs._value : false;
 
 //@override
 //bool operator !=(YearMonthDay rhs) => _value != rhs._value;

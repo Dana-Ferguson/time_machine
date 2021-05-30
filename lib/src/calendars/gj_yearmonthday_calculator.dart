@@ -13,10 +13,10 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   // automatically checked. They are protected so that GregorianYearMonthDayCalculator can
   // read them.
   @protected
-  static final List<int> minDaysPerMonth = const [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  static const List<int> minDaysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   @protected
-  static final List<int> maxDaysPerMonth = const [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  static const List<int> maxDaysPerMonth = [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   /*
     void main() {
@@ -37,8 +37,8 @@ abstract class GJYearMonthDayCalculator extends RegularYearMonthDayCalculator {
     }
  */
   // In the source material this was produced in a static constructor -- you can find the code above to reproduce this
-  static final List<int> _minTotalDaysByMonth = const [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-  static final List<int> _maxTotalDaysByMonth = const [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
+  static const List<int> _minTotalDaysByMonth = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  static const List<int> _maxTotalDaysByMonth = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
 
   GJYearMonthDayCalculator(int minYear, int maxYear, int averageDaysPer10Years, int daysAtStartOfYear1)
       : super(minYear, maxYear, 12, averageDaysPer10Years, daysAtStartOfYear1);

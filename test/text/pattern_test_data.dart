@@ -14,35 +14,36 @@ abstract class PatternTestData<T> {
   @internal final T Value;
 
   /*final*/
-  T defaultTemplate;
+  late T defaultTemplate;
 
   /// Culture of the pattern.
   @internal Culture culture = Culture.invariant;
 
   /// Standard pattern, expected to format/parse the same way as Pattern.
-  @internal IPattern<T> standardPattern;
+  @internal IPattern<T>? standardPattern;
 
   /// This lets the JS_Test_Gen know what to put. (This is a total cop-out ~ complexity level is too high)
   /// rational: there are 33 usages of StandardPattern, it's easier to annotate than spend a week creating the most beautiful reflection program
-  @internal String standardPatternCode;
+  @internal late String standardPatternCode;
 
   /// Pattern text.
-  @internal String pattern;
+  @internal String pattern = '***undefined pattern***';
 
   /// String value to be parsed, and expected result of formatting.
-  @internal String text;
+  @internal String text = '***undefined text***';
+
 
   /// Template value to specify in the pattern
-  @internal T template;
+  @internal late T template;
 
   /// Extra description for the test case
-  @internal String description;
+  @internal late String description;
 
   /// Message format to verify for exceptions.
-  @internal String message;
+  @internal String? message;
 
   /// Message parameters to verify for exceptions.
-  @internal final List parameters = List();
+  @internal final List parameters = [];
 
   @internal PatternTestData(this.Value) {
     template = defaultTemplate;
@@ -58,7 +59,7 @@ abstract class PatternTestData<T> {
     expect(actualValue, Value);
 
     if (standardPattern != null) {
-      assert(Value == standardPattern
+      assert(Value == standardPattern!
           .parse(text)
           .value);
     }
@@ -70,7 +71,7 @@ abstract class PatternTestData<T> {
     expect(pattern.format(Value), text);
 
     if (standardPattern != null) {
-      expect(standardPattern.format(Value), text);
+      expect(standardPattern!.format(Value), text);
     }
   }
 
@@ -102,7 +103,7 @@ abstract class PatternTestData<T> {
   }
 
   @internal void TestInvalidPattern() {
-    String expectedMessage = FormatMessage(message, parameters);
+    String expectedMessage = FormatMessage(message!, parameters);
     try {
       CreatePattern();
       // 'Expected InvalidPatternException'
@@ -115,7 +116,7 @@ abstract class PatternTestData<T> {
   }
 
   void TestParseFailure() {
-    String expectedMessage = FormatMessage(message, parameters);
+    String expectedMessage = FormatMessage(message!, parameters);
     IPattern<T> pattern = CreatePattern();
 
     var result = pattern.parse(text);
@@ -129,7 +130,7 @@ abstract class PatternTestData<T> {
       // Expected... now let's check the message *starts* with the right part.
       // We're not currently validating the bit that reproduces the bad value.
       assert(e.message.startsWith(expectedMessage),
-      "Expected message to start with \n'${expectedMessage}'; was actually \n'${e.message}'");
+      "Expected message to start with \n'$expectedMessage'; was actually \n'${e.message}'");
     }
   }
 
@@ -142,16 +143,13 @@ abstract class PatternTestData<T> {
       if (culture != Culture.invariant) {
         builder.write('Culture=$culture; ');
       }
-      if (description != null) {
-        builder.write('Description=$description; ');
-      }
       // if (!Template.Equals(DefaultTemplate)) {
       if (template != defaultTemplate) {
         builder.write('Template=$template;');
       }
       return builder.toString();
     }
-    catch (Exception) {
+    on Exception {
       return 'Formatting of test name failed';
     }
   }
@@ -164,7 +162,7 @@ abstract class PatternTestData<T> {
     }
     on FormatException // catch ()
         {
-      throw FormatException("Failed to format String '${message}' with ${parameters.length} parameters");
+      throw FormatException("Failed to format String '$message' with ${parameters.length} parameters");
     }
   }
 }

@@ -1,7 +1,7 @@
 
 
 class SkipMe {
-  final String reason;
+  final String? reason;
 
   const SkipMe([this.reason]);
   const SkipMe.unimplemented() : reason = 'unimplemented';
@@ -11,13 +11,13 @@ class SkipMe {
 }
 
 class Test {
-  final String name;
+  final String? name;
   const Test([this.name]);
 }
 
 class TestCase {
   final Iterable arguments;
-  final String description;
+  final String? description;
 
   const TestCase(this.arguments, [this.description]);
 }
@@ -25,13 +25,13 @@ class TestCase {
 class TestCaseSource {
   // List of Lists (n-arguments), or just a List (single argument)
   final Symbol source;
-  final String description;
+  final String? description;
 
   const TestCaseSource(this.source, [this.description]);
 }
 
 class TestCaseData {
-  String name;
+  String? name;
   Object arguments;
   TestCaseData(this.arguments);
 }

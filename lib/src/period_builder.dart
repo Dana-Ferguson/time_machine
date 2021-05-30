@@ -44,19 +44,17 @@ class PeriodBuilder {
   /// allows object initializers to be used.
   ///
   /// * [period]: An existing period to copy values from.
-  PeriodBuilder([Period period = Period.zero]) {
-    Preconditions.checkNotNull(period, 'period');
-    years = period.years;
-    months = period.months;
-    weeks = period.weeks;
-    days = period.days;
-    hours = period.hours;
-    minutes = period.minutes;
-    seconds = period.seconds;
-    milliseconds = period.milliseconds;
-    microseconds = period.microseconds;
+  PeriodBuilder([Period period = Period.zero]) :
+    years = period.years,
+    months = period.months,
+    weeks = period.weeks,
+    days = period.days,
+    hours = period.hours,
+    minutes = period.minutes,
+    seconds = period.seconds,
+    milliseconds = period.milliseconds,
+    microseconds = period.microseconds,
     nanoseconds = period.nanoseconds;
-  }
 
   static final Map<PeriodUnits, int Function(PeriodBuilder)> _indexGetterFunctionMap = {
     PeriodUnits.years: (PeriodBuilder p) => p.years,
@@ -97,7 +95,7 @@ class PeriodBuilder {
   ///
   /// [ArgumentError]: [unit] is not a single unit, or a value is provided for a date unit which is outside the range of `System.Int32`.
   int operator [](PeriodUnits unit) {
-    if (_indexGetterFunctionMap.containsKey(unit)) return _indexGetterFunctionMap[unit](this);
+    if (_indexGetterFunctionMap.containsKey(unit)) return _indexGetterFunctionMap[unit]!(this);
     throw ArgumentError('Indexer for PeriodBuilder only takes a single unit');
   }
 
@@ -108,7 +106,7 @@ class PeriodBuilder {
 //    Preconditions.checkArgumentRange('value', value, int.MinValue, int.MaxValue);
 //  }
 
-    if (_indexSetterFunctionMap.containsKey(unit)) return _indexSetterFunctionMap[unit](this, value);
+    if (_indexSetterFunctionMap.containsKey(unit)) return _indexSetterFunctionMap[unit]!(this, value);
     throw ArgumentError('Indexer for PeriodBuilder only takes a single unit');
   }
 

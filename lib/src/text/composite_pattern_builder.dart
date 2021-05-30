@@ -26,7 +26,7 @@ abstract class ICompositePatternBuilder {
 /// This type is mutable, and should not be used between multiple isolates. The patterns created
 /// by the [build] method are immutable.
 class CompositePatternBuilder<T> {
-  final List<IPattern<T>> _patterns = List<IPattern<T>>();
+  final List<IPattern<T>> _patterns = <IPattern<T>>[];
   // note: this was originally List<bool Function(T arg), but had to be dropped, because
   // in C#, you can have nested classes, so CompositePatternBuilder<T>._CompositePattern
   // would share their type parameter <T> ~ I'm a bit unsure how to do that here
@@ -35,7 +35,7 @@ class CompositePatternBuilder<T> {
   // ~ they could be verified at runtime - but Dart can't do it at compile time (not yet anyway?)
   // We also couldn't use [Object] iaw with the Style guide -- since that failed too???
   // todo: add back in type safety with a new method
-  final List<bool Function(dynamic arg)> _formatPredicates = List<bool Function(dynamic arg)>();
+  final List<bool Function(dynamic arg)> _formatPredicates = <bool Function(dynamic arg)>[];
 
   /// Constructs a new instance which initially has no component patterns. At least one component
   /// pattern must be added before [build] is called.
@@ -58,13 +58,13 @@ class CompositePatternBuilder<T> {
   ///
   /// * [StateError]: No component patterns have been added.
   IPattern<T> build() {
-    Preconditions.checkState(_patterns.length != 0, 'A composite pattern must have at least one component pattern.');
+    Preconditions.checkState(_patterns.isNotEmpty, 'A composite pattern must have at least one component pattern.');
     return _CompositePattern<T>._(_patterns, _formatPredicates);
   }
 
   IPartialPattern<T> _buildAsPartial() {
     Preconditions.debugCheckState(_patterns.every((p) => p is IPartialPattern<T>), 'All patterns should be partial');
-    return build(); // as IPartialPattern<T>;
+    return build() as IPartialPattern<T>;
   }
 }
 
@@ -74,6 +74,7 @@ class _CompositePattern<T> implements IPartialPattern<T> {
 
   _CompositePattern._(this._patterns, this._formatPredicates);
 
+  @override
   ParseResult<T> parse(String text) {
     for (IPattern<T> pattern in _patterns) {
       ParseResult<T> result = pattern.parse(text);
@@ -84,9 +85,13 @@ class _CompositePattern<T> implements IPartialPattern<T> {
     return IParseResult.noMatchingFormat<T>(ValueCursor(text));
   }
 
+  @override
   ParseResult<T> parsePartial(ValueCursor cursor) {
     int index = cursor.index;
-    for (IPartialPattern<T> pattern in _patterns) {
+    for (IPattern<T> pattern in _patterns) {
+      if (pattern is! IPartialPattern<T>) {
+        throw Exception('not a partial pattern');
+      }
       cursor.move(index);
       ParseResult<T> result = pattern.parsePartial(cursor);
       if (result.success || !IParseResult.continueAfterErrorWithMultipleFormats(result)) {
@@ -97,8 +102,10 @@ class _CompositePattern<T> implements IPartialPattern<T> {
     return IParseResult.noMatchingFormat<T>(cursor);
   }
 
+  @override
   String format(T value) => _findFormatPattern(value).format(value);
 
+  @override
   StringBuffer appendFormat(T value, StringBuffer builder) =>
       _findFormatPattern(value).appendFormat(value, builder);
 
@@ -108,6 +115,6 @@ class _CompositePattern<T> implements IPartialPattern<T> {
         return _patterns[i];
       }
     }
-    throw FormatException('Composite pattern was unable to format value using any of the provided patterns.');
+    throw const FormatException('Composite pattern was unable to format value using any of the provided patterns.');
   }
 }

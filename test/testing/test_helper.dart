@@ -7,14 +7,14 @@ import 'package:matcher/matcher.dart';
 import 'test_helper_interface.dart'
   if (dart.library.html) 'test_helper_without_mirrors.dart'
   if (dart.library.io) 'test_helper_with_mirrors.dart'
-as helpingMachine;
+as helping_machine;
 
-Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction;
-Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction;
-Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction;
+late Function<T>(T value, T equalValue, T unequalValue) testOperatorEqualityFunction;
+late Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonEqualityFunction;
+late Function<T>(T value, T equalValue, List<T> greaterValues) testOperatorComparisonFunction;
 
 void setFunctions() {
-  helpingMachine.setFunctions();
+  helping_machine.setFunctions();
 }
 
 /// Provides methods to help run tests for some of the system interfaces and object support.
@@ -132,7 +132,7 @@ abstract class TestHelper
   }
 
   /// Typically used to report a list of items (e.g. reflection members) that fail a condition, one per line.
-  static void AssertNoFailures<T>(Iterable<T> failures, String failureFormatter(T))
+  static void AssertNoFailures<T>(Iterable<T> failures, String Function(T) failureFormatter)
   {
     var failureList = failures.toList();
     if (failureList.isEmpty)
@@ -155,7 +155,7 @@ abstract class TestHelper
   /// Asserts that the given operation throws one of InvalidOperationException, ArgumentException (including
   /// ArgumentOutOfRangeException) or OverflowException. (It's hard to always be consistent bearing in mind
   /// one method calling another.)
-  static void AssertOverflow_Action(action())
+  static void AssertOverflow_Action(Function() action)
   {
     try
     {
@@ -173,6 +173,7 @@ abstract class TestHelper
       print(e);
     }
     catch (InvalidOperationException)
+    // ignore: empty_catches
     {
     }
   }
@@ -207,7 +208,7 @@ abstract class TestHelper
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [greaterValue]: The values greater than the base value, in ascending order.
-  static void TestCompareToClass<T extends Comparable<T>>(T value, T equalValue, List<T> greaterValues)
+  static void TestCompareToClass<T extends Comparable<T?>>(T value, T equalValue, List<T> greaterValues)
   {
     ValidateInput(value, equalValue, greaterValues, 'greaterValue');
     expect(value.compareTo(null) > 0, isTrue, reason: 'value.CompareTo<T>(null)');
@@ -317,7 +318,7 @@ abstract class TestHelper
   /// [value]: The base value.
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValue]: The value not equal to the base value.
-  static void TestObjectEquals(Object value, Object equalValue, List<Object> unequalValues) {
+  static void TestObjectEquals(dynamic? value, dynamic equalValue, List<dynamic> unequalValues) {
     ValidateInput(value, equalValue, unequalValues, 'unequalValue');
     expect(value == null, isFalse, reason: 'value.Equals(null)');
     expect(value == (value), isTrue, reason: 'value.Equals(value)');
@@ -336,7 +337,7 @@ abstract class TestHelper
   /// [equalValue]: The value equal to but not the same object as the base value.
   /// [unequalValues]: The values not equal to the base value.
   /// [unequalName]: The name to use in 'not equal value' error messages.
-  static void ValidateInput(Object value, Object equalValue, List unequalValues, String unequalName) {
+  static void ValidateInput(Object? value, dynamic equalValue, List unequalValues, String unequalName) {
     //Assert.NotNull(value, 'value cannot be null in TestObjectEquals() method');
     //Assert.NotNull(equalValue, 'equalValue cannot be null in TestObjectEquals() method');
     //Assert.AreNotSame(value, equalValue, 'value and equalValue MUST be different objects');

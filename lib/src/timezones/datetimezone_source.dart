@@ -38,14 +38,14 @@ abstract class DateTimeZoneSource {
   /// 'UTC+/-Offset'), but there is no requirement they be included.
   ///
   /// Returns: The IDs available from this source.
-  Future<Iterable<String>> getIds();
+  Future<Iterable<String>>? getIds();
 
   /// Returns an appropriate version ID for diagnostic purposes, which must not be null.
   ///
   /// This doesn't have any specific format; it's solely for diagnostic purposes.
   /// The included sources return strings of the format 'source identifier: source version' indicating where the
   /// information comes from and which version of the source information has been loaded.
-  final Future<String> versionId = null;
+  final Future<String>? versionId = null;
 
   /// Returns the time zone definition associated with the given ID.
   ///
@@ -67,13 +67,13 @@ abstract class DateTimeZoneSource {
   /// returned by [getIds].
   /// Returns: The [DateTimeZone] for the given ID.
   /// [ArgumentException]: [id] is not supported by this source.
-  Future<DateTimeZone> forId(String id);
+  Future<DateTimeZone>? forId(String id);
 
-  DateTimeZone forCachedId(String id);
+  DateTimeZone? forCachedId(String id);
 
   /// Returns this source's ID for the system default time zone.
   ///
   /// The ID for the system default time zone for this source,
   /// or null if the system default time zone has no mapping in this source.
-  String get systemDefaultId;
+  String? get systemDefaultId;
 }

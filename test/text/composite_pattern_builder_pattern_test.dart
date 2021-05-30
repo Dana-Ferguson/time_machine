@@ -17,10 +17,10 @@ Future main() async {
 
 // See https://github.com/nodatime/nodatime/issues/607
 @Test()
-@TestCase(const ['2017-02-23T16:40:50.123456789'])
-@TestCase(const ['2017-02-23T16:40:50.123'])
-@TestCase(const ['2017-02-23T16:40:50'])
-@TestCase(const ['2017-02-23T16:40'])
+@TestCase(['2017-02-23T16:40:50.123456789'])
+@TestCase(['2017-02-23T16:40:50.123'])
+@TestCase(['2017-02-23T16:40:50'])
+@TestCase(['2017-02-23T16:40'])
 void IsoPattern(String text) {
   // We assert that the text round-trips. If it does, it's
   // reasonable to assume it parsed correctly...

@@ -11,7 +11,7 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 @internal
 abstract class IDateTimeZoneProviders {
-  static void set defaultProvider(DateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
+  static set defaultProvider(DateTimeZoneProvider provider) => DateTimeZoneProviders._defaultProvider = provider;
 }
 
 
@@ -19,14 +19,14 @@ abstract class IDateTimeZoneProviders {
 abstract class DateTimeZoneProviders {
   // todo: await ... await ... patterns are so ick.
 
-  static Future<DateTimeZoneProvider> _tzdb;
+  static Future<DateTimeZoneProvider>? _tzdb;
 
   static Future<DateTimeZoneProvider> get tzdb => _tzdb ??= DateTimeZoneCache.getCache(TzdbDateTimeZoneSource());
 
-  static DateTimeZoneProvider _defaultProvider;
+  static DateTimeZoneProvider? _defaultProvider;
   /// This is the default [DateTimeZoneProvider] for the currently loaded TimeMachine.
   /// It will be used internally where-ever timezone support is needed when no provider is provided,
-  static DateTimeZoneProvider get defaultProvider => _defaultProvider;
+  static DateTimeZoneProvider? get defaultProvider => _defaultProvider;
 }
 
 @internal
@@ -62,16 +62,16 @@ class TzdbDateTimeZoneSource extends DateTimeZoneSource {
     }*/
   }
 
-  static TzdbIndex _cachedTzdbIndex;
+  static TzdbIndex? _cachedTzdbIndex;
   static final Future<TzdbIndex> _tzdbIndexAsync = _cachedTzdbIndex != null
       ? Future.value(_cachedTzdbIndex)
-      : _init().then((_) => _cachedTzdbIndex);
+      : _init().then((_) => _cachedTzdbIndex!);
 
   @override
   Future<DateTimeZone> forId(String id) async => (await _tzdbIndexAsync).getTimeZone(id);
 
   @override
-  DateTimeZone forCachedId(String id) => _cachedTzdbIndex.getTimeZoneSync(id);
+  DateTimeZone forCachedId(String id) => _cachedTzdbIndex!.getTimeZoneSync(id)!;
 
   @override
   Future<Iterable<String>> getIds() async => (await _tzdbIndexAsync).zoneIds;

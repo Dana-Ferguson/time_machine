@@ -19,11 +19,11 @@ import 'time_machine_testing.dart';
 // TODO: Fix all tests to use SingleTransitionZone.
 
 // Sample time zones for DateTimeZone.AtStartOfDay etc. I didn't want to only test midnight transitions.
-DateTimeZone LosAngeles;
-DateTimeZone NewZealand;
-DateTimeZone Paris;
-DateTimeZone NewYork;
-DateTimeZone Pacific;
+late DateTimeZone LosAngeles;
+late DateTimeZone NewZealand;
+late DateTimeZone Paris;
+late DateTimeZone NewYork;
+late DateTimeZone Pacific;
 
 Future main() async {
   await TimeMachine.initialize();
@@ -113,7 +113,7 @@ void UnambiguousStartOfDay()
   expect(expected, LocalDate(2000, 3, 1).atStartOfDayInZone(TransitionForwardAtMidnightZone));
 }
 
-T captureVM<T extends Error>(action()) {
+T? captureVM<T extends Error>(Function() action) {
   try {
     action();
   } on T catch (error) {
@@ -124,7 +124,7 @@ T captureVM<T extends Error>(action()) {
 }
 
 // DartWeb fails to reify generic types (see above) -- so, type erasure does have its own power.
-Object capture(action()) {
+Object? capture(Function() action) {
   try {
     action();
   } catch (error) {
@@ -140,17 +140,17 @@ void AssertImpossible(LocalDateTime localTime, DateTimeZone zone)
   expect(0, mapping.count);
 
   SkippedTimeError e; // = Assert.Throws<SkippedTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.single()), TypeMatcher<SkippedTimeError>());
+  expect(e = (capture(() => mapping.single())) as SkippedTimeError, const TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.First());
-  expect(e = capture(() => mapping.first()), TypeMatcher<SkippedTimeError>());
+  expect(e = (capture(() => mapping.first())) as SkippedTimeError, const TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 
   // e = Assert.Throws<SkippedTimeException>(() => mapping.Last());
-  expect(e = capture(() => mapping.last()), TypeMatcher<SkippedTimeError>());
+  expect(e = (capture(() => mapping.last())) as SkippedTimeError, const TypeMatcher<SkippedTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.zone);
 }
@@ -166,7 +166,7 @@ void AssertAmbiguous(LocalDateTime localTime, DateTimeZone zone)
   var mapping = zone.mapLocal(localTime);
   expect(2, mapping.count);
   AmbiguousTimeError e; // = Assert.Throws<AmbiguousTimeException>(() => mapping.Single());
-  expect(e = capture(() => mapping.single()), TypeMatcher<AmbiguousTimeError>());
+  expect(e = (capture(() => mapping.single())) as AmbiguousTimeError, const TypeMatcher<AmbiguousTimeError>());
   expect(localTime, e.localDateTime);
   expect(zone, e.Zone);
   expect(earlier, e.earlierMapping);
@@ -300,16 +300,16 @@ void MapLocalDateTime_SkippedDateReturnsSkippedMapping()
 // skipped December 30th 2011, going from  23:59:59 December 29th local time UTC-10
 // to 00:00:00 December 31st local time UTC+14
 @Test()
-@TestCase(const ['Pacific/Apia', "2011-12-30"])
-@TestCase(const ['Pacific/Enderbury', "1994-12-31"])
-@TestCase(const ['Pacific/Kiritimati', "1994-12-31"])
-@TestCase(const ['Pacific/Kwajalein', "1993-08-21"])
+@TestCase(['Pacific/Apia', "2011-12-30"])
+@TestCase(['Pacific/Enderbury', "1994-12-31"])
+@TestCase(['Pacific/Kiritimati', "1994-12-31"])
+@TestCase(['Pacific/Kwajalein', "1993-08-21"])
 Future AtStartOfDay_DayDoesntExist(String zoneId, String localDate) async
 {
   LocalDate badDate = LocalDatePattern.iso.parse(localDate).value;
   DateTimeZone zone = await (await DateTimeZoneProviders.tzdb)[zoneId];
   SkippedTimeError exception; //  = Assert.Throws<SkippedTimeException>(() => zone.AtStartOfDay(badDate));
-  expect(exception = capture(() => ZonedDateTime.atStartOfDay(badDate, zone)), TypeMatcher<SkippedTimeError>());
+  expect(exception = (capture(() => ZonedDateTime.atStartOfDay(badDate, zone))) as SkippedTimeError, const TypeMatcher<SkippedTimeError>());
   expect(badDate.at(LocalTime.midnight), exception.localDateTime);
 }
 

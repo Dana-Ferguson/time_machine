@@ -7,8 +7,7 @@ abstract class NameIdMappingSupport
   /// The unit test for this member checks that the system we're running on doesn't
   /// introduce any new or different mappings, but allows this mapping to be a superset
   /// of the detected one.
-  static const Map<String, String> StandardNameToIdMap = const
-  {
+  static const Map<String, String> StandardNameToIdMap = {
       'Coordinated Universal Time': "UTC",
       'Co-ordinated Universal Time': "UTC",
       'Jerusalem Standard Time': "Israel Standard Time",

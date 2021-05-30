@@ -46,7 +46,7 @@ class TzdbZone1970Location {
   /// This will return an empty string if no comment was provided in the original data.
   final String comment;
 
-  TzdbZone1970Location._(this.comment, this.countries, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
+  const TzdbZone1970Location._(this.comment, this.countries, this._latitudeSeconds, this._longitudeSeconds, this.zoneId);
 
   /// Creates a new location.
   ///
@@ -60,15 +60,15 @@ class TzdbZone1970Location {
   /// [zoneId]: Time zone identifier of the location. Must not be null.
   /// [comment]: Optional comment. Must not be null, but may be empty.
   /// [ArgumentOutOfRangeException]: The latitude or longitude is invalid.
-  factory TzdbZone1970Location(int latitudeSeconds, int longitudeSeconds,  List<TzdbZone1970LocationCountry> countries,  String zoneId, String comment) {
+  factory TzdbZone1970Location(int latitudeSeconds, int longitudeSeconds,  List<TzdbZone1970LocationCountry?>? countries,  String zoneId, String comment) {
     Preconditions.checkArgumentRange('latitudeSeconds', latitudeSeconds, -90 * 3600, 90 * 3600);
     Preconditions.checkArgumentRange('longitudeSeconds', longitudeSeconds, -180 * 3600, 180 * 3600);
 
     var Countries = List<TzdbZone1970LocationCountry>.unmodifiable(Preconditions.checkNotNull(countries, 'countries'));
-    Preconditions.checkArgument(Countries.length > 0, 'countries', "Collection must contain at least one entry");
-    for (var entry in Countries) {
-      Preconditions.checkArgument(entry != null, 'countries', "Collection must not contain null entries");
-    }
+    Preconditions.checkArgument(Countries.isNotEmpty, 'countries', "Collection must contain at least one entry");
+    // for (var entry in Countries) {
+    //   Preconditions.checkArgument(entry != null, 'countries', "Collection must not contain null entries");
+    // }
     var ZoneId = Preconditions.checkNotNull(zoneId, 'zoneId');
     var Comment = Preconditions.checkNotNull(comment, 'comment');
 
@@ -98,7 +98,7 @@ class TzdbZone1970Location {
     int latitudeSeconds = reader.readInt32();
     int longitudeSeconds = reader.readInt32();
     int countryCount = reader.read7BitEncodedInt();
-    var countries = List<TzdbZone1970LocationCountry>();
+    var countries = <TzdbZone1970LocationCountry>[];
     for (int i = 0; i < countryCount; i++)
     {
       String countryName = reader.readString();
@@ -137,7 +137,7 @@ class TzdbZone1970LocationCountry {
   TzdbZone1970LocationCountry(this.name, this.code) {
     Preconditions.checkNotNull(name, 'name');
     Preconditions.checkNotNull(code, 'code');
-    Preconditions.checkArgument(name.length > 0, 'name', "Country name cannot be empty");
+    Preconditions.checkArgument(name.isNotEmpty, 'name', "Country name cannot be empty");
     Preconditions.checkArgument(code.length == 2, 'code', "Country code must be two characters");
   }
 
@@ -145,9 +145,9 @@ class TzdbZone1970LocationCountry {
   ///
   /// [other]: The country to compare with this one.
   /// Returns: `true` if the given country has the same name and code as this one; `false` otherwise.
-  bool equals(TzdbZone1970LocationCountry other) => other != null && other.code == code && other.name == name;
+  bool equals(TzdbZone1970LocationCountry other) => other.code == code && other.name == name;
 
-  @override operator==(dynamic other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
+  @override bool operator==(Object other) => other is TzdbZone1970LocationCountry && other.code == code && other.name == name;
 
   /// Returns a hash code for this country.
   @override int get hashCode => hash2(name, code);

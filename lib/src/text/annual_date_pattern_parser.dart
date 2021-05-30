@@ -26,9 +26,10 @@ class AnnualDatePatternParser implements IPatternParser<AnnualDate> {
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<AnnualDate> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in AnnualDatePattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -101,7 +102,7 @@ class AnnualDateParseBucket extends ParseBucket<AnnualDate> {
 
   // PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText
   // static final PatternFields monthOfYearNumeric_booleanOR_monthOfYearText = new PatternFields(_value)
-  ParseResult<AnnualDate> _determineMonth(PatternFields usedFields, String text) {
+  ParseResult<AnnualDate>? _determineMonth(PatternFields usedFields, String text) {
     var x = usedFields & (PatternFields.monthOfYearNumeric | PatternFields.monthOfYearText);
     if (x == PatternFields.monthOfYearNumeric) {
     // No-op

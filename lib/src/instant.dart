@@ -42,7 +42,7 @@ class Instant implements Comparable<Instant> {
   /// This value is equivalent to 9999-12-31T23:59:59.999999999Z
   static final Instant maxValue = Instant._trusted(Time(days: IInstant.maxDays, nanoseconds: TimeConstants.nanosecondsPerDay - 1));
 
-  static const Instant unixEpoch = const Instant._trusted(Time.zero);
+  static const Instant unixEpoch = Instant._trusted(Time.zero);
 
   final Time timeSinceEpoch;
 
@@ -97,14 +97,15 @@ class Instant implements Comparable<Instant> {
     return Instant._trusted(Time(milliseconds: dateTime.millisecondsSinceEpoch));
   }
 
+  @override
   int compareTo(Instant other) => timeSinceEpoch.compareTo(other.timeSinceEpoch);
   @wasInternal bool get isValid => this >= minValue && this <= maxValue;
 
   @override int get hashCode => timeSinceEpoch.hashCode;
-  @override bool operator==(dynamic other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
+  @override bool operator==(Object other) => other is Instant && timeSinceEpoch == other.timeSinceEpoch;
 
-  Instant operator+(Time time) => this.add(time);
-  Instant operator-(Time time) => this.subtract(time);
+  Instant operator+(Time time) => add(time);
+  Instant operator-(Time time) => subtract(time);
   Instant add(Time time) => Instant.epochTime(timeSinceEpoch + time);
   Instant subtract(Time time) => Instant.epochTime(timeSinceEpoch - time);
 
@@ -167,11 +168,11 @@ class Instant implements Comparable<Instant> {
   static Time difference(Instant start, Instant end) => start.timeSince(end);
 
   // @override toString() => TextShim.toStringInstant(this); // '${_span.totalSeconds} seconds since epoch.';
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
   // On Dart2: this is still required, but I can't reproduce a minimal test case -- I am lost.
-  @ddcSupportHack String toStringDDC([String patternText, Culture culture]) =>
+  @ddcSupportHack String toStringDDC([String? patternText, Culture? culture]) =>
       InstantPatterns.format(this, patternText, culture);
 
   double toJulianDate() => (TimeConstants.julianEpoch.timeUntil(this)).totalDays;
@@ -226,14 +227,14 @@ class Instant implements Comparable<Instant> {
     return IZonedDateTime.trusted(offsetDateTime, DateTimeZone.utc);
   }
 
-  ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem calendar]) =>
+  ZonedDateTime inZone(DateTimeZone zone, [CalendarSystem? calendar]) =>
       // zone is checked for nullity by the constructor.
       // constructor also checks and corrects for calendar being null
     ZonedDateTime(this, zone, calendar);
 
   // todo: get the correct calendar for the local timezone / culture
   /// Get the [ZonedDateTime] that corresponds to this [Instant] within in the zone [DateTimeZone.local].
-  ZonedDateTime inLocalZone([CalendarSystem calendar]) => ZonedDateTime(this, DateTimeZone.local, calendar);
+  ZonedDateTime inLocalZone([CalendarSystem? calendar]) => ZonedDateTime(this, DateTimeZone.local, calendar);
 
-  OffsetDateTime withOffset(Offset offset, [CalendarSystem calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
+  OffsetDateTime withOffset(Offset offset, [CalendarSystem? calendar]) => IOffsetDateTime.fromInstant(this, offset, calendar);
 }

@@ -6,7 +6,10 @@ import 'test_helper.dart';
 
 void setFunctions() {
   print('TEST OPERATOR FUNCTIONS NOT SET!');
-  testOperatorComparisonFunction = null;
-  testOperatorComparisonEqualityFunction = null;
-  testOperatorEqualityFunction = null;
+  testOperatorComparisonFunction =
+      <T>(T value, T equalValue, List<T> greaterValues) => null;
+  testOperatorComparisonEqualityFunction =
+      <T>(T value, T equalValue, List<T> greaterValues) => null;
+  testOperatorEqualityFunction =
+      <T>(T value, T equalValue, T unequalValue) => null;
 }

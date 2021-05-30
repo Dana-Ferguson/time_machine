@@ -40,13 +40,13 @@ class IslamicYearMonthDayCalculator extends RegularYearMonthDayCalculator {
   /// The pattern of leap years within a cycle, one bit per year, for this calendar.
   final int _leapYearPatternBits;
 
-  static const List<int> _totalDaysByMonth = const [0, 30, 59, 89, 118, 148, 177, 207, 236, 266, 295, 325];
+  static const List<int> _totalDaysByMonth = [0, 30, 59, 89, 118, 148, 177, 207, 236, 266, 295, 325];
 
   // This generates _totalDaysByMonth, but I'd rather this code get tree-shaken out.
   // ignore: unused_element
   static List<int> _genTotalDaysByMonth() {
     int days = 0;
-    var totalDaysByMonth = List<int>();
+    var totalDaysByMonth = <int>[];
     for (int i = 0; i < 12; i++) {
       // _totalDaysByMonth[i] = days;
       totalDaysByMonth.add(days);

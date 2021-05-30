@@ -9,7 +9,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @internal
 abstract class TimePatterns {
   static final TimePattern roundtripPatternImpl = TimePattern.createWithInvariantCulture('-D:hh:mm:ss.FFFFFFFFF');
-  static String format(Time time, String patternText, Culture culture) =>
+  static String format(Time time, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
         .getInstance(culture)
         .timePatternParser
@@ -29,7 +29,7 @@ class TimePattern implements IPattern<Time> {
   /// Gets the pattern text for this pattern, as supplied on creation.
   final String patternText;
 
-  TimePattern._(this.patternText, this._pattern);
+  const TimePattern._(this.patternText, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -39,6 +39,7 @@ class TimePattern implements IPattern<Time> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<Time> parse(String text) => _pattern.parse(text);
 
   /// Formats the given Span as text according to the rules of this pattern.
@@ -46,6 +47,7 @@ class TimePattern implements IPattern<Time> {
   /// * [value]: The Span to format.
   ///
   /// Returns: The Span formatted according to this pattern.
+  @override
   String format(Time value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -55,6 +57,7 @@ class TimePattern implements IPattern<Time> {
   /// * [builder]: The [StringBuffer] to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(Time value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   // todo: should this be internal, or should all the other *_pattern classes creates' be private

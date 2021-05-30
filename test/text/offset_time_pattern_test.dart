@@ -192,8 +192,8 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
     expect(Offset.hours(2), parsed.offset);
   }
 
-  @Test()
-  void ParseNull() => AssertParseNull(OffsetTimePattern.extendedIso);
+  // @Test()
+  // void ParseNull() => AssertParseNull(OffsetTimePattern.extendedIso);
 }
 
 @internal /*sealed*/class Data extends PatternTestData<OffsetTime> {
@@ -203,7 +203,7 @@ class OffsetTimePatternTest extends PatternTestBase<OffsetTime> {
   /// Initializes a new instance of the [Data] class.
   ///
   /// [value]: The value.
-  @internal Data([OffsetTime value]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
+  @internal Data([OffsetTime? value]) : super(value ?? OffsetTimePatterns.defaultTemplateValue);
 
   @internal Data.a(int hour, int minute, Offset offset) : this.c(hour, minute, 0, offset);
 

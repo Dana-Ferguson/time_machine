@@ -14,9 +14,7 @@ abstract class RegularYearMonthDayCalculator extends YearMonthDayCalculator {
   RegularYearMonthDayCalculator(int minYear, int maxYear, int monthsInYear,
       int averageDaysPer10Years, int daysAtStartOfYear1)
       : _monthsInYear = monthsInYear,
-        super(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1) {
-
-  }
+        super(minYear, maxYear, averageDaysPer10Years, daysAtStartOfYear1);
 
   @override int getMonthsInYear(int year) => _monthsInYear;
 

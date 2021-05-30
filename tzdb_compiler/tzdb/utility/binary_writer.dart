@@ -14,7 +14,7 @@ class MemoryStream implements io.IOSink {
 
   int get length => buffer.length;
   int get position => _position;
-  void set position(int value) {
+  set position(int value) {
     _position = value;
     buffer.length = _position;
   }
@@ -24,7 +24,7 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  Encoding encoding;
+  late Encoding encoding;
 
   @override
   void add(List<int> data) {
@@ -37,7 +37,7 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  void addError(Object error, [StackTrace stackTrace]) {
+  void addError(Object error, [StackTrace? stackTrace]) {
     throw Exception('$error :: $stackTrace');
   }
 
@@ -47,20 +47,16 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  Future close() {
-    return null;
-  }
+  Future close() async => null;
 
   @override
-  Future get done => null;
+  Future get done async => null;
 
   @override
-  Future flush() {
-    return null;
-  }
+  Future flush() async => null;
 
   @override
-  void write(Object obj) {
+  void write(Object? obj) {
     throw Exception('not implemented');
   }
 
@@ -75,7 +71,7 @@ class MemoryStream implements io.IOSink {
   }
 
   @override
-  void writeln([Object obj = '']) {
+  void writeln([Object? obj = '']) {
     throw Exception('not implemented');
   }
 }
@@ -87,9 +83,9 @@ class BinaryWriter {
 
   final ByteData _binary0 = ByteData(_bufferSize);
   final ByteData _binary1 = ByteData(_bufferSize);
-  ByteData _binary;
-  int _offset;
-  int _bank;
+  late ByteData _binary;
+  late int _offset;
+  late int _bank;
 
   final io.IOSink _sink;
 
@@ -98,6 +94,7 @@ class BinaryWriter {
   BinaryWriter(this._sink) {
     _binary = _binary0;
     _bank = 0;
+    // _offset = 0 ???
   }
 
   factory BinaryWriter.fromFile(String path) {

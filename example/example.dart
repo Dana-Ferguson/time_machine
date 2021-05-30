@@ -26,7 +26,7 @@ Future main() async {
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm')}');
     print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm')}\n');
 
-    var french = await Cultures.getCulture('fr-FR');
+    var french = (await Cultures.getCulture('fr-FR'))!;
     print('Formatted and French ($french)');
     print('UTC Time: ${now.toString('dddd yyyy-MM-dd HH:mm', french)}');
     print('Local Time: ${now.inLocalZone().toString('dddd yyyy-MM-dd HH:mm', french)}\n');

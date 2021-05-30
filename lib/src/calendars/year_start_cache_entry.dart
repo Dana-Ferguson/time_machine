@@ -47,7 +47,7 @@ class YearStartCacheEntryVM {
 
   /// Entry which is guaranteed to be obviously invalid for any real date, by having
   /// a validation value which is larger than any valid year number.
-  static final YearStartCacheEntry _invalid = YearStartCacheEntry(invalidEntryYear, 0);
+  // static final YearStartCacheEntry _invalid = YearStartCacheEntry(invalidEntryYear, 0);
 
   /// Entry value: most significant 25 bits are the number of days (e.g. since the Unix epoch); remaining 7 bits are
   /// the validator.
@@ -57,11 +57,7 @@ class YearStartCacheEntryVM {
   YearStartCacheEntryVM(int year, int days) : _value = (days << _entryValidationBits) | _getValidator(year);
 
   static List<YearStartCacheEntry> createCache() {
-    List<YearStartCacheEntry> cache = List<YearStartCacheEntry>(_cacheSize);
-    for (int i = 0; i < cache.length; i++) {
-      cache[i] = YearStartCacheEntry._invalid;
-    }
-    return cache;
+    return List<YearStartCacheEntry>.filled(_cacheSize, YearStartCacheEntry._invalid);
   }
 
   /// Returns the validator to use for a given year, a non-negative number containing at most
@@ -90,7 +86,7 @@ class YearStartCacheEntryVM {
 class YearStartCacheEntry {
   static const int _cacheIndexBits = 10;
   static const int _cacheIndexMask = 1023; // _cacheSize - 1;
-  static const int _entryValidationBits = 7;
+  // static const int _entryValidationBits = 7;
   static const int _entryValidationMask = 127; // (1 << _entryValidationBits) - 1;
 
   static const int _cacheSize = 1024; // 1 << _cacheIndexBits;
@@ -113,11 +109,7 @@ class YearStartCacheEntry {
   YearStartCacheEntry(this.year, this.days);
 
   static List<YearStartCacheEntry> createCache() {
-    List<YearStartCacheEntry> cache = List<YearStartCacheEntry>(_cacheSize);
-    for (int i = 0; i < cache.length; i++) {
-      cache[i] = YearStartCacheEntry._invalid;
-    }
-    return cache;
+    return List<YearStartCacheEntry>.filled(_cacheSize, YearStartCacheEntry._invalid);
   }
 
   /// Returns the validator to use for a given year, a non-negative number containing at most

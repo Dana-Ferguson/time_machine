@@ -50,7 +50,7 @@ class ValueCursor extends TextCursor {
 
   /// Attempts to match the specified string with the current point in the string in a case-insensitive
   /// manner, according to the given comparison info. The cursor is optionally updated to the end of the match.
-  bool matchCaseInsensitive(String match, CompareInfo compareInfo, bool moveOnSuccess) {
+  bool matchCaseInsensitive(String match, CompareInfo? compareInfo, bool moveOnSuccess) {
     if (match.length > value.length - index) {
       return false;
     }
@@ -190,7 +190,7 @@ class ValueCursor extends TextCursor {
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  int parseInt64Digits(int minimumDigits, int maximumDigits) {
+  int? parseInt64Digits(int minimumDigits, int maximumDigits) {
     int result = 0;
     int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
@@ -223,7 +223,7 @@ class ValueCursor extends TextCursor {
   /// [result]: The result integer value. The value of this is not guaranteed
   /// to be anything specific if the return value is false.
   /// Returns: `true` if the digits were parsed.
-  int parseDigits(int minimumDigits, int maximumDigits) {
+  int? parseDigits(int minimumDigits, int maximumDigits) {
     int result = 0;
     int localIndex = index;
     int maxIndex = localIndex + maximumDigits;
@@ -255,7 +255,7 @@ class ValueCursor extends TextCursor {
   /// to be anything specific if the return value is false.
   /// [minimumDigits]: The minimum number of digits that must be specified in the value.
   /// Returns: `true` if the digits were parsed.
-  int parseFraction(int maximumDigits, int scale, int minimumDigits) {
+  int? parseFraction(int maximumDigits, int scale, int minimumDigits) {
     Preconditions.debugCheckArgument(maximumDigits <= scale, 'maximumDigits',
         'Must not allow more maximum digits than scale');
 

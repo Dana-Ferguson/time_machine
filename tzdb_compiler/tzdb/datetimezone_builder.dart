@@ -3,7 +3,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 import 'zone_rule_set.dart';
 import 'zone_transition.dart';
 
-T lastOrDefault<T>(Iterable<T> iterable) {
+T? lastOrDefault<T>(Iterable<T> iterable) {
   if (iterable.isEmpty) return null;
   return iterable.last;
 }
@@ -14,14 +14,14 @@ T lastOrDefault<T>(Iterable<T> iterable) {
 class DateTimeZoneBuilder
 {
   final List<ZoneInterval> _zoneIntervals = [];
-  StandardDaylightAlternatingMap _tailZone;
+  StandardDaylightAlternatingMap? _tailZone;
 
   DateTimeZoneBuilder._();
 
   /// Builds a time zone with the given ID from a sequence of rule sets.
   static DateTimeZone build(String id, List<ZoneRuleSet> ruleSets)
   {
-    Preconditions.checkArgument(ruleSets.length > 0, 'ruleSets', 'Cannot create a time zone without any Zone entries');
+    Preconditions.checkArgument(ruleSets.isNotEmpty, 'ruleSets', 'Cannot create a time zone without any Zone entries');
     var builder = DateTimeZoneBuilder._();
     return builder._buildZone(id, ruleSets);
   }
@@ -132,7 +132,7 @@ class DateTimeZoneBuilder
     // Main loop - we keep going round until we run out of rules or hit infinity, each of which
     // corresponds with a return statement in the loop.
     while (true) {
-      ZoneTransition bestTransition;
+      ZoneTransition? bestTransition;
       for (int i = 0; i < activeRules.length; i++) {
         var rule = activeRules[i];
         var nextTransition = rule.next(previousTransition.instant, standardOffset, previousTransition.savings);
@@ -224,7 +224,7 @@ class DateTimeZoneBuilder
           current.wallOffset == next.wallOffset &&
           current.standardOffset == next.standardOffset)
       {
-        _zoneIntervals[i] = IZoneInterval.withEnd(current, IZoneInterval.rawEnd(next));
+        _zoneIntervals[i] = IZoneInterval.withEnd(current, IZoneInterval.rawEnd(next))!;
         _zoneIntervals.removeAt(i + 1);
         i--; // We may need to coalesce the next one, too.
       }

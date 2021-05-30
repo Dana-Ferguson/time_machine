@@ -19,7 +19,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 @interface
 abstract class DateTimeZoneProvider {
   /// Gets the version ID of this provider.
-  final String versionId = null;
+  late final String? versionId;
 
   /// Gets the list of valid time zone ids advertised by this provider.
   ///
@@ -29,7 +29,7 @@ abstract class DateTimeZoneProvider {
   ///
   /// In addition to the list returned here, providers always support the fixed-offset timezones with IDs 'UTC'
   /// and 'UTC+/-Offset'. These may or may not be included explicitly in this list.
-  final List<String> ids = null;
+  late final List<String> ids;
 
   /// Gets the time zone from this provider that matches the system default time zone, if a matching time zone is
   /// available.
@@ -60,7 +60,7 @@ abstract class DateTimeZoneProvider {
   /// The fixed-offset timezones with IDs 'UTC' and "UTC+/-Offset" are always available.
   ///
   /// [id]: The time zone ID to find.
-  Future<DateTimeZone> getZoneOrNull(String id);
+  Future<DateTimeZone?> getZoneOrNull(String id);
 
   /// Returns the time zone for the given ID.
   ///

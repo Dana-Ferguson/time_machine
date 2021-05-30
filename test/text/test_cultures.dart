@@ -54,7 +54,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
   @internal static final Culture Invariant = Culture.invariant;
 
-  static Culture getCulture(String id) {
+  static Culture? getCulture(String id) {
     switch (id) {
       case 'en-US': return EnUs;
       case 'fr-FR': return FrFr;

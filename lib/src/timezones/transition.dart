@@ -17,7 +17,7 @@ class Transition {
   /// The offset from the time when this transition occurs until the next transition.
   final Offset newOffset;
 
-  Transition(this.instant, this.newOffset);
+  const Transition(this.instant, this.newOffset);
 
   bool equals(Transition other) => instant == other.instant && newOffset == other.newOffset;
 
@@ -26,7 +26,8 @@ class Transition {
   /// [left]: The left hand side of the operator.
   /// [right]: The right hand side of the operator.
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is Transition && equals(right);
+  @override
+  bool operator ==(Object right) => right is Transition && equals(right);
 
   /// Returns a hash code for this instance.
   ///

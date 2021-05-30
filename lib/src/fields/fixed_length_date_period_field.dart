@@ -14,8 +14,9 @@ import 'package:time_machine/src/fields/time_machine_fields.dart';
 class FixedLengthDatePeriodField implements IDatePeriodField {
   final int _unitDays;
 
-  FixedLengthDatePeriodField(this._unitDays);
-
+  const FixedLengthDatePeriodField(this._unitDays);
+  
+  @override
   LocalDate add(LocalDate localDate, int value) {
     if (value == 0) {
       return localDate;
@@ -60,6 +61,7 @@ class FixedLengthDatePeriodField implements IDatePeriodField {
     return LocalDate.fromEpochDay(days, calendar);
   }
 
+  @override
   int unitsBetween(LocalDate start, LocalDate end) =>
       IPeriod.daysBetween(start, end) ~/ _unitDays;
 }

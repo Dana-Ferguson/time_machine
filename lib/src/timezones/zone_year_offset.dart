@@ -94,9 +94,6 @@ class ZoneYearOffset {
   ///
   /// true if the current object is equal to the [other] parameter; otherwise, false.
   bool equals(ZoneYearOffset other) {
-    if (null == other) {
-      return false;
-    }
     if (identical(this, other)) {
       return true;
     }
@@ -109,7 +106,8 @@ class ZoneYearOffset {
         _addDay == other._addDay;
   }
 
-  bool operator==(dynamic other) => other is ZoneYearOffset && equals(other);
+  @override
+  bool operator==(Object other) => other is ZoneYearOffset && equals(other);
 
   // todo: timeOfDay:{5:r} <-- recreate the format?
   @override String toString() =>

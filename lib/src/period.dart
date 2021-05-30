@@ -17,7 +17,7 @@ class _DateComponentsBetweenResult {
   final int weeks;
   final int days;
 
-  _DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
+  const _DateComponentsBetweenResult(this.date, this.years, this.months, this.weeks, this.days);
 }
 
 // @private static void TimeComponentsBetween(int totalNanoseconds, PeriodUnits units,
@@ -31,7 +31,7 @@ class _TimeComponentsBetweenResult {
   final int microseconds;
   final int nanoseconds;
 
-  _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
+  const _TimeComponentsBetweenResult(this.hours, this.minutes, this.seconds, this.milliseconds, this.microseconds, this.nanoseconds);
 }
 
 @internal
@@ -78,7 +78,7 @@ class Period {
   // but without the hit of having to catch the exception...
 
   /// A period containing only zero-valued properties.
-  static const Period zero = const Period();
+  static const Period zero = Period();
 
 
   /// Returns an equality comparer which compares periods by first normalizing them - so 24 hours is deemed equal to 1 day, and so on.
@@ -502,7 +502,7 @@ class Period {
     return LocalDateTime.localDateAtTime(date.addDays(calc.extraDays), calc.localTime);
   }
 
-  static Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
+  static final Map<PeriodUnits, Period Function(LocalDate, LocalDate)> _functionMapBetweenDates = {
     PeriodUnits.years: (start, end) => Period(years: DatePeriodFields.yearsField.unitsBetween(start, end)),
     PeriodUnits.months: (start, end) => Period(months: DatePeriodFields.monthsField.unitsBetween(start, end)),
     PeriodUnits.weeks: (start, end) => Period(weeks: DatePeriodFields.weeksField.unitsBetween(start, end)),
@@ -545,7 +545,7 @@ class Period {
     return Period(years: result.years, months: result.months, weeks: result.weeks, days: result.days);
   }
 
-  static Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
+  static final Map<PeriodUnits, Period Function(int)> _functionMapBetweenTimes = {
     PeriodUnits.hours: (remaining) => Period(hours: remaining ~/ TimeConstants.nanosecondsPerHour),
     PeriodUnits.minutes: (remaining) => Period(minutes: remaining ~/ TimeConstants.nanosecondsPerMinute),
     PeriodUnits.seconds: (remaining) => Period(seconds: remaining ~/ TimeConstants.nanosecondsPerSecond),
@@ -677,7 +677,7 @@ class Period {
   Period normalize() {
     // Simplest way to normalize: grab all the fields up to 'week' and
     // sum them.
-    int totalNanoseconds = this._totalNanoseconds;
+    int totalNanoseconds = _totalNanoseconds;
     int days = (totalNanoseconds ~/ TimeConstants.nanosecondsPerDay);
 
     int hours, minutes, seconds, milliseconds, nanoseconds;
@@ -697,8 +697,8 @@ class Period {
       nanoseconds = arithmeticMod(totalNanoseconds, TimeConstants.nanosecondsPerMillisecond);
     }
 
-    return Period(years: this.years,
-        months: this.months,
+    return Period(years: years,
+        months: months,
         weeks: 0 /* weeks */,
         days: days,
         hours: hours,
@@ -723,7 +723,6 @@ class Period {
   /// [other]: The period to compare this one with.
   /// Returns: True if this period has the same values for the same properties as the one specified.
   bool equals(Period other) =>
-      other != null &&
           years == other.years &&
           months == other.months &&
           weeks == other.weeks &&
@@ -735,7 +734,8 @@ class Period {
           microseconds == other.microseconds &&
           nanoseconds == other.nanoseconds;
 
-  bool operator==(dynamic other) => other is Period && equals(other);
+  @override
+  bool operator==(Object other) => other is Period && equals(other);
 }
 
 // todo: why is this private, it's used in period_tests?
@@ -743,15 +743,11 @@ class Period {
 @private class NormalizingPeriodEqualityComparer {
   @internal static final NormalizingPeriodEqualityComparer instance = NormalizingPeriodEqualityComparer._();
 
-  NormalizingPeriodEqualityComparer._() {
-  }
+  NormalizingPeriodEqualityComparer._();
 
   bool equals(Period x, Period y) {
     if (identical(x, y)) {
       return true;
-    }
-    if (x == null || y == null) {
-      return false;
     }
     return x.normalize().equals(y.normalize());
   }
@@ -770,7 +766,7 @@ class _PeriodComparer // implements Comparer<Period>
 
   _PeriodComparer(this._baseDateTime);
 
-  int compare(Period x, Period y) {
+  int compare(Period? x, Period? y) {
     if (identical(x, y)) {
       return 0;
     }

@@ -17,7 +17,7 @@ Future main() async {
 
 @Test()
 class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
-  @internal final List<Data> InvalidPatternData = [ null];
+  @internal final List<Data?> InvalidPatternData = [ null];
 
   @internal List<Data> ParseFailureData = [
     Data()
@@ -142,9 +142,9 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
       ..text = 'PT1H-1M',
 
     // Max/min
-    Data(Period(hours: Platform.int64MaxValue))
+    Data(const Period(hours: Platform.int64MaxValue))
       ..text = 'PT9223372036854775807H',
-    Data(Period(hours: Platform.int64MinValue))
+    Data(const Period(hours: Platform.int64MinValue))
       ..text = 'PT-9223372036854775808H',
   ];
 
@@ -152,7 +152,7 @@ class PeriodPatternRoundtripTest extends PatternTestBase<Period> {
 
   @internal Iterable<Data> get FormatData => [FormatOnlyData, FormatAndParseData].expand((x) => x);
 
-  @Test()
-  void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);
+  // @Test()
+  // void ParseNull() => AssertParseNull(PeriodPattern.roundtrip);
 }
 

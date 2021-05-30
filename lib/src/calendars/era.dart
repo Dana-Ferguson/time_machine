@@ -16,25 +16,25 @@ abstract class IEra {
 @immutable
 class Era {
   /// The 'Common' era (CE), also known as Anno Domini (AD). This is used in the ISO, Gregorian and Julian calendars.
-  static const Era common = const Era._('CE', "Eras_Common");
+  static const Era common = Era._('CE', "Eras_Common");
 
   /// The 'before common' era (BCE), also known as Before Christ (BC). This is used in the ISO, Gregorian and Julian calendars.
-  static const Era beforeCommon = const Era._('BCE', "Eras_BeforeCommon");
+  static const Era beforeCommon = Era._('BCE', "Eras_BeforeCommon");
 
   /// The 'Anno Martyrum' or "Era of the Martyrs". This is the sole era used in the Coptic calendar.
-  static const Era annoMartyrum = const Era._('AM', "Eras_AnnoMartyrum");
+  static const Era annoMartyrum = Era._('AM', "Eras_AnnoMartyrum");
 
   /// The 'Anno Hegira' era. This is the sole era used in the Hijri (Islamic) calendar.
-  static const Era annoHegirae = const Era._('EH', "Eras_AnnoHegirae");
+  static const Era annoHegirae = Era._('EH', "Eras_AnnoHegirae");
 
   /// The 'Anno Mundi' era. This is the sole era used in the Hebrew calendar.
-  static const Era annoMundi = const Era._('AM', "Eras_AnnoMundi");
+  static const Era annoMundi = Era._('AM', "Eras_AnnoMundi");
 
   /// The 'Anno Persico' era. This is the sole era used in the Persian calendar.
-  static const Era annoPersico = const Era._('AP', "Eras_AnnoPersico");
+  static const Era annoPersico = Era._('AP', "Eras_AnnoPersico");
 
   /// The "Bahá'í" era. This is the sole era used in the Wondrous calendar.
-  static const Era bahai = const Era._('BE', "Eras_Bahai");
+  static const Era bahai = Era._('BE', "Eras_Bahai");
 
   final String _resourceIdentifier;
 

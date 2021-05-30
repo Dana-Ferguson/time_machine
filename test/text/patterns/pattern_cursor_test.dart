@@ -25,8 +25,8 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const [r"'abc\"], "Escape at end")
-  @TestCase(const ["'abc"], "Missing close quote")
+  @TestCase([r"'abc\"], "Escape at end")
+  @TestCase(["'abc"], "Missing close quote")
   void GetQuotedString_Invalid(String pattern) {
     var cursor = PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
@@ -34,11 +34,11 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const ["'abc'", "abc"])
-  @TestCase(const ["''", ""])
-  @TestCase(const ["'\"abc\"'", "\"abc\""], "Double quotes")
-  @TestCase(const [r"'ab\c'", "abc"], "Escaped backslash")
-  @TestCase(const [r"'ab\'c'", "ab'c"], "Escaped close quote")
+  @TestCase(["'abc'", "abc"])
+  @TestCase(["''", ""])
+  @TestCase(["'\"abc\"'", "\"abc\""], "Double quotes")
+  @TestCase([r"'ab\c'", "abc"], "Escaped backslash")
+  @TestCase([r"'ab\'c'", "ab'c"], "Escaped close quote")
   void GetQuotedString_Valid(String pattern, String expected) {
     var cursor = PatternCursor(pattern);
     expect('\'', GetNextCharacter(cursor));
@@ -68,9 +68,9 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const ['aaa', 3])
-  @TestCase(const ['a', 1])
-  @TestCase(const ['aaadaa', 3])
+  @TestCase(['aaa', 3])
+  @TestCase(['a', 1])
+  @TestCase(['aaadaa', 3])
   void GetRepeatCount_Valid(String text, int expectedCount) {
     var cursor = PatternCursor(text);
     expect(cursor.moveNext(), isTrue);
@@ -87,14 +87,14 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const ['x<HH:mm>y', "HH:mm"], "Simple")
-  @TestCase(const ["x<HH:'T'mm>y", "HH:'T'mm"], "Quoting")
-  @TestCase(const [r"x<HH:\Tmm>y", r"HH:\Tmm"], "Escaping")
-  @TestCase(const ['x<a<b>c>y', "a<b>c"], "Simple nesting")
-  @TestCase(const ["x<a'<'bc>y", "a'<'bc"], "Quoted start embedded")
-  @TestCase(const ["x<a'>'bc>y", "a'>'bc"], "Quoted end embedded")
-  @TestCase(const [r"x<a\<bc>y", r"a\<bc"], "Escaped start embedded")
-  @TestCase(const [r"x<a\>bc>y", r"a\>bc"], "Escaped end embedded")
+  @TestCase(['x<HH:mm>y', "HH:mm"], "Simple")
+  @TestCase(["x<HH:'T'mm>y", "HH:'T'mm"], "Quoting")
+  @TestCase([r"x<HH:\Tmm>y", r"HH:\Tmm"], "Escaping")
+  @TestCase(['x<a<b>c>y', "a<b>c"], "Simple nesting")
+  @TestCase(["x<a'<'bc>y", "a'<'bc"], "Quoted start embedded")
+  @TestCase(["x<a'>'bc>y", "a'>'bc"], "Quoted end embedded")
+  @TestCase([r"x<a\<bc>y", r"a\<bc"], "Escaped start embedded")
+  @TestCase([r"x<a\>bc>y", r"a\>bc"], "Escaped end embedded")
   void GetEmbeddedPattern_Valid(String pattern, String expectedEmbedded) {
     var cursor = PatternCursor(pattern);
     cursor.moveNext();
@@ -104,11 +104,11 @@ class PatternCursorTest extends TextCursorTestBase {
   }
 
   @Test()
-  @TestCase(const ['x(oops)'], "Wrong start character")
-  @TestCase(const ['x<oops)'], "No end")
-  @TestCase(const [r"x<oops\>"], "Escaped end")
-  @TestCase(const ["x<oops'>'"], "Quoted end")
-  @TestCase(const ['x<oops<nested>'], "Incomplete after nesting")
+  @TestCase(['x(oops)'], "Wrong start character")
+  @TestCase(['x<oops)'], "No end")
+  @TestCase([r"x<oops\>"], "Escaped end")
+  @TestCase(["x<oops'>'"], "Quoted end")
+  @TestCase(['x<oops<nested>'], "Incomplete after nesting")
   void GetEmbeddedPattern_Invalid(String text) {
     var cursor = PatternCursor(text);
     cursor.moveNext();

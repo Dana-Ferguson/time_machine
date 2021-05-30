@@ -22,7 +22,7 @@ Future loadCultures() async
   expect(ids.length, greaterThan(0));
 
   for (var id in ids) {
-    var culture = await Cultures.getCulture(id);
+    var culture = (await Cultures.getCulture(id))!;
     expect(culture.name, id);
   }
 }
@@ -30,6 +30,6 @@ Future loadCultures() async
 // see: issue #13
 @Test()
 Future loadBadCulture() async {
-  var culture = await Cultures.getCulture('en-CN');
+  var culture = (await Cultures.getCulture('en-CN'))!;
   expect(culture.name, 'en');
 }

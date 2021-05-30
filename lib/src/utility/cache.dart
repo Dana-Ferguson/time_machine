@@ -1,8 +1,9 @@
 // Portions of this work are Copyright 2018 The Time Machine Authors. All rights reserved.
 // Portions of this work are Copyright 2018 The Noda Time Authors. All rights reserved.
 // Use of this source code is governed by the Apache License 2.0, as found in the LICENSE.txt file.
-import 'package:time_machine/src/time_machine_internal.dart';
+// import 'package:time_machine/src/time_machine_internal.dart';
 import 'dart:collection';
+import 'package:meta/meta.dart';
 
 /// Implements a thread-safe cache of a fixed size, with a single computation function.
 /// (That happens to be all we need at the time of writing.)
@@ -27,8 +28,8 @@ class Cache<TKey, TValue> {
         //      {bool equals(K key1, K key2),
         //      int hashCode(K key),
         //      bool isValidKey(potentialKey)});
-        this._dictionary = Map<TKey,TValue>(/*keyComparer*/),
-        this._keyList = Queue<TKey>();
+        _dictionary = <TKey,TValue>{}, // Map<TKey,TValue>(/*keyComparer*/),
+        _keyList = Queue<TKey>();
 
   /// Fetches a value from the cache, populating it if necessary.
   ///
@@ -38,9 +39,9 @@ class Cache<TKey, TValue> {
   {
     // lock (mutex)
     // First check the cache...
-    TValue value = _dictionary[key];
-    if (value != null) {
-      return value;
+    TValue? cacheValue = _dictionary[key];
+    if (cacheValue != null) {
+      return cacheValue;
     }
 
     // Make space if necessary...
@@ -51,7 +52,7 @@ class Cache<TKey, TValue> {
     }
 
     // Create and cache the new value
-    value = _valueFactory(key);
+    final value = _valueFactory(key);
     _keyList.addLast(key);
     _dictionary[key] = value;
     return value;

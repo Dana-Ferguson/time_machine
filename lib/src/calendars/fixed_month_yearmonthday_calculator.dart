@@ -17,8 +17,7 @@ abstract class FixedMonthYearMonthDayCalculator extends RegularYearMonthDayCalcu
   static const int _averageDaysPer10Years = 3653; // Ideally 365.25 days per year...
 
   @protected FixedMonthYearMonthDayCalculator(int minYear, int maxYear, int daysAtStartOfYear1)
-      : super(minYear, maxYear, 13, _averageDaysPer10Years, daysAtStartOfYear1) {
-  }
+      : super(minYear, maxYear, 13, _averageDaysPer10Years, daysAtStartOfYear1);
 
   @override
   int getDaysSinceEpoch(YearMonthDay yearMonthDay) =>

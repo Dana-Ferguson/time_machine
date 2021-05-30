@@ -17,7 +17,7 @@ abstract class LocalDateTimePatterns
   static final LocalDateTimePattern fullRoundtripPatternImpl = LocalDateTimePattern.createWithInvariantCulture("uuuu'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffff '('c')'");
 
   static final LocalDateTime defaultTemplateValue = LocalDateTime(2000, 1, 1, 0, 0, 0);
-  static String format(LocalDateTime localDateTime, String patternText, Culture culture) =>
+  static String format(LocalDateTime localDateTime, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .localDateTimePatternParser
@@ -78,7 +78,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// implementing an internal interface.
   final IPartialPattern<LocalDateTime> _underlyingPattern;
 
-  LocalDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
+  const LocalDateTimePattern._(this.patternText, this._formatInfo, this.templateValue, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -88,6 +88,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<LocalDateTime> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given local date/time as text according to the rules of this pattern.
@@ -95,6 +96,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// * [value]: The local date/time to format.
   ///
   /// Returns: The local date/time formatted according to this pattern.
+  @override
   String format(LocalDateTime value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -104,6 +106,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(LocalDateTime value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.
@@ -143,7 +146,7 @@ class LocalDateTimePattern implements IPattern<LocalDateTime> {
   /// Returns: A pattern for parsing and formatting local date/times.
   ///
   /// * [InvalidPatternError]: The pattern text was invalid.
-  static LocalDateTimePattern createWithCulture(String patternText, Culture culture, [LocalDateTime templateValue]) =>
+  static LocalDateTimePattern createWithCulture(String patternText, Culture culture, [LocalDateTime? templateValue]) =>
       _create(patternText, TimeMachineFormatInfo.getFormatInfo(culture), templateValue ?? LocalDateTimePatterns.defaultTemplateValue);
 
   /// Creates a pattern for the given pattern text in the current thread's current culture.

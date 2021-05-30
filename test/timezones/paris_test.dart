@@ -11,8 +11,8 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-DateTimeZone Paris;
-DateTimeZoneProvider Tzdb;
+late DateTimeZone paris;
+late DateTimeZoneProvider tzdb;
 
 // Until 1911, Paris was 9 minutes and 21 seconds off UTC.
 Offset InitialOffset = TestObjects.CreatePositiveOffset(0, 9, 21);
@@ -32,9 +32,9 @@ Future main() async {
 }
 
 Future setup() async {
-  Tzdb = await DateTimeZoneProviders.tzdb;
+  tzdb = await DateTimeZoneProviders.tzdb;
   // Make sure we deal with the uncached time zone
-  Paris = Uncached(await Tzdb['Europe/Paris']);
+  paris = Uncached(await tzdb['Europe/Paris']);
 }
 
 @Test()
@@ -44,9 +44,9 @@ void FirstTransitions()
   var nameChangeInstant = Instant.utc(1891, 3, 15, 23, 50, 39);
   var utcChangeInstant = Instant.utc(1911, 3, 10, 23, 50, 39);
 
-  var beforeNameChange = Paris.getZoneInterval(nameChangeInstant - Time.epsilon);
-  var afterNameChange = Paris.getZoneInterval(nameChangeInstant);
-  var afterSmallChange = Paris.getZoneInterval(utcChangeInstant);
+  var beforeNameChange = paris.getZoneInterval(nameChangeInstant - Time.epsilon);
+  var afterNameChange = paris.getZoneInterval(nameChangeInstant);
+  var afterSmallChange = paris.getZoneInterval(utcChangeInstant);
 
   expect('LMT', beforeNameChange.name);
   expect(InitialOffset, beforeNameChange.wallOffset);

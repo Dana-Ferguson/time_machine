@@ -18,13 +18,13 @@ class SingleEraCalculator extends EraCalculator {
       :
         _minYear = ymdCalculator.minYear,
         _maxYear = ymdCalculator.maxYear,
-        this._era = era,
+        _era = era,
         super([era]);
 
   void _validateEra(Era era) {
-    if (era != this._era) {
+    if (era != _era) {
       Preconditions.checkNotNull(era, 'era');
-      Preconditions.checkArgument(era == this._era, 'era', "Only supported era is ${this._era.name}; requested era was ${era.name}");
+      Preconditions.checkArgument(era == _era, 'era', "Only supported era is ${_era.name}; requested era was ${era.name}");
     }
   }
 

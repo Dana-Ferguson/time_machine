@@ -49,7 +49,8 @@ class DateInterval {
   /// * [rhs]: The second value to compare
   ///
   /// Returns: True if the two date intervals have the same properties; false otherwise.
-  bool operator ==(dynamic rhs) => rhs is DateInterval && start == rhs.start && end == rhs.end;
+  @override
+  bool operator ==(Object rhs) => rhs is DateInterval && start == rhs.start && end == rhs.end;
 
 
   /// Compares the given date interval for equality with this one.
@@ -72,7 +73,7 @@ class DateInterval {
   /// * [ArgumentException]: [date] is not in the same
   /// calendar as the start and end date of this interval.
   bool contains(LocalDate date) {
-    if (date == null) throw ArgumentError.notNull('date');
+    // if (date == null) throw ArgumentError.notNull('date');
     Preconditions.checkArgument(date.calendar == start.calendar, 'date', "The date to check must be in the same calendar as the start and end dates");
     return start <= date && date <= end;
   }
@@ -123,7 +124,7 @@ class DateInterval {
   ///
   /// * [ArgumentException]: [interval] uses a different
   /// calendar to this date interval.
-  DateInterval intersection(DateInterval interval) {
+  DateInterval? intersection(DateInterval interval) {
     return containsInterval(interval) ? interval
         : interval.containsInterval(this) ? this
         : interval.contains(start) ? DateInterval(start, interval.end)
@@ -140,7 +141,7 @@ class DateInterval {
   /// instance, in the case the intervals overlap or are contiguous; a null reference otherwise.
   ///
   /// * [ArgumentException]: [interval] uses a different calendar to this date interval.
-  DateInterval union(DateInterval interval) {
+  DateInterval? union(DateInterval interval) {
     _validateInterval(interval);
 
     var _start = LocalDate.min(start, interval.start);

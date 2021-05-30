@@ -60,7 +60,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// [second] will become optional, like this:
   /// `(int hour, int minute, [int second], {int ms, int us, int ns})`.
   /// The is a planned backwards compatible public API change.
-  factory LocalTime(int hour, int minute, int second, {int ms, int us, int ns}) {
+  factory LocalTime(int hour, int minute, int second, {int? ms, int? us, int? ns}) {
     // Avoid the method calls which give a decent exception unless we're actually going to fail.
     if (hour < 0 || hour >= TimeConstants.hoursPerDay ||
         minute < 0 || minute >= TimeConstants.minutesPerHour ||
@@ -256,7 +256,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two times are the same; false otherwise
-  @override bool operator ==(dynamic other) => other is LocalTime && this.timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
+  @override bool operator ==(Object other) => other is LocalTime && timeSinceMidnight.inNanoseconds == other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly earlier than the right
   /// one.
@@ -265,7 +265,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly earlier than [other], false otherwise.
-  bool operator <(LocalTime other) => this.timeSinceMidnight.inNanoseconds < other.timeSinceMidnight.inNanoseconds;
+  bool operator <(LocalTime other) => timeSinceMidnight.inNanoseconds < other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is earlier than or equal to the right
   /// one.
@@ -274,7 +274,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is earlier than or equal to [other], false otherwise.
-  bool operator <=(LocalTime other) => this.timeSinceMidnight.inNanoseconds <= other.timeSinceMidnight.inNanoseconds;
+  bool operator <=(LocalTime other) => timeSinceMidnight.inNanoseconds <= other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is strictly later than the right
   /// one.
@@ -283,7 +283,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is strictly later than [other], false otherwise.
-  bool operator >(LocalTime other) => this.timeSinceMidnight.inNanoseconds > other.timeSinceMidnight.inNanoseconds;
+  bool operator >(LocalTime other) => timeSinceMidnight.inNanoseconds > other.timeSinceMidnight.inNanoseconds;
 
   /// Compares two LocalTime values to see if the left one is later than or equal to the right
   /// one.
@@ -292,7 +292,7 @@ class LocalTime implements Comparable<LocalTime> {
   /// * [other]: Second operand of the comparison
   ///
   /// Returns: true if the [this] is later than or equal to [other], false otherwise.
-  bool operator >=(LocalTime other) => this.timeSinceMidnight.inNanoseconds >= other.timeSinceMidnight.inNanoseconds;
+  bool operator >=(LocalTime other) => timeSinceMidnight.inNanoseconds >= other.timeSinceMidnight.inNanoseconds;
 
   /// Indicates whether this time is earlier, later or the same as another one.
   ///
@@ -301,7 +301,8 @@ class LocalTime implements Comparable<LocalTime> {
   /// A value less than zero if this time is earlier than [other];
   /// zero if this time is the same as [other]; a value greater than zero if this time is
   /// later than [other].
-  int compareTo(LocalTime other) => timeSinceMidnight.inNanoseconds.compareTo(other?.timeSinceMidnight?.inNanoseconds ?? 0);
+  @override
+  int compareTo(LocalTime? other) => timeSinceMidnight.inNanoseconds.compareTo(other?.timeSinceMidnight.inNanoseconds ?? 0);
 
   /// Returns a hash code for this local time.
   @override int get hashCode => timeSinceMidnight.inNanoseconds.hashCode;
@@ -423,6 +424,6 @@ class LocalTime implements Comparable<LocalTime> {
   /// or null to use the default format pattern ('T').
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       LocalTimePatterns.format(this, patternText, culture);
 }

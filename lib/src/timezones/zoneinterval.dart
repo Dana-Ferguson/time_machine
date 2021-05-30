@@ -12,16 +12,16 @@ abstract class IZoneInterval {
   static Instant rawStart(ZoneInterval zoneInterval) => zoneInterval._rawStart;
   static Instant rawEnd(ZoneInterval zoneInterval) => zoneInterval._rawEnd;
 
-  static ZoneInterval newZoneInterval(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) =>
+  static ZoneInterval newZoneInterval(String name, Instant? rawStart, Instant? rawEnd, Offset wallOffset, Offset savings) =>
       ZoneInterval._(name, rawStart, rawEnd, wallOffset, savings);
 
-  static ZoneInterval withStart(ZoneInterval zoneInterval, Instant newStart) => zoneInterval?._withStart(newStart);
+  static ZoneInterval? withStart(ZoneInterval? zoneInterval, Instant newStart) => zoneInterval?._withStart(newStart);
 
-  static ZoneInterval withEnd(ZoneInterval zoneInterval, Instant newEnd) => zoneInterval?._withEnd(newEnd);
+  static ZoneInterval? withEnd(ZoneInterval? zoneInterval, Instant newEnd) => zoneInterval?._withEnd(newEnd);
 
-  static bool containsLocal(ZoneInterval zoneInterval, LocalInstant localInstant) => zoneInterval?._containsLocal(localInstant);
+  static bool containsLocal(ZoneInterval zoneInterval, LocalInstant localInstant) => zoneInterval._containsLocal(localInstant);
 
-  static bool equalIgnoreBounds(ZoneInterval zoneInterval, ZoneInterval other) => zoneInterval?._equalIgnoreBounds(other);
+  static bool equalIgnoreBounds(ZoneInterval zoneInterval, ZoneInterval other) => zoneInterval._equalIgnoreBounds(other);
 }
 
 /// Represents a range of time for which a particular Offset applies.
@@ -145,7 +145,7 @@ class ZoneInterval {
   /// [wallOffset]: The [wallOffset] from UTC for this period including any daylight savings.
   /// [savings]: The [wallOffset] daylight savings contribution to the offset.
   /// [ArgumentError]: If `<paramref name = 'start' /> &gt;= <paramref name = "end" />`.
-  factory ZoneInterval._(String name, Instant rawStart, Instant rawEnd, Offset wallOffset, Offset savings) {
+  factory ZoneInterval._(String name, Instant? rawStart, Instant? rawEnd, Offset wallOffset, Offset savings) {
     rawStart ??= IInstant.beforeMinValue;
     rawEnd ??= IInstant.afterMaxValue;
     // Work out the corresponding local instants, taking care to 'go infinite' appropriately.
@@ -208,7 +208,7 @@ class ZoneInterval {
         && wallOffset == other.wallOffset && savings == other.savings;
   }
 
-  @override bool operator==(dynamic other) => other is ZoneInterval ? equals(other) : false;
+  @override bool operator==(Object other) => other is ZoneInterval ? equals(other) : false;
 
   /// Serves as a hash function for a particular type.
   @override int get hashCode => hashObjects([name, _rawStart, _rawEnd, wallOffset, savings]);
@@ -216,7 +216,7 @@ class ZoneInterval {
   /// Returns a [String] that represents this instance.
   ///
   /// A [String] that represents this instance.
-  @override String toString() => '${name}: [$_rawStart, $_rawEnd) $wallOffset ($savings)';
+  @override String toString() => '$name: [$_rawStart, $_rawEnd) $wallOffset ($savings)';
 
 // @override String toString() => '${name}: [$RawStart, $RawEnd) $wallOffset ($savings)';
 // @override String toString() => '${name}: [$IsoLocalStart, $IsoLocalEnd) $wallOffset ($savings)';

@@ -16,12 +16,14 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 /// [T]: The type which was parsed, such as a [LocalDateTime].
 @immutable
 class ParseResult<T> {
-  final T _value;
-  final Error Function() _errorProvider;
+  late final T _value;
+  final Error Function()? _errorProvider;
   final bool _continueAfterErrorWithMultipleFormats;
 
-  ParseResult._error(this._errorProvider, this._continueAfterErrorWithMultipleFormats) : _value = null;
+  // ignore: prefer_const_constructors_in_immutables
+  ParseResult._error(this._errorProvider, this._continueAfterErrorWithMultipleFormats);
 
+  // ignore: prefer_const_constructors_in_immutables
   ParseResult._(this._value)
       : _errorProvider = null,
         _continueAfterErrorWithMultipleFormats = false;
@@ -43,7 +45,7 @@ class ParseResult<T> {
       // InvalidOperationException
       throw StateError('Parse operation succeeded, so no exception is available');
     }
-    return _errorProvider();
+    return _errorProvider!();
   }
 
   /// Gets the value from the parse operation if it was successful, or throws an exception indicating the parse failure
@@ -57,7 +59,7 @@ class ParseResult<T> {
     if (_errorProvider == null) {
       return _value;
     }
-    throw _errorProvider();
+    throw _errorProvider!();
   }
 
   /// Returns the success value, and sets the out parameter to either

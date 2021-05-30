@@ -9,5 +9,5 @@ import 'package:time_machine/src/text/time_machine_text.dart';
 // It's simpler than either nesting them or giving them a file per delegate.
 // @internal typedef CharacterHandler = void Function<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor patternCursor, SteppedPatternBuilder<TResult, TBucket> patternBuilder);
 @internal
-typedef void CharacterHandler<TResult, TBucket extends ParseBucket<TResult>>(PatternCursor patternCursor, SteppedPatternBuilder<TResult, TBucket> patternBuilder);
+typedef CharacterHandler<TResult, TBucket extends ParseBucket<TResult>> = void Function(PatternCursor patternCursor, SteppedPatternBuilder<TResult, TBucket> patternBuilder);
 

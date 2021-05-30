@@ -49,7 +49,7 @@ class CultureLoader {
     // #hack: Flutter is very angry about making sure this is a 100% List<String>
     // map((x) => x as String)
     // return json.toList<String>();
-    var list = List<String>();
+    var list = <String>[];
     for (var item in json) {
       list.add(item as String);
     }
@@ -66,7 +66,7 @@ class CultureLoader {
     return CultureReader(binary).readCulture();
   }
 
-  Future<Culture> getCulture(String cultureId) async {
+  Future<Culture?> getCulture(String? cultureId) async {
     if (cultureId == null) return null;
 
     if (ICultures.allCulturesLoaded) {

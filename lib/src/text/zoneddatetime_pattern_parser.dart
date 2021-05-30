@@ -12,8 +12,8 @@ import 'package:time_machine/src/text/patterns/time_machine_patterns.dart';
 @internal
 class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
   final ZonedDateTime _templateValue;
-  final DateTimeZoneProvider _zoneProvider;
-  final ZoneLocalMappingResolver _resolver;
+  final DateTimeZoneProvider? _zoneProvider;
+  final ZoneLocalMappingResolver? _resolver;
 
   static final Map<String /*char*/, CharacterHandler<ZonedDateTime, _ZonedDateTimeParseBucket>> _patternCharacterHandlers =
   {
@@ -63,9 +63,10 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
 
   // Note: public to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<ZonedDateTime> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     // Nullity check is performed in ZonedDateTimePattern.
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -117,19 +118,19 @@ class ZonedDateTimePatternParser implements IPatternParser<ZonedDateTime> {
     builder.addField(PatternFields.embeddedOffset, pattern.current);
     String embeddedPattern = pattern.getEmbeddedPattern();
     var offsetPattern = OffsetPatterns.underlyingPattern(OffsetPatterns.create(embeddedPattern, builder.formatInfo));
-    builder.addEmbeddedPattern(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
+    builder.addEmbeddedPattern<Offset>(offsetPattern, (bucket, offset) => bucket.offset = offset, (zdt) => zdt.offset);
   }
 
-  static ParseResult<ZonedDateTime> _parseZone(ValueCursor value, _ZonedDateTimeParseBucket bucket) => bucket.parseZone(value);
+  static ParseResult<ZonedDateTime>? _parseZone(ValueCursor value, _ZonedDateTimeParseBucket bucket) => bucket.parseZone(value);
 }
 
 class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   final /*LocalDatePatternParser.*/LocalDateParseBucket date;
   final /*LocalTimePatternParser.*/LocalTimeParseBucket time;
   DateTimeZone _zone;
-  Offset offset;
-  final ZoneLocalMappingResolver _resolver;
-  final DateTimeZoneProvider _zoneProvider;
+  late Offset offset;
+  final ZoneLocalMappingResolver? _resolver;
+  final DateTimeZoneProvider? _zoneProvider;
 
   _ZonedDateTimeParseBucket(ZonedDateTime templateValue, this._resolver, this._zoneProvider)
       : date = /*LocalDatePatternParser.*/LocalDateParseBucket(templateValue.calendarDate),
@@ -137,8 +138,8 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
         _zone = templateValue.zone;
 
 
-  ParseResult<ZonedDateTime> parseZone(ValueCursor value) {
-    DateTimeZone zone = _tryParseFixedZone(value) ?? _tryParseProviderZone(value);
+  ParseResult<ZonedDateTime>? parseZone(ValueCursor value) {
+    DateTimeZone? zone = _tryParseFixedZone(value) ?? _tryParseProviderZone(value);
 
     if (zone == null) {
       return IParseResult.noMatchingZoneId<ZonedDateTime>(value);
@@ -152,7 +153,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   /// general format. If it manages, it will move the cursor and return the
   /// zone. Otherwise, it will return null and the cursor will remain where
   /// it was.
-  DateTimeZone _tryParseFixedZone(ValueCursor value) {
+  DateTimeZone? _tryParseFixedZone(ValueCursor value) {
     if (value.compareOrdinal(IDateTimeZone.utcId) != 0) {
       return null;
     }
@@ -165,10 +166,10 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
   /// Tries to parse a time zone ID from the provider. Returns the zone
   /// on success (after moving the cursor to the end of the ID) or null on failure
   /// (leaving the cursor where it was).
-  DateTimeZone _tryParseProviderZone(ValueCursor value) {
+  DateTimeZone? _tryParseProviderZone(ValueCursor value) {
     // The IDs from the provider are guaranteed to be in order (using ordinal comparisons).
     // Use a binary search to find a match, then make sure it's the longest possible match.
-    var ids = _zoneProvider.ids;
+    var ids = _zoneProvider!.ids;
     int lowerBound = 0; // Inclusive
     int upperBound = ids.length; // Exclusive
     while (lowerBound < upperBound) {
@@ -211,7 +212,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
           }
         }
         value.move(value.index + longestSoFar.length);
-        return _zoneProvider.getDateTimeZoneSync(longestSoFar); // [longestSoFar];
+        return _zoneProvider!.getDateTimeZoneSync(longestSoFar); // [longestSoFar];
       }
     }
     return null;
@@ -229,7 +230,7 @@ class _ZonedDateTimeParseBucket extends ParseBucket<ZonedDateTime> {
     // No offset - so just use the resolver
     if ((usedFields & PatternFields.embeddedOffset).value == 0) {
       try {
-        return ParseResult.forValue<ZonedDateTime>(ZonedDateTime.resolve(localDateTime, _zone, _resolver));
+        return ParseResult.forValue<ZonedDateTime>(ZonedDateTime.resolve(localDateTime, _zone, _resolver!));
       }
       on SkippedTimeError {
         return IParseResult.skippedLocalTime<ZonedDateTime>(text);

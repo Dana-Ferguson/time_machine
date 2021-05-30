@@ -34,7 +34,7 @@ List<Era> Eras = []; /*typeof(Era).GetTypeInfo()
 
 @TestCaseSource(#Eras)
 @Test() @SkipMe.unimplemented()
-void ResourcePresence(Era era)
+void ResourcePresence(Era? era)
 {
   // todo: get us resources?
   var valueByName; // PatternResources.ResourceManager.GetString(era.ResourceIdentifier, Culture.invariantCulture);

@@ -31,7 +31,7 @@ abstract class TextCursor {
   }
 
   /// Gets the current character.
-  String _current;
+  late String _current;
   String get current => _current;
 
   /// Gets a value indicating whether this instance has more characters.
@@ -43,7 +43,7 @@ abstract class TextCursor {
 
   /// Gets the current index into the string being parsed.
   // todo: { get; private set; }
-  int index;
+  late int index;
 
   /// Gets the remainder the string that has not been parsed yet.
   String get remainder => value.substring(index);

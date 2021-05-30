@@ -35,7 +35,7 @@ class BadiYearMonthDayCalculator extends YearMonthDayCalculator {
   /// NazRuzDate falls on March 19, 20, 21, or 22.
   /// DaysInAyymiHa can be 4,5.
   /// For each year, the value in the array is (NawRuzDate - 19) + 10 * (DaysInAyyamiHa - 4)
-  static List<int> _yearInfoRaw = base64.decode(
+  static final List<int> _yearInfoRaw = base64.decode(
       'AgELAgIBCwICAQsCAgEBCwIBAQsCAQELAgEBCwIBAQsCAQELAgEBCwIBAQELAQEBCwEBAQsBAQELAQEB'
           'CwEBAQsBAQELAQEBCwEBAQEKAQEBCgEBAQsCAgILAgICCwICAgsCAgILAgICCwICAgELAgIBCwICAQsC'
           'AgELAgIBCwICAQsCAgELAgIBCwICAQELAgEBCwIBAQsCAQELAgEBCwIBAQsCAQELAgEBCwIBAQELAQEB'

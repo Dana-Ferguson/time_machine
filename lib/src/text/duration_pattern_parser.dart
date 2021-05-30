@@ -32,9 +32,10 @@ class TimePatternParser implements IPatternParser<Time> {
 
   // Note: to implement the interface. It does no harm, and it's simpler than using explicit
   // interface implementation.
+  @override
   IPattern<Time> parsePattern(String patternText, TimeMachineFormatInfo formatInfo) {
     Preconditions.checkNotNull(patternText, 'patternText');
-    if (patternText.length == 0) {
+    if (patternText.isEmpty) {
       throw InvalidPatternError(TextErrorMessages.formatStringEmpty);
     }
 
@@ -156,7 +157,7 @@ class _TimeParseBucket extends ParseBucket<Time> {
   BigInt _currentNanos = BigInt.zero;
 
   void addNanoseconds(int nanoseconds) {
-    this._currentNanos += BigInt.from(nanoseconds);
+    _currentNanos += BigInt.from(nanoseconds);
   }
 
   void addDays(int days) {

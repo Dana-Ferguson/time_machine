@@ -41,7 +41,7 @@ class ZonedDateTime {
   final DateTimeZone zone;
 
   /// Internal constructor from pre-validated values.
-  ZonedDateTime._(this._offsetDateTime, this.zone);
+  const ZonedDateTime._(this._offsetDateTime, this.zone);
 
   /// Initializes a new instance of [ZonedDateTime] in the specified time zone
   /// and the ISO or specified calendar.
@@ -49,7 +49,7 @@ class ZonedDateTime {
   /// * [instant]: The instant.
   /// * [zone]: The time zone.
   /// * [calendar]: The calendar system, defaulting to ISO.
-  factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone zone, CalendarSystem calendar]) {
+  factory ZonedDateTime([Instant instant = Instant.unixEpoch, DateTimeZone? zone, CalendarSystem? calendar]) {
     // zone = Preconditions.checkNotNull(zone, 'zone');
     var _zone = zone ?? DateTimeZone.utc;
     var _offsetDateTime = IOffsetDateTime.fromInstant(instant, _zone.getUtcOffset(instant), calendar);
@@ -74,7 +74,7 @@ class ZonedDateTime {
     Offset correctOffset = zone.getUtcOffset(candidateInstant);
     // Not using Preconditions, to avoid building the string unnecessarily.
     if (correctOffset != offset) {
-      throw ArgumentError('Offset $offset is invalid for local date and time $localDateTime in time zone ${zone?.id} offset');
+      throw ArgumentError('Offset $offset is invalid for local date and time $localDateTime in time zone ${zone.id} offset');
     }
     var offsetDateTime = OffsetDateTime(localDateTime, offset);
     return ZonedDateTime._(offsetDateTime, zone);
@@ -300,7 +300,7 @@ class ZonedDateTime {
   /// * [other]: The second value to compare
   ///
   /// Returns: True if the two operands are equal according to [Equals(ZonedDateTime)]; false otherwise
-  @override bool operator ==(dynamic other) => other is ZonedDateTime && equals(other);
+  @override bool operator ==(Object other) => other is ZonedDateTime && equals(other);
 
   /// Adds a duration to a zoned date and time.
   ///
@@ -419,11 +419,11 @@ class ZonedDateTime {
   /// or null to use the default format pattern ('G').
   /// * [culture]: The [Culture] to use when formatting the value,
   /// or null to use the current isolate's culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       ZonedDateTimePatterns.format(this, patternText, culture);
 
   @ddcSupportHack
-  String toStringDDC([String patternText, Culture culture]) =>
+  String toStringDDC([String? patternText, Culture? culture]) =>
       ZonedDateTimePatterns.format(this, patternText, culture);
 
   /// Constructs a [DateTime] from this [ZonedDateTime] which has a
@@ -483,7 +483,7 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
   /// Internal constructor to prevent external classes from deriving from this.
   /// (That means we can add more abstract members in the future.)
-  ZonedDateTimeComparer._();
+  const ZonedDateTimeComparer._();
 
   /// Compares two [ZonedDateTime] values and returns a value indicating whether one is less than, equal to, or greater than the other.
   ///
@@ -515,9 +515,9 @@ abstract class ZonedDateTimeComparer // : todo: IComparer<ZonedDateTime>, IEqual
 
 /// Implementation for [Comparer.Local].
 class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
+  static const ZonedDateTimeComparer instance = _ZonedDateTimeLocalComparer._();
 
-  _ZonedDateTimeLocalComparer._() : super._();
+  const _ZonedDateTimeLocalComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>
@@ -534,9 +534,9 @@ class _ZonedDateTimeLocalComparer extends ZonedDateTimeComparer {
 
 /// Implementation for [Comparer.Instant].
 class _ZonedDateTimeInstantComparer extends ZonedDateTimeComparer {
-  static final ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
+  static const ZonedDateTimeComparer instance = _ZonedDateTimeInstantComparer._();
 
-  _ZonedDateTimeInstantComparer._() : super._();
+  const _ZonedDateTimeInstantComparer._() : super._();
 
   /// <inheritdoc />
   @override int compare(ZonedDateTime x, ZonedDateTime y) =>

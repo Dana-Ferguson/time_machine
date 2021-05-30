@@ -14,7 +14,7 @@ abstract class OffsetDatePatterns {
   static final OffsetDatePattern fullRoundtripPatternImpl = OffsetDatePattern._create(
       "uuuu'-'MM'-'ddo<G> '('c')'", TimeMachineFormatInfo.invariantInfo, defaultTemplateValue);
 
-  static String format(OffsetDate offsetDate, String patternText, Culture culture) =>
+  static String format(OffsetDate offsetDate, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .offsetDatePatternParser
@@ -55,7 +55,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   /// in the pattern are taken from the template.
   final OffsetDate templateValue;
 
-  OffsetDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
+  const OffsetDatePattern._(this.patternText, this._formatInfo, this.templateValue, this._pattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -65,6 +65,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<OffsetDate> parse(String text) => _pattern.parse(text);
 
   /// Formats the given zoned date as text according to the rules of this pattern.
@@ -72,6 +73,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   /// * [value]: The zoned date to format.
   ///
   /// Returns: The zoned date formatted according to this pattern.
+  @override
   String format(OffsetDate value) => _pattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -81,6 +83,7 @@ class OffsetDatePattern implements IPattern<OffsetDate> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(OffsetDate value, StringBuffer builder) => _pattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text, format info, and template value.

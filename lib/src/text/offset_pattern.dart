@@ -7,7 +7,7 @@ import 'package:time_machine/src/time_machine_internal.dart';
 
 @internal
 abstract class OffsetPatterns {
-  static String format(Offset offset, String patternText, Culture culture) =>
+  static String format(Offset offset, String? patternText, Culture? culture) =>
       TimeMachineFormatInfo
           .getInstance(culture)
           .offsetPatternParser
@@ -38,7 +38,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// implementing an @internal interface.
   final IPartialPattern<Offset> _underlyingPattern;
 
-  OffsetPattern._(this.patternText, this._underlyingPattern);
+  const OffsetPattern._(this.patternText, this._underlyingPattern);
 
   /// Parses the given text value according to the rules of this pattern.
   ///
@@ -48,6 +48,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// * [text]: The text value to parse.
   ///
   /// Returns: The result of parsing, which may be successful or unsuccessful.
+  @override
   ParseResult<Offset> parse(String text) => _underlyingPattern.parse(text);
 
   /// Formats the given offset as text according to the rules of this pattern.
@@ -55,6 +56,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// * [value]: The offset to format.
   ///
   /// Returns: The offset formatted according to this pattern.
+  @override
   String format(Offset value) => _underlyingPattern.format(value);
 
   /// Formats the given value as text according to the rules of this pattern,
@@ -64,6 +66,7 @@ class OffsetPattern implements IPattern<Offset> {
   /// * [builder]: The `StringBuffer` to append to.
   ///
   /// Returns: The builder passed in as [builder].
+  @override
   StringBuffer appendFormat(Offset value, StringBuffer builder) => _underlyingPattern.appendFormat(value, builder);
 
   /// Creates a pattern for the given pattern text and format info.

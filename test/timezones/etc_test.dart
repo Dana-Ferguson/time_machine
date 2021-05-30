@@ -12,13 +12,13 @@ import 'package:time_machine/src/timezones/time_machine_timezones.dart';
 
 import '../time_machine_testing.dart';
 
-DateTimeZoneProvider Tzdb;
+late DateTimeZoneProvider tzdb;
 
 /// Tests for fixed 'Etc/GMT+x' zones. These just test that the time zones are built
 /// appropriately; FixedDateTimeZoneTest takes care of the rest.
 Future main() async {
   await TimeMachine.initialize();
-  Tzdb = await DateTimeZoneProviders.tzdb;
+  tzdb = await DateTimeZoneProviders.tzdb;
 
   await runTests();
 }
@@ -29,9 +29,9 @@ Future main() async {
 Future FixedEasternZone() async
 {
   String id = 'Etc/GMT+5';
-  var zone = await Tzdb[id];
+  var zone = await tzdb[id];
   expect(id, zone.id);
-  expect(zone, TypeMatcher<FixedDateTimeZone>());
+  expect(zone, const TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
   expect(Offset.hours(-5), fixedZone.offset);
 }
@@ -40,9 +40,9 @@ Future FixedEasternZone() async
 Future FixedWesternZone() async
 {
   String id = 'Etc/GMT-4';
-  var zone = await Tzdb[id];
+  var zone = await tzdb[id];
   expect(id, zone.id);
-  expect(zone, TypeMatcher<FixedDateTimeZone>());
+  expect(zone, const TypeMatcher<FixedDateTimeZone>());
   FixedDateTimeZone fixedZone = zone as FixedDateTimeZone;
   expect(Offset.hours(4), fixedZone.offset);
 }

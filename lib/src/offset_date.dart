@@ -22,7 +22,7 @@ class OffsetDate
   ///
   /// * [date]: The date part of the value.
   /// * [offset]: The offset part of the value.
-  OffsetDate(this.calendarDate, this.offset);
+  const OffsetDate(this.calendarDate, this.offset);
 
   /// Gets the calendar system associated with this offset date.
   CalendarSystem get calendar => calendarDate.calendar;
@@ -55,7 +55,7 @@ class OffsetDate
   /// * [offset]: The new UTC offset.
   ///
   /// Returns: A new `OffsetDate` for the same date, but with the specified UTC offset.
-  OffsetDate withOffset(Offset offset) => OffsetDate(this.calendarDate, offset);
+  OffsetDate withOffset(Offset offset) => OffsetDate(calendarDate, offset);
 
   /// Returns this offset date, with the given date adjuster applied to it, maintaining the existing offset.
   ///
@@ -107,12 +107,13 @@ class OffsetDate
   /// * [right]: The right hand side of the operator.
   ///
   /// Returns: `true` if values are equal to each other, otherwise `false`.
-  bool operator ==(dynamic right) => right is OffsetDate && equals(right);
+  @override
+  bool operator ==(Object right) => right is OffsetDate && equals(right);
 
   /// Returns a [String] that represents this instance.
   ///
   /// The value of the current instance in the default format pattern ('G'), using the current isolate's
   /// culture to obtain a format provider.
-  @override String toString([String patternText, Culture culture]) =>
+  @override String toString([String? patternText, Culture? culture]) =>
       OffsetDatePatterns.format(this, patternText, culture);
 }

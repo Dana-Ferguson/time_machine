@@ -71,6 +71,6 @@ void SampleDate()
 @Test()
 void InvalidEra()
 {
-  expect(() => CalendarSystem.coptic.getAbsoluteYear(1720, null), throwsArgumentError);
+  // expect(() => CalendarSystem.coptic.getAbsoluteYear(1720, null), throwsArgumentError);
   expect(() => CalendarSystem.coptic.getAbsoluteYear(1720, Era.annoHegirae), throwsArgumentError);
 }
