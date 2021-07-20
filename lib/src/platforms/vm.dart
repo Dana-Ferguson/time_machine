@@ -20,7 +20,9 @@ class _VirtualMachineIO implements PlatformIO {
 
     var resource = Uri.parse('package:time_machine/data/$path/$filename');
     final Uri resolved = (await Isolate.resolvePackageUri(resource))!;
-    var binary = ByteData.view(Int8List.fromList(await io.File.fromUri(resolved).readAsBytes()).buffer);
+    var binary = ByteData.view(
+        Int8List.fromList(await io.File.fromUri(resolved).readAsBytes())
+            .buffer);
     return binary;
   }
 
@@ -42,28 +44,39 @@ class _FlutterMachineIO implements PlatformIO {
   Future<ByteData> getBinary(String path, String? filename) async {
     if (filename == null) return ByteData(0);
 
-    ByteData byteData = await _rootBundle.load('packages/time_machine/data/$path/$filename');
+    ByteData byteData =
+        await _rootBundle.load('packages/time_machine/data/$path/$filename');
     return byteData;
   }
 
   @override
   // may return Map<String, dynamic> or List
   Future getJson(String path, String filename) async {
-    String text = await _rootBundle.loadString('packages/time_machine/data/$path/$filename');
+    String text = await _rootBundle
+        .loadString('packages/time_machine/data/$path/$filename');
     return json.decode(text);
   }
 }
 
-Future initialize(Map args) {
+Future initialize(Map args, {testing = false}) {
   String? timeZoneOverride = args['timeZone'];
   String? cultureOverride = args['culture'];
+  final testing = args['testing'] ?? false;
 
-  if (io.Platform.isIOS || io.Platform.isAndroid || io.Platform.isFuchsia || io.Platform.isMacOS || io.Platform.isWindows || io.Platform.isLinux) {
-    if (args['rootBundle'] == null) throw Exception("Pass in the rootBundle from 'package:flutter/services.dart';");
+  if (!testing &&
+      (io.Platform.isIOS ||
+          io.Platform.isAndroid ||
+          io.Platform.isFuchsia ||
+          io.Platform.isMacOS ||
+          io.Platform.isWindows ||
+          io.Platform.isLinux)) {
+    if (args['rootBundle'] == null) {
+      throw Exception(
+          "Pass in the rootBundle from 'package:flutter/services.dart';");
+    }
     // Map IO functions
     PlatformIO.local = _FlutterMachineIO(args['rootBundle']);
-  }
-  else {
+  } else {
     // Map IO functions
     PlatformIO.local = _VirtualMachineIO();
   }
@@ -71,11 +84,12 @@ Future initialize(Map args) {
   return TimeMachine.initialize(timeZoneOverride, cultureOverride);
 }
 
-class TimeMachine  {
+class TimeMachine {
   static bool _longIdNames = false;
 
   // I'm looking to basically use @internal for protection??? <-- what did I mean by this?
-  static Future initialize(String? timeZoneOverride, String? cultureOverride) async {
+  static Future initialize(
+      String? timeZoneOverride, String? cultureOverride) async {
     Platform.startVM();
 
     ITzdbDateTimeZoneSource.loadAllTimeZoneInformation_SetFlag();
@@ -90,12 +104,15 @@ class TimeMachine  {
     //var localTimezoneId = await _getTimeZoneId();
     //var local = await tzdb[localTimezoneId];
 
-    var local = timeZoneOverride != null ? await tzdb.getZoneOrNull(timeZoneOverride) : await _figureOutTimeZone(tzdb);
+    var local = timeZoneOverride != null
+        ? await tzdb.getZoneOrNull(timeZoneOverride)
+        : await _figureOutTimeZone(tzdb);
     // todo: cache local more directly? (this is indirect caching)
     TzdbIndex.localId = local!.id;
 
     // Default Culture
-    var cultureId = cultureOverride ?? io.Platform.localeName.split('.').first.replaceAll('_', '-');
+    var cultureId = cultureOverride ??
+        io.Platform.localeName.split('.').first.replaceAll('_', '-');
     Culture? culture = await Cultures.getCulture(cultureId);
     ICultures.currentCulture = culture!;
     // todo: remove Culture.currentCulture
@@ -106,7 +123,8 @@ class TimeMachine  {
   /// with known timezones and narrow down which timezone the local computer is in.
   ///
   /// note: during testing, bugs were found with dart's zone interval id -- it sometimes does daylight savings when it didn't exist
-  static Future<DateTimeZone?> _figureOutTimeZone(DateTimeZoneProvider provider, [bool strict = false]) async {
+  static Future<DateTimeZone?> _figureOutTimeZone(DateTimeZoneProvider provider,
+      [bool strict = false]) async {
     var zones = <DateTimeZone>[];
     // load all the timezones; todo: fast_cache method
     for (var id in provider.ids) {
@@ -129,12 +147,14 @@ class TimeMachine  {
       if (_isTheSame(nowDateTime, zone.getZoneInterval(nowInstant))) {
         // todo: test me? ********************************************************************************************************************
         // also: find and link the relevant issue to this!
-        allZoneIntervals.addAll(zone.getZoneIntervals(interval).where((z) => z.wallOffset.inSeconds.abs() % TimeConstants.secondsPerHour == 0));
+        allZoneIntervals.addAll(zone.getZoneIntervals(interval).where((z) =>
+            z.wallOffset.inSeconds.abs() % TimeConstants.secondsPerHour == 0));
         lessZones.add(zone);
       }
     }
 
-    allSpecialInstants = allZoneIntervals.map((z) => IZoneInterval.rawStart(z)).toList();
+    allSpecialInstants =
+        allZoneIntervals.map((z) => IZoneInterval.rawStart(z)).toList();
     var badZones = HashSet<String>();
 
     zones = lessZones;
@@ -150,8 +170,12 @@ class TimeMachine  {
 
         for (var zone in zones) {
           var zoneInterval = zone.getZoneInterval(instant);
-          if ((_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) != zoneInterval.name
-              || dateTime.timeZoneOffset.inSeconds != zoneInterval.wallOffset.inSeconds) {
+          if ((_longIdNames
+                      ? _zoneIdMap[dateTime.timeZoneName]
+                      : dateTime.timeZoneName) !=
+                  zoneInterval.name ||
+              dateTime.timeZoneOffset.inSeconds !=
+                  zoneInterval.wallOffset.inSeconds) {
             // print('${instant}: ${dateTime}: ${zone.id}: dart: ${dateTime.timeZoneName}@${dateTime.timeZoneOffset.inSeconds} vs tzdb: ${zoneInterval.name}@${zoneInterval.wallOffset.seconds};');
             badZones.add(zone.id);
           }
@@ -189,8 +213,11 @@ class TimeMachine  {
   }
 
   static bool _isTheSame(DateTime dateTime, ZoneInterval zoneInterval) {
-    return (_longIdNames ? _zoneIdMap[dateTime.timeZoneName] : dateTime.timeZoneName) == zoneInterval.name
-        && dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.inSeconds;
+    return (_longIdNames
+                ? _zoneIdMap[dateTime.timeZoneName]
+                : dateTime.timeZoneName) ==
+            zoneInterval.name &&
+        dateTime.timeZoneOffset.inSeconds == zoneInterval.wallOffset.inSeconds;
   }
 
   // This is slower (on at least one computer) than guessing the timezone
@@ -201,35 +228,32 @@ class TimeMachine  {
     try {
       if (io.Platform.isFuchsia) {
         //
-      }
-      else if (io.Platform.isLinux) {
+      } else if (io.Platform.isLinux) {
         // e.g. cat /etc/timezone /g --> 'America/New_York\n'
         var id = await io.Process.run('cat', ["/etc/timezone"]);
         return (id.stdout as String).trim();
-      }
-      else if (io.Platform.isWindows) {
+      } else if (io.Platform.isWindows) {
         // todo: Test
         // This returns a CLDR windows timezone see: https://unicode.org/repos/cldr/trunk/common/supplemental/windowsZones.xml
         // We can then convert this to a TZDB timezone.
         // e.g. tzutl /g --> 'Eastern Standard Time'
         var id = await io.Process.run('tzutil', ['/g']);
         return windowsZoneToCldrZone((id.stdout as String).trim());
-      }
-      else if (io.Platform.isAndroid) {
+      } else if (io.Platform.isAndroid) {
         //
-      }
-      else if (io.Platform.isIOS) {
+      } else if (io.Platform.isIOS) {
         //
-      }
-      else if (io.Platform.isMacOS) {
+      } else if (io.Platform.isMacOS) {
         //
       }
     } catch (e) {
       // todo: custom error type
-      throw StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; Error was $e');
+      throw StateError(
+          'LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; Error was $e');
     }
 
-    throw StateError('LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
+    throw StateError(
+        'LocalTimeZone not found; OS is ${io.Platform.operatingSystem}; OS was unsupported.');
   }
 
   static Map<String, String>? _windowsZones;

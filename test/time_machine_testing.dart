@@ -36,7 +36,7 @@ abstract class TimeMachine {
   TimeMachine() { throw StateError('TimeMachine can not be instantiated.'); }
   static Future initialize([Map args = const {}]) async {
     helper.setFunctions();
-    await public_machine.TimeMachine.initialize(args);
+    await public_machine.TimeMachine.initialize({...args, 'testing': true});
   }
 }
 
