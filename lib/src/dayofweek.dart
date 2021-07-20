@@ -55,7 +55,7 @@ class DayOfWeek {
   @override
   String toString() => _stringRepresentations[_value];
 
-  DayOfWeek? parse(String text) {
+  static DayOfWeek? parse(String text) {
     var token = text.trim().toLowerCase();
     for (int i = 0; i < _stringRepresentations.length; i++) {
       if (stringOrdinalIgnoreCaseEquals(_stringRepresentations[i], token)) return _isoConstants[i];
