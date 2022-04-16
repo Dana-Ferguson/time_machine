@@ -34,7 +34,7 @@ The last two/three? are generic library goals.
 
 Time Machine is a port of [Noda Time](https://www.nodatime.org); use it for all your .NET needs.
 
-Current TZDB Version: 2020d
+Current TZDB Version: 2022a
 
 ### Example Code:
 
@@ -141,6 +141,8 @@ flutter:
 Your initialization function will look like this:
 ```dart
 import 'package:flutter/services.dart';
+
+WidgetsFlutterBinding.ensureInitialized();
 
 // TimeMachine discovers your TimeZone heuristically (it's actually pretty fast).
 await TimeMachine.initialize({'rootBundle': rootBundle});

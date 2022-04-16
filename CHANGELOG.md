@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.18
+- Update TZDB to 2022a
+
 ## 0.9.17
 - Support for Flutter on Windows, Linux and MacOS
 

@@ -6,7 +6,7 @@ homepage: https://github.com/Dana-Ferguson/time_machine
 # SDK's lower bound must be compatible with the current version pushed with Flutter
 # ./flutter --version
 environment:
-  sdk: ">=2.12.0-0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 # Verify flutter_test dependency compatibility first before updating any constraints
 # https://github.com/flutter/flutter/blob/master/packages/flutter_test/pubspec.yaml
