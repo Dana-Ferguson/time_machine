@@ -130,3 +130,20 @@ void ToString_NoFormat() {
   }
 }
 
+@Test()
+void ToJsonTest()
+{
+  expect(OffsetTime(LocalTime(12, 0, 28), Offset.zero).toJson(), '12:00:28Z');
+  expect(OffsetTime(LocalTime(0, 10, 0), Offset.hours(2)).toJson(), '00:10:00+02');
+  expect(OffsetTime(LocalTime(23, 29, 40), Offset.zero).toJson(), '23:29:40Z');
+  expect(OffsetTime(LocalTime(11, 9, 19), Offset.hours(-7)).toJson(), '11:09:19-07');
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(OffsetTime.fromJson('12:00:28Z'), OffsetTime(LocalTime(12, 0, 28), Offset.zero));
+  expect(OffsetTime.fromJson('00:10:00+02'), OffsetTime(LocalTime(0, 10, 0), Offset.hours(2)));
+  expect(OffsetTime.fromJson('23:29:40+00:00'), OffsetTime(LocalTime(23, 29, 40), Offset.zero));
+  expect(OffsetTime.fromJson('11:09:19-07:00'), OffsetTime(LocalTime(11, 9, 19), Offset.hours(-7)));
+}

@@ -502,4 +502,20 @@ void MinMax_SameCalendar()
 //  });
 //}
 
+@Test()
+void ToJsonTest()
+{
+  expect(LocalDateTime(2020, 2, 1, 12, 0, 28).toJson(), '2020-02-01T12:00:28');
+  expect(LocalDateTime(2020, 2, 10, 0, 10, 0).toJson(), '2020-02-10T00:10:00');
+  expect(LocalDateTime(2020, 12, 1, 23, 29, 40).toJson(), '2020-12-01T23:29:40');
+  expect(LocalDateTime(2020, 12, 20, 11, 9, 19).toJson(), '2020-12-20T11:09:19');
+}
 
+@Test()
+void FromJsonTest()
+{
+  expect(LocalDateTime.fromJson('2020-02-01T12:00:28'), LocalDateTime(2020, 2, 1, 12, 0, 28));
+  expect(LocalDateTime.fromJson('2020-02-10T00:10:00'), LocalDateTime(2020, 2, 10, 0, 10, 0));
+  expect(LocalDateTime.fromJson('2020-12-01T23:29:40'), LocalDateTime(2020, 12, 1, 23, 29, 40));
+  expect(LocalDateTime.fromJson('2020-12-20T11:09:19'), LocalDateTime(2020, 12, 20, 11, 9, 19));
+}

@@ -84,3 +84,21 @@ void ToStringTest()
   expect('12-01', AnnualDate(12, 1).toString());
   expect('12-20', AnnualDate(12, 20).toString());
 }
+
+@Test()
+void ToJsonTest()
+{
+  expect('02-01', AnnualDate(2, 1).toJson());
+  expect('02-10', AnnualDate(2, 10).toJson());
+  expect('12-01', AnnualDate(12, 1).toJson());
+  expect('12-20', AnnualDate(12, 20).toJson());
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(AnnualDate(2, 1), AnnualDate.fromJson('02-01'));
+  expect(AnnualDate(2, 10), AnnualDate.fromJson('02-10'));
+  expect(AnnualDate(12, 1), AnnualDate.fromJson('12-01'));
+  expect(AnnualDate(12, 20), AnnualDate.fromJson('12-20'));
+}

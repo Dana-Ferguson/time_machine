@@ -116,4 +116,13 @@ class OffsetDate
   /// culture to obtain a format provider.
   @override String toString([String? patternText, Culture? culture]) =>
       OffsetDatePatterns.format(this, patternText, culture);
+
+  /// Constructs an instance for the given json string with format ISO-8601, in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  factory OffsetDate.fromJson(String json) =>
+      OffsetDatePattern.generalIso.parse(json).getValueOrThrow();
+
+  /// Returns a json [String] that represents this instance with format ISO-8601 format, in the ISO calendar.
+  String toJson() => OffsetDatePattern.generalIso.format(this);
 }
