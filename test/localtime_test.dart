@@ -81,3 +81,21 @@ void WithOffset()
   expect(expected, time.withOffset(offset));
 }
 
+
+@Test()
+void ToJsonTest()
+{
+  expect(LocalTime(12, 0, 28).toJson(), '12:00:28');
+  expect(LocalTime(0, 10, 0).toJson(), '00:10:00');
+  expect(LocalTime(23, 29, 40).toJson(), '23:29:40');
+  expect(LocalTime(11, 9, 19).toJson(), '11:09:19');
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(LocalTime.fromJson('12:00:28'), LocalTime(12, 0, 28));
+  expect(LocalTime.fromJson('00:10:00'), LocalTime(0, 10, 0));
+  expect(LocalTime.fromJson('23:29:40'), LocalTime(23, 29, 40));
+  expect(LocalTime.fromJson('11:09:19'), LocalTime(11, 9, 19));
+}

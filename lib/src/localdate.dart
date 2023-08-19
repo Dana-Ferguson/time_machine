@@ -589,5 +589,13 @@ class LocalDate implements Comparable<LocalDate> {
   /// culture to obtain a format provider.
   @override String toString([String? patternText, Culture? culture]) =>
       LocalDatePatterns.format(this, patternText, culture);
-}
 
+  /// Constructs an instance for the given json string with format 'yyyy-MM-dd', in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  factory LocalDate.fromJson(String json) =>
+      LocalDatePattern.iso.parse(json).getValueOrThrow();
+
+  /// Returns a json [String] that represents this instance with format 'yyyy-MM-dd' format, in the ISO calendar.
+  String toJson() => LocalDatePattern.iso.format(this);
+}

@@ -60,3 +60,21 @@ void MinIsoValue()
   expect(CalendarSystem.iso, value.calendar);
   expect(() => value.addDays(-1), throwsRangeError);
 }
+
+@Test()
+void ToJsonTest()
+{
+  expect(LocalDate(2020, 2, 1).toJson(), '2020-02-01');
+  expect(LocalDate(2020, 2, 10).toJson(), '2020-02-10');
+  expect(LocalDate(2020, 12, 1).toJson(), '2020-12-01');
+  expect(LocalDate(2020, 12, 20).toJson(), '2020-12-20');
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(LocalDate.fromJson('2020-02-01'), LocalDate(2020, 2, 1));
+  expect(LocalDate.fromJson('2020-02-10'), LocalDate(2020, 2, 10));
+  expect(LocalDate.fromJson('2020-12-01'), LocalDate(2020, 12, 1));
+  expect(LocalDate.fromJson('2020-12-20'), LocalDate(2020, 12, 20));
+}

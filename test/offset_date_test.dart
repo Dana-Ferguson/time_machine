@@ -143,3 +143,20 @@ void ToString_NoFormat()
 
 */
 
+@Test()
+void ToJsonTest()
+{
+  expect(OffsetDate(LocalDate(2020, 2, 1), Offset.zero).toJson(), '2020-02-01Z');
+  expect(OffsetDate(LocalDate(2020, 2, 10), Offset.hours(2)).toJson(), '2020-02-10+02');
+  expect(OffsetDate(LocalDate(2020, 12, 1), Offset.zero).toJson(), '2020-12-01Z');
+  expect(OffsetDate(LocalDate(2020, 12, 20), Offset.hours(-7)).toJson(), '2020-12-20-07');
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(OffsetDate.fromJson('2020-02-01Z'), OffsetDate(LocalDate(2020, 2, 1), Offset.zero));
+  expect(OffsetDate.fromJson('2020-02-10+02'), OffsetDate(LocalDate(2020, 2, 10), Offset.hours(2)));
+  expect(OffsetDate.fromJson('2020-12-01+00:00'), OffsetDate(LocalDate(2020, 12, 1), Offset.zero));
+  expect(OffsetDate.fromJson('2020-12-20-07:00'), OffsetDate(LocalDate(2020, 12, 20), Offset.hours(-7)));
+}

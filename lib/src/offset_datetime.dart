@@ -299,6 +299,15 @@ class OffsetDateTime {
   @override String toString([String? patternText, Culture? culture]) =>
       OffsetDateTimePatterns.format(this, patternText, culture);
 
+  /// Constructs an instance for the given json string with format ISO-8601, in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  factory OffsetDateTime.fromJson(String json) =>
+      OffsetDateTimePattern.extendedIso.parse(json).getValueOrThrow();
+
+  /// Returns a json [String] that represents this instance with format ISO-8601, in the ISO calendar.
+  String toJson() => OffsetDateTimePattern.extendedIso.format(this);
+
   /// Adds a duration to an offset date and time.
   ///
   /// * [offsetDateTime]: The value to add the duration to.

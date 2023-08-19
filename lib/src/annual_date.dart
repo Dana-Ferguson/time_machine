@@ -36,6 +36,23 @@ class AnnualDate implements Comparable<AnnualDate> {
     GregorianYearMonthDayCalculator.validateGregorianYearMonthDay(2000, month, day);
   }
 
+  /// Constructs an instance for the given string with format MM-dd, in the ISO calendar.
+  ///
+  /// * [s]: The string to parse.
+  ///
+  /// * [FormatException]: The string is not in the correct format.
+  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date.
+  /// (February 29th is considered valid.)
+  factory AnnualDate.parse(String s) {
+    var parts = s.split('-');
+    if (parts.length != 2) {
+      throw FormatException('Invalid annual date format', s);
+    }
+    var month = int.parse(parts[0]);
+    var day = int.parse(parts[1]);
+    return AnnualDate(month, day);
+  }
+
   /// Gets the month of year.
   int get month => _value.month;
 
@@ -150,5 +167,23 @@ class AnnualDate implements Comparable<AnnualDate> {
   /// Returns: true if the [this] is later than or equal to [rhs], false otherwise.
   bool operator >=(AnnualDate rhs) {
     return compareTo(rhs) >= 0;
+  }
+
+  /// Constructs an instance for the given json string with format MM-dd, in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  ///
+  /// * [FormatException]: The string is not in the correct format.
+  /// * [ArgumentOutOfRangeException]: The parameters do not form a valid date.
+  /// (February 29th is considered valid.)
+  factory AnnualDate.fromJson(String json) {
+    return AnnualDate.parse(json);
+  }
+
+  /// Returns a json [String] that represents this instance.
+  ///
+  /// The value of the current instance, in the form MM-dd.
+  String toJson() {
+    return toString();
   }
 }

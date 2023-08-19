@@ -95,4 +95,13 @@ class OffsetTime {
   /// or null to use the current isolate's culture.
   @override String toString([String? patternText, Culture? culture]) =>
       OffsetTimePatterns.format(this, patternText, culture);
+
+    /// Constructs an instance for the given json string with format ISO-8601, in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  factory OffsetTime.fromJson(String json) =>
+      OffsetTimePattern.extendedIso.parse(json).getValueOrThrow();
+
+  /// Returns a json [String] that represents this instance with format ISO-8601, in the ISO calendar.
+  String toJson() => OffsetTimePattern.extendedIso.format(this);
 }

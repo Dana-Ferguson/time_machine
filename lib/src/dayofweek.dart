@@ -63,4 +63,8 @@ class DayOfWeek {
 
     return null;
   }
+
+  String toJson() => toString();
+
+  static DayOfWeek? fromJson(String json) => parse(json)!;
 }

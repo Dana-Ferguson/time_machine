@@ -426,4 +426,13 @@ class LocalTime implements Comparable<LocalTime> {
   /// or null to use the current isolate's culture.
   @override String toString([String? patternText, Culture? culture]) =>
       LocalTimePatterns.format(this, patternText, culture);
+
+  /// Constructs an instance for the given json string with format 'HH:mm:ss;FFFFFFFFF', in the ISO calendar.
+  ///
+  /// * [json]: The json string to parse.
+  factory LocalTime.fromJson(String json) =>
+      LocalTimePattern.extendedIso.parse(json).getValueOrThrow();
+
+  /// Returns a json [String] that represents this instance with format 'HH:mm:ss.FFFFFFFFF' format, in the ISO calendar.
+  String toJson() => LocalTimePattern.extendedIso.format(this);
 }

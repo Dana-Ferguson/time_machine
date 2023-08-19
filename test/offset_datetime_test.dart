@@ -511,3 +511,20 @@ void ToOffsetTime()
   expect(expected, odt.toOffsetTime());
 }
 
+@Test()
+void ToJsonTest()
+{
+  expect(OffsetDateTime(LocalDateTime(2020, 2, 1, 12, 0, 28), Offset.zero).toJson(), '2020-02-01T12:00:28Z');
+  expect(OffsetDateTime(LocalDateTime(2020, 2, 10, 0, 10, 0), Offset.hours(2)).toJson(), '2020-02-10T00:10:00+02');
+  expect(OffsetDateTime(LocalDateTime(2020, 12, 1, 23, 29, 40), Offset.zero).toJson(), '2020-12-01T23:29:40Z');
+  expect(OffsetDateTime(LocalDateTime(2020, 12, 20, 11, 9, 19), Offset.hours(-7)).toJson(), '2020-12-20T11:09:19-07');
+}
+
+@Test()
+void FromJsonTest()
+{
+  expect(OffsetDateTime.fromJson('2020-02-01T12:00:28Z'), OffsetDateTime(LocalDateTime(2020, 2, 1, 12, 0, 28), Offset.zero));
+  expect(OffsetDateTime.fromJson('2020-02-10T00:10:00+02'), OffsetDateTime(LocalDateTime(2020, 2, 10, 0, 10, 0), Offset.hours(2)));
+  expect(OffsetDateTime.fromJson('2020-12-01T23:29:40+00:00'), OffsetDateTime(LocalDateTime(2020, 12, 1, 23, 29, 40), Offset.zero));
+  expect(OffsetDateTime.fromJson('2020-12-20T11:09:19-07:00'), OffsetDateTime(LocalDateTime(2020, 12, 20, 11, 9, 19), Offset.hours(-7)));
+}
