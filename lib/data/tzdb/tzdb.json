@@ -422,5 +422,18 @@
   "Indian/Mayotte": "indian_mayotte",
   "Africa/Johannesburg": "africa_johannesburg",
   "Africa/Lusaka": "africa_lusaka",
-  "Africa/Harare": "africa_harare"
+  "Africa/Harare": "africa_harare",
+  "CET": "europe_paris",
+  "CST6CDT": "america_chicago",
+  "EET": "europe_sofia",
+  "EST": "america_cancun",
+  "EST5EDT": "america_new_york",
+  "GB": "europe_london",
+  "GB-Eire": "europe_london",
+  "HST": "pacific_honolulu",
+  "MET": "europe_paris",
+  "MST": "america_phoenix",
+  "MST7MDT": "america_denver",
+  "PST8PDT": "america_los_angeles",
+  "WET": "europe_lisbon"
 }
