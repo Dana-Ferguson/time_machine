@@ -35,6 +35,7 @@ Future<List<int>> _httpGetBytes(Uri uri) {
 }
 
 @ddcSupportHack
+
 /// Reads the bytes of a URI as a list of bytes.
 Future<List<int>> _readAsBytes(Uri uri) async {
   if (uri.scheme == 'http' || uri.scheme == "https") {
@@ -47,6 +48,7 @@ Future<List<int>> _readAsBytes(Uri uri) async {
 }
 
 @ddcSupportHack
+
 /// Reads the bytes of a URI as a string.
 Future<String> _readAsString(Uri uri, Encoding? encoding) async {
   if (uri.scheme == 'http' || uri.scheme == "https") {
@@ -66,23 +68,26 @@ Future<String> _readAsString(Uri uri, Encoding? encoding) async {
 class _WebMachineIO implements PlatformIO {
   @override
   Future<ByteData> getBinary(String path, String filename) async {
-
     // var resource = new Resource('packages/time_machine/data/$path/$filename');
     // // todo: probably a better way to do this
     // var binary = new ByteData.view(new Int8List.fromList(await resource.readAsBytes()).buffer);
 
-    var resource = Uri.parse('${Uri.base.origin}/packages/time_machine/data/$path/$filename');
-    var binary = ByteData.view(Int8List.fromList(await _readAsBytes(resource)).buffer);
+    var resource = Uri.parse(
+        '${Uri.base.origin}/assets/packages/time_machine/data/$path/$filename');
+    var binary =
+        ByteData.view(Int8List.fromList(await _readAsBytes(resource)).buffer);
 
     return binary;
   }
 
   @override
-  Future/**<Map<String, dynamic>>*/ getJson(String path, String filename) async {
+  Future /**<Map<String, dynamic>>*/ getJson(
+      String path, String filename) async {
     // var resource = new Resource('packages/time_machine/data/$path/$filename');
     // return json.decode(await resource.readAsString());
 
-    var resource = Uri.parse('${Uri.base.origin}/packages/time_machine/data/$path/$filename');
+    var resource = Uri.parse(
+        '${Uri.base.origin}/assets/packages/time_machine/data/$path/$filename');
     return json.decode(await _readAsString(_resolveUri(resource), null));
   }
 }
@@ -144,8 +149,7 @@ class TimeMachine {
       _yearFormat = options['year'];
       _monthFormat = options['month'];
       _dayFormat = options['day'];
-    }
-    catch (e, s) {
+    } catch (e, s) {
       print('Failed to get platform local information.\n$e\n$s');
     }
   }
